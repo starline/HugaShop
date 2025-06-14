@@ -207,7 +207,7 @@ class WarehouseMove extends BaseModel
 
     /**
      * Фиксируем поставку/списание (выполнен)
-     * $subtract (вычесть)  = true - при списании
+     * $subtract (вычесть) = true - при списании
      * @param int $move_id
      * @param $subtract
      */
@@ -245,14 +245,14 @@ class WarehouseMove extends BaseModel
             return false;
         }
 
-        // Если заказ был списан(3)|отменен(4), меняем знак
+        // Если поставка был списан(3)|отменен(4), меняем знак
         $factor = in_array($movement->status, [3, 4]) ? -1 : 1;
 
-        // Если заказ был как "выполнен/closed", отнимаем||добавляем товар на склад
+        // Если поставка была как "выполнен/closed", отнимаем || добавляем товар на склад
         if ($movement->closed) {
             foreach (WarehousePurchase::where('move_id', $movement->id)->get() as $purchase) {
                 if ($purchase->amount) {
-                    Product::updateStock($purchase->prodyct_id, -$factor * $purchase->amount);
+                    Product::updateStock($purchase->product_id, - ($factor) * $purchase->amount);
                 }
             }
             $movement->update(['closed' => 0]);

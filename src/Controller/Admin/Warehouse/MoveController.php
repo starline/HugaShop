@@ -15,7 +15,6 @@ use HugaShop\Api\Image;
 use HugaShop\Api\Design;
 use HugaShop\Api\Request;
 use HugaShop\Api\User\User;
-use HugaShop\Api\Product\Product;
 use HugaShop\Api\User\UserPermission;
 use App\Controller\BaseAdminController;
 use HugaShop\Api\Finance\FinancePayment;
@@ -91,6 +90,7 @@ class MoveController extends BaseAdminController
                     }
                 }
 
+
                 ////////////////////////////////////////////////
                 // Cтатус перемещения, обновление склада товаров
                 // Меняем статус поставки после того как purchases отредактированы
@@ -107,7 +107,7 @@ class MoveController extends BaseAdminController
                 }
 
                 // Ожидаем
-                elseif ($move_status == 1) {
+                elseif ($move_status === 1) {
 
                     // TODO: обновляем даты поставки. Также нужно проверять дату поставки, когда купили последний товар.
 
@@ -119,7 +119,7 @@ class MoveController extends BaseAdminController
                 }
 
                 // Выполнен/добавлен на склад
-                elseif ($move_status == 2) {
+                elseif ($move_status === 2) {
                     if (!WarehouseMove::close($movement->id)) {
                         Design::assign('message_error', 'error_closing');
                     } else {
@@ -128,7 +128,7 @@ class MoveController extends BaseAdminController
                 }
 
                 // Списан
-                elseif ($move_status == 3) {
+                elseif ($move_status === 3) {
                     if (!WarehouseMove::close($movement->id, true)) {
                         Design::assign('message_error', 'error_closing');
                     } else {
@@ -137,7 +137,7 @@ class MoveController extends BaseAdminController
                 }
 
                 // Отменен
-                elseif ($move_status == 4) {
+                elseif ($move_status === 4) {
                     if (!WarehouseMove::open($movement->id)) {
                         Design::assign('message_error', 'error_open');
                     } else {
