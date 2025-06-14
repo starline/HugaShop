@@ -414,7 +414,7 @@ class TestScript extends BaseExtension
                             }
 
                             // 3. Заменняем product_id на новые по variant_id
-                            // Удаляем variant_id в WarehousePurchase
+                            // 4. Удаляем variant_id в WarehousePurchase
                             if (1) {
                                 $w_purchases = WarehousePurchase::query()->get();
                                 foreach ($w_purchases as $w_purchase) {
@@ -430,7 +430,7 @@ class TestScript extends BaseExtension
                             }
 
 
-                            // 4. 
+                            // 5. 
 
 
                             $this->result[] = 'done';

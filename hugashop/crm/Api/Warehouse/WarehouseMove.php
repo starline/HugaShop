@@ -15,6 +15,8 @@ namespace HugaShop\Api\Warehouse;
 use HugaShop\Api\Image;
 use HugaShop\Api\Helper;
 use HugaShop\Api\BaseModel;
+use HugaShop\Api\User\User;
+use HugaShop\Api\Product\Product;
 use Illuminate\Support\Collection;
 use HugaShop\Api\Product\ProductVariant;
 
@@ -37,7 +39,7 @@ class WarehouseMove extends BaseModel
 
     public function purchases()
     {
-        return $this->hasMany(WarehousePurchase::class, 'move_id');
+        return $this->hasMany(WarehousePurchase::class, 'move_id')->orderBy('position');
     }
 
     public function place()
@@ -196,6 +198,9 @@ class WarehouseMove extends BaseModel
             $movement->awaiting_date = Helper::dateConvert($movement->awaiting_date . ' 12:00', 'Y-m-d');
         }
 
+        // Закрепляем за менеджером
+        $movement->manager_id = User::authUser('id');
+
         return self::create($movement);
     }
 
@@ -219,7 +224,7 @@ class WarehouseMove extends BaseModel
         if (!$movement->closed) {
             foreach (WarehousePurchase::where('move_id', $movement->id)->get() as $purchase) {
                 if ($purchase->amount) {
-                    ProductVariant::updateStock($purchase->variant_id, $factor * $purchase->amount);
+                    Product::updateStock($purchase->product_id, $factor * $purchase->amount);
                 }
             }
             $movement->update(['closed' => 1]);
@@ -247,7 +252,7 @@ class WarehouseMove extends BaseModel
         if ($movement->closed) {
             foreach (WarehousePurchase::where('move_id', $movement->id)->get() as $purchase) {
                 if ($purchase->amount) {
-                    ProductVariant::updateStock($purchase->variant_id, -$factor * $purchase->amount);
+                    Product::updateStock($purchase->prodyct_id, -$factor * $purchase->amount);
                 }
             }
             $movement->update(['closed' => 0]);

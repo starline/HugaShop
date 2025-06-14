@@ -3,7 +3,7 @@
 
 <head>
 
-	<title>{$variant->product_name}</title>
+	<title>{$product->name}</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel="icon" href='{"images/favicon.ico"|asset:"{$settings->theme}"}' type="image/x-icon" />
 
@@ -58,8 +58,8 @@
 	<div class='wrapper'>
 		{for $i=1 to $count}
 			<section>
-				<div class="name">{$variant->product_name}{if $variant->name} - {$variant->name}{/if}</div>
-				<div class="sku">{$variant->sku}</div>
+				<div class="name">{$product->name}{if $product->name} - {$product->name}{/if}</div>
+				<div class="sku">{$product->sku}</div>
 			</section>
 		{/for}
 	</div>

@@ -226,14 +226,11 @@ abstract class BaseModel extends Model
 
     /**
      * Get one
-     * @param int|array|null $id id | ['id'' => 1, 'name' => 'name']
+     * @param int|array $id id | ['id'' => 1, 'name' => 'name']
      * @param array|string $joins 'group' | ['group', 'permissions']
      */
-    public static function getOne(int|array|null $id, array|string $joins = [])
+    public static function getOne(int|array $id, array|string $joins = [])
     {
-        if (empty($id)) {
-            return null;
-        }
 
         $query = static::query();
 

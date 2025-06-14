@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  * 
  * ProductMaarkingAdmin
  *
@@ -16,28 +16,24 @@ use HugaShop\Api\Design;
 use HugaShop\Api\Request;
 use HugaShop\Api\Product\Product;
 use App\Controller\BaseAdminController;
-use HugaShop\Api\Product\ProductVariant;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class ProductMarkingController extends BaseAdminController
 {
-    #[Route('/admin/product/{variant_id}/marking', requirements: ['variant_id' => '\d+'], name: 'ProductMarkingAdmin')]
-    public function index(int $variant_id): Response
+    #[Route('/admin/product/{product_id}/marking', requirements: ['product_id' => '\d+'], name: 'ProductMarkingAdmin')]
+    public function index(int $product_id): Response
     {
 
         $this->checkAdminAccess('product_marking');
 
-        $variant = ProductVariant::getVariant(intval($variant_id));
+        $product = Product::getOne($product_id);
 
-        if (empty($variant->product_id)) {
+        if (empty($product->id)) {
             return $this->redirectToRoute('ProductListAdmin');
         }
 
-        $product = Product::getProduct(intval($variant->product_id));
-        $variant->product_name = $product->name;
-
-        Design::assign('variant', $variant);
+        Design::assign('product', $product);
         Design::assign('count', Request::getVar('count', 'int') ?: 1);
 
         // Выводим на экран

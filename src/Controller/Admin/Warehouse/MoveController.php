@@ -4,24 +4,24 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.9
+ * @version 4.0
  *
  */
 
 namespace App\Controller\Admin\Warehouse;
 
 use stdClass;
-use HugaShop\Api\User\User;
 use HugaShop\Api\Image;
 use HugaShop\Api\Design;
 use HugaShop\Api\Request;
-use HugaShop\Api\Warehouse\WarehouseMove;
-use HugaShop\Api\Finance\FinancePayment;
-use HugaShop\Api\Product\ProductVariant;
+use HugaShop\Api\User\User;
+use HugaShop\Api\Product\Product;
 use HugaShop\Api\User\UserPermission;
+use App\Controller\BaseAdminController;
+use HugaShop\Api\Finance\FinancePayment;
+use HugaShop\Api\Warehouse\WarehouseMove;
 use HugaShop\Api\Warehouse\WarehousePlace;
 use HugaShop\Api\Warehouse\WarehousePurchase;
-use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -37,7 +37,6 @@ class MoveController extends BaseAdminController
         $total =  new \stdClass();
         $total->purchases = 0;
         $payments = [];
-        $purchases = [];
 
 
         #### Update
@@ -46,9 +45,6 @@ class MoveController extends BaseAdminController
 
             // Создаем новую поставку/списание
             if (empty($movement->id)) {
-
-                // Закрепляем за менеджером
-                $movement->manager_id = User::authUser('id');
                 $movement = Design::setFlashMessage('add', WarehouseMove::addMovement($movement));
             } else {
                 Design::setFlashMessage('update', WarehouseMove::updateMove($movement->id, $movement));
@@ -63,74 +59,37 @@ class MoveController extends BaseAdminController
             // Обновляем товары поставку
             if (!empty($movement->id)) {
 
-                // Закупки/списание товаров
-                if (Request::post('purchases')) {
-                    foreach (Request::post('purchases') as $n => $var) { # id, variant_id, amount
-                        foreach ($var as $i => $v) {
-                            if (empty($purchases[$i])) {
-                                $purchases[$i] = new \stdClass();
-                            }
-                            $purchases[$i]->$n = $v;
-                        }
+                // Сохраняем все пришедшие id в массив
+                $posted_purchase_ids = [];
+                foreach (Request::post('purchases', 'array') as $position => $item) {
+
+                    $item_upd = [
+                        'product_id'    => $item['product_id'],
+                        'amount'        => $item['amount'],
+                        'position'      => $position,
+                    ];
+
+                    if (UserPermission::checkAccess("product_price")) {
+                        $item_upd['cost_price'] = $item['cost_price'];
+                    }
+
+                    if (!empty($item['id'])) {
+                        WarehousePurchase::updatePurchase($item['id'], $item_upd);
+                        $posted_purchase_ids[] = $item['id'];
+                    } else {
+                        $item_upd['move_id'] = $movement->id;
+                        $new_id = WarehousePurchase::addPurchase($item_upd);
+                        $posted_purchase_ids[] = $new_id;
                     }
                 }
 
-                $posted_purchases_ids = [];
-                foreach ($purchases as $purchase) {
-                    $variant = ProductVariant::getVariant($purchase->product_id);
-
-                    $purchase_upd = new stdClass();
-                    $purchase_upd->amount = $purchase->amount;
-
-                    // Обновляем существующий вариант товара
-                    if (!empty($purchase->id)) {
-                        if (!empty($variant)) { # если исходный вариант существует
-
-                            // Если параметр не задан, берется с исходного варианта товара
-                            $purchase_upd->variant_id = $purchase->variant_id;
-                            $purchase_upd->variant_name = $variant->name;
-                            $purchase_upd->sku = $variant->sku;
-
-                            if (UserPermission::checkAccess("product_price") and isset($purchase->cost_price)) {
-                                $purchase_upd->cost_price = $purchase->cost_price;
-                            }
-                        } else { # Если исходный вариант удален, не существует
-                            if (UserPermission::checkAccess("product_price") and isset($purchase->cost_price)) {
-                                $purchase_upd->cost_price = $purchase->cost_price;
-                            }
-                        }
-
-                        WarehousePurchase::updatePurchase($purchase->id, $purchase_upd);
-                    }
-
-                    // Добавляем новый вариант товара
-                    else {
-                        $purchase_upd->move_id = $movement->id;
-                        $purchase_upd->variant_id = $purchase->variant_id;
-                        if (UserPermission::checkAccess("product_price") and isset($purchase->cost_price)) {
-                            $purchase_upd->cost_price = $purchase->cost_price;
-                        }
-                        $purchase->id = WarehousePurchase::addPurchase($purchase_upd);
-                    }
-
-                    $posted_purchases_ids[] = $purchase->id;
-                }
-
-                // Удалить непереданные товары
-                foreach (WarehousePurchase::getPurchases(['move_id' => $movement->id]) as $purch_temp) {
-                    if (!in_array($purch_temp->id, $posted_purchases_ids)) {
-                        WarehousePurchase::deletePurchase($purch_temp->id);
+                // Удаляем все purchase, которые были, но не пришли в POST (удалённые на фронте)
+                $all_purchases = WarehousePurchase::getPurchases(['move_id' => $movement->id]);
+                foreach ($all_purchases as $purchase) {
+                    if (!in_array($purchase->id, $posted_purchase_ids)) {
+                        WarehousePurchase::deletePurchase($purchase->id);
                     }
                 }
-
-                // Отсортировать  варианты
-                asort($posted_purchases_ids);
-                $i = 0;
-                foreach ($posted_purchases_ids as $purchase_id) {
-                    WarehousePurchase::updatePurchase($posted_purchases_ids[$i], ['position' => $purchase_id]);
-                    $i++;
-                }
-
 
                 ////////////////////////////////////////////////
                 // Cтатус перемещения, обновление склада товаров

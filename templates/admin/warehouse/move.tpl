@@ -217,24 +217,26 @@
 			<div class="list purchases">
 				{foreach $movement->purchases as $purchase}
 					<div class="list_row">
+						<input type="hidden" name="purchases[{$purchase->position}][product_id]"
+							value="{$purchase->product_id}" />
+						<input type="hidden" name="purchases[{$purchase->position}][id]" value="{$purchase->id}" />
 
 						<div class="move">
 							<div class="move_zone"></div>
 						</div>
 
 						<div class="image">
-							<input type="hidden" name="purchases[id][]" value="{$purchase->id}" />
 							<img class="product_icon"
 								src="{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60}{else}{'images/cargo.png'|asset}{/if}"
 								data-bs-toggle="tooltip" title="{$purchase->product->variant_name}" />
 						</div>
 
-						<div class="col">
-							<a href="/admin/product/{$purchase->product->id}/price">{$purchase->product->name}</a>
-						</div>
+						<div class="col row">
+							<div class="col">
+								<a href="/admin/product/{$purchase->product->id}/price">{$purchase->product_name}</a>
+							</div>
 
-						<div class="purchase_variant">
-							<div class="view_purchase">
+							<div class="col-3 text-end purchase_variant">
 								<i data-bs-toggle="tooltip"
 									title="{$purchase->variant_name}">{$purchase->variant_name|truncate:20:'…':true:false}</i>
 
@@ -246,163 +248,167 @@
 									</div>
 								{/if}
 							</div>
-						</div>
 
-						{if 'product_price'|user_access}
-							<div class="price">
+							<div class="col-2 text-end price">
 								<div class="view_edit_purchase">
 									<div class="row_alert">
 										<span class="js_change">{$purchase->price|number:2}</span>
 										<span class="price_sign">{$currency->sign}</span>
 									</div>
-
-									<div>
+									{if 'product_price'|user_access}
 										<div class="view_purchase">
 											{$purchase->cost_price|price_html|raw}
 										</div>
-									</div>
-
+									{/if}
 									<div class="edit_purchase input-group input-group-sm" style="display:none;">
-										<input class="form-control text-end" type="text" name="purchases[cost_price][]"
-											value="{$purchase->cost_price}" size="5" />
+										<input class="form-control text-end" type="text"
+											name="purchases[{$purchase->position}][cost_price]" value="{$purchase->cost_price}"
+											size="5" />
 										<span class="input-group-text">{$currency->sign}</span>
 									</div>
 								</div>
 							</div>
-						{/if}
 
-						<div class="amount">
-							<div class="view_edit_purchase">
-								<div class="row_alert">
-									<span class="js_change">{($purchase->product->weight * $purchase->amount)|number}</span>
-									<span class="price_sign">{$settings->weight_units}</span>
-								</div>
-
-								<div class="view_purchase">
-									{$purchase->amount} {$settings->units}
-								</div>
-
-								<div class="edit_purchase" style="display:none;">
-									<select class="form-select form-select-sm" name="purchases[amount][]">
-										{section name=amounts start=1 loop=$settings->max_order_amount step=1}
-											<option value="{$smarty.section.amounts.index}"
-												{if $purchase->amount==$smarty.section.amounts.index}selected{/if}>
-												{$smarty.section.amounts.index} {$settings->units}</option>
-										{/section}
-									</select>
-								</div>
-							</div>
-						</div>
-
-						<div class="stock">
-							<div class="view_edit_purchase">
-								<div class="row_alert">
-									{if $purchase->product->income_move}
-										<div class="wmovements" data-bs-toggle="tooltip" data-bs-html="true"
-											title="{foreach $purchase->product->warehouse_move as $mov}Поставка №{$mov->move_id} | {$mov->awaiting_date|date} | +{$mov->amount}</br>{/foreach}">
-											+{$purchase->product->income_move}</div>
+							<div class="col-2 text-end amount">
+								<div class="view_edit_purchase">
+									{if $purchase->product->weight}
+										<div class="row_alert">
+											<span
+												class="js_change">{($purchase->product->weight * $purchase->amount)|number:2}</span>
+											<span class="price_sign">{$settings->weight_units}</span>
+										</div>
 									{/if}
-								</div>
-
-								{if $purchase->product}
-									<div class="variant_stock">остаток: <span class="js_change">{$purchase->product->stock}</span>
+									<div class="view_purchase">
+										{$purchase->amount} {$settings->units}
 									</div>
-								{else}
-									{if $purchase->product->id|empty}
-										<img src="{'images/error.png'|asset}" data-bs-toggle="tooltip" title="Товар был удалён">
-									{elseif $purchase->variant->id|empty}
-										<img src="{'images/error.png'|asset}" data-bs-toggle="tooltip"
-											title="Вариант товара был удалён">
+
+									<div class="edit_purchase" style="display:none;">
+										<select class="form-select form-select-sm text-end"
+											name="purchases[{$purchase->position}][amount]">
+											{section name=amounts start=1 loop=$settings->max_order_amount step=1}
+												<option value="{$smarty.section.amounts.index}"
+													{if $purchase->amount == $smarty.section.amounts.index}selected{/if}>
+													{$smarty.section.amounts.index} {$settings->units}</option>
+											{/section}
+										</select>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-2 text-end stock">
+								<div class="view_edit_purchase">
+									{if $purchase->product}
+										<div class="row_alert">
+											{if $purchase->product->income_move}
+												<div class="wmovements" data-bs-toggle="tooltip" data-bs-html="true"
+													title="{foreach $purchase->product->warehouse_move as $mov}Поставка №{$mov->move_id} | {$mov->awaiting_date|date} | +{$mov->amount}</br>{/foreach}">
+													+{$purchase->product->income_move}
+												</div>
+											{/if}
+										</div>
+
+										<div class="variant_stock">остаток: <span
+												class="js_change">{$purchase->product->stock}</span>
+										</div>
 									{/if}
-								{/if}
+								</div>
 							</div>
 						</div>
 
-						{if 'product_marking'|user_access}
-							<div class="icons">
-								<a href="{'ProductMarkingAdmin'|urll:[variant_id => $purchase->product->id]}" target="_blank"
+						<div class="icons flex-column">
+							{if $purchase->product->id}
+								<a href="{'ProductMarkingAdmin'|urll:[product_id => $purchase->product->id]}" target="_blank"
 									class="material-icons" data-bs-toggle="tooltip" title="Распечать этикету">print</a>
-
-								{if $can_edit}
-									<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
-								{/if}
-							</div>
-						{/if}
+							{/if}
+							{if $can_edit}
+								<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
+							{/if}
+						</div>
 					</div>
 				{/foreach}
 
 
+				<!-- New purchase row -->
 				<div id="new_purchase" class="list_row sort_disabled" style="display:none;">
+					<input type="hidden" name="purchases[INDEX][product_id]" value="">
+					<input type="hidden" name="purchases[INDEX][id]" value="">
+
 					<div class="move">
 						<div class="move_zone"></div>
 					</div>
 
 					<div class="image">
-						<input type="hidden" name="purchases[id][]" value="">
 						<img class="product_icon" src="">
 					</div>
 
-					<div class="col">
-						<a class="add_name" href=""></a>
-					</div>
+					<div class="col row">
+						<div class="col">
+							<a class="add_name" href=""></a>
+						</div>
 
-					<div class="purchase_variant">
-						<div class="view_purchase">
-							<i data-bs-toggle="tooltip" title=""></i>
-							<div class="round_box copy_field" value="{$purchase->sku}">
-								<div class="copy_hover" data-bs-toggle="tooltip" data-bs-original-title="Скопировать">
-									<i class="material-icons">content_copy</i>
+						<div class="col-3 text-end purchase_variant">
+							<div class="view_purchase">
+								<i data-bs-toggle="tooltip" title=""></i>
+								<div class="round_box copy_field" value="">
+									<div class="copy_hover" data-bs-toggle="tooltip" data-bs-original-title="Скопировать">
+										<i class="material-icons">content_copy</i>
+									</div>
 								</div>
+								<input type="hidden" name="purchases[INDEX][sku]" value="">
 							</div>
 						</div>
-					</div>
 
-					<div class="price">
-						<div class="view_edit_purchase">
-							{if 'product_price'|user_access}
+						<div class="col-2 text-end price">
+							<div class="view_edit_purchase">
 								<div class="row_alert">
 									<span class="js_change"></span>
 									<span class="price_sign">{$currency->sign}</span>
 								</div>
-							{/if}
-							<div class="edit_purchase input-group input-group-sm">
-								<input class="form-control text-end" type="text" name="purchases[cost_price][]" value=""
-									size="5" {if !'product_price'|user_access} disabled {/if} />
-								<span class="input-group-text">{$currency->sign}</span>
+								<div class="edit_purchase input-group input-group-sm">
+									<input class="form-control text-end" type="text" name="purchases[INDEX][cost_price]"
+										value="" size="5" />
+									<span class="input-group-text">{$currency->sign}</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-2 text-end amount">
+							<div class="view_edit_purchase">
+								<div class="row_alert">
+									<span class="js_change"></span>
+									<span class="price_sign">{$settings->weight_units}</span>
+								</div>
+								<select class="form-select form-select-sm text-end" name="purchases[INDEX][amount]">
+									{section name=amounts start=1 loop=$settings->max_order_amount step=1}
+										<option value="{$smarty.section.amounts.index}">{$smarty.section.amounts.index}
+											{$settings->units}</option>
+									{/section}
+								</select>
+							</div>
+						</div>
+
+						<div class="col-2 text-end stock">
+							<div class="view_edit_purchase">
+								<div class="row_alert"></div>
+								<div class="variant_stock">остаток: <span class="js_change"></span></div>
 							</div>
 						</div>
 					</div>
 
-					<div class="amount">
-						<div class="view_edit_purchase">
-							<div class="row_alert">
-								<span class="js_change"></span>
-								<span class="price_sign">{$settings->weight_units}</span>
-							</div>
-							<select class="form-select form-select-sm" name="purchases[amount][]"></select>
-						</div>
-					</div>
-
-					<div class="stock">
-						<div class="view_edit_purchase">
-							<div class="row_alert"></div>
-							<div class="variant_stock">остаток: <span class="js_change"></span></div>
-						</div>
-					</div>
-
-					<div class="icons">
+					<div class="icons flex-column">
 						<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
 					</div>
 				</div>
 
+
 			</div>
 
-			<div id="add_purchase" {if !$purchases|empty}style="display:none;" {/if}>
+			<div id="add_purchase" {if $movement->purchases}style="display:none;" {/if}>
 				<input type="text" id="add_purchase" class="input_autocomplete form-control"
 					placeholder="Выберите товар чтобы добавить его">
 			</div>
 
-			{if $purchases and $can_edit}
+			{if $movement->purchases and $can_edit}
 				<div class="edit_purchases dash_link">редактировать покупки</div>
 			{/if}
 
@@ -411,7 +417,6 @@
 			{if $movement->images || $can_edit}
 				<div id="images" class="col-12 layer images">
 					<h2>Фотоотчет</h2>
-
 					<ul>
 						{foreach $movement->images as $image}
 							<li>
@@ -435,10 +440,6 @@
 						</div>
 
 						<div class="add_image"></div>
-
-						<span class="upload_image">
-							<span class="dash_link">Добавить изображение</span>
-						</span>
 					{/if}
 				</div>
 			{/if}
@@ -482,27 +483,44 @@
 					regional: 'ru'
 				});
 
-
 				// Сортировка вариантов
 				$("#purchases").sortable({
-					items: '.list_row:not(.sort_disabled)',
+					items: '.list_row',
 					handle: ".move_zone",
-					cancel: ".sort_disabled",
 					tolerance: "pointer",
 					opacity: 0.95,
 					axis: 'y',
 					update: function(event, ui) {
-						$("#purchases input[name*='check']").prop('checked', false);
+						indexListRows('#purchases');
 					}
 				});
-
 
 				// Удаление товара
 				$(".purchases").on('click', 'i.delete', function() {
 					$(this).closest(".list_row").fadeOut(200, function() { $(this).remove(); });
+					indexListRows('#purchases');
 					return false;
 				});
 
+				// После завершения сортировки переиндексировать input-ы
+				function indexListRows(container_selector) {
+					$(container_selector).find('.list_row').each(function(idx) {
+						$(this).find('input, select, textarea').each(function() {
+							this.name = this.name.replace(/purchases\[(?:\d+|INDEX)\]/,
+								'purchases[' + idx + ']');
+						});
+					});
+					console.log('index row');
+				}
+
+				// Редактировать покупки
+				$(".edit_purchases").click(function() {
+					$(this).hide();
+					$(".purchases div.view_purchase").hide();
+					$(".purchases div.edit_purchase").show();
+					$("div#add_purchase").show();
+					return false;
+				});
 
 				// Добавление товара. Клонируем срочку товара.
 				const new_purchase = $('.purchases #new_purchase').clone(true);
@@ -513,44 +531,49 @@
 					minChars: 0,
 					noCache: false,
 					onSelect: function(suggestion) {
-						const new_item = new_purchase.clone().appendTo('.purchases');
+						let new_item = new_purchase.clone().appendTo('.purchases');
+						let product = suggestion.data;
+
 						new_item.removeAttr('id');
-						new_item.find('a.add_name').html(suggestion.data.name);
-						new_item.find('a.add_name').attr('href', '/admin/product/' + suggestion.data.id +
+						new_item.find('a.add_name').html(product.name);
+						new_item.find('a.add_name').attr('href', '/admin/product/' + product.id +
 							'/price');
 
-						new_item.find('.price .js_change').text(suggestion.data.price);
-						new_item.find('input[name*=purchases\\[cost_price\\]]').val(suggestion.data
-							.cost_price);
+						new_item.find('input[name*=product_id]').val(product.id);
+						new_item.find('.price .js_change').text(product.price);
+						new_item.find('input[name*=cost_price]').val(product.cost_price);
 
-						if (suggestion.data.variant_name) {
-							new_item.find('.view_purchase i').text(suggestion.data.variant_name);
+						if (product.variant_name) {
+							new_item.find('.view_purchase i').text(product.variant_name);
 						} else {
 							new_item.find('.view_purchase i').remove();
 						}
 
-						if (suggestion.data.sku) {
-							new_item.find('.view_purchase .copy_field').attr('value', suggestion.data.sku);
-							new_item.find('.view_purchase .copy_field').text(suggestion.data.sku);
+						if (product.sku) {
+							new_item.find('.view_purchase .copy_field').attr('value', product.sku);
+							new_item.find('.view_purchase .copy_field').text(product.sku);
 						} else {
 							new_item.find('.view_purchase .copy_field').remove();
 						}
 
-						new_item.find('.stock .js_change').text(suggestion.data.stock);
-						new_item.find('.amount .js_change ').text(suggestion.data.weight);
+						new_item.find('.stock .js_change').text(product.stock);
+						new_item.find('.amount .js_change ').text(product.weight);
 
-						const amount_select_el = new_item.find('select[name*=purchases][name*=amount]');
+						const amount_select_el = new_item.find('select[name*=amount]');
 						for (let i = 1; i <= max_order_amount; i++)
 							amount_select_el.append("<option value='" + i + "'>" + i + " " + units +
 								"</option>");
 
-						if (suggestion.data.image.url)
-							new_item.find('img.product_icon').attr("src", suggestion.data.image.url);
+						if (product.image.url)
+							new_item.find('img.product_icon').attr("src", product.image.url);
 						else
 							new_item.find('img.product_icon').remove();
 
 						$("input#add_purchase").val('').focus().blur();
+
+						indexListRows('#purchases');
 						new_item.show();
+
 					},
 					formatResult: function(suggestion, currentValue) {
 						let reEscape = new RegExp('(\\' + ['/', '.', '*', '+', '?', '|', '(', ')', '[', ']', '{', '}', '\\'].join('|\\') + ')', 'g');
@@ -558,17 +581,19 @@
 						let stock_txt = ' - <span class="color_grey">нет в наличии</span>';
 						let movement = '';
 
-						let stock_count = suggestion.data.stock;
-						let movement_count = suggestion.data.movements_amount;
+						let product = suggestion.data;
+
+						let stock_count = product.stock;
+						let movement_count = product.movements_amount;
 
 						if (stock_count > 0)
-							stock_txt = ' - <span class="color_green">остаток ' + suggestion.data.stock + ' ' +
+							stock_txt = ' - <span class="color_green">остаток ' + product.stock + ' ' +
 							units + '</span>';
 
 						if (movement_count > 0)
 							movement = ' <span class="color_grey">(+' + movement_count + ')</span>'
 
-						return (suggestion.data.image ? "<img align='absmiddle' src='" + suggestion.data
+						return (product.image ? "<img align='absmiddle' src='" + product
 								.image.url +
 								"'> " : '') + suggestion.value.replace(new RegExp(pattern, 'gi'),
 								'<strong>$1<\/strong>') + ' - ' + '<span class="color_red"><b>' + suggestion
@@ -577,14 +602,7 @@
 				});
 
 
-				// Редактировать покупки
-				$(".edit_purchases").click(function() {
-					$(".purchases div.view_purchase").hide();
-					$(".purchases div.edit_purchase").show();
-					$(this).hide();
-					$("div#add_purchase").show();
-					return false;
-				});
+
 
 			});
 

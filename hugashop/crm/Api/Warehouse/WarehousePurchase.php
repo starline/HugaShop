@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  * 
  * @author Andri Huga
- * @version 2.6
+ * @version 2.7
  * 
  */
 
@@ -12,7 +12,6 @@ namespace HugaShop\Api\Warehouse;
 
 use HugaShop\Api\BaseModel;
 use HugaShop\Api\Product\Product;
-use HugaShop\Api\Product\ProductVariant;
 use Illuminate\Support\Collection;
 
 class WarehousePurchase extends BaseModel
@@ -23,9 +22,9 @@ class WarehousePurchase extends BaseModel
         'id'           => ['type' => 'int',      'extra' => 'AUTO_INCREMENT'],
         'move_id'      => ['type' => 'int'],
         'product_id'   => ['type' => 'int'],
-        'sku'          => ['type' => 'varchar'],
         'product_name' => ['type' => 'varchar'],
         'variant_name' => ['type' => 'varchar'],
+        'sku'          => ['type' => 'varchar'],
         'price'        => ['type' => 'decimal',  'def'  => 0.00],
         'cost_price'   => ['type' => 'decimal',  'def'  => 0.00],
         'amount'       => ['type' => 'int',      'def'  => 0],
@@ -101,45 +100,42 @@ class WarehousePurchase extends BaseModel
             $factor = in_array($movement->status, [3, 4]) ? -1 : 1;
 
             // если сменили вариант товара
-            if (!empty($purchase->variant_id) && $old->variant_id != $purchase->variant_id) {
+            if (!empty($purchase->product_id) && $old->product_id != $purchase->product_id) {
 
                 // забираем со старого варианта
-                if ($old->variant_id) {
-                    ProductVariant::updateStock($old->variant_id, -$factor * $old->amount);
+                if ($old->product_id) {
+                    Product::updateStock($old->product_id, -$factor * $old->amount);
                 }
 
                 // добавляем в новый вариант
-                ProductVariant::updateStock($purchase->variant_id, $factor * $purchase->amount);
+                Product::updateStock($purchase->product_id, $factor * $purchase->amount);
 
                 // обновляем склад с новым значением поставки
-            } elseif (!empty($purchase->variant_id)) {
-                ProductVariant::updateStock($old->variant_id, -$factor * ($old->amount - $purchase->amount));
+            } elseif (!empty($purchase->product_id)) {
+                Product::updateStock($old->product_id, -$factor * ($old->amount - $purchase->amount));
             }
         }
 
         // Обновляем товары поставки
-        self::where('id', $id)->update((array) $purchase);
+        WarehousePurchase::updateOne($id, $purchase);
         return $id;
     }
 
 
     /**
-     * Добавляем товар в поставку
+     * Add purchase to move. Get datas from products such as (name, sku, price, cost_price)
      * @param $purchase
      */
-    public static function addPurchase(object $purchase): int
+    public static function addPurchase(array|object $purchase): int
     {
-        $variant = null;
-        $product = null;
-        if (!empty($purchase->variant_id)) {
-            $variant = ProductVariant::find($purchase->variant_id);
-            if (!$variant) {
-                return 0;
-            }
-            $product = Product::find($variant->product_id);
-            if (!$product) {
-                return 0;
-            }
+
+        if (is_array($purchase)) {
+            $purchase = (object) $purchase;
+        }
+
+        $product = Product::getOne((int) $purchase->product_id);
+        if (!$product) {
+            return 0;
         }
 
         $movement = WarehouseMove::find($purchase->move_id);
@@ -147,21 +143,21 @@ class WarehousePurchase extends BaseModel
             return 0;
         }
 
-        $purchase->product_id   = $purchase->product_id   ?? $variant?->product_id;
-        $purchase->product_name = $purchase->product_name ?? $product?->name;
-        $purchase->sku          = $purchase->sku          ?? $variant?->sku;
-        $purchase->variant_name = $purchase->variant_name ?? $variant?->name;
-        $purchase->price        = $purchase->price        ?? $variant?->price;
-        $purchase->cost_price   = $purchase->cost_price   ?? $variant?->cost_price;
+        $purchase->product_id   = $product->id;
+        $purchase->product_name = $product->name;
+        $purchase->variant_name = $product->variant_name;
+        $purchase->sku          = $product->sku;
+        $purchase->price        = $purchase->price        ?? $product->price;
+        $purchase->cost_price   = $purchase->cost_price   ?? $product->cost_price;
         $purchase->amount       = $purchase->amount       ?? 1;
 
         // Если заказ закрыт, нужно обновить склад при добавлении покупки
-        if ($movement->closed && !empty($purchase->amount) && $variant?->id) {
+        if ($movement->closed && !empty($purchase->amount)) {
             $factor = in_array($movement->status, [3, 4]) ? -1 : 1;
-            ProductVariant::updateStock($variant->id, $factor * $purchase->amount);
+            Product::updateStock($product->id, $factor * $purchase->amount);
         }
 
-        return self::create($purchase)->id;
+        return WarehousePurchase::create($purchase)->id;
     }
 
 
@@ -187,7 +183,7 @@ class WarehousePurchase extends BaseModel
             // Если списание, прибавляем на складе
             // Если поставка, отнимаем со склада
             $factor = in_array($movement->status, [3, 4]) ? 1 : -1;
-            ProductVariant::updateStock($purchase->variant_id, $factor * $purchase->amount);
+            Product::updateStock($purchase->product_id, $factor * $purchase->amount);
         }
 
         return self::deleteOne($id) > 0;
@@ -199,15 +195,15 @@ class WarehousePurchase extends BaseModel
      * $status = 1
      * @param int|array|null $variand_id
      */
-    public static function getProductMovements(int|array|null $variant_id): Collection
+    public static function getProductMovements(int|array|null $product_id): Collection
     {
-        if (empty($variant_id)) {
+        if (empty($product_id)) {
             return collect();
         }
 
         return self::query()
             ->with(['warehouse_move'])
-            ->whereIn('variant_id', (array) $variant_id)
+            ->whereIn('product_id', (array) $product_id)
             ->whereHas('warehouse_move', function ($q) {
                 $q->where('status', 1);
             })

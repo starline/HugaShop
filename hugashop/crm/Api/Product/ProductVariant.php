@@ -224,32 +224,4 @@ class ProductVariant extends BaseModel
 
         return false;
     }
-
-
-    /**
-     * Live update variant stock
-     * @param int $variant_id
-     * @param int $amount
-     */
-    public static function updateStock(int $variant_id, int $amount)
-    {
-        return self::where('id', $variant_id)->whereNotNull('stock')->increment('stock', $amount);
-    }
-
-
-    /**
-     * Обнуление наличия
-     * @param $variant
-     * @param array $filter
-     */
-    public static function restoreStock($variant, array $filter = [])
-    {
-        $query = self::query();
-
-        if (!empty($filter['provider_ids'])) {
-            $query->whereIn('provider_id', (array) $filter['provider_ids']);
-        }
-
-        return $query->update((array) $variant);
-    }
 }

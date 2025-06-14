@@ -221,10 +221,10 @@ class OrderPurchase extends DatabaseQuery
 
         $purchase = (object) $purchase;
 
-        if (!empty($purchase->variant_id)) {
+        if (!empty($purchase->product_id)) {
 
             // Выбираем данные исходного варианта товара
-            $variant = ProductVariant::getVariant($purchase->variant_id);
+            $variant = ProductVariant::getVariant($purchase->product_id);
             if (empty($variant)) {
                 return false;
             }
@@ -269,7 +269,7 @@ class OrderPurchase extends DatabaseQuery
         // Если заказ закрыт, нужно обновить склад при добавлении покупки
         if ($order->closed && !empty($purchase->amount) && !empty($variant->id)) {
             $s = -1;
-            ProductVariant::updateStock($purchase->variant_id, $s * $purchase->amount);
+            Product::updateStock($purchase->product_id, $s * $purchase->amount);
         }
 
         return self::insert($purchase)->get();
@@ -295,7 +295,7 @@ class OrderPurchase extends DatabaseQuery
 
         // Если заказ закрыт, нужно обновить склад при изменении покупки
         if ($order->closed && !empty($purchase->amount)) {
-            ProductVariant::updateStock($purchase->variant_id, $purchase->amount);
+            Product::updateStock($purchase->product_id, $purchase->amount);
         }
 
         return self::delete()->whereId($id)->get();

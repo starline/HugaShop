@@ -442,4 +442,15 @@ class Product extends BaseModel
             ->get()
             ->keyBy('id');
     }
+
+
+    /**
+     * Live update product stock
+     * @param int $variant_id
+     * @param int $amount
+     */
+    public static function updateStock(int $product_id, int $amount)
+    {
+        return self::where('id', $product_id)->whereNotNull('stock')->increment('stock', $amount);
+    }
 }
