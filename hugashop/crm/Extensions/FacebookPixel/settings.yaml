@@ -1,0 +1,12 @@
+name: "Facebook pixel"
+description: "Добавляет на сайт Facebook pixel"
+settings:
+  - {
+      variable: enabled,
+      name: "Включено",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }
+  - { variable: pixel_id, name: "Pixel id" }
+  - { variable: currency_code, name: "Код валюты" }
+  - { variable: domain_verification, name: "Код подтверждения домена" }
+  - { variable: api_token, name: "Api токен" }

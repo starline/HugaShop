@@ -1,0 +1,50 @@
+<?php
+
+/**
+ * Сначало проверяетя есть ли уже файл на сервере через Ngix
+ *
+ * @author Andi Huga
+ * @version 2.6
+ *
+ */
+
+namespace App\Controller\Front;
+
+use HugaShop\Api\Image;
+use HugaShop\Api\Helper;
+use App\Controller\BaseFrontController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpKernel\Attribute\Cache;
+
+class ImageResizeController extends BaseFrontController
+{
+    #[Route('/files/resize/{file}', name: 'ImageResize')]
+    #[Cache(public: true, maxage: 315360000, mustRevalidate: true)]
+    public function imageResize(string $file, Request $request): Response
+    {
+        $token = array_key_first($request->query->all());
+
+        // Если нет входных данных
+        if (empty($file) || empty($token)) {
+            return new Response('File not found', Response::HTTP_NOT_FOUND);
+        }
+
+        $filename = urldecode($file);
+
+        if (!Helper::checkToken($filename, $token, Image::$token_lenght)) {
+            return new Response('File not found. Bad token', Response::HTTP_NOT_FOUND);
+        }
+
+        $resized_filename = Image::resize($filename);
+
+        if (!empty($resized_filename) and is_readable($resized_filename)) {
+            $response = new Response(file_get_contents($resized_filename));
+            $response->headers->set('Content-type', 'image');
+            return $response;
+        }
+
+        return new Response('File not found', Response::HTTP_NOT_FOUND);
+    }
+}

@@ -1,0 +1,16 @@
+name: "Счет на оплату без НДС - ИП Россия"
+settings:
+  - { variable: business_form, name: "Тип организации" }
+  - { variable: recipient, name: "Получатель (ФИО)" }
+  - { variable: ipn, name: "ИНН получателя" }
+  - { variable: account, name: "Счет получателя" }
+  - { variable: bank, name: "Банк получателя" }
+  - { variable: bik, name: "БИК" }
+  - { variable: ks, name: "К/с" }
+  - { variable: recipient_adress, name: "Юр. адрес" }
+  - { variable: recipient_phone, name: "Телефон" }
+  - { variable: pense, name: "Обозначение копеек" }
+  - { variable: tax, name: "Налоги ИП % (платит покупатель)" }
+  - { variable: tax_inside, name: "Налоги ИП % (платит продавец)" }
+  - { variable: stamp_file, name: "Штамп (.png)", type: file }
+  - { variable: sign_file, name: "Подпись (.png)", type: file }

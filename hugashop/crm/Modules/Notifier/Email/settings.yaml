@@ -1,0 +1,4 @@
+name: "Оповещение по Email"
+type: email
+settings:
+  - { variable: from_email, name: "Email отправителя" }

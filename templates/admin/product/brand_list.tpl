@@ -1,0 +1,69 @@
+{extends 'wrapper/main.tpl'}
+{include 'product/parts/menu_part.tpl'}
+
+{$meta_title='Бренды'}
+
+{block name=content}
+
+	{* Заголовок *}
+	<div class=header_top>
+		<h1>{$meta_title}</h1>
+		<a class="add" href="/admin/product/brand">Добавить бренд</a>
+	</div>
+
+
+	<div id="main_list">
+
+		{if $brands}
+			<form method="post" class="list_form">
+				{getCSRFInput}
+
+				<div class="list">
+					{foreach $brands as $brand}
+						<div class="list_row" item_id="{$brand->id}">
+
+							{if 'product_brand_delete'|user_access}
+								<div class="checkbox">
+									<input class="form-check-input" type="checkbox" name="check[]" value="{$brand->id}" />
+								</div>
+							{/if}
+
+							<div class="col">
+								<a href="/admin/product/brand/{$brand->id}">{$brand->name}</a>
+							</div>
+
+							{if $brand->image}
+								<div class="brand_image">
+									<img src="{$config->root_url}/files/brands/{$brand->image}" />
+								</div>
+							{/if}
+
+							{if 'product_brand_delete'|user_access}
+								<div class="icons">
+									<i class="delete material-icons" title="Удалить">cancel</i>
+								</div>
+							{/if}
+						</div>
+					{/foreach}
+				</div>
+
+				{if 'product_brand_delete'|user_access}
+					<div id="action">
+						<span id="check_all" class="dash_link">Выбрать все</span>
+						<span id="select">
+							<select class="form-select" name="action">
+								<option value="">Выбрать действие</option>
+								<option value="delete">Удалить</option>
+							</select>
+						</span>
+						<button class="btn btn-primary apply" id="apply_action" type="submit">Применить</button>
+					</div>
+				{/if}
+
+			</form>
+		{else}
+			Нет брендов
+		{/if}
+	</div>
+
+{/block}

@@ -1,0 +1,20 @@
+{
+  "name": "hugashop/turbosms",
+  "type": "project",
+  "license": "AGPL-3.0",
+  "keywords": [
+    "telegram",
+    "bot"
+  ],
+  "require": {
+    "php": "^8.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Turbosms\\": "src/"
+    }
+  },
+  "config": {
+    "sort-packages": true
+  }
+}

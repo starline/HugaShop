@@ -1,0 +1,4 @@
+name: "Яндекс Электронная коммерция"
+description: "Добавляет обмен clientID"
+settings:
+  - { variable: counter_id, name: "ID Счетчика" }

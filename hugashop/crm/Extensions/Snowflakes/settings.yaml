@@ -1,0 +1,9 @@
+name: "Снежинки на сайте"
+description: "Добавляет на сайт новогоднее настроение, а точнее снегопад, сугробы и машинку, которая их регулярно убирает!"
+settings:
+  - { variable: countSnowflake, name: "Кол-во снежинок" }
+  - {
+      variable: enabled,
+      name: "Включено",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }

@@ -1,0 +1,8 @@
+name: "SEO для страниц"
+description: "Задает SEO параметры для выбранного URL"
+settings:
+  - {
+      variable: enabled,
+      name: "Включено",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }

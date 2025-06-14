@@ -1,0 +1,11 @@
+name: "SchemaOrg"
+description: "Добавляет на сайт Google tag"
+settings:
+  - {
+      variable: enabled,
+      name: "Включено",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }
+  - { variable: country_code, name: "Код страны" }
+  - { variable: return_days, name: "Дней на возврат" }
+  - { variable: shipping_cost, name: "Стоимость доставки" }

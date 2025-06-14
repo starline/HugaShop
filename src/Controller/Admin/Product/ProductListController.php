@@ -1,0 +1,267 @@
+<?php
+
+/**
+ * HugaShop - Sell anything
+ *
+ * @author Andri Huga
+ * @version 2.1
+ *
+ */
+
+namespace App\Controller\Admin\Product;
+
+use HugaShop\Api\Design;
+use HugaShop\Api\Helper;
+use HugaShop\Api\Request;
+use HugaShop\Api\Settings;
+use HugaShop\Api\Product\Product;
+use HugaShop\Api\Product\ProductBrand;
+use App\Controller\BaseAdminController;
+use HugaShop\Api\Product\ProductCategory;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+use Illuminate\Database\Capsule\Manager as Capsule;
+
+class ProductListController extends BaseAdminController
+{
+    #[Route('/admin/products', name: 'ProductListAdmin')]
+    public function index(): Response
+    {
+
+        $this->checkAdminAccess(['product_view', 'product_content']);
+
+        $filter = [];
+        $filter['page'] = max(1, Request::get('page', 'int'));
+        $filter['limit'] = Request::get('page', 'string') == 'all' ? 'all' : Settings::getParam('products_num_admin');
+
+
+        // Текущая категория
+        $category_id = Request::get('category_id', 'int');
+        $filter['category_id'] = $category_id;
+
+        // Если категория существует Выбираем всех деток категории
+        if ($category_id && $category = ProductCategory::getCategoryById($category_id)) {
+            $filter['category_id'] = $category->children;
+        }
+
+        // Текущий бренд
+        $brand_id = Request::get('brand_id', 'int');
+        if ($brand_id && $brand = ProductBrand::getBrand($brand_id)) {
+            $filter['brand_id'] = $brand->id;
+        }
+
+        // Текущий фильтр
+        if ($fltr = Request::get('filter', 'string')) {
+            if ($fltr == 'featured') {
+                $filter['featured'] = 1;
+            } elseif ($fltr == 'sale') {
+                $filter['sale'] = 1;
+            } elseif ($fltr == 'discounted') {
+                $filter['discounted'] = 1;
+            } elseif ($fltr == 'visible') {
+                $filter['visible'] = 1;
+            } elseif ($fltr == 'hidden') {
+                $filter['visible'] = 0;
+            } elseif ($fltr == 'outofstock') {
+                $filter['in_stock'] = 0;
+            } elseif ($fltr == 'instock') {
+                $filter['in_stock'] = 1;
+            } elseif ($fltr == 'stagnation') {
+                $filter['stagnation'] = 1;
+            } elseif ($fltr == 'purchase') {
+                $filter['purchase'] = 1;
+            } elseif ($fltr == 'top') {
+                $filter['top'] = 1;
+            }
+
+            Design::assign('filter', $fltr);
+        }
+
+        $filter['date_from'] = Request::get('date_from');
+        Design::assign('date_from', $filter['date_from']);
+
+        // Поиск (type 'string' - сжирает запятые)
+        $keyword = Request::get('keyword');
+        if (!empty($keyword)) {
+            $filter['keyword'] = $keyword;
+            Design::assign('keyword', $keyword);
+        }
+
+        // Обработка действий
+        if (Request::checkCSRF()) {
+
+            foreach (Helper::getPositions('DESC') as $id => $position) {
+                Product::updateProduct($id, ['position' => $position]);
+            }
+
+            // Действия с выбранными
+            $ids = Request::post('check');
+            if (!empty($ids)) {
+                switch (Request::post('action')) {
+                    case 'disable': {
+                            Product::updateProduct($ids, ['visible' => 0]);
+                            break;
+                        }
+                    case 'enable': {
+                            Product::updateProduct($ids, ['visible' => 1]);
+                            break;
+                        }
+                    case 'set_featured': {
+                            Product::updateProduct($ids, ['featured' => 1]);
+                            break;
+                        }
+                    case 'unset_featured': {
+                            Product::updateProduct($ids, ['featured' => 0]);
+                            break;
+                        }
+                    case 'set_sale': {
+                            Product::updateProduct($ids, ['sale' => 1]);
+                            break;
+                        }
+                    case 'unset_sale': {
+                            Product::updateProduct($ids, ['sale' => 0]);
+                            break;
+                        }
+                    case 'delete': {
+                            foreach ($ids as $id) {
+                                Product::deleteProduct($id);
+                            }
+                            break;
+                        }
+                    case 'duplicate': {
+                            foreach ($ids as $id) {
+                                Product::duplicateProduct(intval($id));
+                            }
+                            break;
+                        }
+                    case 'move_to_page': {
+
+                            $target_page = Request::post('target_page', 'int');
+
+                            // Сразу потом откроем эту страницу
+                            $filter['page'] = $target_page;
+
+                            // До какого товара перемещать
+                            $limit = $filter['limit'] * ($target_page - 1);
+                            if ($target_page > Request::get('page', 'int')) {
+                                $limit += count($ids) - 1;
+                            } else {
+                                $ids = array_reverse($ids, true);
+                            }
+
+                            $temp_filter = $filter;
+                            $temp_filter['page'] = $limit + 1;
+                            $temp_filter['limit'] = 1;
+                            $target_product = Product::getProducts($temp_filter);
+                            $target_product = array_pop($target_product); # Pop the element off the end of array
+                            $target_position = $target_product->position;
+
+                            // Если вылезли за последний товар - берем позицию последнего товара в качестве цели перемещения
+                            if ($target_page > Request::get('page', 'int') && !$target_position) {
+                                $target_position = Product::getLastProductPosition();
+                            }
+
+                            foreach ($ids as $id) {
+                                $sort_product = Product::getOne($id);
+                                $initial_position = $sort_product->position;
+
+                                if ($target_position > $initial_position) {
+                                    Product::where('position', '>', $initial_position)
+                                        ->where('position', '<=', $target_position)
+                                        ->update([
+                                            'position' => Capsule::raw('position - 1')
+                                        ]);
+                                } else {
+                                    Product::where('position', '<', $initial_position)
+                                        ->where('position', '>=', $target_position)
+                                        ->update([
+                                            'position' => Capsule::raw('position + 1')
+                                        ]);
+                                }
+
+                                Product::where('id', $id)->update(['position' => $target_position]);
+                            }
+                            break;
+                        }
+                    case 'move_to_brand': {
+                            $brand_id = Request::post('target_brand', 'int');
+                            $brand = ProductBrand::getBrand($brand_id);
+                            $filter['page'] = 1;
+                            $filter['brand_id'] = $brand_id;
+                            Product::updateProduct($ids, ["brand_id" => $brand_id]);
+
+                            // Заново выберем бренды категории
+                            $brands = ProductBrand::getBrands(['category_id' => $category_id]);
+                            Design::assign('brands', $brands);
+
+                            break;
+                        }
+                }
+            }
+        }
+
+        // Отображение
+        if (isset($brand)) {
+            Design::assign('brand', $brand);
+        }
+        if (isset($category)) {
+            Design::assign('category', $category);
+        }
+
+        // TODO: Фильтр по характеристике
+
+        $products = Product::getProducts($filter, ['image']);
+        $products_count = Product::countProducts($filter);
+
+        if ($products->isNotEmpty()) {
+
+
+            /*
+            $variants = [];
+            foreach (ProductVariant::getVariants(['product_id' => array_keys($products)]) as $variant) {
+                $variant->profit_price = $variant->price - $variant->cost_price;
+                $variants[$variant->id] = $variant;
+            }
+
+            $movements = [];
+            foreach (WarehousePurchase::getProductMovements(array_keys($variants)) as $movement) {
+                $movements[$movement->id] = $movement;
+                $variants[$movement->variant_id]->movements[] = $movement;
+            }
+
+            foreach ($variants as $variant) {
+
+                // Подсчитываем общее кол-во поставок
+                $variant->movements_amount = 0;
+                if (!empty($variant->movements)) {
+                    foreach ($variant->movements as $move) {
+                        $variant->movements_amount += $move->amount;
+                    }
+                }
+
+                $products[$variant->product_id]->variants[] = $variant;
+            }*/
+        }
+
+
+        // Все Бренды
+        $all_brands = ProductBrand::getBrands();
+
+        // Бренды категории
+        $brands = ProductBrand::getBrands(['category_id' => $filter['category_id']]);
+
+        // Категории
+        $categories = ProductCategory::getCategoriesTree();
+
+        Design::assign('pages_count', ceil($products_count / Settings::getParam('products_num_admin')));
+        Design::assign('current_page', $filter['limit'] == 'all' ? 'all' : $filter['page']);
+
+        Design::assign('products', $products);
+        Design::assign('products_count', $products_count);
+        Design::assign('categories', $categories);
+        Design::assign('all_brands', $all_brands);
+        Design::assign('brands', $brands);
+
+        return $this->fetchResponse('product/product_list.tpl');
+    }
+}

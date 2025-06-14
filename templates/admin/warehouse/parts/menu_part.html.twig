@@ -1,0 +1,24 @@
+{% if 'product_view'|user_access %}
+	<li class="mini {% if route in ['ProductsAdmin', 'ProductAdmin'] %}active{% endif %}">
+		<a href="/admin/products">Товары</a>
+	</li>
+{% endif %}
+
+{% if 'warehouse'|user_access %}
+	<li class="mini {% if route in ['MoveAdmin', 'MoveListAdmin', 'MoveNewAdmin'] %}active{% endif %}">
+		<a href="/admin/warehouse/moves">Поставки</a>
+	</li>
+{% endif %}
+
+
+{% if 'warehouse_provider'|user_access %}
+	<li class="mini right {% if route in ['ProviderListAdmin', 'ProviderAdmin'] %}active{% endif %}">
+		<a href="/admin/warehouse/providers">Поставщики</a>
+	</li>
+{% endif %}
+
+{% if 'warehouse_place'|user_access %}
+	<li class="mini right {% if route in ['PlaceListAdmin', 'PlaceAdmin', 'PlaceNewAdmin'] %}active{% endif %}">
+		<a href="/admin/warehouse/places">Склады</a>
+	</li>
+{% endif %}

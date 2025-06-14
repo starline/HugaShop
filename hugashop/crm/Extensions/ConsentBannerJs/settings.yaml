@@ -1,0 +1,13 @@
+name: "Баннер согласия. Consent Banner"
+description: "Выводит баннер согласия для выбора режима сбора данных пользователя. Consent Banner"
+settings:
+  - {
+      variable: enabled,
+      name: "Включено",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }
+  - {
+      variable: privacy_link,
+      name: "Политика конфеденциальности",
+      placeholder: "Ссылка на страницу",
+    }

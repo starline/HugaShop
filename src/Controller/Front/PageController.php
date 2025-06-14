@@ -1,0 +1,40 @@
+<?php
+
+/**
+ * HugaShop - Sell anything
+ *
+ * @author Andri Huga
+ * @version 2.7
+ *
+ * Этот класс использует шаблон page.tpl
+ *
+ */
+
+namespace App\Controller\Front;
+
+use HugaShop\Api\Design;
+use HugaShop\Api\Content\ContentPage;
+use HugaShop\Api\User\UserPermission;
+use App\Controller\BaseFrontController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+class PageController extends BaseFrontController
+{
+    #[Route('/info/{url}', name: 'Page')]
+    public function page(string $url): Response
+    {
+
+        $page = ContentPage::getPage($url);
+
+        if (empty($page) || (!UserPermission::checkAccess('page') and !$page->visible)) {
+            throw $this->createNotFoundException('Page does not found'); # 404
+        }
+
+        Design::assign('page', $page);
+        Design::assign('meta_title', $page->meta_title);
+        Design::assign('meta_description', $page->meta_description);
+
+        return $this->fetchResponse('page.tpl');
+    }
+}

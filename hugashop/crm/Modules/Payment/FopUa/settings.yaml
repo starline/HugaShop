@@ -1,0 +1,13 @@
+name: "Счет на оплату без НДС - ФОП Украина"
+settings:
+  - { variable: recipient, name: "Одержувача" }
+  - { variable: ipn, name: "ІПН одержувача" }
+  - { variable: account, name: "Рахунок одержувача" }
+  - { variable: bank, name: "Банк одержувача" }
+  - { variable: mfo, name: "МФО" }
+  - { variable: edrpou, name: "ЄДРПОУ" }
+  - { variable: recipient_adress, name: "Юр. адреса:" }
+  - { variable: pense, name: "Обозначение копеек" }
+  - { variable: tax, name: "Налоги ФОП % (платит покупатель)" }
+  - { variable: stamp_file, name: "Штамп (.png)", type: file }
+  - { variable: sign_file, name: "Подпись (.png)", type: file }

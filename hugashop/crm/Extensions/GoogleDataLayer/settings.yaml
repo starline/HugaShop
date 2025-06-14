@@ -1,0 +1,9 @@
+name: "Google DataLayer UA (Устарело)"
+description: "Добавляет на сайт Google DataLayer Universal Analitic"
+settings:
+  - {
+      variable: enabled,
+      name: "Включено",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }
+  - { variable: currency_code, name: "Код валюты" }

@@ -1,0 +1,6 @@
+name: "Turbosms UA"
+type: sms
+settings:
+  - { variable: login, name: "Логин" }
+  - { variable: password, name: "Пароль" }
+  - { variable: name, name: "Alfa имя" }

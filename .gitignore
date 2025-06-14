@@ -1,0 +1,45 @@
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/.env.dev
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+# Temp
+/.git
+/.vscode
+/.idea
+/composer.lock
+/symfony.lock
+
+# Config
+/.env
+/hugashop/crm/config.yaml
+
+
+# Domain
+/public/robots.txt
+/public/files/
+/public/BingSiteAuth.xml
+/public/yandex_d772c6c00f99a7af.html
+/public/yandex_5bfaff59528faf2a.html
+/public/zen_0g7OecYicPswxrVF48BnqB6XZC6GWQSrP0udTi6Q0SdR89mcCm7RyCFZMDCQRuSv.html
+/public/X1wluQW5iLfqlgBJXYv75nzmZN7PJltocnLonGLSZC4
+/public/ads.txt
+/public/favicon.svg
+/public/favicon.ico
+/public/google2ccd99f980468528.html
+
+###> symfony/asset-mapper ###
+/public/assets/
+/assets/vendor/
+###< symfony/asset-mapper ###
+
+###> sensiolabs/minify-bundle ###
+/var/minify/
+###< sensiolabs/minify-bundle ###

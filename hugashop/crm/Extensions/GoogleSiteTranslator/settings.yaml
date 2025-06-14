@@ -1,0 +1,21 @@
+name: "Переводчик сайта Google Translator"
+description: "Переводит сайта на разные языки с помощью Google Translator. Коды языков(ISO-639-1)"
+settings:
+  - {
+      variable: enabled,
+      name: "Включено",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }
+  - { variable: main_code, name: "Код языка сайта" }
+  - { variable: lang_codes, name: "Коды переводов (через запятую)" }
+  - { variable: first_code, name: "Перевод по-умолчанию" }
+  - {
+      variable: auto_detect,
+      name: "Автоматически определять",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }
+  - {
+      variable: use_own_template,
+      name: "Использовать свой вид",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }

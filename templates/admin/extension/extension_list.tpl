@@ -1,0 +1,34 @@
+{extends file='wrapper/main.tpl'}
+{include file='extension/parts/menu_part.tpl'}
+
+{$meta_title='Модули расширения'}
+
+{block name=content}
+
+    <!-- Заголовок -->
+    <div class="header_top">
+        <h1>{$meta_title}</h1>
+    </div>
+
+    <div id="main_list">
+        {if $extension_modules}
+            <form method="post" class="list_form">
+                {getCSRFInput}
+
+                <div id="extensions" class="list">
+                    {foreach $extension_modules as $ext_module}
+                        <div class="list_row">
+                            <div class="col">
+                                <a href="/admin/extension/{$ext_module->module}">{$ext_module->name}</a>
+                                <div class="notice">{$ext_module->description}</div>
+                            </div>
+                        </div>
+                    {/foreach}
+                </div>
+            </form>
+        {else}
+            Здесь еще нет модулей расширения
+        {/if}
+    </div>
+
+{/block}

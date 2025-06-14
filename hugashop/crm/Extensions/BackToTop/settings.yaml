@@ -1,0 +1,13 @@
+name: "Кнопка «Вернуться вверх»"
+description: "Добавляет на сайт кнопку для возврата вверх страницы"
+settings:
+  - {
+      variable: enabled,
+      name: "Включено",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }
+  - {
+      variable: mobile_show,
+      name: "Показывать на мобильном",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }

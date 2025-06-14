@@ -1,0 +1,9 @@
+name: "Google DataLayer GA4"
+description: "Добавляет на сайт Google DataLayer для GA4"
+settings:
+  - {
+      variable: enabled,
+      name: "Включено",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }
+  - { variable: currency_code, name: "Код валюты" }

@@ -1,0 +1,12 @@
+name: "Оплата через OLX"
+settings:
+  - { variable: fee_inside, name: "Комиссия сервиса % (платит продавец)" }
+  - {
+      variable: fee_fix_inside,
+      name: "Комиссия сервиса y.e. (платит продавец)",
+    }
+  - {
+      variable: calculate_finance_payment,
+      name: "Пересчитывать финансовый платеж",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }

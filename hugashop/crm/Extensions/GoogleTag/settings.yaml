@@ -1,0 +1,9 @@
+name: "Google Tag"
+description: "Добавляет на сайт Google tag"
+settings:
+  - {
+      variable: enabled,
+      name: "Включено",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }
+  - { variable: tag_id, name: "Tag id" }

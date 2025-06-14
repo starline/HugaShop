@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * HugaShop - Sell anything
+ *
+ * @author Andri Huga
+ * @version 2.4
+ *
+ * Users Group
+ *
+ */
+
+namespace App\Controller\Admin\User;
+
+use HugaShop\Api\Design;
+use HugaShop\Api\Request;
+use HugaShop\Api\User\UserGroup;
+use App\Controller\BaseAdminController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+class GroupController extends BaseAdminController
+{
+    #[Route('/admin/user/group', name: 'GroupNewAdmin')]
+    #[Route('/admin/user/group/{id}', requirements: ['id' => '\d+'], name: 'GroupAdmin')]
+    public function index(?int $id = null): Response
+    {
+
+        $this->checkAdminAccess('user_group_edit');
+
+        #### Update
+        ###########
+        if (!empty($group = Request::getDataAcces(UserGroup::$table_fields))) {
+
+            if (empty($group->id)) {
+                $group = Design::setFlashMessage('add', UserGroup::create($group));
+            } else {
+                Design::setFlashMessage('update', UserGroup::whereId($group->id)->update((array) $group));
+            }
+
+            return $this->redirectToRoute('GroupAdmin', ['id' => $group->id]);
+        }
+
+        #### View
+        #########
+        if (!empty($id)) {
+            $group = UserGroup::find($id);
+
+            if (empty($group->id)) {
+                return $this->redirectToRoute('GroupListAdmin');
+            }
+        }
+
+        Design::assign('group', $group);
+
+        return $this->fetchResponse('user/group.tpl');
+    }
+}
