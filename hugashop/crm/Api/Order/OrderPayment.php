@@ -12,33 +12,39 @@ namespace HugaShop\Api\Order;
 
 use HugaShop\Api\Config;
 use HugaShop\Api\Helper;
-use HugaShop\Api\Database;
+use Illuminate\Database\Capsule\Manager as Capsule;
 use HugaShop\Api\Finance\FinancePurse;
-use HugaShop\Api\DatabaseQuery;
 use HugaShop\Api\Finance\FinanceCurrency;
+use HugaShop\Api\BaseModel;
 
-class OrderPayment extends DatabaseQuery
+class OrderPayment extends BaseModel
 {
-    public static $table = [
-        'fields' => [
-            'id' =>                     ['type' => 'int',           'lenght' => 11,       'extra' => 'AUTO_INCREMENT'],
-            'name' =>                   ['type' => 'varchar',       'lenght' => 255,      'required' => true],
-            'public_name' =>            ['type' => 'varchar',       'lenght' => 255,      'required' => true],
-            'enabled' =>                ['type' => 'tinyint'],
-            'enabled_public' =>         ['type' => 'tinyint'],
-            'currency_id' =>            ['type' => 'int',           'lenght' => 11],
-            'comment' =>                ['type' => 'varchar',       'lenght' => 255],
-            'module' =>                 ['type' => 'varchar',       'lenght' => 255], # FopUa|BankCard|...
-            'description' =>            ['type' => 'text'],
-            'finance_purse_id' =>       ['type' => 'int',           'lenght' => 11],
-            'settings' =>               ['type' => 'text'],
-            'position' =>               ['type' => 'int',           'lenght' => 11, 'def' => 0]
-        ],
-        'join' => [
-            FinancePurse::class => ['id' => 'finance_purse_id'],
-            FinanceCurrency::class => ['id' => 'currency_id']
-        ]
+    public static $table_fields = [
+        'id' =>                     ['type' => 'int',           'lenght' => 11,       'extra' => 'AUTO_INCREMENT'],
+        'name' =>                   ['type' => 'varchar',       'lenght' => 255,      'required' => true],
+        'public_name' =>            ['type' => 'varchar',       'lenght' => 255,      'required' => true],
+        'enabled' =>                ['type' => 'tinyint'],
+        'enabled_public' =>         ['type' => 'tinyint'],
+        'currency_id' =>            ['type' => 'int',           'lenght' => 11],
+        'comment' =>                ['type' => 'varchar',       'lenght' => 255],
+        'module' =>                 ['type' => 'varchar',       'lenght' => 255],
+        'description' =>            ['type' => 'text'],
+        'finance_purse_id' =>       ['type' => 'int',           'lenght' => 11],
+        'settings' =>               ['type' => 'text'],
+        'position' =>               ['type' => 'int',           'lenght' => 11, 'def' => 0]
     ];
+
+    protected $with = ['finance_purse', 'currency'];
+
+    public function finance_purse()
+    {
+        return $this->belongsTo(FinancePurse::class, 'finance_purse_id');
+    }
+
+    public function currency()
+    {
+        return $this->belongsTo(FinanceCurrency::class, 'currency_id');
+    }
 
 
     /**
@@ -47,35 +53,26 @@ class OrderPayment extends DatabaseQuery
      */
     public static function getPaymentMethods(array $filter = array())
     {
-        $alias = self::getAlias();
-        $SELECT = self::makeSelect();
+        $query = self::query();
 
-        $WHERE = '';
         if (!empty($filter['delivery_id'])) {
-            $WHERE .= Database::placehold('AND id in (SELECT payment_method_id FROM __order_delivery_payment dp WHERE dp.delivery_id=?)', intval($filter['delivery_id']));
+            $deliveryId = $filter['delivery_id'];
+            $query->whereIn('id', function ($q) use ($deliveryId) {
+                $q->select('payment_method_id')
+                    ->from('order_delivery_payment')
+                    ->where('delivery_id', $deliveryId);
+            });
         }
 
-        if (!empty($filter['enabled'])) {
-            $WHERE .= Database::placehold(" AND `$alias`.enabled=?", intval($filter['enabled']));
+        if (isset($filter['enabled'])) {
+            $query->where('enabled', intval($filter['enabled']));
         }
 
-        if (!empty($filter['enabled_public'])) {
-            $WHERE .= Database::placehold(" AND `$alias`.enabled_public=?", intval($filter['enabled_public']));
+        if (isset($filter['enabled_public'])) {
+            $query->where('enabled_public', intval($filter['enabled_public']));
         }
 
-        $query =
-            "SELECT
-			 	$SELECT
-			FROM 
-				__order_payment `$alias`
-			WHERE 
-				1 
-				$WHERE
-			ORDER BY 
-				`$alias`.position
-			";
-
-        return self::query($query)->results();
+        return $query->orderBy('position')->get();
     }
 
 
@@ -85,7 +82,7 @@ class OrderPayment extends DatabaseQuery
      */
     public static function getPaymentMethodSettings(int $id)
     {
-        return self::select('settings')->whereId($id)->getResult('settings');
+        return optional(self::find($id))->settings;
     }
 
 
@@ -135,8 +132,10 @@ class OrderPayment extends DatabaseQuery
             return false;
         }
 
-        $query = Database::placehold("SELECT delivery_id FROM __order_delivery_payment WHERE payment_method_id=?", intval($id));
-        return self::query($query)->results('delivery_id');
+        return Capsule::table('order_delivery_payment')
+            ->where('payment_method_id', $id)
+            ->pluck('delivery_id')
+            ->toArray();
     }
 
 
@@ -159,14 +158,12 @@ class OrderPayment extends DatabaseQuery
     public static function updatePaymentDeliveries(int $id, array $deliveries_ids)
     {
 
-        // Удаляем ранее установленные настройки
-        $query = Database::placehold("DELETE FROM __order_delivery_payment WHERE payment_method_id=?", $id);
-        self::query($query);
-
-        if (is_array($deliveries_ids)) {
-            foreach ($deliveries_ids as $d_id) {
-                self::query("INSERT INTO __order_delivery_payment SET payment_method_id=?, delivery_id=?", $id, $d_id);
-            }
+        Capsule::table('order_delivery_payment')->where('payment_method_id', $id)->delete();
+        foreach ($deliveries_ids as $d_id) {
+            Capsule::table('order_delivery_payment')->insert([
+                'payment_method_id' => $id,
+                'delivery_id' => $d_id
+            ]);
         }
         return true;
     }

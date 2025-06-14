@@ -14,33 +14,36 @@ namespace HugaShop\Api\Order;
 
 use HugaShop\Api\Config;
 use HugaShop\Api\Helper;
-use HugaShop\Api\Database;
+use Illuminate\Database\Capsule\Manager as Capsule;
 use HugaShop\Api\Finance\FinancePurse;
-use HugaShop\Api\DatabaseQuery;
+use HugaShop\Api\BaseModel;
 
-class OrderDelivery extends DatabaseQuery
+class OrderDelivery extends BaseModel
 {
-    public static $table = [
-        'fields' => [
-            'id' =>                 ['type' => 'int',        'extra' => 'AUTO_INCREMENT'],
-            'name' =>               ['type' => 'varchar',    'req' => true],
-            'public_name' =>        ['type' => 'varchar',    'req' => true],
-            'description' =>        ['type' => 'text'],
-            'module' =>             ['type' => 'varchar'], # NovaPoshta|DeliveryAuto|...
-            'settings' =>           ['type' => 'text'],
-            'free_from' =>          ['type' => 'decimal',   'lenght' => 10.2],
-            'price' =>              ['type' => 'decimal',   'lenght' => 10.2],
-            'enabled' =>            ['type' => 'tinyint',   'def' => 0],
-            'enabled_public' =>     ['type' => 'tinyint',   'def' => 0],
-            'position' =>           ['type' => 'int'],
-            'separate_payment' =>   ['type' => 'tinyint',   'def' => 0],
-            'finance_purse_id' =>   ['type' => 'int'],
-            'comment' =>            ['type' => 'varchar']
-        ],
-        'join' => [
-            FinancePurse::class => ['id' => 'finance_purse_id']
-        ],
+    public static $table_fields = [
+        'id' =>                 ['type' => 'int',        'extra' => 'AUTO_INCREMENT'],
+        'name' =>               ['type' => 'varchar',    'req' => true],
+        'public_name' =>        ['type' => 'varchar',    'req' => true],
+        'description' =>        ['type' => 'text'],
+        'module' =>             ['type' => 'varchar'],
+        'settings' =>           ['type' => 'text'],
+        'free_from' =>          ['type' => 'decimal',   'lenght' => 10.2],
+        'price' =>              ['type' => 'decimal',   'lenght' => 10.2],
+        'enabled' =>            ['type' => 'tinyint',   'def' => 0],
+        'enabled_public' =>     ['type' => 'tinyint',   'def' => 0],
+        'position' =>           ['type' => 'int'],
+        'separate_payment' =>   ['type' => 'tinyint',   'def' => 0],
+        'finance_purse_id' =>   ['type' => 'int'],
+        'comment' =>            ['type' => 'varchar']
     ];
+
+    protected $with = ['finance_purse'];
+
+    public function finance_purse()
+    {
+        return $this->belongsTo(FinancePurse::class, 'finance_purse_id');
+    }
+
 
 
     /**
@@ -62,8 +65,10 @@ class OrderDelivery extends DatabaseQuery
             return false;
         }
 
-        $query = Database::placehold("SELECT payment_method_id FROM __order_delivery_payment WHERE delivery_id=?", intval($id));
-        return self::query($query)->results('payment_method_id');
+        return Capsule::table('order_delivery_payment')
+            ->where('delivery_id', $id)
+            ->pluck('payment_method_id')
+            ->toArray();
     }
 
 
@@ -73,14 +78,12 @@ class OrderDelivery extends DatabaseQuery
     public static function updateDeliveryPayments($id, array $payment_methods_ids)
     {
         $payment_methods_ids = empty($payment_methods_ids) ? [] : $payment_methods_ids;
-
-        $query = Database::placehold("DELETE FROM __order_delivery_payment WHERE delivery_id=?", intval($id));
-        self::query($query);
-
-        if (is_array($payment_methods_ids)) {
-            foreach ($payment_methods_ids as $p_id) {
-                self::query("INSERT INTO __order_delivery_payment SET delivery_id=?, payment_method_id=?", $id, $p_id);
-            }
+        Capsule::table('order_delivery_payment')->where('delivery_id', $id)->delete();
+        foreach ($payment_methods_ids as $p_id) {
+            Capsule::table('order_delivery_payment')->insert([
+                'delivery_id' => $id,
+                'payment_method_id' => $p_id
+            ]);
         }
     }
 

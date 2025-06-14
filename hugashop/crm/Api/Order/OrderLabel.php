@@ -10,20 +10,18 @@
 
 namespace HugaShop\Api\Order;
 
-use HugaShop\Api\Database;
-use HugaShop\Api\DatabaseQuery;
+use Illuminate\Database\Capsule\Manager as Capsule;
+use HugaShop\Api\BaseModel;
 
-class OrderLabel extends DatabaseQuery
+class OrderLabel extends BaseModel
 {
-    public static $table = [
-        'fields' => [
-            'id' =>                 ['type' => 'int',       'extra' => 'AUTO_INCREMENT'],
-            'name' =>               ['type' => 'varchar',   'req' => true],
-            'color' =>              ['type' => 'varchar',   'lenght' => 6],
-            'enabled' =>            ['type' => 'tinyint',   'def' => 0],
-            'in_filter' =>          ['type' => 'tinyint',   'def' => 0],
-            'position' =>           ['type' => 'int',       'def' => 0]
-        ]
+    public static $table_fields = [
+        'id' =>                 ['type' => 'int',       'extra' => 'AUTO_INCREMENT'],
+        'name' =>               ['type' => 'varchar',   'req' => true],
+        'color' =>              ['type' => 'varchar',   'lenght' => 6],
+        'enabled' =>            ['type' => 'tinyint',   'def' => 0],
+        'in_filter' =>          ['type' => 'tinyint',   'def' => 0],
+        'position' =>           ['type' => 'int',       'def' => 0]
     ];
 
 
@@ -46,17 +44,8 @@ class OrderLabel extends DatabaseQuery
             return false;
         }
 
-        // Удаляем сязи с заказами
-        $query = Database::placehold("DELETE FROM __order_label_related WHERE label_id=?", intval($id));
-
-        if (self::query($query)) {
-
-            // Удаляем метку
-            $query = Database::placehold("DELETE FROM __order_label WHERE id=? LIMIT 1", intval($id));
-            return self::query($query);
-        }
-
-        return false;
+        Capsule::table('order_label_related')->where('label_id', $id)->delete();
+        return self::deleteOne($id);
     }
 
 
@@ -70,27 +59,13 @@ class OrderLabel extends DatabaseQuery
             return [];
         }
 
-        $alias = self::getAlias();
-        $SELECT = self::makeSelect();
-
-        $label_id_filter = Database::placehold('AND olr.order_id in(?@)', (array)$order_id);
-
-        $query = Database::placehold(
-            "SELECT 
-                $SELECT,
-                olr.order_id as order_id
-			FROM 
-                __order_label `$alias`
-            LEFT JOIN 
-                __order_label_related olr ON olr.label_id = `$alias`.id 
-			WHERE 
-				1 
-				$label_id_filter 
-			ORDER BY 
-                `$alias`.position"
-        );
-
-        return self::query($query)->results();
+        return Capsule::table('order_label as ol')
+            ->select('ol.*', 'olr.order_id')
+            ->leftJoin('order_label_related as olr', 'olr.label_id', '=', 'ol.id')
+            ->whereIn('olr.order_id', (array) $order_id)
+            ->orderBy('ol.position')
+            ->get()
+            ->all();
     }
 
 
@@ -102,12 +77,9 @@ class OrderLabel extends DatabaseQuery
     public static function updateOrderLabels(int $id, $labels_ids)
     {
         $labels_ids = (array)$labels_ids;
-        $query = Database::placehold("DELETE FROM __order_label_related WHERE order_id=?", intval($id));
-        self::query($query);
-        if (is_array($labels_ids)) {
-            foreach ($labels_ids as $l_id) {
-                self::query("INSERT INTO __order_label_related SET order_id=?, label_id=?", $id, $l_id);
-            }
+        Capsule::table('order_label_related')->where('order_id', $id)->delete();
+        foreach ($labels_ids as $l_id) {
+            Capsule::table('order_label_related')->insert(['order_id' => $id, 'label_id' => $l_id]);
         }
     }
 
@@ -115,10 +87,8 @@ class OrderLabel extends DatabaseQuery
     public static function addOrderLabels(int $id, $labels_ids)
     {
         $labels_ids = (array)$labels_ids;
-        if (is_array($labels_ids)) {
-            foreach ($labels_ids as $l_id) {
-                self::query("INSERT IGNORE INTO __order_label_related SET order_id=?, label_id=?", $id, $l_id);
-            }
+        foreach ($labels_ids as $l_id) {
+            Capsule::table('order_label_related')->insertOrIgnore(['order_id' => $id, 'label_id' => $l_id]);
         }
     }
 
@@ -126,10 +96,11 @@ class OrderLabel extends DatabaseQuery
     public static function deleteOrderLabels(int $id, $labels_ids)
     {
         $labels_ids = (array)$labels_ids;
-        if (is_array($labels_ids)) {
-            foreach ($labels_ids as $l_id) {
-                self::query("DELETE FROM __order_label_related WHERE order_id=? AND label_id=?", $id, $l_id);
-            }
+        foreach ($labels_ids as $l_id) {
+            Capsule::table('order_label_related')
+                ->where('order_id', $id)
+                ->where('label_id', $l_id)
+                ->delete();
         }
     }
 }
