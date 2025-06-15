@@ -413,9 +413,9 @@ class TestScript extends BaseExtension
                                 });
                             }
 
-                            // 3. Заменняем product_id на новые по variant_id
+                            // 3. Заменняем product_id на новые по variant_id d WarehousePurchase
                             // 4. Удаляем variant_id в WarehousePurchase
-                            if (1) {
+                            if (0) {
                                 $w_purchases = WarehousePurchase::query()->get();
                                 foreach ($w_purchases as $w_purchase) {
 
@@ -430,8 +430,21 @@ class TestScript extends BaseExtension
                             }
 
 
-                            // 5. 
+                            // 5. Заменняем product_id на новые по variant_id d OrderPurchase
+                            // 4. Удаляем variant_id в WarehousePurchase
+                            if (1) {
+                                $purchases = OrderPurchase::query()->get();
+                                foreach ($purchases as $purchase) {
 
+                                    $product = Product::where('variant_id', $purchase->variant_id)->first();
+
+                                    if ($product and $purchase->product_id != $product->id) {
+                                        $this->result[] = $purchase->product_id . ' -> ' . $product->id;
+                                        $purchase->product_id = $product->id;
+                                        $purchase->save();
+                                    }
+                                }
+                            }
 
                             $this->result[] = 'done';
                         }

@@ -112,7 +112,7 @@ class CmlExchangeController extends BaseAdminController
                 if ($existed_order) {
                     Order::updateOrder($order->id, $order);
                 } else {
-                    $order->id = Order::addOrder($order);
+                    $order = Order::addOrder($order);
                 }
 
                 $purchases_ids = array();

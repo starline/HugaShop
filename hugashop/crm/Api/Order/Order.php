@@ -14,69 +14,97 @@ use HugaShop\Api\Cart\Cart;
 use HugaShop\Api\User\User;
 use HugaShop\Api\Helper;
 use HugaShop\Api\Database;
+use Illuminate\Database\Capsule\Manager as Capsule;
 use HugaShop\Api\Order\OrderPayment;
 use HugaShop\Api\Order\OrderDelivery;
-use HugaShop\Api\DatabaseQuery;
 use HugaShop\Api\Finance\FinancePayment;
+use HugaShop\Api\BaseModel;
 use HugaShop\Api\Product\ProductVariant;
 
-class Order extends DatabaseQuery
+class Order extends BaseModel
 {
-    public static $table = [
-        'fields' => [
-            'id' =>                     ['type' => 'int'],
-            'delivery_id' =>            ['type' => 'int'],
-            'delivery_price' =>         ['type' => 'decimal',   'lenght' => 10.2],
-            'delivery_note' =>          ['type' => 'varchar'],
-            'delivery_info' =>          ['type' => 'varchar',   'lenght' => 900],
-            'separate_delivery' =>      ['type' => 'tinyint',   'def' => 0],
-            'payment_method_id' =>      ['type' => 'int'],
-            'status' =>                 ['type' => 'int',       'def' => 0],
-            'paid' =>                   ['type' => 'tinyint',   'def' => 0],
-            'closed' =>                 ['type' => 'tinyint',   'def' => 0,             'access' => false],
-            'user_id' =>                ['type' => 'int'],
-            'name' =>                   ['type' => 'varchar'],
-            'email' =>                  ['type' => 'varchar'],
-            'phone' =>                  ['type' => 'varchar'],
-            'address' =>                ['type' => 'varchar'],
-            'comment' =>                ['type' => 'varchar'],
-            'note' =>                   ['type' => 'varchar'],
-            'url' =>                    ['type' => 'varchar',                           'access' => false],
-            'total_price' =>            ['type' => 'decimal',   'lenght' => 10.2,       'access' => false],
-            'profit_price' =>           ['type' => 'decimal',   'lenght' => 10.2,       'access' => false],
-            'interest_price' =>         ['type' => 'decimal',   'lenght' => 10.2,       'access' => false],
-            'payment_price' =>          ['type' => 'decimal',   'lenght' => 10.2,       'access' => false],
-            'discount' =>               ['type' => 'decimal',   'lenght' => 10.2],
-            'coupon_discount' =>        ['type' => 'decimal',   'lenght' => 10.2],
-            'coupon_code' =>            ['type' => 'varchar'],
-            'date' =>                   ['type' => 'datetime',  'def' => 'CURRENT_TIMESTAMP',   'access' => false],
-            'modified' =>               ['type' => 'datetime',                                  'access' => false],
-            'manager_id' =>             ['type' => 'int'],
-            'settings' =>               ['type' => 'text']
-        ],
-        'join' => [
-            OrderPayment::class => ['id' => 'payment_method_id'],
-            OrderDelivery::class => ['id' => 'delivery_id'],
-            User::class => ['id' => 'manager_id'],
-            User::class => ['id' => 'user_id']
-        ]
+    public static $table_fields = [
+        'id' =>                     ['type' => 'int'],
+        'delivery_id' =>            ['type' => 'int'],
+        'delivery_price' =>         ['type' => 'decimal',   'lenght' => 10.2],
+        'delivery_note' =>          ['type' => 'varchar'],
+        'delivery_info' =>          ['type' => 'varchar',   'lenght' => 900],
+        'separate_delivery' =>      ['type' => 'tinyint',   'def' => 0],
+        'payment_method_id' =>      ['type' => 'int'],
+        'status' =>                 ['type' => 'int',       'def' => 0],
+        'paid' =>                   ['type' => 'tinyint',   'def' => 0],
+        'closed' =>                 ['type' => 'tinyint', 'def' => 0, 'access' => false],
+        'user_id' =>                ['type' => 'int'],
+        'name' =>                   ['type' => 'varchar'],
+        'email' =>                  ['type' => 'varchar'],
+        'phone' =>                  ['type' => 'varchar'],
+        'address' =>                ['type' => 'varchar'],
+        'comment' =>                ['type' => 'varchar'],
+        'note' =>                   ['type' => 'varchar'],
+        'url' =>                    ['type' => 'varchar', 'access' => false],
+        'total_price' =>            ['type' => 'decimal',   'lenght' => 10.2,       'access' => false],
+        'profit_price' =>           ['type' => 'decimal',   'lenght' => 10.2,       'access' => false],
+        'interest_price' =>         ['type' => 'decimal',   'lenght' => 10.2,       'access' => false],
+        'payment_price' =>          ['type' => 'decimal',   'lenght' => 10.2,       'access' => false],
+        'discount' =>               ['type' => 'decimal',   'lenght' => 10.2],
+        'coupon_discount' =>        ['type' => 'decimal',   'lenght' => 10.2],
+        'coupon_code' =>            ['type' => 'varchar'],
+        'date' =>                   ['type' => 'datetime',  'def' => 'CURRENT_TIMESTAMP',   'access' => false],
+        'modified' =>               ['type' => 'datetime', 'access' => false],
+        'manager_id' =>             ['type' => 'int'],
+        'settings' =>               ['type' => 'text']
     ];
+
+    protected $with = ['payment_method', 'delivery_method'];
+
+    public function payment_method()
+    {
+        return $this->belongsTo(OrderPayment::class, 'payment_method_id');
+    }
+
+    public function delivery_method()
+    {
+        return $this->belongsTo(OrderDelivery::class, 'delivery_id');
+    }
+
+    public function manager()
+    {
+        return $this->belongsTo(User::class, 'manager_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
 
     /**
      * Выбрать определенный заказ
      * @param int|string $id
      */
-    public static function getOrder(int|string|null $id = null): object|null
+    public static function getOrder(int|string|null $id = null, array $join = []): ?self
     {
         if (empty($id)) {
             return null;
         }
 
+        $query = self::query();
+
+        $with = [];
+        if (in_array('payment_method', $join)) $with[] = 'payment_method';
+        if (in_array('delivery_method', $join)) $with[] = 'delivery_method';
+        if (in_array('manager', $join)) $with[] = 'manager';
+        if (in_array('user', $join)) $with[] = 'user';
+        if (!empty($with)) $query->with($with);
+
         if (is_int($id)) {
-            $order = Order::select()->whereId($id)->getResult();
+            $order = $query->where('id', $id)->first();
         } else {
-            $order = Order::select()->where('url=?', $id)->getResult();
+            $order = $query->where('url', $id)->first();
+        }
+
+        if ($order) {
+            $order->settings = empty($order->settings) ? new \stdClass() : (object) unserialize($order->settings);
         }
 
         return $order;
@@ -91,153 +119,91 @@ class Order extends DatabaseQuery
      */
     public static function getOrders(array $filter = [], string|bool $select = false, array $join = [])
     {
-
-        $SELECT =   Order::makeSelect();
-        $WHERE =    '';
-        $JOIN =     '';
-
-        $alias = Order::getAlias();
-
-        // Pages view
-        $LIMIT = '';
-        if (isset($filter['limit']) and $filter['limit'] != 'all') { # If all - Show all
-            $limit = max(1, intval($filter['limit']));
-            $page = 1;
-            if (isset($filter['page'])) {
-                $page = max(1, intval($filter['page']));
-            }
-            $LIMIT = Database::placehold(' LIMIT ?, ? ', ($page - 1) * $limit, $limit);
-        }
+        $query = self::query();
 
         if (!empty($filter['payment_method_id'])) {
-            $WHERE .= Database::placehold(" AND `$alias`.payment_method_id = ?", intval($filter['payment_method_id']));
+            $query->where('payment_method_id', $filter['payment_method_id']);
         }
-
         if (!empty($filter['delivery_id'])) {
-            $WHERE .= Database::placehold(" AND `$alias`.delivery_id = ?", intval($filter['delivery_id']));
+            $query->where('delivery_id', $filter['delivery_id']);
         }
-
         if (isset($filter['paid'])) {
-            $WHERE .= Database::placehold(" AND `$alias`.paid = ?", intval($filter['paid']));
+            $query->where('paid', intval($filter['paid']));
         }
-
         if (isset($filter['status'])) {
-            $WHERE .= Database::placehold(" AND $alias.status = ?",  intval($filter['status']));
+            $query->where('status', intval($filter['status']));
         }
-
         if (!empty($filter['id'])) {
-            $WHERE .= Database::placehold(" AND `$alias`.id in(?@)", (array)$filter['id']);
+            $query->whereIn('id', (array)$filter['id']);
         }
-
         if (!empty($filter['user_id'])) {
-            $WHERE .= Database::placehold(" AND `$alias`.user_id = ?", intval($filter['user_id']));
+            $query->where('user_id', intval($filter['user_id']));
         }
-
         if (!empty($filter['modified_since'])) {
-            $WHERE .= Database::placehold(" AND `$alias`.modified > ?", $filter['modified_since']);
+            $query->where('modified', '>', $filter['modified_since']);
         }
-
         if (!empty($filter['label'])) {
-            $WHERE .= Database::placehold(" AND ol.label_id = ?", $filter['label']);
-            $JOIN .= Database::placehold(" LEFT JOIN __order_label_related AS ol ON `$alias`.id=ol.order_id ");
+            $query->join('order_label_related as ol', 'ol.order_id', '=', 'order.id');
+            $query->where('ol.label_id', $filter['label']);
         }
-
         if (!empty($filter['product_id'])) {
-            $WHERE .= Database::placehold(' AND op.product_id = ?', intval($filter['product_id']));
-            $JOIN .= Database::placehold(" LEFT JOIN __order_purchase AS op ON `$alias`.id=op.order_id ");
+            $query->join('order_purchase as op', 'op.order_id', '=', 'order.id');
+            $query->where('op.product_id', intval($filter['product_id']));
         }
 
         // Ищем заказ по ID|phone|address|name
         if (!empty($filter['keyword'])) {
             $keywords = explode(' ', $filter['keyword']);
-            foreach ($keywords as $keyword) {
-                $WHERE .= Database::placehold(" AND (`$alias`.id = '" . Database::escape(trim($keyword)) .
-                    "' OR `$alias`.name LIKE '%" . Database::escape(trim($keyword)) .
-                    "%' OR REPLACE(`$alias`.phone, '-', '')  LIKE '%" . Database::escape(str_replace('-', '', trim($keyword))) .
-                    "%' OR `$alias`.address LIKE '%" . Database::escape(trim($keyword)) . "%') ");
-            }
-        }
-
-        // JOIN PAYMENT_METHOD
-        if (in_array("payment_method", $join)) {
-            $SELECT .= Database::placehold(", pm.name as payment_method_name");
-            $JOIN .= Database::placehold(" LEFT JOIN __order_payment pm ON pm.id=`$alias`.payment_method_id");
-        }
-
-        // JOIN DELIVERY_METHOD
-        if (in_array("delivery_method", $join)) {
-            $SELECT .= Database::placehold(", dm.name as delivery_method_name");
-            $JOIN .= Database::placehold(" LEFT JOIN __order_delivery dm ON dm.id=`$alias`.delivery_id");
-        }
-
-
-        // Выбираем заказы
-        if (empty($select)) {
-            $query =
-                "SELECT 
-                    $SELECT
-				FROM 
-					__order `$alias`
-					$JOIN
-				WHERE 
-					1
-					$WHERE
-				ORDER BY
-					id DESC 
-					$LIMIT";
-
-            $orders = [];
-            foreach (Order::query($query)->results() as $order) {
-
-                // Преобразуем json в object
-                // Если преобразовывать пустую переменную, в обьект добавляется "scalar"
-                if (!empty($order->settings)) {
-                    $order->settings = (object) unserialize($order->settings);
-                } else {
-                    $order->settings = new \stdClass();
+            $query->where(function ($q) use ($keywords) {
+                foreach ($keywords as $kw) {
+                    $kw = trim($kw);
+                    $clean = str_replace('-', '', $kw);
+                    $q->orWhere('id', $kw)
+                        ->orWhere('name', 'like', "%$kw%")
+                        ->orWhereRaw('REPLACE(phone, "-", "") LIKE ?', ["%$clean%"])
+                        ->orWhere('address', 'like', "%$kw%");
                 }
-
-                $orders[$order->id] = $order;
-            }
-
-            return $orders;
+            });
         }
+
+        $with = [];
+        if (in_array('payment_method', $join)) $with[] = 'payment_method';
+        if (in_array('delivery_method', $join)) $with[] = 'delivery_method';
+        if (in_array('manager', $join)) $with[] = 'manager';
+        if (in_array('user', $join)) $with[] = 'user';
+        if (!empty($with)) $query->with($with);
+
 
 
         // Выбираем кол-во
-        elseif ($select == 'count') {
-            $query = Database::placehold(
-                "SELECT 
-					COUNT(DISTINCT `$alias`.id) as count
-				FROM 
-					__order `$alias`
-					$JOIN
-				WHERE
-					1
-					$WHERE"
-            );
+        if ($select === 'count') {
+            return $query->count();
 
-            return Order::query($query)->result('count');
+            // Выбираем общую стоимость заказов
+        } elseif ($select === 'sum') {
+            return $query->selectRaw('SUM(total_price) as sum_total_price, SUM(profit_price) as sum_profit_price')->first();
         }
 
-
-        // Выбираем общую стоимость заказов
-        elseif ($select == 'sum') {
-            $query = Database::placehold(
-                "SELECT 
-                    SUM(`$alias`.total_price) as sum_total_price, 
-                    SUM(`$alias`.profit_price) as sum_profit_price 
-                FROM 
-                    __order `$alias` 
-                    $JOIN
-                WHERE 
-                    1 
-                    $WHERE"
-            );
-
-            return Order::query($query)->result();
+        // Pages view
+        if (isset($filter['limit']) && $filter['limit'] != 'all') {
+            $limit = max(1, intval($filter['limit']));
+            $page = isset($filter['page']) ? max(1, intval($filter['page'])) : 1;
+            $query->limit($limit)->offset(($page - 1) * $limit);
         }
+
+        $query->orderByDesc('id');
+
+        // Выбираем заказы
+        $orders = $query->get();
+        foreach ($orders as $o) {
+            // Преобразуем json в object
+            // Если преобразовывать пустую переменную, в обьект добавляется "scalar"
+            $o->settings = empty($o->settings) ? new \stdClass() : (object) unserialize($o->settings);
+        }
+
+        return $orders->keyBy('id')->all();
     }
+
 
 
     /**
@@ -247,7 +213,7 @@ class Order extends DatabaseQuery
      */
     public static function getOrdersCount(array $filter = [])
     {
-        return Order::getOrders($filter, 'count');
+        return Order::getOrders($filter, select: 'count');
     }
 
 
@@ -282,7 +248,7 @@ class Order extends DatabaseQuery
             $order->modified = date("Y-m-d H:i:s");
         }
 
-        return parent::updateOne($id, $order);
+        return self::updateOne($id, $order);
     }
 
 
@@ -296,9 +262,9 @@ class Order extends DatabaseQuery
             return false;
         }
 
-        Order::delete()->where('id=?', $id)->get();
-        OrderPurchase::delete()->where('order_id=?', $id)->get();
-        DatabaseQuery::delete()->from('order_label_related')->where('order_id=?', $id)->get();
+        self::where('id', $id)->delete();
+        OrderPurchase::where('order_id', $id)->delete();
+        Capsule::table('order_label_related')->where('order_id', $id)->delete();
         Cart::updateOne($id, ['order_id' => null]);
 
         return FinancePayment::deleteOrderPayments($id);
@@ -319,7 +285,7 @@ class Order extends DatabaseQuery
             $order->phone = Helper::clearPhoneNummber($order->phone);
         }
 
-        return Order::add($order);
+        return self::create((array)$order);
     }
 
 
@@ -362,14 +328,12 @@ class Order extends DatabaseQuery
                 if (!empty($variant) and !is_null($variant->stock)) {
 
                     // Кол-во нужно добавлять/вычетать в SQL запросе. Чтобы не произошла коллизия при одновременных запросах
-                    $query = Database::placehold("UPDATE __product_variant SET stock=stock-? WHERE id=? LIMIT 1", $purchase->amount, intval($variant->id));
-                    if (!Order::query($query)) {
-                        return false;
-                    }
+                    ProductVariant::updateStock($variant->id, -$purchase->amount);
                 }
             }
 
-            return Order::update(['closed' => 1])->whereId($order->id)->get();
+            self::where('id', $order->id)->update(['closed' => 1]);
+            return true;
         }
 
         return true;
@@ -383,7 +347,7 @@ class Order extends DatabaseQuery
     public static function open(int $order_id)
     {
 
-        if (empty($order = Order::getOrder($order_id))) {
+        if (empty($order = self::getOrder($order_id))) {
             return false;
         }
 
@@ -395,14 +359,11 @@ class Order extends DatabaseQuery
                 if (!empty($variant) && !is_null($variant->stock)) {
 
                     // Кол-во нужно добавлять/вычетать в SQL запросе. Чтобы не произошла коллизия при одновременных запросах
-                    $query = Database::placehold("UPDATE __product_variant SET stock=stock+? WHERE id=? LIMIT 1", $purchase->amount, intval($variant->id));
-                    if (!Order::query($query)) {
-                        return false;
-                    }
+                    ProductVariant::updateStock($variant->id, $purchase->amount);
                 }
             }
-
-            return Order::update(['closed' => 0])->whereId($order->id)->get();
+            self::where('id', $order->id)->update(['closed' => 0]);
+            return true;
         }
 
         return true;
@@ -577,19 +538,12 @@ class Order extends DatabaseQuery
      */
     public static function getNextOrder(int $id, ?int $status = null)
     {
-        $where_status = '';
+        $query = self::query()->where('id', '>', $id);
         if ($status !== null) {
-            $where_status = Database::placehold('AND status=?', $status);
+            $query->where('status', $status);
         }
-
-        $query = Database::placehold("SELECT MIN(id) as id FROM __order WHERE id>? $where_status LIMIT 1", $id);
-        $next_id = Order::query($query)->result('id');
-
-        if ($next_id) {
-            return Order::getOrder(intval($next_id));
-        } else {
-            return false;
-        }
+        $next_id = $query->min('id');
+        return $next_id ? self::getOrder(intval($next_id)) : false;
     }
 
 
@@ -600,18 +554,11 @@ class Order extends DatabaseQuery
      */
     public static function getPrevOrder(int $id, ?int $status = null)
     {
-        $where_status = '';
+        $query = self::query()->where('id', '<', $id);
         if ($status !== null) {
-            $where_status = Database::placehold('AND status=?', $status);
+            $query->where('status', $status);
         }
-
-        $query = Database::placehold("SELECT MAX(id) as id FROM __order WHERE id<? $where_status LIMIT 1", $id);
-        $prev_id = Order::query($query)->result('id');
-
-        if ($prev_id) {
-            return Order::getOrder(intval($prev_id));
-        } else {
-            return false;
-        }
+        $prev_id = $query->max('id');
+        return $prev_id ? self::getOrder(intval($prev_id)) : false;
     }
 }

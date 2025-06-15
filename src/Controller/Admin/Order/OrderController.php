@@ -111,7 +111,7 @@ class OrderController extends BaseAdminController
                     }
                 }
 
-                $order->id = Design::setFlashMessage('add', Order::addOrder($order));
+                $order = Design::setFlashMessage('add', Order::addOrder($order));
             }
 
             // Обновляем заказ

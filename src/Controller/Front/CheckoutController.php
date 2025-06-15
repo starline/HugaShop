@@ -161,11 +161,10 @@ class CheckoutController extends BaseFrontController
 
 
                     // Добавляем заказ в базу
-                    $order_id = Design::setFlashMessage('add', Order::addOrder($pre_order));
+                    $order = Design::setFlashMessage('add', Order::addOrder($pre_order));
 
-                    if (!empty($order_id)) {
+                    if (!empty($order->id)) {
 
-                        $order = Order::getOrder($order_id);
                         Request::setSession('order_id', $order->id);
 
                         // Если использовали купон, увеличим количество его использований
