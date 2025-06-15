@@ -77,8 +77,8 @@ class MoveController extends BaseAdminController
                         $posted_purchase_ids[] = $item['id'];
                     } else {
                         $item_upd['move_id'] = $movement->id;
-                        $new_id = WarehousePurchase::addPurchase($item_upd);
-                        $posted_purchase_ids[] = $new_id;
+                        $purchase = WarehousePurchase::addPurchase($item_upd);
+                        $posted_purchase_ids[] = $purchase->id;
                     }
                 }
 

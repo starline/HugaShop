@@ -133,13 +133,10 @@ class CmlExchangeController extends BaseAdminController
 
                     // Ищем товар
                     $product_id = DatabaseQuery::query('SELECT id FROM __product WHERE external_id=?', $product_1c_id)->result('id');
-                    $variant_id = DatabaseQuery::query('SELECT id FROM __product_variant WHERE external_id=? AND product_id=?', $variant_1c_id, $product_id)->result('id');
 
                     $purchase = new \stdClass();
                     $purchase->order_id = $order->id;
                     $purchase->product_id = $product_id;
-                    $purchase->variant_id = $variant_id;
-
                     $purchase->sku = $xml_product->Артикул;
                     $purchase->product_name = $xml_product->Наименование;
                     $purchase->amount = $xml_product->Количество;
@@ -150,13 +147,13 @@ class CmlExchangeController extends BaseAdminController
                         $purchase->price = $purchase->price * (100 - $discount) / 100;
                     }
 
-                    $purchase_id = DatabaseQuery::query('SELECT id FROM __order_purchase WHERE order_id=? AND product_id=? AND variant_id=?', $order->id, $product_id, $variant_id)->result('id');
-                    if (!empty($purchase_id)) {
-                        $purchase_id = OrderPurchase::updatePurchase($purchase_id, $purchase);
+                    $check_purchase = OrderPurchase::where('order_id', $order->id)->where('product_id', $product_id)->first();
+                    if (!empty($check_purchase->id)) {
+                        OrderPurchase::updatePurchase($check_purchase->id, $purchase);
                     } else {
-                        $purchase_id = OrderPurchase::addPurchase($purchase);
+                        $purchase = OrderPurchase::addPurchase($purchase);
                     }
-                    $purchases_ids[] = $purchase_id;
+                    $purchases_ids[] = $purchase->id;
                 }
 
                 // Удалим покупки, которых нет в файле

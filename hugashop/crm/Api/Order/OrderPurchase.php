@@ -60,9 +60,10 @@ class OrderPurchase extends BaseModel
         }
 
         $with = [];
-        if (in_array('product', $join) || in_array('category', $join)) {
+        if (in_array('product', $join) || in_array('product.category', $join) || in_array('product.image', $join)) {
             $with[] = 'product';
-            $with[] = 'product.image';
+            if (in_array('category', $join)) $with[] = 'product.image';
+            if (in_array('category', $join)) $with[] = 'product.category';
         }
         if (in_array('order', $join)) {
             $with[] = 'order';
@@ -93,6 +94,7 @@ class OrderPurchase extends BaseModel
 
         return $purchases;
     }
+
 
     /**
      * Обновляем покупки
@@ -130,7 +132,7 @@ class OrderPurchase extends BaseModel
     /**
      * Добавляем новый вариант товара в заказ
      */
-    public static function addPurchase(array|object $purchase): int
+    public static function addPurchase(array|object $purchase)
     {
         $purchase = (object) $purchase;
 
@@ -159,7 +161,7 @@ class OrderPurchase extends BaseModel
             Product::updateStock($purchase->product_id, -$purchase->amount);
         }
 
-        return self::create($purchase);
+        return static::create($purchase);
     }
 
     /**

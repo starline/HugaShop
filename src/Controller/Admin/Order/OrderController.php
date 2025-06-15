@@ -187,7 +187,7 @@ class OrderController extends BaseAdminController
                             $purchase_upd->price = $purchase->price;
                         }
 
-                        $purchase->id = OrderPurchase::addPurchase($purchase_upd);
+                        $purchase = OrderPurchase::addPurchase($purchase_upd);
                     }
 
                     $posted_purchases_ids[] = $purchase->id;

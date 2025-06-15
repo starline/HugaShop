@@ -120,9 +120,9 @@ class Product extends BaseModel
     {
         return $this->belongsToMany(
             self::class,
-            ProductRelated::class,     // имя таблицы связей
-            'product_id',            // внешний ключ для текущего товара
-            'related_id'             // внешний ключ для связанного товара
+            ProductRelated::class,   # имя таблицы связей
+            'product_id',            # внешний ключ для текущего товара
+            'related_id'             # внешний ключ для связанного товара
         );
     }
 

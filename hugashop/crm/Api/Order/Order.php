@@ -15,11 +15,12 @@ use HugaShop\Api\Database;
 use HugaShop\Api\BaseModel;
 use HugaShop\Api\Cart\Cart;
 use HugaShop\Api\User\User;
+use HugaShop\Api\Product\Product;
 use HugaShop\Api\Order\OrderPayment;
 use HugaShop\Api\Order\OrderDelivery;
 use HugaShop\Api\Finance\FinancePayment;
-use HugaShop\Api\Product\ProductVariant;
 use HugaShop\Api\Order\OrderLabelRelated;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Order extends BaseModel
 {
@@ -77,6 +78,21 @@ class Order extends BaseModel
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function purchases()
+    {
+        return $this->hasMany(OrderPurchase::class, 'order_id')->orderBy('position');
+    }
+
+    public function labels(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            OrderLabel::class,
+            OrderLabelRelated::class,   # имя таблицы связей
+            'order_id',                 # внешний ключ для текущего order
+            'label_id'                  # внешний ключ для связанного label
+        )->orderBy('position');
+    }
+
 
     /**
      * Выбрать определенный заказ
@@ -95,6 +111,10 @@ class Order extends BaseModel
         if (in_array('delivery_method', $join)) $with[] = 'delivery_method';
         if (in_array('manager', $join)) $with[] = 'manager';
         if (in_array('user', $join)) $with[] = 'user';
+        if (in_array('labels', $join)) $with[] = 'labels';
+        if (in_array('purchases', $join)) {
+            $with[] = 'purchases.product.image';
+        }
         if (!empty($with)) $query->with($with);
 
         if (is_int($id)) {
@@ -115,7 +135,7 @@ class Order extends BaseModel
      * Выбрать список заказов
      * @param array $filter
      * @param string|bool $select = false|count|sum
-     * @param array $join = ['payment_method', 'delivery_method']
+     * @param array $join = ['payment_method', 'delivery_method', 'purchases' 'labels']
      */
     public static function getOrders(array $filter = [], string|bool $select = false, array $join = [])
     {
@@ -166,13 +186,17 @@ class Order extends BaseModel
             });
         }
 
+
         $with = [];
         if (in_array('payment_method', $join)) $with[] = 'payment_method';
         if (in_array('delivery_method', $join)) $with[] = 'delivery_method';
         if (in_array('manager', $join)) $with[] = 'manager';
         if (in_array('user', $join)) $with[] = 'user';
+        if (in_array('labels', $join)) $with[] = 'labels';
+        if (in_array('purchases', $join)) {
+            $with[] = 'purchases.product.image'; # добавляем фото товара
+        }
         if (!empty($with)) $query->with($with);
-
 
 
         // Выбираем кол-во
@@ -209,7 +233,6 @@ class Order extends BaseModel
     /**
      * Выбираем кол-во заказов
      * @param array $filter
-     * @return int
      */
     public static function getOrdersCount(array $filter = [])
     {
@@ -305,30 +328,30 @@ class Order extends BaseModel
             $purchases = OrderPurchase::getPurchases(['order_id' => $order->id]);
 
             // Вычисляем общее кол-во покупки. Может быть несколько одинаковых вариантов
-            $variants_amounts = [];
+            $products_amounts = [];
             foreach ($purchases as $purchase) {
-                if (isset($variants_amounts[$purchase->variant_id])) {
-                    $variants_amounts[$purchase->variant_id] += $purchase->amount;
+                if (isset($products_amounts[$purchase->product_id])) {
+                    $products_amounts[$purchase->product_id] += $purchase->amount;
                 } else {
-                    $variants_amounts[$purchase->variant_id] = $purchase->amount;
+                    $products_amounts[$purchase->product_id] = $purchase->amount;
                 }
             }
 
             // Определяем возможность заказа заданого кол-ва
             // Нельзя отнимать кол-во больше чем есть нна складе.
-            foreach ($variants_amounts as $id => $amount) {
-                $variant = ProductVariant::getVariant($id);
-                if (empty($variant) || ($variant->stock < $amount)) {
+            foreach ($products_amounts as $id => $amount) {
+                $product = Product::getOne($id);
+                if (empty($product) || ($product->stock < $amount)) {
                     return false;
                 }
             }
 
             foreach ($purchases as $purchase) {
-                $variant = ProductVariant::getVariant($purchase->variant_id);
-                if (!empty($variant) and !is_null($variant->stock)) {
+                $product = Product::getOne($purchase->product_id);
+                if (!empty($product) and !is_null($product->stock)) {
 
                     // Кол-во нужно добавлять/вычетать в SQL запросе. Чтобы не произошла коллизия при одновременных запросах
-                    ProductVariant::updateStock($variant->id, -$purchase->amount);
+                    Product::updateStock($product->id, -$purchase->amount);
                 }
             }
 
@@ -355,11 +378,11 @@ class Order extends BaseModel
         if ($order->closed) {
             $purchases = OrderPurchase::getPurchases(['order_id' => $order->id]);
             foreach ($purchases as $purchase) {
-                $variant = ProductVariant::getVariant($purchase->variant_id);
-                if (!empty($variant) && !is_null($variant->stock)) {
+                $product = Product::getOne($purchase->product_id);
+                if (!empty($product) && !is_null($product->stock)) {
 
                     // Кол-во нужно добавлять/вычетать в SQL запросе. Чтобы не произошла коллизия при одновременных запросах
-                    ProductVariant::updateStock($variant->id, $purchase->amount);
+                    Product::updateStock($product->id, $purchase->amount);
                 }
             }
             self::where('id', $order->id)->update(['closed' => 0]);

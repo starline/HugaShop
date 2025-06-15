@@ -125,11 +125,7 @@ class OrderListController extends BaseAdminController
         }
 
         // Фильтр по метке
-        $label = OrderLabel::getOne(Request::get('label'));
-        if (!empty($label)) {
-            $filter['label'] = $label->id;
-            Design::assign('label', $label);
-        }
+        $this->applyLabelFilter($filter);
 
         // Оплачены/Не оплачены
         $paid = Request::get('paid', "integer");
@@ -157,22 +153,13 @@ class OrderListController extends BaseAdminController
             $filter['page'] = 1;
             Design::assign('pagination_hide', true);
         }
+        
+        // Выбираем все заказы
+        $orders         = Order::getOrders($filter, join: ['delivery_method', 'payment_method', 'purchases', 'product.images', 'labels']);
+        $orders_count   = Order::getOrdersCount($filter);
 
-        $orders_count = Order::getOrdersCount($filter);
-        $orders = Order::getOrders($filter, false, ['delivery_method', 'payment_method']); # Выбираем все заказы
-
-        $orders_price = Order::getOrdersPrice($filter); # Выбираем общую сумму заказов
-        $labels = OrderLabel::getLabels(); # Метки заказов
-
-        // Метки заказов
-        foreach (OrderLabel::getOrderLabels(array_keys($orders)) as $ol) {
-            $orders[$ol->order_id]->labels[] = $ol;
-        }
-
-        // Товары и их фото
-        foreach (OrderPurchase::getPurchases(['order_id' => array_keys($orders)], ["image"]) as $op) {
-            $orders[$op->order_id]->purchases[] = $op;
-        }
+        $orders_price   = Order::getOrdersPrice($filter); # Выбираем общую сумму заказов
+        $labels         = OrderLabel::getLabels(); # Метки заказов
 
         Design::assign('pages_count', ceil($orders_count / Settings::getParam('products_num_admin')));
         Design::assign('current_page', $filter['limit'] == 'all' ? 'all' : $filter['page']);
@@ -183,5 +170,19 @@ class OrderListController extends BaseAdminController
         Design::assign('labels', $labels);
 
         return $this->fetchResponse('order/order_list.tpl');
+    }
+
+
+    /**
+     * Filter label
+     */
+    private function applyLabelFilter(&$filter)
+    {
+        if ($label_id = Request::get('label', 'int')) {
+            if ($label = OrderLabel::getOne($label_id)) {
+                $filter['label'] = $label->id;
+                Design::assign('label', $label);
+            }
+        }
     }
 }

@@ -18,14 +18,14 @@
 
                 <a href="{'OrderAdmin'|urll:[id => $order->id]}"><b>{$order->name}</b></a>
 
-                {if !$order->purchases|empty}
+                {if $order->purchases}
                     <div class="purchases">
                         {foreach $order->purchases as $purchase}
                             <div class="image">
                                 <div class="amount">{$purchase->amount}</div>
-                                <img data-bs-toggle="tooltip" title="{$purchase->product_name} {if $purchase->variant_name} - {$purchase->variant_name}
-                    {/if}"
-                                    src="{if $purchase->image_filename}{$purchase->image_filename|resize:60}{else}{'images/cargo.png'|asset}{/if}" />
+                                <img data-bs-toggle="tooltip"
+                                    title="{$purchase->product->name} {if $purchase->variant_name} - {$purchase->variant_name}{/if}"
+                                    src="{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60}{else}{'images/cargo.png'|asset}{/if}" />
                             </div>
                         {/foreach}
                     </div>
@@ -81,7 +81,7 @@
 
             <div class="col-12 col-md-2 text-center">
 
-                {if !$order->labels|empty}
+                {if $order->labels}
                     {foreach $order->labels as $lab}
                         <span class="order_label_text" style="background-color:#{$lab->color};">{$lab->name}</span>
                     {/foreach}

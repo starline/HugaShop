@@ -126,7 +126,7 @@ class WarehousePurchase extends BaseModel
      * Add purchase to move. Get datas from products such as (name, sku, price, cost_price)
      * @param $purchase
      */
-    public static function addPurchase(array|object $purchase): int
+    public static function addPurchase(array|object $purchase)
     {
 
         if (is_array($purchase)) {
@@ -157,7 +157,7 @@ class WarehousePurchase extends BaseModel
             Product::updateStock($product->id, $factor * $purchase->amount);
         }
 
-        return WarehousePurchase::create($purchase)->id;
+        return WarehousePurchase::create($purchase);
     }
 
 
