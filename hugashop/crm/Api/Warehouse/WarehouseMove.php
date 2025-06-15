@@ -159,10 +159,12 @@ class WarehouseMove extends BaseModel
             }
         }
 
-        if (in_array('payments', $join)) {
+        if (in_array('payments', $join) || in_array('payments.category', $join)) {
             $with[] = 'payments';
+            if (in_array('payments.category', $join)) {
+                $with[] = 'payments.category';
+            }
         }
-
 
         if (!empty($with)) {
             $query->with($with);

@@ -122,25 +122,13 @@ class OrderController extends BaseAdminController
             }
 
             // Обновляем метки заказа
-            $order_labels = !empty(Request::post('order_labels')) ? Request::post('order_labels') : array();
+            $order_labels = !empty(Request::post('order_labels')) ? Request::post('order_labels') : [];
             OrderLabel::updateOrderLabels($order->id, $order_labels);
 
 
-            /////////////////////
-            // Сохраняем Покупки
-            ////////////////////
-            if (Request::post('purchases')) {
-                foreach (Request::post('purchases') as $var_name => $var_arr) {
-                    foreach ($var_arr as $index => $value) {
-                        if (empty($purchases[$index])) {
-                            $purchases[$index] = new \stdClass();
-                        }
-                        $purchases[$index]->$var_name = $value;
-                    }
-                }
-            }
 
-            // Сохраняем все пришедшие id в массив
+
+            // Save Purchases
             $posted_purchase_ids = [];
             foreach (Request::post('purchases', 'array') as $position => $item) {
 
@@ -158,7 +146,7 @@ class OrderController extends BaseAdminController
                     OrderPurchase::updatePurchase($item['id'], $item_upd);
                     $posted_purchase_ids[] = $item['id'];
                 } else {
-                    $item_upd['move_id'] = $order->id;
+                    $item_upd['order_id'] = $order->id;
                     $purchase = OrderPurchase::addPurchase($item_upd);
                     $posted_purchase_ids[] = $purchase->id;
                 }
@@ -171,6 +159,8 @@ class OrderController extends BaseAdminController
                     OrderPurchase::deletePurchase($purchase->id);
                 }
             }
+
+
 
             // Обновляем общую стоимость и прибыль, комиссию менеджера
             Order::updateTotalPrice($order->id, false);
@@ -372,16 +362,6 @@ class OrderController extends BaseAdminController
             /* if (!empty($purchases = OrderPurchase::getPurchases(['order_id' => $order->id], ['image', , 'product.']))) {
                 foreach ($purchases as &$purchase) {
 
-                    // Выбираем все варианты товара
-                    $purchase->variants = ProductVariant::getVariants(['product_id' => $purchase->product_id]);
-
-                    // Выбираем поставки товаров
-                    $purchase->variant->movements = WarehousePurchase::getProductMovements($purchase->variant->id);
-                    $mov_amount = 0;
-                    foreach ($purchase->variant->movements as $mov) {
-                        $mov_amount += $mov->amount;
-                    }
-                    $purchase->variant->movements_amount = $mov_amount;
 
                     // Общий вес
                     $total->purchases_weight += $purchase->variant->weight * $purchase->amount;

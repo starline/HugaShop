@@ -136,12 +136,9 @@ class OrderPurchase extends BaseModel
     {
         $purchase = (object) $purchase;
 
-        $product = null;
-        if (!empty($purchase->product_id)) {
-            $product = Product::getProduct((int) $purchase->product_id);
-            if (empty($product)) {
-                return 0;
-            }
+        $product = Product::getProduct((int) $purchase->product_id);
+        if (empty($product)) {
+            return 0;
         }
 
         $order = Order::getOrder((int) $purchase->order_id);
@@ -149,12 +146,12 @@ class OrderPurchase extends BaseModel
             return 0;
         }
 
-        $purchase->product_id   = $purchase->product_id   ?? $product?->id;
-        $purchase->product_name = $purchase->product_name ?? $product?->name;
-        $purchase->sku          = $purchase->sku          ?? $product?->sku;
-        $purchase->variant_name = $purchase->variant_name ?? $product?->variant_name;
-        $purchase->price        = $purchase->price        ?? $product?->price;
-        $purchase->cost_price   = $purchase->cost_price   ?? $product?->cost_price;
+        $purchase->product_id   = $product->id;
+        $purchase->product_name = $product->name;
+        $purchase->sku          = $product->sku;
+        $purchase->variant_name = $product->variant_name;
+        $purchase->price        = $purchase->price        ?? $product->price;
+        $purchase->cost_price   = $purchase->cost_price   ?? $product->cost_price;
         $purchase->amount       = $purchase->amount       ?? 1;
 
         if ($order->closed && !empty($purchase->amount) && !empty($purchase->product_id)) {

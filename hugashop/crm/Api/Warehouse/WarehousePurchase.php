@@ -188,26 +188,4 @@ class WarehousePurchase extends BaseModel
 
         return self::deleteOne($id) > 0;
     }
-
-
-    /**
-     * Выбираем ожидаемые поставки определенного товара
-     * $status = 1
-     * @param int|array|null $variand_id
-     */
-    public static function getProductMovements(int|array|null $product_id): Collection
-    {
-        if (empty($product_id)) {
-            return collect();
-        }
-
-        return self::query()
-            ->with(['warehouse_move'])
-            ->whereIn('product_id', (array) $product_id)
-            ->whereHas('warehouse_move', function ($q) {
-                $q->where('status', 1);
-            })
-            ->orderBy('warehouse_move.awaiting_date')
-            ->get();
-    }
 }

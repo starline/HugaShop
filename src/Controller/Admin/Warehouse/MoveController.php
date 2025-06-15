@@ -58,7 +58,7 @@ class MoveController extends BaseAdminController
             // Обновляем товары поставку
             if (!empty($movement->id)) {
 
-                // Сохраняем все пришедшие id в массив
+                // Save Purchases
                 $posted_purchase_ids = [];
                 foreach (Request::post('purchases', 'array') as $position => $item) {
 
@@ -158,7 +158,7 @@ class MoveController extends BaseAdminController
         if (!empty($id)) {
 
             // Выбираем данные
-            $movement = WarehouseMove::getMovement($id, ['images', 'purchases', 'purchases.warehouse_move']);
+            $movement = WarehouseMove::getMovement($id, ['images', 'purchases', 'purchases.warehouse_move', 'payments.category']);
 
             if (empty($movement->id)) {
                 return $this->redirectToRoute('MoveListAdmin');
