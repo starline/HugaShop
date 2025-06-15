@@ -34,8 +34,6 @@ class OrderPayment extends BaseModel
         'position' =>               ['type' => 'int',           'lenght' => 11, 'def' => 0]
     ];
 
-    protected $with = ['finance_purse', 'currency'];
-
     public function finance_purse()
     {
         return $this->belongsTo(FinancePurse::class, 'finance_purse_id');

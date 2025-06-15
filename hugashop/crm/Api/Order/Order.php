@@ -4,22 +4,22 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.7
+ * @version 3.8
  *
  */
 
 namespace HugaShop\Api\Order;
 
-use HugaShop\Api\Cart\Cart;
-use HugaShop\Api\User\User;
 use HugaShop\Api\Helper;
 use HugaShop\Api\Database;
-use Illuminate\Database\Capsule\Manager as Capsule;
+use HugaShop\Api\BaseModel;
+use HugaShop\Api\Cart\Cart;
+use HugaShop\Api\User\User;
 use HugaShop\Api\Order\OrderPayment;
 use HugaShop\Api\Order\OrderDelivery;
 use HugaShop\Api\Finance\FinancePayment;
-use HugaShop\Api\BaseModel;
 use HugaShop\Api\Product\ProductVariant;
+use HugaShop\Api\Order\OrderLabelRelated;
 
 class Order extends BaseModel
 {
@@ -264,7 +264,7 @@ class Order extends BaseModel
 
         self::where('id', $id)->delete();
         OrderPurchase::where('order_id', $id)->delete();
-        Capsule::table('order_label_related')->where('order_id', $id)->delete();
+        OrderLabelRelated::where('order_id', $id)->delete();
         Cart::updateOne($id, ['order_id' => null]);
 
         return FinancePayment::deleteOrderPayments($id);

@@ -82,23 +82,27 @@ class Product extends BaseModel
     }
 
     /**
-     * Inccome purchases
+     * Future warehouse movements for the product
      */
-    public function incoming_purchases()
+    public function movements()
     {
         return $this->hasMany(WarehousePurchase::class, 'product_id', 'id')
+            ->with('warehouse_move')
             ->whereHas('warehouse_move', function ($query) {
-                $query->where('awaiting_date', '>', Carbon::now());
-            });
+                $query->where('status', 1)
+                    ->where('awaiting_date', '>', Carbon::now());
+            })
+            ->orderBy('warehouse_move.awaiting_date');
     }
 
     /**
-     * Count of income movementts
+     * Amount of future warehouse movements
      */
-    public function getIncome_move_attribute()
+    public function getMovementsAmountAttribute()
     {
-        return $this->incoming_purchases->sum('amount');
+        return $this->movements->sum('amount');
     }
+
 
     public function image()
     {
@@ -228,8 +232,8 @@ class Product extends BaseModel
         if (in_array('variant', $join)) {
             $with[] = 'variants';
         }
-        if (in_array('incoming_purchases', $join)) {
-            $with[] = 'incoming_purchases';
+        if (in_array('movements', $join)) {
+            $with[] = 'movements';
         }
         if (!empty($with)) {
             $query->with($with);

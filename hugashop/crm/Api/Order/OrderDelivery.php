@@ -37,7 +37,6 @@ class OrderDelivery extends BaseModel
         'comment' =>            ['type' => 'varchar']
     ];
 
-    protected $with = ['finance_purse'];
 
     public function finance_purse()
     {

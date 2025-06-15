@@ -210,39 +210,14 @@ class ProductListController extends BaseAdminController
 
         // TODO: Фильтр по характеристике
 
-        $products = Product::getProducts($filter, ['image']);
+        $products = Product::getProducts($filter, ['image', 'movements']);
         $products_count = Product::countProducts($filter);
 
         if ($products->isNotEmpty()) {
-
-
-            /*
-            $variants = [];
-            foreach (ProductVariant::getVariants(['product_id' => array_keys($products)]) as $variant) {
-                $variant->profit_price = $variant->price - $variant->cost_price;
-                $variants[$variant->id] = $variant;
+            foreach ($products as $product) {
+                $product->profit_price = $product->price - $product->cost_price;
             }
-
-            $movements = [];
-            foreach (WarehousePurchase::getProductMovements(array_keys($variants)) as $movement) {
-                $movements[$movement->id] = $movement;
-                $variants[$movement->variant_id]->movements[] = $movement;
-            }
-
-            foreach ($variants as $variant) {
-
-                // Подсчитываем общее кол-во поставок
-                $variant->movements_amount = 0;
-                if (!empty($variant->movements)) {
-                    foreach ($variant->movements as $move) {
-                        $variant->movements_amount += $move->amount;
-                    }
-                }
-
-                $products[$variant->product_id]->variants[] = $variant;
-            }*/
         }
-
 
         // Все Бренды
         $all_brands = ProductBrand::getBrands();

@@ -108,7 +108,7 @@ class SearchAjax extends BaseAdminController
 
         $filter['limit'] = $this->page_limit;
 
-        $products = Product::getProducts($filter, ['image', 'incoming_purchases']);
+        $products = Product::getProducts($filter, ['image', 'movements']);
 
         $suggestions = [];
         foreach ($products as $product) {
