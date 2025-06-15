@@ -41,10 +41,10 @@ class OrderListController extends BaseAdminController
                 switch (Request::post('action')) {
                     case 'delete': {
                             foreach ($ids as $id) {
-                                $o = Order::getOrder(intval($id));
+                                $order = Order::getOrder(intval($id));
 
                                 // Если заказ Новый(0) Принят(1) Выполнен(2) Отгружен(4)
-                                if ($o->status < 3 || $o->status == 4) {
+                                if ($order->status < 3 || $order->status == 4) {
                                     Order::updateOrder($id, array('status' => 3));
                                     Order::open($id);
                                 }
