@@ -36,7 +36,7 @@ class AjaxCartController extends BaseFrontController
         }
 
         // Get updated card
-        $cart = Cart::getCart(null, ['total']);
+        $cart = Cart::getCart(join: ['total']);
         Design::assign('cart', $cart);
 
         return $this->fetchResponse('parts/header.tpl', 'cart_informer');

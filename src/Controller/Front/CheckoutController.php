@@ -97,14 +97,7 @@ class CheckoutController extends BaseFrontController
             }
 
             // get updated cart
-            $cart = Cart::getCart(null, ['total']);
-
-            // Вычисляем сумму скидки
-            /*$pre_order->discount = $user->group->discount;
-            if (!empty($coupon)) {
-                $pre_order->coupon_discount = $coupon->coupon_discount;
-                $pre_order->coupon_code = $coupon->code;
-            }*/
+            $cart = Cart::getCart(join: ['total']);
 
 
             #### Если нажали оформить заказ

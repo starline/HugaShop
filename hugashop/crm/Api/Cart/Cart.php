@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 4.8
+ * @version 4.9
  *
  */
 
@@ -61,7 +61,7 @@ class Cart extends BaseModel
             return self::$current_cart;
         }
 
-        $cart = Cart::getCart(null, ['total']);
+        $cart = Cart::getCart(join: ['total']);
 
         // Join authorized and NOautorized user's carts
         if (!empty($cart->id) and empty($cart->user_id) and User::isLoggedIn()) {
@@ -79,7 +79,7 @@ class Cart extends BaseModel
             }
 
             Cart::updateCart($cart->id, ['user_id' => User::authUser('id')]);
-            $cart = Cart::getCart(null, ['total']);
+            $cart = Cart::getCart(join: ['total']);
         }
 
         return self::$current_cart = $cart;
@@ -93,7 +93,7 @@ class Cart extends BaseModel
      */
     public static function getCart(int|array|null $cart_id = null, array $join = [])
     {
-        $query = self::query()->select('cart.*');
+        $query = self::query();
 
         if (!empty($cart_id)) {
             if (is_array($cart_id)) {
@@ -115,23 +115,25 @@ class Cart extends BaseModel
         }
 
         if (in_array('total', $join)) {
-            $query->leftJoin('cart_purchase as cp', function ($join) {
-                $join->on('cp.cart_id', '=', 'cart.id')->where('cp.disabled', 0);
-            });
-            $query->leftJoin('product_variant as pv', 'pv.id', '=', 'cp.variant_id');
-            $query->selectRaw('SUM(cp.amount) as purchases_count')
-                ->selectRaw('SUM(pv.price*cp.amount) as purchases_price')
-                ->groupBy('cart.id');
+            $query->with(['purchases' => function ($query) {
+                $query->where('disabled', 0)->with('product');
+            }]);
         }
-
         if (in_array('user', $join)) {
             $query->with('user');
         }
-        if (in_array(Order::class, $join)) {
+        if (in_array('order', $join)) {
             $query->with('order');
         }
 
-        return $query->first();
+        $cart = $query->first();
+
+        if (in_array('total', $join) && !empty($cart)) {
+            $cart->purchases_count = $cart->purchases->sum('amount');
+            $cart->purchases_price = $cart->purchases->sum(fn($purchase) => $purchase->variant->price * $purchase->amount);
+        }
+
+        return $cart;
     }
 
 

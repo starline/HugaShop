@@ -38,11 +38,6 @@ class CartPurchase extends BaseModel
         return $this->belongsTo(Product::class, 'product_id');
     }
 
-    public function variant()
-    {
-        return $this->belongsTo(ProductVariant::class, 'variant_id');
-    }
-
 
     /**
      * Get cart purchases
@@ -51,7 +46,7 @@ class CartPurchase extends BaseModel
      */
     public static function getCartPurchases(array $filter = [], array $join = [])
     {
-        $query = self::query()->select('cart_purchase.*');
+        $query = self::query();
 
         if (isset($filter['cart_id'])) {
             if (!empty($filter['cart_id'])) {
@@ -81,19 +76,6 @@ class CartPurchase extends BaseModel
         if (in_array('category', $join)) {
             $query->leftJoin('product_category as pc', 'pc.id', '=', 'p.category_id')
                 ->addSelect(['pc.name as category_name', 'pc.id as category_id', 'pc.url as category_url']);
-        }
-
-        if (in_array('variant', $join)) {
-            $query->leftJoin('product_variant as pv', 'pv.id', '=', 'cart_purchase.variant_id')
-                ->addSelect([
-                    'pv.name as variant_name',
-                    'pv.sku as variant_sku',
-                    'pv.price as variant_price',
-                    'pv.cost_price as variant_cost_price',
-                    'pv.stock as variant_stock',
-                    'pv.custom as variant_custom',
-                    'pv.weight as variant_weight',
-                ]);
         }
 
         $query->orderBy('cart_purchase.cart_id');

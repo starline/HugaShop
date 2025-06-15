@@ -126,8 +126,6 @@ class OrderController extends BaseAdminController
             OrderLabel::updateOrderLabels($order->id, $order_labels);
 
 
-
-
             // Save Purchases
             $posted_purchase_ids = [];
             foreach (Request::post('purchases', 'array') as $position => $item) {
@@ -156,11 +154,9 @@ class OrderController extends BaseAdminController
             $all_purchases = OrderPurchase::getPurchases(['move_id' => $order->id]);
             foreach ($all_purchases as $purchase) {
                 if (!in_array($purchase->id, $posted_purchase_ids)) {
-                    OrderPurchase::deletePurchase($purchase->id);
+                    //OrderPurchase::deletePurchase($purchase->id);
                 }
             }
-
-
 
             // Обновляем общую стоимость и прибыль, комиссию менеджера
             Order::updateTotalPrice($order->id, false);

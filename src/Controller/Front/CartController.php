@@ -69,7 +69,7 @@ class CartController extends BaseFrontController
         }
 
         // Get updated card
-        $cart = Cart::getCart(null, ['total']);
+        $cart = Cart::getCart(join: ['total']);
 
         if (!empty($cart->id)) {
 
