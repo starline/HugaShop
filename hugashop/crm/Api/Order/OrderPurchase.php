@@ -4,17 +4,15 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.5
+ * @version 3.6
  * 
  */
 
 namespace HugaShop\Api\Order;
 
 use HugaShop\Api\BaseModel;
-use HugaShop\Api\Helper;
 use Illuminate\Support\Collection;
 use HugaShop\Api\Product\Product;
-use HugaShop\Api\Product\ProductVariant;
 use HugaShop\Api\Product\ProductCategory;
 
 class OrderPurchase extends BaseModel
@@ -23,7 +21,6 @@ class OrderPurchase extends BaseModel
         'id'           => ['type' => 'int',      'extra' => 'AUTO_INCREMENT'],
         'order_id'     => ['type' => 'int'],
         'product_id'   => ['type' => 'int'],
-        'variant_id'   => ['type' => 'int'],
         'sku'          => ['type' => 'varchar', 'def'  => ''],
         'product_name' => ['type' => 'varchar', 'def'  => ''],
         'variant_name' => ['type' => 'varchar', 'def'  => ''],
@@ -43,10 +40,6 @@ class OrderPurchase extends BaseModel
         return $this->belongsTo(Product::class, 'product_id');
     }
 
-    public function variant()
-    {
-        return $this->belongsTo(ProductVariant::class, 'variant_id');
-    }
 
     /**
      * Выбираем товары в заказе
@@ -70,9 +63,6 @@ class OrderPurchase extends BaseModel
         if (in_array('product', $join) || in_array('category', $join)) {
             $with[] = 'product';
             $with[] = 'product.image';
-        }
-        if (in_array('variant', $join)) {
-            $with[] = 'variant';
         }
         if (in_array('order', $join)) {
             $with[] = 'order';
@@ -120,16 +110,16 @@ class OrderPurchase extends BaseModel
             return 0;
         }
 
-        if ($order->closed && !empty($purchase->amount) && isset($old->variant_id) && isset($purchase->variant_id)) {
-            if ($old->variant_id != $purchase->variant_id) {
-                if (!empty($old->variant_id)) {
-                    ProductVariant::where('id', $old->variant_id)->whereNotNull('stock')->increment('stock', $old->amount);
+        if ($order->closed && !empty($purchase->amount) && isset($old->product_id) && isset($purchase->product_id)) {
+            if ($old->product_id != $purchase->product_id) {
+                if (!empty($old->product_id)) {
+                    Product::where('id', $old->product_id)->whereNotNull('stock')->increment('stock', $old->amount);
                 }
-                if (!empty($purchase->variant_id)) {
-                    ProductVariant::where('id', $purchase->variant_id)->whereNotNull('stock')->decrement('stock', $purchase->amount);
+                if (!empty($purchase->product_id)) {
+                    Product::where('id', $purchase->product_id)->whereNotNull('stock')->decrement('stock', $purchase->amount);
                 }
-            } elseif (!empty($purchase->variant_id)) {
-                ProductVariant::where('id', $purchase->variant_id)->whereNotNull('stock')->increment('stock', $old->amount - $purchase->amount);
+            } elseif (!empty($purchase->product_id)) {
+                Product::where('id', $purchase->product_id)->whereNotNull('stock')->increment('stock', $old->amount - $purchase->amount);
             }
         }
 
@@ -144,18 +134,8 @@ class OrderPurchase extends BaseModel
     {
         $purchase = (object) $purchase;
 
-        $variant = null;
         $product = null;
-        if (!empty($purchase->variant_id)) {
-            $variant = ProductVariant::getVariant($purchase->variant_id);
-            if (empty($variant)) {
-                return 0;
-            }
-            $product = Product::getProduct((int) $variant->product_id);
-            if (empty($product)) {
-                return 0;
-            }
-        } elseif (!empty($purchase->product_id)) {
+        if (!empty($purchase->product_id)) {
             $product = Product::getProduct((int) $purchase->product_id);
             if (empty($product)) {
                 return 0;
@@ -167,19 +147,19 @@ class OrderPurchase extends BaseModel
             return 0;
         }
 
-        $purchase->product_id   = $purchase->product_id   ?? $variant->product_id ?? $product?->id;
+        $purchase->product_id   = $purchase->product_id   ?? $product?->id;
         $purchase->product_name = $purchase->product_name ?? $product?->name;
-        $purchase->sku          = $purchase->sku          ?? $variant?->sku;
-        $purchase->variant_name = $purchase->variant_name ?? $variant?->name;
-        $purchase->price        = $purchase->price        ?? $variant?->price ?? $product?->price;
-        $purchase->cost_price   = $purchase->cost_price   ?? $variant?->cost_price ?? $product?->cost_price;
+        $purchase->sku          = $purchase->sku          ?? $product?->sku;
+        $purchase->variant_name = $purchase->variant_name ?? $product?->variant_name;
+        $purchase->price        = $purchase->price        ?? $product?->price;
+        $purchase->cost_price   = $purchase->cost_price   ?? $product?->cost_price;
         $purchase->amount       = $purchase->amount       ?? 1;
 
-        if ($order->closed && !empty($purchase->amount) && !empty($purchase->variant_id)) {
+        if ($order->closed && !empty($purchase->amount) && !empty($purchase->product_id)) {
             Product::updateStock($purchase->product_id, -$purchase->amount);
         }
 
-        return self::create($purchase)->id;
+        return self::create($purchase);
     }
 
     /**
