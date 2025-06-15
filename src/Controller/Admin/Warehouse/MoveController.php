@@ -158,7 +158,7 @@ class MoveController extends BaseAdminController
         if (!empty($id)) {
 
             // Выбираем данные
-            $movement = WarehouseMove::getMovement($id, ['images', 'purchases']);
+            $movement = WarehouseMove::getMovement($id, ['images', 'purchases', 'purchases.warehouse_move']);
 
             if (empty($movement->id)) {
                 return $this->redirectToRoute('MoveListAdmin');

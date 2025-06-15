@@ -6,7 +6,6 @@ use HugaShop\Api\Image;
 use HugaShop\Api\Config;
 use HugaShop\Api\Product\Product;
 use HugaShop\Api\Request;
-use HugaShop\Api\Product\ProductVariant;
 use HugaShop\Api\Product\ProductCategory;
 use App\Controller\BaseAdminController;
 use Symfony\Component\Routing\Attribute\Route;
@@ -134,57 +133,23 @@ class ProductExport extends BaseAdminController
         }
 
         // Выбирааем все варианты товаров
-        $variants = ProductVariant::getVariants(['product_id' => array_keys($products)]);
+        $products = Product::getList(['id' => array_keys($products)]);
+        foreach ($products as $product) {
+            foreach ($this->columns_names as $column_var => $column_name) {
+                if (!empty($product->$column_var)) {
+                    $res[$column_var] = $product->$column_var;
 
-        // Присваиваем варианты к соответсвующему товару
-        foreach ($variants as $variant) {
-            if (isset($products[$variant->product_id])) {
-                if (is_null($variant->stock)) {
-                    $variant->stock = '';
-                }
-                $products[$variant->product_id]->variants[] = $variant;
-            }
-        }
-
-        foreach ($products as &$product) {
-            if (empty($product->variants)) {
-                continue;
-            }
-
-            $variants = $product->variants;
-            unset($product->variants);
-
-            if (!empty($variants)) {
-                foreach ($variants as $variant) {
-
-                    $result = $product;
-                    foreach ($variant as $name => $value) {
-                        if (empty($result->$name)) {
-                            $result->$name = $value;
-                        }
+                    // сформируем сссылку на товар
+                    if ($column_var == 'url') {
+                        $res[$column_var] = Config::get('root_url') . '/tovar-' . $res[$column_var];
                     }
-
-                    foreach ($this->columns_names as $column_var => $column_name) {
-                        if (!empty($result->$column_var)) {
-                            $res[$column_var] = $result->$column_var;
-
-                            // Если есть название варианта, добавляем к названию товара
-                            //if ($column_var == 'name' and !empty($result->variant)) {
-                            //   $res[$column_var] .= ' (' . $result->variant . ')';
-                            //}
-
-                            // сформируем сссылку на товар
-                            if ($column_var == 'url') {
-                                $res[$column_var] = Config::get('root_url') . '/tovar-' . $res[$column_var];
-                            }
-                        } else {
-                            $res[$column_var] = '';
-                        }
-                    }
-                    fputcsv($f, $res, $this->column_delimiter);
+                } else {
+                    $res[$column_var] = '';
                 }
             }
+            fputcsv($f, $res, $this->column_delimiter);
         }
+
         fclose($f);
         $total_products = Product::countProducts($filter);
 

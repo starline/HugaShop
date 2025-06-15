@@ -12,9 +12,14 @@ namespace App\Controller\Admin\Finance;
 
 use HugaShop\Api\Design;
 use HugaShop\Api\Request;
-use HugaShop\Api\DatabaseQuery;
-use HugaShop\Api\Finance\FinanceCurrency;
+use HugaShop\Api\Order\Order;
+use HugaShop\Api\Product\Product;
+use HugaShop\Api\User\UserCoupon;
+use HugaShop\Api\Order\OrderDelivery;
+use HugaShop\Api\Order\OrderPurchase;
 use App\Controller\BaseAdminController;
+use HugaShop\Api\Finance\FinanceCurrency;
+use Illuminate\Database\Capsule\Manager as DB;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -51,7 +56,7 @@ class CurrencyController extends BaseAdminController
             }
 
             // Удалить непереданные валюты
-            FinanceCurrency::delete()->where('id NOT IN(?@)', $currencies_ids)->get();
+            FinanceCurrency::whereNotIn('id', $currencies_ids)->delete();
 
             // Пересчитать курсы
             $old_currency = FinanceCurrency::getCurrency();
@@ -62,35 +67,77 @@ class CurrencyController extends BaseAdminController
                 if (Request::post('recalculate') == 1) {
 
                     // Пересчитываем цены товаров
-                    DatabaseQuery::query("UPDATE __product_variant SET price=price*?", $coef);
-                    DatabaseQuery::query("UPDATE __product_variant SET cost_price=cost_price*?", $coef);
-                    DatabaseQuery::query("UPDATE __product_variant SET old_price=old_price*?", $coef);
+                    Product::query()->update([
+                        'price'      => DB::raw("price * $coef"),
+                        'cost_price' => DB::raw("cost_price * $coef"),
+                        'old_price'  => DB::raw("old_price * $coef"),
+                    ]);
 
                     // Заказы
-                    DatabaseQuery::query("UPDATE __order SET delivery_price=delivery_price*?", $coef);
-                    DatabaseQuery::query("UPDATE __order SET total_price=total_price*?", $coef);
-                    DatabaseQuery::query("UPDATE __order SET profit_price=profit_price*?", $coef);
-                    DatabaseQuery::query("UPDATE __order SET coupon_discount=coupon_discount*?", $coef);
-                    DatabaseQuery::query("UPDATE __order SET interest_price=interest_price*?", $coef);
-                    DatabaseQuery::query("UPDATE __order SET payment_price=payment_price*?", $coef);
-                    DatabaseQuery::query("UPDATE __order SET delivery_price=delivery_price*?", $coef);
+                    Order::query()->update([
+                        'delivery_price'   => DB::raw("delivery_price * $coef"),
+                        'total_price'      => DB::raw("total_price * $coef"),
+                        'profit_price'     => DB::raw("profit_price * $coef"),
+                        'coupon_discount'  => DB::raw("coupon_discount * $coef"),
+                        'interest_price'   => DB::raw("interest_price * $coef"),
+                        'payment_price'    => DB::raw("payment_price * $coef"),
+                    ]);
 
                     // Товары заказа
-                    DatabaseQuery::query("UPDATE __order_purchase SET price=price*?", $coef);
-                    DatabaseQuery::query("UPDATE __order_purchase SET cost_price=cost_price*?", $coef);
+                    OrderPurchase::query()->update([
+                        'price'      => DB::raw("price * $coef"),
+                        'cost_price' => DB::raw("cost_price * $coef"),
+                    ]);
 
-                    DatabaseQuery::query("UPDATE __user_coupon SET value=value*? WHERE type='absolute'", $coef);
-                    DatabaseQuery::query("UPDATE __user_coupon SET min_order_price=min_order_price*?", $coef);
+                    // Обновить value только у type = 'absolute'
+                    UserCoupon::query()
+                        ->where('type', 'absolute')
+                        ->update([
+                            'value' => DB::raw("value * $coef"),
+                        ]);
 
-                    DatabaseQuery::query("UPDATE __order_delivery SET price=price*?, free_from=free_from*?", $coef, $coef);
+                    // Обновить min_order_price у всех записей
+                    UserCoupon::query()
+                        ->update([
+                            'min_order_price' => DB::raw("min_order_price * $coef"),
+                        ]);
+
+                    OrderDelivery::query()->update([
+                        'price'     => DB::raw("price * $coef"),
+                        'free_from' => DB::raw("free_from * $coef"),
+                    ]);
 
                     // TODO Склад
                 }
 
-                DatabaseQuery::query("UPDATE __finance_currency SET rate_from=1.0*rate_from*$new_currency->rate_to/$old_currency->rate_to");
-                DatabaseQuery::query("UPDATE __finance_currency SET rate_to=1.0*rate_to*$new_currency->rate_from/$old_currency->rate_from");
-                DatabaseQuery::query("UPDATE __finance_currency SET rate_to = rate_from WHERE id=?", $new_currency->id);
-                DatabaseQuery::query("UPDATE __finance_currency SET rate_to = 1, rate_from = 1 WHERE (rate_to=0 OR rate_from=0) AND id=?", $new_currency->id);
+                // 1. Обновляем rate_from
+                FinanceCurrency::query()->update([
+                    'rate_from' => DB::raw("1.0 * rate_from * $new_currency->rate_to / $old_currency->rate_to"),
+                ]);
+
+                // 2. Обновляем rate_to
+                FinanceCurrency::query()->update([
+                    'rate_to' => DB::raw("1.0 * rate_to * $new_currency->rate_from / $old_currency->rate_from"),
+                ]);
+
+                // 3. Уравниваем rate_to и rate_from у текущей валюты
+                FinanceCurrency::query()
+                    ->where('id', $new_currency->id)
+                    ->update([
+                        'rate_to' => DB::raw("rate_from"),
+                    ]);
+
+                // 4. Обнуляемые значения — сбрасываем на 1
+                FinanceCurrency::query()
+                    ->where('id', $new_currency->id)
+                    ->where(function ($q) {
+                        $q->where('rate_to', 0)
+                            ->orWhere('rate_from', 0);
+                    })
+                    ->update([
+                        'rate_to'   => 1,
+                        'rate_from' => 1,
+                    ]);
             }
 
             // Отсортировать валюты

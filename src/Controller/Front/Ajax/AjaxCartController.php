@@ -29,9 +29,9 @@ class AjaxCartController extends BaseFrontController
         $amount = Request::getVar('amount', 'int') ?: 1;
 
         // Add product to cart
-        if (!empty($variant_id = Request::getVar('variant_id', 'int'))) {
-            if (CartPurchase::addCartPurchase($variant_id, $amount)) {
-                $this->setEvent(new CartAddEvent(['variant_id' => $variant_id, 'amount' => $amount]));
+        if (!empty($product_id = Request::getVar('product_id', 'int'))) {
+            if (CartPurchase::addCartPurchase($product_id, $amount)) {
+                $this->setEvent(new CartAddEvent(['product_id' => $product_id, 'amount' => $amount]));
             }
         }
 

@@ -107,7 +107,12 @@ class Order extends BaseModel
         $query = self::query();
 
         $with = [];
-        if (in_array('payment_method', $join)) $with[] = 'payment_method';
+        if (in_array('payment_method', $join) || in_array('payment_method.currency', $join)) {
+            $with[] = 'payment_method';
+            if (in_array('payment_method.currency', $join)) {
+                $with[] = 'payment_method.currency';
+            }
+        }
         if (in_array('delivery_method', $join)) $with[] = 'delivery_method';
         if (in_array('manager', $join)) $with[] = 'manager';
         if (in_array('user', $join)) $with[] = 'user';

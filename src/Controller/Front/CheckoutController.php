@@ -60,7 +60,7 @@ class CheckoutController extends BaseFrontController
             Cart::updateCart($cart->id, ['checkout_init' => date('Y-m-d H:i:s')]);
         }
 
-        $purchases = CartPurchase::getCartPurchases(['cart_id' => $cart->id, 'disabled' => 0], ['image', 'variant', 'product', 'category']);
+        $purchases = CartPurchase::getCartPurchases(['cart_id' => $cart->id, 'disabled' => 0], ['image', 'product', 'category']);
         $pre_order = new \stdClass();
 
         // Данные пользователя
@@ -174,7 +174,7 @@ class CheckoutController extends BaseFrontController
 
                         // Добавляем товары к заказу
                         foreach ($purchases as $purchase) {
-                            OrderPurchase::addPurchase(['order_id' => $order->id, 'variant_id' => $purchase->variant->id, 'amount' => $purchase->amount]);
+                            OrderPurchase::addPurchase(['order_id' => $order->id, 'product_id' => $purchase->product->id, 'amount' => $purchase->amount]);
                         }
 
                         // Определяем стоимость доставки

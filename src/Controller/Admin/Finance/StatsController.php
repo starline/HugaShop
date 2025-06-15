@@ -13,7 +13,6 @@ namespace App\Controller\Admin\Finance;
 use HugaShop\Api\Design;
 use HugaShop\Api\Product\Product;
 use HugaShop\Api\Order\OrderPayment;
-use HugaShop\Api\Product\ProductVariant;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -34,8 +33,8 @@ class StatsController extends BaseAdminController
         $total->sum_price = 0;
         $total->sum_stock = 0;
 
-        $variants = ProductVariant::getVariants();
-        foreach ($variants as $v) {
+        $products = Product::getList();
+        foreach ($products as $v) {
 
             // Пропускаем товары "Под заказ", ∞, отсутствующие
             if (!empty($v->stock) and empty($v->custom)) {

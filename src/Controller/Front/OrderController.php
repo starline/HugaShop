@@ -50,13 +50,11 @@ class OrderController extends BaseFrontController
 
         $order->subtotal_price = 0;
         $order->purchases_count = 0;
-        $order->variants_sku = [];
 
         $purchases = OrderPurchase::getPurchases(['order_id' => $order->id], ['image', 'product', 'category']);
         foreach ($purchases as $purch) {
-            $order->subtotal_price += $purch->variant->price * $purch->amount;
+            $order->subtotal_price += $purch->product->price * $purch->amount;
             $order->purchases_count += $purch->amount;
-            $order->variants_sku[] = $purch->variant->sku;
         }
 
         // Способ доставки

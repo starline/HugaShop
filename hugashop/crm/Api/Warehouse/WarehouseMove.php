@@ -137,11 +137,15 @@ class WarehouseMove extends BaseModel
         if (in_array('images', $join)) {
             $with[] = 'images';
         }
-        if (in_array('purchases', $join)) {
+        if (in_array('purchases', $join) || in_array('purchases.warehouse_move', $join)) {
             $with[] = 'purchases';
             $with[] = 'purchases.product';
             $with[] = 'purchases.product.image';
+            if (in_array('purchases.warehouse_move', $join)) {
+                $with[] = 'purchases.warehouse_move';
+            }
         }
+
 
         if (!empty($with)) {
             $query->with($with);

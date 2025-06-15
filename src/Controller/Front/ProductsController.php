@@ -20,7 +20,6 @@ use HugaShop\Api\Product\Product;
 use App\Controller\BaseFrontController;
 use HugaShop\Api\Product\ProductOption;
 use HugaShop\Api\Product\ProductFeature;
-use HugaShop\Api\Product\ProductVariant;
 use HugaShop\Api\Product\ProductCategory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -135,38 +134,8 @@ class ProductsController extends BaseFrontController
         $products_filter['page'] = $current_page;
         $products_filter['limit'] = $items_per_page;
 
-
         //  Выбираем товары
-        $variants_sku = [];
         $products = Product::getProducts($products_filter, ['image']);
-
-        if (!empty($products)) {
-            $products_ids = array_keys($products);
-
-            foreach ($products as &$product) {
-                $product->variants = [];
-                $product->properties = [];
-            }
-
-            $variants = ProductVariant::getVariants(['product_id' => $products_ids]);
-            foreach ($variants as $variant) {
-
-                // Устанавливаем варинт по-умолчанию
-                if (($variant->stock > 0 || is_null($variant->stock)) || empty($products[$variant->product_id]->variant)) {
-                    $products[$variant->product_id]->variant = $variant;
-                }
-
-                $products[$variant->product_id]->variants[] = $variant;
-                $variants_sku[] = $variant->sku;
-            }
-
-            /*
-            $properties = ProductOption::getOptions(array('product_id'=>$products_ids));
-            foreach($properties as $property)
-                $products[$property->product_id]->options[] = $property;
-            */
-        }
-
 
         if (empty($category->meta_title)) {
             $category->meta_title = $category->name;
@@ -188,7 +157,6 @@ class ProductsController extends BaseFrontController
         Design::assign('noindex', $noindex);
         Design::assign('sort', $products_filter['sort']);
         Design::assign('category', $category);
-        Design::assign('variants_sku', $variants_sku);
         Design::assign('products', $products);
         Design::assign('features', $features);
 

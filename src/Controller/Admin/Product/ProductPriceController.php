@@ -21,8 +21,6 @@ use HugaShop\Api\Product\Product;
 use HugaShop\Api\Order\OrderPurchase;
 use HugaShop\Api\User\UserPermission;
 use App\Controller\BaseAdminController;
-use HugaShop\Api\Product\ProductRelated;
-use HugaShop\Api\Product\ProductVariant;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -69,11 +67,6 @@ class ProductPriceController extends BaseAdminController
 
             Design::setFlashMessage('update', Product::updateProduct($product->id, $product));
 
-            // Варианты товара
-            if (!empty($product_variants_ids = Request::post('product_variants', type: 'array'))) {
-                // ...
-            }
-
 
             // Связанные товары
             // Удаляем все связанные товары
@@ -104,10 +97,6 @@ class ProductPriceController extends BaseAdminController
             // Связанные товары
             $related_products = Product::getRelatedProducts($product->id);
 
-            // Варианты товары
-            $product_variants = ProductVariant::getByParentId(548);
-            dump($product_variants);
-
             // Заказы с этим товаром
             $filter = [
                 'page' => max(1, Request::get('page', type: 'int')),
@@ -133,7 +122,6 @@ class ProductPriceController extends BaseAdminController
             Design::assign('orders_paid_price', $orders_paid_price);
 
             Design::assign('related_products', $related_products);
-            Design::assign('product_variants', $product_variants);
             Design::assign('product', $product);
         }
 

@@ -28,9 +28,7 @@ use HugaShop\Api\User\UserPermission;
 use HugaShop\Api\Finance\FinancePurse;
 use App\Controller\BaseAdminController;
 use HugaShop\Api\Finance\FinancePayment;
-use HugaShop\Api\Product\ProductVariant;
 use HugaShop\Api\Finance\FinanceCurrency;
-use HugaShop\Api\Warehouse\WarehousePurchase;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Api\Finance\FinancePaymentContractor;
@@ -142,71 +140,36 @@ class OrderController extends BaseAdminController
                 }
             }
 
-            $posted_purchases_ids = [];
-            foreach ($purchases as $purchase) {
+            // Сохраняем все пришедшие id в массив
+            $posted_purchase_ids = [];
+            foreach (Request::post('purchases', 'array') as $position => $item) {
 
-                if (!empty($purchase->variant_id)) {
-                    $variant = ProductVariant::getVariant($purchase->variant_id);
+                $item_upd = [
+                    'product_id'    => $item['product_id'],
+                    'amount'        => $item['amount'],
+                    'position'      => $position,
+                ];
+
+                if (UserPermission::checkAccess("product_price")) {
+                    $item_upd['price'] = $item['price'];
                 }
 
-                // Не добавляем товар с нулевым кол-вом
-                if (!empty($purchase->amount)) {
-
-                    $purchase_upd = new stdClass();
-                    $purchase_upd->amount = $purchase->amount;
-
-                    // Обновляем существующий вариант товара в заказе
-                    if (!empty($purchase->id)) {
-                        if (!empty($variant)) { # если исходный вариант существует
-
-                            // Если параметр не задан, берется с исходного варианта товара
-                            $purchase_upd->variant_id = $variant->id;
-                            $purchase_upd->variant_name = $variant->name;
-                            $purchase_upd->sku = $variant->sku;
-                            $purchase_upd->cost_price = $variant->cost_price;
-
-                            if (UserPermission::checkAccess("product_price") and isset($purchase->price)) {
-                                $purchase_upd->price = $purchase->price;
-                            }
-                        } else { # Если исходный вариант удален, не существует
-                            if (UserPermission::checkAccess("product_price") and isset($purchase->price)) {
-                                $purchase_upd->price = $purchase->price;
-                            }
-                        }
-
-                        OrderPurchase::updatePurchase($purchase->id, $purchase_upd);
-                    }
-
-                    // Добавляем новый вариант
-                    else {
-
-                        $purchase_upd->order_id = $order->id;
-                        $purchase_upd->variant_id = $purchase->variant_id;
-
-                        if (UserPermission::checkAccess("product_price") and isset($purchase->price)) {
-                            $purchase_upd->price = $purchase->price;
-                        }
-
-                        $purchase = OrderPurchase::addPurchase($purchase_upd);
-                    }
-
-                    $posted_purchases_ids[] = $purchase->id;
+                if (!empty($item['id'])) {
+                    OrderPurchase::updatePurchase($item['id'], $item_upd);
+                    $posted_purchase_ids[] = $item['id'];
+                } else {
+                    $item_upd['move_id'] = $order->id;
+                    $purchase = OrderPurchase::addPurchase($item_upd);
+                    $posted_purchase_ids[] = $purchase->id;
                 }
             }
 
-            // Удалить непереданные товары
-            foreach (OrderPurchase::getPurchases(['order_id' => $order->id]) as $p) {
-                if (!in_array($p->id, $posted_purchases_ids)) {
-                    OrderPurchase::deletePurchase($p->id);
+            // Удаляем все purchase, которые были, но не пришли в POST (удалённые на фронте)
+            $all_purchases = OrderPurchase::getPurchases(['move_id' => $order->id]);
+            foreach ($all_purchases as $purchase) {
+                if (!in_array($purchase->id, $posted_purchase_ids)) {
+                    OrderPurchase::deletePurchase($purchase->id);
                 }
-            }
-
-            // Отсортировать варианты
-            asort($posted_purchases_ids);
-            $i = 0;
-            foreach ($posted_purchases_ids as $purchases_id) {
-                OrderPurchase::updatePurchase(intval($posted_purchases_ids[$i]), ['position' => $purchases_id]);
-                $i++;
             }
 
             // Обновляем общую стоимость и прибыль, комиссию менеджера
@@ -399,7 +362,7 @@ class OrderController extends BaseAdminController
         #########
         if (!empty($id)) {
 
-            $order = Order::getOrder($id, join: ['delivery_method', 'payment_method', 'purchases', 'product.image', 'labels']);
+            $order = Order::getOrder($id, join: ['delivery_method', 'payment_method', 'purchases', 'product.image', 'labels', 'payment_method.currency']);
 
             if (empty($order->id)) {
                 return $this->redirectToRoute('OrderListAdmin');
@@ -429,17 +392,6 @@ class OrderController extends BaseAdminController
                 }
             }*/
 
-
-
-            // Выбранный Способ оплаты
-            if (!empty($payment_method = OrderPayment::getOne($order->payment_method_id))) {
-
-                // Выбираем настройки способа оплаты
-                $payment_method->settings = OrderPayment::getPaymentMethodSettings($payment_method->id);
-
-                // Валюта оплаты
-                Design::assign('payment_currency', FinanceCurrency::getCurrency(intval($payment_method->currency_id)));
-            }
 
             // Выбранный Пользователь
             if (!empty($order->user_id)) {

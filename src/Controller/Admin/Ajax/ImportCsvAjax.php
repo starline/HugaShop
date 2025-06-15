@@ -16,8 +16,6 @@ use HugaShop\Api\Config;
 use HugaShop\Api\Helper;
 use HugaShop\Api\Product\Product;
 use HugaShop\Api\Request;
-use HugaShop\Api\Product\ProductVariant;
-use HugaShop\Api\Finance\FinanceCurrency;
 use App\Controller\BaseAdminController;
 use HugaShop\Api\Design;
 use Symfony\Component\Routing\Attribute\Route;
@@ -150,50 +148,49 @@ class ImportCsvAjax extends BaseAdminController
         $items = [];
 
         // Вариантов с одинаковым артикулом может быть несколько
-        $prev_variants = ProductVariant::getList(['sku' => $new_product['sku']]);
-        foreach ($prev_variants as $prev_variant) {
+        $prev_products = Product::getList(['sku' => $new_product['sku']]);
+        foreach ($prev_products as $prev_product) {
 
             // Подготовим вариант товара
-            $variant = new \stdClass();
+            $product = new \stdClass();
 
             // Price
-            if (Request::get('no_price', 'int') != 1 and $new_product['price'] != $prev_variant->price) {
-                $variant->price = $new_product['price'];
+            if (Request::get('no_price', 'int') != 1 and $new_product['price'] != $prev_product->price) {
+                $product->price = $new_product['price'];
 
                 // Вычисляем старую цену
-                if ($prev_variant->price > $new_product['price']) {
-                    $variant->old_price = $prev_variant->price;
+                if ($prev_product->price > $new_product['price']) {
+                    $product->old_price = $prev_product->price;
                 }
             }
 
             // Cost price
-            if ($new_product['cost_price'] != $prev_variant->cost_price) {
-                $variant->cost_price = $new_product['cost_price'];
+            if ($new_product['cost_price'] != $prev_product->cost_price) {
+                $product->cost_price = $new_product['cost_price'];
             }
 
             // Weight
-            if (!empty($new_product['weight']) and $new_product['weight'] != $prev_variant->weight) {
-                $variant->weight = $new_product['weight'];
+            if (!empty($new_product['weight']) and $new_product['weight'] != $prev_product->weight) {
+                $product->weight = $new_product['weight'];
             }
 
 
             $item = new \stdClass();
 
             // Делаем импорт если есть изменения
-            if (!empty((array) $variant)) {
-                $variant->date = date("Y-m-d H:i:s"); # Определяем дату обновления. В базе 2014-11-30 21:05:08
-                ProductVariant::updateVariant($prev_variant->id, $variant);
+            if (!empty((array) $product)) {
+                $product->date = date("Y-m-d H:i:s"); # Определяем дату обновления. В базе 2014-11-30 21:05:08
+                Product::updateOne($prev_product->id, $product);
                 $item->status = 'updated';
             } else {
                 $item->status = 'not_updated';
             }
 
-            $variant = ProductVariant::getOne($prev_variant->id);
+            $product = Product::getOne($prev_product->id);
 
             // Отобразим обновленный товар
-            $item->variant =                   $variant;
-            $item->prev_variant =              $prev_variant;
-            $item->product =                   Product::getOne($variant->product_id);
+            $item->product =                   $product;
+            $item->prev_product =              $prev_product;
 
             $items[] = $item;
         }

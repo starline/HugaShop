@@ -16,7 +16,6 @@ use HugaShop\Api\Design;
 use HugaShop\Api\Settings;
 use HugaShop\Api\Product\Product;
 use App\Controller\BaseFrontController;
-use HugaShop\Api\Product\ProductVariant;
 use HugaShop\Api\Product\ProductCategory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -45,20 +44,6 @@ class MainController extends BaseFrontController
 
                     // id выбраных товаров
                     $category_pids = array_keys($category_products);
-
-                    // Выбираем варианты товаров
-                    $category_variants = ProductVariant::getVariants(['product_id' => $category_pids]);
-
-                    // Для каждого варианта, добавляем вариант в соответствующий товар
-                    foreach ($category_variants as &$variant) {
-
-                        // Устанавливаем варинт по-умолчанию
-                        if (($variant->stock > 0 || is_null($variant->stock)) || empty($category_products[$variant->product_id]->variant)) {
-                            $category_products[$variant->product_id]->variant = $variant;
-                        }
-
-                        $category_products[$variant->product_id]->variants[] = $variant;
-                    }
 
                     $current_category = new \stdClass();
                     $current_category->category = $cat;

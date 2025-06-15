@@ -26,7 +26,6 @@ use HugaShop\Api\Product\ProductFeature;
 use HugaShop\Api\Product\ProductCategory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use HugaShop\Api\Product\ProductFeatureVariant;
 use HugaShop\Api\Product\ProductCategoryFeature;
 
 class ProductController extends BaseAdminController
@@ -183,12 +182,6 @@ class ProductController extends BaseAdminController
         if (!empty($product->category_id)) {
             $features = ProductFeature::getFeatures(['category_id' => $product->category_id]);
             Design::assign('features', $features);
-
-            if (!empty($features)) {
-                foreach ($features as &$feature) {
-                    $feature->variants = ProductFeatureVariant::getFeatureVariants($feature->id);
-                }
-            }
         }
 
         Design::assign('product', $product);

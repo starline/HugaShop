@@ -16,6 +16,7 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 use HugaShop\Api\Finance\FinancePurse;
 use HugaShop\Api\Finance\FinanceCurrency;
 use HugaShop\Api\BaseModel;
+use stdClass;
 
 class OrderPayment extends BaseModel
 {
@@ -45,11 +46,19 @@ class OrderPayment extends BaseModel
     }
 
 
+    public static function getPaymentMethod(int $payment_method_id)
+    {
+        $payment_method = OrderPayment::getOne($payment_method_id);
+        $payment_method->settings = $payment_method->settings ? (object) unserialize($payment_method->settings) : new stdClass();
+        return $payment_method;
+    }
+
+
     /**
      * Get payments methods
      * @param array $filter
      */
-    public static function getPaymentMethods(array $filter = array())
+    public static function getPaymentMethods(array $filter = array(), array $join = [])
     {
         $query = self::query();
 
@@ -61,6 +70,9 @@ class OrderPayment extends BaseModel
                     ->where('delivery_id', $deliveryId);
             });
         }
+
+        if (in_array('currency', $join))  $with[] = 'currency';
+        if (!empty($with)) $query->with($with);
 
         if (isset($filter['enabled'])) {
             $query->where('enabled', intval($filter['enabled']));

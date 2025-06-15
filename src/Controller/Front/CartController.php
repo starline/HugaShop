@@ -28,10 +28,10 @@ class CartController extends BaseFrontController
     /**
      * Cart remove items
      */
-    #[Route('/cart/remove/{variant_id}', name: 'CartRemove', priority: 2)]
-    public function cartRemove(int $variant_id)
+    #[Route('/cart/remove/{product_id}', name: 'CartRemove', priority: 2)]
+    public function cartRemove(int $product_id)
     {
-        CartPurchase::updatePurchase(null, $variant_id, ['disabled' => 1]); # Удаление товар из корзины
+        CartPurchase::updatePurchase(null, $product_id, ['disabled' => 1]); # Удаление товар из корзины
         return $this->redirectToRoute('Cart');
     }
 
@@ -39,14 +39,14 @@ class CartController extends BaseFrontController
     /**
      * Cart add items
      */
-    #[Route('/cart/add/{variant_id}', name: 'CartAdd', priority: 2)]
-    public function cartAdd(int $variant_id)
+    #[Route('/cart/add/{product_id}', name: 'CartAdd', priority: 2)]
+    public function cartAdd(int $product_id)
     {
         $amount = Request::getVar('amount', 'int') ?: 1;
 
         // Добавим товар в корзину
-        if (CartPurchase::addCartPurchase($variant_id, $amount)) {
-            $event = new CartAddEvent(['variant_id' => $variant_id, 'amount' => $amount]);
+        if (CartPurchase::addCartPurchase($product_id, $amount)) {
+            $event = new CartAddEvent(['product_id' => $product_id, 'amount' => $amount]);
             $this->setEvent($event);
         }
 
@@ -63,8 +63,8 @@ class CartController extends BaseFrontController
 
         // Если нам запостили amounts, обновляем их
         if ($amounts = Request::post('amounts', 'array')) {
-            foreach ($amounts as $variant_id => $amount) {
-                CartPurchase::updatePurchase(null, $variant_id, ['amount' => $amount]);
+            foreach ($amounts as $product_id => $amount) {
+                CartPurchase::updatePurchase(null, $product_id, ['amount' => $amount]);
             }
         }
 
@@ -74,7 +74,7 @@ class CartController extends BaseFrontController
         if (!empty($cart->id)) {
 
             // Выбираем товары корзины
-            $purchases = CartPurchase::getCartPurchases(['cart_id' => $cart->id, 'disabled' => 0], ['image', 'product', 'variant', 'category']);
+            $purchases = CartPurchase::getCartPurchases(['cart_id' => $cart->id, 'disabled' => 0], ['image', 'product', 'category']);
             Design::assign('purchases', $purchases);
         }
 

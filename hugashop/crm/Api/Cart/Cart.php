@@ -221,4 +221,51 @@ class Cart extends BaseModel
             }
         }
     }
+
+    /**
+     * Get cart info
+     * @param array $filter
+     */
+    public static function getCartInfo(array $filter)
+    {
+        $cart = Cart::getOne($filter);
+
+        if (!empty($cart->user_agent)) {
+            $cart->user_agent = Helper::getUserAgentInfo($cart->user_agent);
+        }
+
+        if (!empty($cart->referral) and !empty($gets = @unserialize($cart->referral))) {
+            $cart->referral = Cart::getReferral($gets);
+        }
+
+        return $cart;
+    }
+
+
+    /**
+     * Get referral
+     * @param array $gets
+     */
+    public static function getReferral(array $gets)
+    {
+
+        $referral_name = '';
+        foreach ($gets as $get_key => $get_value) {
+            if (in_array($get_key, ['fbclid'])) {
+                $referral_name = 'Facebook';
+                break;
+            }
+
+            if (in_array($get_key, ['gclid', 'gbraid', 'wbraid'])) {
+                $referral_name = 'Google Ads';
+                break;
+            }
+
+            if (in_array($get_key, ['srsltid'])) {
+                $referral_name = 'Google Shopping';
+                break;
+            }
+        }
+        return $referral_name;
+    }
 }

@@ -14,7 +14,6 @@ use HugaShop\Api\Config;
 use HugaShop\Api\Helper;
 use HugaShop\Api\Request;
 use HugaShop\Api\Settings;
-use Illuminate\Support\Str;
 use HugaShop\Api\Order\Order;
 use HugaShop\Api\DatabaseQuery;
 use HugaShop\Api\Product\Product;
@@ -23,7 +22,6 @@ use HugaShop\Api\Product\ProductBrand;
 use App\Controller\BaseAdminController;
 use HugaShop\Api\Product\ProductOption;
 use HugaShop\Api\Product\ProductFeature;
-use HugaShop\Api\Product\ProductVariant;
 use HugaShop\Api\Product\ProductCategory;
 use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Api\Product\ProductCategoryFeature;
@@ -122,13 +120,10 @@ class CmlExchangeController extends BaseAdminController
                     $purchase = null;
 
                     //  Id товара и варианта (если есть) по 1С
-                    $product_1c_id = $variant_1c_id = '';
-                    @list($product_1c_id, $variant_1c_id) = explode('#', $xml_product->Ид);
+                    $product_1c_id = '';
+                    @list($product_1c_id) = explode('#', $xml_product->Ид);
                     if (empty($product_1c_id)) {
                         $product_1c_id = '';
-                    }
-                    if (empty($variant_1c_id)) {
-                        $variant_1c_id = '';
                     }
 
                     // Ищем товар
@@ -221,9 +216,9 @@ class CmlExchangeController extends BaseAdminController
 
                 $t1 = $doc->addChild('Товары');
                 foreach ($purchases as $purchase) {
-                    if (!empty($purchase->product_id) && !empty($purchase->variant_id)) {
+                    if (!empty($purchase->product_id) && !empty($purchase->product_id)) {
                         $id_p = DatabaseQuery::query('SELECT external_id FROM __product WHERE id=?', $purchase->product_id)->result('external_id');
-                        $id_v = DatabaseQuery::query('SELECT external_id FROM __product_variant WHERE id=?', $purchase->variant_id)->result('external_id');
+                        $id_v = DatabaseQuery::query('SELECT external_id FROM __product_product WHERE id=?', $purchase->product_id)->result('external_id');
 
                         // Если нет внешнего ключа товара - указываем наш id
                         if (!empty($id_p)) {
@@ -237,8 +232,8 @@ class CmlExchangeController extends BaseAdminController
                         if (!empty($id_v)) {
                             $id = $id . '#' . $id_v;
                         } else {
-                            DatabaseQuery::query('UPDATE __product_variant SET external_id=id WHERE id=?', $purchase->variant_id);
-                            $id = $id . '#' . $purchase->variant_id;
+                            DatabaseQuery::query('UPDATE __product_product SET external_id=id WHERE id=?', $purchase->product_id);
+                            $id = $id . '#' . $purchase->product_id;
                         }
 
                         $t1_1 = $t1->addChild('Товар');
@@ -451,13 +446,13 @@ class CmlExchangeController extends BaseAdminController
                         }
                     }
                     $z->next('Предложение');
-                    $current_variant_num++;
+                    $current_product_num++;
                 }
                 $z->close();
                 print "success";
 
                 //unlink($dir.$filename);
-                Request::deleteSession('last_1c_imported_variant_num');
+                Request::deleteSession('last_1c_imported_product_num');
             }
         }
     }
@@ -535,9 +530,9 @@ class CmlExchangeController extends BaseAdminController
 
         // Товары
         //  Id товара и варианта (если есть) по 1С
-        @list($product_1c_id, $variant_1c_id) = explode('#', $xml_product->Ид);
-        if (empty($variant_1c_id)) {
-            $variant_1c_id = '';
+        @list($product_1c_id) = explode('#', $xml_product->Ид);
+        if (empty($product_1c_id)) {
+            $product_1c_id = '';
         }
 
         // Ид категории
@@ -547,8 +542,8 @@ class CmlExchangeController extends BaseAdminController
 
 
         // Подгатавливаем вариант
-        $variant_id = null;
-        $variant = new \stdClass();
+        $product_id = null;
+        $product = new \stdClass();
         $values = array();
         if (isset($xml_product->ХарактеристикиТовара->ХарактеристикаТовара)) {
             foreach ($xml_product->ХарактеристикиТовара->ХарактеристикаТовара as $xml_property) {
@@ -556,18 +551,17 @@ class CmlExchangeController extends BaseAdminController
             }
         }
         if (!empty($values)) {
-            $variant->name = join(', ', $values);
+            $product->name = join(', ', $values);
         }
-        $variant->sku = (string)$xml_product->Артикул;
-        $variant->external_id = $variant_1c_id;
+        $product->sku = (string)$xml_product->Артикул;
+        $product->external_id = $product_1c_id;
 
         // Ищем товар
         $product = Product::where('external_id', $product_1c_id)->get();
-        if (empty($product->id) && !empty($variant->sku)) {
-            $res = DatabaseQuery::query('SELECT product_id, id FROM __product_variant WHERE sku=?', $variant->sku)->result();
+        if (empty($product->id) && !empty($product->sku)) {
+            $res = Product::where('sku', $product->sku)->first();
             if (!empty($res)) {
-                $product->id = $res->product_id;
-                $variant_id = $res->id;
+                $product->id = $res->id;
             }
         }
 
@@ -609,10 +603,8 @@ class CmlExchangeController extends BaseAdminController
 
         // Если нашелся товар
         else {
-            if (empty($variant_id) && !empty($variant_1c_id)) {
-                $variant_id = DatabaseQuery::query('SELECT id FROM __product_variant WHERE external_id=? AND product_id=?', $variant_1c_id, $product->id)->result('id');
-            } elseif (empty($variant_id) && empty($variant_1c_id)) {
-                $variant_id = DatabaseQuery::query('SELECT id FROM __product_variant WHERE product_id=?', $product->id)->result('id');
+            if (empty($product_id) && !empty($product_1c_id)) {
+                $product_id = Product::where('product_id', $product->id)->where('external_id', $product_1c_id)->pluk('id');
             }
 
             // Обновляем товар
@@ -655,14 +647,6 @@ class CmlExchangeController extends BaseAdminController
             }
         }
 
-        // Если не найден вариант, добавляем вариант один к товару
-        if (empty($variant_id)) {
-            $variant->product_id = $product->id;
-            $variant->stock = 0;
-            $variant_id = ProductVariant::addVariant($variant);
-        } elseif (!empty($variant_id)) {
-            ProductVariant::updateVariant($variant_id, $variant);
-        }
         // Свойства товара
         if (isset($xml_product->ЗначенияСвойств->ЗначенияСвойства)) {
             foreach ($xml_product->ЗначенияСвойств->ЗначенияСвойства as $xml_option) {

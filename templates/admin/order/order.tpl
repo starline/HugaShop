@@ -256,7 +256,7 @@
 						<div class="image">
 							<img class="product_icon" data-bs-toggle="tooltip"
 								src="{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60:60}{else}{'images/cargo.png'|asset}{/if}"
-								title="{$purchase->variant->name}" />
+								title="{$purchase->product->variant_name}" />
 						</div>
 
 						<div class="col">
@@ -457,16 +457,16 @@
 
 			</div>
 
-			<div id="add_purchase" {if $purchases}style='display:none;' {/if}>
+			<div id="add_purchase" {if $order->purchases}style='display:none;' {/if}>
 				<input type="text" id="add_purchase" class="form-control input_autocomplete"
 					placeholder="Выберите товар чтобы добавить его" />
 			</div>
 
-			{if $purchases and $can_edit}
+			{if $order->purchases and $can_edit}
 				<div class="edit_purchases dash_link">редактировать покупки</div>
 			{/if}
 
-			{if $purchases}
+			{if $order->purchases}
 				<div class="subtotal mt-4">
 					<div class="over_line">{$total->purchases_count} {$settings->units} {$total->purchases_weight}
 						{$settings->weight_units}
@@ -582,9 +582,10 @@
 							<option value="">Не выбрана</option>
 							{if !$payment_methods|empty}
 								{foreach $payment_methods as $pm}
-									{if $pm->enabled || $pm->enabled_public || $pm->id == $payment_method->id}
+									{if $pm->enabled || $pm->enabled_public || $pm->id == $order->payment_method->id}
 										<option class="{if !$pm->enabled_public}disabled{/if}" value="{$pm->id}"
-											{if !$payment_method->id|empty and $pm->id == $payment_method->id}selected{/if}>{$pm->name}
+											{if !$order->payment_method->id|empty and $pm->id == $order->payment_method->id}selected{/if}>
+											{$pm->name}
 										</option>
 									{/if}
 								{/foreach}
@@ -602,9 +603,9 @@
 				</div>
 
 				<!-- Модуль оплаты -->
-				{if !$payment_method->module|empty}
+				{if !$order->payment_method->module|empty}
 					<div class="payment_method_module">
-						{get_payment_module_html order_id=$order->id module=$payment_method->module view_type='admin'}
+						{get_payment_module_html order_id=$order->id module=$order->payment_method->module view_type='admin'}
 					</div>
 				{/if}
 			</div>
@@ -635,12 +636,12 @@
 					<div class="main_line">
 						<small>К оплате:</small>
 						<b>
-							{$order->payment_price|price_convert:$payment_currency->id|raw}
+							{$order->payment_price|price_convert:$order->payment_method->currency->id|raw}
 
-							{if !$payment_currency->sign|empty}
-								<span class="price_sign">{$payment_currency->sign}</span>
+							{if !$order->payment_method->currency->sign|empty}
+								<span class="price_sign">{$order->payment_method->currency->sign}</span>
 							{else}
-								<span class="price_sign">{$currency->sign}</span>
+								<span class="price_sign">{$order->payment_method->currency->sign}</span>
 							{/if}
 						</b>
 					</div>

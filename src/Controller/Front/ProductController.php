@@ -17,13 +17,10 @@ use HugaShop\Api\Design;
 use HugaShop\Api\Request;
 use HugaShop\Api\Settings;
 use HugaShop\Api\Product\Product;
-use HugaShop\Api\Product\ProductBrand;
 use App\Controller\BaseFrontController;
 use HugaShop\Api\Product\ProductOption;
 use HugaShop\Api\Content\ContentComment;
-use HugaShop\Api\Product\ProductFeature;
 use HugaShop\Api\Product\ProductRelated;
-use HugaShop\Api\Product\ProductVariant;
 use HugaShop\Api\Product\ProductCategory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -67,54 +64,14 @@ class ProductController extends BaseFrontController
         // Изображение товара
         $product->images = Image::getImages($product->id, 'product');
         $product->image = reset($product->images);
-
-        $variants = ProductVariant::getVariants(['product_id' => $product->id]);
-        $product->variants = $variants;
-
-        // Вариант по умолчанию
-        if (($variant_id = Request::get('variant', 'int')) > 0 && isset($variants[$variant_id])) {
-            $product->variant = $variants[$variant_id];
-        } else {
-            // TODO 
-            $product->variant = reset($variants);
-        }
-
         $product->features = ProductOption::getProductOptions($product->id);
 
         // Comments
         ContentComment::handleComments($product->id, Product::class);
 
         // Связанные товары
-        $related_ids = [];
-        $related_products = [];
-        foreach (ProductRelated::getRelatedProducts($product->id) as $p) {
-            $related_ids[] = $p->related_id;
-            $related_products[$p->related_id] = null;
-        }
-
-        if (!empty($related_ids)) {
-            foreach (Product::getProducts(['id' => $related_ids, 'in_stock' => 1, 'visible' => 1, 'limit' => Settings::getParam('rel_products_num')], join: ['image']) as $p) {
-                $related_products[$p->id] = $p;
-            }
-
-            $related_products_variants = ProductVariant::getVariants(['product_id' => array_keys($related_products), 'in_stock' => 1]);
-            foreach ($related_products_variants as $related_product_variant) {
-                if (isset($related_products[$related_product_variant->product_id])) {
-                    $related_products[$related_product_variant->product_id]->variants[] = $related_product_variant;
-                }
-            }
-
-            foreach ($related_products as $id => $r) {
-                if (is_object($r)) {
-                    $r->variant = &$r->variants[0];
-                } else {
-                    unset($related_products[$id]);
-                }
-            }
-
-            Design::assign('related_products', $related_products);
-        }
-
+        $related_products = ProductRelated::getRelatedProducts($product->id);
+        Design::assign('related_products', $related_products);
 
         // Добавление в историю просмотренных товаров
         $max_visited_products = 50; # Максимальное число хранимых товаров в истории

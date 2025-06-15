@@ -18,7 +18,6 @@ use HugaShop\Api\Helper;
 use HugaShop\Api\Product\Product;
 use HugaShop\Api\Request;
 use HugaShop\Api\Settings;
-use HugaShop\Api\Product\ProductVariant;
 use HugaShop\Api\Finance\FinanceCurrency;
 use HugaShop\Api\Product\ProductCategory;
 use Symfony\Contracts\Service\Attribute\Required;
@@ -115,23 +114,6 @@ class BaseFrontController extends BaseController
             $browsed_products = Product::getProducts(['id' => $browsed_products_ids, 'visible' => 1], ['image']);
 
             if (!empty($browsed_products)) {
-
-                // id выбраных товаров
-                $pids = array_keys($browsed_products);
-
-                // Выбираем варианты товаров
-                $variants = ProductVariant::getVariants(['product_id' => $pids]);
-
-                // Для каждого варианта, добавляем вариант в соответствующий товар
-                foreach ($variants as &$variant) {
-                    $browsed_products[$variant->product_id]->variants[] = $variant;
-                }
-
-                foreach ($browsed_products as &$product) {
-                    if (isset($product->variants[0])) {
-                        $product->variant = $product->variants[0];
-                    }
-                }
 
                 // Сортируем товары в порядке просмотра
                 $browsed_products_sort = [];
