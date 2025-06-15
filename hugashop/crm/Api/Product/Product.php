@@ -16,7 +16,6 @@ use HugaShop\Api\Image;
 use HugaShop\Api\Helper;
 use HugaShop\Api\BaseModel;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use HugaShop\Api\Content\ContentComment;
 use HugaShop\Api\Warehouse\WarehousePurchase;
@@ -87,12 +86,13 @@ class Product extends BaseModel
     public function movements()
     {
         return $this->hasMany(WarehousePurchase::class, 'product_id', 'id')
-            ->with('warehouse_move')
-            ->whereHas('warehouse_move', function ($query) {
-                $query->where('status', 1)
-                    ->where('awaiting_date', '>', Carbon::now());
-            })
-            ->orderBy('warehouse_move.awaiting_date');
+            ->with(['warehouse_move' => function ($q) {
+                $q->where('status', 1)
+                    ->orderBy('awaiting_date');
+            }])
+            ->whereHas('warehouse_move', function ($q) {
+                $q->where('status', 1);
+            });
     }
 
     /**

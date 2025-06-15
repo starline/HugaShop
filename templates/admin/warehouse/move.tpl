@@ -299,10 +299,10 @@
 								<div class="view_edit_purchase">
 									{if $purchase->product}
 										<div class="row_alert">
-											{if $purchase->product->income_move}
+											{if $purchase->product->movements_amount}
 												<div class="wmovements" data-bs-toggle="tooltip" data-bs-html="true"
-													title="{foreach $purchase->product->warehouse_move as $mov}Поставка №{$mov->move_id} | {$mov->awaiting_date|date} | +{$mov->amount}</br>{/foreach}">
-													+{$purchase->product->income_move}
+													title="{foreach $purchase->product->movements as $mov}<div class='text-nowrap'>Поставка №{$mov->move_id} | {$mov->awaiting_date|date} | +{$mov->amount}</div>{/foreach}">
+													+{$purchase->product->movements_amount}
 												</div>
 											{/if}
 										</div>
@@ -583,15 +583,12 @@
 
 						let product = suggestion.data;
 
-						let stock_count = product.stock;
-						let movement_count = product.movements_amount;
-
-						if (stock_count > 0)
+						if (product.stock > 0)
 							stock_txt = ' - <span class="color_green">остаток ' + product.stock + ' ' +
 							units + '</span>';
 
-						if (movement_count > 0)
-							movement = ' <span class="color_grey">(+' + movement_count + ')</span>'
+						if (product.movements_amount > 0)
+							movement = ' <span class="color_grey">(+' + product.movements_amount + ')</span>'
 
 						return (product.image ? "<img align='absmiddle' src='" + product
 								.image.url +
@@ -600,9 +597,6 @@
 							.data.price + currency + '</b><span>' + stock_txt + movement;
 					}
 				});
-
-
-
 
 			});
 

@@ -78,7 +78,7 @@ class ContentComment extends BaseModel
      * Возвращает комментарии, удовлетворяющие фильтру
      * @param array $filter
      */
-    public static function getComments(array $filter = [], array|string $joins = [], $count = false)
+    public static function getComments(array $filter = [], array|string $join = [], $count = false)
     {
 
         $query = self::query();

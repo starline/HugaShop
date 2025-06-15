@@ -273,17 +273,19 @@
 												{/if}
 											</span>
 
-											<span class="col-3 stock">
-												{if $product->stock|is_null}
-													∞
-												{else}
-													{$product->stock} {$settings->units}
-												{/if}
+											<span class="col-3 ">
+												<div class="stock">
+													{if $product->stock|is_null}
+														∞
+													{else}
+														{$product->stock} {$settings->units}
+													{/if}
 
-												{if $product->movements_amount}
-													<span class="wmovements" data-bs-toggle="tooltip" data-bs-html="true"
-														title="{foreach $product->movements as $mov}Поставка №{$mov->move_id} </br> {$mov->awaiting_date|date} +{$mov->amount}</br>{/foreach}">+{$product->movements_amount}</span>
-												{/if}
+													{if $product->movements_amount}
+														<span class="wmovements" data-bs-toggle="tooltip" data-bs-html="true"
+															title="{foreach $product->movements as $mov}Поставка №{$mov->move_id} </br> {$mov->awaiting_date|date} +{$mov->amount}</br>{/foreach}">+{$product->movements_amount}</span>
+													{/if}
+												</div>
 											</span>
 										</div>
 									</div>

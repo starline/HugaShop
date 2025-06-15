@@ -357,22 +357,22 @@
 							</div>
 						</div>
 
-						{if !$purchase->variant->id|empty}
+						{if !$purchase->product_id|empty}
 							<div class="stock">
 								<div class="view_edit_purchase">
 									<div class="row_alert">
-										{if $purchase->variant->movements_amount}
+										{if $purchase->product->movements_amount}
 											<div class="wmovements" data-bs-toggle="tooltip" data-bs-html="true"
 												title="{foreach $purchase->variant->movements as $mov}Поставка №{$mov->move_id} | {$mov->awaiting_date|date} | +{$mov->amount}</br>{/foreach}">
-												+{$purchase->variant->movements_amount}
+												+{$purchase->product->movements_amount}
 											</div>
 										{/if}
-										{if !$order->closed and  $purchase->variant->stock < $purchase->amount}
+										{if !$order->closed and  $purchase->product->stock < $purchase->amount}
 											<img src="{'images/error.png'|asset}" data-bs-toggle="tooltip"
-												title='На складе остал{$purchase->variant->stock|plural:'ся':'ось'} {$purchase->variant->stock} товар{$purchase->variant->stock|plural:'':'ов':'а'}'>
+												title='На складе остал{$purchase->product->stock|plural:'ся':'ось'} {$purchase->product->stock} товар{$purchase->product->stock|plural:'':'ов':'а'}'>
 										{/if}
 									</div>
-									<div class="variant_stock">остаток: <span class="js_change">{$purchase->variant->stock}</span>
+									<div class="variant_stock">остаток: <span class="js_change">{$purchase->product->stock}</span>
 									</div>
 								</div>
 							</div>

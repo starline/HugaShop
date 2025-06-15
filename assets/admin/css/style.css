@@ -173,6 +173,7 @@ textarea {
 }
 
 .tooltip {
+	--bs-tooltip-max-width: auto;
 	--bs-tooltip-padding-x: 0.7rem;
 	--bs-tooltip-padding-y: 0.35rem;
 	--bs-tooltip-font-size: 0.9rem;

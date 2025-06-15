@@ -18,6 +18,7 @@ use HugaShop\Api\BaseModel;
 use HugaShop\Api\User\User;
 use HugaShop\Api\Product\Product;
 use Illuminate\Support\Collection;
+use HugaShop\Api\Finance\FinancePayment;
 
 class WarehouseMove extends BaseModel
 {

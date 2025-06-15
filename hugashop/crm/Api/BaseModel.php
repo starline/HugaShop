@@ -173,18 +173,18 @@ abstract class BaseModel extends Model
      * Get list
      * @param array $filter
      * @param array|string $order ['id', 'DESC]
-     * @param array $joins [Order:class, User::class]
+     * @param array $join [Order:class, User::class]
      * @param string $select
      */
-    public static function getList(array $filter = [], array|string $order = [], array|string $joins = [], ?string $select = null)
+    public static function getList(array $filter = [], array|string $order = [], array|string $join = [], ?string $select = null)
     {
         $query = static::query();
 
 
 
         // JOINs
-        if (!empty($joins)) {
-            $query->with(is_string($joins) ? [$joins] : $joins);
+        if (!empty($join)) {
+            $query->with(is_string($join) ? [$join] : $join);
         }
 
         // Сортировка
@@ -227,16 +227,16 @@ abstract class BaseModel extends Model
     /**
      * Get one
      * @param int|array $id id | ['id'' => 1, 'name' => 'name']
-     * @param array|string $joins 'group' | ['group', 'permissions']
+     * @param array|string $join 'group' | ['group', 'permissions']
      */
-    public static function getOne(int|array $id, array|string $joins = [])
+    public static function getOne(int|array $id, array|string $join = [])
     {
 
         $query = static::query();
 
         // Eager load relationships
-        if (!empty($joins)) {
-            $query->with(is_string($joins) ? [$joins] : $joins);
+        if (!empty($join)) {
+            $query->with(is_string($join) ? [$join] : $join);
         }
 
         // Apply conditions

@@ -661,23 +661,23 @@ class DatabaseQuery
     /**
      * Get one
      * @param int|array|null $id id | ['id'' => 1, 'name' => 'name']
-     * @param array|string $joins User::class | [User::class, Group::class]
+     * @param array|string $join User::class | [User::class, Group::class]
      */
-    public static function getOne(int|array|null $id, array|string $joins = [])
+    public static function getOne(int|array|null $id, array|string $join = [])
     {
         if (empty($id)) {
             return null;
         }
 
-        if (is_string($joins)) {
-            $joins = [$joins];
+        if (is_string($join)) {
+            $join = [$join];
         }
 
         if (is_array($id)) {
-            return self::select()->makeWhere($id)->leftJoin($joins)->getResult();
+            return self::select()->makeWhere($id)->leftJoin($join)->getResult();
         }
 
-        return self::select()->whereId($id)->leftJoin($joins)->getResult();
+        return self::select()->whereId($id)->leftJoin($join)->getResult();
     }
 
 
@@ -685,10 +685,10 @@ class DatabaseQuery
      * Get list
      * @param array $filter
      * @param array|string $order ['id', 'DESC]
-     * @param array $joins [Order:class, User::class]
+     * @param array $join [Order:class, User::class]
      * @param string|array|null $select
      */
-    public static function getList(array $filter = [], array|string $order = [], array $joins = [], string|array|null $select = null)
+    public static function getList(array $filter = [], array|string $order = [], array $join = [], string|array|null $select = null)
     {
         if (is_string($order)) {
             $order = [$order];
@@ -700,7 +700,7 @@ class DatabaseQuery
         unset($filter['page']);
         unset($filter['limit']);
 
-        return static::select($select)->makeWhere($filter)->leftJoin($joins)->order(...$order)->limit($page, $limit)->getResults($select);
+        return static::select($select)->makeWhere($filter)->leftJoin($join)->order(...$order)->limit($page, $limit)->getResults($select);
     }
 
 
