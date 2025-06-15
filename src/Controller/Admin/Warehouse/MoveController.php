@@ -167,19 +167,13 @@ class MoveController extends BaseAdminController
             $total->cost_price = 0;
             $total->retail_price = 0;
             $total->weight = 0;
-            $total->payments_price = 0;
+            $movement->payments->total_amount = 0;
 
-            //  Выбираем платежи
-            $rel_payments = FinancePayment::getWarehousePayments($movement->id);
-            foreach ($rel_payments as $pay) {
-                $payment = FinancePayment::getPayment($pay->payment_id);
+            foreach ($movement->payments as $payment) {
+                $sign = ($payment->type == 1) ? 1 : -1;
+                $payment->amount = $sign * abs($payment->amount);
 
-                // Учитываем расход или приход (#expense or income)
-                $number_sign = ($payment->type == 0) ? -1 : 1;
-                $total->payments_price +=  $number_sign * $payment->currency_amount ??  $number_sign * $payment->amount;
-                $payment->amount = $number_sign * $payment->amount;
-
-                $payments[$payment->id] = $payment;
+                $movement->payments->total_amount += $sign * $payment->currency_amount ?? $sign * $payment->amount;
             }
 
             // Выбранный Менеджер
@@ -199,7 +193,6 @@ class MoveController extends BaseAdminController
         Design::assign([
             'movement'          => $movement,
             'total'             => $total,
-            'payments'          => $payments,
             'can_edit'          => $can_edit,
             'warehouse_places'  => $warehouse_places
         ]);

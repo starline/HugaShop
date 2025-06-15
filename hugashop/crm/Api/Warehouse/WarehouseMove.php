@@ -19,6 +19,8 @@ use HugaShop\Api\User\User;
 use HugaShop\Api\Product\Product;
 use Illuminate\Support\Collection;
 use HugaShop\Api\Finance\FinancePayment;
+use HugaShop\Api\Finance\FinancePaymentContractor;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class WarehouseMove extends BaseModel
 {
@@ -52,6 +54,16 @@ class WarehouseMove extends BaseModel
         return $this->hasMany(Image::class, 'entity_id')
             ->where('entity_name', 'warehouse')
             ->orderBy('position');
+    }
+
+    public function payments(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            FinancePayment::class,
+            FinancePaymentContractor::class,
+            'entity_id',
+            'payment_id'
+        )->wherePivot('entity_name', 'wh_movement');
     }
 
     /**
@@ -145,6 +157,10 @@ class WarehouseMove extends BaseModel
             if (in_array('purchases.warehouse_move', $join)) {
                 $with[] = 'purchases.warehouse_move';
             }
+        }
+
+        if (in_array('payments', $join)) {
+            $with[] = 'payments';
         }
 
 

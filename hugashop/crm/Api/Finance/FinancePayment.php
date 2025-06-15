@@ -63,7 +63,7 @@ class FinancePayment extends BaseModel
      * @param $filter
      * @param $count
      */
-    public static function getPayments($filter = [], $count = false)
+    public static function getPayments($filter = [], $count = false, $join = [])
     {
         $query = self::with([
             'purse.currency',

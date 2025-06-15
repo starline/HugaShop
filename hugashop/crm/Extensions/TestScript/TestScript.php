@@ -21,6 +21,7 @@ use HugaShop\Api\User\User;
 use HugaShop\Api\Order\Order;
 use HugaShop\Api\Product\Product;
 use Symfony\Component\Mime\Email;
+use HugaShop\Api\Cart\CartPurchase;
 use HugaShop\Api\User\UserNotifier;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Finder\Finder;
@@ -432,7 +433,7 @@ class TestScript extends BaseExtension
 
                             // 5. Заменняем product_id на новые по variant_id d OrderPurchase
                             // 4. Удаляем variant_id в WarehousePurchase
-                            if (1) {
+                            if (0) {
                                 $purchases = OrderPurchase::query()->get();
                                 foreach ($purchases as $purchase) {
 
@@ -445,6 +446,23 @@ class TestScript extends BaseExtension
                                     }
                                 }
                             }
+
+                            // Тоже самое для Cart
+                            if (0) {
+                                $purchases = CartPurchase::query()->get();
+                                foreach ($purchases as $purchase) {
+
+                                    $product = Product::where('variant_id', $purchase->variant_id)->first();
+
+                                    if ($product and $purchase->product_id != $product->id) {
+                                        $this->result[] = $purchase->product_id . ' -> ' . $product->id;
+                                        $purchase->product_id = $product->id;
+                                        $purchase->save();
+                                    }
+                                }
+                            }
+
+                            
 
                             $this->result[] = 'done';
                         }

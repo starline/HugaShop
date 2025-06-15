@@ -165,9 +165,9 @@
 				<div class="layer">
 					<h2>Финансы</h2>
 
-					{if !$payments|empty}
+					{if $movement->payments}
 						<div class="order_details_row total_wholesale_price">Всего:
-							<b>{$total->payments_price|price_html:profit|raw}</b>
+							<b>{$movement->payments->total_amount|price_html:profit|raw}</b>
 						</div>
 					{/if}
 
@@ -177,9 +177,9 @@
 							платеж</a>
 					</div>
 
-					{if !$payments|empty}
+					{if $movement->payments}
 						<div class="list mt-4">
-							{foreach $payments as $p}
+							{foreach $movement->payments as $p}
 								<div class="list_row {if !$p->verified}verified_off{else}verified_on{/if}" item_id="{$p->id}">
 									<div class="payment_amount {if $p->related_payment_id}transfer{/if}">
 										<a
@@ -194,9 +194,9 @@
 											<div class="time">{$p->date|time}</div>
 										</div>
 									</div>
-									<div class="name">
-										{if !$p->category_name|empty}
-											{$p->category_name}
+									<div class="col">
+										{if $p->category->name}
+											{$p->category->name}
 										{else}
 											Премещение между кошельками
 										{/if} <div class="notice">{$p->comment}</div>

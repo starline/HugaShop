@@ -283,7 +283,7 @@
 
 													{if $product->movements_amount}
 														<span class="wmovements" data-bs-toggle="tooltip" data-bs-html="true"
-															title="{foreach $product->movements as $mov}Поставка №{$mov->move_id} </br> {$mov->awaiting_date|date} +{$mov->amount}</br>{/foreach}">+{$product->movements_amount}</span>
+															title="{foreach $product->movements as $mov}<div class='text-nowrap'>Поставка №{$mov->move_id} | {$mov->awaiting_date|date} | +{$mov->amount}</div>{/foreach}">+{$product->movements_amount}</span>
 													{/if}
 												</div>
 											</span>

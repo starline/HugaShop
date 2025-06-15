@@ -37,7 +37,7 @@ class FinancePurse extends BaseModel
     public static function getPurses(array $filter = [])
     {
 
-        return self::getList($filter, order: ['position'], joins: 'currency');
+        return self::getList($filter, order: ['position'], join: 'currency');
     }
 
 

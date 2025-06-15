@@ -247,7 +247,9 @@
 
 				{foreach $order->purchases as $purchase}
 					<div class="list_row">
-						<input type="hidden" name="purchases[id][]" value="{$purchase->id}" />
+						<input type="hidden" name="purchases[{$purchase->position}][product_id]"
+							value="{$purchase->product_id}" />
+						<input type="hidden" name="purchases[{$purchase->position}][id]" value="{$purchase->id}" />
 
 						<div class="move">
 							<div class="move_zone"></div>
@@ -256,40 +258,15 @@
 						<div class="image">
 							<img class="product_icon" data-bs-toggle="tooltip"
 								src="{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60:60}{else}{'images/cargo.png'|asset}{/if}"
-								title="{$purchase->product->variant_name}" />
+								data-bs-toggle="tooltip" title="{$purchase->product->variant_name}" />
 						</div>
 
-						<div class="col">
-							<a href="/admin/product/{$purchase->product_id}/price">{$purchase->product_name}</a>
-						</div>
-
-						<div class="purchase_variant">
-							<div class="edit_purchase" style="display:none;">
-								<select class="form-select form-select-sm" name="purchases[variant_id][]"
-									{if $purchase->variants|count == 1 && $purchase->variant_name == '' && $purchase->sku == ''}
-									style="display:none;" {/if}>
-
-									{* Если вариант удален, показываем сохраненный в заказе *}
-									{if !$purchase->variant}
-										<option price="{$purchase->price}" cost_price="{$purchase->cost_price}"
-											amount="{$purchase->amount}" value="">
-											{$purchase->variant_name} {if $purchase->sku}(арт. {$purchase->sku}){/if}
-										</option>
-									{/if}
-
-									{foreach $purchase->variants as $v}
-										{if $v->stock > 0 || $v->id == $purchase->variant->id}
-											<option price="{$v->price}" cost_price="{$v->cost_price}" amount="{$v->stock}"
-												weight="{$v->weight}" value="{$v->id}"
-												{if $v->id == $purchase->variant_id}selected{/if}>
-												{$v->name} {if $v->sku}(арт. {$v->sku}){/if}
-											</option>
-										{/if}
-									{/foreach}
-								</select>
+						<div class="col row">
+							<div class="col">
+								<a href="/admin/product/{$purchase->product_id}/price">{$purchase->product_name}</a>
 							</div>
 
-							<div class="view_purchase">
+							<div class="col-3 text-end purchase_variant">
 								<i data-bs-toggle="tooltip"
 									title="{$purchase->variant_name}">{$purchase->variant_name|truncate:20:'…':true:false}</i>
 
@@ -301,98 +278,100 @@
 									</div>
 								{/if}
 							</div>
-						</div>
 
-
-						<div class="price">
-							<div class="view_edit_purchase">
-								<div class="row_alert">
-									{if 'order_finance'|user_access}
-										<span class="js_change">{$purchase->cost_price|number:2}</span>
-										<span class="price_sign">{$currency->sign}</span>
-									{/if}
-								</div>
-
-								<div class="view_purchase">
-									{$purchase->price|price_html|raw}
-								</div>
-
-								<div class="edit_purchase input-group input-group-sm" style="display:none;">
-									<input class="form-control text-end" type="text" name="purchases[price][]"
-										value="{$purchase->price}" size="5" maxlength="10"
-										{if !'order_finance'|user_access}disabled{/if} />
-									<span class="input-group-text">{$currency->sign}</span>
-								</div>
-							</div>
-						</div>
-
-
-						<div class="amount">
-							<div class="view_edit_purchase">
-								<div class="row_alert">
-									<span class="js_change">{$purchase->variant->weight * $purchase->amount}</span>
-									<span class="price_sign">{$settings->weight_units}</span>
-								</div>
-
-								<div class="view_purchase">
-									{$purchase->amount} {$settings->units}
-								</div>
-
-								<div class="edit_purchase" style="display:none;">
-
-									{if $purchase->variant}
-										{math equation="min(max(x,y),z)" x=$purchase->variant->stock+$purchase->amount*($order->closed) y=$purchase->amount z=$settings->max_order_amount assign="loop"}
-									{else}
-										{math equation="x" x=$purchase->amount assign="loop"}
-									{/if}
-
-									<select class="form-select form-select-sm" name="purchases[amount][]">
-										{section name=amounts start=1 loop=$loop+1 step=1}
-											<option value="{$smarty.section.amounts.index}"
-												{if $purchase->amount == $smarty.section.amounts.index}selected{/if}>
-												{$smarty.section.amounts.index} {$settings->units}</option>
-										{/section}
-									</select>
-								</div>
-							</div>
-						</div>
-
-						{if !$purchase->product_id|empty}
-							<div class="stock">
+							<div class="col-2 text-end price">
 								<div class="view_edit_purchase">
 									<div class="row_alert">
-										{if $purchase->product->movements_amount}
-											<div class="wmovements" data-bs-toggle="tooltip" data-bs-html="true"
-												title="{foreach $purchase->variant->movements as $mov}Поставка №{$mov->move_id} | {$mov->awaiting_date|date} | +{$mov->amount}</br>{/foreach}">
-												+{$purchase->product->movements_amount}
-											</div>
-										{/if}
-										{if !$order->closed and  $purchase->product->stock < $purchase->amount}
-											<img src="{'images/error.png'|asset}" data-bs-toggle="tooltip"
-												title='На складе остал{$purchase->product->stock|plural:'ся':'ось'} {$purchase->product->stock} товар{$purchase->product->stock|plural:'':'ов':'а'}'>
+										{if 'order_finance'|user_access}
+											<span class="js_change">{$purchase->cost_price|number:2}</span>
+											<span class="price_sign">{$currency->sign}</span>
 										{/if}
 									</div>
-									<div class="variant_stock">остаток: <span class="js_change">{$purchase->product->stock}</span>
+									{if 'product_price'|user_access}
+										<div class="view_purchase">
+											{$purchase->price|price_html|raw}
+										</div>
+									{/if}
+									<div class="edit_purchase input-group input-group-sm" style="display:none;">
+										<input class="form-control text-end" type="text"
+											name="purchases[{$purchase->position}][price]" value="{$purchase->price}" size="5"
+											maxlength="10" {if !'order_finance'|user_access}disabled{/if} />
+										<span class="input-group-text">{$currency->sign}</span>
 									</div>
 								</div>
 							</div>
-						{/if}
+
+
+							<div class="col-2 text-end amount">
+								<div class="view_edit_purchase">
+									{if $purchase->product->weight}
+										<div class="row_alert">
+											<span
+												class="js_change">{($purchase->product->weight * $purchase->amount)|number:2}</span>
+											<span class="price_sign">{$settings->weight_units}</span>
+										</div>
+									{/if}
+									<div class="view_purchase">
+										{$purchase->amount} {$settings->units}
+									</div>
+
+									<div class="edit_purchase" style="display:none;">
+
+										{if $purchase->variant}
+											{math equation="min(max(x,y),z)" x=$purchase->product->stock + $purchase->amount * ($order->closed) y=$purchase->amount z=$settings->max_order_amount assign="loop"}
+										{else}
+											{math equation="x" x=$purchase->amount assign="loop"}
+										{/if}
+
+										<select class="form-select form-select-sm text-end"
+											name="purchases[{$purchase->position}][amount]">
+											{section name=amounts start=1 loop=$loop+1 step=1}
+												<option value="{$smarty.section.amounts.index}"
+													{if $purchase->amount == $smarty.section.amounts.index}selected{/if}>
+													{$smarty.section.amounts.index} {$settings->units}</option>
+											{/section}
+										</select>
+									</div>
+								</div>
+							</div>
+
+
+							<div class="col-2 text-end stock">
+								<div class="view_edit_purchase">
+									{if $purchase->product}
+										<div class="row_alert">
+											{if $purchase->product->movements_amount}
+												<div class="wmovements" data-bs-toggle="tooltip" data-bs-html="true"
+													title="{foreach $purchase->product->movements as $mov}<div class='text-nowrap'>Поставка №{$mov->move_id} | {$mov->awaiting_date|date} | +{$mov->amount}</div>{/foreach}">
+													+{$purchase->product->movements_amount}
+												</div>
+											{/if}
+											{if !$order->closed and $purchase->product->stock < $purchase->amount}
+												<img src="{'images/error.png'|asset}" data-bs-toggle="tooltip"
+													title='На складе остал{$purchase->product->stock|plural:'ся':'ось'} {$purchase->product->stock} товар{$purchase->product->stock|plural:'':'ов':'а'}'>
+											{/if}
+										</div>
+
+										<div class="variant_stock">остаток: <span
+												class="js_change">{$purchase->product->stock}</span>
+										</div>
+									{/if}
+								</div>
+							</div>
+						</div>
 
 						<div class="icons">
-
 							{if !$order->closed}
 								{if !$purchase->product}
 									<img src="{'images/error.png'|asset}" alt="Товар был удалён" title="Товар был удалён">
-								{elseif !$purchase->variant->id}
-									<img src="{'images/error.png'|asset}" alt="Вариант товара был удалён"
-										title="Вариант товара был удалён">
+								{elseif !$purchase->product->id}
+									<img src="{'images/error.png'|asset}" alt="Товара был удалён" title="Вариант товара был удалён">
 								{/if}
 							{/if}
 
 							{if $can_edit}
 								<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
 							{/if}
-
 						</div>
 					</div>
 				{/foreach}

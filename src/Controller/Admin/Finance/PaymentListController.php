@@ -64,8 +64,9 @@ class PaymentListController extends BaseAdminController
             $filter['payments_type'] = $payments_type;
         }
 
-        $payments_count = FinancePayment::countPayments($filter);
         $payments = FinancePayment::getPayments($filter);
+        $payments_count = FinancePayment::countPayments($filter);
+
 
         foreach ($payments as $p) {
 

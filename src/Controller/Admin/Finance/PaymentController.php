@@ -168,7 +168,7 @@ class PaymentController extends BaseAdminController
             if (!empty(Request::get('contractor_entity_name', 'string')) and !empty(Request::get('contractor_entity_id', 'integer'))) {
                 $contractor->entity_name = Request::get('contractor_entity_name', 'string');
                 $contractor->entity_id = Request::get('contractor_entity_id', 'integer');
-                $contractor = FinancePayment::setContractorName($contractor);
+                $contractor = FinancePaymentContractor::setContractorName($contractor);
             }
         }
 

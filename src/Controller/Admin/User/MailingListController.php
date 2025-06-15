@@ -45,7 +45,7 @@ class MailingListController extends BaseAdminController
         $filter['page'] =  max(1, Request::get('page', 'int'));
         $filter['limit'] = Request::get('page', 'string') == 'all' ? 'all' : Settings::getParam('products_num_admin');
 
-        $mailing_list = UserMailing::getList($filter, order: ['id', 'DESC'], joins: ['user', 'notifier']);
+        $mailing_list = UserMailing::getList($filter, order: ['id', 'DESC'], join: ['user', 'notifier']);
         $mailing_count = UserMailing::getCount($filter);
 
         Design::assign('pages_count', ceil($mailing_count / Settings::getParam('products_num_admin')));

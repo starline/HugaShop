@@ -37,7 +37,7 @@ class SmsSenderMail extends BaseExtensionModel
 
         $filter['id'] = $mail_ids;
         if (!empty($filter['id'])) {
-            return UserMailing::getList($filter, order: ['id', 'DESC'], joins: ['user', 'notifier']);
+            return UserMailing::getList($filter, order: ['id', 'DESC'], join: ['user', 'notifier']);
         }
         return [];
     }

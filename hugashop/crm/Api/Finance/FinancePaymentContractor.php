@@ -41,7 +41,7 @@ class FinancePaymentContractor extends BaseModel
         if (!$contractor) {
             return false;
         }
-        return self::setContractorName($contractor);
+        return FinancePaymentContractor::setContractorName($contractor);
     }
 
 

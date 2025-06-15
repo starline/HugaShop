@@ -34,7 +34,7 @@ class Order extends BaseModel
         'payment_method_id' =>      ['type' => 'int'],
         'status' =>                 ['type' => 'int',       'def' => 0],
         'paid' =>                   ['type' => 'tinyint',   'def' => 0],
-        'closed' =>                 ['type' => 'tinyint', 'def' => 0, 'access' => false],
+        'closed' =>                 ['type' => 'tinyint',   'def' => 0, 'access' => false],
         'user_id' =>                ['type' => 'int'],
         'name' =>                   ['type' => 'varchar'],
         'email' =>                  ['type' => 'varchar'],
@@ -98,11 +98,8 @@ class Order extends BaseModel
      * Выбрать определенный заказ
      * @param int|string $id
      */
-    public static function getOrder(int|string|null $id = null, array $join = []): ?self
+    public static function getOrder(int|string $id, array $join = []): ?self
     {
-        if (empty($id)) {
-            return null;
-        }
 
         $query = self::query();
 
