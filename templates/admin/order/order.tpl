@@ -245,7 +245,7 @@
 		<div id="purchases">
 			<div class="list purchases overflow-x-auto">
 
-				{foreach $purchases as $purchase}
+				{foreach $order->purchases as $purchase}
 					<div class="list_row">
 						<input type="hidden" name="purchases[id][]" value="{$purchase->id}" />
 
@@ -255,7 +255,7 @@
 
 						<div class="image">
 							<img class="product_icon" data-bs-toggle="tooltip"
-								src="{if $purchase->image->filename}{$purchase->image->filename|resize:60:60}{else}{'images/cargo.png'|asset}{/if}"
+								src="{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60:60}{else}{'images/cargo.png'|asset}{/if}"
 								title="{$purchase->variant->name}" />
 						</div>
 

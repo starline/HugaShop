@@ -223,31 +223,31 @@ class OrderController extends BaseAdminController
                 if (!Order::open(intval($order->id))) {
                     Design::assign('message_error', 'error_open');
                 } else {
-                    Order::update($order->id, ['status' => 0]);
+                    Order::updateOne($order->id, ['status' => 0]);
                 }
             } elseif ($order_status == 1) { # Принят
                 if (!Order::close(intval($order->id))) {
                     Design::assign('message_error', 'error_closing');
                 } else {
-                    Order::update($order->id, ['status' => 1]);
+                    Order::updateOne($order->id, ['status' => 1]);
                 }
             } elseif ($order_status == 4) { # Отгружен
                 if (!Order::close(intval($order->id))) {
                     Design::assign('message_error', 'error_closing');
                 } else {
-                    Order::update($order->id, ['status' => 4]);
+                    Order::updateOne($order->id, ['status' => 4]);
                 }
             } elseif ($order_status == 2) { # Выполнен
                 if (!Order::close(intval($order->id))) {
                     Design::assign('message_error', 'error_closing');
                 } else {
-                    Order::update($order->id, ['status' => 2]);
+                    Order::updateOne($order->id, ['status' => 2]);
                 }
             } elseif ($order_status == 3) { # Отмена
                 if (!Order::open(intval($order->id))) {
                     Design::assign('message_error', 'error_open');
                 } else {
-                    Order::update($order->id, ['status' => 3]);
+                    Order::updateOne($order->id, ['status' => 3]);
                 }
             }
 
@@ -399,19 +399,14 @@ class OrderController extends BaseAdminController
         #########
         if (!empty($id)) {
 
-            $order = Order::getOrder($id);
+            $order = Order::getOrder($id, join: ['delivery_method', 'payment_method', 'purchases', 'product.image', 'labels']);
 
             if (empty($order->id)) {
                 return $this->redirectToRoute('OrderListAdmin');
             }
 
-            // Выбираем активные Метки заказа
-            foreach (OrderLabel::getOrderLabels($order->id) as $ol) {
-                $order_labels[] = $ol->id;
-            }
-
             // Выбираем товары заказа
-            if (!empty($purchases = OrderPurchase::getPurchases(['order_id' => $order->id], ['image', 'product']))) {
+            /* if (!empty($purchases = OrderPurchase::getPurchases(['order_id' => $order->id], ['image', , 'product.']))) {
                 foreach ($purchases as &$purchase) {
 
                     // Выбираем все варианты товара
@@ -432,13 +427,9 @@ class OrderController extends BaseAdminController
                     $total->purchases_price += $purchase->price * $purchase->amount;
                     $total->purchases_count += $purchase->amount;
                 }
-            }
-
-            Design::assign('purchases', $purchases);
+            }*/
 
 
-            // Выбранный cпособ доставки
-            Design::assign('delivery', OrderDelivery::getOne($order->delivery_id));
 
             // Выбранный Способ оплаты
             if (!empty($payment_method = OrderPayment::getOne($order->payment_method_id))) {
@@ -512,7 +503,6 @@ class OrderController extends BaseAdminController
         Design::assign('order',              $order);
         Design::assign('total',              $total);
         Design::assign('labels',             OrderLabel::getLabels()); # Все Метки заказов
-        Design::assign('order_labels',       $order_labels);
         Design::assign('payment_method',     $payment_method);
         Design::assign('payment_methods',    $payment_methods);
         Design::assign('payments',           $payments);

@@ -12,36 +12,44 @@ namespace HugaShop\Api\Cart;
 
 use HugaShop\Api\Helper;
 use HugaShop\Api\Request;
-use HugaShop\Api\Database;
+use HugaShop\Api\BaseModel;
 use HugaShop\Api\User\User;
 use HugaShop\Api\Order\Order;
-use HugaShop\Api\DatabaseQuery;
 
-class Cart extends DatabaseQuery
+class Cart extends BaseModel
 {
-    public static $table = [
-        'fields' => [
-            'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
-            'token' =>              ['type' => 'varchar'],
-            'user_id' =>            ['type' => 'int'],
-            'order_id' =>           ['type' => 'int',           'access' => false],
-            'created' =>            ['type' => 'datetime',      'def' => 'CURRENT_TIMESTAMP'],
-            'session_start' =>      ['type' => 'datetime',      'access' => false],
-            'checkout_init' =>      ['type' => 'datetime',      'access' => false],
-            'ordered' =>            ['type' => 'datetime',      'access' => false],
-            'ip' =>                 ['type' => 'varchar',       'access' => false],
-            'user_agent' =>         ['type' => 'varchar',       'access' => false],
-            'referral' =>           ['type' => 'varchar',       'access' => false,  'length' => 900],
-            'language' =>           ['type' => 'varchar',       'access' => false]
-        ],
-        'join' => [
-            Order::class => ['id' => 'order_id'],
-            User::class => ['id' => 'user_id']
-        ]
+    public static $table_fields = [
+        'id' =>                 ['type' => 'int',       'extra' => 'AUTO_INCREMENT'],
+        'token' =>              ['type' => 'varchar'],
+        'user_id' =>            ['type' => 'int'],
+        'order_id' =>           ['type' => 'int',       'access' => false],
+        'created' =>            ['type' => 'datetime',  'def' => 'CURRENT_TIMESTAMP'],
+        'session_start' =>      ['type' => 'datetime',  'access' => false],
+        'checkout_init' =>      ['type' => 'datetime',  'access' => false],
+        'ordered' =>            ['type' => 'datetime',  'access' => false],
+        'ip' =>                 ['type' => 'varchar',   'access' => false],
+        'user_agent' =>         ['type' => 'varchar',   'access' => false],
+        'referral' =>           ['type' => 'varchar',   'access' => false, 'length' => 900],
+        'language' =>           ['type' => 'varchar',   'access' => false],
     ];
 
     private static $cookie_cart = 'CART';
     private static $current_cart;
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'order_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function purchases()
+    {
+        return $this->hasMany(CartPurchase::class, 'cart_id');
+    }
 
 
     /**
@@ -85,116 +93,45 @@ class Cart extends DatabaseQuery
      */
     public static function getCart(int|array|null $cart_id = null, array $join = [])
     {
+        $query = self::query()->select('cart.*');
 
-        $alias = self::getAlias();
-
-        $WHERE = '';
         if (!empty($cart_id)) {
             if (is_array($cart_id)) {
-
                 if (!empty($cart_id['user_id'])) {
-                    $WHERE .= Database::placehold(" AND `$alias`.user_id=? ", intval($cart_id['user_id']));
+                    $query->where('user_id', intval($cart_id['user_id']));
                 }
-
-                if ($cart_id['ordered'] === false) {
-                    $WHERE .= Database::placehold(" AND `$alias`.ordered=? ", null);
+                if (array_key_exists('ordered', $cart_id) && $cart_id['ordered'] === false) {
+                    $query->whereNull('ordered');
                 }
             } else {
-                $WHERE .= Database::placehold(" AND `$alias`.id=? ", intval($cart_id));
+                $query->where('id', intval($cart_id));
             }
-        }
-
-        // Берем из сессии
-        elseif (!empty($cart_token = Request::getSession(self::$cookie_cart))) {
-            $WHERE .= Database::placehold(" AND `$alias`.token=? ", $cart_token);
-        }
-
-        // Берем из Cookie
-        elseif (!empty($cart_token = Request::getCookie(self::$cookie_cart))) {
-            $WHERE .= Database::placehold(" AND `$alias`.token=? ", $cart_token);
+        } elseif ($cart_token = Request::getSession(self::$cookie_cart)) {
+            $query->where('token', $cart_token);
+        } elseif ($cart_token = Request::getCookie(self::$cookie_cart)) {
+            $query->where('token', $cart_token);
         } else {
-            return false;
+            return null;
         }
 
-
-        // TODO: возвращает сроку с NULL параметрами из-за SUM(cp.amount)
-
-        // JOIN AMOUNT
-        // SUM(cp.amount) - отдает одну строку
-        $SELECT = self::makeSelect();
-        $JOIN = '';
-        if (in_array("total", $join)) {
-            $SELECT .= Database::placehold(", SUM(cp.amount) as purchases_count, SUM(pv.price*cp.amount) as purchases_price");
-            $JOIN .= Database::placehold(" LEFT JOIN __cart_purchase cp ON cp.cart_id = `$alias`.id AND cp.disabled=0");
-            $JOIN .= Database::placehold(" LEFT JOIN __product_variant pv ON pv.id = cp.variant_id");
+        if (in_array('total', $join)) {
+            $query->leftJoin('cart_purchase as cp', function ($join) {
+                $join->on('cp.cart_id', '=', 'cart.id')->where('cp.disabled', 0);
+            });
+            $query->leftJoin('product_variant as pv', 'pv.id', '=', 'cp.variant_id');
+            $query->selectRaw('SUM(cp.amount) as purchases_count')
+                ->selectRaw('SUM(pv.price*cp.amount) as purchases_price')
+                ->groupBy('cart.id');
         }
 
-        // Get cart
-        // @link https://dev.mysql.com/doc/refman/8.4/en/group-by-handling.html
-        $query =
-            "SELECT 
-                $SELECT
-			FROM 
-				__cart `$alias`
-                $JOIN
-            WHERE 
-                1 
-			    $WHERE
-            GROUP BY 
-                `$alias`.id
-			LIMIT 
-				1";
-
-        return Cart::query($query)->result();
-
-
-        /*
-            // Пользовательская скидка
-            $cart->discount = 0;
-            if (!empty(User::authUser('id'))) {
-                $cart->discount = $user->group->discount;
-            }
-
-            $cart->total_price *= (100 - $cart->discount) / 100;
-
-            // Скидка по купону
-            if (!empty(Request::getSession('coupon_code'))) {
-                $cart->coupon = UserCoupon::getCoupon(Request::getSession('coupon_code'));
-                if ($cart->coupon && $cart->coupon->valid && $cart->total_price >= $cart->coupon->min_order_price) {
-                    if ($cart->coupon->type == 'absolute') {
-
-                        // Абсолютная скидка не более суммы заказа
-                        $cart->coupon_discount = $cart->total_price > $cart->coupon->value ? $cart->coupon->value : $cart->total_price;
-                        $cart->total_price = max(0, $cart->total_price - $cart->coupon->value);
-                    } else {
-                        $cart->coupon_discount = $cart->total_price * ($cart->coupon->value) / 100;
-                        $cart->total_price = $cart->total_price - $cart->coupon_discount;
-                    }
-                } else {
-                    Request::deleteSession('coupon_code');
-                }
-            }
-        }*/
-    }
-
-
-    /**
-     * Get cart info
-     * @param array $filter
-     */
-    public static function getCartInfo(array $filter)
-    {
-        $cart = Cart::getOne($filter);
-
-        if (!empty($cart->user_agent)) {
-            $cart->user_agent = Helper::getUserAgentInfo($cart->user_agent);
+        if (in_array('user', $join)) {
+            $query->with('user');
+        }
+        if (in_array(Order::class, $join)) {
+            $query->with('order');
         }
 
-        if (!empty($cart->referral) and !empty($gets = @unserialize($cart->referral))) {
-            $cart->referral = Cart::getReferral($gets);
-        }
-
-        return $cart;
+        return $query->first();
     }
 
 
@@ -221,8 +158,7 @@ class Cart extends DatabaseQuery
         Request::setSession(self::$cookie_cart, $cart->token);
         Request::setCookie(self::$cookie_cart, $cart->token, 360);
 
-        // Save to DB
-        return self::insert($cart)->getInsertId();
+        return Cart::create((array)$cart)->id;
     }
 
 
@@ -232,9 +168,7 @@ class Cart extends DatabaseQuery
      */
     public static function deleteCart(int $id): bool
     {
-        Cart::deleteOne($id);
-
-        // Delete purchases
+        self::deleteOne($id);
         return CartPurchase::deletePurchase($id);
     }
 
@@ -263,7 +197,7 @@ class Cart extends DatabaseQuery
             return false;
         }
 
-        return Cart::updateOne($id, $cart);
+        return self::updateOne($id, $cart);
     }
 
 
@@ -286,33 +220,5 @@ class Cart extends DatabaseQuery
                 }
             }
         }
-    }
-
-
-    /**
-     * Get referral
-     * @param array $gets
-     */
-    public static function getReferral(array $gets)
-    {
-
-        $referral_name = '';
-        foreach ($gets as $get_key => $get_value) {
-            if (in_array($get_key, ['fbclid'])) {
-                $referral_name = 'Facebook';
-                break;
-            }
-
-            if (in_array($get_key, ['gclid', 'gbraid', 'wbraid'])) {
-                $referral_name = 'Google Ads';
-                break;
-            }
-
-            if (in_array($get_key, ['srsltid'])) {
-                $referral_name = 'Google Shopping';
-                break;
-            }
-        }
-        return $referral_name;
     }
 }

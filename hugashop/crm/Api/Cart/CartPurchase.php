@@ -11,30 +11,37 @@
 namespace HugaShop\Api\Cart;
 
 use HugaShop\Api\Helper;
-use HugaShop\Api\Database;
-use HugaShop\Api\DatabaseQuery;
+use HugaShop\Api\BaseModel;
 use HugaShop\Api\Product\Product;
 use HugaShop\Api\Product\ProductVariant;
 use HugaShop\Api\Product\ProductCategory;
 
-class CartPurchase extends DatabaseQuery
+class CartPurchase extends BaseModel
 {
-    public static $table = [
-        'fields' => [
-            'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
-            'cart_id' =>            ['type' => 'int'],
-            'product_id' =>         ['type' => 'int'],
-            'variant_id' =>         ['type' => 'int'],
-            'amount' =>             ['type' => 'int',           'def' => 0],
-            'created' =>            ['type' => 'datetime',      'def' => 'CURRENT_TIMESTAMP'],
-            'disabled' =>           ['type' => 'tinyint',       'def' => 0]
-        ],
-        'join' => [
-            Cart::class => ['id' => 'cart_id'],
-            Product::class => ['id' => 'product_id'],
-            ProductVariant::class => ['id' => 'variant_id']
-        ]
+    public static $table_fields = [
+        'id' =>                 ['type' => 'int',       'extra' => 'AUTO_INCREMENT'],
+        'cart_id' =>            ['type' => 'int'],
+        'product_id' =>         ['type' => 'int'],
+        'variant_id' =>         ['type' => 'int'],
+        'amount' =>             ['type' => 'int',       'def' => 0],
+        'created' =>            ['type' => 'datetime',  'def' => 'CURRENT_TIMESTAMP'],
+        'disabled' =>           ['type' => 'tinyint',   'def' => 0],
     ];
+
+    public function cart()
+    {
+        return $this->belongsTo(Cart::class, 'cart_id');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+
+    public function variant()
+    {
+        return $this->belongsTo(ProductVariant::class, 'variant_id');
+    }
 
 
     /**
@@ -44,116 +51,57 @@ class CartPurchase extends DatabaseQuery
      */
     public static function getCartPurchases(array $filter = [], array $join = [])
     {
+        $query = self::query()->select('cart_purchase.*');
 
-        $alias = self::getAlias();
-        $WHERE = '';
         if (isset($filter['cart_id'])) {
             if (!empty($filter['cart_id'])) {
-                $WHERE .= Database::placehold(" AND `$alias`.cart_id in(?@)", (array)$filter['cart_id']);
+                $query->whereIn('cart_purchase.cart_id', (array)$filter['cart_id']);
             } else {
                 return [];
             }
         }
 
         if (isset($filter['disabled'])) {
-            $WHERE .= Database::placehold(" AND `$alias`.disabled=?", $filter['disabled']);
+            $query->where('cart_purchase.disabled', $filter['disabled']);
         }
 
-        // JOIN IMAGE
-        $SELECT = self::makeSelect();
-        $JOIN = '';
-        if (in_array("image", $join)) {
-            $SELECT .= Database::placehold(", i.filename as image_filename");
-            $JOIN .= Database::placehold(
-                "
-                LEFT JOIN 
-                    __content_image i 
-                ON 
-                    i.entity_id=`$alias`.product_id AND 
-                    i.entity_name='product' 
-                    AND i.position=(SELECT MIN(position) FROM __content_image WHERE entity_id=`$alias`.product_id and entity_name='product')
-                "
-            );
+        if (in_array('image', $join)) {
+            $query->leftJoin('content_image as i', function ($join) {
+                $join->on('i.entity_id', '=', 'cart_purchase.product_id')
+                    ->where('i.entity_name', 'product')
+                    ->whereRaw('(i.position = (SELECT MIN(position) FROM content_image WHERE entity_id=cart_purchase.product_id and entity_name="product"))');
+            })->addSelect('i.filename as image_filename');
         }
 
-        // JOIN PRODUCT
-        if (in_array("product", $join) || in_array("category", $join)) {
-            $SELECT .= Database::placehold(
-                ", 
-                p.name as product_name,
-                p.url as product_url
-                "
-            );
-            $JOIN .= Database::placehold(
-                "
-                LEFT JOIN 
-                    __product p 
-                ON p.id=`$alias`.product_id 
-                "
-            );
+        if (in_array('product', $join) || in_array('category', $join)) {
+            $query->leftJoin('product as p', 'p.id', '=', 'cart_purchase.product_id')
+                ->addSelect(['p.name as product_name', 'p.url as product_url']);
         }
 
-
-        // JOIN CATEGORY
-        if (in_array("category", $join)) {
-            $SELECT .= Database::placehold(
-                ", 
-                pc.name as category_name,
-                pc.id as category_id,
-                pc.url as category_url
-                "
-            );
-            $JOIN .= Database::placehold(
-                "
-                LEFT JOIN
-                    __product_category pc 
-                ON  pc.id=p.category_id
-                "
-            );
+        if (in_array('category', $join)) {
+            $query->leftJoin('product_category as pc', 'pc.id', '=', 'p.category_id')
+                ->addSelect(['pc.name as category_name', 'pc.id as category_id', 'pc.url as category_url']);
         }
 
-
-        // JOIN VARIANT
-        if (in_array("variant", $join)) {
-            $SELECT .= Database::placehold(
-                ",
-                pv.name as variant_name, 
-                pv.sku as variant_sku, 
-                pv.price as variant_price, 
-                pv.cost_price as variant_cost_price, 
-                pv.stock as variant_stock,
-                pv.custom as variant_custom,
-                pv.weight as variant_weight
-                "
-            );
-            $JOIN .= Database::placehold(
-                "
-                 LEFT JOIN 
-                    __product_variant pv 
-                ON pv.id=`$alias`.variant_id
-                "
-            );
+        if (in_array('variant', $join)) {
+            $query->leftJoin('product_variant as pv', 'pv.id', '=', 'cart_purchase.variant_id')
+                ->addSelect([
+                    'pv.name as variant_name',
+                    'pv.sku as variant_sku',
+                    'pv.price as variant_price',
+                    'pv.cost_price as variant_cost_price',
+                    'pv.stock as variant_stock',
+                    'pv.custom as variant_custom',
+                    'pv.weight as variant_weight',
+                ]);
         }
 
+        $query->orderBy('cart_purchase.cart_id');
 
-        // Get cart product
-        $query =
-            "SELECT  
-                $SELECT
-            FROM 
-                __cart_purchase `$alias`
-                $JOIN
-            WHERE 
-                1 
-                $WHERE
-            ORDER BY 
-                `$alias`.cart_id";
+        $purchases = $query->get();
+        $purchases_normalized = Helper::normalizeObjectData($purchases->toArray());
 
-        $purchases = self::query($query)->results();
-        $purchases_normalized = Helper::normalizeObjectData($purchases);
-
-        // Get category data
-        if (in_array("category", $join)) {
+        if (in_array('category', $join)) {
             foreach ($purchases_normalized as $purchase) {
                 if (!empty($purchase->category->id)) {
                     $purchase->category = ProductCategory::getCategoryById($purchase->category->id);
@@ -209,19 +157,18 @@ class CartPurchase extends DatabaseQuery
             return false;
         }
 
-        $cart_product = new \stdClass();
-        $cart_product->cart_id = $cart_id;
-        $cart_product->product_id = $variant->product_id;
-        $cart_product->variant_id = $variant->id;
-        $cart_product->amount = $amount;
-        $cart_product->created = date("Y-m-d H:i:s"); # current date
+        $data = [
+            'cart_id' => $cart_id,
+            'product_id' => $variant->product_id,
+            'variant_id' => $variant->id,
+            'amount' => $amount,
+            'created' => date('Y-m-d H:i:s'),
+        ];
 
-        // Add product variant to cart
         if ($new_purchase === true) {
-            return CartPurchase::insert($cart_product)->getInsertId();
+            return self::create($data)->id;
         }
 
-        // Update exist
         return self::updatePurchase($cart_id, $variant->id, ['amount' => $amount, 'disabled' => 0]);
     }
 
@@ -261,7 +208,10 @@ class CartPurchase extends DatabaseQuery
             }
         }
 
-        return self::update($purchase)->where('cart_id=?', $cart_id)->where('variant_id=?', $variant_id)->get();
+        return self::query()
+            ->where('cart_id', $cart_id)
+            ->where('variant_id', $variant_id)
+            ->update((array)$purchase);
     }
 
 
@@ -281,16 +231,16 @@ class CartPurchase extends DatabaseQuery
             $cart_id = $cart->id;
         }
 
-        $query = self::delete();
+        $query = self::query();
 
         if (!empty($variant_id)) {
-            $query->where('variant_id=?', $variant_id);
+            $query->where('variant_id', $variant_id);
         }
 
         if (!empty($cart_id)) {
-            $query->where('cart_id=?', $cart_id);
+            $query->where('cart_id', $cart_id);
         }
 
-        return $query->get();
+        return $query->delete();
     }
 }

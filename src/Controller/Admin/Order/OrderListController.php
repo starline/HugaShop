@@ -153,9 +153,9 @@ class OrderListController extends BaseAdminController
             $filter['page'] = 1;
             Design::assign('pagination_hide', true);
         }
-        
+
         // Выбираем все заказы
-        $orders         = Order::getOrders($filter, join: ['delivery_method', 'payment_method', 'purchases', 'product.images', 'labels']);
+        $orders         = Order::getOrders($filter, join: ['delivery_method', 'payment_method', 'purchases', 'product.image', 'labels']);
         $orders_count   = Order::getOrdersCount($filter);
 
         $orders_price   = Order::getOrdersPrice($filter); # Выбираем общую сумму заказов
