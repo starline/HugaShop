@@ -343,7 +343,7 @@ class OrderController extends BaseAdminController
                 'purchases.product',
                 'purchases.product.image',
                 'purchases.product.movements',
-                'labels',
+                'label_ids',
                 'user',
                 'user.group',
                 'payments',

@@ -44,7 +44,7 @@ class OrderLabel extends BaseModel
             return false;
         }
 
-        Capsule::table('order_label_related')->where('label_id', $id)->delete();
+        OrderLabelRelated::where('label_id', $id)->delete();
         return self::deleteOne($id);
     }
 
@@ -59,11 +59,12 @@ class OrderLabel extends BaseModel
             return [];
         }
 
-        return Capsule::table('order_label as ol')
-            ->select('ol.*', 'olr.order_id')
-            ->leftJoin('order_label_related as olr', 'olr.label_id', '=', 'ol.id')
+        $tableRelated = (new OrderLabelRelated())->getTable();
+        return self::query()
+            ->select('order_label.*', 'olr.order_id')
+            ->leftJoin("{$tableRelated} as olr", 'olr.label_id', '=', 'order_label.id')
             ->whereIn('olr.order_id', (array) $order_id)
-            ->orderBy('ol.position')
+            ->orderBy('order_label.position')
             ->get()
             ->all();
     }
@@ -74,11 +75,12 @@ class OrderLabel extends BaseModel
      * @param int $id
      * @param $labels_ids
      */
-    public static function updateOrderLabels(int $id, array $labels_ids)
+    public static function updateOrderLabels(int $id, $labels_ids)
     {
-        OrderLabel::where('order_id', $id)->delete();
+        $labels_ids = (array)$labels_ids;
+        OrderLabelRelated::where('order_id', $id)->delete();
         foreach ($labels_ids as $l_id) {
-            OrderLabel::create(['order_id' => $id, 'label_id' => $l_id]);
+            OrderLabelRelated::query()->insert(['order_id' => $id, 'label_id' => $l_id]);
         }
     }
 
@@ -87,7 +89,7 @@ class OrderLabel extends BaseModel
     {
         $labels_ids = (array)$labels_ids;
         foreach ($labels_ids as $l_id) {
-            Capsule::table('order_label_related')->insertOrIgnore(['order_id' => $id, 'label_id' => $l_id]);
+            OrderLabelRelated::query()->insertOrIgnore(['order_id' => $id, 'label_id' => $l_id]);
         }
     }
 
@@ -96,8 +98,7 @@ class OrderLabel extends BaseModel
     {
         $labels_ids = (array)$labels_ids;
         foreach ($labels_ids as $l_id) {
-            Capsule::table('order_label_related')
-                ->where('order_id', $id)
+            OrderLabelRelated::where('order_id', $id)
                 ->where('label_id', $l_id)
                 ->delete();
         }

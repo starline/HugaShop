@@ -193,7 +193,7 @@
 									<label for="label_{$l->id}" style="background-color:#{$l->color};"
 										class="form-check {if !$l->enabled}disabled{/if}">
 										<input class="form-check-input" id="label_{$l->id}" type="checkbox" name="order_labels[]"
-											value="{$l->id}" {if in_array($l->id, $order_labels)}checked{/if}
+											value="{$l->id}" {if in_array($l->id, $order->label_ids)}checked{/if}
 											{if !$can_edit}disabled{/if} />
 										<span class="form-check-label">{$l->name}</span>
 									</label>

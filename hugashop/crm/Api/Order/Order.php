@@ -82,6 +82,10 @@ class Order extends BaseModel
         return $this->hasMany(OrderPurchase::class, 'order_id')->orderBy('position');
     }
 
+    public function label_ids() {
+
+    }
+    
     public function labels(): BelongsToMany
     {
         return $this->belongsToMany(
