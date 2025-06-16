@@ -12,7 +12,6 @@ namespace App\Controller\Admin\Order;
 
 use stdClass;
 use HugaShop\Api\Design;
-use HugaShop\Api\Helper;
 use HugaShop\Api\Request;
 use HugaShop\Api\Settings;
 use HugaShop\Api\Cart\Cart;
@@ -41,18 +40,6 @@ class OrderController extends BaseAdminController
     {
 
         $this->checkAdminAccess('order');
-
-        $total =  new \stdClass();
-        $total->purchases_weight =  0;
-        $total->purchases_count =   0;
-        $total->purchases_price =   0;
-        $total->payments_price =    0;
-
-        $payment_method = new \stdClass();
-        $order_labels =     [];
-        $payments =         [];
-        $purchases =        [];
-
 
         #### Update
         ###########
@@ -151,10 +138,10 @@ class OrderController extends BaseAdminController
             }
 
             // Удаляем все purchase, которые были, но не пришли в POST (удалённые на фронте)
-            $all_purchases = OrderPurchase::getPurchases(['move_id' => $order->id]);
+            $all_purchases = OrderPurchase::getPurchases(['order_id' => $order->id]);
             foreach ($all_purchases as $purchase) {
                 if (!in_array($purchase->id, $posted_purchase_ids)) {
-                    //OrderPurchase::deletePurchase($purchase->id);
+                    OrderPurchase::deletePurchase($purchase->id);
                 }
             }
 
@@ -348,16 +335,29 @@ class OrderController extends BaseAdminController
         #########
         if (!empty($id)) {
 
-            $order = Order::getOrder($id, join: ['delivery_method', 'payment_method', 'purchases', 'product.image', 'labels', 'payment_method.currency']);
+            $order = Order::getOrder($id, join: [
+                'delivery_method',
+                'payment_method',
+                'payment_method.currency',
+                'purchases',
+                'purchases.product',
+                'purchases.product.image',
+                'purchases.product.movements',
+                'labels',
+                'user',
+                'user.group',
+                'payments',
+                'payments.category',
+                'payments.purse',
+                'payments.contractor'
+            ]);
 
             if (empty($order->id)) {
                 return $this->redirectToRoute('OrderListAdmin');
             }
 
+            /*
             // Выбираем товары заказа
-            /* if (!empty($purchases = OrderPurchase::getPurchases(['order_id' => $order->id], ['image', , 'product.']))) {
-                foreach ($purchases as &$purchase) {
-
 
                     // Общий вес
                     $total->purchases_weight += $purchase->variant->weight * $purchase->amount;
@@ -367,12 +367,6 @@ class OrderController extends BaseAdminController
                     $total->purchases_count += $purchase->amount;
                 }
             }*/
-
-
-            // Выбранный Пользователь
-            if (!empty($order->user_id)) {
-                Design::assign('order_user', User::getUser($order->user_id));
-            }
 
             // Выбранный Менеджер
             if (!empty($order->manager_id)) {
@@ -386,24 +380,18 @@ class OrderController extends BaseAdminController
                 Design::assign('order_manager', $order_manager);
             }
 
-            //  Выбираем платежи
-            $rel_payments = FinancePayment::getOrderPayments($order->id);
-            foreach ($rel_payments as $rel_payment) {
-                $payment = FinancePayment::getPayment($rel_payment->payment_id);
+            $total =  new \stdClass();
+            $total->purchases_weight =  0;
+            $total->purchases_count =   0;
+            $total->purchases_price =   0;
+            $total->payments_price =    0;
 
-                // Учитываем расход или приход (#expense or income)
-                $number_sign = ($payment->type == 0) ? -1 : 1;
-                $total->payments_price += $number_sign * $payment->currency_amount ??  $number_sign * $payment->amount;
-                $payment->amount = $number_sign * $payment->amount;
+            // Платежи
+            foreach ($order->payments as $payment) {
+                $sign = ($payment->type == 1) ? 1 : -1;
+                $payment->amount = $sign * abs($payment->amount);
 
-                // Выбираем контрагента
-                $contractor = FinancePaymentContractor::getContractor(intval($payment->id));
-                if (isset($contractor->entity_name)) {
-                    $contractor->view_name = Helper::getViewAdmin($contractor->entity_name);
-                }
-
-                $payments[$payment->id] = $payment;
-                $payments[$payment->id]->contractor = $contractor;
+                $total->payments_price += $sign * $payment->currency_amount ?? $sign * $payment->amount;
             }
 
             // Выбираем предыдущий заказ
@@ -431,9 +419,7 @@ class OrderController extends BaseAdminController
         Design::assign('order',              $order);
         Design::assign('total',              $total);
         Design::assign('labels',             OrderLabel::getLabels()); # Все Метки заказов
-        Design::assign('payment_method',     $payment_method);
         Design::assign('payment_methods',    $payment_methods);
-        Design::assign('payments',           $payments);
         Design::assign('deliveries',         $deliveries);
         Design::assign('can_edit',           $can_edit);
 

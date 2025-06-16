@@ -399,8 +399,6 @@
 						<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
 					</div>
 				</div>
-
-
 			</div>
 
 			<div id="add_purchase" {if $movement->purchases}style="display:none;" {/if}>

@@ -448,7 +448,7 @@ class TestScript extends BaseExtension
                             }
 
                             // Тоже самое для Cart
-                            if (0) {
+                            if (1) {
                                 $purchases = CartPurchase::query()->get();
                                 foreach ($purchases as $purchase) {
 
@@ -462,7 +462,7 @@ class TestScript extends BaseExtension
                                 }
                             }
 
-                            
+
 
                             $this->result[] = 'done';
                         }

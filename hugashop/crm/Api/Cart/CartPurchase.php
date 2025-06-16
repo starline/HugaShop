@@ -4,17 +4,15 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.9
+ * @version 4.0
  *
  */
 
 namespace HugaShop\Api\Cart;
 
-use HugaShop\Api\Helper;
 use HugaShop\Api\BaseModel;
 use HugaShop\Api\Product\Product;
 use HugaShop\Api\Product\ProductVariant;
-use HugaShop\Api\Product\ProductCategory;
 
 class CartPurchase extends BaseModel
 {
@@ -22,7 +20,6 @@ class CartPurchase extends BaseModel
         'id' =>                 ['type' => 'int',       'extra' => 'AUTO_INCREMENT'],
         'cart_id' =>            ['type' => 'int'],
         'product_id' =>         ['type' => 'int'],
-        'variant_id' =>         ['type' => 'int'],
         'amount' =>             ['type' => 'int',       'def' => 0],
         'created' =>            ['type' => 'datetime',  'def' => 'CURRENT_TIMESTAMP'],
         'disabled' =>           ['type' => 'tinyint',   'def' => 0],
@@ -50,48 +47,29 @@ class CartPurchase extends BaseModel
 
         if (isset($filter['cart_id'])) {
             if (!empty($filter['cart_id'])) {
-                $query->whereIn('cart_purchase.cart_id', (array)$filter['cart_id']);
+                $query->whereIn('cart_id', (array)$filter['cart_id']);
             } else {
                 return [];
             }
         }
 
         if (isset($filter['disabled'])) {
-            $query->where('cart_purchase.disabled', $filter['disabled']);
+            $query->where('disabled', $filter['disabled']);
         }
 
-        if (in_array('image', $join)) {
-            $query->leftJoin('content_image as i', function ($join) {
-                $join->on('i.entity_id', '=', 'cart_purchase.product_id')
-                    ->where('i.entity_name', 'product')
-                    ->whereRaw('(i.position = (SELECT MIN(position) FROM content_image WHERE entity_id=cart_purchase.product_id and entity_name="product"))');
-            })->addSelect('i.filename as image_filename');
-        }
-
-        if (in_array('product', $join) || in_array('category', $join)) {
-            $query->leftJoin('product as p', 'p.id', '=', 'cart_purchase.product_id')
-                ->addSelect(['p.name as product_name', 'p.url as product_url']);
-        }
-
-        if (in_array('category', $join)) {
-            $query->leftJoin('product_category as pc', 'pc.id', '=', 'p.category_id')
-                ->addSelect(['pc.name as category_name', 'pc.id as category_id', 'pc.url as category_url']);
-        }
-
-        $query->orderBy('cart_purchase.cart_id');
-
-        $purchases = $query->get();
-        $purchases_normalized = Helper::normalizeObjectData($purchases->toArray());
-
-        if (in_array('category', $join)) {
-            foreach ($purchases_normalized as $purchase) {
-                if (!empty($purchase->category->id)) {
-                    $purchase->category = ProductCategory::getCategoryById($purchase->category->id);
-                }
+        $with = [];
+        if (in_array('product.image', $join) || in_array('product.category', $join)) {
+            $with[] = 'product.image';
+            if (in_array('product.category', $join)) {
+                $with[] = 'product.category';
             }
         }
+        if ($with) {
+            $query->with($with);
+        }
 
-        return $purchases_normalized;
+        $query->orderBy('position');
+        return $query->get();
     }
 
 

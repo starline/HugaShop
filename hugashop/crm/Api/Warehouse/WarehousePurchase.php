@@ -64,17 +64,7 @@ class WarehousePurchase extends BaseModel
         }
 
         $query->orderBy('position');
-        $purchases = $query->get();
-
-        if (in_array('image', $join)) {
-            foreach ($purchases as $purchase) {
-                $purchase->image_filename = $purchase->product
-                    ? $purchase->product->images()->where('entity_name', 'product')->orderBy('position')->value('filename')
-                    : null;
-            }
-        }
-
-        return $purchases;
+        return $query->get();
     }
 
 

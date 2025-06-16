@@ -1504,6 +1504,7 @@ div#sort_links b {
 }
 
 .list .list_row .payment_amount {
+	padding-top: 13px;
 	text-align: end;
 	font-size: 1.15rem;
 }
@@ -1546,7 +1547,8 @@ div#sort_links b {
 	color: var(--lightin-dark-color);
 }
 
-.list .order_date {
+.list .list_row .order_date {
+	padding-top: 19px;
 	text-align: end;
 }
 

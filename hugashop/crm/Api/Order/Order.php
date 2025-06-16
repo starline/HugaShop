@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.8
+ * @version 3.9
  *
  */
 
@@ -20,6 +20,7 @@ use HugaShop\Api\Order\OrderPayment;
 use HugaShop\Api\Order\OrderDelivery;
 use HugaShop\Api\Finance\FinancePayment;
 use HugaShop\Api\Order\OrderLabelRelated;
+use HugaShop\Api\Finance\FinancePaymentContractor;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Order extends BaseModel
@@ -56,8 +57,6 @@ class Order extends BaseModel
         'settings' =>               ['type' => 'text']
     ];
 
-    protected $with = ['payment_method', 'delivery_method'];
-
     public function payment_method()
     {
         return $this->belongsTo(OrderPayment::class, 'payment_method_id');
@@ -93,6 +92,16 @@ class Order extends BaseModel
         )->orderBy('position');
     }
 
+    public function payments(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            FinancePayment::class,
+            FinancePaymentContractor::class,
+            'entity_id',
+            'payment_id'
+        )->wherePivot('entity_name', 'order');
+    }
+
 
     /**
      * Выбрать определенный заказ
@@ -103,21 +112,9 @@ class Order extends BaseModel
 
         $query = self::query();
 
-        $with = [];
-        if (in_array('payment_method', $join) || in_array('payment_method.currency', $join)) {
-            $with[] = 'payment_method';
-            if (in_array('payment_method.currency', $join)) {
-                $with[] = 'payment_method.currency';
-            }
+        if (!empty($join)) {
+            $query->with($join);
         }
-        if (in_array('delivery_method', $join)) $with[] = 'delivery_method';
-        if (in_array('manager', $join)) $with[] = 'manager';
-        if (in_array('user', $join)) $with[] = 'user';
-        if (in_array('labels', $join)) $with[] = 'labels';
-        if (in_array('purchases', $join)) {
-            $with[] = 'purchases.product.image';
-        }
-        if (!empty($with)) $query->with($with);
 
         if (is_int($id)) {
             $order = $query->where('id', $id)->first();

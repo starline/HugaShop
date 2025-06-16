@@ -51,7 +51,7 @@ class CartListController extends BaseAdminController
         $filter['page'] = max(1, Request::get('page', 'int'));
         $filter['limit'] = Request::get('page', 'string') == 'all' ? 'all' : Settings::getParam('products_num_admin');
 
-        $carts = Cart::getList($filter, ['id', 'DESC'], ['user', Order::class]);
+        $carts = Cart::getList($filter, join: ['user', 'order']);
         $carts_count = Cart::getCount($filter);
 
         foreach ($carts as $cart) {
@@ -60,19 +60,6 @@ class CartListController extends BaseAdminController
             }
             if (!empty($cart->referral) and !empty($gets = @unserialize($cart->referral))) {
                 $cart->referral = Cart::getReferral($gets);
-            }
-        }
-
-        // Товары и их фото
-        foreach (CartPurchase::getCartPurchases(['cart_id' => array_keys($carts)], ['user', 'image', 'product', 'variant']) as $cp) {
-            $carts[$cp->cart_id]->purchases[] = $cp;
-            if (!isset($carts[$cp->cart_id]->total_price)) {
-                $carts[$cp->cart_id]->total_price = 0;
-                $carts[$cp->cart_id]->profit_price = 0;
-            }
-            if (empty($cp->disabled)) {
-                $carts[$cp->cart_id]->total_price += $cp->variant->price * $cp->amount;
-                $carts[$cp->cart_id]->profit_price += ($cp->variant->price - $cp->variant->cost_price) * $cp->amount;
             }
         }
 

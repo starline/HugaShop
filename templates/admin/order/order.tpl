@@ -209,25 +209,25 @@
 				<h2>Покупатель
 					{if $can_edit}
 						<i class="edit_user material-icons" data-bs-toggle="tooltip" title="Редактировать">edit</i>
-						{if $order_user}
+						{if $order->user}
 							<i class="delete_user material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
 						{/if}
 					{/if}
 				</h2>
 
 				<div class="view_user">
-					{if !$order_user}
+					{if !$order->user}
 						Не зарегистрирован
 					{else}
-						<a href="/admin/user/{$order_user->id}">{$order_user->name}</a>
-						{if $order_user->group->name}
-							<div>{$order_user->group->name}</div>
+						<a href="/admin/user/{$order->user->id}">{$order->user->name}</a>
+						{if $order->user->group->name}
+							<div>{$order->user->group->name}</div>
 						{/if}
 					{/if}
 				</div>
 
 				<div class="edit_user" style="display:none;">
-					<input type="hidden" name="user_id" value="{$order_user->id}" />
+					<input type="hidden" name="user_id" value="{$order->user->id}" />
 					<input type="text" id="user_id" class="form-control input_autocomplete "
 						placeholder="Выберите пользователя" />
 				</div>
@@ -317,7 +317,7 @@
 
 									<div class="edit_purchase" style="display:none;">
 
-										{if $purchase->variant}
+										{if $purchase->product}
 											{math equation="min(max(x,y),z)" x=$purchase->product->stock + $purchase->amount * ($order->closed) y=$purchase->amount z=$settings->max_order_amount assign="loop"}
 										{else}
 											{math equation="x" x=$purchase->amount assign="loop"}
@@ -377,59 +377,72 @@
 				{/foreach}
 
 
-				<div id="new_purchase" class="list_row" style="display:none;">
+				<!-- New purchase row -->
+				<div id="new_purchase" class="list_row sort_disabled" style="display:none;">
+					<input type="hidden" name="purchases[INDEX][product_id]" value="">
+					<input type="hidden" name="purchases[INDEX][id]" value="">
+
 					<div class="move">
 						<div class="move_zone"></div>
 					</div>
 
 					<div class="image">
-						<input type="hidden" name="purchases[id][]" value="">
 						<img class="product_icon" src="">
 					</div>
 
-					<div class="col">
-						<a class="add_name" href=""></a>
-					</div>
+					<div class="col row">
+						<div class="col">
+							<a class="add_name" href=""></a>
+						</div>
 
-					<div class="purchase_variant">
-						<select class="form-select form-select-sm" name="purchases[variant_id][]"
-							style="display:none;"></select>
-					</div>
+						<div class="col-3 text-end purchase_variant">
+							<div class="view_purchase">
+								<i data-bs-toggle="tooltip" title=""></i>
+								<div class="round_box copy_field" value="">
+									<div class="copy_hover" data-bs-toggle="tooltip" data-bs-original-title="Скопировать">
+										<i class="material-icons">content_copy</i>
+									</div>
+								</div>
+								<input type="hidden" name="purchases[INDEX][sku]" value="">
+							</div>
+						</div>
 
-					<div class="price">
-						<div class="view_edit_purchase">
-							{if 'order_finance'|user_access}
+						<div class="col-2 text-end price">
+							<div class="view_edit_purchase">
+								{if 'order_finance'|user_access}
+									<div class="row_alert">
+										<span class="js_change"></span>
+										<span class="price_sign">{$currency->sign}</span>
+									</div>
+								{/if}
+								<div class="edit_purchase input-group input-group-sm">
+									<input class="form-control text-end" type="text" name="purchases[INDEX][price]" value=""
+										size="5" {if !'order_finance'|user_access} disabled {/if} />
+									<span class="input-group-text">{$currency->sign}</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-2 text-end amount">
+							<div class="view_edit_purchase">
 								<div class="row_alert">
 									<span class="js_change"></span>
-									<span class="price_sign">{$currency->sign}</span>
+									<span class="price_sign">{$settings->weight_units}</span>
 								</div>
-							{/if}
-							<div class="edit_purchase input-group input-group-sm">
-								<input class="form-control text-end" type="text" name="purchases[price][]" value="" size="5"
-									{if !'order_finance'|user_access} disabled {/if} />
-								<span class="input-group-text">{$currency->sign}</span>
+								<select class="form-select form-select-sm text-end"
+									name="purchases[INDEX][amount]"></select>
+							</div>
+						</div>
+
+						<div class="col-2 text-end stock">
+							<div class="view_edit_purchase">
+								<div class="row_alert"></div>
+								<div class="variant_stock">остаток: <span class="js_change"></span></div>
 							</div>
 						</div>
 					</div>
 
-					<div class="amount">
-						<div class="view_edit_purchase">
-							<div class="row_alert">
-								<span class="js_change"></span>
-								<span class="price_sign">{$settings->weight_units}</span>
-							</div>
-							<select class="form-select form-select-sm" name="purchases[amount][]"></select>
-						</div>
-					</div>
-
-					<div class="stock">
-						<div class="view_edit_purchase">
-							<div class="row_alert"></div>
-							<div class="variant_stock">остаток: <span class="js_change"></span></div>
-						</div>
-					</div>
-
-					<div class="icons">
+					<div class="icons flex-column">
 						<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
 					</div>
 				</div>
@@ -643,13 +656,13 @@
 			{if  'order_finance'|user_access AND $order->id}
 				<div class="layer mt-5">
 					<h2>Финансы
-						{if payments}
+						{if $order->payments}
 							<span class="sum_total"> всего: {$total->payments_price|price_html:profit|raw}</span>
 						{/if}
 					</h2>
 
 					<div id="payments" class="list">
-						{foreach $payments as $p}
+						{foreach $order->payments as $p}
 							<div class="list_row {if !$p->verified}verified_off{else}verified_on{/if}" item_id="{$p->id}">
 								<div class="payment_amount {if $p->related_payment_id}transfer{/if}">
 									<a
@@ -666,18 +679,18 @@
 
 								<div class="col row">
 									<div class="col-12 col-md-6">
-										{if !$p->category_name|empty}
-											{$p->category_name}
+										{if $p->category->name}
+											{$p->category->name}
 										{else}
 											Премещение между кошельками
 										{/if} <div class="notice">{$p->comment}</div>
 									</div>
 
 									<div class="col-12 col-md-6">
-										{$p->purse_name}
+										{$p->purse->name}
 										<div class="notice">
 											<a
-												href="/admin/{$p->contractor->view_name}/{$p->contractor->entity_id}">{$p->contractor->entity->name}</a>
+												href="/admin/{$p->contractor->entity_name}/{$p->contractor->entity_id}">{$p->contractor->entity_name}</a>
 										</div>
 									</div>
 								</div>
@@ -718,14 +731,36 @@
 					handle: ".move_zone",
 					tolerance: "pointer",
 					opacity: 0.95,
-					axis: 'y'
+					axis: 'y',
+					update: function(event, ui) {
+						indexListRows('#purchases');
+					}
 				});
 
 				// Удаление товара
 				$(".purchases").on('click', 'i.delete', function() {
-					$(this).closest(".list_row").fadeOut(200, function() {
-						$(this).remove();
+					$(this).closest(".list_row").fadeOut(200, function() { $(this).remove(); });
+					indexListRows('#purchases');
+					return false;
+				});
+
+				// После завершения сортировки переиндексировать input-ы
+				function indexListRows(container_selector) {
+					$(container_selector).find('.list_row').each(function(idx) {
+						$(this).find('input, select, textarea').each(function() {
+							this.name = this.name.replace(/purchases\[(?:\d+|INDEX)\]/,
+								'purchases[' + idx + ']');
+						});
 					});
+					console.log('index row');
+				}
+
+				// Редактировать покупки
+				$(".edit_purchases").click(function() {
+					$(this).hide();
+					$(".purchases div.view_purchase").hide();
+					$(".purchases div.edit_purchase").show();
+					$("div#add_purchase").show();
 					return false;
 				});
 
@@ -738,119 +773,81 @@
 					minChars: 0,
 					noCache: false,
 					onSelect: function(suggestion) {
-						const new_item = new_purchase.clone().appendTo('.purchases');
+						let new_item = new_purchase.clone().appendTo('.purchases');
+						let product = suggestion.data;
+
 						new_item.removeAttr('id');
-						new_item.find('a.add_name').html(suggestion.data.name);
-						new_item.find('a.add_name').attr('href', '/admin/product/' + suggestion.data.id +
+						new_item.find('a.add_name').html(product.name);
+						new_item.find('a.add_name').attr('href', '/admin/product/' + product.id +
 							'/price');
 
-						// Добавляем варианты нового товара
-						const variants_select = new_item.find('select[name*=purchases][name*=variant_id]');
-						for (let i in suggestion.data.variants) {
-							let variant = suggestion.data.variants[i];
-							let sku = variant.sku == '' ? '' : ' (арт. ' + variant.sku + ')';
-							variants_select.append("<option value='" + variant.id +
-								"' price='" + variant.price + "' cost_price='" +
-								variant.cost_price + "' amount='" + variant.stock + "' weight='" + variant
-								.weight + "'>" + variant
-								.name + sku +
-								"</option>");
+						new_item.find('input[name*=product_id]').val(product.id);
+						new_item.find('.price .js_change').text(product.cost_price);
+						new_item.find('input[name*=price]').val(product.price);
+
+						if (product.variant_name) {
+							new_item.find('.view_purchase i').text(product.variant_name);
+						} else {
+							new_item.find('.view_purchase i').remove();
 						}
 
-						if (suggestion.data.variants.length > 1 || suggestion.data.variants[0].name != '')
-							variants_select.show();
+						if (product.sku) {
+							new_item.find('.view_purchase .copy_field').attr('value', product.sku);
+							new_item.find('.view_purchase .copy_field').text(product.sku);
+						} else {
+							new_item.find('.view_purchase .copy_field').remove();
+						}
 
-						change_variant(variants_select);
+						new_item.find('.stock .js_change').text(product.stock);
+						new_item.find('.amount .js_change ').text(product.weight);
 
-						if (suggestion.data.image)
-							new_item.find('img.product_icon').attr("src", suggestion.data.image);
+						let amount_select_el = new_item.find('select[name*=amount]');
+						let amount = product.stock < 0 ? 0 : product.stock;
+
+						for (let i = 1; i <= amount; i++)
+							amount_select_el.append("<option value='" + i + "'>" + i + " " + units +
+								"</option>");
+
+						// Дополнительное кол-во для новых заказов (0)
+						if (order_status == 0) {
+							for (let ai = (Number(amount) + 1); ai <= max_order_amount; ai++)
+								amount_select_el.append("<option class='disabled' value='" + ai + "'>" + ai +
+									" " + units +
+									"</option>");
+						}
+
+						if (product.image.url)
+							new_item.find('img.product_icon').attr("src", product.image.url);
 						else
 							new_item.find('img.product_icon').remove();
 
 						$("input#add_purchase").val('').focus().blur();
+
+						indexListRows('#purchases');
 						new_item.show();
+
 					},
 					formatResult: function(suggestion, currentValue) {
 						let reEscape = new RegExp('(\\' + ['/', '.', '*', '+', '?', '|', '(', ')', '[', ']', '{', '}', '\\'].join('|\\') + ')', 'g');
 						let pattern = '(' + currentValue.replace(reEscape, '\\$1') + ')';
 						let stock_txt = ' - <span class="color_grey">нет в наличии</span>';
 						let movement = '';
-						let movement_count = 0;
-						let stock_count = 0;
-						for (let i in suggestion.data.variants) {
-							stock_count += suggestion.data.variants[i].stock;
 
-							if (suggestion.data.variants[i].movements_amount) {
-								movement_count += suggestion.data.variants[i].movements_amount;
-							}
-						}
+						let product = suggestion.data;
 
-						if (stock_count > 0)
-							stock_txt = ' - <span class="color_green">остаток ' + suggestion.data.variants[0]
-							.stock + ' ' + units + '</span>';
+						if (product.stock > 0)
+							stock_txt = ' - <span class="color_green">остаток ' + product.stock + ' ' +
+							units + '</span>';
 
-						if (movement_count > 0)
-							movement = ' <span class="color_grey">(+' + movement_count + ')</span>'
+						if (product.movements_amount > 0)
+							movement = ' <span class="color_grey">(+' + product.movements_amount + ')</span>'
 
-						return (suggestion.data.image ? "<img align='absmiddle' src='" + suggestion.data
-								.image +
+						return (product.image ? "<img align='absmiddle' src='" + product
+								.image.url +
 								"'> " : '') + suggestion.value.replace(new RegExp(pattern, 'gi'),
 								'<strong>$1<\/strong>') + ' - ' + '<span class="color_red"><b>' + suggestion
-							.data.variants[0].price + ' ' + currency + '</b><span>' + stock_txt + movement;
+							.data.price + currency + '</b><span>' + stock_txt + movement;
 					}
-				});
-
-
-				// Изменение цены и кол-ва при смене варианта
-				$('.purchases').on('change', 'select[name*=purchases][name*=variant_id]', function() {
-					change_variant($(this));
-				});
-
-
-				// Изменение цены и макс количества при изменении варианта
-				function change_variant(element) {
-					let cost_price = element.find('option:selected').attr('cost_price');
-					let price = element.find('option:selected').attr('price');
-					let weight = element.find('option:selected').attr('weight');
-
-					// Выбираем доступное кол-во товара (по складу)
-					let amount = element.find('option:selected').attr('amount');
-					let row = element.closest('.list_row');
-
-					row.find('.price .js_change').text(cost_price);
-					row.find('input[name*=purchases\\[price\\]]').val(price);
-					row.find('.stock .js_change').text(amount);
-					row.find('.amount .js_change').text(weight);
-
-					const amount_select_el = row.find('select[name*=purchases][name*=amount]');
-					let selected_amount = (amount_select_el.val() || 1);
-					amount_select_el.html('');
-
-					if (amount < 0)
-						amount = 0;
-
-					for (let i = 1; i <= amount; i++)
-						amount_select_el.append("<option value='" + i + "'>" + i + " " + units + "</option>");
-
-					// Дополнительное кол-во для новых заказов (0)
-					if (order_status == 0) {
-						for (let ai = (Number(amount) + 1); ai <= max_order_amount; ai++)
-							amount_select_el.append("<option class='disabled' value='" + ai + "'>" + ai + " " + units +
-								"</option>");
-					}
-
-					amount_select_el.val(selected_amount);
-					return false;
-				}
-
-
-				// Редактировать покупки
-				$(".edit_purchases").click(function() {
-					$(".purchases div.view_purchase").hide();
-					$(".purchases div.edit_purchase").show();
-					$(this).hide();
-					$("div#add_purchase").show();
-					return false;
 				});
 
 
