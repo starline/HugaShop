@@ -119,11 +119,11 @@ class Product extends BaseModel
     public function related(): BelongsToMany
     {
         return $this->belongsToMany(
-            self::class,
+            Product::class,
             ProductRelated::class,   # имя таблицы связей
             'product_id',            # внешний ключ для текущего товара
             'related_id'             # внешний ключ для связанного товара
-        );
+        )->orderBy('position');
     }
 
 

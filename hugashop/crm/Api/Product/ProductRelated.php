@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
@@ -20,11 +20,11 @@ class ProductRelated extends BaseModel
     public static $table_fields = [
         'product_id' =>         ['type' => 'int',           'req' => true],
         'related_id' =>         ['type' => 'int',           'req' => true],
-        'position' =>           ['type' => 'int',            'def' => 0]
+        'position' =>           ['type' => 'int',           'def' => 0]
     ];
 
 
-    public function related()
+    public function product()
     {
         return $this->belongsTo(Product::class, 'related_id');
     }

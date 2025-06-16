@@ -18,7 +18,6 @@ use HugaShop\Api\Request;
 use HugaShop\Api\Settings;
 use HugaShop\Api\Order\Order;
 use HugaShop\Api\Product\Product;
-use HugaShop\Api\Order\OrderPurchase;
 use HugaShop\Api\User\UserPermission;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
@@ -88,14 +87,14 @@ class ProductPriceController extends BaseAdminController
         #########
         if (!empty($id)) {
 
-            $product = Product::getProduct(intval($id));
+            $product = Product::getProduct(intval($id), join: [
+                'related',
+                'related.image'
+            ]);
 
             if (empty($product->id)) {
                 return $this->redirectToRoute('ProductListAdmin');
             }
-
-            // Связанные товары
-            $related_products = Product::getRelatedProducts($product->id);
 
             // Заказы с этим товаром
             $filter = [
@@ -114,8 +113,6 @@ class ProductPriceController extends BaseAdminController
                 'labels'
             ]);
 
-
-
             $paid_filter = ['paid' => 1, 'product_id' => $product->id]; # только оплаченые
             $orders_paid_price = Order::getOrdersPrice($paid_filter); # Выбираем общую сумму заказов
 
@@ -125,7 +122,6 @@ class ProductPriceController extends BaseAdminController
             Design::assign('orders_count', $orders_count);
             Design::assign('orders_paid_price', $orders_paid_price);
 
-            Design::assign('related_products', $related_products);
             Design::assign('product', $product);
         }
 
