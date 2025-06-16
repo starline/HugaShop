@@ -130,23 +130,11 @@ class Order extends BaseModel
      */
     public static function getOrder(int|string $id, array $join = []): ?self
     {
-
         $query = self::query();
-
-        if (!empty($join)) {
-            $query->with($join);
-        }
-
-        if (is_int($id)) {
-            $order = $query->where('id', $id)->first();
-        } else {
-            $order = $query->where('url', $id)->first();
-        }
-
-        if ($order) {
-            $order->settings = empty($order->settings) ? new \stdClass() : (object) unserialize($order->settings);
-        }
-
+        if (!empty($join)) $query->with($join);
+        if (is_int($id)) $order = $query->where('id', $id)->first();
+        else $order = $query->where('url', $id)->first();
+        if ($order) $order->settings = empty($order->settings) ? new \stdClass() : (object) unserialize($order->settings);
         return $order;
     }
 
@@ -160,6 +148,8 @@ class Order extends BaseModel
     public static function getOrders(array $filter = [], string|bool $select = false, array $join = [])
     {
         $query = self::query();
+
+        if (!empty($join)) $query->with($join);
 
         if (!empty($filter['payment_method_id'])) {
             $query->where('payment_method_id', $filter['payment_method_id']);
@@ -205,19 +195,6 @@ class Order extends BaseModel
                 }
             });
         }
-
-
-        $with = [];
-        if (in_array('payment_method', $join)) $with[] = 'payment_method';
-        if (in_array('delivery_method', $join)) $with[] = 'delivery_method';
-        if (in_array('manager', $join)) $with[] = 'manager';
-        if (in_array('user', $join)) $with[] = 'user';
-        if (in_array('labels', $join)) $with[] = 'labels';
-        if (in_array('purchases', $join)) {
-            $with[] = 'purchases.product.image'; # добавляем фото товара
-        }
-        if (!empty($with)) $query->with($with);
-
 
         // Выбираем кол-во
         if ($select === 'count') {
