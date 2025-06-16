@@ -42,7 +42,6 @@ class ProductExport extends BaseAdminController
 
         // Эксель кушает только 1251
         //setlocale(LC_ALL, 'ru_RU.1251');
-        //DatabaseQuery::query('SET NAMES cp1251');
 
         // Страница, которую экспортируем
         $page = Request::get('page');
@@ -61,7 +60,7 @@ class ProductExport extends BaseAdminController
         // Выбираем названия характеристик товаров
         // $features = ProductFeature::getFeatures();
         // foreach ($features as $feature)
-        // 	$this->columns_names[$feature->name] = $feature->name;
+        // $this->columns_names[$feature->name] = $feature->name;
 
         // Если начали сначала - добавим в первую строку названия колонок
         if ($page == 1) {

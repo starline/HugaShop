@@ -15,7 +15,6 @@ use HugaShop\Api\Helper;
 use HugaShop\Api\Request;
 use HugaShop\Api\Settings;
 use HugaShop\Api\Order\Order;
-use HugaShop\Api\DatabaseQuery;
 use HugaShop\Api\Product\Product;
 use HugaShop\Api\Order\OrderPurchase;
 use HugaShop\Api\Product\ProductBrand;
@@ -127,11 +126,11 @@ class CmlExchangeController extends BaseAdminController
                     }
 
                     // Ищем товар
-                    $product_id = DatabaseQuery::query('SELECT id FROM __product WHERE external_id=?', $product_1c_id)->result('id');
+                    $product = Product::where('external_id', $product_1c_id)->first();
 
                     $purchase = new \stdClass();
                     $purchase->order_id = $order->id;
-                    $purchase->product_id = $product_id;
+                    $purchase->product_id = $product->id;
                     $purchase->sku = $xml_product->Артикул;
                     $purchase->product_name = $xml_product->Наименование;
                     $purchase->amount = $xml_product->Количество;
@@ -142,7 +141,7 @@ class CmlExchangeController extends BaseAdminController
                         $purchase->price = $purchase->price * (100 - $discount) / 100;
                     }
 
-                    $check_purchase = OrderPurchase::where('order_id', $order->id)->where('product_id', $product_id)->first();
+                    $check_purchase = OrderPurchase::where('order_id', $order->id)->where('product_id', $product->id)->first();
                     if (!empty($check_purchase->id)) {
                         OrderPurchase::updatePurchase($check_purchase->id, $purchase);
                     } else {
@@ -158,7 +157,7 @@ class CmlExchangeController extends BaseAdminController
                     }
                 }
 
-                DatabaseQuery::query('UPDATE __order SET discount=0, total_price=? WHERE id=? LIMIT 1', $xml_order->Сумма, $order->id);
+                Order::updateOne($order->id, ['discount' => 0, 'total_price' => $xml_order->Сумма]);
             }
 
 

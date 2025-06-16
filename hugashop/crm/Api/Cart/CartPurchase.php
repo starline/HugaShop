@@ -39,7 +39,7 @@ class CartPurchase extends BaseModel
     /**
      * Get cart purchases
      * @param array $filter
-     * @param array $join = ['image', 'product', 'variant', 'category']
+     * @param array $join = ['product.image', 'product', 'category']
      */
     public static function getCartPurchases(array $filter = [], array $join = [])
     {
@@ -59,6 +59,7 @@ class CartPurchase extends BaseModel
 
         $with = [];
         if (in_array('product.image', $join) || in_array('product.category', $join)) {
+            $with[] = 'product';
             $with[] = 'product.image';
             if (in_array('product.category', $join)) {
                 $with[] = 'product.category';

@@ -42,7 +42,6 @@ class OrderExport extends BaseAdminController
 
         // Эксель кушает только 1251
         //setlocale(LC_ALL, 'ru_RU.1251');
-        //DatabaseQuery::query('SET NAMES cp1251');
 
         // Страница, которую экспортируем
         $page = Request::get('page');
