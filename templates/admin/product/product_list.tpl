@@ -34,11 +34,11 @@
 				<h1>Нет товаров</h1>
 			{/if}
 
-			<div class="btns_wrap">
-				{if 'product_content'|user_access}
-					<a class="add" href="/admin/product">Добавить товар</a>
-				{/if}
+			{if 'product_content'|user_access}
+				<a class="add" href="/admin/product">Добавить товар</a>
+			{/if}
 
+			<div class="btns_wrap">
 				{if 'product_import'|user_access AND $products_count > 0}
 					<a class="export_btn" href="/admin/products/export?{$smarty.server.QUERY_STRING}">
 						<img src="{'images/export_excel.png'|asset}" name="export" data-bs-toggle="tooltip"

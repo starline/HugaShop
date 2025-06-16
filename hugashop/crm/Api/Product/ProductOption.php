@@ -45,8 +45,7 @@ class ProductOption extends BaseModel
             $query->orderBy('position');
         }])
             ->whereIn('product_id', $ids)
-            ->get()
-            ->map(function ($option) {
+            ->get()->map(function ($option) {
                 return (object)[
                     'feature_id' => $option->feature->id ?? null,
                     'name'       => $option->feature->name ?? null,

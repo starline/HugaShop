@@ -130,7 +130,11 @@ class ProductController extends BaseAdminController
         #########
         if (!empty($id)) {
 
-            $product = Product::getProduct(intval($id));
+            $product = Product::getProduct(intval($id), join: [
+                'images',
+                'images_content',
+                'options'
+            ]);
 
             if (empty($product->id)) {
                 return $this->redirectToRoute('ProductListAdmin');
@@ -139,52 +143,19 @@ class ProductController extends BaseAdminController
             // SEO keywords
             $seo_keywords = SeoKeywords::getKeywords($product->id, 'product');
 
-            // Изображения товара
-            $images = Image::getImages($product->id, 'product');
-            $images_content = Image::getImages($product->id, 'product_content');
-
-            // Свойства товара
-            $options = ProductOption::getProductOptions($product->id);
-            if (is_array($options)) {
-                $temp_options = [];
-                foreach ($options as $option) {
-                    $temp_options[$option->feature_id] = $option;
-                }
-                $options = $temp_options;
+            // Все свойства товара
+            if (!empty($product->category_id)) {
+                $features = ProductFeature::getFeatures(['category_id' => $product->category_id]);
+                Design::assign('features', $features);
             }
 
             Design::assign('seo_keywords', $seo_keywords);
-            Design::assign('product_images', $images);
-            Design::assign('images_content', $images_content);
-            Design::assign('options', $options);
+            Design::assign('product', $product);
         }
 
+        $brands         = ProductBrand::getBrands(); # All Products Brands
+        $categories     = ProductCategory::getCategoriesTree(); #Все категории
 
-        #### Create View
-        #########
-        else {
-
-            $product  = new stdClass();
-
-            if ($category_id = Request::get('category_id')) {
-                $product->category_id = $category_id;
-            }
-
-            if ($brand_id = Request::get('brand_id')) {
-                $product->brand_id = $brand_id;
-            }
-        }
-
-        $brands = ProductBrand::getBrands(); # All Products Brands
-        $categories = ProductCategory::getCategoriesTree(); #Все категории
-
-        // Все свойства товара
-        if (!empty($product->category_id)) {
-            $features = ProductFeature::getFeatures(['category_id' => $product->category_id]);
-            Design::assign('features', $features);
-        }
-
-        Design::assign('product', $product);
         Design::assign('brands', $brands);
         Design::assign('categories', $categories);
 

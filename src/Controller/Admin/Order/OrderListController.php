@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  * 
  * status: 0 - Новый, 1 - Принят, 4 - Отгружен,  2 - Выполнен, 3 - Отмена
  *
@@ -155,7 +155,14 @@ class OrderListController extends BaseAdminController
         }
 
         // Выбираем все заказы
-        $orders         = Order::getOrders($filter, join: ['delivery_method', 'payment_method', 'purchases', 'product.image', 'labels']);
+        $orders = Order::getOrders($filter, join: [
+            'delivery_method',
+            'payment_method',
+            'purchases',
+            'purchases.product',
+            'purchases.product.image',
+            'labels'
+        ]);
         $orders_count   = Order::getOrdersCount($filter);
 
         $orders_price   = Order::getOrdersPrice($filter); # Выбираем общую сумму заказов

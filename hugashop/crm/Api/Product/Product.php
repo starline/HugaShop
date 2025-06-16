@@ -16,7 +16,6 @@ use HugaShop\Api\Image;
 use HugaShop\Api\Helper;
 use HugaShop\Api\BaseModel;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use HugaShop\Api\Content\ContentComment;
 use HugaShop\Api\Warehouse\WarehousePurchase;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -73,10 +72,24 @@ class Product extends BaseModel
         return $this->belongsTo(ProductCategory::class, 'category_id');
     }
 
+    public function image()
+    {
+        return $this->hasOne(Image::class, 'entity_id')
+            ->where('entity_name', 'product')
+            ->orderBy('position');
+    }
+
     public function images()
     {
         return $this->hasMany(Image::class, 'entity_id')
             ->where('entity_name', 'product')
+            ->orderBy('position');
+    }
+
+    public function images_content()
+    {
+        return $this->hasMany(Image::class, 'entity_id')
+            ->where('entity_name', 'product_content')
             ->orderBy('position');
     }
 
@@ -103,14 +116,6 @@ class Product extends BaseModel
         return $this->movements->sum('amount');
     }
 
-
-    public function image()
-    {
-        return $this->hasOne(Image::class, 'entity_id')
-            ->where('entity_name', 'product')
-            ->orderBy('position');
-    }
-
     public function variants()
     {
         return $this->hasMany(ProductVariant::class, 'product_id');
@@ -124,6 +129,19 @@ class Product extends BaseModel
             'product_id',            # внешний ключ для текущего товара
             'related_id'             # внешний ключ для связанного товара
         )->orderBy('position');
+    }
+
+    /**
+     * Features
+     */
+    public function options()
+    {
+        return $this->hasMany(ProductOption::class, 'product_id');
+    }
+
+    public function getFeaturesValueAttribute()
+    {
+        return $this->options->keyBy('feature_id');
     }
 
 

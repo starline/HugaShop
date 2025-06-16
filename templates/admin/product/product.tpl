@@ -112,7 +112,7 @@
 			<div id="images" class="col-lg-6 layer images">
 				<h2>Изображения товара</h2>
 				<ul>
-					{foreach $product_images as $image}
+					{foreach $product->images as $image}
 						<li>
 							<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
 							<a href="{$image->filename|resize:1080:1080:w}" class="zoom" data-fancybox="product_images"
@@ -149,7 +149,7 @@
 
 				<ul class="property_block features">
 					{foreach $features as $feature}
-						{assign var=feature_id value=$feature->id}
+						{$feature_id = $feature->id}
 						<li feature_id="{$feature_id}">
 							{if $feature->variants}
 								<label for="options[{$feature_id}]" class="col-form-label"><a
@@ -157,7 +157,8 @@
 								<select class="form-select" id="options[{$feature_id}]" name="options[{$feature_id}]">
 									<option value="">-</option>
 									{foreach $feature->variants as $variant}
-										<option value="{$variant}" {if $variant==$options[$feature_id]->value}selected{/if}>
+										<option value="{$variant}"
+											{if $variant == $product->features_value.$feature_id->value}selected{/if}>
 											{$variant}
 										</option>
 									{/foreach}
@@ -165,7 +166,7 @@
 							{else}
 								<label for="options[{$feature_id}]" class="col-form-label">{$feature->name}</label>
 								<input class="form-control" id="options[{$feature_id}]" type="text" name="options[{$feature_id}]"
-									value="{$options.$feature_id->value}" />
+									value="{$product->features_value.$feature_id->value}" />
 							{/if}
 						</li>
 					{/foreach}
@@ -200,7 +201,7 @@
 			<div id="images_content" class="col-12 layer images">
 				<h2>Картинки описания</h2>
 				<ul>
-					{foreach $images_content as $image}
+					{foreach $product->images_content as $image}
 						<li>
 							<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
 							<a href="{$image->filename|resize:1080:1080:w}" class="zoom" data-fancybox="images_content"
