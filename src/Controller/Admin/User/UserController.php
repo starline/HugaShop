@@ -77,17 +77,15 @@ class UserController extends BaseAdminController
 
 
         $orders_count = Order::getOrdersCount($filter); # Кол-во заказов
-        $orders = Order::getOrders($filter, false, ['delivery_method', 'payment_method']);
+        $orders = Order::getOrders($filter, join: [
+            'delivery_method',
+            'payment_method',
+            'labels',
+            'purchases',
+            'purchases.product',
+            'purchases.product.image'
+        ]);
 
-        // Метки заказов
-        foreach (OrderLabel::getOrderLabels(array_keys($orders)) as $ol) {
-            $orders[$ol->order_id]->labels[] = $ol;
-        }
-
-        // Товары и картинка
-        foreach (OrderPurchase::getPurchases(['order_id' => array_keys($orders)], ['image']) as $op) {
-            $orders[$op->order_id]->purchases[] = $op;
-        }
 
         // Выбираем общую сумму заказов
         $filter["paid"] = 1; # оплаченые

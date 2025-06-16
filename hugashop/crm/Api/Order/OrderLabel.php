@@ -4,13 +4,12 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.4
+ * @version 3.5
  *
  */
 
 namespace HugaShop\Api\Order;
 
-use Illuminate\Database\Capsule\Manager as Capsule;
 use HugaShop\Api\BaseModel;
 
 class OrderLabel extends BaseModel
@@ -46,27 +45,6 @@ class OrderLabel extends BaseModel
 
         OrderLabelRelated::where('label_id', $id)->delete();
         return self::deleteOne($id);
-    }
-
-
-    /**
-     * Get current order label
-     * @param int|array $order_id
-     */
-    public static function getOrderLabels(int|array $order_id = [])
-    {
-        if (empty($order_id)) {
-            return [];
-        }
-
-        $tableRelated = (new OrderLabelRelated())->getTable();
-        return self::query()
-            ->select('order_label.*', 'olr.order_id')
-            ->leftJoin("{$tableRelated} as olr", 'olr.label_id', '=', 'order_label.id')
-            ->whereIn('olr.order_id', (array) $order_id)
-            ->orderBy('order_label.position')
-            ->get()
-            ->all();
     }
 
 

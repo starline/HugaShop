@@ -21,6 +21,7 @@ use HugaShop\Api\Order\OrderDelivery;
 use HugaShop\Api\Finance\FinancePayment;
 use HugaShop\Api\Order\OrderLabelRelated;
 use HugaShop\Api\Finance\FinancePaymentContractor;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Order extends BaseModel
@@ -82,10 +83,26 @@ class Order extends BaseModel
         return $this->hasMany(OrderPurchase::class, 'order_id')->orderBy('position');
     }
 
-    public function label_ids() {
-
+    /**
+     * Relationship for order labels IDs
+     */
+    public function label_ids(): HasMany
+    {
+        return $this->hasMany(OrderLabelRelated::class, 'order_id');
     }
-    
+
+    /**
+     * Accessor to get array of label IDs
+     */
+    public function getLabelIdsAttribute(): array
+    {
+        if ($this->relationLoaded('label_ids')) {
+            return $this->getRelation('label_ids')->pluck('label_id')->toArray();
+        }
+
+        return $this->label_ids()->pluck('label_id')->toArray();
+    }
+
     public function labels(): BelongsToMany
     {
         return $this->belongsToMany(

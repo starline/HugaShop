@@ -4,7 +4,7 @@
  * HugaShop - Selling anything
  *
  * @author Andri Huga
- * @version 2.4
+ * @version 2.5
  * 
  * ProductPriceAdmin
  *
@@ -104,13 +104,17 @@ class ProductPriceController extends BaseAdminController
                 'product_id' => $product->id
             ];
 
-            $orders_count = Order::getOrdersCount($filter);                                      # Кол-во заказов
-            $orders = Order::getOrders($filter, select: false, join: ['delivery_method', 'payment_method']);   # Выбираем заказы с этим товаром
+            $orders_count = Order::getOrdersCount($filter);     # Кол-во заказов
+            $orders = Order::getOrders($filter, join: [         # Выбираем заказы с этим товаром
+                'delivery_method',
+                'payment_method',
+                'purchases',
+                'purchases.product',
+                'purchases.product.image',
+                'labels'
+            ]);
 
-            // Товары заказа
-            foreach (OrderPurchase::getPurchases(['order_id' => array_keys($orders)], join: ['image']) as $op) {
-                $orders[$op->order_id]->purchases[] = $op;
-            }
+
 
             $paid_filter = ['paid' => 1, 'product_id' => $product->id]; # только оплаченые
             $orders_paid_price = Order::getOrdersPrice($paid_filter); # Выбираем общую сумму заказов
