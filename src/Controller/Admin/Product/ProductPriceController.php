@@ -20,6 +20,7 @@ use HugaShop\Api\Order\Order;
 use HugaShop\Api\Product\Product;
 use HugaShop\Api\User\UserPermission;
 use App\Controller\BaseAdminController;
+use HugaShop\Api\Product\ProductRelated;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -68,13 +69,11 @@ class ProductPriceController extends BaseAdminController
 
 
             // Связанные товары
-            // Удаляем все связанные товары
-            Product::deleteAllRelatedProducts($product->id);
+            ProductRelated::deleteAllRelatedProducts($product->id); # Удаляем все связанные товары
             if (!empty($rel_products_ids = Request::post('related_products', 'array'))) {
-
                 $pos = 0;
                 foreach ($rel_products_ids as $rel_id) {
-                    Product::addRelatedProduct($product->id, $rel_id, $pos++);
+                    ProductRelated::addRelatedProduct($product->id, $rel_id, $pos++);
                 }
             }
 

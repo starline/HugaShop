@@ -31,6 +31,7 @@ use HugaShop\Extensions\BaseExtension;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Mailer\Transport;
 use HugaShop\Api\Content\ContentComment;
+use HugaShop\Api\Product\ProductRelated;
 use HugaShop\Api\Product\ProductVariant;
 use HugaShop\Api\Product\ProductCategory;
 use Symfony\Component\Filesystem\Filesystem;
@@ -549,7 +550,7 @@ class TestScript extends BaseExtension
                             //print_r($rel_products_ids);
 
                             // Удаляем все связанные товары
-                            Product::deleteAllRelatedProducts($product->id);
+                            ProductRelated::deleteAllRelatedProducts($product->id);
 
                             // Записываем новые связаные товары
                             $pos = 0;

@@ -354,10 +354,7 @@ class Product extends BaseModel
         }
 
         // Удаляем связанные товары
-        $related = ProductRelated::getRelatedProducts($id);
-        foreach ($related as $rel) {
-            ProductRelated::deleteRelatedProduct($id, $rel->related_id);
-        }
+        ProductRelated::deleteAllRelatedProducts($id);
 
         // Удаляем товар из связанных с другими
         ProductRelated::where('related_id')->delete();
@@ -431,20 +428,6 @@ class Product extends BaseModel
     public static function getLastProductPosition()
     {
         return self::orderBy('position', 'desc')->skip(1)->value('position');
-    }
-
-
-    /**
-     * Метод получения связанных товаров с изображениями
-     */
-    public static function getRelatedProducts(int $product_id): Collection
-    {
-        return self::whereHas('related', function ($query) use ($product_id) {
-            $query->where('product_id', $product_id);
-        })
-            ->with('image')
-            ->get()
-            ->keyBy('id');
     }
 
 

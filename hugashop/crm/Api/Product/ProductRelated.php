@@ -32,16 +32,14 @@ class ProductRelated extends BaseModel
     /**
      * Выбираем связанные товары
      * @param int $product_id
-     * @param bool $count
+     * @param int $limit
      */
-    public static function getRelatedProducts(int $product_id, bool $count = false)
+    public static function getRelatedProducts(int $product_id, int $limit = 0)
     {
         $query = self::where('product_id', $product_id);
-
-        if ($count) {
-            $query->limit($count);
+        if ($limit) {
+            $query->limit($limit);
         }
-
         $query->orderBy('position');
         return $query->get()->keyBy('related_id');
     }
@@ -55,13 +53,11 @@ class ProductRelated extends BaseModel
      */
     public static function addRelatedProduct(int $product_id, int $related_id, ?int $position = 0)
     {
-        $record = self::create([
+        return self::create([
             'product_id' => $product_id,
             'related_id' => $related_id,
             'position' => $position,
         ]);
-
-        return $record->id ?? 0;
     }
 
 

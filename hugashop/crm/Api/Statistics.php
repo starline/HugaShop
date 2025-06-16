@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.4
+ * @version 2.5
  *
  * Выбираем статистику
  *
@@ -232,25 +232,42 @@ class Statistics
      */
     public static function productByDate($product_id, $from_date = null, $to_date = null)
     {
-
-        $query = OrderPurchase::query()
-            ->selectRaw('SUM((order_purchase.price * order_purchase.amount) - order_purchase.price * order_purchase.amount * order.discount / 100) as totalPrice')
-            ->selectRaw('SUM((order_purchase.price * order_purchase.amount - order_purchase.cost_price * order_purchase.amount) - order_purchase.price * order_purchase.amount * order.discount / 100) as profitPrice')
-            ->selectRaw('SUM(order_purchase.amount) as amount')
-            ->selectRaw('MONTH(order.date) as month')
-            ->selectRaw('YEAR(order.date) as year')
-            ->leftJoin('order', 'order_purchase.order_id', '=', 'order.id')
-            ->where('order_purchase.product_id', $product_id)
-            ->where('order.closed', 1);
+        $query = Order::query()
+            ->with(['purchases' => function ($q) use ($product_id) {
+                $q->where('product_id', $product_id);
+            }])
+            ->where('closed', 1);
 
         if (!empty($from_date)) {
             $from_date = Helper::dateConvert($from_date . ' 12:00', 'Y-m-d');
-            $query->where('order.date', '>', $from_date);
+            $query->where('date', '>=', $from_date);
         }
 
-        return $query->get();
-    }
+        if (!empty($to_date)) {
+            $to_date = Helper::dateConvert($to_date . ' 12:00', 'Y-m-d');
+            $query->where('date', '<=', $to_date);
+        }
 
+        $orders = $query->get();
+
+        $totalPrice  = 0;
+        $profitPrice = 0;
+        $amount      = 0;
+
+        foreach ($orders as $order) {
+            foreach ($order->purchases as $purchase) {
+                $totalPrice  += ($purchase->price - $purchase->price * $order->discount / 100) * $purchase->amount;
+                $profitPrice += ($purchase->price - $purchase->price * $order->discount / 100 - $purchase->cost_price) * $purchase->amount;
+                $amount      += $purchase->amount;
+            }
+        }
+
+        return (object) [
+            'totalPrice'  => $totalPrice,
+            'profitPrice' => $profitPrice,
+            'amount'      => $amount,
+        ];
+    }
 
     /**
      * Выводим статистку обработаных заказов Менеджера по месяцам
