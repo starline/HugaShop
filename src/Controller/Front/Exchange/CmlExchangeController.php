@@ -216,24 +216,18 @@ class CmlExchangeController extends BaseAdminController
                 $t1 = $doc->addChild('Товары');
                 foreach ($purchases as $purchase) {
                     if (!empty($purchase->product_id) && !empty($purchase->product_id)) {
-                        $id_p = DatabaseQuery::query('SELECT external_id FROM __product WHERE id=?', $purchase->product_id)->result('external_id');
-                        $id_v = DatabaseQuery::query('SELECT external_id FROM __product_product WHERE id=?', $purchase->product_id)->result('external_id');
+                        $id_p = Product::whereId($purchase->product_id)->value('external_id');
 
                         // Если нет внешнего ключа товара - указываем наш id
                         if (!empty($id_p)) {
                             $id = $id_p;
                         } else {
-                            DatabaseQuery::query('UPDATE __product SET external_id=id WHERE id=?', $purchase->product_id);
+                            Product::whereId($purchase->product_id)->update(['external_id' => $purchase->product_id]);
                             $id = $purchase->product_id;
                         }
 
                         // Если нет внешнего ключа варианта - указываем наш id
-                        if (!empty($id_v)) {
-                            $id = $id . '#' . $id_v;
-                        } else {
-                            DatabaseQuery::query('UPDATE __product_product SET external_id=id WHERE id=?', $purchase->product_id);
-                            $id = $id . '#' . $purchase->product_id;
-                        }
+                        $id = $id . '#' . $purchase->product_id;
 
                         $t1_1 = $t1->addChild('Товар');
 
@@ -338,7 +332,7 @@ class CmlExchangeController extends BaseAdminController
                     unlink($v);
                 }
             }
-            Request::deleteSession('last_1c_imported_variant_num');
+            Request::deleteSession('last_1c_imported_product_num');
             Request::deleteSession('last_1c_imported_product_num');
             Request::deleteSession('features_mapping');
             Request::deleteSession('categories_mapping');
@@ -357,6 +351,9 @@ class CmlExchangeController extends BaseAdminController
 
         if (Request::get('type') == 'catalog' && Request::get('mode') == 'import') {
             $filename = basename(Request::get('filename'));
+
+            // Номер текущего товара
+            $current_product_num = 0;
 
             if ($filename === 'import.xml') {
 
@@ -382,9 +379,6 @@ class CmlExchangeController extends BaseAdminController
                 if (!empty(Request::getSession('last_1c_imported_product_num'))) {
                     $last_product_num = Request::getSession('last_1c_imported_product_num');
                 }
-
-                // Номер текущего товара
-                $current_product_num = 0;
 
                 while ($z->name === 'Товар') {
                     if ($current_product_num >= $last_product_num) {
@@ -419,28 +413,25 @@ class CmlExchangeController extends BaseAdminController
                 while ($z->read() && $z->name !== 'Предложение');
 
                 // Последний вариант, на котором остановились
-                $last_variant_num = 0;
-                if (!empty(Request::getSession('last_1c_imported_variant_num'))) {
-                    $last_variant_num = Request::getSession('last_1c_imported_variant_num');
+                $last_product_num = 0;
+                if (!empty(Request::getSession('last_1c_imported_product_num'))) {
+                    $last_product_num = Request::getSession('last_1c_imported_product_num');
                 }
 
                 // Номер текущего товара
-                $current_variant_num = 0;
+                $current_product_num = 0;
 
                 while ($z->name === 'Предложение') {
-                    if ($current_variant_num >= $last_variant_num) {
+                    if ($current_product_num >= $last_product_num) {
                         $xml = new \SimpleXMLElement($z->readOuterXML());
-
-                        // Варианты
-                        $this->import_variant($xml);
 
                         $exec_time = microtime(true) - $start_time;
                         if ($exec_time + 1 >= $max_exec_time) {
                             header("Content-type: text/xml; charset=utf-8");
                             print "\xEF\xBB\xBF";
                             print "progress\r\n";
-                            print "Выгружено ценовых предложений: $current_variant_num\r\n";
-                            Request::setSession('last_1c_imported_variant_num', $current_variant_num);
+                            print "Выгружено ценовых предложений: $current_product_num\r\n";
+                            Request::setSession('last_1c_imported_product_num', $current_product_num);
                             exit();
                         }
                     }
@@ -463,7 +454,7 @@ class CmlExchangeController extends BaseAdminController
 
         if (isset($xml->Группы->Группа)) {
             foreach ($xml->Группы->Группа as $xml_group) {
-                $category_id = DatabaseQuery::query('SELECT id FROM __product_category WHERE external_id=?', $xml_group->Ид)->result('id');
+                $category_id = ProductCategory::where('external_id', $xml_group->Ид)->value('id');
                 if (empty($category_id)) {
                     $category_id = ProductCategory::addCategory([
                         'parent_id' => $parent_id,
@@ -625,7 +616,7 @@ class CmlExchangeController extends BaseAdminController
 
                 // Обновляем категорию товара
                 if (isset($category_id) && !empty($product_id)) {
-                    DatabaseQuery::query('DELETE FROM __product_category WHERE product_id=?', $product->id);
+                    ProductCategory::query()->where('product_id', $product->id)->delete();
                     Product::updateProduct($product_id, ['category_id' => $category_id]);
                 }
             }
@@ -635,7 +626,11 @@ class CmlExchangeController extends BaseAdminController
                 foreach ($xml_product->Картинка as $img) {
                     $image = basename($img);
                     if (!empty($image) && is_file($dir . $image) && is_writable(Config::get('images_originals_dir'))) {
-                        $img_id = DatabaseQuery::query('SELECT id FROM __content_image WHERE product_id=? ORDER BY position LIMIT 1', $product->id)->result('id');
+                        $img_id = Image::query()
+                            ->where('entity_id', $product->id)
+                            ->where('entity_name', 'product')
+                            ->orderBy('position')
+                            ->value('id');
                         if (!empty($img_id)) {
                             Image::deleteImage($img_id);
                         }
@@ -670,7 +665,7 @@ class CmlExchangeController extends BaseAdminController
 
                     // Добавим бренд
                     // Найдем его по имени
-                    if (!$brand_id = DatabaseQuery::query('SELECT id FROM __product_brand WHERE name=?', $brand_name)->result('id')) {
+                    if (!$brand_id = ProductBrand::where('name', $brand_name)->value('id')) {
 
                         // Создадим, если не найден
                         $brand_id = ProductBrand::addBrand(['name' => $brand_name, 'meta_title' => $brand_name, 'meta_description' => $brand_name]);
@@ -682,77 +677,9 @@ class CmlExchangeController extends BaseAdminController
             }
         }
 
-
         // Если нужно - удаляем вариант или весь товар
         if ($xml_product->Статус == 'Удален') {
-            ProductVariant::deleteVariant($variant_id);
-            if (DatabaseQuery::query('SELECT count(id) as variants_num FROM __product_variant WHERE product_id=?', $product->id)->result('variants_num') == 0) {
-                Product::deleteProduct($product->id);
-            }
-        }
-    }
-
-
-    public function import_variant($xml_variant)
-    {
-        global $dir;
-
-        $variant = new \stdClass();
-
-        //  Id товара и варианта (если есть) по 1С
-        @list($product_1c_id, $variant_1c_id) = explode('#', $xml_variant->Ид);
-        if (empty($variant_1c_id)) {
-            $variant_1c_id = '';
-        }
-        if (empty($product_1c_id)) {
-            return false;
-        }
-
-        $variant_id = DatabaseQuery::query('SELECT v.id FROM __product_variant v WHERE v.external_id=? AND product_id=(SELECT p.id FROM __product p WHERE p.external_id=? LIMIT 1)', $variant_1c_id, $product_1c_id)->result('id');
-        $variant->external_id = $variant_1c_id;
-        $variant->product_id = DatabaseQuery::query('SELECT p.id FROM __product p WHERE p.external_id=?', $product_1c_id)->result('id');
-        if (empty($variant->product_id)) {
-            return false;
-        }
-
-        $variant->price = $xml_variant->Цены->Цена->ЦенаЗаЕдиницу;
-
-        if (isset($xml_variant->ХарактеристикиТовара->ХарактеристикаТовара)) {
-            foreach ($xml_variant->ХарактеристикиТовара->ХарактеристикаТовара as $xml_property) {
-                $values[] = $xml_property->Значение;
-            }
-        }
-        if (!empty($values)) {
-            $variant->name = join(', ', $values);
-        }
-        $sku = (string)$xml_variant->Артикул;
-        if (!empty($sku)) {
-            $variant->sku = $sku;
-        }
-
-
-        // Конвертируем цену из валюты 1С в базовую валюту магазина
-        if (!empty($xml_variant->Цены->Цена->Валюта)) {
-
-            // Ищем валюту по коду
-            $variant_currency = DatabaseQuery::query("SELECT id, rate_from, rate_to FROM __finance_currency WHERE code like ?", $xml_variant->Цены->Цена->Валюта)->result();
-
-            // Если не нашли - ищем по обозначению
-            if (empty($variant_currency)) {
-                $variant_currency = DatabaseQuery::query("SELECT id, rate_from, rate_to FROM __finance_currency WHERE sign like ?", $xml_variant->Цены->Цена->Валюта)->result();
-            }
-            // Если нашли валюту - конвертируем из нее в базовую
-            if ($variant_currency && $variant_currency->rate_from > 0 && $variant_currency->rate_to > 0) {
-                $variant->price = floatval($variant->price) * $variant_currency->rate_to / $variant_currency->rate_from;
-            }
-        }
-
-        $variant->stock = $xml_variant->Количество;
-
-        if (empty($variant_id)) {
-            ProductVariant::addVariant($variant);
-        } else {
-            ProductVariant::updateVariant($variant_id, $variant);
+            Product::deleteProduct($product->id);
         }
     }
 }

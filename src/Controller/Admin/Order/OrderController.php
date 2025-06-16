@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  */
 
@@ -109,7 +109,7 @@ class OrderController extends BaseAdminController
             }
 
             // Обновляем метки заказа
-            $order_labels = !empty(Request::post('order_labels')) ? Request::post('order_labels') : [];
+            $order_labels = Request::post('order_labels', 'array') ?: [];
             OrderLabel::updateOrderLabels($order->id, $order_labels);
 
 

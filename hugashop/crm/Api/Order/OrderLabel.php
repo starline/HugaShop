@@ -74,12 +74,11 @@ class OrderLabel extends BaseModel
      * @param int $id
      * @param $labels_ids
      */
-    public static function updateOrderLabels(int $id, $labels_ids)
+    public static function updateOrderLabels(int $id, array $labels_ids)
     {
-        $labels_ids = (array)$labels_ids;
-        Capsule::table('order_label_related')->where('order_id', $id)->delete();
+        OrderLabel::where('order_id', $id)->delete();
         foreach ($labels_ids as $l_id) {
-            Capsule::table('order_label_related')->insert(['order_id' => $id, 'label_id' => $l_id]);
+            OrderLabel::create(['order_id' => $id, 'label_id' => $l_id]);
         }
     }
 
