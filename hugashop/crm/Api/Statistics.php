@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  * Выбираем статистику
  *
@@ -12,14 +12,14 @@
 
 namespace HugaShop\Api;
 
-use HugaShop\Api\Product\Product;
 use HugaShop\Api\Helper;
+use HugaShop\Api\Order\Order;
+use HugaShop\Api\Product\Product;
+use HugaShop\Api\Order\OrderPurchase;
+use HugaShop\Api\Finance\FinancePayment;
 use HugaShop\Api\Finance\FinanceCurrency;
 use HugaShop\Api\Product\ProductCategory;
-use HugaShop\Api\Order\Order;
-use HugaShop\Api\Order\OrderPurchase;
-use HugaShop\Api\Warehouse\WarehousePurchase;
-use HugaShop\Api\Finance\FinancePayment;
+use HugaShop\Api\Warehouse\WarehouseMove;
 
 class Statistics
 {
@@ -97,36 +97,44 @@ class Statistics
      */
     public static function productWarehouseMovemetByMonth($product_id, $type)
     {
-
-        $query = WarehousePurchase::query()
-            ->selectRaw('SUM(wh_purchase.amount) as amount')
-            ->selectRaw('MONTH(wh_move.awaiting_date) as month')
-            ->selectRaw('YEAR(wh_move.awaiting_date) as year')
-            ->leftJoin('wh_move', 'wh_purchase.move_id', '=', 'wh_move.id')
-            ->where('wh_move.closed', 1)
-            ->where('wh_purchase.product_id', $product_id);
+        $query = WarehouseMove::query()
+            ->selectRaw('MONTH(awaiting_date) as month')
+            ->selectRaw('YEAR(awaiting_date) as year')
+            ->where('closed', 1)
+            ->whereHas('purchases', function ($q) use ($product_id) {
+                $q->where('product_id', $product_id);
+            })
+            ->withSum([
+                'purchases as amount' => function ($q) use ($product_id) {
+                    $q->where('product_id', $product_id);
+                }
+            ], 'amount');
 
         if ($type === 'add') {
-            $query->where('wh_move.status', 2);
+            $query->where('status', 2);
         } elseif ($type === 'delete') {
-            $query->where('wh_move.status', 3);
+            $query->where('status', 3);
         }
 
-        $data = $query->groupBy('month', 'year')
+        $data = $query
             ->orderBy('year')
             ->orderBy('month')
             ->get();
 
-        $results = [];
+        $grouped = [];
         foreach ($data as $d) {
-            $results[] = [
-                'month' => $d->month,
-                'year'  => $d->year,
-                'y'     => $d->amount,
-            ];
+            $key = $d->year . '-' . $d->month;
+            if (!isset($grouped[$key])) {
+                $grouped[$key] = [
+                    'month' => (int) $d->month,
+                    'year'  => (int) $d->year,
+                    'y'     => 0,
+                ];
+            }
+            $grouped[$key]['y'] += (int) $d->amount;
         }
 
-        return $results;
+        return array_values($grouped);
     }
 
 
@@ -160,46 +168,59 @@ class Statistics
     {
 
         $query = OrderPurchase::query()
-            ->leftJoin('order', 'order_purchase.order_id', '=', 'order.id')
-            ->where('order.closed', 1);
+            ->with('order')
+            ->whereHas('order', function ($q) {
+                $q->where('closed', 1);
+            });
 
         if (!is_int($product_id)) {
             if (!is_array($product_id)) {
                 $product_id = explode(',', $product_id);
             }
-            $query->whereIn('order_purchase.product_id', $product_id);
+            $query->whereIn('product_id', $product_id);
         } else {
-            $query->where('order_purchase.product_id', $product_id);
+            $query->where('product_id', $product_id);
         }
 
-        if (!empty($type) && $type === 'totalPrice') {
-            $query->selectRaw('SUM((order_purchase.price - order_purchase.price * order.discount / 100) * order_purchase.amount) as total_price');
-        } elseif (!empty($type) && $type === 'profitPrice') {
-            $query->selectRaw('SUM((order_purchase.price - order_purchase.price * order.discount / 100 - order_purchase.cost_price) * order_purchase.amount) as total_price');
-        } elseif (!empty($type) && $type === 'amount') {
-            $query->selectRaw('SUM(order_purchase.amount) as total_price');
-        } else {
-            return false;
+        $purchases = $query->get();
+
+        $data = [];
+        foreach ($purchases as $purchase) {
+            if (!$purchase->order) {
+                continue;
+            }
+
+            $month = (int)date('n', strtotime($purchase->order->date));
+            $year  = (int)date('Y', strtotime($purchase->order->date));
+            $key   = sprintf('%04d-%02d', $year, $month);
+
+            if (!isset($data[$key])) {
+                $data[$key] = [
+                    'month' => $month,
+                    'year'  => $year,
+                    'y'     => 0,
+                ];
+            }
+
+            if ($type === 'totalPrice') {
+                $data[$key]['y'] += ($purchase->price - $purchase->price * $purchase->order->discount / 100) * $purchase->amount;
+            } elseif ($type === 'profitPrice') {
+                $data[$key]['y'] += ($purchase->price - $purchase->price * $purchase->order->discount / 100 - $purchase->cost_price) * $purchase->amount;
+            } elseif ($type === 'amount') {
+                $data[$key]['y'] += $purchase->amount;
+            } else {
+                return false;
+            }
         }
 
-        $query->selectRaw('MONTH(order.date) as month')
-            ->selectRaw('YEAR(order.date) as year');
+        usort($data, function ($a, $b) {
+            if ($a['year'] == $b['year']) {
+                return $a['month'] <=> $b['month'];
+            }
+            return $a['year'] <=> $b['year'];
+        });
 
-        $data = $query->groupBy('month', 'year')
-            ->orderBy('year')
-            ->orderBy('month')
-            ->get();
-
-        $results = [];
-        foreach ($data as $d) {
-            $results[] = [
-                'month' => $d->month,
-                'year'  => $d->year,
-                'y'     => $d->total_price,
-            ];
-        }
-
-        return $results;
+        return array_values($data);
     }
 
 

@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * HugaShop - Selling anything
+ *
+ * @author Andri Huga
+ * @version 2.1
+ *
+ */
+
 namespace App\Controller\Admin\Ajax\Stats;
 
 use HugaShop\Api\Request;

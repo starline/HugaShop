@@ -130,7 +130,7 @@ class Cart extends BaseModel
 
         if (in_array('total', $join) && !empty($cart)) {
             $cart->purchases_count = $cart->purchases->sum('amount');
-            $cart->purchases_price = $cart->purchases->sum(fn($purchase) => $purchase->variant->price * $purchase->amount);
+            $cart->purchases_price = $cart->purchases->sum(fn($purchase) => $purchase->product->price * $purchase->amount);
         }
 
         return $cart;
@@ -214,8 +214,8 @@ class Cart extends BaseModel
 
         if (!empty($gets = Request::gets())) {
 
-            // Except
-            foreach ($gets as $get_key => $get_value) {
+            // Except some GET params
+            foreach ($gets as $get_key => $p) {
                 if (!in_array($get_key, ['page', 'variant', 'sort'])) {
                     Request::setSession('referral', serialize(Request::gets()));
                     break;

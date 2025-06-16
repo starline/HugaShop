@@ -230,11 +230,11 @@
 			<div class="col-lg-6 layer">
 				<h2>
 					Связанные товары
-					<span class="sum_total">{$related_products|count}
-						{$related_products|count|plural:'товар':'товаров':'товара'}</span>
+					<span class="sum_total">{$product->related|count}
+						{$product->related|count|plural:'товар':'товаров':'товара'}</span>
 				</h2>
 				<div class="list sortable related_products">
-					{foreach $related_products as $related_product}
+					{foreach $product->related as $related_product}
 						<div
 							class="list_row {if !$related_product->visible}visible_off{/if} {if $related_product->disable}disable{/if}">
 							<div class="move">
@@ -244,7 +244,7 @@
 
 							<div class="image">
 								<img class="product_icon"
-									src="{if $related_product->image_filename}{$related_product->image_filename|resize:60}{else}{'images/cargo.png'|asset}{/if}">
+									src="{if $related_product->image->filename}{$related_product->image->filename|resize:60}{else}{'images/cargo.png'|asset}{/if}">
 							</div>
 
 							<div class="col">

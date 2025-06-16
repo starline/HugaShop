@@ -4,7 +4,7 @@
  * HugaShop - Selling anything
  *
  * @author Andri Huga
- * @version 2.5
+ * @version 2.6
  * 
  * ProductPriceAdmin
  *
@@ -96,35 +96,44 @@ class ProductPriceController extends BaseAdminController
                 return $this->redirectToRoute('ProductListAdmin');
             }
 
-            // Заказы с этим товаром
-            $filter = [
-                'page' => max(1, Request::get('page', type: 'int')),
-                'limit' => Request::get('page', type: 'string') == 'all' ? 'all' : Settings::getParam('products_num_admin'),
-                'product_id' => $product->id
-            ];
-
-            $orders_count = Order::getOrdersCount($filter);     # Кол-во заказов
-            $orders = Order::getOrders($filter, join: [         # Выбираем заказы с этим товаром
-                'delivery_method',
-                'payment_method',
-                'purchases',
-                'purchases.product',
-                'purchases.product.image',
-                'labels'
-            ]);
-
-            $paid_filter = ['paid' => 1, 'product_id' => $product->id]; # только оплаченые
-            $orders_paid_price = Order::getOrdersPrice($paid_filter); # Выбираем общую сумму заказов
-
-            Design::assign('pages_count', ceil($orders_count / Settings::getParam('products_num_admin')));
-            Design::assign('current_page', $filter['limit'] == 'all' ? 'all' : $filter['page']);
-            Design::assign('orders', $orders);
-            Design::assign('orders_count', $orders_count);
-            Design::assign('orders_paid_price', $orders_paid_price);
-
             Design::assign('product', $product);
+            $this->getProductOrders($product->id);
         }
 
         return $this->fetchResponse('product/product_price.tpl');
+    }
+
+
+    /**
+     * Get all products order  
+     */
+    private function getProductOrders(int $product_id)
+    {
+        // Заказы с этим товаром
+        $filter = [
+            'page' => max(1, Request::get('page', type: 'int')),
+            'limit' => Request::get('page', type: 'string') == 'all' ? 'all' : Settings::getParam('products_num_admin'),
+            'product_id' => $product_id
+        ];
+
+        $orders_count = Order::getOrdersCount($filter);     # Кол-во заказов
+        $orders =       Order::getOrders($filter, join: [   # Выбираем заказы с этим товаром
+            'delivery_method',
+            'payment_method',
+            'purchases',
+            'purchases.product',
+            'purchases.product.image',
+            'labels'
+        ]);
+
+        $paid_filter = ['paid' => 1, 'product_id' => $product_id]; # только оплаченые
+        $orders_paid_price = Order::getOrdersPrice($paid_filter); # Выбираем общую сумму заказов
+
+        Design::assign('pages_count', ceil($orders_count / Settings::getParam('products_num_admin')));
+        Design::assign('current_page', $filter['limit'] == 'all' ? 'all' : $filter['page']);
+
+        Design::assign('orders', $orders);
+        Design::assign('orders_count', $orders_count);
+        Design::assign('orders_paid_price', $orders_paid_price);
     }
 }

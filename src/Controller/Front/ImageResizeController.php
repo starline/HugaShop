@@ -4,7 +4,7 @@
  * Сначало проверяетя есть ли уже файл на сервере через Ngix
  *
  * @author Andi Huga
- * @version 2.6
+ * @version 2.7
  *
  */
 
@@ -12,13 +12,17 @@ namespace App\Controller\Front;
 
 use HugaShop\Api\Image;
 use HugaShop\Api\Helper;
-use App\Controller\BaseFrontController;
+use App\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpKernel\Attribute\Cache;
 
-class ImageResizeController extends BaseFrontController
+/**
+ * Use BaseController
+ * We don't need BaseAdminController or BaseController
+ */
+class ImageResizeController extends BaseController
 {
     #[Route('/files/resize/{file}', name: 'ImageResize')]
     #[Cache(public: true, maxage: 315360000, mustRevalidate: true)]
