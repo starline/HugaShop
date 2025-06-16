@@ -105,11 +105,11 @@ $(function () {
     });
 
 
-    function getCartInformer(variant_id = null, amount = null, callback = null) {
+    function getCartInformer(product_id = null, amount = null, callback = null) {
         $.ajax({
             url: "/ajax/cart",
             data: {
-                variant_id: variant_id,
+                product_id: product_id,
                 amount: amount
             },
             dataType: 'html',

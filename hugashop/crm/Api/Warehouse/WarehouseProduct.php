@@ -22,7 +22,6 @@ class WarehouseProduct extends BaseModel
         'move_id'    => ['type' => 'int'],
         'product_id' => ['type' => 'int'],
         'place_id'   => ['type' => 'int'],
-        'variant_id' => ['type' => 'int'],
         'cost_price' => ['type' => 'decimal', 'def'  => 0.00],
         'amount'     => ['type' => 'int',     'def'  => 0],
     ];
@@ -30,7 +29,7 @@ class WarehouseProduct extends BaseModel
     public static function updateStock(array $purchase)
     {
         return self::updateOrCreate(
-            ['variant_id' => $purchase['variant_id'], 'place_id' => $purchase['place_id']],
+            ['product_id' => $purchase['product_id'], 'place_id' => $purchase['place_id']],
             $purchase
         );
     }

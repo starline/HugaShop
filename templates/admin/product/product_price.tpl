@@ -7,7 +7,7 @@
 {/if}
 
 {block name=content}
-	
+
 	<!-- Основная форма -->
 	<form method="post" enctype="multipart/form-data">
 		<input name="id" type="hidden" value="{$product->id}" />
@@ -77,7 +77,7 @@
 								disabled />
 						</div>
 						<div class="marking_print">
-							<a class="print_icon" href="{'ProductMarkingAdmin'|urll:[variant_id => $product->id]}"
+							<a class="print_icon" href="{'ProductMarkingAdmin'|urll:[product_id => $product->id]}"
 								target="_blank">
 								<img src="{'images/printer.png'|asset}" data-bs-toggle="tooltip" title="Печать маркировки">
 							</a>
@@ -251,7 +251,7 @@
 								<a
 									href="{'ProductAdmin'|urll:[id => $related_product->id]}?return={$smarty.server.REQUEST_URI}">{$related_product->name}</a>
 							</div>
-							
+
 							<div class="icons">
 								<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
 							</div>

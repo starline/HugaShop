@@ -23,20 +23,20 @@
 namespace HugaShop\Extensions\FacebookPixel;
 
 use FacebookAds\Api;
-use HugaShop\Api\User\User;
 use HugaShop\Api\Config;
-// Symfony
 use HugaShop\Api\Request;
+// Symfony
 use App\Event\CartAddEvent;
+use HugaShop\Api\User\User;
 use App\Event\OrderAddEvent;
 // Facebook Bussines
-use HugaShop\Api\Order\OrderPurchase;
-use HugaShop\Api\Product\ProductVariant;
-use HugaShop\Api\Finance\FinanceCurrency;
+use HugaShop\Api\Product\Product;
 use FacebookAds\Logger\CurlLogger;
 use App\Event\DesignBeforeFetchEvent;
+use HugaShop\Api\Order\OrderPurchase;
 use HugaShop\Extensions\BaseExtension;
 use FacebookAds\Object\ServerSide\Event;
+use HugaShop\Api\Finance\FinanceCurrency;
 use FacebookAds\Object\ServerSide\Content;
 use FacebookAds\Object\ServerSide\UserData;
 use FacebookAds\Object\ServerSide\CustomData;
@@ -80,14 +80,14 @@ final class FacebookPixel extends BaseExtension
         $access_token = $this->ext_settings->api_token;
         $pixel_id = $this->ext_settings->pixel_id;
 
-        if (empty($access_token) || empty($pixel_id) || empty($item->variant_id)) {
+        if (empty($access_token) || empty($pixel_id) || empty($item->product_id)) {
             return;
         }
 
         // Выбрать вариант, посчитать общую сумму
-        $variant = ProductVariant::getOne($item->variant_id);
-        $value = $variant->price * intval($item->amount);
-        $sku = $variant->sku ?: $variant->id;
+        $product = Product::getOne($item->product_id);
+        $value = $product->price * intval($item->amount);
+        $sku = $product->sku ?: $product->id;
 
         // Initialize
         Api::init(null, null, $access_token);
@@ -184,8 +184,8 @@ final class FacebookPixel extends BaseExtension
         $purchases_content = [];
         foreach ($purchases as $purch) {
 
-            $purchases_sku[] = $purch->variant->sku;
-            $purchases_content[] = new Content(["product_id" => $purch->variant->sku, "quantity" => $purch->amount, "item_price" => $purch->price]);
+            $purchases_sku[] = $purch->product->sku;
+            $purchases_content[] = new Content(["product_id" => $purch->product->sku, "quantity" => $purch->amount, "item_price" => $purch->price]);
 
             // Общая стоимость товаров. Без учета скидок
             $purchases_price += $purch->price * $purch->amount;

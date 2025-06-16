@@ -173,12 +173,14 @@ class Order extends BaseModel
             $query->where('modified', '>', $filter['modified_since']);
         }
         if (!empty($filter['label'])) {
-            $query->join('order_label_related as ol', 'ol.order_id', '=', 'order.id');
-            $query->where('ol.label_id', $filter['label']);
+            $query->whereHas('label_ids', function ($q) use ($filter) {
+                $q->where('label_id', $filter['label']);
+            });
         }
         if (!empty($filter['product_id'])) {
-            $query->join('order_purchase as op', 'op.order_id', '=', 'order.id');
-            $query->where('op.product_id', intval($filter['product_id']));
+            $query->whereHas('purchases', function ($q) use ($filter) {
+                $q->where('product_id', intval($filter['product_id']));
+            });
         }
 
         // Ищем заказ по ID|phone|address|name

@@ -50,11 +50,10 @@ use HugaShop\Api\Image;
 use HugaShop\Api\Config;
 use HugaShop\Api\Helper;
 use HugaShop\Api\Settings;
+use HugaShop\Api\Product\Product;
 use HugaShop\Api\Product\ProductBrand;
 use HugaShop\Api\Product\ProductOption;
-use HugaShop\Api\Product\ProductVariant;
 use HugaShop\Api\Finance\FinanceCurrency;
-use HugaShop\Api\Product\ProductCategory;
 use Symfony\Contracts\Cache\ItemInterface;
 
 class FeedGenerator
@@ -82,61 +81,50 @@ class FeedGenerator
             // TODO: Select all child categories
             $filter['category_id'] = $pricefeed_categories;
             $filter['visible'] = 1;
-            $product_variants = ProductVariant::getVariants($filter, ['product_id' => 'ASC', 'position' => 'ASC'], ['Product', 'Image', 'ProductCategory']);
+            $products = Product::getList($filter, ['product_id' => 'ASC', 'position' => 'ASC'], ['images', 'category']);
 
             $feed_data = [];
-            $prev_product_id = null;
-            foreach ($product_variants as $pv) {
-
-                $product = []; # clean
+            foreach ($products as $product) {
 
                 // Hard Required params
-                if (empty($pv->image) || empty($pv->product_name) || empty($pv->price)) {
+                if (empty($product->image) || empty($product->name) || empty($product->price)) {
                     continue;
                 }
 
                 // Disable
-                if (!empty($pv->disable)) {
+                if (!empty($product->disable)) {
                     continue;
                 }
 
                 // Не показываеам "нет в наличии"
-                if ($pv->stock === 0  and empty(self::$pricefeed->show_out_stock)) {
+                if ($product->stock === 0  and empty(self::$pricefeed->show_out_stock)) {
                     continue;
                 }
 
-                $variant_url = '';
-                if ($prev_product_id === $pv->product_id) {
-                    $variant_url = '?variant=' . $pv->variant_id;
-                }
-
-                $prev_product_id = $pv->product_id;
-
-
                 // ID
-                if (empty(self::$pricefeed->sku_id) || empty($pv->sku)) {
-                    $product['id'] = $pv->variant_id;
+                if (empty(self::$pricefeed->sku_id) || empty($product->sku)) {
+                    $product['id'] = $product->id;
                 } else {
-                    $product['id'] = $pv->sku; # В качестве id используется артикул
+                    $product['id'] = $product->sku; # В качестве id используется артикул
                 }
 
 
-                $product['link'] = Config::get('root_url') . '/tovar-' . $pv->url;
+                $product['link'] = Config::get('root_url') . '/tovar-' . $product->url;
                 $product['condition'] =  'new';
 
 
                 // Формируем название + вариант
                 // Information in these fields should be 65 characters or less
-                $product['title'] = mb_substr($pv->product_name . ($pv->variant_name ? ' - ' . $pv->variant_name : ''), 0, 65);
+                $product['title'] = mb_substr($product->name . ($product->variant_name ? ' - ' . $product->variant_name : ''), 0, 65);
 
 
                 // TIP: Если использовать основное описание товара - Слишком много нерелевантных слов.
                 // Items need to have descriptions to show in your shop and ads.
-                $product['description'] = $pv->annotation ? strip_tags($pv->annotation) : $product['title'];
+                $product['description'] = $product->annotation ? strip_tags($product->annotation) : $product['title'];
 
 
                 // + характеристики
-                $options = ProductOption::getProductOptions($pv->product_id);
+                $options = ProductOption::getProductOptions($product->id);
                 $array_options = [];
                 foreach ($options as $item) {
                     $array_options[] = $item->name . ': ' . $item->value;
@@ -151,13 +139,13 @@ class FeedGenerator
                 // Main image
                 // Don't include text in your images that overlays the product, calls to action, promo codes, watermarks or time-sensitive information like temporary price drops.
                 // Images must be in JPEG or PNG format, at least 500 x 500 pixels and up to 8 MB
-                $product['image_link'] = Image::getURL($pv->image, 1080, 1080);
+                $product['image_link'] = Image::getURL($product->image, 1080, 1080);
 
 
                 // Additional images
                 // Links to up to 20 additional images of your item, separated by a comma (,), semicolon (;), space ( ) or vertical bar (|).
                 // Follow the same image specifications as image_link.
-                $images = Image::getImages($pv->product_id, 'product');
+                $images = Image::getImages($product->id, 'product');
                 $images = $images->slice(1)->values();
                 if ($images->isNotEmpty()) {
                     $product['additional_image_link'] = $images->map(function ($image) {
@@ -167,10 +155,10 @@ class FeedGenerator
 
 
                 // Цена товара со скидкой
-                $price = round(FinanceCurrency::priceConvert($pv->price, $main_currency->id, false), 2);
-                if (!is_null($pv->old_price) && $pv->old_price > $pv->price) {
+                $price = round(FinanceCurrency::priceConvert($product->price, $main_currency->id, false), 2);
+                if (!is_null($product->old_price) && $product->old_price > $product->price) {
                     $product['sale_price'] = $price . ' ' . $main_currency->code;
-                    $price = round(FinanceCurrency::priceConvert($pv->old_price, $main_currency->id, false), 2);
+                    $price = round(FinanceCurrency::priceConvert($product->old_price, $main_currency->id, false), 2);
                 }
                 $product['price'] =  $price . ' ' . $main_currency->code;
 
@@ -179,11 +167,9 @@ class FeedGenerator
                  * Пути к категории товара
                  * @link https://support.google.com/merchants/answer/6324436?sjid=3754571142713809101-NC#Format
                  */
-                $categories = ProductCategory::getCategories(['product_id' => $pv->product_id]);
-                if (!empty($categories)) {
+                if (!empty($product->category)) {
                     $categories_array = [];
-                    $categories = reset($categories);
-                    foreach ($categories->path as $category) {
+                    foreach ($$product->category->path as $category) {
                         $categories_array[] = $category->name;
                     }
                     $product['google_product_category'] =  join(" > ", $categories_array);
@@ -191,8 +177,8 @@ class FeedGenerator
 
 
                 // Brand
-                if (!empty($pv->brand_id)) {
-                    $brandItem = ProductBrand::getBrand((int)$pv->brand_id);
+                if (!empty($product->brand_id)) {
+                    $brandItem = ProductBrand::getBrand((int)$product->brand_id);
                     if (!is_null($brandItem)) {
                         $product['brand'] = $brandItem->name;
                     }
@@ -204,8 +190,8 @@ class FeedGenerator
 
 
                 // Availability
-                if (!is_null($pv->stock)) {
-                    if ($pv->stock > 0) {
+                if (!is_null($product->stock)) {
+                    if ($product->stock > 0) {
                         $product['availability'] = 'in stock';
                     } else {
                         $product['availability'] = 'out of stock';

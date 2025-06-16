@@ -450,7 +450,7 @@ class Product extends BaseModel
 
     /**
      * Live update product stock
-     * @param int $variant_id
+     * @param int $product_id
      * @param int $amount
      */
     public static function updateStock(int $product_id, int $amount)

@@ -72,7 +72,7 @@ class Cart extends BaseModel
             if (!empty($user_cart = Cart::getCart(['user_id' => User::authUser('id'), 'ordered' => false]))) {
                 if (!empty($user_purchases = CartPurchase::getCartPurchases(['cart_id' => $user_cart->id]))) {
                     foreach ($user_purchases as $purch) {
-                        CartPurchase::addCartPurchase($purch->variant_id, $purch->amount);
+                        CartPurchase::addCartPurchase($purch->product_id, $purch->amount);
                     }
                     Cart::deleteCart($user_cart->id);
                 }

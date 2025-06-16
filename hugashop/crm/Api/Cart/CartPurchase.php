@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 4.0
+ * @version 4.1
  *
  */
 
@@ -12,7 +12,6 @@ namespace HugaShop\Api\Cart;
 
 use HugaShop\Api\BaseModel;
 use HugaShop\Api\Product\Product;
-use HugaShop\Api\Product\ProductVariant;
 
 class CartPurchase extends BaseModel
 {
@@ -75,16 +74,16 @@ class CartPurchase extends BaseModel
 
 
     /**
-     * Add product variant to cart
-     * @param int $variant_id
+     * Add product to cart
+     * @param int $product_id
      * @param int|null $amount
      */
-    public static function addCartPurchase(int $variant_id, ?int $amount = 1)
+    public static function addCartPurchase(int $product_id, ?int $amount = 1)
     {
-        $variant = ProductVariant::getVariant($variant_id);
+        $product = Product::getOne($product_id);
 
-        // Check is variant available
-        if (empty($variant) || ($variant->stock == 0 and !$variant->custom)) {
+        // Check is product available
+        if (empty($product) || ($product->stock == 0 and !$product->custom)) {
             return false;
         }
 
@@ -97,7 +96,7 @@ class CartPurchase extends BaseModel
 
             $purchases = self::getCartPurchases(['cart_id' => $cart_id]);
             foreach ($purchases as $purchase) {
-                if ($purchase->variant_id == $variant->id) {
+                if ($purchase->product_id == $product->id) {
                     $amount = max(1, $amount + $purchase->amount);
                     $new_purchase = false;
                 }
@@ -110,8 +109,8 @@ class CartPurchase extends BaseModel
         }
 
         // Не дадим больше чем на складе, если не под заказ
-        if (empty($variant->custom)) {
-            $amount = min($amount, $variant->stock);
+        if (empty($product->custom)) {
+            $amount = min($amount, $product->stock);
         }
 
         if (empty($cart_id)) {
@@ -120,8 +119,7 @@ class CartPurchase extends BaseModel
 
         $data = [
             'cart_id' => $cart_id,
-            'product_id' => $variant->product_id,
-            'variant_id' => $variant->id,
+            'product_id' => $product->id,
             'amount' => $amount,
             'created' => date('Y-m-d H:i:s'),
         ];
@@ -130,17 +128,17 @@ class CartPurchase extends BaseModel
             return self::create($data)->id;
         }
 
-        return self::updatePurchase($cart_id, $variant->id, ['amount' => $amount, 'disabled' => 0]);
+        return self::updatePurchase($cart_id, $product->id, ['amount' => $amount, 'disabled' => 0]);
     }
 
 
     /**
      * Update
      * @param int|null $cart_id
-     * @param int $variant_id
+     * @param int $product_id
      * @param array|object $purchase
      */
-    public static function updatePurchase(int|null $cart_id, int $variant_id, array|object $purchase)
+    public static function updatePurchase(int|null $cart_id, int $product_id, array|object $purchase)
     {
 
         // Get cart
@@ -155,8 +153,8 @@ class CartPurchase extends BaseModel
         if (isset($purchase->amount)) {
 
             // Выберем товар из базы, заодно убедившись в его существовании
-            $variant = ProductVariant::getVariant($variant_id);
-            if (empty($variant) || ($variant->stock == 0 and !$variant->custom)) {
+            $product = Product::getOne($product_id);
+            if (empty($product) || ($product->stock == 0 and !$product->custom)) {
                 return false;
             }
 
@@ -164,14 +162,14 @@ class CartPurchase extends BaseModel
             $purchase->amount = max(1, $purchase->amount);
 
             // Не дадим больше чем на складе, если не под заказ
-            if (empty($variant->custom)) {
-                $purchase->amount = min($purchase->amount, $variant->stock);
+            if (empty($product->custom)) {
+                $purchase->amount = min($purchase->amount, $product->stock);
             }
         }
 
         return self::query()
             ->where('cart_id', $cart_id)
-            ->where('variant_id', $variant_id)
+            ->where('product_id', $product_id)
             ->update((array)$purchase);
     }
 
@@ -179,9 +177,9 @@ class CartPurchase extends BaseModel
     /**
      * Удаление товара из корзины
      * @param int $cart_id
-     * @param int $variant_id
+     * @param int $product_id
      */
-    public static function deletePurchase(?int $cart_id = null, ?int $variant_id = null)
+    public static function deletePurchase(?int $cart_id = null, ?int $product_id = null)
     {
         // Get cart
         if (is_null($cart_id)) {
@@ -194,8 +192,8 @@ class CartPurchase extends BaseModel
 
         $query = self::query();
 
-        if (!empty($variant_id)) {
-            $query->where('variant_id', $variant_id);
+        if (!empty($product_id)) {
+            $query->where('product_id', $product_id);
         }
 
         if (!empty($cart_id)) {

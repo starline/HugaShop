@@ -87,7 +87,7 @@
 							<div class="variant">
 								<input type="radio" class="btn-check" name="variant" value="{$v->id}" id="variant_{$v->id}"
 									autocomplete="off" {if $product->variant->id == $v->id}checked{/if}
-									{if !$v->stock AND !$v->custom}disabled{/if} variant_sku="{$v->sku}" variant_id="{$v->id}"
+									{if !$v->stock AND !$v->custom}disabled{/if} variant_sku="{$v->sku}" 
 									product_name="{$product->name}" variant_name="{$v->name}" price="{$v->price|price_html:clean}"
 									max_stock="{$v->stock}" old_price="{$v->old_price|price_html:clean}" />
 

@@ -23,7 +23,7 @@
 							<div class="py-4 border-top">
 
 								<div class="delete mt-5">
-									<a href="{'CartRemove'|urll:[variant_id => $purchase->variant->id]}" class="ajax">
+									<a href="{'CartRemove'|urll:[product_id => $purchase->product->id]}" class="ajax">
 										<img loading="lazy" src="{'/images/delete.png'|asset}" data-bs-toggle="tooltip"
 											title="Удалить из корзины" alt="Удалить из корзины">
 									</a>
@@ -40,13 +40,14 @@
 										<div>
 											<a
 												href="{'Product'|urll:[url => $purchase->product->url]}">{$purchase->product->name}</a>
-											{if $purchase->variant->name} - {$purchase->variant->name}{/if}
+											{if $purchase->product->variant_name} - {$purchase->product->variant_name}{/if}
 										</div>
 
 										<div class="row mt-1 g-4 text-end">
 											<div class="col-12 col-lg-8">
-												<select class="amount ms-auto form-select text-end" name="amounts[{$purchase->variant->id}]">
-													{$loop = ($purchase->variant->custom || $purchase->variant->stock == null) ? $settings->max_order_amount : $purchase->variant->stock + 1}
+												<select class="amount ms-auto form-select text-end"
+													name="amounts[{$purchase->product->id}]">
+													{$loop = ($purchase->product->custom || $purchase->product->stock == null) ? $settings->max_order_amount : $purchase->product->stock + 1}
 													{section name=amounts start=1 loop=$loop step=1}
 														<option value="{$smarty.section.amounts.index}"
 															{if $purchase->amount == $smarty.section.amounts.index}selected{/if}>
@@ -56,7 +57,7 @@
 											</div>
 
 											<div class="col-12 col-lg-4 fs-4">
-												{($purchase->variant->price * $purchase->amount)|price_html|raw}
+												{($purchase->product->price * $purchase->amount)|price_html|raw}
 											</div>
 										</div>
 									</div>
