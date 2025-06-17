@@ -108,6 +108,7 @@ class OrderController extends BaseAdminController
                 Design::setFlashMessage('update', Order::updateOrder($order->id, $order));
             }
 
+
             // Обновляем метки заказа
             $order_labels = Request::post('order_labels', 'array');
             OrderLabel::updateOrderLabels($order->id, $order_labels);
@@ -152,7 +153,7 @@ class OrderController extends BaseAdminController
             ////////////////////////////////////////////
             // Статус заказа, обновление склада товаров
             ///////////////////////////////////////////
-            $order_status = Request::post('status', 'string');
+            $order_status = Request::post('status', 'int');
 
 
             if ($order_status == 0) { # Новый

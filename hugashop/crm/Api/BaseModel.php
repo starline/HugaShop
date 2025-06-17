@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.7
+ * @version 1.8
  *
  */
 
@@ -100,8 +100,8 @@ abstract class BaseModel extends Model
      */
     public static function create(array|object $values): object
     {
-        $values = static::validateValues($values);
-        return parent::query()->create($values);
+        $values = self::validateValues($values);
+        return static::query()->create($values);
     }
 
 
@@ -165,7 +165,7 @@ abstract class BaseModel extends Model
      */
     public static function deleteOne(array|int $ids)
     {
-        return self::whereId($ids)->delete();
+        return static::whereId($ids)->delete();
     }
 
 
