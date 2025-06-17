@@ -251,111 +251,116 @@
 							value="{$purchase->product_id}" />
 						<input type="hidden" name="purchases[{$purchase->position}][id]" value="{$purchase->id}" />
 
-						<div class="move">
-							<div class="move_zone"></div>
-						</div>
-
-						<div class="image">
-							<img class="product_icon" data-bs-toggle="tooltip"
-								src="{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60:60}{else}{'images/cargo.png'|asset}{/if}"
-								data-bs-toggle="tooltip" title="{$purchase->product->variant_name}" />
-						</div>
-
-						<div class="col row">
-							<div class="col">
-								<a href="/admin/product/{$purchase->product_id}/price">{$purchase->product_name}</a>
-							</div>
-
-							<div class="col-3 text-end purchase_variant">
-								<i data-bs-toggle="tooltip"
-									title="{$purchase->variant_name}">{$purchase->variant_name|truncate:20:'…':true:false}</i>
-
-								{if $purchase->sku}
-									<div class="round_box copy_field" value="{$purchase->sku}">{$purchase->sku}
-										<div class="copy_hover" data-bs-toggle="tooltip" data-bs-original-title="Скопировать">
-											<i class="material-icons">content_copy</i>
-										</div>
+						<div class="col row gy-5">
+							<div class="col-12 col-md-6">
+								<div class="row">
+									<div class="move">
+										<div class="move_zone"></div>
 									</div>
-								{/if}
-							</div>
-
-							<div class="col-2 text-end price">
-								<div class="view_edit_purchase">
-									<div class="row_alert">
-										{if 'order_finance'|user_access}
-											<span class="js_change">{$purchase->cost_price|number:2}</span>
-											<span class="price_sign">{$currency->sign}</span>
-										{/if}
+									<div class="image">
+										<img class="product_icon"
+											src="{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60:60}{else}{'images/cargo.png'|asset}{/if}" />
 									</div>
-									{if 'product_price'|user_access}
-										<div class="view_purchase">
-											{$purchase->price|price_html|raw}
-										</div>
-									{/if}
-									<div class="edit_purchase input-group input-group-sm" style="display:none;">
-										<input class="form-control text-end" type="text"
-											name="purchases[{$purchase->position}][price]" value="{$purchase->price}" size="5"
-											maxlength="10" {if !'order_finance'|user_access}disabled{/if} />
-										<span class="input-group-text">{$currency->sign}</span>
+									<div class="col">
+										<a class="product_name"
+											href="/admin/product/{$purchase->product_id}/price">{$purchase->product_name}</a>
+										<div class="variant_name">{$purchase->variant_name}</div>
 									</div>
 								</div>
 							</div>
 
-
-							<div class="col-2 text-end amount">
-								<div class="view_edit_purchase">
-									{if $purchase->product->weight}
-										<div class="row_alert">
-											<span
-												class="js_change">{($purchase->product->weight * $purchase->amount)|number:2}</span>
-											<span class="price_sign">{$settings->weight_units}</span>
-										</div>
-									{/if}
-									<div class="view_purchase">
-										{$purchase->amount} {$settings->units}
-									</div>
-
-									<div class="edit_purchase" style="display:none;">
-
-										{if $purchase->product}
-											{math equation="min(max(x,y),z)" x=$purchase->product->stock + $purchase->amount * ($order->closed) y=$purchase->amount z=$settings->max_order_amount assign="loop"}
-										{else}
-											{math equation="x" x=$purchase->amount assign="loop"}
+							<div class="col-12 col-md-6">
+								<div class="row gx-2">
+									<div class="col-2 text-end sku">
+										{if $purchase->sku}
+											<div class="round_box copy_field" value="{$purchase->sku}">{$purchase->sku}
+												<div class="copy_hover" data-bs-toggle="tooltip"
+													data-bs-original-title="Скопировать">
+													<i class="material-icons">content_copy</i>
+												</div>
+											</div>
 										{/if}
-
-										<select class="form-select form-select-sm text-end"
-											name="purchases[{$purchase->position}][amount]">
-											{section name=amounts start=1 loop=$loop+1 step=1}
-												<option value="{$smarty.section.amounts.index}"
-													{if $purchase->amount == $smarty.section.amounts.index}selected{/if}>
-													{$smarty.section.amounts.index} {$settings->units}</option>
-											{/section}
-										</select>
 									</div>
-								</div>
-							</div>
 
-
-							<div class="col-2 text-end stock">
-								<div class="view_edit_purchase">
-									{if $purchase->product}
-										<div class="row_alert">
-											{if $purchase->product->movements_amount}
-												<div class="wmovements" data-bs-toggle="tooltip" data-bs-html="true"
-													title="{foreach $purchase->product->movements as $mov}<div class='text-nowrap'>Поставка №{$mov->move_id} | {$mov->awaiting_date|date} | +{$mov->amount}</div>{/foreach}">
-													+{$purchase->product->movements_amount}
+									<div class="col-4 text-end price">
+										<div class="view_edit_purchase">
+											<div class="row_alert">
+												{if 'order_finance'|user_access}
+													<span class="js_change">{$purchase->cost_price|number:2}</span>
+													<span class="price_sign">{$currency->sign}</span>
+												{/if}
+											</div>
+											{if 'product_price'|user_access}
+												<div class="view_purchase">
+													{$purchase->price|price_html|raw}
 												</div>
 											{/if}
-											{if !$order->closed and $purchase->product->stock < $purchase->amount}
-												<img src="{'images/error.png'|asset}" data-bs-toggle="tooltip"
-													title='На складе остал{$purchase->product->stock|plural:'ся':'ось'} {$purchase->product->stock} товар{$purchase->product->stock|plural:'':'ов':'а'}'>
+											<div class="edit_purchase input-group input-group-sm" style="display:none;">
+												<input class="form-control text-end" type="text"
+													name="purchases[{$purchase->position}][price]" value="{$purchase->price}"
+													size="5" maxlength="10" {if !'order_finance'|user_access}disabled{/if} />
+												<span class="input-group-text">{$currency->sign}</span>
+											</div>
+										</div>
+									</div>
+
+
+									<div class="col-3 text-end amount">
+										<div class="view_edit_purchase">
+											{if $purchase->product->weight}
+												<div class="row_alert">
+													<span
+														class="js_change">{($purchase->product->weight * $purchase->amount)|number:2}</span>
+													<span class="price_sign">{$settings->weight_units}</span>
+												</div>
+											{/if}
+											<div class="view_purchase">
+												{$purchase->amount} {$settings->units}
+											</div>
+
+											<div class="edit_purchase" style="display:none;">
+
+												{if $purchase->product}
+													{math equation="min(max(x,y),z)" x=$purchase->product->stock + $purchase->amount * ($order->closed) y=$purchase->amount z=$settings->max_order_amount assign="loop"}
+												{else}
+													{math equation="x" x=$purchase->amount assign="loop"}
+												{/if}
+
+												<select class="form-select form-select-sm text-end"
+													name="purchases[{$purchase->position}][amount]">
+													{section name=amounts start=1 loop=$loop+1 step=1}
+														<option value="{$smarty.section.amounts.index}"
+															{if $purchase->amount == $smarty.section.amounts.index}selected{/if}>
+															{$smarty.section.amounts.index} {$settings->units}</option>
+													{/section}
+												</select>
+											</div>
+										</div>
+									</div>
+
+
+									<div class="col-3 text-end stock">
+										<div class="view_edit_purchase">
+											{if $purchase->product}
+												<div class="row_alert">
+													{if $purchase->product->movements_amount}
+														<div class="wmovements" data-bs-toggle="tooltip" data-bs-html="true"
+															title="{foreach $purchase->product->movements as $mov}<div class='text-nowrap'>Поставка №{$mov->move_id} | {$mov->awaiting_date|date} | +{$mov->amount}</div>{/foreach}">
+															+{$purchase->product->movements_amount}
+														</div>
+													{/if}
+													{if !$order->closed and $purchase->product->stock < $purchase->amount and !$purchase->product->stock|is_null}
+														<img src="{'images/error.png'|asset}" data-bs-toggle="tooltip"
+															title='На складе остал{$purchase->product->stock|plural:'ся':'ось'} {$purchase->product->stock} товар{$purchase->product->stock|plural:'':'ов':'а'}'>
+													{/if}
+												</div>
+
+												<div class="variant_stock">остаток: <span
+														class="js_change">{if $purchase->product->stock|is_null}∞{else}{$purchase->product->stock}{/if}</span>
+												</div>
 											{/if}
 										</div>
-
-										<div class="variant_stock">остаток: <span
-												class="js_change">{$purchase->product->stock}</span>
-										</div>
-									{/if}
+									</div>
 								</div>
 							</div>
 						</div>
@@ -382,62 +387,66 @@
 					<input type="hidden" name="purchases[INDEX][product_id]" value="">
 					<input type="hidden" name="purchases[INDEX][id]" value="">
 
-					<div class="move">
-						<div class="move_zone"></div>
-					</div>
-
-					<div class="image">
-						<img class="product_icon" src="">
-					</div>
-
-					<div class="col row">
-						<div class="col">
-							<a class="add_name" href=""></a>
+					<div class="col row gy-5">
+						<div class="col-12 col-md-6">
+							<div class="row">
+								<div class="move">
+									<div class="move_zone"></div>
+								</div>
+								<div class="image">
+									<img class="product_icon" src="" />
+								</div>
+								<div class="col">
+									<a class="product_name" href=""></a>
+									<div class="variant_name"></div>
+								</div>
+							</div>
 						</div>
 
-						<div class="col-3 text-end purchase_variant">
-							<div class="view_purchase">
-								<i data-bs-toggle="tooltip" title=""></i>
-								<div class="round_box copy_field" value="">
-									<div class="copy_hover" data-bs-toggle="tooltip" data-bs-original-title="Скопировать">
-										<i class="material-icons">content_copy</i>
+						<div class="col-12 col-md-6">
+							<div class="row gx-2">
+								<div class="col-2 text-end sku">
+									<div class="round_box copy_field" value="">
+										<div class="copy_hover" data-bs-toggle="tooltip"
+											data-bs-original-title="Скопировать">
+											<i class="material-icons">content_copy</i>
+										</div>
 									</div>
 								</div>
-								<input type="hidden" name="purchases[INDEX][sku]" value="">
-							</div>
-						</div>
 
-						<div class="col-2 text-end price">
-							<div class="view_edit_purchase">
-								{if 'order_finance'|user_access}
-									<div class="row_alert">
-										<span class="js_change"></span>
-										<span class="price_sign">{$currency->sign}</span>
+								<div class="col-4 text-end price">
+									<div class="view_edit_purchase">
+										<div class="row_alert">
+											{if 'order_finance'|user_access}
+												<span class="js_change"></span>
+												<span class="price_sign">{$currency->sign}</span>
+											{/if}
+										</div>
+										<div class="edit_purchase input-group input-group-sm">
+											<input class="form-control text-end" type="text" name="purchases[INDEX][price]"
+												value="" size="5" {if !'order_finance'|user_access} disabled {/if} />
+											<span class="input-group-text">{$currency->sign}</span>
+										</div>
 									</div>
-								{/if}
-								<div class="edit_purchase input-group input-group-sm">
-									<input class="form-control text-end" type="text" name="purchases[INDEX][price]" value=""
-										size="5" {if !'order_finance'|user_access} disabled {/if} />
-									<span class="input-group-text">{$currency->sign}</span>
 								</div>
-							</div>
-						</div>
 
-						<div class="col-2 text-end amount">
-							<div class="view_edit_purchase">
-								<div class="row_alert">
-									<span class="js_change"></span>
-									<span class="price_sign">{$settings->weight_units}</span>
+								<div class="col-3 text-end amount">
+									<div class="view_edit_purchase">
+										<div class="row_alert">
+											<span class="js_change"></span>
+											<span class="price_sign">{$settings->weight_units}</span>
+										</div>
+										<select class="form-select form-select-sm text-end"
+											name="purchases[INDEX][amount]"></select>
+									</div>
 								</div>
-								<select class="form-select form-select-sm text-end"
-									name="purchases[INDEX][amount]"></select>
-							</div>
-						</div>
 
-						<div class="col-2 text-end stock">
-							<div class="view_edit_purchase">
-								<div class="row_alert"></div>
-								<div class="variant_stock">остаток: <span class="js_change"></span></div>
+								<div class="col-3 text-end stock">
+									<div class="view_edit_purchase">
+										<div class="row_alert"></div>
+										<div class="variant_stock">остаток: <span class="js_change"></span></div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -457,6 +466,7 @@
 			{if $order->purchases and $can_edit}
 				<div class="edit_purchases dash_link">редактировать покупки</div>
 			{/if}
+
 
 			{if $order->purchases}
 				<div class="subtotal mt-4">
@@ -527,9 +537,9 @@
 							<option value="">Не выбрана</option>
 							{if !$deliveries|empty}
 								{foreach $deliveries as $d}
-									{if $d->enabled || $d->enabled_public || $d->id == $delivery->id}
+									{if $d->enabled || $d->enabled_public || $d->id == $order->delivery_method->id}
 										<option class="{if !$d->enabled_public}disabled{/if}" value="{$d->id}"
-											{if !$delivery->id|empty and $d->id == $delivery->id}selected{/if}>
+											{if !$order->delivery_method->id|empty and $d->id == $order->delivery_method->id}selected{/if}>
 											{$d->name}</option>
 									{/if}
 								{/foreach}
@@ -556,9 +566,9 @@
 				</div>
 
 				<!-- Модуль доставки -->
-				{if !$delivery->module|empty}
+				{if !$order->delivery_method->module|empty}
 					<div class="delivery_method_module">
-						{get_delivery_module_html order_id=$order->id module=$delivery->module view_type='admin'}
+						{get_delivery_module_html order_id=$order->id module=$order->delivery_method->module view_type='admin'}
 					</div>
 				{/if}
 			</div>
@@ -623,7 +633,6 @@
 						</div>
 					{/if}
 				{/if}
-
 				{if !$order->payment_price|empty}
 					<div class="main_line">
 						<small>К оплате:</small>
@@ -633,7 +642,7 @@
 							{if !$order->payment_method->currency->sign|empty}
 								<span class="price_sign">{$order->payment_method->currency->sign}</span>
 							{else}
-								<span class="price_sign">{$order->payment_method->currency->sign}</span>
+								<span class="price_sign">{$currency->sign}</span>
 							{/if}
 						</b>
 					</div>
@@ -651,6 +660,8 @@
 					<button class="btn btn-primary" type="submit">Сохранить</button>
 				</div>
 			{/if}
+
+
 
 			<!-- Финансы -->
 			{if  'order_finance'|user_access AND $order->id}
@@ -777,8 +788,8 @@
 						let product = suggestion.data;
 
 						new_item.removeAttr('id');
-						new_item.find('a.add_name').html(product.name);
-						new_item.find('a.add_name').attr('href', '/admin/product/' + product.id +
+						new_item.find('a.product_name').html(product.name);
+						new_item.find('a.product_name').attr('href', '/admin/product/' + product.id +
 							'/price');
 
 						new_item.find('input[name*=product_id]').val(product.id);
@@ -786,16 +797,16 @@
 						new_item.find('input[name*=price]').val(product.price);
 
 						if (product.variant_name) {
-							new_item.find('.view_purchase i').text(product.variant_name);
+							new_item.find('.variant_name').text(product.variant_name);
 						} else {
-							new_item.find('.view_purchase i').remove();
+							new_item.find('.variant_name').remove();
 						}
 
 						if (product.sku) {
-							new_item.find('.view_purchase .copy_field').attr('value', product.sku);
-							new_item.find('.view_purchase .copy_field').text(product.sku);
+							new_item.find('.sku .copy_field').attr('value', product.sku);
+							new_item.find('.sku .copy_field').text(product.sku);
 						} else {
-							new_item.find('.view_purchase .copy_field').remove();
+							new_item.find('.sku .copy_field').remove();
 						}
 
 						new_item.find('.stock .js_change').text(product.stock);

@@ -45,8 +45,8 @@ class OrderController extends BaseFrontController
         }
 
         // подключаем плагин Smarty
-        Design::setFunctionPlugin("get_payment_module_html", OrderPayment::class, 'getPaymentModuleHtml');    # Форма оплаты
-        Design::setFunctionPlugin("get_delivery_module_html", OrderDelivery::class, 'getDeliveryModuleHtml'); # Выводим модуль доставки
+        Design::setFunctionPlugin('get_payment_module_html',    OrderPayment::class,    'getPaymentModuleHtml');    # Форма оплаты
+        Design::setFunctionPlugin('get_delivery_module_html',   OrderDelivery::class,   'getDeliveryModuleHtml');   # Выводим модуль доставки
 
         $order->subtotal_price = 0;
         $order->purchases_count = 0;

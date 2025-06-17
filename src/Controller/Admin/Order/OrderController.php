@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.4
+ * @version 2.5
  *
  */
 
@@ -109,7 +109,7 @@ class OrderController extends BaseAdminController
             }
 
             // Обновляем метки заказа
-            $order_labels = Request::post('order_labels', 'array') ?: [];
+            $order_labels = Request::post('order_labels', 'array');
             OrderLabel::updateOrderLabels($order->id, $order_labels);
 
 
@@ -146,7 +146,7 @@ class OrderController extends BaseAdminController
             }
 
             // Обновляем общую стоимость и прибыль, комиссию менеджера
-            Order::updateTotalPrice($order->id, false);
+            Order::updateTotalPrice($order->id, modified: false);
 
 
             ////////////////////////////////////////////
@@ -356,17 +356,20 @@ class OrderController extends BaseAdminController
                 return $this->redirectToRoute('OrderListAdmin');
             }
 
-            /*
+            $total =  new \stdClass();
+            $total->purchases_weight =  0;
+            $total->purchases_count =   0;
+            $total->purchases_price =   0;
+            $total->payments_price =    0;
+
             // Выбираем товары заказа
+            foreach ($order->purchases as $purchase) {
+                $total->purchases_weight += $purchase->product->weight * $purchase->amount; # Общий вес
+                $total->purchases_count += $purchase->amount;
+                $total->purchases_price += $purchase->price * $purchase->amount; # Общая стоимость товаров. Без учета скидок
 
-                    // Общий вес
-                    $total->purchases_weight += $purchase->variant->weight * $purchase->amount;
+            }
 
-                    // Общая стоимость товаров. Без учета скидок
-                    $total->purchases_price += $purchase->price * $purchase->amount;
-                    $total->purchases_count += $purchase->amount;
-                }
-            }*/
 
             // Выбранный Менеджер
             if (!empty($order->manager_id)) {
@@ -380,11 +383,6 @@ class OrderController extends BaseAdminController
                 Design::assign('order_manager', $order_manager);
             }
 
-            $total =  new \stdClass();
-            $total->purchases_weight =  0;
-            $total->purchases_count =   0;
-            $total->purchases_price =   0;
-            $total->payments_price =    0;
 
             // Платежи
             foreach ($order->payments as $payment) {
@@ -394,12 +392,11 @@ class OrderController extends BaseAdminController
                 $total->payments_price += $sign * $payment->currency_amount ?? $sign * $payment->amount;
             }
 
-            // Выбираем предыдущий заказ
-            Design::assign('prev_order', Order::getPrevOrder($order->id, $order->status));
-
-            // Get Cart Info
-            Design::assign('cart', Cart::getCartInfo(['order_id' => $order->id]));
+            Design::assign('total', $total);
+            Design::assign('prev_order', Order::getPrevOrder($order->id, $order->status)); # Выбираем предыдущий заказ
+            Design::assign('cart', Cart::getCartInfo(['order_id' => $order->id])); # Get Cart Info
         }
+
 
         // Определяем возможность редактировать
         $can_edit = false;
@@ -407,24 +404,16 @@ class OrderController extends BaseAdminController
             $can_edit = true;
         }
 
-        // Все способы доставки
-        // Потом в шаблоне .tpl выберем какой отображать
-        $deliveries = OrderDelivery::getDeliveryMethods();
-
-        // Все способы оплаты
-        // Потом в шаблоне .tpl выберем какой отображать
-        $payment_methods = OrderPayment::getPaymentMethods();
-
         Design::assign('status',             $order->status ?? 0); # Default Status
         Design::assign('order',              $order);
-        Design::assign('total',              $total);
+
         Design::assign('labels',             OrderLabel::getLabels()); # Все Метки заказов
-        Design::assign('payment_methods',    $payment_methods);
-        Design::assign('deliveries',         $deliveries);
+        Design::assign('payment_methods',    OrderPayment::getPaymentMethods()); # Потом в шаблоне .tpl выберем какой отображать
+        Design::assign('deliveries',         OrderDelivery::getDeliveryMethods()); # Потом в шаблоне .tpl выберем какой отображать
         Design::assign('can_edit',           $can_edit);
 
-        Design::setFunctionPlugin("get_payment_module_html", OrderPayment::class, 'getPaymentModuleHtml');
-        Design::setFunctionPlugin("get_delivery_module_html", OrderDelivery::class, 'getDeliveryModuleHtml');
+        Design::setFunctionPlugin('get_payment_module_html',    OrderPayment::class,    'getPaymentModuleHtml');
+        Design::setFunctionPlugin('get_delivery_module_html',   OrderDelivery::class,   'getDeliveryModuleHtml');
 
         return $this->fetchResponse('order/order.tpl');
     }

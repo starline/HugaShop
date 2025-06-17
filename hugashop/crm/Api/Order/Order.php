@@ -402,7 +402,7 @@ class Order extends BaseModel
     {
 
         // Get order informatiion
-        if (empty($order = Order::getOrder(intval($order_id)))) {
+        if (empty($order = Order::getOrder($order_id))) {
             return false;
         }
 
@@ -413,21 +413,21 @@ class Order extends BaseModel
         }
 
         // Выбираем все товары заказа
-        $order_purchases = OrderPurchase::getPurchases(array('order_id' => $order->id));
+        $order_purchases = OrderPurchase::getPurchases(['order_id' => $order->id]);
 
-        // Выбираем общую стоимость товаров заказа (чистая сумма)
+        
         $order_clean_price = 0;
-        foreach ($order_purchases as $purchase) {
-            $order_clean_price += $purchase->price * $purchase->amount;
-        }
-
-        // Выбираем общую себестоимость товаров заказов
         $order_cost_price = 0;
         foreach ($order_purchases as $purchase) {
+
+            // Выбираем общую стоимость товаров заказа (чистая сумма)
+            $order_clean_price += $purchase->price * $purchase->amount;
+
+            // Выбираем общую себестоимость товаров заказов
             $order_cost_price += $purchase->cost_price * $purchase->amount;
         }
 
-
+        
         // Вычисляем стоимость заказа со скидкой и купоном
         $order_discount_price = $order_clean_price * (100 - $order->discount) / 100 - $order->coupon_discount;
         $set_total_price = Database::placehold("o.total_price = ? ", $order_discount_price);

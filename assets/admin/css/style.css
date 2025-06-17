@@ -1904,6 +1904,8 @@ i.material-icons.shopping_cart::before {
 }
 
 .icons a.send_sms {
+	width: auto;
+	background-position-x: left;
 	background-image: url(../images/send_sms_gray.png);
 	font-size: 0.9rem;
 	margin: 0;
@@ -1912,6 +1914,8 @@ i.material-icons.shopping_cart::before {
 }
 
 .icons a.delivery_info_update {
+	width: auto;
+	background-position-x: left;
 	padding: 2px 0 2px 21px;
 	background-image: url(../images/update.png);
 	font-size: 0.9rem;
@@ -2063,8 +2067,6 @@ textarea.editor_small {
 	background-image: url(../images/plus-circle.png);
 }
 
-
-
 span.alert {
 	background-image: url(../images/bullet_error.png);
 	background-repeat: no-repeat;
@@ -2074,6 +2076,61 @@ span.alert {
 
 
 /* Заказы */
+.list.purchases .purchase_variant {
+	font-size: 0.85rem;
+	color: var(--text-dim-color);
+}
+
+.list.purchases .variant_name {
+	margin-top: 5px;
+	font-size: .85rem;
+	color: var(--text-dim-color);
+}
+
+.list.purchases .purchase_variant .view_purchase {
+	margin-top: -2px;
+}
+
+.list.purchases .view_edit_purchase {
+	position: relative;
+}
+
+.list.purchases .stock .variant_stock {
+	font-size: 0.8rem;
+	line-height: 2.1;
+	color: var(--lightin-dark-color);
+}
+
+.list.purchases .row_alert {
+	position: absolute;
+	right: 0;
+	top: -15px;
+	font-size: 0.8rem;
+	color: var(--text-dim-color);
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	width: max-content;
+}
+
+.list.purchases #add_purchase {
+	width: 100%;
+	margin-top: 5px;
+}
+
+.list.purchases .price .view_purchase {
+	font-weight: bold;
+}
+
+.list.purchases .amount .view_purchase {
+	font-weight: bold;
+}
+
+.list.purchases .remove {
+	padding-left: 15px;
+	text-align: right;
+}
+
 .list .notice {
 	color: var(--text-dim-color);
 	font-size: 0.9rem;
@@ -2412,54 +2469,8 @@ input.input_autocomplete {
 	margin-top: 10px;
 }
 
-
-.list.purchases .purchase_variant {
-	font-size: 0.85rem;
-	color: var(--text-dim-color);
-}
-
-.list.purchases .purchase_variant .view_purchase {
-	margin-top: -2px;
-}
-
-.list.purchases .view_edit_purchase {
-	position: relative;
-}
-
-.list.purchases .stock .variant_stock {
-	font-size: 0.8rem;
-	line-height: 2.1;
-	color: var(--lightin-dark-color);
-}
-
-.list.purchases .row_alert {
-	position: absolute;
-	right: 0;
-	top: -15px;
-	font-size: 0.8rem;
-	color: var(--text-dim-color);
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	width: max-content;
-}
-
-.list.purchases #add_purchase {
-	width: 100%;
-	margin-top: 5px;
-}
-
-.list.purchases .price .view_purchase {
-	font-weight: bold;
-}
-
-.list.purchases .amount .view_purchase {
-	font-weight: bold;
-}
-
-.list.purchases .remove {
-	padding-left: 15px;
-	text-align: right;
+#purchases .coupon .name input.coupon_code {
+	width: 200px;
 }
 
 .subtotal {
@@ -2483,9 +2494,7 @@ input.input_autocomplete {
 	margin-left: 5px;
 }
 
-#purchases .coupon .name input.coupon_code {
-	width: 200px;
-}
+
 
 .tracking_info {
 	margin-left: 10px;
