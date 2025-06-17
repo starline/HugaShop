@@ -241,9 +241,12 @@
 									title="{$purchase->variant_name}">{$purchase->variant_name|truncate:20:'…':true:false}</i>
 
 								{if $purchase->sku}
-									<div class="round_box copy_field" value="{$purchase->sku}">{$purchase->sku}
-										<div class="copy_hover" data-bs-toggle="tooltip" data-bs-original-title="Скопировать">
-											<i class="material-icons">content_copy</i>
+									<div class="sku">
+										<div class="round_box copy_field" value="{$purchase->sku}">
+											<span>{$purchase->sku}</span>
+											<div class="copy_hover" data-bs-toggle="tooltip" data-bs-original-title="Скопировать">
+												<i class="material-icons">content_copy</i>
+											</div>
 										</div>
 									</div>
 								{/if}
@@ -347,14 +350,14 @@
 						</div>
 
 						<div class="col-3 text-end purchase_variant">
-							<div class="view_purchase">
-								<i data-bs-toggle="tooltip" title=""></i>
+							<i data-bs-toggle="tooltip" title=""></i>
+							<div class="sku">
 								<div class="round_box copy_field" value="">
+									<span></span>
 									<div class="copy_hover" data-bs-toggle="tooltip" data-bs-original-title="Скопировать">
 										<i class="material-icons">content_copy</i>
 									</div>
 								</div>
-								<input type="hidden" name="purchases[INDEX][sku]" value="">
 							</div>
 						</div>
 
@@ -548,10 +551,10 @@
 						}
 
 						if (product.sku) {
-							new_item.find('.view_purchase .copy_field').attr('value', product.sku);
-							new_item.find('.view_purchase .copy_field').text(product.sku);
+							new_item.find('.sku .copy_field').attr('value', product.sku);
+							new_item.find('.sku .copy_field span').text(product.sku);
 						} else {
-							new_item.find('.view_purchase .copy_field').remove();
+							new_item.find('.sku .copy_field').remove();
 						}
 
 						new_item.find('.stock .js_change').text(product.stock);

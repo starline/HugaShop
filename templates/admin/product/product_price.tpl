@@ -182,35 +182,81 @@
 					{foreach $product_variants as $product_variant}
 						<div
 							class="list_row {if !$product_variant->visible}visible_off{/if} {if $product_variant->disable}disable{/if}">
-							<div class="move">
-								<input type="hidden" name="product_variants[{$product_variant->id}][id]"
-									value="{$product_variant->id}">
-								<div class="move_zone"></div>
-							</div>
-							<div class="col">
-								<a
-									href="{'ProductAdmin'|urll:[id => $product_variant->id]}?return={$smarty.server.REQUEST_URI}">{$product_variant->name}</a>
-								<span>{$product_variant->variant_name}</span>
-								<div class="round_box copy_field" value="{$product_variant->sku}">{$product_variant->sku}
-									<div class="copy_hover" data-bs-toggle="tooltip" data-bs-original-title="Скопировать">
-										<i class="material-icons">content_copy</i>
+							<input type="hidden" name="product_variants[{$product_variant->id}][id]"
+								value="{$product_variant->id}">
+							<input type="hidden" name="product_variants[{$product_variant->id}][position]"
+								value="{$product_variant->position}">
+
+							<div class="col row gy-5">
+								<div class="col-12 col-md-9">
+									<div class="row">
+										<div class="move">
+											<div class="move_zone"></div>
+										</div>
+										<div class="image">
+											<img class="product_icon"
+												src="{if $rel_product->image->filename}{$rel_product->image->filename|resize:60}{else}{'images/cargo.png'|asset}{/if}">
+										</div>
+										<div class="col">
+											<a class="product_name"
+												href="{'ProductAdmin'|urll:[id => $product_variant->id]}?return={$smarty.server.REQUEST_URI|urlencode}">{$product_variant->name}</a>
+											<div class="variant_name">{$product_variant->variant_name}</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-12 col-md-3">
+									<div class="col sku">
+										<div class="round_box copy_field" value="{$product_variant->sku}">
+											<span>{$product_variant->sku}</span>
+											<div class="copy_hover" data-bs-toggle="tooltip"
+												data-bs-original-title="Скопировать">
+												<i class="material-icons">content_copy</i>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
+
 							<div class="icons">
 								<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
 							</div>
 						</div>
 					{/foreach}
 
-					<div id="new_product_variant" class="row" style="display:none;">
-						<div class="move">
-							<input type="hidden" name="product_variants[]" value="">
-							<div class="move_zone"></div>
+					<div id="new_product_variant" class="list_row" style="display:none;">
+						<input type="hidden" name="product_variants[INDEX][product_id]" value="">
+						<input type="hidden" name="product_variants[INDEX][position]" value="">
+
+						<div class="col row gy-5">
+							<div class="col-12 col-md-9">
+								<div class="row">
+									<div class="move">
+										<div class="move_zone"></div>
+									</div>
+									<div class="image">
+										<img class="product_icon" src="">
+									</div>
+									<div class="col">
+										<a class="product_name" href=""></a>
+										<div class="variant_name"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-12 col-md-3">
+								<div class="col sku">
+									<div class="round_box copy_field" value="">
+										<span></span>
+										<div class="copy_hover" data-bs-toggle="tooltip"
+											data-bs-original-title="Скопировать">
+											<i class="material-icons">content_copy</i>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
-						<div class="name">
-							<a class="product_variant_name" href=""></a>
-						</div>
+
 						<div class="icons">
 							<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
 						</div>
@@ -237,8 +283,8 @@
 					{foreach $product->related as $rel_product}
 						<div
 							class="list_row {if !$rel_product->visible}visible_off{/if} {if $rel_product->disable}disable{/if}">
+							<input type="hidden" name="related_products[]" value="{$rel_product->id}">
 							<div class="move">
-								<input type="hidden" name="related_products[]" value="{$rel_product->id}">
 								<div class="move_zone"></div>
 							</div>
 
@@ -249,7 +295,7 @@
 
 							<div class="col">
 								<a class="related_product_name"
-									href="{'ProductAdmin'|urll:[id => $rel_product->id]}?return={$smarty.server.REQUEST_URI}">{$rel_product->name}</a>
+									href="{'ProductAdmin'|urll:[id => $rel_product->id]}?return={$smarty.server.REQUEST_URI|escape}">{$rel_product->name}</a>
 							</div>
 
 							<div class="icons">
@@ -350,6 +396,16 @@
 					axis: 'y'
 				});
 
+				// После завершения сортировки переиндексировать input-ы
+				function indexListRows(container_selector) {
+					$(container_selector).find('.list_row').each(function(idx) {
+						$(this).find('input, select, textarea').each(function() {
+							this.name = this.name.replace(/purchases\[(?:\d+|INDEX)\]/,
+								'purchases[' + idx + ']');
+						});
+					});
+					console.log('index row');
+				}
 
 				// Варианты товара
 				let new_product_variant = $('#new_product_variant').clone(true).removeAttr('id');
@@ -361,29 +417,46 @@
 					onSelect: function(suggestion) {
 						$(this).val('').focus().blur();
 						let new_item = new_product_variant.clone().appendTo('.product_variants');
-						new_item.find('a.product_variant_name').html(suggestion.data.name);
-						new_item.find('a.product_variant_name')
-							.attr('href', '/admin/product/' + suggestion.data.id);
-						new_item.find('input[name*="product_variants[id]"]').val(suggestion.data.id);
+						let product = suggestion.data;
 
-						if (suggestion.data.image)
-							new_item.find('img.product_icon').attr("src", suggestion.data.image);
+						new_item.find('a.product_name').html(product.name);
+						new_item.find('a.product_name')
+							.attr('href', '/admin/product/' + product.id);
+
+						new_item.find('input[name*=product_id]').val(product.id);
+
+						if (product.variant_name) {
+							new_item.find('.variant_name').text(product.variant_name);
+						} else {
+							new_item.find('.variant_name').remove();
+						}
+
+						if (product.sku) {
+							new_item.find('.sku .copy_field').attr('value', product.sku);
+							new_item.find('.sku .copy_field span').text(product.sku);
+						} else {
+							new_item.find('.sku .copy_field').remove();
+						}
+
+						if (product.image)
+							new_item.find('img.product_icon').attr("src", product.image.url);
 						else
 							new_item.find('img.product_icon').remove();
 
-						if (suggestion.data.disable == 1)
+						if (product.disable == 1)
 							new_item.addClass("disable");
 
-						if (suggestion.data.visible == 0)
+						if (product.visible == 0)
 							new_item.addClass("visible_off");
 
+						indexListRows('.product_variants');
 						new_item.show();
 					},
 					formatResult: function(suggestions, currentValue) {
 						let reEscape = new RegExp('(\\' + ['/', '.', '*', '+', '?', '|', '(', ')', '[', ']', '{', '}', '\\'].join('|\\') + ')', 'g');
 						let pattern = '(' + currentValue.replace(reEscape, '\\$1') + ')';
 						return (suggestions.data.image ? "<img align=absmiddle src='" + suggestions.data
-							.image + "'> " : '') + suggestions.value.replace(new RegExp(pattern, 'gi'),
+							.image.url + "'> " : '') + suggestions.value.replace(new RegExp(pattern, 'gi'),
 							'<strong>$1<\/strong>');
 					}
 				});
@@ -399,20 +472,22 @@
 					onSelect: function(suggestion) {
 						$(this).val('').focus().blur();
 						let new_item = new_related_product.clone().appendTo('.related_products');
-						new_item.find('a.related_product_name').html(suggestion.data.name);
-						new_item.find('a.related_product_name')
-							.attr('href', '/admin/product/' + suggestion.data.id);
-						new_item.find('input[name*="related_products"]').val(suggestion.data.id);
+						let product = suggestion.data;
 
-						if (suggestion.data.image)
-							new_item.find('img.product_icon').attr("src", suggestion.data.image.url);
+						new_item.find('a.related_product_name').html(product.name);
+						new_item.find('a.related_product_name')
+							.attr('href', '/admin/product/' + product.id);
+						new_item.find('input[name*="related_products"]').val(product.id);
+
+						if (product.image)
+							new_item.find('img.product_icon').attr("src", product.image.url);
 						else
 							new_item.find('img.product_icon').remove();
 
-						if (suggestion.data.disable == 1)
+						if (product.disable == 1)
 							new_item.addClass("disable");
 
-						if (suggestion.data.visible == 0)
+						if (product.visible == 0)
 							new_item.addClass("visible_off");
 
 						new_item.show();
@@ -421,8 +496,7 @@
 						let reEscape = new RegExp('(\\' + ['/', '.', '*', '+', '?', '|', '(', ')', '[', ']', '{', '}', '\\'].join('|\\') + ')', 'g');
 						let pattern = '(' + currentValue.replace(reEscape, '\\$1') + ')';
 						return (suggestions.data.image ? "<img align=absmiddle src='" + suggestions.data
-							.image.url + "'> " : '') + suggestions.value.replace(new RegExp(pattern,
-								'gi'),
+							.image.url + "'> " : '') + suggestions.value.replace(new RegExp(pattern, 'gi'),
 							'<strong>$1<\/strong>');
 					}
 				});

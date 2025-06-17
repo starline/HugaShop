@@ -257,7 +257,8 @@
 								<div class="row gx-2">
 									<div class="col-2 text-end sku">
 										{if $purchase->sku}
-											<div class="round_box copy_field" value="{$purchase->sku}">{$purchase->sku}
+											<div class="round_box copy_field" value="{$purchase->sku}">
+												<span>{$purchase->sku}</span>
 												<div class="copy_hover" data-bs-toggle="tooltip"
 													data-bs-original-title="Скопировать">
 													<i class="material-icons">content_copy</i>
@@ -391,6 +392,7 @@
 							<div class="row gx-2">
 								<div class="col-2 text-end sku">
 									<div class="round_box copy_field" value="">
+										<span></span>
 										<div class="copy_hover" data-bs-toggle="tooltip"
 											data-bs-original-title="Скопировать">
 											<i class="material-icons">content_copy</i>
@@ -788,7 +790,7 @@
 
 						if (product.sku) {
 							new_item.find('.sku .copy_field').attr('value', product.sku);
-							new_item.find('.sku .copy_field').text(product.sku);
+							new_item.find('.sku .copy_field span').text(product.sku);
 						} else {
 							new_item.find('.sku .copy_field').remove();
 						}
