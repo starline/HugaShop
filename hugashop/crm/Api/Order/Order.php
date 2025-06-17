@@ -318,17 +318,21 @@ class Order extends BaseModel
     public static function close(int $order_id)
     {
 
-        if (empty($order = Order::getOrder(intval($order_id)))) {
+        $order = self::getOrder($order_id, join: [
+            'purchases',
+            'purchases.product'
+        ]);
+
+        if (empty($order)) {
             return false;
         }
 
         // Если заказ Не был принят, снимаем товары со склада
         if (empty($order->closed)) {
-            $purchases = OrderPurchase::getPurchases(['order_id' => $order->id]);
 
             // Вычисляем общее кол-во покупки. Может быть несколько одинаковых вариантов
             $products_amounts = [];
-            foreach ($purchases as $purchase) {
+            foreach ($order->purchases as $purchase) {
                 if (isset($products_amounts[$purchase->product_id])) {
                     $products_amounts[$purchase->product_id] += $purchase->amount;
                 } else {
@@ -337,25 +341,25 @@ class Order extends BaseModel
             }
 
             // Определяем возможность заказа заданого кол-ва
-            // Нельзя отнимать кол-во больше чем есть нна складе.
+            // Нельзя отнимать кол-во больше чем есть на складе.
             foreach ($products_amounts as $id => $amount) {
                 $product = Product::getOne($id);
-                if (empty($product) || ($product->stock < $amount)) {
-                    return false;
+                if (!is_null($product->stock)) {
+                    if (empty($product) || ($product->stock < $amount)) {
+                        return false;
+                    }
                 }
             }
 
-            foreach ($purchases as $purchase) {
-                $product = Product::getOne($purchase->product_id);
-                if (!empty($product) and !is_null($product->stock)) {
+            foreach ($order->purchases as $purchase) {
+                if (!empty($purchase->product) and !is_null($purchase->product->stock)) {
 
                     // Кол-во нужно добавлять/вычетать в SQL запросе. Чтобы не произошла коллизия при одновременных запросах
-                    Product::updateStock($product->id, -$purchase->amount);
+                    Product::updateStock($purchase->product->id, -$purchase->amount);
                 }
             }
 
             self::where('id', $order->id)->update(['closed' => 1]);
-            return true;
         }
 
         return true;
@@ -369,23 +373,25 @@ class Order extends BaseModel
     public static function open(int $order_id)
     {
 
-        if (empty($order = self::getOrder($order_id))) {
+        $order = self::getOrder($order_id, join: [
+            'purchases',
+            'purchases.product'
+        ]);
+
+        if (empty($order)) {
             return false;
         }
 
         // Если заказ был принят, возвращаем товары на склад
         if ($order->closed) {
-            $purchases = OrderPurchase::getPurchases(['order_id' => $order->id]);
-            foreach ($purchases as $purchase) {
-                $product = Product::getOne($purchase->product_id);
-                if (!empty($product) && !is_null($product->stock)) {
+            foreach ($order->purchases as $purchase) {
+                if (!empty($purchase->product) && !is_null($purchase->product->stock)) {
 
                     // Кол-во нужно добавлять/вычетать в SQL запросе. Чтобы не произошла коллизия при одновременных запросах
-                    Product::updateStock($product->id, $purchase->amount);
+                    Product::updateStock($purchase->product->id, $purchase->amount);
                 }
             }
             self::where('id', $order->id)->update(['closed' => 0]);
-            return true;
         }
 
         return true;

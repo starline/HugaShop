@@ -61,6 +61,18 @@
             {if email_exists|in_array:$service_messages_error}
                 <span class="badge text-bg-danger">Такой email уже используется</span>
             {/if}
+            {if error_closing|in_array:$service_messages_error}
+                <span class="badge text-bg-danger">Нехватка товара на складе</span>
+            {/if}
+            {if error_open|in_array:$service_messages_error}
+                <span class="badge text-bg-danger">Не могу вернуть товар на склад</span>
+            {/if}
+            {if error_paid|in_array:$service_messages_error}
+                <span class="badge text-bg-danger">Выберите способ оплаты</span>
+            {/if}
+
+
+
 
             <span class="badge text-bg-secondary mx-2">{$now|date} в {$now|time}</span>
         </div>

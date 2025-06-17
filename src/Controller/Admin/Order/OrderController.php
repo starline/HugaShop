@@ -47,7 +47,7 @@ class OrderController extends BaseAdminController
 
             // Если выбрали "заказ оплачен", но не выбрали способ оплаты - отменим оплату
             if (!empty($order->paid) and !$order->payment_method_id) {
-                Design::assign('message_error', 'error_paid');
+                Design::setFlashMessage('error', 'error_paid');
                 $order->paid = 0;
             }
 
@@ -157,31 +157,31 @@ class OrderController extends BaseAdminController
 
             if ($order_status == 0) { # Новый
                 if (!Order::open(intval($order->id))) {
-                    Design::assign('message_error', 'error_open');
+                    Design::setFlashMessage('error', 'error_open');
                 } else {
                     Order::updateOne($order->id, ['status' => 0]);
                 }
             } elseif ($order_status == 1) { # Принят
                 if (!Order::close(intval($order->id))) {
-                    Design::assign('message_error', 'error_closing');
+                    Design::setFlashMessage('error', 'error_closing');
                 } else {
                     Order::updateOne($order->id, ['status' => 1]);
                 }
             } elseif ($order_status == 4) { # Отгружен
                 if (!Order::close(intval($order->id))) {
-                    Design::assign('message_error', 'error_closing');
+                    Design::setFlashMessage('error', 'error_closing');
                 } else {
                     Order::updateOne($order->id, ['status' => 4]);
                 }
             } elseif ($order_status == 2) { # Выполнен
                 if (!Order::close(intval($order->id))) {
-                    Design::assign('message_error', 'error_closing');
+                    Design::setFlashMessage('error', 'error_closing');
                 } else {
                     Order::updateOne($order->id, ['status' => 2]);
                 }
             } elseif ($order_status == 3) { # Отмена
                 if (!Order::open(intval($order->id))) {
-                    Design::assign('message_error', 'error_open');
+                    Design::setFlashMessage('error', 'error_open');
                 } else {
                     Order::updateOne($order->id, ['status' => 3]);
                 }

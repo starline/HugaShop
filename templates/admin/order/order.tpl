@@ -10,22 +10,6 @@
 
 
 {block name=content}
-
-	{if $message_error}
-		<!-- Системное сообщение -->
-		<div class="message message_error">
-			<span class="text">
-				{if $message_error == 'error_closing'}
-					Нехватка товара на складе
-				{elseif $message_error == 'error_paid'}
-					Выберите способ оплаты
-				{else}
-					{$message_error}
-				{/if}
-			</span>
-		</div>
-	{/if}
-
 	<form method="post" id="order" enctype="multipart/form-data" class="two_columns_order">
 		{getCSRFInput}
 
