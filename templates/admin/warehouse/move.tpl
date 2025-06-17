@@ -167,7 +167,7 @@
 
 					{if $movement->payments}
 						<div class="order_details_row total_wholesale_price">Всего:
-							<b>{$movement->payments->total_amount|price_html:profit|raw}</b>
+							<b>{$total->payments_price|price_html:profit|raw}</b>
 						</div>
 					{/if}
 

@@ -167,13 +167,12 @@ class MoveController extends BaseAdminController
             $total->cost_price = 0;
             $total->retail_price = 0;
             $total->weight = 0;
-            $movement->payments->total_amount = 0;
+            $total->payments_price = 0;
 
             foreach ($movement->payments as $payment) {
                 $sign = ($payment->type == 1) ? 1 : -1;
                 $payment->amount = $sign * abs($payment->amount);
-
-                $movement->payments->total_amount += $sign * $payment->currency_amount ?? $sign * $payment->amount;
+                $total->payments_price += $sign * $payment->currency_amount ?? $sign * $payment->amount;
             }
 
             // Выбранный Менеджер
