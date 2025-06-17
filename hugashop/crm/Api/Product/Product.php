@@ -128,7 +128,8 @@ class Product extends BaseModel
             ProductRelated::class,   # имя таблицы связей
             'product_id',            # внешний ключ для текущего товара
             'related_id'             # внешний ключ для связанного товара
-        )->orderBy('position');
+        )->withPivot('position',)
+            ->orderBy('pivot_position');
     }
 
     /**
@@ -139,6 +140,9 @@ class Product extends BaseModel
         return $this->hasMany(ProductOption::class, 'product_id');
     }
 
+    /**
+     * Use: product->features_value
+     */
     public function getFeaturesValueAttribute()
     {
         return $this->options->keyBy('feature_id');

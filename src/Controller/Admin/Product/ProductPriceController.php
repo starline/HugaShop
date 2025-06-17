@@ -96,6 +96,7 @@ class ProductPriceController extends BaseAdminController
             }
 
             Design::assign('product', $product);
+            
             $this->getProductOrders($product->id);
         }
 

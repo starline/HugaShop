@@ -346,47 +346,6 @@
 					return false;
 				});
 
-
-				// Волшебные изображения
-				let images_num = 8;
-				let images_loaded = 0;
-				let old_wizar_dicon_src = $('#images_wizard img').attr('src');
-				let name_changed = false;
-
-				$("input[name=name]").change(function() {
-					name_changed = true;
-				});
-
-				$('#images_wizard').click(function() {
-
-					$('#images_wizard img').attr('src', php_loader);
-					if (name_changed)
-						$('div.images ul li.wizard').remove();
-
-					name_changed = false;
-					key = $('input[name=name]').val();
-					$.ajax({
-						url: "/admin/ajax/images",
-						data: {keyword: key, start: images_loaded},
-						dataType: 'json',
-						success: function(data) {
-							for (i = 0; i < Math.min(data.length, images_num); i++) {
-								image_url = data[i];
-								$("<li class='wizard'>" +
-									"<i class='delete material-icons' data-bs-toggle='tooltip' title='Удалить'>cancel</i>" +
-									"<a href='" + image_url + "'" +
-									" target=_blank><img onerror='$(this).closest(\"li\").remove();' src='" +
-									image_url +
-									"' /><input name=images_urls[] type=hidden value='" +
-									image_url + "'></a></li>").appendTo('div .images ul');
-							}
-							$('#images_wizard img').attr('src', old_wizar_dicon_src);
-							images_loaded += images_num;
-						}
-					});
-					return false;
-				});
-
 				// Автозаполнение мета-тегов
 				let url_touched = true;
 

@@ -234,22 +234,22 @@
 						{$product->related|count|plural:'товар':'товаров':'товара'}</span>
 				</h2>
 				<div class="list sortable related_products">
-					{foreach $product->related as $related_product}
+					{foreach $product->related as $rel_product}
 						<div
-							class="list_row {if !$related_product->visible}visible_off{/if} {if $related_product->disable}disable{/if}">
+							class="list_row {if !$rel_product->visible}visible_off{/if} {if $rel_product->disable}disable{/if}">
 							<div class="move">
-								<input type="hidden" name="related_products[]" value="{$related_product->id}">
+								<input type="hidden" name="related_products[]" value="{$rel_product->id}">
 								<div class="move_zone"></div>
 							</div>
 
 							<div class="image">
 								<img class="product_icon"
-									src="{if $related_product->image->filename}{$related_product->image->filename|resize:60}{else}{'images/cargo.png'|asset}{/if}">
+									src="{if $rel_product->image->filename}{$rel_product->image->filename|resize:60}{else}{'images/cargo.png'|asset}{/if}">
 							</div>
 
 							<div class="col">
-								<a
-									href="{'ProductAdmin'|urll:[id => $related_product->id]}?return={$smarty.server.REQUEST_URI}">{$related_product->name}</a>
+								<a class="related_product_name"
+									href="{'ProductAdmin'|urll:[id => $rel_product->id]}?return={$smarty.server.REQUEST_URI}">{$rel_product->name}</a>
 							</div>
 
 							<div class="icons">
@@ -258,7 +258,7 @@
 						</div>
 					{/foreach}
 
-					<div id="new_related_product" class="row" style="display:none;">
+					<div id="new_related_product" class="list_row" style="display:none;">
 						<div class="move">
 							<input type="hidden" name="related_products[]" value="">
 							<div class="move_zone"></div>
@@ -266,7 +266,7 @@
 						<div class="image">
 							<img class="product_icon" src="">
 						</div>
-						<div class="name">
+						<div class="col">
 							<a class="related_product_name" href=""></a>
 						</div>
 						<div class="icons">
@@ -405,7 +405,7 @@
 						new_item.find('input[name*="related_products"]').val(suggestion.data.id);
 
 						if (suggestion.data.image)
-							new_item.find('img.product_icon').attr("src", suggestion.data.image);
+							new_item.find('img.product_icon').attr("src", suggestion.data.image.url);
 						else
 							new_item.find('img.product_icon').remove();
 
@@ -421,7 +421,8 @@
 						let reEscape = new RegExp('(\\' + ['/', '.', '*', '+', '?', '|', '(', ')', '[', ']', '{', '}', '\\'].join('|\\') + ')', 'g');
 						let pattern = '(' + currentValue.replace(reEscape, '\\$1') + ')';
 						return (suggestions.data.image ? "<img align=absmiddle src='" + suggestions.data
-							.image + "'> " : '') + suggestions.value.replace(new RegExp(pattern, 'gi'),
+							.image.url + "'> " : '') + suggestions.value.replace(new RegExp(pattern,
+								'gi'),
 							'<strong>$1<\/strong>');
 					}
 				});
