@@ -97,7 +97,7 @@
 						<div class="form-check {if !$payment_method->enabled}disabled{/if}">
 							<input class="form-check-input" type="checkbox" name="delivery_payments[]"
 								id="payment_{$payment_method->id}" value='{$payment_method->id}'
-								{if in_array($payment_method->id, $delivery_payments)}checked{/if}>
+								{if in_array($payment_method->id, $delivery->payments_ids)}checked{/if}>
 							<label class="form-check-label" for="payment_{$payment_method->id}">{$payment_method->name}</label>
 						</div>
 					{/foreach}

@@ -16,7 +16,6 @@ use HugaShop\Api\Helper;
 use HugaShop\Api\BaseModel;
 use HugaShop\Api\Finance\FinancePurse;
 use HugaShop\Api\Finance\FinanceCurrency;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class OrderPayment extends BaseModel
 {

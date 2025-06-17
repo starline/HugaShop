@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.22
  *
  */
 
@@ -97,10 +97,9 @@ class PaymentController extends BaseAdminController
             Design::assign('payment_method',             $payment_method);
         }
 
-
+        Design::assign('payment_modules',            $payment_modules);
         Design::assign('deliveries',                 OrderDelivery::getDeliveryMethods());
         Design::assign('purses',                     FinancePurse::getPurses());
-        Design::assign('payment_modules',            $payment_modules);
         Design::assign('currencies',                 FinanceCurrency::getCurrencies(['enabled' => 1]));
 
         return $this->fetchResponse('order/payment.tpl');

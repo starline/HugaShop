@@ -43,7 +43,15 @@ class OrderDelivery extends BaseModel
         return $this->belongsTo(FinancePurse::class, 'finance_purse_id');
     }
 
+    public function payments()
+    {
+        return $this->hasMany(OrderPaymentDelivery::class, 'delivery_id');
+    }
 
+    public function getPaymentsIdsAttribute()
+    {
+        return $this->payments->pluck('payment_method_id')->toArray();
+    }
 
     /**
      * Выбираем все способы доставки

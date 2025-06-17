@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.0
+ * @version 2.1
  *
  */
 
@@ -26,21 +26,18 @@ class DeliveryController extends BaseAdminController
     public function index(?int $id): Response
     {
 
-        $delivery_payments = [];
-        $delivery_settings = [];
-
 
         #### Update
         ###########
         if (!empty($delivery = Request::getDataAcces(OrderDelivery::getFields()))) {
 
-            $delivery->settings = Request::post('delivery_settings');
+            $delivery->settings = Request::post('delivery_settings', 'array');
+            $delivery_payments = Request::post('delivery_payments');
 
             if (empty($delivery->id)) {
-                $delivery->id = Design::setFlashMessage('add', OrderDelivery::add($delivery));
+                $delivery = Design::setFlashMessage('add', OrderDelivery::create($delivery));
             } else {
-                Design::setFlashMessage('update', OrderDelivery::update($delivery->id, $delivery));
-                $delivery_payments = Request::post('delivery_payments');
+                Design::setFlashMessage('update', OrderDelivery::updateOne($delivery->id, $delivery));
                 OrderDelivery::updateDeliveryPayments($delivery->id, $delivery_payments);
             }
 
@@ -51,26 +48,20 @@ class DeliveryController extends BaseAdminController
         #### View
         #########
         if (!empty($id)) {
-            $delivery = OrderDelivery::getOne($id);
+            $delivery = OrderDelivery::getOne($id, join: [
+                'payments'
+            ]);
 
             if (empty($delivery->id)) {
                 return $this->redirectToRoute('DeliveryListAdmin');
             }
 
-            $delivery_payments = OrderDelivery::getDeliveryPayments($id);
-            $delivery_settings = $delivery->settings;
+            Design::assign('delivery', $delivery);
         }
 
-        $payment_methods =  OrderPayment::getPaymentMethods(); # Связанные способы оплаты
-        $delivery_modules = OrderDelivery::getDeliveryModules();
-        $finance_purses =   FinancePurse::getPurses();
-
-        Design::assign('delivery', $delivery);
-        Design::assign('delivery_settings', $delivery_settings);
-        Design::assign('delivery_payments', $delivery_payments);
-        Design::assign('payment_methods', $payment_methods);
-        Design::assign('delivery_modules', $delivery_modules);
-        Design::assign('finance_purses', $finance_purses);
+        Design::assign('payment_methods',   OrderPayment::getPaymentMethods());       # Связанные способы оплаты
+        Design::assign('delivery_modules',  OrderDelivery::getDeliveryModules());
+        Design::assign('finance_purses',    FinancePurse::getPurses());
 
         return $this->fetchResponse('order/delivery.tpl');
     }

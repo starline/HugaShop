@@ -97,6 +97,14 @@ textarea {
 	padding-left: 2em;
 }
 
+.form-check.disabled {
+	opacity: 0.35;
+}
+
+.form-check.disabled:hover {
+	opacity: unset;
+}
+
 .form-check .form-check-input {
 	cursor: pointer;
 	margin-left: -2.0em;
