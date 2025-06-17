@@ -58,7 +58,7 @@
 	<div class='wrapper'>
 		{for $i=1 to $count}
 			<section>
-				<div class="name">{$product->name}{if $product->name} - {$product->name}{/if}</div>
+				<div class="name">{$product->name}{if $product->variant_name} - {$product->variant_name}{/if}</div>
 				<div class="sku">{$product->sku}</div>
 			</section>
 		{/for}

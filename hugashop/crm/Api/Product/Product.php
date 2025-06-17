@@ -238,27 +238,8 @@ class Product extends BaseModel
         }
 
         // With relations
-        $with = [];
-        if (in_array('brand', $join)) {
-            $with[] = 'brand';
-        }
-        if (in_array('category', $join)) {
-            $with[] = 'category';
-        }
-        if (in_array('images', $join)) {
-            $with[] = 'images';
-        }
-        if (in_array('image', $join)) {
-            $with[] = 'image';
-        }
-        if (in_array('variant', $join)) {
-            $with[] = 'variants';
-        }
-        if (in_array('movements', $join)) {
-            $with[] = 'movements';
-        }
-        if (!empty($with)) {
-            $query->with($with);
+        if (!empty($join)) {
+            $query->with($join);
         }
 
         // Sorting
@@ -378,7 +359,12 @@ class Product extends BaseModel
     public static function addProduct(object|array $product)
     {
         $product = Helper::makeUniqSlug(self::class, $product); # If the URL exists, change it
-        return self::create($product);
+        $product = self::create($product);
+
+        // Make position same as id
+        self::updateOne($product->id, ['position' => $product->id]);
+        $product->position = $product->id;
+        return $product;
     }
 
 

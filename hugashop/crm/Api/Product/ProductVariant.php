@@ -18,8 +18,10 @@ use HugaShop\Api\Product\Product;
 class ProductVariant extends BaseModel
 {
     public static $table_fields = [
-        'main_product_id' =>        ['type' => 'int'],
+        'parent_id' =>        ['type' => 'int'],
         'product_id' =>       ['type' => 'int'],
+        'enabled' =>            ['type' => 'tinyint',      'def' => 1],
+        'position' =>           ['type' => 'int',          'def' => 0]
     ];
 
     public function product()
@@ -27,7 +29,7 @@ class ProductVariant extends BaseModel
         return $this->belongsTo(Product::class, 'product_id');
     }
 
-    public function main_product()
+    public function parent_product()
     {
         return $this->belongsTo(Product::class, 'product_id');
     }

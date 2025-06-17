@@ -152,8 +152,7 @@ class ProductListController extends BaseAdminController
                             $temp_filter = $filter;
                             $temp_filter['page'] = $limit + 1;
                             $temp_filter['limit'] = 1;
-                            $target_product = Product::getProducts($temp_filter);
-                            $target_product = array_pop($target_product); # Pop the element off the end of array
+                            $target_product = Product::getProducts($temp_filter)->last();
                             $target_position = $target_product->position;
 
                             // Если вылезли за последний товар - берем позицию последнего товара в качестве цели перемещения
@@ -210,7 +209,7 @@ class ProductListController extends BaseAdminController
 
         // TODO: Фильтр по характеристике
 
-        $products = Product::getProducts($filter, ['image', 'movements']);
+        $products = Product::getProducts($filter, join: ['image', 'movements']);
         $products_count = Product::countProducts($filter);
 
         if ($products->isNotEmpty()) {
