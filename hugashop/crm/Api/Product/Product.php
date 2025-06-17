@@ -16,7 +16,10 @@ use HugaShop\Api\Image;
 use HugaShop\Api\Helper;
 use HugaShop\Api\BaseModel;
 use Illuminate\Support\Arr;
+use HugaShop\Api\Order\OrderPurchase;
+use HugaShop\Api\Product\ProductOption;
 use HugaShop\Api\Content\ContentComment;
+use HugaShop\Api\Product\ProductRelated;
 use HugaShop\Api\Warehouse\WarehousePurchase;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -378,11 +381,8 @@ class Product extends BaseModel
             return false;
         }
 
-        // Удаляем варианты
-        $variants = ProductVariant::getVariants(array('product_id' => $id));
-        foreach ($variants as $v) {
-            ProductVariant::deleteVariant($v->id);
-        }
+        // Удаляем из вариантов
+        ProductVariant::deleteVariant($id);
 
         // Удаляем основные изображения
         $images = Image::getImages($id, 'product');
@@ -412,10 +412,10 @@ class Product extends BaseModel
         ContentComment::deleteEntityComments($id, Product::class);
 
         // Зачищаем из покупок
-        //OrderPurchase::where('product_id', $id)->update(['product_id' => NULL]);
+        OrderPurchase::where('product_id', $id)->update(['product_id' => NULL]);
 
         // Зачищаем из поставок
-        //WarehousePurchase::where('product_id', $id)->update(['product_id' => NULL]);
+        WarehousePurchase::where('product_id', $id)->update(['product_id' => NULL]);
 
         // Удаляем товар
         return self::deleteOne($id);

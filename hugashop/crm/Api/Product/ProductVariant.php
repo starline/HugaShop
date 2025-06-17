@@ -33,4 +33,10 @@ class ProductVariant extends BaseModel
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+
+
+    public static function deleteVariant(int $product_id)
+    {
+        //$product_id
+    }
 }
