@@ -21,7 +21,9 @@ use HugaShop\Extensions\SeoPage\Model\SeoPage as SeoPageModel;
 final class SeoPage extends BaseExtension
 {
 
-
+    /**
+     * Ajax
+     */
     public function updateOne($id, $entity)
     {
         SeoPageModel::updateOne($id, $entity);

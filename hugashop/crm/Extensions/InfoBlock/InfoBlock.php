@@ -19,13 +19,15 @@ use HugaShop\Extensions\InfoBlock\Model\InfoBlock as InfoBlockModel;
 final class InfoBlock extends BaseExtension
 {
 
-
+    /**
+     * Ajax
+     */
     public function updateOne($id, $entity)
     {
         InfoBlockModel::updateOne($id, $entity);
     }
 
-    
+
     /**
      * Список странниц
      */
@@ -59,6 +61,8 @@ final class InfoBlock extends BaseExtension
             foreach (Helper::getPositions() as $id => $position) {
                 InfoBlockModel::updateOne($id, ['position' => $position]);
             }
+
+            Helper::cache(self::class)->clear();
         }
 
         $blocks = InfoBlockModel::getList([], 'position');
@@ -80,8 +84,7 @@ final class InfoBlock extends BaseExtension
         if (!empty($block = Request::getDataAcces(InfoBlockModel::getFields()))) {
 
             if (empty($block->id)) {
-                $block->id = Design::setFlashMessage('add', InfoBlockModel::create($block)->id);
-                Helper::cache(self::class)->clear();
+                $block = Design::setFlashMessage('add', InfoBlockModel::create($block));
             } else {
                 Design::setFlashMessage('update', InfoBlockModel::updateOne($block->id, $block));
                 Helper::cache(self::class)->clear();
@@ -119,7 +122,7 @@ final class InfoBlock extends BaseExtension
 
         $enabled = $params['enabled'] ?? '1';
 
-        $cache_item = Helper::cache(self::class)->getItem('item_' . $params['id']);
+        $cache_item = Helper::cache(self::class)->getItem($params['id']);
         if (!$cache_item->isHit()) {
 
             $block = InfoBlockModel::getOne(['id' => intval($params['id']), 'enabled' => $enabled]);
