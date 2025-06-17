@@ -63,7 +63,7 @@ class ProductController extends BaseAdminController
         if (!empty($product = Request::getDataAcces(($this->entity_params)))) {
 
             if (empty($product->id)) {
-                $product->id = Design::setFlashMessage('add', Product::addProduct($product));
+                $product = Design::setFlashMessage('add', Product::addProduct($product));
             } else {
                 Design::setFlashMessage('update', Product::updateProduct($product->id, $product));
             }

@@ -323,9 +323,50 @@ class Product extends BaseModel
      * @param int|array $id
      * @param object|array $product
      */
-    public static function updateProduct(int|array $id, $product)
+    public static function updateProduct(int|array $id, array|object $product)
     {
         $product = Helper::makeUniqSlug(self::class, $product); # If the URL exists, change it
+
+        // Save price and cost price history
+        $ids = is_array($id) ? $id : [$id];
+        $new_price = null;
+        $new_cost_price = null;
+        if (is_object($product)) {
+            if (isset($product->price)) {
+                $new_price = $product->price;
+            }
+            if (isset($product->cost_price)) {
+                $new_cost_price = $product->cost_price;
+            }
+        } elseif (is_array($product)) {
+            if (array_key_exists('price', $product)) {
+                $new_price = $product['price'];
+            }
+            if (array_key_exists('cost_price', $product)) {
+                $new_cost_price = $product['cost_price'];
+            }
+        }
+
+        if ($new_price !== null || $new_cost_price !== null) {
+            foreach ($ids as $pid) {
+                $old_product = self::getOne($pid);
+                if ($old_product) {
+                    $final_price = $new_price !== null ? $new_price : $old_product->price;
+                    $final_cost = $new_cost_price !== null ? $new_cost_price : $old_product->cost_price;
+                    if (
+                        floatval($old_product->price) != floatval($final_price) ||
+                        floatval($old_product->cost_price) != floatval($final_cost)
+                    ) {
+                        ProductPriceHistory::addRecord(
+                            intval($pid),
+                            floatval($final_price),
+                            floatval($final_cost)
+                        );
+                    }
+                }
+            }
+        }
+
         return self::updateOne($id, $product);
     }
 

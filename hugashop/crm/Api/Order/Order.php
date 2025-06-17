@@ -400,9 +400,8 @@ class Order extends BaseModel
      */
     public static function updateTotalPrice(int $order_id, $modified = true)
     {
-
         // Get order informatiion
-        if (empty($order = Order::getOrder($order_id))) {
+        if (!$order = self::with(['purchases', 'manager.group', 'payment_method'])->find($order_id)) {
             return false;
         }
 
@@ -413,25 +412,17 @@ class Order extends BaseModel
         }
 
         // Выбираем все товары заказа
-        $order_purchases = OrderPurchase::getPurchases(['order_id' => $order->id]);
 
-        
-        $order_clean_price = 0;
-        $order_cost_price = 0;
-        foreach ($order_purchases as $purchase) {
+        // Выбираем общую стоимость товаров заказа (чистая сумма)
+        $order_clean_price = $order->purchases->sum(fn($p) => $p->price * $p->amount);
 
-            // Выбираем общую стоимость товаров заказа (чистая сумма)
-            $order_clean_price += $purchase->price * $purchase->amount;
+        // Выбираем общую себестоимость товаров заказов
+        $order_cost_price  = $order->purchases->sum(fn($p) => $p->cost_price * $p->amount);
 
-            // Выбираем общую себестоимость товаров заказов
-            $order_cost_price += $purchase->cost_price * $purchase->amount;
-        }
-
-        
         // Вычисляем стоимость заказа со скидкой и купоном
         $order_discount_price = $order_clean_price * (100 - $order->discount) / 100 - $order->coupon_discount;
-        $set_total_price = Database::placehold("o.total_price = ? ", $order_discount_price);
 
+        $payment_settings = new \stdClass();
         // Выбираем настройки способа оплаты
         if (!empty($order->payment_method_id)) {
             $payment_settings = OrderPayment::getPaymentMethodSettings($order->payment_method_id);
@@ -448,19 +439,17 @@ class Order extends BaseModel
             $order_payment_fee_inside_price += $payment_settings->fee_fix_inside;
         }
 
-
         // Вычисляем внутренюю сумму налога которую оплачивает продавец
         $order_payment_tax_inside_price = 0;
         if (!empty($payment_settings->tax_inside)) {
             $order_payment_tax_inside_price = $order_discount_price * $payment_settings->tax_inside / 100;
         }
 
-
         // Вычисляем общую сумму заказа к оплате
         $order_payment_price = $order_discount_price;
 
         // Добаляем стоимость доставки
-        if (!empty($order->delivery_price) and !$order->separate_delivery) {
+        if (!empty($order->delivery_price) && !$order->separate_delivery) {
             $order_payment_price += $order->delivery_price;
         }
 
@@ -477,15 +466,11 @@ class Order extends BaseModel
 
         // BUG: Если основная валюта без копеек, округлим сумму
 
-        $set_payment_price = Database::placehold(", o.payment_price = ? ", $order_payment_price);
-
-
         // Вычисляем комиссию менеджера
         // Комиссия вычисляется от чистой стоимости заказа (с учетом скидки)
         // Комиссия менеджера уменьшается пропорционально сделаной им скидки
         // BUG Комиссия менеджера уменьшается на заказы от рекламы
         $manager_interest = 0;
-        $set_interest  = "";
         if (!empty($order->manager_id)) { # если присвоен менеджер
             $manager = User::getUser($order->manager_id);
             if (!empty($manager->group->discount)) {
@@ -495,9 +480,8 @@ class Order extends BaseModel
                 // Корректируем Комиссию менеджера
                 // BUG: Костыль, требует доработки.
                 if ($order_cost_price > 0) {
-                    $roi =  ($order_discount_price - $order_cost_price) / $order_cost_price * 100;
+                    $roi = ($order_discount_price - $order_cost_price) / $order_cost_price * 100;
                     if ($roi < 70) {
-
                         // Пропорциональное уменьшение % менеджера
                         $manager_discount = $manager->group->discount * $roi / 70;
                     }
@@ -505,50 +489,35 @@ class Order extends BaseModel
 
                 $manager_interest = ($order_discount_price * $manager_discount / 100);
                 if ($order_clean_price > 0) {
-
                     // Реальный % скидки на заказ c учетом купона и дисконта(%)
                     $real_order_discaunt = (1 - $order_discount_price / $order_clean_price) * 100;
 
                     // Вычет из комиссия менеджера = скидка на заказ % * 2
-                    $manager_interest_discount =  $manager_interest * $real_order_discaunt * 2 / 100;
-                    $manager_interest = $manager_interest - $manager_interest_discount;
+                    $manager_interest -= $manager_interest * $real_order_discaunt * 2 / 100;
                 }
 
                 // Округляем до 0.00
                 $manager_interest = round($manager_interest, 2);
-                $set_interest = Database::placehold(", o.interest_price = ? ", $manager_interest);
             }
         }
-
 
         // Вычисляем конечную прибыль от заказа
         // Берем общую сумму заказа (после скидки и купона) и отнимает расходы
         // В расходы включены комиссия менеджера, комиссия платежной системы, комиссия способа доставки(?)
         $order_profit_price = ($order_discount_price - $order_cost_price) - $manager_interest - $order_payment_fee_inside_price - $order_payment_tax_inside_price;
-        $set_profit_price = Database::placehold(", o.profit_price = ? ", $order_profit_price);
 
-        $set_modified = "";
+        $data = [
+            'total_price'    => $order_discount_price,
+            'profit_price'   => $order_profit_price,
+            'interest_price' => $manager_interest,
+            'payment_price'  => $order_payment_price,
+        ];
         if ($modified) {
-            $set_modified = Database::placehold(", modified=? ", date("Y-m-d H:i:s"));
+            $data['modified'] = date('Y-m-d H:i:s');
         }
 
-        $query = Database::placehold(
-            "UPDATE 
-				__order o 
-            SET 
-                $set_total_price 
-                $set_profit_price 
-                $set_interest 
-                $set_modified 
-                $set_payment_price 
-			WHERE 
-				o.id = ? 
-			LIMIT 
-				1",
-            intval($order->id)
-        );
+        self::updateOne($order->id, $data);
 
-        Order::query($query);
         return $order->id;
     }
 
