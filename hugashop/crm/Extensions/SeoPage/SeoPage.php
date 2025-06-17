@@ -130,7 +130,7 @@ final class SeoPage extends BaseExtension
         // Example: /info/pravila+кирилица
         $page_uri = urldecode($_SERVER['REQUEST_URI']);
 
-        $cache_item = Helper::cache(self::class)->getItem(Helper::makeToken($page_uri));
+        $cache_item = Helper::cache(self::class)->getItem('item_' . Helper::makeToken($page_uri));
         if (!$cache_item->isHit()) {
 
             // SEO page

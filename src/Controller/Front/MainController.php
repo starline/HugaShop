@@ -41,10 +41,6 @@ class MainController extends BaseFrontController
                 $category_products = Product::getProducts($products_filter, ['image']);
 
                 if (!empty($category_products)) {
-
-                    // id выбраных товаров
-                    $category_pids = array_keys($category_products);
-
                     $current_category = new \stdClass();
                     $current_category->category = $cat;
                     $current_category->products = $category_products;

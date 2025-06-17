@@ -35,7 +35,7 @@ class FeedGenerator
         self::$pricefeed = $pricefeed; # for use in cache function
 
         // The callable will only be executed on a cache miss.
-        $response = Helper::cache(self::class)->get($pricefeed->id, function (ItemInterface $item): array {
+        $response = Helper::cache(self::class)->get('item_' . $pricefeed->id, function (ItemInterface $item): array {
             $item->expiresAfter(10); # seconds
 
             $feed_data = [];

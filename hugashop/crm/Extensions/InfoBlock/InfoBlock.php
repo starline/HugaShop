@@ -122,7 +122,7 @@ final class InfoBlock extends BaseExtension
 
         $enabled = $params['enabled'] ?? '1';
 
-        $cache_item = Helper::cache(self::class)->getItem($params['id']);
+        $cache_item = Helper::cache(self::class)->getItem('item_' . $params['id']);
         if (!$cache_item->isHit()) {
 
             $block = InfoBlockModel::getOne(['id' => intval($params['id']), 'enabled' => $enabled]);

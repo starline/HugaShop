@@ -79,7 +79,7 @@ final class FacebookCommerce extends BaseExtension
                 Design::setFlashMessage('update', FacebookCommerceModel::updateOne($pricefeed->id, $pricefeed) >= 0);
 
                 // Cache clean
-                Helper::cache(FeedGenerator::class)->delete($pricefeed->id);
+                Helper::cache(FeedGenerator::class)->delete('item_' . $pricefeed->id);
             }
 
             $pricefeed_categories = Request::post('pricefeed_categories', 'array');
