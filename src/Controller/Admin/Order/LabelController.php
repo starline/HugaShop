@@ -35,9 +35,9 @@ class LabelController extends BaseAdminController
             }
 
             if (empty($label->id)) {
-                $label->id = Design::setFlashMessage('add', OrderLabel::add($label));
+                $label = Design::setFlashMessage('add', OrderLabel::create($label));
             } else {
-                Design::setFlashMessage('update', OrderLabel::update($label->id, $label));
+                Design::setFlashMessage('update', OrderLabel::updateOne($label->id, $label));
             }
 
             return $this->redirectToRoute('LabelAdmin', ['id' => $label->id]);

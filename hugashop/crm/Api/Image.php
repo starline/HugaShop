@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.3
+ * @version 3.4
  * 
  * Intervention Image
  * @link https://image.intervention.io/v3/getting-started/installation
@@ -74,7 +74,8 @@ class Image extends BaseModel
                     $key = array_search($url, $dropped_images['name']);
 
                     // Ужимаем изображение до заданого размера
-                    if ($key !== false && $image_name = Image::uploadImage($dropped_images['tmp_name'][$key], $dropped_images['name'][$key])) {
+                    $image_name = Image::uploadImage($dropped_images['tmp_name'][$key], $dropped_images['name'][$key]);
+                    if ($key !== false && $image_name) {
                         Image::addImage($entity_id, $entity_name, $image_name);
                     }
                 }
@@ -96,9 +97,9 @@ class Image extends BaseModel
 
     /**
      * Add image to DB. Check name
-     * @param $entity_id
-     * @param $entity_name
-     * @param $filename
+     * @param int $entity_id
+     * @param string $entity_name
+     * @param string $filename
      * @return int image_id
      */
     public static function addImage(int $entity_id, string $entity_name, string $filename)
@@ -452,7 +453,7 @@ class Image extends BaseModel
             }
         }
 
-        return false;
+        return null;
     }
 
 
