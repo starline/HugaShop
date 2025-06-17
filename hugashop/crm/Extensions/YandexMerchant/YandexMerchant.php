@@ -78,7 +78,7 @@ final class YandexMerchant extends BaseExtension
                 Design::setFlashMessage('update', YandexMerchantModel::updateOne($pricefeed->id, $pricefeed) >= 0);
 
                 // Cache clean
-                Helper::cache(FeedGenerator::class)->delete('pricefeed_' . $pricefeed->id);
+                Helper::cache(FeedGenerator::class)->delete($pricefeed->id);
             }
 
             $category_ids = Request::post('pricefeed_categories', 'array');

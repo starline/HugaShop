@@ -316,13 +316,10 @@ class Statistics
     {
 
         $query = FinancePayment::query()
-            ->select('finance_payment.amount', 'finance_payment.currency_amount', 'finance_payment.currency_rate')
-            ->selectRaw('MONTH(finance_payment.date) as month')
-            ->selectRaw('YEAR(finance_payment.date) as year')
-            ->selectRaw('purse.currency_id as currency_id')
-            ->selectRaw('cur.position as pos')
-            ->leftJoin('finance_purse as purse', 'purse.id', '=', 'finance_payment.purse_id')
-            ->leftJoin('finance_currency as cur', 'cur.id', '=', 'purse.currency_id');
+        ->select('purse_id', 'amount', 'currency_amount', 'currency_rate')
+            ->selectRaw('MONTH(date) as month')
+            ->selectRaw('YEAR(date) as year')
+            ->with('purse.currency');
 
         if (isset($filter['type'])) {
             if ($filter['type'] == 'plus' || $filter['type'] == 1) {
@@ -330,26 +327,27 @@ class Statistics
             } elseif ($filter['type'] == 'minus' || $filter['type'] == 0) {
                 $filter['type'] = 0;
             }
-            $query->where('finance_payment.type', $filter['type']);
+            $query->where('type', $filter['type']);
         }
 
         if (isset($filter['payments_ids'])) {
-            $query->whereIn('finance_payment.id', (array)$filter['payments_ids']);
+            $query->whereIn('id', (array)$filter['payments_ids']);
         }
 
         if (isset($filter['related_payment_id']) && $filter['related_payment_id'] === 'NULL') {
-            $query->whereNull('finance_payment.related_payment_id');
+            $query->whereNull('related_payment_id');
         } elseif (!empty($filter['related_payment_id'])) {
-            $query->where('finance_payment.related_payment_id', $filter['related_payment_id']);
+            $query->where('related_payment_id', $filter['related_payment_id']);
         }
 
         if (isset($filter['purse_id'])) {
-            $query->whereIn('finance_payment.purse_id', (array)$filter['purse_id']);
+            $query->whereIn('purse_id', (array)$filter['purse_id']);
         }
 
         if (isset($filter['category_id']) && !empty($filter['category_id'])) {
-            $query->leftJoin('finance_category as fc', 'finance_payment.finance_category_id', '=', 'fc.id');
-            $query->where('fc.id', (int)$filter['category_id']);
+            $query->whereHas('category', function ($q) use ($filter) {
+                $q->where('id', (int) $filter['category_id']);
+            });
         }
 
         $data = $query->orderBy('year')
@@ -358,14 +356,20 @@ class Statistics
 
         $finances = [];
         foreach ($data as $item) {
-            if ($item->pos != 1) {
+            $currency = $item->purse?->currency;
+            if ($currency && $currency->position != 1) {
                 if (!empty($item->currency_amount) && intval($item->currency_rate) !== 1) {
                     $item->amount = $item->currency_amount;
                 } else {
-                    $item->amount = FinanceCurrency::priceConvert((int)$item->amount, FinanceCurrency::getMainCurrency()->id, false, (int)$item->currency_id);
+                    $item->amount = FinanceCurrency::priceConvert(
+                        (int) $item->amount,
+                        FinanceCurrency::getMainCurrency()->id,
+                        false,
+                        (int) $currency->id
+                    );
                 }
             }
-            $finances[$item->year][$item->month][] = (array)$item;
+            $finances[$item->year][$item->month][] = $item->toArray();
         }
 
         $results = array();

@@ -57,7 +57,7 @@ class Email
 
         foreach ($params as $name => $value) {
             if (in_array($name, $params_name) and !empty($value)) {
-                $$name = $value;
+                $$name = $value; # set var
             }
         }
 

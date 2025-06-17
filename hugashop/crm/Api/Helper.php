@@ -463,7 +463,6 @@ class Helper
         }
 
         $stat .= "Page generation time: " . round($exec_time / 1e+9, 4) . " seconds\r\n";
-        $stat .= "DB queries count: " . Database::getQueryCount() . " pcs\r\n";
         $stat .= "-->";
 
         return $stat;

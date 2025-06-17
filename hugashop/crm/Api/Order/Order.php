@@ -11,7 +11,6 @@
 namespace HugaShop\Api\Order;
 
 use HugaShop\Api\Helper;
-use HugaShop\Api\Database;
 use HugaShop\Api\BaseModel;
 use HugaShop\Api\Cart\Cart;
 use HugaShop\Api\User\User;

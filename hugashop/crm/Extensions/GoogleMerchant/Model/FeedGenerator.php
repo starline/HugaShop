@@ -3,7 +3,7 @@
 /**
  *
  * @author Andi Huga
- * @version 3.9
+ * @version 4.0
  *
  * Google feed generator
  * Uses Cache
@@ -19,7 +19,6 @@ use HugaShop\Api\Config;
 use HugaShop\Api\Helper;
 use HugaShop\Api\Settings;
 use HugaShop\Api\Product\Product;
-use HugaShop\Api\Product\ProductBrand;
 use HugaShop\Api\Product\ProductOption;
 use HugaShop\Api\Finance\FinanceCurrency;
 use HugaShop\Api\Product\ProductCategory;
@@ -39,6 +38,7 @@ class FeedGenerator
         $response = Helper::cache(self::class)->get($pricefeed->id, function (ItemInterface $item): array {
             $item->expiresAfter(10); # seconds
 
+            $feed_data = [];
 
             // Валюты
             $main_currency = FinanceCurrency::getMainCurrency();
@@ -51,57 +51,55 @@ class FeedGenerator
             // TODO: Select all child categories
             $filter['category_id'] = $categories;
             $filter['visible'] = 1;
-            $products = Product::getList($filter, ['product_id' => 'ASC', 'position' => 'ASC'], ['images', 'brand', 'category']);
+            $products_raw = Product::getList($filter, 'position', ['image', 'brand']);
 
             // В качестве id используется артикул
-            foreach ($products as $prod) {
+            foreach ($products_raw as $product_raw) {
 
                 $product = new \stdClass();  # clean
 
                 // Hard Required params
-                if (empty($prod->image) || empty($prod->name) || empty($prod->price)) {
+                if (empty($product_raw->image) || empty($product_raw->name) || empty($product_raw->price)) {
                     continue;
                 }
 
                 // Disable
-                if (!empty($prod->disable)) {
+                if (!empty($product_raw->disable)) {
                     continue;
                 }
 
                 // Не показываеам "нет в наличии"
-                if ($prod->stock == 0  and empty(self::$pricefeed->show_out_stock)) {
+                if ($product_raw->stock == 0  and empty(self::$pricefeed->show_out_stock)) {
                     continue;
                 }
 
                 // ID
-                if (empty(self::$pricefeed->sku_id) || empty($prod->sku)) {
-                    $product->id = $prod->id;
+                if (empty(self::$pricefeed->sku_id) || empty($product_raw->sku)) {
+                    $product->id = $product_raw->id;
                 } else {
-                    $product->id = $prod->sku; # В качестве id используется артикул
+                    $product->id = $product_raw->sku; # В качестве id используется артикул
                 }
 
 
-                $product->link = Config::get('root_url') . '/tovar-' . $prod->url;
+                $product->link = Config::get('root_url') . '/tovar-' . $product_raw->url;
                 $product->condition = 'new';
 
-
                 // Форммируем название + вариант
-                $product->name = $prod->name . ($prod->variant_name ? ' - ' . $prod->variant_name : '');
-
+                $product->name = $product_raw->name . ($product_raw->variant_name ? ' - ' . $product_raw->variant_name : '');
 
                 // TIP: Если использовать основное описание товара - Слишком много нерелевантных слов.
-                $product->description = strip_tags($prod->annotation);
+                $product->description = strip_tags($product_raw->annotation);
 
 
                 // + характеристики
-                $options = ProductOption::getProductOptions($prod->id);
+                $options = ProductOption::getProductOptions($product_raw->id);
                 $array_options = [];
                 foreach ($options as $item) {
                     $array_options[] = $item->name . ': ' . $item->value;
                 }
 
                 if (!empty($array_options)) {
-                    $product->description = $product->description ?: $prod->name;
+                    $product->description = $product->description ?: $product_raw->name;
                     $product->description .= ' | ' . join(', ', $array_options);
                 }
 
@@ -109,12 +107,12 @@ class FeedGenerator
                 // Main image
                 // Нельзя использовать изображения рекламного характера или фотографии с надписями, которые закрывают товар.
                 // Водяные знаки, логотипы, названия марок и другие наложения;
-                $product->image_link = Image::getURL($prod->image, 1080, 1080);
+                $product->image_link = Image::getURL($product_raw->image->filename, 1080, 1080);
 
                 // Обработка дополнительных фотографий
-                $images = Image::getImages($prod->id, 'product');
+                $images = Image::getImages($product_raw->id, 'product');
                 $images = $images->slice(1)->values();
-                if (!$images->isNotEmpty()) {
+                if ($images->isNotEmpty()) {
                     $product->additional_image_link = $images->map(function ($image) {
                         return Image::getURL($image->filename, 1080, 1080);
                     });
@@ -122,10 +120,10 @@ class FeedGenerator
 
 
                 // Цена товара со скидкой
-                $price = round(FinanceCurrency::priceConvert($prod->price, $main_currency->id, false), 2);
-                if (!is_null($prod->old_price) && $prod->old_price > $prod->price) {
+                $price = round(FinanceCurrency::priceConvert($product_raw->price, $main_currency->id, false), 2);
+                if (!is_null($product_raw->old_price) && $product_raw->old_price > $product_raw->price) {
                     $product->sale_price = $price . ' ' . $main_currency->code;
-                    $price = round(FinanceCurrency::priceConvert($prod->old_price, $main_currency->id, false), 2);
+                    $price = round(FinanceCurrency::priceConvert($product_raw->old_price, $main_currency->id, false), 2);
                 }
                 $product->price = $price . ' ' . $main_currency->code;
 
@@ -141,34 +139,26 @@ class FeedGenerator
                  * Пути к категории товара
                  * @link https://support.google.com/merchants/answer/6324406?sjid=9520931803415694483-NC
                  */
-                $categories = ProductCategory::getCategories(['product_id' => $prod->id]);
-                if (!empty($categories)) {
-                    $categories_array = [];
-                    $categories = reset($categories);
-                    foreach ($categories->path as $category) {
-                        $categories_array[] = $category->name;
+                $product_category = ProductCategory::getCategory($product_raw->category_id);
+                if (!empty($product_category)) {
+                    foreach ($product_category->path as $cat) {
+                        $categories_array[] = $cat->name;
                     }
-
                     $product->product_type = join(" > ", $categories_array);
                 }
 
 
                 // Brand
-                if (!empty($prod->brand_id)) {
-                    $brandItem = ProductBrand::getBrand((int)$prod->brand_id);
-                    if (!is_null($brandItem)) {
-                        $product->brand_name = $brandItem->name;
-                    }
-                }
-
-                if (empty($product->brand_name)) {
+                if (!empty($product_raw->brand->name)) {
+                    $product->brand_name = $product_raw->brand->name;
+                } else {
                     $product->brand_name = Settings::getParam('company_name');
                 }
 
 
                 // Availability
                 $product->availability = 'out_of_stock';
-                if (is_null($prod->stock) || $prod->stock > 0) {
+                if (is_null($product_raw->stock) || $product_raw->stock > 0) {
                     $product->availability = 'in_stock';
                 }
 
@@ -182,14 +172,14 @@ class FeedGenerator
                     $product->label_0 = self::$pricefeed->label;
                 }
 
-                if (!empty($prod->category_url)) {
-                    $product->label_1 = $prod->category_url;
+                if (!empty($product_category->url)) {
+                    $product->label_1 = $product_category->url;
                 }
 
-                $products[] = $product;
+                $feed_data[] = $product;
             }
 
-            return $products;
+            return $feed_data;
         });
 
         return $response;

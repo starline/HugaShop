@@ -10,7 +10,6 @@
 
 namespace HugaShop\Extensions\FacebookCommerce;
 
-
 use HugaShop\Api\Design;
 use HugaShop\Api\Helper;
 use HugaShop\Api\Request;
@@ -50,12 +49,12 @@ final class FacebookCommerce extends BaseExtension
             foreach (Helper::getPositions() as $id => $position) {
                 FacebookCommerceModel::updateOne($id, ['position' => $position]);
             }
+
+            Helper::cache(FeedGenerator::class)->clear();
         }
 
-        $pricefeeds = FacebookCommerceModel::getList([], 'position');
+        $pricefeeds = FacebookCommerceModel::getList(order: 'position');
         Design::assign('pricefeeds', $pricefeeds);
-
-        Helper::cache(FeedGenerator::class)->clear();
 
         return $this->getTemplatePath('templates/feed_list.tpl');
     }
@@ -80,7 +79,7 @@ final class FacebookCommerce extends BaseExtension
                 Design::setFlashMessage('update', FacebookCommerceModel::updateOne($pricefeed->id, $pricefeed) >= 0);
 
                 // Cache clean
-                Helper::cache(FeedGenerator::class)->delete('pricefeed_' . $pricefeed->id);
+                Helper::cache(FeedGenerator::class)->delete($pricefeed->id);
             }
 
             $pricefeed_categories = Request::post('pricefeed_categories', 'array');
@@ -121,17 +120,19 @@ final class FacebookCommerce extends BaseExtension
      */
     public function webhook(array $params = [])
     {
+
         if (empty($params['token']) || empty($params['id'])) {
             return false;
         }
 
-        // Get token cut '.csv' 
+        // Get token cut '.csv'
+        // Example: a2e8e4cbf284cb268e2b4328eb66cd5e.csv
         $token = str_replace('.csv', '', $params['token']);
 
         if (!empty($pricefeed = FacebookCommerceModel::getOne(['id' => $params['id'], 'token' => $token]))) {
             $feed_data = FeedGenerator::getPriceFeed($pricefeed);
 
-            // encoding contents in CSV format
+            // Encoding contents in CSV format
             $serializer = new Serializer([new ObjectNormalizer()], [new CsvEncoder()]);
             $csv = $serializer->encode($feed_data, 'csv');
 

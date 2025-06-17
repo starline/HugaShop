@@ -3,7 +3,7 @@
 /**
  *
  * @author Andi Huga
- * @version 3.1
+ * @version 3.2
  *
  * Use Cache
  * Яндекс фид YXM
@@ -81,76 +81,76 @@ class FeedGenerator
 
             $filter['category_id'] = $categories;
             $filter['visible'] = 1;
-            $product_variants = Product::getList($filter, ['product_id' => 'ASC', 'position' => 'ASC'], ['image', 'brand', 'category']);
+            $raw_products = Product::getList($filter, 'position', ['image', 'brand']);
 
             $resp_xml .=  "<offers>";
-            foreach ($product_variants as $prod) {
+            foreach ($raw_products as $raw_product) {
 
                 // Нe показываем выключеные и не активные
-                if (!empty($prod->disable) || empty($prod->visible)) {
+                if (!empty($raw_product->disable) || empty($raw_product->visible)) {
                     continue;
                 }
 
-                if (empty($prod->name) || empty($prod->price)) {
+                if (empty($raw_product->name) || empty($raw_product->price)) {
                     continue;
                 }
 
                 // Не показываеам "нет в наличии"
-                if ($prod->stock == 0  and empty($pricefeed->show_out_stock)) {
+                if ($raw_product->stock == 0  and empty(self::$pricefeed->show_out_stock)) {
                     continue;
                 }
 
 
                 // Товар доступен
                 $available = 'false';
-                if (!empty($prod->stock) and intval($prod->stock) > 0) {
+                if (!empty($raw_product->stock) and intval($raw_product->stock) > 0) {
                     $available = 'true';
                 }
 
                 // ID
-                if (empty($pricefeed->sku_id) || empty($prod->sku)) {
-                    $item_id = $prod->id;
+                if (empty(self::$pricefeed->sku_id) || empty($raw_product->sku)) {
+                    $item_id = $raw_product->id;
                 } else {
-                    $item_id = $prod->sku;
+                    $item_id = $raw_product->sku;
                 }
 
                 $resp_xml .= '<offer id="' . $item_id . '" available="' . $available . '">';
 
                 // <name> - Оптимальная длина — 50‑60 символов, максимальная — 150.
-                $name = htmlspecialchars(mb_substr($prod->name . ($prod->variant_name ? ' ' . $prod->variant_name : ''), 0, 150));
+                $name = htmlspecialchars(mb_substr($raw_product->name . ($raw_product->variant_name ? ' ' . $raw_product->variant_name : ''), 0, 150));
                 $resp_xml .= '<name>' . $name . '</name>';
 
-                $resp_xml .= '<url>' . Config::get('root_url') . '/tovar-' . $prod->url . '</url>';
+                $resp_xml .= '<url>' . Config::get('root_url') . '/tovar-' . $raw_product->url . '</url>';
                 $resp_xml .= '<currencyId>' . $main_currency->code . '</currencyId>';
-                $resp_xml .= '<categoryId>' . $prod->category_id . '</categoryId>';
+                $resp_xml .= '<categoryId>' . $raw_product->category_id . '</categoryId>';
 
 
                 // Максимальная длина — 3000 знаков.
                 // Лучше уложиться в 400–800 знаков — чтобы текст не выглядел чересчур объемным и сложным для восприятия.
-                if (!empty($prod->annotation)) {
-                    $resp_xml .= '<description>' . htmlspecialchars(strip_tags($prod->annotation)) . '</description>';
+                if (!empty($raw_product->annotation)) {
+                    $resp_xml .= '<description>' . htmlspecialchars(strip_tags($raw_product->annotation)) . '</description>';
                 }
 
 
                 // Бренд
-                if (!empty($prod->brand_name)) {
-                    $resp_xml .= '<vendor>' . htmlspecialchars($prod->brand_name) . '</vendor>';
+                if (!empty($raw_product->brand->name)) {
+                    $resp_xml .= '<vendor>' . htmlspecialchars($raw_product->brand->name) . '</vendor>';
                 }
 
 
                 // Price
-                $price = round(FinanceCurrency::priceConvert($prod->price, $main_currency->id, false), 2);
-                $old_price = round(FinanceCurrency::priceConvert($prod->old_price, $main_currency->id, false), 2);
+                $price = round(FinanceCurrency::priceConvert($raw_product->price, $main_currency->id, false), 2);
+                $old_price = round(FinanceCurrency::priceConvert($raw_product->old_price, $main_currency->id, false), 2);
 
                 $resp_xml .= '<price>' . $price . '</price>';
-                if (!empty($prod->old_price) and $prod->price < $prod->old_price) {
+                if (!empty($raw_product->old_price) and $raw_product->price < $raw_product->old_price) {
                     $resp_xml .=  "<oldprice>" . $old_price . "</oldprice>";
                 }
 
 
                 // Options
                 // Example: <param name="Размер экрана" unit="дюйм">27</param>
-                $product_options = ProductOption::getProductOptions($prod->id);
+                $product_options = ProductOption::getProductOptions($raw_product->id);
                 foreach ($product_options as $option) {
                     $resp_xml .= '<param name="' . htmlspecialchars($option->name) . '">' . htmlspecialchars($option->value) . '</param>';
                 }
@@ -158,7 +158,7 @@ class FeedGenerator
 
                 // Добавляйте не больше 20 фотографий для одного товара.
                 // На фотографиях может использоваться водяной знак и иная информация о товаре
-                $images = Image::getImages($prod->id, 'product');
+                $images = Image::getImages($raw_product->id, 'product');
                 if ($images->isNotEmpty()) {
                     foreach ($images as $img) {
                         $resp_xml .= '<picture>' . Image::getURL($img->filename, 1080, 1080, true) . '</picture>';

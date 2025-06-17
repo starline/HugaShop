@@ -4,14 +4,13 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.8
+ * @version 1.9
  *
  */
 
 namespace App\Controller\Admin\Ajax;
 
 use HugaShop\Api\Request;
-use HugaShop\Api\Database;
 use App\Controller\BaseAdminController;
 use HugaShop\Api\Product\ProductOption;
 use HugaShop\Api\Product\ProductFeature;
@@ -62,7 +61,7 @@ class ProductAjax extends BaseAdminController
         $this->checkAdminAccess(['product_content', 'product_price']);
 
         $limit = 100;
-        $keyword = Database::escape(Request::get('query', 'string'));
+        $keyword = Request::get('query', 'string');
         $feature_id = Request::get('feature_id', 'integer');
 
         $options = ProductOption::getOptions(array("feature_id" => $feature_id, "keyword" => $keyword, "limit" => $limit));
@@ -87,8 +86,7 @@ class ProductAjax extends BaseAdminController
         $this->checkAdminAccess(['product_content', 'product_price']);
 
         $limit = 100;
-        $keyword = Database::escape(Request::get('query', 'string'));
-
+        $keyword = Request::get('query', 'string');
         $features = ProductFeature::getFeatures(['keyword' => $keyword, 'limit' => $limit]);
 
         $features_value = [];

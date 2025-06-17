@@ -4,31 +4,31 @@
         <title>{$settings->company_name}</title>
         <description>{$settings->company_description}</description>
         <link>{$config->root_url}</link>
-        {foreach $product_variants as $pv}
+        {foreach $products as $product}
             <item>
-                <g:id>{$pv->id}</g:id>
-                <g:title>{$pv->name}</g:title>
-                <g:description>{$pv->description}</g:description>
-                <g:link>{$pv->link}</g:link>
-                <g:price>{$pv->price}</g:price>
-                {if !$pv->sale_price|empty}
-                    <g:sale_price>{$pv->sale_price}</g:sale_price>
+                <g:id>{$product->id}</g:id>
+                <g:title>{$product->name}</g:title>
+                <g:description>{$product->description}</g:description>
+                <g:link>{$product->link}</g:link>
+                <g:price>{$product->price}</g:price>
+                {if !$product->sale_price|empty}
+                    <g:sale_price>{$product->sale_price}</g:sale_price>
                 {/if}
-                <g:condition>{$pv->condition}</g:condition>
-                <g:image_link>{$pv->image_link}</g:image_link>
-                {if !$pv->additional_image_link|empty}
-                    {foreach $pv->additional_image_link as $image_link}
+                <g:condition>{$product->condition}</g:condition>
+                <g:image_link>{$product->image_link}</g:image_link>
+                {if !$product->additional_image_link|empty}
+                    {foreach $product->additional_image_link as $image_link}
                         <g:additional_image_link>{$image_link}</g:additional_image_link>
                     {/foreach}
                 {/if}
-                <g:product_type>{$pv->product_type}</g:product_type>
-                <g:brand>{$pv->brand_name}</g:brand>
-                <g:availability>{$pv->availability}</g:availability>
-                {if !$pv->label_0|empty}
-                    <g:custom_label_0>{$pv->label_0}</g:custom_label_0>
+                <g:product_type>{$product->product_type}</g:product_type>
+                <g:brand>{$product->brand_name}</g:brand>
+                <g:availability>{$product->availability}</g:availability>
+                {if !$product->label_0|empty}
+                    <g:custom_label_0>{$product->label_0}</g:custom_label_0>
                 {/if}
-                {if !$pv->label_1|empty}
-                    <g:custom_label_1>{$pv->label_1}</g:custom_label_1>
+                {if !$product->label_1|empty}
+                    <g:custom_label_1>{$product->label_1}</g:custom_label_1>
                 {/if}
             </item>
         {/foreach}

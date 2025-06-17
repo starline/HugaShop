@@ -23,8 +23,6 @@ use HugaShop\Extensions\GoogleMerchant\Model\GoogleMerchant as GoogleMerchantMod
 final class GoogleMerchant extends BaseExtension
 {
 
-
-
     /**
      * Список
      */
@@ -80,7 +78,7 @@ final class GoogleMerchant extends BaseExtension
                 Design::setFlashMessage('update', GoogleMerchantModel::updateOne($pricefeed->id, $pricefeed) >= 0);
 
                 // Cache clean
-                Helper::cache(FeedGenerator::class)->delete('pricefeed_' . $pricefeed->id);
+                Helper::cache(FeedGenerator::class)->delete($pricefeed->id);
             }
 
             $pricefeed_categories = Request::post('pricefeed_categories', 'array');
@@ -141,7 +139,9 @@ final class GoogleMerchant extends BaseExtension
         }
 
         if (!empty($pricefeed = GoogleMerchantModel::getOne(['id' => $params['id'], 'token' => $params['token']]))) {
-            Design::assign('product_variants', FeedGenerator::getPriceFeed($pricefeed));
+
+            Design::assign('products', FeedGenerator::getPriceFeed($pricefeed));
+
             $response = new Response($this->fetchTemplate('templates/feed_generator.tpl'));
             $response->headers->set('Content-type', 'text/xml');
             return $response;

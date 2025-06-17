@@ -180,8 +180,6 @@ abstract class BaseModel extends Model
     {
         $query = static::query();
 
-
-
         // JOINs
         if (!empty($join)) {
             $query->with(is_string($join) ? [$join] : $join);
