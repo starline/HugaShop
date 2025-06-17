@@ -14,7 +14,7 @@
                         <select class="form-select" name="{$module_type}_settings[{$setting->variable}]"
                             id="{$module_key}-{$setting->variable}">
                             {foreach $setting->options as $option}
-                                <option value='{$option->value}' {if $option->value == ${$module_type}_settings->
+                                <option value='{$option->value}' {if $option->value == ${$module_type}->settings->
                                     {$setting->variable}}selected{/if}>
                                     {$option->name}</option>
                             {/foreach}
@@ -26,7 +26,7 @@
                         <label class="form-check-label" for="{$module_key}-{$setting->variable}">{$setting->name}</label>
                         <input class="form-check-input" name="{$module_type}_settings[{$setting->variable}]" type="checkbox"
                             value="{$option->value}"
-                            {if $option->value == ${$module_type}_settings->{$setting->variable}}checked{/if}
+                            {if $option->value == ${$module_type}->settings->{$setting->variable}}checked{/if}
                         id="{$module_key}-{$setting->variable}" />
                     </li>
 
@@ -39,17 +39,17 @@
                             id="{$module_key}-{$setting->variable}" />
                     </li>
 
-                    {if ${$module_type}_settings->{$setting->variable}}
+                    {if ${$module_type}->settings->{$setting->variable}}
                         <li>
                             <img
-                                src="{$config->root_url}/{${$module_type}_settings->{$setting->variable}}?{math equation='rand(10,10000)'}" />
+                                src="{$config->root_url}/{${$module_type}->settings->{$setting->variable}}?{math equation='rand(10,10000)'}" />
                         </li>
                     {/if}
                 {else}
                     <li>
                         <label class="col-form-label" for="{$module_key}-{$setting->variable}">{$setting->name}</label>
                         <input class="form-control" name="{$module_type}_settings[{$setting->variable}]" type="text"
-                            value="{${$module_type}_settings->{$setting->variable}}" id="{$module_key}-{$setting->variable}"
+                            value="{${$module_type}->settings->{$setting->variable}}" id="{$module_key}-{$setting->variable}"
                             {if !$setting->placeholder|empty}placeholder="{$setting->placeholder}" {/if} />
                     </li>
                 {/if}

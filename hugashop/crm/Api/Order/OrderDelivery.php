@@ -14,9 +14,9 @@ namespace HugaShop\Api\Order;
 
 use HugaShop\Api\Config;
 use HugaShop\Api\Helper;
-use Illuminate\Database\Capsule\Manager as Capsule;
-use HugaShop\Api\Finance\FinancePurse;
 use HugaShop\Api\BaseModel;
+use HugaShop\Api\Finance\FinancePurse;
+use HugaShop\Api\Order\OrderPaymentDelivery;
 
 class OrderDelivery extends BaseModel
 {
@@ -64,7 +64,7 @@ class OrderDelivery extends BaseModel
             return false;
         }
 
-        return Capsule::table('order_delivery_payment')
+        return OrderPaymentDelivery::query()
             ->where('delivery_id', $id)
             ->pluck('payment_method_id')
             ->toArray();
@@ -77,9 +77,9 @@ class OrderDelivery extends BaseModel
     public static function updateDeliveryPayments($id, array $payment_methods_ids)
     {
         $payment_methods_ids = empty($payment_methods_ids) ? [] : $payment_methods_ids;
-        Capsule::table('order_delivery_payment')->where('delivery_id', $id)->delete();
+        OrderPaymentDelivery::query()->where('delivery_id', $id)->delete();
         foreach ($payment_methods_ids as $p_id) {
-            Capsule::table('order_delivery_payment')->insert([
+            OrderPaymentDelivery::query()->insert([
                 'delivery_id' => $id,
                 'payment_method_id' => $p_id
             ]);

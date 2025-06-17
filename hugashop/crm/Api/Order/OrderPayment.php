@@ -10,13 +10,13 @@
 
 namespace HugaShop\Api\Order;
 
+use stdClass;
 use HugaShop\Api\Config;
 use HugaShop\Api\Helper;
-use Illuminate\Database\Capsule\Manager as Capsule;
+use HugaShop\Api\BaseModel;
 use HugaShop\Api\Finance\FinancePurse;
 use HugaShop\Api\Finance\FinanceCurrency;
-use HugaShop\Api\BaseModel;
-use stdClass;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class OrderPayment extends BaseModel
 {
@@ -26,11 +26,11 @@ class OrderPayment extends BaseModel
         'public_name' =>            ['type' => 'varchar',       'lenght' => 255,      'required' => true],
         'enabled' =>                ['type' => 'tinyint'],
         'enabled_public' =>         ['type' => 'tinyint'],
-        'currency_id' =>            ['type' => 'int',           'lenght' => 11],
         'comment' =>                ['type' => 'varchar',       'lenght' => 255],
         'module' =>                 ['type' => 'varchar',       'lenght' => 255],
         'description' =>            ['type' => 'text'],
         'finance_purse_id' =>       ['type' => 'int',           'lenght' => 11],
+        'currency_id' =>            ['type' => 'int',           'lenght' => 11],
         'settings' =>               ['type' => 'text'],
         'position' =>               ['type' => 'int',           'lenght' => 11, 'def' => 0]
     ];
@@ -43,6 +43,16 @@ class OrderPayment extends BaseModel
     public function currency()
     {
         return $this->belongsTo(FinanceCurrency::class, 'currency_id');
+    }
+
+    public function deliveries()
+    {
+        return $this->hasMany(OrderPaymentDelivery::class, 'payment_method_id');
+    }
+
+    public function getDeliveriesIdsAttribute()
+    {
+        return $this->deliveries->pluck('delivery_id')->toArray();
     }
 
 
@@ -138,11 +148,7 @@ class OrderPayment extends BaseModel
      */
     public static function getPaymentDeliveries(int $id)
     {
-        if (empty($id)) {
-            return false;
-        }
-
-        return Capsule::table('order_delivery_payment')
+        return OrderPaymentDelivery::query()
             ->where('payment_method_id', $id)
             ->pluck('delivery_id')
             ->toArray();
@@ -168,9 +174,9 @@ class OrderPayment extends BaseModel
     public static function updatePaymentDeliveries(int $id, array $deliveries_ids)
     {
 
-        Capsule::table('order_delivery_payment')->where('payment_method_id', $id)->delete();
+        OrderPaymentDelivery::query()->where('payment_method_id', $id)->delete();
         foreach ($deliveries_ids as $d_id) {
-            Capsule::table('order_delivery_payment')->insert([
+            OrderPaymentDelivery::insert([
                 'payment_method_id' => $id,
                 'delivery_id' => $d_id
             ]);

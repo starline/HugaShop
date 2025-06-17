@@ -227,7 +227,7 @@ abstract class BaseModel extends Model
     /**
      * Get one
      * @param int|array $id id | ['id'' => 1, 'name' => 'name']
-     * @param array|string $join 'group' | ['group', 'permissions']
+     * @param array|string $join ['user', 'user.permissions'] | 'user.permissions'
      */
     public static function getOne(int|array $id, array|string $join = [])
     {
@@ -248,7 +248,12 @@ abstract class BaseModel extends Model
             $query->where('id', $id);
         }
 
-        return $query->first();
+        $result = $query->first();
+
+        // Settings
+        if ($result) $result->settings = empty($result->settings) ? new \stdClass() : (object) unserialize($result->settings);
+
+        return $result;
     }
 
 

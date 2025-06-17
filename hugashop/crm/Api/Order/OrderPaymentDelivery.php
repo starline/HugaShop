@@ -4,9 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1,0
- *
- * Класс для работы с доставкой
+ * @version 1.1
  *
  */
 
@@ -14,7 +12,7 @@ namespace HugaShop\Api\Order;
 
 use HugaShop\Api\BaseModel;
 
-class OrderDeliveryPayment extends BaseModel
+class OrderPaymentDelivery extends BaseModel
 {
     protected $table = 'order_delivery_payment';
 

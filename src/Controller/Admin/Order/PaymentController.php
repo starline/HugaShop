@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.0
+ * @version 2.1
  *
  */
 
@@ -32,17 +32,18 @@ class PaymentController extends BaseAdminController
 
         $this->checkAdminAccess('order_payment');
 
-        $payment_method_settings =  Request::post('payment_method_settings', 'array');
-        $payment_deliveries =       Request::post('payment_deliveries', 'array');
-        $payment_modules =          OrderPayment::getPaymentModules();
+        $payment_modules = OrderPayment::getPaymentModules();
 
 
         #### Update
         ###########
         if (!empty($payment_method = Request::getDataAcces(OrderPayment::getFields()))) {
 
+            $payment_method_settings        = Request::post('payment_method_settings', 'array');
+            $payment_method_deliveries      = Request::post('payment_method_deliveries', 'array');
+
             if (empty($payment_method->id)) {
-                $payment_method->id = Design::setFlashMessage('add', OrderPayment::add($payment_method));
+                $payment_method = Design::setFlashMessage('add', OrderPayment::create($payment_method));
             } else {
                 Design::setFlashMessage('update', OrderPayment::updateOne($payment_method->id, $payment_method));
 
@@ -74,7 +75,7 @@ class PaymentController extends BaseAdminController
                     }
                     OrderPayment::updatePaymentSettings($payment_method->id, $payment_method_settings);
                 }
-                OrderPayment::updatePaymentDeliveries($payment_method->id, $payment_deliveries);
+                OrderPayment::updatePaymentDeliveries($payment_method->id, $payment_method_deliveries);
             }
 
             // Делаем редирект на страницу с ID
@@ -85,14 +86,15 @@ class PaymentController extends BaseAdminController
         #### View
         #########
         if (!empty($id)) {
-            $payment_method = OrderPayment::getOne($id);
+            $payment_method = OrderPayment::getOne($id, join: [
+                'deliveries'
+            ]);
 
             if (empty($payment_method->id)) {
                 return $this->redirectToRoute('OrderPaymentListAdmin');
             }
 
-            $payment_method_settings = $payment_method->settings;
-            $payment_deliveries = OrderPayment::getPaymentDeliveries($id); # Связанные способы доставки
+            Design::assign('payment_method',             $payment_method);
         }
 
 
@@ -100,10 +102,6 @@ class PaymentController extends BaseAdminController
         Design::assign('purses',                     FinancePurse::getPurses());
         Design::assign('payment_modules',            $payment_modules);
         Design::assign('currencies',                 FinanceCurrency::getCurrencies(['enabled' => 1]));
-        Design::assign('payment_deliveries',         $payment_deliveries);
-        Design::assign('payment_method',             $payment_method);
-        Design::assign('payment_method_settings',    $payment_method_settings);
-
 
         return $this->fetchResponse('order/payment.tpl');
     }

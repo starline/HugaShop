@@ -63,7 +63,7 @@
 						<label for="currency_id">Валюта</label>
 						<select class="form-select" name="currency_id" id="currency_id">
 							{foreach $currencies as $currency}
-								<option value="{$currency->id}" {if $currency->id==$payment_method->currency_id}selected{/if}>
+								<option value="{$currency->id}" {if $currency->id == $payment_method->currency_id}selected{/if}>
 									{$currency->name}</option>
 							{/foreach}
 						</select>
@@ -87,7 +87,7 @@
 							{foreach $purses as $purse}
 								<option class="{if !$purse->enabled}disabled{/if}"
 									{if $purse->id == $payment_method->finance_purse_id} selected {/if} value="{$purse->id}">
-									{$purse->name} ({$purse->currency_sign})</option>
+									{$purse->name} ({$purse->currency->sign})</option>
 							{/foreach}
 						</select>
 					</li>
@@ -104,9 +104,9 @@
 					{foreach $deliveries as $delivery}
 						{if $delivery->enabled}
 							<div class="form-check {if !$delivery->enabled}disabled{/if}">
-								<input class="form-check-input" type="checkbox" name="payment_deliveries[]"
+								<input class="form-check-input" type="checkbox" name="payment_method_deliveries[]"
 									id="delivery_{$delivery->id}" value="{$delivery->id}"
-									{if in_array($delivery->id, $payment_deliveries)}checked{/if}>
+									{if in_array($delivery->id, $payment_method->deliveries_ids)}checked{/if}>
 								<label class="form-check-label" for="delivery_{$delivery->id}">{$delivery->name}</label>
 							</div>
 						{/if}
