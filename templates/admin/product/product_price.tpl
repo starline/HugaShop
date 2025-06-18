@@ -193,10 +193,8 @@
 					{foreach $product_variants as $product_variant}
 						<div
 							class="list_row {if !$product_variant->product->visible}visible_off{/if} {if $product_variant->product->disable}disable{/if}">
-							<input type="hidden" name="product_variants[{$product_variant->product->id}][id]"
+							<input type="hidden" name="product_variants[{$product_variant->product_id}][product_id]"
 								value="{$product_variant->product_id}">
-							<input type="hidden" name="product_variants[{$product_variant->product_id}][position]"
-								value="{$product_variant->position}">
 
 							<div class="col row gy-5">
 								<div class="col-12 col-md-9">
@@ -237,7 +235,6 @@
 
 					<div id="new_product_variant" class="list_row" style="display:none;">
 						<input type="hidden" name="product_variants[INDEX][product_id]" value="">
-						<input type="hidden" name="product_variants[INDEX][position]" value="">
 
 						<div class="col row gy-5">
 							<div class="col-12 col-md-9">
@@ -414,16 +411,17 @@
 					axis: 'y'
 				});
 
+
 				// После завершения сортировки переиндексировать input-ы
-				function indexListRows(container_selector) {
+				function indexListRows(container_selector, name_prefix) {
+					const regex = new RegExp(name_prefix + '\\[(?:\\d+|INDEX)\\]');
 					$(container_selector).find('.list_row').each(function(idx) {
 						$(this).find('input, select, textarea').each(function() {
-							this.name = this.name.replace(/purchases\[(?:\d+|INDEX)\]/,
-								'purchases[' + idx + ']');
+							this.name = this.name.replace(regex, name_prefix + '[' + idx + ']');
 						});
 					});
-					console.log('index row');
 				}
+
 
 				// Варианты товара
 				let new_product_variant = $('#new_product_variant').clone(true).removeAttr('id');
@@ -467,7 +465,7 @@
 						if (product.visible == 0)
 							new_item.addClass("visible_off");
 
-						indexListRows('.product_variants');
+						indexListRows('.product_variants', 'product_variants');
 						new_item.show();
 					},
 					formatResult: function(suggestions, currentValue) {
