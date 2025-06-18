@@ -168,6 +168,17 @@
 				<div class="col-12 layer product_stats">
 					<div id="product_stats"></div>
 				</div>
+
+				<div class="col-12 layer product_price_history">
+					<div class="grafic">
+						<div class="chart_actions btn_row">
+							<a class="btn btn-light" id="price_chart_reset">Reset zoom</a>
+						</div>
+						<div>
+							<canvas id="productPriceHistory" height="250" role="img"></canvas>
+						</div>
+					</div>
+				</div>
 			{/if}
 
 
@@ -369,6 +380,13 @@
 
 	{include file='parts/charts_init.tpl'}
 
+	<script type="text/javascript" src="{'js/chart/chart.umd.js'|asset}"></script>
+	<script type="text/javascript" src="{'js/chart/luxon.js'|asset}"></script>
+	<script type="text/javascript" src="{'js/chart/chartjs-adapter-luxon.js'|asset}"></script>
+	<script type="text/javascript" src="{'js/chart/chartjs-plugin-datalabels.js'|asset}"></script>
+	<script type="text/javascript" src="{'js/chart/hammerjs.js'|asset}"></script>
+	<script type="text/javascript" src="{'js/chart/chartjs-plugin-zoom.min.js'|asset}"></script>
+
 
 	<script type="module">
 		import '{"js/jquery/datepicker/jquery.ui.datepicker-ru.js"|asset}';
@@ -510,19 +528,6 @@
 				});
 
 
-				// Выводим график
-				showStatGraphic(
-					'product_stats', {
-						product_id: php_product_id,
-						filter: 'byMonth',
-						'csrf': csrf
-					},
-					['totalPrice', 'profitPrice', 'amount', 'add', 'delete'],
-					null,
-					php_currency_sign
-				);
-
-
 				// Бесконечность на складе
 				$("input[name*=variants][name*=stock]").focus(function() {
 					if ($(this).val() == '∞')
@@ -547,6 +552,83 @@
 					return false;
 				});
 
+
+				// Выводим график
+				showStatGraphic(
+					'product_stats', {
+						product_id: php_product_id,
+						filter: 'byMonth',
+						'csrf': csrf
+					},
+					['totalPrice', 'profitPrice', 'amount', 'add', 'delete'],
+					null,
+					php_currency_sign
+				);
+
+				let priceChart = new Chart(document.getElementById('productPriceHistory'), {
+					type: 'line',
+					options: {
+						locale: 'ru',
+						maintainAspectRatio: false,
+						plugins: {
+							datalabels: {
+								color: 'black',
+								formatter: function(value) { return value.y; },
+								align: 'top',
+								anchor: 'end',
+								display: 'auto',
+								font: { weight: 'bold' }
+							},
+							zoom: {
+								pan: { enabled: true, mode: 'x', modifierKey: 'ctrl' },
+								zoom: { drag: { enabled: true }, mode: 'x' }
+							},
+							tooltip: { yAlign: 'bottom' }
+						},
+						scales: {
+							x: { type: 'time', time: { unit: 'day', tooltipFormat: 'dd LLL yyyy' } },
+							y: { display: true, title: { display: true, text: php_currency_name } }
+						}
+					},
+					plugins: [ChartDataLabels]
+				});
+
+				function loadPriceHistory() {
+					$.post('/admin/ajax/stats/product-price', { product_id: php_product_id, csrf: csrf }, function(data) {
+						if (data && data.length > 0) {
+							let priceData = [];
+							let costData = [];
+							data.forEach((p) => {
+								let dt = luxon.DateTime.fromISO(p.date);
+								priceData.push({ x: dt, y: parseFloat(p.price) });
+								costData.push({ x: dt, y: parseFloat(p.cost_price) });
+							});
+							priceChart.data.datasets.push({
+								label: 'Цена, ' + php_currency_sign,
+								data: priceData,
+								borderColor: '#76c100',
+								backgroundColor: '#76c100',
+								fill: false,
+								tension: 0
+							});
+							priceChart.data.datasets.push({
+								label: 'Оптовая цена, ' + php_currency_sign,
+								data: costData,
+								borderColor: '#f8a13f',
+								backgroundColor: '#f8a13f',
+								fill: false,
+								tension: 0
+							});
+							priceChart.update();
+						}
+					});
+				}
+
+				loadPriceHistory();
+
+				$('#price_chart_reset').click(function() {
+					priceChart.resetZoom();
+				});
 			});
 		{/literal}
 	</script>

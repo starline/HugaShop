@@ -20,6 +20,7 @@ use HugaShop\Api\Finance\FinancePayment;
 use HugaShop\Api\Finance\FinanceCurrency;
 use HugaShop\Api\Product\ProductCategory;
 use HugaShop\Api\Warehouse\WarehouseMove;
+use HugaShop\Api\Product\ProductPriceHistory;
 
 class Statistics
 {
@@ -316,7 +317,7 @@ class Statistics
     {
 
         $query = FinancePayment::query()
-        ->select('purse_id', 'amount', 'currency_amount', 'currency_rate')
+            ->select('purse_id', 'amount', 'currency_amount', 'currency_rate')
             ->selectRaw('MONTH(date) as month')
             ->selectRaw('YEAR(date) as year')
             ->with('purse.currency');
@@ -384,5 +385,36 @@ class Statistics
         }
 
         return $results;
+    }
+
+    
+    /**
+     * Возвращает историю изменения цены товара по дням
+     */
+    public static function productPriceHistoryByDay(int $product_id)
+    {
+        if (empty($product_id)) {
+            return [];
+        }
+
+        $records = ProductPriceHistory::query()
+            ->selectRaw('DATE(created_at) as date')
+            ->selectRaw('MAX(price) as price')
+            ->selectRaw('MAX(cost_price) as cost_price')
+            ->where('product_id', $product_id)
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+
+        $result = [];
+        foreach ($records as $rec) {
+            $result[] = [
+                'date' => $rec->date,
+                'price' => (float) $rec->price,
+                'cost_price' => (float) $rec->cost_price,
+            ];
+        }
+
+        return $result;
     }
 }
