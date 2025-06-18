@@ -34,7 +34,7 @@ class ProductVariant extends BaseModel
     /**
      * Get all variants for product including parent
      */
-    public static function getProductVariants(int $product_id, array $join = []): Collection
+    public static function getVariants(int $product_id, array $join = []): Collection
     {
         // Сначала находим parent_id этого товара
         $parent_id = self::query()
@@ -53,7 +53,7 @@ class ProductVariant extends BaseModel
     /**
      * Update variants positions for product
      */
-    public static function updateProductVariants(int $current_product_id, array $variants): void
+    public static function updateVariants(int $current_product_id, array $variants): void
     {
         if (empty($current_product_id)) {
             return;
@@ -110,6 +110,14 @@ class ProductVariant extends BaseModel
         // Удаляем связи, где product_id присутствует, но привязан к чужому parent
         self::whereIn('product_id', $keep_ids)
             ->where('parent_id', '!=', $parent_id)
+            ->delete();
+    }
+
+
+    public function deleteVariant(int $product_id)
+    {
+        self::where('product_id', $product_id)
+            ->orWhere('parent_id', $product_id)
             ->delete();
     }
 }

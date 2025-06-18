@@ -467,6 +467,18 @@ class Product extends BaseModel
             ProductRelated::addRelatedProduct($new_id, $rel->related_id);
         }
 
+        // If product had variants, add duplicate to variants list
+        $has_variants = ProductVariant::query()
+            ->where('product_id', $id)
+            ->orWhere('parent_id', $id)
+            ->exists();
+
+        if ($has_variants) {
+            $variants = ProductVariant::getVariants($id)->pluck('product_id')->toArray();
+            $variants[] = $new_id;
+            ProductVariant::updateVariants($id, $variants);
+        }
+
         return $new_id;
     }
 
