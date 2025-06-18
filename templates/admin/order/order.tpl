@@ -236,7 +236,7 @@
 						<input type="hidden" name="purchases[{$purchase->position}][id]" value="{$purchase->id}" />
 
 						<div class="col row gy-5">
-							<div class="col-12 col-md-6">
+							<div class="col-12 col-md-7">
 								<div class="row">
 									<div class="move">
 										<div class="move_zone"></div>
@@ -253,9 +253,9 @@
 								</div>
 							</div>
 
-							<div class="col-12 col-md-6">
+							<div class="col-12 col-md-5">
 								<div class="row gx-2">
-									<div class="col-2 text-end sku">
+									<div class="col-4 text-end sku">
 										{if $purchase->sku}
 											<div class="round_box copy_field" value="{$purchase->sku}">
 												<span>{$purchase->sku}</span>
@@ -290,7 +290,7 @@
 									</div>
 
 
-									<div class="col-3 text-end amount">
+									<div class="col-4 text-end amount">
 										<div class="view_edit_purchase">
 											{if $purchase->product->weight}
 												<div class="row_alert">
@@ -321,13 +321,10 @@
 												</select>
 											</div>
 										</div>
-									</div>
 
-
-									<div class="col-3 text-end stock">
-										<div class="view_edit_purchase">
+										<div class="text-end stock view_edit_purchase">
 											{if $purchase->product}
-												<div class="row_alert">
+												<div class="row_alert alert_down">
 													{if $purchase->product->movements_amount}
 														<div class="wmovements" data-bs-toggle="tooltip" data-bs-html="true"
 															title="{foreach $purchase->product->movements as $mov}<div class='text-nowrap'>Поставка №{$mov->move_id} | {$mov->awaiting_date|date} | +{$mov->amount}</div>{/foreach}">
@@ -345,6 +342,7 @@
 												</div>
 											{/if}
 										</div>
+
 									</div>
 								</div>
 							</div>
@@ -425,11 +423,8 @@
 										<select class="form-select form-select-sm text-end"
 											name="purchases[INDEX][amount]"></select>
 									</div>
-								</div>
-
-								<div class="col-3 text-end stock">
-									<div class="view_edit_purchase">
-										<div class="row_alert"></div>
+									<div class="view_edit_purchase text-end stock">
+										<div class="row_alert alert_down"></div>
 										<div class="variant_stock">остаток: <span class="js_change"></span></div>
 									</div>
 								</div>

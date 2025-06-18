@@ -192,10 +192,10 @@
 				<div class="list sortable product_variants">
 					{foreach $product_variants as $product_variant}
 						<div
-							class="list_row {if !$product_variant->visible}visible_off{/if} {if $product_variant->disable}disable{/if}">
-							<input type="hidden" name="product_variants[{$product_variant->id}][id]"
-								value="{$product_variant->id}">
-							<input type="hidden" name="product_variants[{$product_variant->id}][position]"
+							class="list_row {if !$product_variant->product->visible}visible_off{/if} {if $product_variant->product->disable}disable{/if}">
+							<input type="hidden" name="product_variants[{$product_variant->product->id}][id]"
+								value="{$product_variant->product_id}">
+							<input type="hidden" name="product_variants[{$product_variant->product_id}][position]"
 								value="{$product_variant->position}">
 
 							<div class="col row gy-5">
@@ -206,20 +206,20 @@
 										</div>
 										<div class="image">
 											<img class="product_icon"
-												src="{if $rel_product->image->filename}{$rel_product->image->filename|resize:60}{else}{'images/cargo.png'|asset}{/if}">
+												src="{if $product_variant->product->image->filename}{$product_variant->product->image->filename|resize:60}{else}{'images/cargo.png'|asset}{/if}">
 										</div>
 										<div class="col">
 											<a class="product_name"
-												href="{'ProductAdmin'|urll:[id => $product_variant->id]}?return={$smarty.server.REQUEST_URI|urlencode}">{$product_variant->name}</a>
-											<div class="variant_name">{$product_variant->variant_name}</div>
+												href="{'ProductAdmin'|urll:[id => $product_variant->product_id]}?return={$smarty.server.REQUEST_URI|urlencode}">{$product_variant->product->name}</a>
+											<div class="variant_name">{$product_variant->product->variant_name}</div>
 										</div>
 									</div>
 								</div>
 
 								<div class="col-12 col-md-3">
-									<div class="col sku">
-										<div class="round_box copy_field" value="{$product_variant->sku}">
-											<span>{$product_variant->sku}</span>
+									<div class="col sku text-end">
+										<div class="round_box copy_field" value="{$product_variant->product->sku}">
+											<span>{$product_variant->product->sku}</span>
 											<div class="copy_hover" data-bs-toggle="tooltip"
 												data-bs-original-title="Скопировать">
 												<i class="material-icons">content_copy</i>
@@ -256,7 +256,7 @@
 							</div>
 
 							<div class="col-12 col-md-3">
-								<div class="col sku">
+								<div class="col sku text-end">
 									<div class="round_box copy_field" value="">
 										<span></span>
 										<div class="copy_hover" data-bs-toggle="tooltip"

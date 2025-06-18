@@ -21,6 +21,7 @@ use HugaShop\Api\Product\Product;
 use HugaShop\Api\User\UserPermission;
 use App\Controller\BaseAdminController;
 use HugaShop\Api\Product\ProductRelated;
+use HugaShop\Api\Product\ProductVariant;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -77,6 +78,10 @@ class ProductPriceController extends BaseAdminController
                 }
             }
 
+            // Варианты товара
+            $variants = Request::post('product_variants', 'array');
+            ProductVariant::updateProductVariants($product->id, $variants ?? []);
+
             return $this->redirectToRoute('ProductPriceAdmin', ['id' => $product->id]);
         }
 
@@ -96,7 +101,10 @@ class ProductPriceController extends BaseAdminController
             }
 
             Design::assign('product', $product);
-            
+
+            $product_variants = ProductVariant::getProductVariants($product->id, ['product', 'product.image']);
+            Design::assign('product_variants', $product_variants);
+
             $this->getProductOrders($product->id);
         }
 

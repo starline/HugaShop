@@ -464,6 +464,9 @@ class TestScript extends BaseExtension
                             }
 
 
+                            // В ProductRelated удалить $table 
+                            // В таблице переименовать product_product_relates на product_related
+
 
                             $this->result[] = 'done';
                         }

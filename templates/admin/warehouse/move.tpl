@@ -234,12 +234,10 @@
 						<div class="col row">
 							<div class="col">
 								<a href="/admin/product/{$purchase->product->id}/price">{$purchase->product_name}</a>
+								<span class="variant_name">{$purchase->variant_name}</span>
 							</div>
 
-							<div class="col-3 text-end purchase_variant">
-								<i data-bs-toggle="tooltip"
-									title="{$purchase->variant_name}">{$purchase->variant_name|truncate:20:'…':true:false}</i>
-
+							<div class="col-3 text-end">
 								{if $purchase->sku}
 									<div class="sku">
 										<div class="round_box copy_field" value="{$purchase->sku}">
@@ -281,6 +279,7 @@
 											<span class="price_sign">{$settings->weight_units}</span>
 										</div>
 									{/if}
+
 									<div class="view_purchase">
 										{$purchase->amount} {$settings->units}
 									</div>
@@ -296,12 +295,9 @@
 										</select>
 									</div>
 								</div>
-							</div>
-
-							<div class="col-2 text-end stock">
-								<div class="view_edit_purchase">
+								<div class="view_edit_purchase text-end stock">
 									{if $purchase->product}
-										<div class="row_alert">
+										<div class="row_alert alert_down">
 											{if $purchase->product->movements_amount}
 												<div class="wmovements" data-bs-toggle="tooltip" data-bs-html="true"
 													title="{foreach $purchase->product->movements as $mov}<div class='text-nowrap'>Поставка №{$mov->move_id} | {$mov->awaiting_date|date} | +{$mov->amount}</div>{/foreach}">
@@ -309,13 +305,13 @@
 												</div>
 											{/if}
 										</div>
-
 										<div class="variant_stock">остаток: <span
 												class="js_change">{$purchase->product->stock}</span>
 										</div>
 									{/if}
 								</div>
 							</div>
+
 						</div>
 
 						<div class="icons flex-column">
@@ -347,10 +343,10 @@
 					<div class="col row">
 						<div class="col">
 							<a class="add_name" href=""></a>
+							<span class="variant_name"></span>
 						</div>
 
-						<div class="col-3 text-end purchase_variant">
-							<i data-bs-toggle="tooltip" title=""></i>
+						<div class="col-3 text-end">
 							<div class="sku">
 								<div class="round_box copy_field" value="">
 									<span></span>
@@ -388,11 +384,8 @@
 									{/section}
 								</select>
 							</div>
-						</div>
-
-						<div class="col-2 text-end stock">
-							<div class="view_edit_purchase">
-								<div class="row_alert"></div>
+							<div class="view_edit_purchase text-end stock">
+								<div class="row_alert alert_down"></div>
 								<div class="variant_stock">остаток: <span class="js_change"></span></div>
 							</div>
 						</div>

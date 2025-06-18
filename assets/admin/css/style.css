@@ -2076,19 +2076,10 @@ span.alert {
 
 
 /* Заказы */
-.list.purchases .purchase_variant {
-	font-size: 0.85rem;
-	color: var(--text-dim-color);
-}
-
-.list.purchases .variant_name {
+.list .variant_name {
 	margin-top: 5px;
 	font-size: .85rem;
 	color: var(--text-dim-color);
-}
-
-.list.purchases .purchase_variant .view_purchase {
-	margin-top: -2px;
 }
 
 .list.purchases .view_edit_purchase {
@@ -2101,7 +2092,7 @@ span.alert {
 	color: var(--lightin-dark-color);
 }
 
-.list.purchases .row_alert {
+.list .row_alert {
 	position: absolute;
 	right: 0;
 	top: -15px;
@@ -2111,6 +2102,10 @@ span.alert {
 	flex-direction: row;
 	flex-wrap: nowrap;
 	width: max-content;
+}
+
+.list .row_alert.alert_down {
+	top: 17px;
 }
 
 .list.purchases #add_purchase {

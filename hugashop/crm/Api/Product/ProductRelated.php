@@ -15,8 +15,6 @@ use HugaShop\Api\BaseModel;
 class ProductRelated extends BaseModel
 {
 
-    protected $table = 'product_product_related';
-
     public static $table_fields = [
         'product_id' =>         ['type' => 'int',           'req' => true],
         'related_id' =>         ['type' => 'int',           'req' => true],
