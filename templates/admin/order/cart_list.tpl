@@ -22,6 +22,16 @@
 		<div id="main_list">
 			{if $carts}
 
+
+				<div class="grafic">
+					<div class="chart_actions btn_row">
+						<a class="btn btn-light" id="cart_chart_reset">Reset zoom</a>
+					</div>
+					<div>
+						<canvas id="cartsHistory" height="250" role="img"></canvas>
+					</div>
+				</div>
+
 				{include file='parts/pagination.tpl'}
 
 				<form method="post" class="list_form">
@@ -124,4 +134,95 @@
 		</div>
 
 	</div>
+{/block}
+
+
+{block name=body_script append}
+	<script type="text/javascript" src="{'js/chart/chart.umd.js'|asset}"></script>
+	<script type="text/javascript" src="{'js/chart/luxon.js'|asset}"></script>
+	<script type="text/javascript" src="{'js/chart/chartjs-adapter-luxon.js'|asset}"></script>
+	<script type="text/javascript" src="{'js/chart/chartjs-plugin-datalabels.js'|asset}"></script>
+	<script type="text/javascript" src="{'js/chart/hammerjs.js'|asset}"></script>
+	<script type="text/javascript" src="{'js/chart/chartjs-plugin-zoom.min.js'|asset}"></script>
+
+	<script type="module">
+		var csrf = "{setCSRF}";
+
+		let cartsChart = new Chart(document.getElementById('cartsHistory'), {
+			type: 'line',
+			options: {
+				locale: 'ru',
+				maintainAspectRatio: false,
+				plugins: {
+					datalabels: {
+						color: 'black',
+						formatter: function(value) { return value.y; },
+						align: 'top',
+						anchor: 'end',
+						display: 'auto',
+						font: { weight: 'bold' }
+					},
+					zoom: {
+						pan: { enabled: true, mode: 'x', modifierKey: 'ctrl' },
+						zoom: { drag: { enabled: true }, mode: 'x' }
+					},
+					tooltip: { yAlign: 'bottom' }
+				},
+				scales: {
+					x: { type: 'time', time: { unit: 'day', tooltipFormat: 'dd LLL yyyy' } },
+					y: { display: true, title: { display: true, text: 'шт' } }
+				}
+			},
+			plugins: [ChartDataLabels]
+		});
+
+		function loadCartStats() {
+			$.post('/admin/ajax/stats/cart', { csrf: csrf }, function(data) {
+				if (data && data.length > 0) {
+					let carts = [],
+						ordered = [],
+						paid = [];
+					data.forEach((p) => {
+						let dt = luxon.DateTime.fromISO(p.date);
+						carts.push({ x: dt, y: parseInt(p.carts) });
+						ordered.push({ x: dt, y: parseInt(p.ordered) });
+						paid.push({ x: dt, y: parseInt(p.paid) });
+					});
+
+					cartsChart.data.datasets.push({
+						label: 'Корзин',
+						data: carts,
+						borderColor: '#76c100',
+						backgroundColor: '#76c100',
+						fill: false,
+						tension: 0
+					});
+					cartsChart.data.datasets.push({
+						label: 'Оформлено в заказ',
+						data: ordered,
+						borderColor: '#f8a13f',
+						backgroundColor: '#f8a13f',
+						fill: false,
+						tension: 0
+					});
+					cartsChart.data.datasets.push({
+						label: 'Оплачено',
+						data: paid,
+						borderColor: '#000000',
+						backgroundColor: '#000000',
+						fill: false,
+						tension: 0
+					});
+
+					cartsChart.update();
+				}
+			});
+		}
+
+		loadCartStats();
+
+		$('#cart_chart_reset').click(function() {
+			cartsChart.resetZoom();
+		});
+	</script>
 {/block}

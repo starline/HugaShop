@@ -13,6 +13,7 @@
 namespace HugaShop\Api;
 
 use HugaShop\Api\Helper;
+use HugaShop\Api\Cart\Cart;
 use HugaShop\Api\Order\Order;
 use HugaShop\Api\Product\Product;
 use HugaShop\Api\Order\OrderPurchase;
@@ -387,7 +388,7 @@ class Statistics
         return $results;
     }
 
-    
+
     /**
      * Возвращает историю изменения цены товара по дням
      */
@@ -416,5 +417,55 @@ class Statistics
         }
 
         return $result;
+    }
+
+
+   /**
+     * Возвращает историю корзин по дням
+     *
+     * @param string|null $from_date
+     * @param string|null $to_date
+     */
+    public static function cartsByDay(?string $from_date = null, ?string $to_date = null): array
+    {
+        $query = Cart::query()->with('order');
+
+        if (!empty($from_date)) {
+            $from_date = Helper::dateConvert($from_date, 'Y-m-d');
+            $query->where('created', '>=', $from_date);
+        }
+
+        if (!empty($to_date)) {
+            $to_date = Helper::dateConvert($to_date, 'Y-m-d');
+            $query->where('created', '<=', $to_date);
+        }
+
+        $records = $query->get();
+
+        $grouped = [];
+        foreach ($records as $cart) {
+            $date = date('Y-m-d', strtotime($cart->created));
+
+            if (!isset($grouped[$date])) {
+                $grouped[$date] = [
+                    'date'    => $date,
+                    'carts'   => 0,
+                    'ordered' => 0,
+                    'paid'    => 0,
+                ];
+            }
+
+            $grouped[$date]['carts']++;
+            if (!empty($cart->order_id)) {
+                $grouped[$date]['ordered']++;
+            }
+            if ($cart->order && $cart->order->paid) {
+                $grouped[$date]['paid']++;
+            }
+        }
+
+        ksort($grouped);
+
+        return array_values($grouped);
     }
 }
