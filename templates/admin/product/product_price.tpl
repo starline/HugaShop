@@ -193,8 +193,7 @@
 					{foreach $product_variants as $product_variant}
 						<div
 							class="list_row {if !$product_variant->product->visible}visible_off{/if} {if $product_variant->product->disable}disable{/if}">
-							<input type="hidden" name="product_variants[{$product_variant->product_id}][product_id]"
-								value="{$product_variant->product_id}">
+							<input type="hidden" name="product_variants[]" value="{$product_variant->product_id}">
 
 							<div class="col row gy-5">
 								<div class="col-12 col-md-9">
@@ -234,7 +233,7 @@
 					{/foreach}
 
 					<div id="new_product_variant" class="list_row" style="display:none;">
-						<input type="hidden" name="product_variants[INDEX][product_id]" value="">
+						<input type="hidden" name="product_variants[]" value="">
 
 						<div class="col row gy-5">
 							<div class="col-12 col-md-9">
@@ -439,7 +438,7 @@
 						new_item.find('a.product_name')
 							.attr('href', '/admin/product/' + product.id);
 
-						new_item.find('input[name*=product_id]').val(product.id);
+						new_item.find('input[name*=product_variants]').val(product.id);
 
 						if (product.variant_name) {
 							new_item.find('.variant_name').text(product.variant_name);
@@ -465,7 +464,6 @@
 						if (product.visible == 0)
 							new_item.addClass("visible_off");
 
-						indexListRows('.product_variants', 'product_variants');
 						new_item.show();
 					},
 					formatResult: function(suggestions, currentValue) {
