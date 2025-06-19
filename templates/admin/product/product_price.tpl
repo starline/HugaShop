@@ -392,6 +392,7 @@
 		let php_currency_sign = '{$currency->sign}';
 
 		{literal}
+
 			$(function() {
 
 				// Выбор даты
@@ -665,6 +666,7 @@
 					if (statsChart.chart) statsChart.chart.resetSeries();
 				});
 			});
+
 		{/literal}
 	</script>
 
