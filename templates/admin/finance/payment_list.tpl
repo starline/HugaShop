@@ -122,7 +122,7 @@
                                     <div class="notice">{$p->currency_amount|price_html|raw}</div>
                                  {/if}
                               </div>
-                              
+
                               <div class="col-7 col-sm-9">
                                  <div class="row">
                                     <div class="col-12 col-sm-3 text-sm-end order_date">
@@ -196,7 +196,7 @@
       let purse_id = "{$purse_id}";
       let category_id = "{$category_id}";
 
-      import { ajax_icon } from '{"js/common.js"|asset}';
+      import { ajax_icon, getChartData } from '{"js/common.js"|asset}';
 
       // Сделать проверенным
       $("a.verified.edit").click(function() {
@@ -297,32 +297,6 @@
          ]
       });
 
-      function getChartData(chart, filter, options) {
-         $.post('/admin/ajax/stats/finance', filter, function(data) {
-            console.log(data);
-            if (data[0] != null) {
-
-               let datas = [];
-               data.forEach((point) => {
-                  datas.push({
-                     x: luxon.DateTime.local(point.year, point.month),
-                     y: parseInt(point.y)
-                  });
-               });
-
-               let dataset = {
-                  label: options.label,
-                  data: datas,
-                  borderWidth: 0,
-                  backgroundColor: options.color
-               };
-
-               chart.data.datasets.push(dataset);
-               chart.update();
-            }
-         });
-      }
-
 
       getChartData(myChart, {
          'filter': 'byMonth',
@@ -332,7 +306,8 @@
          'csrf': csrf
       }, {
          label: 'Сумма приходов, ' + php_currency_sign,
-         color: '#76c100'
+         color: '#76c100',
+         url: '/admin/ajax/stats/finance'
       });
 
       getChartData(myChart, {
@@ -343,7 +318,8 @@
          'csrf': csrf
       }, {
          label: 'Сумма расходов, ' + php_currency_sign,
-         color: '#f8a13f'
+         color: '#f8a13f',
+         url: '/admin/ajax/stats/finance'
       });
    </script>
 {/block}

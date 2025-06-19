@@ -153,10 +153,14 @@ export function ajax_icon(icon, entity, var_name, csrf) {
 
 // Get Chart data from Ajax
 export function getChartData(chart, filter, options) {
+	if (!options || !options.url) {
+		console.error('getChartData: options.url is required');
+		return;
+	}
 	if (options.type) {
 		filter.type = options.type;
 	}
-	$.post('/admin/ajax/stats/order', filter, function (data) {
+	$.post(options.url, filter, function (data) {
 		if (data && data[0] != null) {
 			let datas = [];
 			data.forEach((point) => {

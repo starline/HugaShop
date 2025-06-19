@@ -32,7 +32,7 @@
                <a class="btn btn-light" id="day_chart_reset">Reset zoom</a>
             </div>
             <div>
-               <canvas id="stats_byDay" height="250" role="img"></canvas>
+               <canvas id="stats_byDay" height="350" role="img"></canvas>
             </div>
          </div>
       </div>
@@ -57,7 +57,7 @@
                <a class="btn btn-light" id="month_chart_reset">Reset zoom</a>
             </div>
             <div>
-               <canvas id="stats_byMonth" height="250" role="img"></canvas>
+               <canvas id="stats_byMonth" height="350" role="img"></canvas>
             </div>
          </div>
       </div>
@@ -154,17 +154,20 @@
             getChartData(byDayChart, { filter: 'byDay', fromDate: date_format, csrf: csrf }, {
                label: 'Сумма заказов, ' + php_currency_sign,
                color: '#76c100',
-               type: 'totalPrice'
+               type: 'totalPrice',
+               url: '/admin/ajax/stats/order'
             });
             getChartData(byDayChart, { filter: 'byDay', fromDate: date_format, csrf: csrf }, {
                label: 'Сумма прибыли, ' + php_currency_sign,
                color: '#f8a13f',
-               type: 'profitPrice'
+               type: 'profitPrice',
+               url: '/admin/ajax/stats/order'
             });
             getChartData(byDayChart, { filter: 'byDay', fromDate: date_format, csrf: csrf }, {
                label: 'Колл-во заказов, шт',
                color: '#000000',
-               type: 'amount'
+               type: 'amount',
+               url: '/admin/ajax/stats/order'
             });
 
             function loadMonthChart(paymentMethod = '') {
@@ -175,17 +178,20 @@
                getChartData(byMonthChart, Object.assign({}, base), {
                   label: 'Сумма заказов, ' + php_currency_sign,
                   color: '#76c100',
-                  type: 'totalPrice'
+                  type: 'totalPrice',
+                  url: '/admin/ajax/stats/order'
                });
                getChartData(byMonthChart, Object.assign({}, base), {
                   label: 'Сумма прибыли, ' + php_currency_sign,
                   color: '#f8a13f',
-                  type: 'profitPrice'
+                  type: 'profitPrice',
+                  url: '/admin/ajax/stats/order'
                });
                getChartData(byMonthChart, Object.assign({}, base), {
                   label: 'Колл-во заказов, шт',
                   color: '#000000',
-                  type: 'amount'
+                  type: 'amount',
+                  url: '/admin/ajax/stats/order'
                });
             }
 
