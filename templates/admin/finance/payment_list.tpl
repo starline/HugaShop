@@ -181,94 +181,96 @@
 
 
 {block name=body_script append}
-
    <script type="text/javascript" src="{'js/chart/luxon.js'|asset}"></script>
-   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
    <script type="module">
+      import 'https://cdn.jsdelivr.net/npm/apexcharts';
+      import '{"js/chart/luxon.js"|asset}';
+      import { ajax_icon, makeChart } from '{"js/common.js"|asset}';
+
       var csrf = "{setCSRF}";
       let php_currency_name = "{$currency->name}";
       let php_currency_sign = "{$currency->sign}";
       let purse_id = "{$purse_id}";
       let category_id = "{$category_id}";
 
-      import { ajax_icon, makeChart } from '{"js/common.js"|asset}';
+      {literal}
 
-      // Сделать проверенным
-      $("a.verified.edit").click(function() {
-         ajax_icon($(this), 'payment', 'verified', csrf);
-         return false;
-      });
+         // Сделать проверенным
+         $("a.verified.edit").click(function() {
+            ajax_icon($(this), 'payment', 'verified', csrf);
+            return false;
+         });
 
-      let current_url = new URL(window.location.href);
+         let current_url = new URL(window.location.href);
 
-      // Select gategory
-      $('select[name="category_id"]').change(function() {
-         let id = $(this).val();
-         if (id != '')
-            current_url.searchParams.set('category_id', id);
-         else
+         // Select gategory
+         $('select[name="category_id"]').change(function() {
+            let id = $(this).val();
+            if (id != '')
+               current_url.searchParams.set('category_id', id);
+            else
+               current_url.searchParams.delete('category_id');
+
+            current_url.searchParams.delete('page');
+            window.location.href = current_url.toString();
+         });
+
+         // Select payments_type
+         $('select[name="payments_type"]').change(function() {
+            var type = $(this).val();
+            if (type != '')
+               current_url.searchParams.set('payments_type', type);
+            else
+               current_url.searchParams.delete('payments_type');
+
+            current_url.searchParams.delete('page');
             current_url.searchParams.delete('category_id');
-
-         current_url.searchParams.delete('page');
-         window.location.href = current_url.toString();
-      });
-
-      // Select payments_type
-      $('select[name="payments_type"]').change(function() {
-         var type = $(this).val();
-         if (type != '')
-            current_url.searchParams.set('payments_type', type);
-         else
-            current_url.searchParams.delete('payments_type');
-
-         current_url.searchParams.delete('page');
-         current_url.searchParams.delete('category_id');
-         window.location.href = current_url.toString();
-      });
+            window.location.href = current_url.toString();
+         });
 
 
-      // Grafic
-      let myChart = makeChart(
-            document.getElementById('financeByMonth'), {
-               chart: {type: 'bar',height: 250},
-               title: {text: 'Доходы и расходы'
-            }
-         },
-         [{
-               filter: {
-                  'filter': 'byMonth',
-                  'type': 'plus',
-                  'purse_id': purse_id,
-                  'category_id': category_id,
-                  'csrf': csrf
-               },
-               options: {
-                  label: 'Сумма приходов, ' + php_currency_sign,
-                  color: '#76c100',
-                  url: '/admin/ajax/stats/finance'
+         // Grafic
+         let myChart = makeChart(
+               document.getElementById('financeByMonth'), {
+                  chart: {type: 'bar',height: 250},
+                  title: {text: 'Доходы и расходы'
                }
             },
-            {
-               filter: {
-                  'filter': 'byMonth',
-                  'type': 'minus',
-                  'purse_id': purse_id,
-                  'category_id': category_id,
-                  'csrf': csrf
+            [{
+                  filter: {
+                     'filter': 'byMonth',
+                     'type': 'plus',
+                     'purse_id': purse_id,
+                     'category_id': category_id,
+                     'csrf': csrf
+                  },
+                  options: {
+                     label: 'Сумма приходов, ' + php_currency_sign,
+                     color: '#76c100',
+                     url: '/admin/ajax/stats/finance'
+                  }
                },
-               options: {
-                  label: 'Сумма расходов, ' + php_currency_sign,
-                  color: '#f8a13f',
-                  url: '/admin/ajax/stats/finance'
+               {
+                  filter: {
+                     'filter': 'byMonth',
+                     'type': 'minus',
+                     'purse_id': purse_id,
+                     'category_id': category_id,
+                     'csrf': csrf
+                  },
+                  options: {
+                     label: 'Сумма расходов, ' + php_currency_sign,
+                     color: '#f8a13f',
+                     url: '/admin/ajax/stats/finance'
+                  }
                }
-            }
-         ],
-         function(cd) { myChart = cd.chart; }
-      );
+            ]
+         );
 
-      $('#chart_reset').click(function() {
-         if (myChart.chart) myChart.chart.resetSeries()
-      });
+         $('#chart_reset').click(function() {
+            if (myChart.chart) myChart.chart.resetSeries()
+         });
+
+      {/literal}
    </script>
 {/block}

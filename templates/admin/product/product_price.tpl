@@ -548,8 +548,6 @@
 				});
 
 
-
-				// Выводим график
 				// Выводим график
 				let statsChart = makeChart(
 					document.getElementById('product_stats'), {

@@ -162,8 +162,7 @@
 				plotOptions: { bar: { dataLabels: { position: 'top' } } },
 				tooltip: { x: { format: 'dd LLL yyyy' } },
 				title: { text: 'Корзины по дням' }
-			},
-			[]
+			}
 		);
 
 		cartsData.ready.then(function() {

@@ -442,7 +442,7 @@
 						icon.addClass('loading_icon');
 						row.after("<div id='chart_" + id + "'></div>");
 
-						makeChart(
+						let chartData = makeChart(
 							document.getElementById('chart_' + id), {
 								chart: { type: 'bar', height: 250 },
 								title: { text: 'Статистика продаж' }
@@ -486,12 +486,13 @@
 										url: '/admin/ajax/stats/order'
 									}
 								}
-							],
-							function() {
-								$("#chart_" + id).css("height", "200px");
-								icon.removeClass('loading_icon');
-							}
+							]
 						);
+						
+						chartData.ready.then(function() {
+							$("#chart_" + id).css("height", "200px");
+							icon.removeClass('loading_icon');
+						});
 					} else {
 						$('#chart_' + id).remove();
 					}
