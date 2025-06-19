@@ -175,12 +175,10 @@
 
 				let options = {
 					chart: { type: 'bar', height: 350 },
-					xaxis: { type: 'datetime' },
-					plotOptions: { bar: { dataLabels: { position: 'top' } } },
 					tooltip: { x: { format: 'MMMM yyyy' } },
 					title: { text: 'Статистика продаж менеджера' },
 					subtitle: { text: 'Доход по месяцам' },
-					yaxis: { title: { text: '' } }
+					yaxis: { title: { text: 'Менеджер' } }
 				};
 
 				let chartData = { series: [] };
