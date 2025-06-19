@@ -97,7 +97,7 @@
                <a class="btn btn-light" id="chart_reset">Reset zoom</a>
             </div>
             <div>
-               <canvas id="financeByMonth" height="250" role="img"></canvas>
+               <div id="financeByMonth" style="height: 250px;"></div>
             </div>
          </div>
 
@@ -192,7 +192,7 @@
       let purse_id = "{$purse_id}";
       let category_id = "{$category_id}";
 
-      import { ajax_icon, getChartData } from '{"js/common.js"|asset}';
+      import { ajax_icon, getChartData, createApexChart, hideOverlappingDataLabels } from '{"js/common.js"|asset}';
 
       // Сделать проверенным
       $("a.verified.edit").click(function() {
@@ -234,13 +234,40 @@
       });
 
       let myChartData = { series: [] };
-      let myChart = new ApexCharts(document.getElementById('financeByMonth'), {
-         series: [],
-         chart: { type: 'bar', height: 350, zoom: { enabled: true } },
-         xaxis: { type: 'datetime' },
-         dataLabels: { enabled: true },
-         tooltip: { x: { format: 'MMMM yyyy' } }
+      let myChart = createApexChart(document.getElementById('financeByMonth'), {
+         chart: {
+            type: 'bar',
+            height: 350,
+            zoom: {
+               autoScaleYaxis: true,
+               enabled: true
+            },
+            events: {
+               mounted: hideOverlappingDataLabels,
+               updated: hideOverlappingDataLabels
+            }
+         },
+         xaxis: {
+            type: 'datetime'
+         },
+         plotOptions: {
+            bar: {
+               dataLabels: { position: 'top', hideOverflowingLabels: true }
+            }
+         },
+         title: {
+            text: 'Доходы и расходы',
+            align: 'left'
+         },
+         dataLabels: {
+            enabled: true,
+            offsetY: -25,
+            style: {
+               colors: ['#000']
+            }
+         }
       });
+
       myChart.render().then(function() {
          myChartData.chart = myChart;
 

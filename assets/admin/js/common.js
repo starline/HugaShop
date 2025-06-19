@@ -151,6 +151,27 @@ export function ajax_icon(icon, entity, var_name, csrf) {
 }
 
 
+// Create ApexCharts chart with default Russian locale
+export function createApexChart(element, options = {}) {
+	const baseOptions = {
+		series: [],
+		chart: {
+			locales: [{
+				name: 'ru',
+				options: {
+					months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+					shortMonths: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек']
+				}
+			}],
+			defaultLocale: 'ru'
+		},
+		tooltip: { x: { format: 'MMMM yyyy' } }
+	};
+
+	const finalOptions = $.extend(true, {}, baseOptions, options);
+	return new ApexCharts(element, finalOptions);
+}
+
 // Get Chart data from Ajax
 export function getChartData(apex, filter, options) {
 	if (!options || !options.url) {
@@ -179,6 +200,28 @@ export function getChartData(apex, filter, options) {
 			});
 
 			apex.chart.updateSeries(apex.series);
+		}
+	});
+}
+
+// Hide overlapping ApexCharts data labels
+export function hideOverlappingDataLabels(chartContext) {
+	const labels = chartContext.el.querySelectorAll('.apexcharts-data-label');
+	const boxes = [];
+
+	labels.forEach((label) => {
+		label.style.display = '';
+	});
+
+	labels.forEach((label) => {
+		const rect = label.getBoundingClientRect();
+		const overlap = boxes.some((box) => {
+			return !(rect.right < box.left || rect.left > box.right || rect.bottom < box.top || rect.top > box.bottom);
+		});
+		if (overlap) {
+			label.style.display = 'none';
+		} else {
+			boxes.push(rect);
 		}
 	});
 }
