@@ -153,6 +153,10 @@ export function ajax_icon(icon, entity, var_name, csrf) {
 
 // Create chart and load datasets
 export function makeChart(element, chartOptions = {}, datasets = []) {
+	if (!element) {
+		console.warn('makeChart: element not found');
+		return;
+	}
 	let chartData = {
 		series: [],
 		chart: null,
