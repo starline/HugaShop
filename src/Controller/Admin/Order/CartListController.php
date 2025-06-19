@@ -51,8 +51,8 @@ class CartListController extends BaseAdminController
         $filter['page'] = max(1, Request::get('page', 'int'));
         $filter['limit'] = Request::get('page', 'string') == 'all' ? 'all' : Settings::getParam('products_num_admin');
 
-        $carts = Cart::getList($filter, join: ['user', 'order']);
-        $carts_count = Cart::getCount($filter);
+        $carts          = Cart::getList($filter, order: ['id', 'desc'], join: ['user', 'order']);
+        $carts_count    = Cart::getCount($filter);
 
         foreach ($carts as $cart) {
             if (!empty($cart->user_agent)) {

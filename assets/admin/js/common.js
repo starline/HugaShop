@@ -151,6 +151,42 @@ export function ajax_icon(icon, entity, var_name, csrf) {
 }
 
 
+// Get Chart data from Ajax
+export function getChartData(chart, filter, options) {
+	if (options.type) {
+		filter.type = options.type;
+	}
+	$.post('/admin/ajax/stats/order', filter, function (data) {
+		if (data && data[0] != null) {
+			let datas = [];
+			data.forEach((point) => {
+				if (filter.filter == 'byMonth')
+					datas.push({ x: luxon.DateTime.local(point.year, point.month), y: parseInt(point.y) });
+				else
+					datas.push({
+						x: luxon.DateTime.local(point.year, point.month, point.day),
+						y: parseInt(
+							point.y)
+					});
+			});
+
+			let dataset = {
+				label: options.label,
+				data: datas,
+				borderColor: options.color,
+				backgroundColor: options.color,
+				borderWidth: 0,
+				fill: false,
+				tension: 0
+			};
+
+			chart.data.datasets.push(dataset);
+			chart.update();
+		}
+	});
+}
+
+
 // RU -> EN
 export function translit(str) {
 	let ru = (

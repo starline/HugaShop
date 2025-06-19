@@ -26,6 +26,7 @@
 				<div class="grafic">
 					<div class="chart_actions btn_row">
 						<a class="btn btn-light" id="cart_chart_reset">Reset zoom</a>
+						<a class="btn btn-light" id="cart_chart_year">год</a>
 					</div>
 					<div>
 						<canvas id="cartsHistory" height="250" role="img"></canvas>
@@ -176,8 +177,22 @@
 			plugins: [ChartDataLabels]
 		});
 
-		function loadCartStats() {
-			$.post('/admin/ajax/stats/cart', { csrf: csrf }, function(data) {
+		function loadCartStats(range = 'month') {
+			let params = { csrf: csrf },
+				now = luxon.DateTime.now();
+
+			if (range === 'month') {
+				params.fromDate = now.minus({ months: 1 }).toISODate();
+				cartsChart.options.scales.x.time.unit = 'day';
+			} else if (range === 'year') {
+				params.fromDate = now.minus({ years: 1 }).toISODate();
+				cartsChart.options.scales.x.time.unit = 'month';
+			}
+
+			params.toDate = now.toISODate();
+
+			$.post('/admin/ajax/stats/cart', params, function(data) {
+				cartsChart.data.datasets = [];
 				if (data && data.length > 0) {
 					let carts = [],
 						ordered = [],
@@ -219,10 +234,14 @@
 			});
 		}
 
-		loadCartStats();
+		loadCartStats('month');
 
 		$('#cart_chart_reset').click(function() {
 			cartsChart.resetZoom();
+		});
+
+		$('#cart_chart_year').click(function() {
+			loadCartStats('year');
 		});
 	</script>
 {/block}

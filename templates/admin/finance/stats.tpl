@@ -8,7 +8,7 @@
       <h1>
          На складе {$total->sum_stock|number} товара
       </h1>
-      
+
       <span class="sum_total">на сумму
          <span class="amount" data-bs-toggle="tooltip" title="Выручка в розницу">{$total->sum_price|price_html|raw}</span>
          <span class="sum_profit_price" data-bs-toggle="tooltip"
@@ -27,7 +27,14 @@
 
    <div class="row gx-5">
       <div class="col-12">
-         <div id="stats_byDay"></div>
+         <div class="grafic">
+            <div class="chart_actions btn_row">
+               <a class="btn btn-light" id="day_chart_reset">Reset zoom</a>
+            </div>
+            <div>
+               <canvas id="stats_byDay" height="250" role="img"></canvas>
+            </div>
+         </div>
       </div>
 
       <div class="col-12 mt-5">
@@ -45,7 +52,14 @@
             </div>
          </div>
 
-         <div id="stats_byMonth"></div>
+         <div class="grafic">
+            <div class="chart_actions btn_row">
+               <a class="btn btn-light" id="month_chart_reset">Reset zoom</a>
+            </div>
+            <div>
+               <canvas id="stats_byMonth" height="250" role="img"></canvas>
+            </div>
+         </div>
       </div>
    </div>
 {/block}
@@ -53,96 +67,138 @@
 
 {block name=body_script append}
 
-   {include file='parts/charts_init.tpl'}
+   <script type="text/javascript" src="{'js/chart/chart.umd.js'|asset}"></script>
+   <script type="text/javascript" src="{'js/chart/luxon.js'|asset}"></script>
+   <script type="text/javascript" src="{'js/chart/chartjs-adapter-luxon.js'|asset}"></script>
+   <script type="text/javascript" src="{'js/chart/chartjs-plugin-datalabels.js'|asset}"></script>
+   <script type="text/javascript" src="{'js/chart/hammerjs.js'|asset}"></script>
+   <script type="text/javascript" src="{'js/chart/chartjs-plugin-zoom.min.js'|asset}"></script>
 
 
    <script type="module">
+      import { getChartData } from '{"js/common.js"|asset}';
+
       var csrf = "{setCSRF}";
       let php_currency_name = '{$currency->name}';
       let php_currency_sign = '{$currency->sign}';
 
+      var date = new Date();
+      date.setMonth(date.getMonth() - 2); // 2 месяца
+      var date_format = date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear(); // 30.08.2020
+
       {literal}
          $(function() {
-
-            var date = new Date();
-            date.setMonth(date.getMonth() - 2); // 2 месяца
-
-            // 30.08.2020
-            var date_format = date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear()
-
-            // Выводим график
-            let my_options = {
-               title: {
-                  text: 'Статистика заказов'
-               },
-               subtitle: {
-                  text: 'Выручка по дням'
-               },
-               xAxis: {
-                  type: 'datetime',
-                  minRange: 7 * 24 * 3600000,
-                  maxZoom: 7 * 24 * 3600000,
-                  gridLineWidth: 1,
-                  ordinal: true,
-                  showEmpty: true
-               },
-               yAxis: {
-                  title: {
-                     text: php_currency_name
+            let byDayChart = new Chart(document.getElementById('stats_byDay'), {
+               type: 'bar',
+               options: {
+                  locale: 'ru',
+                  maintainAspectRatio: false,
+                  plugins: {
+                     datalabels: {
+                        color: 'black',
+                        formatter: function(value) { return value.y; },
+                        align: 'top',
+                        anchor: 'end',
+                        display: 'auto',
+                        font: { weight: 'bold' }
+                     },
+                     zoom: {
+                        pan: { enabled: true, mode: 'x', modifierKey: 'ctrl' },
+                        zoom: { drag: { enabled: true }, mode: 'x' }
+                     },
+                     tooltip: { yAlign: 'bottom' }
+                  },
+                  scales: {
+                     x: { type: 'time', time: { unit: 'day', tooltipFormat: 'dd LLL yyyy' } },
+                     y: { display: true, title: { display: true, text: php_currency_name } }
                   }
-               }
+               },
+               plugins: [ChartDataLabels]
+            });
+
+            let byMonthChart = new Chart(document.getElementById('stats_byMonth'), {
+               type: 'bar',
+               options: {
+                  locale: 'ru',
+                  maintainAspectRatio: false,
+                  plugins: {
+                     datalabels: {
+                        color: 'black',
+                        formatter: function(value) { return value.y; },
+                        align: 'top',
+                        anchor: 'end',
+                        display: 'auto',
+                        font: { weight: 'bold' }
+                     },
+                     zoom: {
+                        pan: { enabled: true, mode: 'x', modifierKey: 'ctrl' },
+                        zoom: { drag: { enabled: true }, mode: 'x' }
+                     },
+                     tooltip: { yAlign: 'bottom' }
+                  },
+                  scales: {
+                     x: {
+                        type: 'time',
+                        time: {
+                           unit: 'month',
+                           tooltipFormat: 'MMMM yyyy',
+                           displayFormats: { quarter: 'MMM yy' }
+                        }
+                     },
+                     y: { display: true, title: { display: true, text: php_currency_name } }
+                  }
+               },
+               plugins: [ChartDataLabels]
+            });
+
+            getChartData(byDayChart, { filter: 'byDay', fromDate: date_format, csrf: csrf }, {
+               label: 'Сумма заказов, ' + php_currency_sign,
+               color: '#76c100',
+               type: 'totalPrice'
+            });
+            getChartData(byDayChart, { filter: 'byDay', fromDate: date_format, csrf: csrf }, {
+               label: 'Сумма прибыли, ' + php_currency_sign,
+               color: '#f8a13f',
+               type: 'profitPrice'
+            });
+            getChartData(byDayChart, { filter: 'byDay', fromDate: date_format, csrf: csrf }, {
+               label: 'Колл-во заказов, шт',
+               color: '#000000',
+               type: 'amount'
+            });
+
+            function loadMonthChart(paymentMethod = '') {
+               byMonthChart.data.datasets = [];
+               let base = { filter: 'byMonth', csrf: csrf };
+               if (paymentMethod) base.paymentMethod = paymentMethod;
+
+               getChartData(byMonthChart, Object.assign({}, base), {
+                  label: 'Сумма заказов, ' + php_currency_sign,
+                  color: '#76c100',
+                  type: 'totalPrice'
+               });
+               getChartData(byMonthChart, Object.assign({}, base), {
+                  label: 'Сумма прибыли, ' + php_currency_sign,
+                  color: '#f8a13f',
+                  type: 'profitPrice'
+               });
+               getChartData(byMonthChart, Object.assign({}, base), {
+                  label: 'Колл-во заказов, шт',
+                  color: '#000000',
+                  type: 'amount'
+               });
             }
 
-            // Выводим график по дням
-            showStatGraphic(
-               'stats_byDay', {
-                  fromDate: date_format,
-                  filter: 'byDay',
-                  'csrf': csrf
-               },
-               ['totalPrice', 'profitPrice', 'amount'],
-               my_options,
-               php_currency_sign,
-               function(response) {
-                  return response;
-               }
-            );
-
-
-            // Выводим график по месяцам
-            showStatGraphic(
-               'stats_byMonth', {
-                  filter: 'byMonth',
-                  'csrf': csrf
-               },
-               ['totalPrice', 'profitPrice', 'amount'],
-               my_options,
-               php_currency_sign,
-               function(response) {
-                  return response;
-               }
-            );
+            loadMonthChart();
 
             $('select[name="payment_method"]').change(function() {
                let paymentMethod = $('select[name="payment_method"]').val();
-
-               showStatGraphic(
-                  'stats_byMonth', {
-                     filter: 'byMonth',
-                     paymentMethod: paymentMethod,
-                     'csrf': csrf
-                  },
-                  ['totalPrice', 'profitPrice', 'amount'],
-                  my_options,
-                  php_currency_sign,
-                  function(response) {
-                     return response;
-                  }
-               );
+               loadMonthChart(paymentMethod);
             });
 
+            $('#day_chart_reset').click(function() { byDayChart.resetZoom(); });
+            $('#month_chart_reset').click(function() { byMonthChart.resetZoom(); });
          });
-
       {/literal}
    </script>
 {/block}
