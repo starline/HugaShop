@@ -46,7 +46,7 @@
 
 				{if $product->images|count > 1}
 					<div class="row g-2 my-2">
-						{foreach $product->images|cut as $i=>$image}
+						{foreach $product->images as $i => $image}
 							<div class="col-3">
 								<a href="{$image->filename|resize:1080:1080:w}" class="zoom" data-fancybox="images"
 									data-caption="{$product->name} - Фото: {$i+1}">
@@ -87,7 +87,7 @@
 							<div class="variant">
 								<input type="radio" class="btn-check" name="variant" value="{$v->id}" id="variant_{$v->id}"
 									autocomplete="off" {if $product->variant->id == $v->id}checked{/if}
-									{if !$v->stock AND !$v->custom}disabled{/if} variant_sku="{$v->sku}" 
+									{if !$v->stock AND !$v->custom}disabled{/if} variant_sku="{$v->sku}"
 									product_name="{$product->name}" variant_name="{$v->name}" price="{$v->price|price_html:clean}"
 									max_stock="{$v->stock}" old_price="{$v->old_price|price_html:clean}" />
 
@@ -210,11 +210,11 @@
 	{/if}
 
 
-	{if $related_products}
+	{if $product->related}
 		<div class="related_products_box">
 			<h2>С этим товаром покупают</h2>
 			<ul class="products owl-carousel">
-				{foreach $related_products as $product}
+				{foreach $product->related as $product}
 					{include file='parts/product_item.tpl'}
 				{/foreach}
 			</ul>

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.0
+ * @version 3.1
  *
  * Этот класс использует шаблон product.tpl
  *
@@ -20,7 +20,6 @@ use HugaShop\Api\Product\Product;
 use App\Controller\BaseFrontController;
 use HugaShop\Api\Product\ProductOption;
 use HugaShop\Api\Content\ContentComment;
-use HugaShop\Api\Product\ProductRelated;
 use HugaShop\Api\Product\ProductCategory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -48,10 +47,15 @@ class ProductController extends BaseFrontController
         // Выбираем товар из базы
         $product = Product::getProduct(id: $url, join: [
             'image',
+            'images',
             'brand',
             'variants',
             'variants.product',
-            'variants.product.image'
+            'variants.product.image',
+            'related',
+            'related.image',
+            'options',
+            'options.feature'
         ]);
 
         if (empty($product)) {
@@ -67,15 +71,8 @@ class ProductController extends BaseFrontController
         $category = ProductCategory::getCategory(intval($product->category_id));
         Design::assign('category', $category);
 
-        // Изображение товара
-        $product->features = ProductOption::getProductOptions($product->id);
-
         // Comments
         ContentComment::handleComments($product->id, Product::class);
-
-        // Связанные товары
-        $related_products = ProductRelated::getRelatedProducts($product->id);
-        Design::assign('related_products', $related_products);
 
         // Добавление в историю просмотренных товаров
         $max_visited_products = 50; # Максимальное число хранимых товаров в истории
@@ -91,9 +88,7 @@ class ProductController extends BaseFrontController
         // Добавим текущий товар
         $browsed_products[] = $product->id;
         $cookie_data = join('.', array_slice($browsed_products, -$max_visited_products, $max_visited_products));
-
         Request::setCookie("BP", $cookie_data, 30); # Время жизни - 30 дней
-
 
         // SEO metateg
         if (empty($product->meta_title)) {

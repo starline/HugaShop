@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.5
+ * @version 3.6
  *
  * Product Content
  *
@@ -55,7 +55,7 @@ class Product extends BaseModel
         'position' =>           ['type' => 'int',           'def' => 0]
     ];
 
-    public static $table__keys = [
+    public static $table_keys = [
         'url' => ['url'],
         'brand_id' => ['brand_id'],
         'visible' => ['visible'],
@@ -151,6 +151,7 @@ class Product extends BaseModel
     {
         return $this->options->keyBy('feature_id');
     }
+
 
 
     /**
@@ -288,7 +289,7 @@ class Product extends BaseModel
     /**
      * Функция возвращает товар
      * @param int|string $id - id или name
-     * @param array $join 'variant'|''
+     * @param array $join 'variant'|'related'|'relared.image'|'image'|'images'
      * @return object
      */
     public static function getProduct(int|string $id, array $join = [])
