@@ -157,7 +157,7 @@ class Statistics
         $filter['limit'] = 'all';
 
         $products = Product::getProducts($filter);
-        
+
         // Извлекаем product_id из объектов
         $product_ids = collect($products)->pluck('id')->all();
 
@@ -354,6 +354,16 @@ class Statistics
             $query->whereHas('category', function ($q) use ($filter) {
                 $q->where('id', (int) $filter['category_id']);
             });
+        }
+
+        if (!empty($filter['fromDate'])) {
+            $from_date = Helper::dateConvert($filter['fromDate'], 'Y-m-d');
+            $query->where('date', '>=', $from_date);
+        }
+
+        if (!empty($filter['toDate'])) {
+            $to_date = Helper::dateConvert($filter['toDate'], 'Y-m-d');
+            $query->where('date', '<=', $to_date);
         }
 
         $data = $query->orderBy('year')

@@ -20,31 +20,30 @@ class FinanceStats extends BaseAdminController
 
 
         $result = null;
-        $request_type = Request::post('type', 'string');
 
-        if (!$from_date = Request::post('fromDate')) {
-            $from_date = null;
-        }
-
-        if (!$to_date = Request::post('toDate')) {
-            $to_date = null;
-        }
-
+        $request_type   = Request::post('type', 'string');
+        $from_date      = Request::post('fromDate') ?: null;
+        $to_date        = Request::post('toDate') ?: null;
+        $category_id    = Request::post('category_id', 'integer') ?: null;
 
         // В месяц
-        //
-        if (Request::post('filter', 'string')  == 'byMonth') {
-
-            $category_id = null;
-            if (!empty(Request::post('category_id', 'integer'))) {
-                $category_id = Request::post('category_id', 'integer');
-            }
+        if (Request::post('filter', 'string')  === 'byMonth') {
 
             // Для опред. кошелка
             // plus - приход
             // minus - расход
+            $params = ["type" => $request_type, "category_id" => $category_id];
+
+            if ($from_date) {
+                $params['fromDate'] = $from_date;
+            }
+            if ($to_date) {
+                $params['toDate'] = $to_date;
+            }
+
             if (!empty($purse_id = Request::post('purse_id', 'integer'))) {
-                $result = Statistics::financeByMonth(["purse_id" => $purse_id, "type" => $request_type, "category_id" => $category_id]);
+                $params['purse_id'] = $purse_id;
+                $result = Statistics::financeByMonth($params);
             }
 
 
@@ -53,7 +52,8 @@ class FinanceStats extends BaseAdminController
             // plus - приход
             // minus - расход
             else {
-                $result = Statistics::financeByMonth(["related_payment_id" => "NULL", "type" => $request_type, "category_id" => $category_id]);
+                $params['related_payment_id'] = "NULL";
+                $result = Statistics::financeByMonth($params);
             }
         }
 

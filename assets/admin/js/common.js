@@ -241,10 +241,14 @@ export function getChartData(apex, filter, options) {
 		const now = luxon.DateTime.now();
 		if (options.range === 'month') {
 			filter.fromDate = now.minus({ months: 1 }).toISODate();
+			filter.toDate = now.toISODate();
 		} else if (options.range === 'year') {
 			filter.fromDate = now.minus({ years: 1 }).toISODate();
+			filter.toDate = now.toISODate();
+		} else if (options.range === 'all') {
+			delete filter.fromDate;
+			delete filter.toDate;
 		}
-		filter.toDate = now.toISODate();
 		delete filter.range;
 	}
 	if (options.type) {

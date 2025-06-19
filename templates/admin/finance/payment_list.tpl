@@ -94,10 +94,12 @@
 
          <div class="grafic">
             <div class="chart_actions btn_row">
+               <a class="btn btn-light" id="chart_year">год</a>
+               <a class="btn btn-light" id="chart_all">все</a>
                <a class="btn btn-light" id="chart_reset">Reset zoom</a>
             </div>
             <div>
-               <div id="financeByMonth" style="height: 250px;"></div>
+               <div id="financeByMonth"></div>
             </div>
          </div>
 
@@ -247,7 +249,8 @@
                   options: {
                      label: 'Сумма приходов, ' + php_currency_sign,
                      color: '#76c100',
-                     url: '/admin/ajax/stats/finance'
+                     url: '/admin/ajax/stats/finance',
+                     range: 'year'
                   }
                },
                {
@@ -261,7 +264,8 @@
                   options: {
                      label: 'Сумма расходов, ' + php_currency_sign,
                      color: '#f8a13f',
-                     url: '/admin/ajax/stats/finance'
+                     url: '/admin/ajax/stats/finance',
+                     range: 'year'
                   }
                }
             ]
@@ -269,6 +273,14 @@
 
          $('#chart_reset').click(function() {
             if (myChart.chart) myChart.chart.resetSeries()
+         });
+
+         $('#chart_year').click(function() {
+            myChart.load({ range: 'year' });
+         });
+
+         $('#chart_all').click(function() {
+            myChart.load({ range: 'all' });
          });
 
       {/literal}
