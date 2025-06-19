@@ -189,11 +189,24 @@
 		});
 
 		$('#chart_year').click(function() {
-			cartsData.load({ range: 'year' });
+			if (cartsData.chart) {
+				cartsData.chart.updateOptions({
+					tooltip: { x: { format: 'LLLL yyyy' } },
+					title: { text: 'Корзины по месяцам' }
+				});
+			}
+			cartsData.load({ range: 'year', filter: 'byMonth' });
 		});
 
 		$('#chart_month').click(function() {
-			cartsData.load({ range: 'month' });
+			if (cartsData.chart) {
+				cartsData.chart.updateOptions({
+					tooltip: { x: { format: 'dd LLL yyyy' } },
+					title: { text: 'Корзины по дням' }
+				});
+			}
+			cartsData.load({ range: 'month', filter: 'byDay' });
 		});
+		
 	</script>
 {/block}

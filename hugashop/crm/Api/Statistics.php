@@ -514,4 +514,74 @@ class Statistics
 
         return array_values($grouped);
     }
+
+
+    /**
+     * Возвращает историю корзин по месяцам
+     */
+    public static function cartsByMonth(?string $from_date = null, ?string $to_date = null, ?string $type = null): array
+    {
+        $query = Cart::query()->with('order')
+            ->selectRaw('MONTH(created) as month')
+            ->selectRaw('YEAR(created) as year');
+
+        if (!empty($from_date)) {
+            $from_date = Helper::dateConvert($from_date, 'Y-m-d');
+            $query->where('created', '>=', $from_date);
+        }
+
+        if (!empty($to_date)) {
+            $to_date = Helper::dateConvert($to_date, 'Y-m-d');
+            $query->where('created', '<=', $to_date);
+        }
+
+        if (in_array($type, ['carts', 'ordered', 'paid'], true)) {
+            $query->selectRaw('COUNT(*) as total');
+
+            if ($type === 'ordered') {
+                $query->whereNotNull('order_id');
+            } elseif ($type === 'paid') {
+                $query->whereHas('order', fn($q) => $q->where('paid', 1));
+            }
+
+            $records = $query->groupBy('month', 'year')
+                ->orderBy('year')
+                ->orderBy('month')
+                ->get();
+
+            $results = [];
+            foreach ($records as $rec) {
+                $results[] = [
+                    'month' => (int) $rec->month,
+                    'year'  => (int) $rec->year,
+                    'y'     => (int) $rec->total,
+                ];
+            }
+
+            return $results;
+        }
+
+        $query->selectRaw('COUNT(*) as carts')
+            ->selectRaw('SUM(CASE WHEN order_id IS NOT NULL THEN 1 ELSE 0 END) as ordered')
+            ->selectRaw('SUM(CASE WHEN orders.paid = 1 THEN 1 ELSE 0 END) as paid')
+            ->leftJoin('orders', 'orders.id', '=', 'carts.order_id');
+
+        $records = $query->groupBy('month', 'year')
+            ->orderBy('year')
+            ->orderBy('month')
+            ->get();
+
+        $results = [];
+        foreach ($records as $rec) {
+            $results[] = [
+                'month'   => (int) $rec->month,
+                'year'    => (int) $rec->year,
+                'carts'   => (int) $rec->carts,
+                'ordered' => (int) $rec->ordered,
+                'paid'    => (int) $rec->paid,
+            ];
+        }
+
+        return $results;
+    }
 }
