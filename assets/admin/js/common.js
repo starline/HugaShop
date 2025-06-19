@@ -221,7 +221,7 @@ export function getChartData(apex, filter, options) {
 
 // Hide overlapping ApexCharts data labels
 export function hideOverlappingDataLabels(chartContext) {
-	const nodes = Array.from(chartContext.el.querySelectorAll('.apexcharts-data-label'));
+	const nodes = Array.from(chartContext.el.querySelectorAll('.apexcharts-datalabel'));
 
 	nodes.forEach((label) => {
 		label.style.display = '';
@@ -249,7 +249,6 @@ export function hideOverlappingDataLabels(chartContext) {
 		}
 	});
 }
-
 
 // RU -> EN
 export function translit(str) {
