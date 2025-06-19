@@ -144,9 +144,8 @@
 	<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 	<script type="module">
+		import { makeChart, hideOverlappingDataLabels } from '{"js/common.js"|asset}';
 		var csrf = "{setCSRF}";
-
-		import { makeChart, hideOverlappingDataLabels, getChartData } from '{"js/common.js"|asset}';
 
 		let cartsData = makeChart(
 			document.getElementById('cartsHistory'), {
@@ -162,46 +161,47 @@
 				plotOptions: { bar: { dataLabels: { position: 'top' } } },
 				tooltip: { x: { format: 'dd LLL yyyy' } },
 				title: { text: 'Корзины по дням' }
-			}
+			},
+			[{
+				filter: { csrf: csrf, filter: 'byDay' },
+				options: {
+					range: 'month',
+					label: 'Корзин',
+					color: '#76c100',
+					type: 'carts',
+					url: '/admin/ajax/stats/cart'
+				}
+			}, {
+				filter: { csrf: csrf, filter: 'byDay' },
+				options: {
+					range: 'month',
+					label: 'Оформлено в заказ',
+					color: '#f8a13f',
+					type: 'ordered',
+					url: '/admin/ajax/stats/cart'
+				}
+			}, {
+				filter: { csrf: csrf, filter: 'byDay' },
+				options: {
+					range: 'month',
+					label: 'Оплачено',
+					color: '#000000',
+					type: 'paid',
+					url: '/admin/ajax/stats/cart'
+				}
+			}]
 		);
 
 		cartsData.ready.then(function() {
-			loadCartStats('month');
+			cartsData.load({ range: 'month' });
 		});
-
-		function loadCartStats(range = 'month') {
-			let params = { csrf: csrf, filter: 'byDay' };
-
-			cartsData.series = [];
-			if (cartsData.chart) cartsData.chart.updateSeries([]);
-
-			const baseOpt = { url: '/admin/ajax/stats/cart' };
-			getChartData(cartsData, Object.assign({}, params), Object.assign({}, baseOpt, {
-				label: 'Корзин',
-				color: '#76c100',
-				type: 'carts',
-				range: range
-			}));
-			getChartData(cartsData, Object.assign({}, params), Object.assign({}, baseOpt, {
-				label: 'Оформлено в заказ',
-				color: '#f8a13f',
-				type: 'ordered',
-				range: range
-			}));
-			getChartData(cartsData, Object.assign({}, params), Object.assign({}, baseOpt, {
-				label: 'Оплачено',
-				color: '#000000',
-				type: 'paid',
-				range: range
-			}));
-		}
 
 		$('#cart_chart_reset').click(function() {
 			if (cartsData.chart) cartsData.chart.resetSeries();
 		});
 
 		$('#cart_chart_year').click(function() {
-			loadCartStats('year');
+			cartsData.load({ range: 'year' });
 		});
 	</script>
 {/block}

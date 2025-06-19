@@ -46,7 +46,13 @@ class ProductController extends BaseFrontController
     {
 
         // Выбираем товар из базы
-        $product = Product::getProduct(id: $url, join: ['brand', 'category']);
+        $product = Product::getProduct(id: $url, join: [
+            'image',
+            'brand',
+            'variants',
+            'variants.product',
+            'variants.product.image'
+        ]);
 
         if (empty($product)) {
             throw $this->createNotFoundException('Product does not found'); # 404
@@ -62,8 +68,6 @@ class ProductController extends BaseFrontController
         Design::assign('category', $category);
 
         // Изображение товара
-        $product->images = Image::getImages($product->id, 'product');
-        $product->image = reset($product->images);
         $product->features = ProductOption::getProductOptions($product->id);
 
         // Comments
