@@ -162,7 +162,8 @@
 
 	<script type="module">
 		import 'https://cdn.jsdelivr.net/npm/apexcharts';
-		import { createApexChart, getChartData } from '{"js/common.js"|asset}';
+		import { makeChart } from '{"js/common.js"|asset}';
+
 
 		var csrf = "{setCSRF}";
 		const php_manager_id = '{$current_user->id}';
@@ -171,55 +172,55 @@
 
 		{literal}
 			$(function() {
-
-				let options = {
-					chart: { type: 'bar', height: 350 },
-					tooltip: { x: { format: 'MMMM yyyy' } },
-					title: { text: 'Статистика продаж менеджера' },
-					subtitle: { text: 'Доход по месяцам' },
-					yaxis: { title: { text: 'Менеджер' } }
-				};
-
-				let chartData = { series: [] };
-				let chart = createApexChart(document.getElementById('product_stats'), options);
-
-				chart.render().then(function() {
-					chartData.chart = chart;
-
-					getChartData(chartData, {
-						manager_id: php_manager_id,
-						filter: 'byMonth',
-						csrf: csrf,
-						type: 'totalPrice'
-					}, {
-						label: 'Сумма дохода, ' + php_currency_sign,
-						color: '#76c100',
-						url: '/admin/ajax/stats/order'
-					});
-
-					getChartData(chartData, {
-						manager_id: php_manager_id,
-						filter: 'byMonth',
-						csrf: csrf,
-						type: 'amount'
-					}, {
-						label: 'Колл-во заказов, шт',
-						color: '#000000',
-						url: '/admin/ajax/stats/order'
-					});
-
-					getChartData(chartData, {
-						manager_id: php_manager_id,
-						filter: 'byMonth',
-						csrf: csrf,
-						type: 'totalPayments'
-					}, {
-						label: 'Сумма платежей, ' + php_currency_sign,
-						color: '#f8a13f',
-						url: '/admin/ajax/stats/order'
-					});
-				});
-
+				makeChart(
+					document.getElementById('product_stats'), {
+						chart: { type: 'bar', height: 350 },
+						tooltip: { x: { format: 'MMMM yyyy' } },
+						title: { text: 'Статистика продаж менеджера' },
+						subtitle: { text: 'Доход по месяцам' },
+						yaxis: { title: { text: 'Статистика Менеджера' } }
+					},
+					[{
+							filter: {
+								manager_id: php_manager_id,
+								filter: 'byMonth',
+								csrf: csrf,
+								type: 'totalPrice'
+							},
+							options: {
+								label: 'Сумма дохода, ' + php_currency_sign,
+								color: '#76c100',
+								url: '/admin/ajax/stats/order'
+							}
+						},
+						{
+							filter: {
+								manager_id: php_manager_id,
+								filter: 'byMonth',
+								csrf: csrf,
+								type: 'amount'
+							},
+							options: {
+								label: 'Колл-во заказов, шт',
+								color: '#000000',
+								url: '/admin/ajax/stats/order'
+							}
+						},
+						{
+							filter: {
+								manager_id: php_manager_id,
+								filter: 'byMonth',
+								csrf: csrf,
+								type: 'totalPayments'
+							},
+							options: {
+								label: 'Сумма платежей, ' + php_currency_sign,
+								color: '#f8a13f',
+								url: '/admin/ajax/stats/order'
+							}
+						}
+					]
+				);
 			});
 		{/literal}
 	</script>
