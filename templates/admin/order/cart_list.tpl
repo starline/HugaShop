@@ -148,10 +148,7 @@
 
 		import { makeChart, hideOverlappingDataLabels, getChartData } from '{"js/common.js"|asset}';
 
-		let cartsData;
-		let cartsChart;
-
-		cartsData = makeChart(
+		let cartsData = makeChart(
 			document.getElementById('cartsHistory'), {
 				chart: {
 					type: 'bar',
@@ -166,19 +163,18 @@
 				tooltip: { x: { format: 'dd LLL yyyy' } },
 				title: { text: 'Корзины по дням' }
 			},
-			[],
-			function(cd) {
-				cartsChart = cd.chart;
-				cartsData = cd;
-				loadCartStats('month');
-			}
+			[]
 		);
+
+		cartsData.ready.then(function() {
+			loadCartStats('month');
+		});
 
 		function loadCartStats(range = 'month') {
 			let params = { csrf: csrf, filter: 'byDay' };
 
 			cartsData.series = [];
-			cartsChart.updateSeries([]);
+			if (cartsData.chart) cartsData.chart.updateSeries([]);
 
 			const baseOpt = { url: '/admin/ajax/stats/cart' };
 			getChartData(cartsData, Object.assign({}, params), Object.assign({}, baseOpt, {
@@ -202,7 +198,7 @@
 		}
 
 		$('#cart_chart_reset').click(function() {
-			cartsChart.resetSeries();
+			if (cartsData.chart) cartsData.chart.resetSeries();
 		});
 
 		$('#cart_chart_year').click(function() {

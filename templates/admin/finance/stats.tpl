@@ -72,7 +72,7 @@
 
 
    <script type="module">
-      import { getChartData } from '{"js/common.js"|asset}';
+      import { makeChart, getChartData } from '{"js/common.js"|asset}';
 
       var csrf = "{setCSRF}";
       let php_currency_name = '{$currency->name}';
@@ -85,81 +85,92 @@
          $(function() {
 
 
-            let byDay = { series: [] };
-            let byDayChart = new ApexCharts(document.querySelector('#stats_byDay'), {
-               series: [],
-               chart: { type: 'bar', height: 350 },
-               tooltip: { x: { format: 'dd LLL yyyy' } }
-            });
+            let byDay = makeChart(
+               document.getElementById('stats_byDay'), {
+                  chart: { type: 'bar', height: 350 },
+                  tooltip: { x: { format: 'dd LLL yyyy' } }
+               },
+               [{
+                     filter: { filter: 'byDay', fromDate: fromDate, csrf: csrf },
+                     options: {
+                        label: 'Сумма заказов, ' + php_currency_sign,
+                        color: '#76c100',
+                        type: 'totalPrice',
+                        url: '/admin/ajax/stats/order'
+                     }
+                  },
+                  {
+                     filter: { filter: 'byDay', fromDate: fromDate, csrf: csrf },
+                     options: {
+                        label: 'Сумма прибыли, ' + php_currency_sign,
+                        color: '#f8a13f',
+                        type: 'profitPrice',
+                        url: '/admin/ajax/stats/order'
+                     }
+                  },
+                  {
+                     filter: { filter: 'byDay', fromDate: fromDate, csrf: csrf },
+                     options: {
+                        label: 'Колл-во заказов, шт',
+                        color: '#000000',
+                        type: 'amount',
+                        url: '/admin/ajax/stats/order'
+                     }
+                  }
+               ]
+            );
 
-            byDayChart.render().then(function() {
-               byDay.chart = byDayChart;
 
-               getChartData(byDay, { filter: 'byDay', fromDate: fromDate, csrf: csrf }, {
-                  label: 'Сумма заказов, ' + php_currency_sign,
-                  color: '#76c100',
-                  type: 'totalPrice',
-                  url: '/admin/ajax/stats/order'
-               });
-               getChartData(byDay, { filter: 'byDay', fromDate: fromDate, csrf: csrf }, {
-                  label: 'Сумма прибыли, ' + php_currency_sign,
-                  color: '#f8a13f',
-                  type: 'profitPrice',
-                  url: '/admin/ajax/stats/order'
-               });
-               getChartData(byDay, { filter: 'byDay', fromDate: fromDate, csrf: csrf }, {
-                  label: 'Колл-во заказов, шт',
-                  color: '#000000',
-                  type: 'amount',
-                  url: '/admin/ajax/stats/order'
-               });
-            });
-
-
-            let byMonth = { series: [] };
-            let byMonthChart = new ApexCharts(document.querySelector('#stats_byMonth'), {
-               series: [],
-               chart: { type: 'bar', height: 350 }
-            });
-            byMonthChart.render().then(function() {
-               byMonth.chart = byMonthChart;
-               loadMonthChart();
-            });
-
-            function loadMonthChart(paymentMethod = '') {
-               byMonth.series = [];
-               byMonth.chart.updateSeries([]);
-               let base = { filter: 'byMonth', csrf: csrf };
-               if (paymentMethod) base.paymentMethod = paymentMethod;
-
-               getChartData(byMonth, Object.assign({}, base), {
-                  label: 'Сумма заказов, ' + php_currency_sign,
-                  color: '#76c100',
-                  type: 'totalPrice',
-                  url: '/admin/ajax/stats/order'
-               });
-               getChartData(byMonth, Object.assign({}, base), {
-                  label: 'Сумма прибыли, ' + php_currency_sign,
-                  color: '#f8a13f',
-                  type: 'profitPrice',
-                  url: '/admin/ajax/stats/order'
-               });
-               getChartData(byMonth, Object.assign({}, base), {
-                  label: 'Колл-во заказов, шт',
-                  color: '#000000',
-                  type: 'amount',
-                  url: '/admin/ajax/stats/order'
-               });
-            }
+            let byMonth = makeChart(
+               document.getElementById('stats_byMonth'), {
+                  chart: { type: 'bar', height: 350 }
+               },
+               [{
+                     filter: { filter: 'byMonth', csrf: csrf },
+                     options: {
+                        label: 'Сумма заказов, ' + php_currency_sign,
+                        color: '#76c100',
+                        type: 'totalPrice',
+                        url: '/admin/ajax/stats/order'
+                     }
+                  },
+                  {
+                     filter: { filter: 'byMonth', csrf: csrf },
+                     options: {
+                        label: 'Сумма прибыли, ' + php_currency_sign,
+                        color: '#f8a13f',
+                        type: 'profitPrice',
+                        url: '/admin/ajax/stats/order'
+                     }
+                  },
+                  {
+                     filter: { filter: 'byMonth', csrf: csrf },
+                     options: {
+                        label: 'Колл-во заказов, шт',
+                        color: '#000000',
+                        type: 'amount',
+                        url: '/admin/ajax/stats/order'
+                     }
+                  }
+               ]
+            );
 
 
             $('select[name="payment_method"]').change(function() {
                let paymentMethod = $('select[name="payment_method"]').val();
-               loadMonthChart(paymentMethod);
+               if (paymentMethod) {
+                  byMonth.load({ paymentMethod: paymentMethod });
+               } else {
+                  byMonth.load();
+               }
             });
 
-            $('#day_chart_reset').click(function() { byDayChart.resetSeries(); });
-            $('#month_chart_reset').click(function() { byMonthChart.resetSeries(); });
+            $('#day_chart_reset').click(function() {
+               if (byDay.chart) byDay.chart.resetSeries();
+            });
+            $('#month_chart_reset').click(function() {
+               if (byMonth.chart) byMonth.chart.resetSeries();
+            });
          });
       {/literal}
    </script>

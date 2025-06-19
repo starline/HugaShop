@@ -152,17 +152,26 @@ export function ajax_icon(icon, entity, var_name, csrf) {
 
 
 // Create chart and load datasets
-export function makeChart(element, chartOptions = {}, datasets = [], callback = null) {
-	let chartData = { series: [] };
+export function makeChart(element, chartOptions = {}, datasets = []) {
+	let chartData = {
+		series: [],
+		chart: null,
+		load: function (overrides = {}) {
+			this.series = [];
+			if (this.chart) this.chart.updateSeries([]);
+			datasets.forEach((data) => {
+				if (data && data.filter && data.options) {
+					let filter = $.extend({}, data.filter, overrides);
+					getChartData(this, filter, data.options);
+				}
+			});
+		}
+	};
+
 	let chart = createApexChart(element, chartOptions);
-	chart.render().then(function () {
+	chartData.ready = chart.render().then(function () {
 		chartData.chart = chart;
-		datasets.forEach((data) => {
-			if (data && data.filter && data.options) {
-				getChartData(chartData, data.filter, data.options);
-			}
-		});
-		if (callback) callback(chartData);
+		chartData.load();
 	});
 	return chartData;
 }

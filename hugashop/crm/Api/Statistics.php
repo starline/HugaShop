@@ -157,7 +157,11 @@ class Statistics
         $filter['limit'] = 'all';
 
         $products = Product::getProducts($filter);
-        return self::productByMonth(array_keys($products), $type);
+        
+        // Извлекаем product_id из объектов
+        $product_ids = collect($products)->pluck('id')->all();
+
+        return self::productByMonth($product_ids, $type);
     }
 
 

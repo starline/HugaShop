@@ -550,8 +550,8 @@
 
 
 				// Выводим график
-				let statsChart;
-				makeChart(
+				// Выводим график
+				let statsChart = makeChart(
 					document.getElementById('product_stats'), {
 						chart: { type: 'bar', height: 350 },
 						title: { text: 'Статистика продаж' }
@@ -621,12 +621,10 @@
 								url: '/admin/ajax/stats/order'
 							}
 						}
-					],
-					function(cd) { statsChart = cd.chart; }
+					]
 				);
 
-				let priceChart;
-				makeChart(
+				let priceChart = makeChart(
 					document.getElementById('productPriceHistory'), {
 						chart: { type: 'line', height: 350, zoom: { enabled: true } },
 						tooltip: { x: { format: 'dd LLL yyyy' } },
@@ -658,16 +656,15 @@
 								url: '/admin/ajax/stats/product-price'
 							}
 						}
-					],
-					function(cd) { priceChart = cd.chart; }
+					]
 				);
 
 				$('#productPriceHistory_reset').click(function() {
-					priceChart.resetSeries();
+					if (priceChart.chart) priceChart.chart.resetSeries();
 				});
 
 				$('#product_stats_reset').click(function() {
-					statsChart.resetSeries();
+					if (statsChart.chart) statsChart.chart.resetSeries();
 				});
 			});
 		{/literal}

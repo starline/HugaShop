@@ -229,8 +229,7 @@
 
 
       // Grafic
-      let myChart;
-      makeChart(
+      let myChart = makeChart(
             document.getElementById('financeByMonth'), {
                chart: {type: 'bar',height: 250},
                title: {text: 'Доходы и расходы'
@@ -269,7 +268,7 @@
       );
 
       $('#chart_reset').click(function() {
-         myChart.resetSeries();
+         if (myChart.chart) myChart.chart.resetSeries()
       });
    </script>
 {/block}
