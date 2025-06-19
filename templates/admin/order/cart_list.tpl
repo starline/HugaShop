@@ -146,13 +146,22 @@
 	<script type="module">
 		var csrf = "{setCSRF}";
 
+		import { createApexChart, hideOverlappingDataLabels } from '{"js/common.js"|asset}';
+
 		let cartsData = { series: [] };
-		let cartsChart = new ApexCharts(document.getElementById('cartsHistory'), {
-			series: [],
-			chart: { type: 'bar', height: 350, zoom: { enabled: true } },
+		let cartsChart = createApexChart(document.getElementById('cartsHistory'), {
+			chart: {
+				type: 'bar',
+				height: 350,
+				events: {
+					mounted: hideOverlappingDataLabels,
+					updated: hideOverlappingDataLabels
+				}
+			},
 			xaxis: { type: 'datetime' },
-			dataLabels: { enabled: true },
-			tooltip: { x: { format: 'dd LLL yyyy' } }
+			plotOptions: { bar: { dataLabels: { position: 'top' } } },
+			tooltip: { x: { format: 'dd LLL yyyy' } },
+			title: { text: 'Корзины по дням' }
 		});
 		cartsChart.render().then(function() {
 			cartsData.chart = cartsChart;

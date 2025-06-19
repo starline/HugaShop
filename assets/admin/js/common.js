@@ -221,19 +221,24 @@ export function getChartData(apex, filter, options) {
 
 // Hide overlapping ApexCharts data labels
 export function hideOverlappingDataLabels(chartContext) {
-	const nodes = chartContext.el.querySelectorAll('.apexcharts-data-label');
-	const items = [];
+	const nodes = Array.from(chartContext.el.querySelectorAll('.apexcharts-data-label'));
 
 	nodes.forEach((label) => {
 		label.style.display = '';
-		items.push({ label, rect: label.getBoundingClientRect() });
 	});
 
-	items.sort((a, b) => a.rect.top - b.rect.top);
+	const items = nodes.map((label) => ({ label, rect: label.getBoundingClientRect() }));
+
+	items.sort((a, b) => {
+		if (a.rect.top === b.rect.top) {
+			return a.rect.left - b.rect.left;
+		}
+		return a.rect.top - b.rect.top;
+	});
 
 	const boxes = [];
 	items.forEach((item) => {
-		const rect = item.rect;
+		const rect = item.label.getBoundingClientRect();
 		const overlap = boxes.some((box) => {
 			return !(rect.right < box.left || rect.left > box.right || rect.bottom < box.top || rect.top > box.bottom);
 		});
@@ -244,6 +249,7 @@ export function hideOverlappingDataLabels(chartContext) {
 		}
 	});
 }
+
 
 // RU -> EN
 export function translit(str) {
