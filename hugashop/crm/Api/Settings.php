@@ -102,7 +102,7 @@ class Settings extends BaseModel
             $value = serialize($value);
         }
 
-        return self::query()->updateOrCreate(['name' => $name], ['name' => $name, 'value' => $value]);
+        self::query()->updateOrCreate(['name' => $name], ['name' => $name, 'value' => $value]);
     }
 
 

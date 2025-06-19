@@ -38,9 +38,10 @@ class ExtensionController extends BaseAdminController
             return $this->redirectToRoute('ExtensionAdmin', ['module' => $module]);
         }
 
-
-        Design::assign('extension', $Extension->ext_config);
-        Design::assign('extension_settings', $Extension->ext_settings);
+        $extension            = clone $Extension->ext_config;
+        $extension->settings  = $Extension->ext_settings;
+        Design::assign('extension', $extension);
+        Design::assign('extensions', [$Extension->ext_name => $Extension->ext_config]);
 
         if (method_exists($Extension, 'index')) {
             $Extension->setEnviroment('kernel', $this->container->get('kernel'));

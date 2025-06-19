@@ -13,7 +13,7 @@
         <div class="row gx-5">
 
             <div class="col-lg-6">
-                {$modules[$extension->module] = $extension}
+                {$modules = $extensions}
                 {$module_type = 'extension'}
                 {include file='parts/module_settings_part.tpl'}
             </div>
