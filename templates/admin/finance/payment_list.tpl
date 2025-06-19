@@ -192,7 +192,7 @@
       let purse_id = "{$purse_id}";
       let category_id = "{$category_id}";
 
-      import { ajax_icon, getChartData, createApexChart, hideOverlappingDataLabels } from '{"js/common.js"|asset}';
+      import { ajax_icon, makeChart } from '{"js/common.js"|asset}';
 
       // Сделать проверенным
       $("a.verified.edit").click(function() {
@@ -229,47 +229,51 @@
 
 
       // Grafic
+      let myChart;
+      makeChart(
+         document.getElementById('financeByMonth'), {
+            chart: {
+               type: 'bar',
+               height: 250
+            },
+            title: {
+               text: 'Доходы и расходы'
+            }
+         },
+         [{
+               filter: {
+                  'filter': 'byMonth',
+                  'type': 'plus',
+                  'purse_id': purse_id,
+                  'category_id': category_id,
+                  'csrf': csrf
+               },
+               options: {
+                  label: 'Сумма приходов, ' + php_currency_sign,
+                  color: '#76c100',
+                  url: '/admin/ajax/stats/finance'
+               }
+            },
+            {
+               filter: {
+                  'filter': 'byMonth',
+                  'type': 'minus',
+                  'purse_id': purse_id,
+                  'category_id': category_id,
+                  'csrf': csrf
+               },
+               options: {
+                  label: 'Сумма расходов, ' + php_currency_sign,
+                  color: '#f8a13f',
+                  url: '/admin/ajax/stats/finance'
+               }
+            }
+         ],
+         function(cd) { myChart = cd.chart; }
+      );
+
       $('#chart_reset').click(function() {
          myChart.resetSeries();
-      });
-
-      let myChartData = { series: [] };
-      let myChart = createApexChart(document.getElementById('financeByMonth'), {
-         chart: {
-            type: 'bar',
-            height: 250
-         },
-         title: {
-            text: 'Доходы и расходы'
-         }
-      });
-
-      myChart.render().then(function() {
-         myChartData.chart = myChart;
-
-         getChartData(myChartData, {
-            'filter': 'byMonth',
-            'type': 'plus',
-            'purse_id': purse_id,
-            'category_id': category_id,
-            'csrf': csrf
-         }, {
-            label: 'Сумма приходов, ' + php_currency_sign,
-            color: '#76c100',
-            url: '/admin/ajax/stats/finance'
-         });
-
-         getChartData(myChartData, {
-            'filter': 'byMonth',
-            'type': 'minus',
-            'purse_id': purse_id,
-            'category_id': category_id,
-            'csrf': csrf
-         }, {
-            label: 'Сумма расходов, ' + php_currency_sign,
-            color: '#f8a13f',
-            url: '/admin/ajax/stats/finance'
-         });
       });
    </script>
 {/block}

@@ -151,6 +151,23 @@ export function ajax_icon(icon, entity, var_name, csrf) {
 }
 
 
+// Create chart and load datasets
+export function makeChart(element, chartOptions = {}, datasets = [], callback = null) {
+	let chartData = { series: [] };
+	let chart = createApexChart(element, chartOptions);
+	chart.render().then(function () {
+		chartData.chart = chart;
+		datasets.forEach((data) => {
+			if (data && data.filter && data.options) {
+				getChartData(chartData, data.filter, data.options);
+			}
+		});
+		if (callback) callback(chartData);
+	});
+	return chartData;
+}
+
+
 // Create ApexCharts chart with default Russian locale
 export function createApexChart(element, options = {}) {
 	const baseOptions = {
@@ -199,6 +216,7 @@ export function createApexChart(element, options = {}) {
 	return new ApexCharts(element, finalOptions);
 }
 
+
 // Get Chart data from Ajax
 export function getChartData(apex, filter, options) {
 	if (!options || !options.url) {
@@ -231,6 +249,7 @@ export function getChartData(apex, filter, options) {
 	});
 }
 
+
 // Hide overlapping ApexCharts data labels
 export function hideOverlappingDataLabels(chartContext) {
 	const nodes = Array.from(chartContext.el.querySelectorAll('.apexcharts-datalabel'));
@@ -261,6 +280,7 @@ export function hideOverlappingDataLabels(chartContext) {
 		}
 	});
 }
+
 
 // RU -> EN
 export function translit(str) {

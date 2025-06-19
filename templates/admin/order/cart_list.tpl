@@ -146,27 +146,33 @@
 	<script type="module">
 		var csrf = "{setCSRF}";
 
-		import { createApexChart, hideOverlappingDataLabels, getChartData } from '{"js/common.js"|asset}';
+		import { makeChart, hideOverlappingDataLabels, getChartData } from '{"js/common.js"|asset}';
 
-		let cartsData = { series: [] };
-		let cartsChart = createApexChart(document.getElementById('cartsHistory'), {
-			chart: {
-				type: 'bar',
-				height: 350,
-				events: {
-					mounted: hideOverlappingDataLabels,
-					updated: hideOverlappingDataLabels
-				}
+		let cartsData;
+		let cartsChart;
+
+		cartsData = makeChart(
+			document.getElementById('cartsHistory'), {
+				chart: {
+					type: 'bar',
+					height: 350,
+					events: {
+						mounted: hideOverlappingDataLabels,
+						updated: hideOverlappingDataLabels
+					}
+				},
+				xaxis: { type: 'datetime' },
+				plotOptions: { bar: { dataLabels: { position: 'top' } } },
+				tooltip: { x: { format: 'dd LLL yyyy' } },
+				title: { text: 'Корзины по дням' }
 			},
-			xaxis: { type: 'datetime' },
-			plotOptions: { bar: { dataLabels: { position: 'top' } } },
-			tooltip: { x: { format: 'dd LLL yyyy' } },
-			title: { text: 'Корзины по дням' }
-		});
-		cartsChart.render().then(function() {
-			cartsData.chart = cartsChart;
-			loadCartStats('month');
-		});
+			[],
+			function(cd) {
+				cartsChart = cd.chart;
+				cartsData = cd;
+				loadCartStats('month');
+			}
+		);
 
 		function loadCartStats(range = 'month') {
 			let params = { csrf: csrf, filter: 'byDay' },
@@ -200,7 +206,7 @@
 				type: 'paid'
 			}));
 		}
-		
+
 		$('#cart_chart_reset').click(function() {
 			cartsChart.resetSeries();
 		});
