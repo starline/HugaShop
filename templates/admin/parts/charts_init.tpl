@@ -1,274 +1,60 @@
 <script type="module">
-    import '{"js/highcharts/js/highcharts.min.js"|asset}';
+    import 'https://cdn.jsdelivr.net/npm/apexcharts';
+    import { createApexChart, getChartData } from '{"js/common.js"|asset}';
 
-    /**
-     * Выводим график
-     */
-    window.showStatGraphic = async function(element, dataParamObj, types_arr, my_options = null,
-        currency_sign, callback) {
-        if ($("div").is('#' + element)) {
-
-            let temp_options = {
-                chart: {
-                    renderTo: element,
-                    zoomType: 'x',
-                    defaultSeriesType: 'line',
-                    type: 'column'
-                },
-                title: {
-                    text: 'Статистика продаж'
-                },
-                subtitle: {
-                    text: 'Выручка по месяцам'
-                },
-                yAxis: [{
-                    title: {
-                        text: currency_sign
-                    }
-                }, {
-                    title: {
-                        text: 'Шт.'
-                    },
-                    min: 0,
-                    opposite: true
-                }],
-                series: []
-            }
-
-            // Копируем базовые сайства
-            if (my_options !== null) {
-                Object.assign(temp_options, my_options);
-            }
-            Object.assign(temp_options, options);
-
-            for (const type of types_arr) {
-
-                dataParamObj.type = type;
-
-                await $.post('/admin/ajax/stats/order', dataParamObj,
-                    function(data) {
-                        if (data == null || data[0] == null)
-                            return false;
-
-                        let series = {
-                            data: []
-                        }
-
-                        //console.log(data);
-                        let minDate = Date.UTC(data[0].month - 1, data[0].day),
-                            maxDate = Date.UTC(data[data.length - 1].year, data[data.length - 1]
-                                .month - 1),
-                            newDates = [],
-                            currentDate = minDate,
-                            d;
-
-                        while (currentDate <= maxDate) {
-                            d = new Date(currentDate);
-                            newDates.push((d.getMonth() + 1) + '/' + d.getFullYear());
-                            currentDate += (24 * 60 * 60 * 1000); // add one Месяц
-                        }
-
-                        //console.log(newDates);  
-                        if (dataParamObj.type == 'totalPrice') {
-                            if (dataParamObj.manager_id)
-                                series.name = 'Сумма дохода, ' + currency_sign;
-                            else
-                                series.name = 'Сумма заказов, ' + currency_sign;
-
-                        } else if (dataParamObj.type == 'profitPrice') {
-                            series.name = 'Сумма прибыли, ' + currency_sign;
-                            series.color = 'rgba(248,161,63,1)';
-
-                        } else if (dataParamObj.type == 'amount') {
-                            if (dataParamObj.category_id || dataParamObj.product_id)
-                                series.name = 'Продано, шт';
-                            else
-                                series.name = 'Колл-во заказов, шт';
-
-                            series.pointPadding = '0.3';
-                            series.pointPlacement = '-0.1';
-                            series.color = 'rgba(0,0,0,1)';
-
-                        } else if (dataParamObj.type == 'add') {
-                            series.name = 'Поставка, шт';
-                            series.type = "scatter";
-                            series.color = '#673ab7';
-                            {literal}
-                                series.tooltip = {headerFormat: '<small>{point.key}</small><br>', pointFormat:'{series.name}: <b>{point.y}</b>', xDateFormat:'%B %Y'};
-                            {/literal}
-                            series.yAxis = 1;
-                        } else if (dataParamObj.type == 'delete') {
-                            series.name = 'Списано, шт';
-                            series.color = '#f00';
-                            series.pointPadding = '0.3';
-                            series.pointPlacement = '-0.1';
-
-                        } else if (dataParamObj.type == 'totalPayments') {
-                            series.name = 'Сумма платежей, ' + currency_sign;
-                            series.color = 'rgba(248,161,63,1)';
-                        }
-
-                        // Iterate over the lines and add categories or series
-                        $.each(data, function(lineNo, line) {
-                            if (dataParamObj.filter == 'byMonth') {
-                                series.data.push([Date.UTC(line.year, line.month - 1),
-                                    parseInt(line.y)
-                                ]);
-                            } else if (dataParamObj.filter == 'byDay') {
-                                series.data.push([Date.UTC(line.year, line.month - 1, line.day),
-                                    parseInt(line.y)
-                                ]);
-                            }
-                        });
-
-                        // Добавляем данные в массив
-                        temp_options.series.push(series);
-                    }
-                );
-            }
-
-            // Если есть данные, выводим график
-            if (temp_options.series.length > 0) {
-                if (callback != null)
-                    callback(true);
-                else
-                    $("#" + element).css("height", "250px");
-
-                // Show chart
-                let chart = new Highcharts.Chart(temp_options);
-            } else {
-                if (callback != null)
-                    callback(false);
-                $("#" + element).append("<div class='chart_none'>нет данных для отображения графика</div>");
-            }
+    // Выводим график через ApexCharts
+    window.showStatGraphic = function(element, dataParamObj, types_arr, my_options = null, currency_sign, callback) {
+        if (!$("div").is('#' + element)) {
+            return;
         }
-    }
 
-    var options = {
-        xAxis: {
-            type: 'datetime',
-            minRange: 7 * 3600000,
-            maxZoom: 7 * 3600000,
-            gridLineWidth: 1,
-            ordinal: true,
-            showEmpty: true
-        },
-        plotOptions: {
-            line: {
-                dataLabels: {
-                    enabled: true
-                },
-                enableMouseTracking: true,
-                connectNulls: false
-            },
-            area: {
-                marker: {
-                    enabled: false
-                },
-            },
-            series: {
-                borderWidth: 0,
-                dataLabels: {
-                    enabled: true,
-                }
-            },
-            column: {
-                grouping: false,
-                shadow: false,
-                borderWidth: 0
-            }
+        let options = {
+            chart: { type: 'bar', height: 350 },
+            xaxis: { type: 'datetime' },
+            plotOptions: { bar: { dataLabels: { position: 'top' } } },
+            tooltip: { x: { format: (dataParamObj.filter == 'byDay') ? 'dd LLL yyyy' : 'MMMM yyyy' } },
+            title: { text: 'Статистика продаж' }
+        };
+
+        if (my_options !== null) {
+            $.extend(true, options, my_options);
         }
-    }
 
-    Highcharts.theme = {
-        colors: ["#55BF3B", "#f45b5b", "#8085e9", "#8d4654", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee", "#DF5353",
-            "#7798BF", "#aaeeee"
-        ],
-        chart: {
-            backgroundColor: null,
-            style: {
-                fontFamily: "Signika, serif"
-            }
-        },
-        title: {
-            style: {
-                color: 'black',
-                fontSize: '16px',
-                fontWeight: 'bold'
-            }
-        },
-        subtitle: {
-            style: {
-                color: 'black'
-            }
-        },
-        tooltip: {
-            borderWidth: 0
-        },
-        legend: {
-            itemStyle: {
-                fontWeight: 'bold',
-                fontSize: '13px'
-            }
-        },
-        xAxis: {
-            labels: {
-                style: {
-                    color: '#6e6e70'
+        let chartData = { series: [] };
+        let chart = createApexChart(document.getElementById(element), options);
+
+        chart.render().then(function() {
+            chartData.chart = chart;
+            types_arr.forEach(function(t) {
+                let params = $.extend({}, dataParamObj, { type: t });
+                let opt = { url: '/admin/ajax/stats/order', label: '', color: '#000000' };
+
+                if (t === 'totalPrice') {
+                    opt.label = (dataParamObj.manager_id ? 'Сумма дохода, ' : 'Сумма заказов, ') +
+                        currency_sign;
+                    opt.color = '#76c100';
+                } else if (t === 'profitPrice') {
+                    opt.label = 'Сумма прибыли, ' + currency_sign;
+                    opt.color = '#f8a13f';
+                } else if (t === 'amount') {
+                    opt.label = (dataParamObj.category_id || dataParamObj.product_id) ?
+                        'Продано, шт' : 'Колл-во заказов, шт';
+                    opt.color = '#000000';
+                } else if (t === 'add') {
+                    opt.label = 'Поставка, шт';
+                    opt.color = '#673ab7';
+                } else if (t === 'delete') {
+                    opt.label = 'Списано, шт';
+                    opt.color = '#f00';
+                } else if (t === 'totalPayments') {
+                    opt.label = 'Сумма платежей, ' + currency_sign;
+                    opt.color = '#f8a13f';
                 }
-            }
-        },
-        yAxis: {
-            labels: {
-                style: {
-                    color: '#6e6e70'
-                }
-            }
-        },
-        plotOptions: {
-            series: {
-                shadow: false
-            },
-            candlestick: {
-                lineColor: '#404048'
-            },
-            map: {
-                shadow: false
-            }
-        },
 
-        toolbar: {
-            itemStyle: {
-                color: '#CCC'
-            }
-        },
+                getChartData(chartData, params, opt);
+            });
 
-        // Highstock specific
-        navigator: {
-            xAxis: {
-                gridLineColor: '#D0D0D8'
-            }
-        },
-        rangeSelector: {
-            buttonTheme: {
-                fill: 'white',
-                stroke: '#C0C0C8',
-                'stroke-width': 1,
-                states: {
-                    select: {
-                        fill: '#D0D0D8'
-                    }
-                }
-            }
-        },
-        scrollbar: {
-            trackBorderColor: '#C0C0C8'
-        },
-
-        // General
-        background2: '#E0E0E8'
+            if (callback) callback(true);
+        });
     };
-
-    // Apply the theme
-    Highcharts.setOptions(Highcharts.theme);
 </script>

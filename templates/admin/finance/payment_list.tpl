@@ -237,7 +237,7 @@
       let myChart = createApexChart(document.getElementById('financeByMonth'), {
          chart: {
             type: 'bar',
-            height: 350
+            height: 250
          },
          title: {
             text: 'Доходы и расходы'

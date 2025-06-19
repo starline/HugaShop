@@ -114,7 +114,7 @@ class ProductVariant extends BaseModel
     }
 
 
-    public function deleteVariant(int $product_id)
+    public static function deleteVariant(int $product_id)
     {
         self::where('product_id', $product_id)
             ->orWhere('parent_id', $product_id)

@@ -20,6 +20,7 @@ use HugaShop\Api\Order\OrderPurchase;
 use HugaShop\Api\Product\ProductOption;
 use HugaShop\Api\Content\ContentComment;
 use HugaShop\Api\Product\ProductRelated;
+use HugaShop\Api\Product\ProductVariant;
 use HugaShop\Api\Warehouse\WarehousePurchase;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
