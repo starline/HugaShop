@@ -392,7 +392,7 @@ class Statistics
     /**
      * Возвращает историю изменения цены товара по дням
      */
-    public static function productPriceHistoryByDay(int $product_id)
+    public static function productPriceHistoryByDay(int $product_id, ?string $type = null)
     {
         if (empty($product_id)) {
             return [];
@@ -406,6 +406,21 @@ class Statistics
             ->groupBy('date')
             ->orderBy('date')
             ->get();
+
+        if (in_array($type, ['price', 'costPrice'], true)) {
+            $results = [];
+            foreach ($records as $rec) {
+                $dt = new \DateTime($rec->date);
+                $results[] = [
+                    'day'   => (int) $dt->format('d'),
+                    'month' => (int) $dt->format('m'),
+                    'year'  => (int) $dt->format('Y'),
+                    'y'     => ($type === 'price') ? (float) $rec->price : (float) $rec->cost_price,
+                ];
+            }
+
+            return $results;
+        }
 
         $result = [];
         foreach ($records as $rec) {

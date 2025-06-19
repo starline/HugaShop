@@ -571,33 +571,29 @@
 
 				priceChart.render().then(function() {
 					priceChartData.chart = priceChart;
-					loadPriceHistory();
-				});
 
-				function loadPriceHistory() {
-					$.post('/admin/ajax/stats/product-price', { product_id: php_product_id, csrf: csrf }, function(data) {
-						if (data && data.length > 0) {
-							let priceData = [];
-							let costData = [];
-							data.forEach((p) => {
-								let dt = luxon.DateTime.fromISO(p.date).toJSDate().getTime();
-								priceData.push([dt, parseFloat(p.price)]);
-								costData.push([dt, parseFloat(p.cost_price)]);
-							});
-							priceChartData.series.push({
-								name: 'Цена, ' + php_currency_sign,
-								data: priceData,
-								color: '#76c100'
-							});
-							priceChartData.series.push({
-								name: 'Оптовая цена, ' + php_currency_sign,
-								data: costData,
-								color: '#f8a13f'
-							});
-							priceChart.updateSeries(priceChartData.series);
-						}
+					getChartData(priceChartData, {
+						filter: 'byDay',
+						product_id: php_product_id,
+						csrf: csrf
+					}, {
+						label: 'Цена, ' + php_currency_sign,
+						color: '#76c100',
+						type: 'price',
+						url: '/admin/ajax/stats/product-price'
 					});
-				}
+
+					getChartData(priceChartData, {
+						filter: 'byDay',
+						product_id: php_product_id,
+						csrf: csrf
+					}, {
+						label: 'Оптовая цена, ' + php_currency_sign,
+						color: '#f8a13f',
+						type: 'costPrice',
+						url: '/admin/ajax/stats/product-price'
+					});
+				});
 
 				$('#productPriceHistory_reset').click(function() {
 					priceChart.resetSeries();

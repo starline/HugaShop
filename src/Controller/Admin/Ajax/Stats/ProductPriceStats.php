@@ -22,7 +22,9 @@ class ProductPriceStats extends BaseAdminController
             return new JsonResponse([]);
         }
 
-        $result = Statistics::productPriceHistoryByDay($product_id);
+        $type = Request::post('type');
+
+        $result = Statistics::productPriceHistoryByDay($product_id, $type);
         return new JsonResponse($result);
     }
 }
