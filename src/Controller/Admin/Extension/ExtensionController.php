@@ -32,9 +32,8 @@ class ExtensionController extends BaseAdminController
 
 
         // Сохранить настройки
-        if (!empty($extension_settings = Request::post('extension_settings'))) {
+        if (!empty($extension_settings = Request::post('extension_settings', 'array'))) {
             Design::setFlashMessage('update', Extension::updateExt($module, $extension_settings));
-
             $Extension->ext_settings = (object) $extension_settings;
             return $this->redirectToRoute('ExtensionAdmin', ['module' => $module]);
         }

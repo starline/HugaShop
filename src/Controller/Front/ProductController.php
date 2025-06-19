@@ -54,8 +54,7 @@ class ProductController extends BaseFrontController
             'variants.product.image',
             'related',
             'related.image',
-            'options',
-            'options.feature'
+            'features'
         ]);
 
         if (empty($product)) {

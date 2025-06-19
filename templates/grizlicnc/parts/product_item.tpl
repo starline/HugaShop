@@ -26,28 +26,17 @@
 
 			{if $type != 'short'}
 
-				{$variant = $product->variant}
-				{if $product->disable}
-					{$is_instock = false}
-				{else}
-					{foreach $product->variants as $v}
-						{if $v->stock > 0}
-							{$is_instock = true}
-							{$variant = $v}
-							{break}
-						{/if}
+				{if $product->stock > 0}
+					{$is_instock = true}
+				{/if}
 
-						{if $v->custom == 1}
-							{$is_custom = true}
-							{$variant = $v}
-							{break}
-						{/if}
+				{if $product->custom == 1}
+					{$is_custom = true}
+				{/if}
 
-						{if $v->awaiting == 1}
-							{$is_awaiting = true}
-							{$awaiting_date = $v->awaiting_date}
-						{/if}
-					{/foreach}
+				{if $product->awaiting == 1}
+					{$is_awaiting = true}
+					{$awaiting_date = $v->awaiting_date}
 				{/if}
 
 				<div class="status_stock">
@@ -68,17 +57,15 @@
 
 				<div class="product_price">
 
-					<!-- Product variant -->
-					<form class="variants" action="/cart" variant_sku="{$variant->sku}" variant_id="{$variant->id}"
-						product_name="{$product->name}" variant_name="{$variant->name}" price="{$variant->price}">
+					<!-- Product -->
+					<form class="variants" action="/cart" product_sku="{$product->sku}" product_id="{$product->id}"
+						product_name="{$product->name}" product_name="{$product->name}" price="{$product->price}">
 
-						{if $variant->id}
-							<input name="variant" value="{$variant->id}" type="hidden" />
-							<input name="amount" value="1" type="hidden" />
-						{/if}
+						<input name="product" value="{$product->id}" type="hidden" />
+						<input name="amount" value="1" type="hidden" />
 
 						<div class="variant">
-							<div class="price">{$variant->price|price_html|raw}</div>
+							<div class="price">{$product->price|price_html|raw}</div>
 						</div>
 
 						{if $is_instock === true || is_custom === true}

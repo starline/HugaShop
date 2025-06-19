@@ -21,8 +21,8 @@
             'event': 'DynamicRemarketing',
             'dynamicParams': {
                 'ecomm_pagetype': 'product',
-                'ecomm_prodid': '{$product->variant->sku}',
-                'ecomm_totalvalue': '{$product->variant->price}',
+                'ecomm_prodid': '{$product->sku}',
+                'ecomm_totalvalue': '{$product->price}',
                 'ecomm_category': '{$category->name}'
             }
         });
@@ -36,12 +36,12 @@
                         'list': 'Product Page'
                     },
                     'products': [{
-                        'name': '{$product->name}{if $product->variant->name} - {$product->variant->name}{/if}',
-                        'id': '{$product->variant->sku}',
-                        'price': '{$product->variant->price}',
+                        'name': '{$product->name}{if $product->variant_name} - {$product->variant_name}{/if}',
+                        'id': '{$product->sku}',
+                        'price': '{$product->price}',
                         'category': '{$category->name}'
-                        {if $product->variant->name}
-                            ,'variant': '{$product->variant->name}'
+                        {if $product->variant_name}
+                            ,'variant': '{$product->variant_name}'
                         {/if}
                     }]
                 }
@@ -52,11 +52,11 @@
 
     {* Products *}
     {if $route == 'Products'}
-        {if !$variants_sku|empty}
+        {if !$products_sku|empty}
             window.dataLayer.push({
                 'event': 'DynamicRemarketing',
                 'dynamicParams': {
-                    'ecomm_prodid': ['{$variants_sku|join:"','"}'],
+                    'ecomm_prodid': ['{$products_sku|join:"','"}'],
                     'ecomm_pagetype': 'category',
                     'ecomm_category': '{$category->name}'
                 }
@@ -70,12 +70,12 @@
                 'impressions': [
                     {foreach $products as $p}
                         {
-                            'id': '{$p->variant->sku}',
+                            'id': '{$p->sku}',
                             'name': '{$p->name}',
-                            {if $p->variant->name}
-                                'variant': '{$p->variant->name}',
+                            {if $p->variant_name}
+                                'variant': '{$p->variant_name}',
                             {/if}
-                            'price': '{$p->variant->price}',
+                            'price': '{$p->price}',
                             'position': {$p@index},
                             'category': '{$category->name}',
                             'list': '{$category->path[0]->name}'
@@ -98,10 +98,10 @@
                     'products': [
                         {foreach $purchases as $purch}
                             {
-                                'id': '{$purch->variant->sku}',
+                                'id': '{$purch->product->sku}',
                                 'name': '{$purch->product->name}',
-                                'variant': '{$purch->variant->name}',
-                                'price': '{$purch->variant->price}',
+                                'variant': '{$purch->product->variant_name}',
+                                'price': '{$purch->price}',
                                 'quantity': {$purch->amount},
                                 'category': '{$purch->category->name}',
                                 'list': '{$purch->category->path[0]->name}',
@@ -128,7 +128,7 @@
         window.dataLayer.push({
             'event': 'DynamicRemarketing',
             'dynamicParams': {
-                'ecomm_prodid': ['{$order->variants_sku|join:"','"}'],
+                'ecomm_prodid': ['{$order->products_sku|join:"','"}'],
                 'ecomm_pagetype': 'purchase',
                 'ecomm_totalvalue': {$order->subtotal_price}
             }
@@ -147,9 +147,9 @@
                     'products': [
                         {foreach $purchases as $p}
                             {
-                                'id': '{$p->variant->sku}',
+                                'id': '{$p->product->sku}',
                                 'name': '{$p->product->name}',
-                                'variant': '{$p->variant->name}',
+                                'variant': '{$p->product->variant_name}',
                                 'price': {$p->price},
                                 'quantity': {$p->amount},
                                 'category': '{$p->category->name}',

@@ -152,6 +152,18 @@ class Product extends BaseModel
         return $this->options->keyBy('feature_id');
     }
 
+    /**
+     * Product features with name and value
+     */
+    public function features()
+    {
+        return $this->belongsToMany(
+            ProductFeature::class,
+            ProductOption::class,
+            'product_id',
+            'feature_id'
+        )->orderBy('position');
+    }
 
 
     /**

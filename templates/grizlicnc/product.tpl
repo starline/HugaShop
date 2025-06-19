@@ -192,7 +192,7 @@
 								<span>{$f->name}</span>
 							</div>
 							<div class="value">
-								<span>{$f->value}</span>
+								<span>{$f->value->value}</span>
 							</div>
 						</li>
 					{/foreach}

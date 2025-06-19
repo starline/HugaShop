@@ -23,6 +23,12 @@ class ProductFeature extends BaseModel
     ];
 
 
+    public function value()
+    {
+        return $this->hasOne(ProductOption::class, 'feature_id');
+    }
+
+
     /**
      * Выбираем названия характеристик
      * @param array $filter
