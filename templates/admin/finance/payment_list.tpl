@@ -238,10 +238,6 @@
          chart: {
             type: 'bar',
             height: 350,
-            zoom: {
-               autoScaleYaxis: true,
-               enabled: true
-            },
             events: {
                mounted: hideOverlappingDataLabels,
                updated: hideOverlappingDataLabels
@@ -256,8 +252,7 @@
             }
          },
          title: {
-            text: 'Доходы и расходы',
-            align: 'left'
+            text: 'Доходы и расходы'
          }
       });
 

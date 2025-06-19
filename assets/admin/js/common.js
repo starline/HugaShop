@@ -163,7 +163,14 @@ export function createApexChart(element, options = {}) {
 					shortMonths: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек']
 				}
 			}],
-			defaultLocale: 'ru'
+			defaultLocale: 'ru',
+			zoom: {
+				autoScaleYaxis: true,
+				enabled: true
+			},
+			toolbar: {
+				show: false
+			}
 		},
 		tooltip: { x: { format: 'MMMM yyyy' } },
 		dataLabels: {
@@ -172,7 +179,8 @@ export function createApexChart(element, options = {}) {
 			style: {
 				colors: ['#000']
 			}
-		}
+		},
+		title: { align: 'left' }
 	};
 
 	const finalOptions = $.extend(true, {}, baseOptions, options);
@@ -213,26 +221,29 @@ export function getChartData(apex, filter, options) {
 
 // Hide overlapping ApexCharts data labels
 export function hideOverlappingDataLabels(chartContext) {
-	const labels = chartContext.el.querySelectorAll('.apexcharts-data-label');
-	const boxes = [];
+	const nodes = chartContext.el.querySelectorAll('.apexcharts-data-label');
+	const items = [];
 
-	labels.forEach((label) => {
+	nodes.forEach((label) => {
 		label.style.display = '';
+		items.push({ label, rect: label.getBoundingClientRect() });
 	});
 
-	labels.forEach((label) => {
-		const rect = label.getBoundingClientRect();
+	items.sort((a, b) => a.rect.top - b.rect.top);
+
+	const boxes = [];
+	items.forEach((item) => {
+		const rect = item.rect;
 		const overlap = boxes.some((box) => {
 			return !(rect.right < box.left || rect.left > box.right || rect.bottom < box.top || rect.top > box.bottom);
 		});
 		if (overlap) {
-			label.style.display = 'none';
+			item.label.style.display = 'none';
 		} else {
 			boxes.push(rect);
 		}
 	});
 }
-
 
 // RU -> EN
 export function translit(str) {
