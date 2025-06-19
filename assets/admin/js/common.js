@@ -152,7 +152,7 @@ export function ajax_icon(icon, entity, var_name, csrf) {
 
 
 // Get Chart data from Ajax
-export function getChartData(chart, filter, options) {
+export function getChartData(apex, filter, options) {
 	if (!options || !options.url) {
 		console.error('getChartData: options.url is required');
 		return;
@@ -164,28 +164,21 @@ export function getChartData(chart, filter, options) {
 		if (data && data[0] != null) {
 			let datas = [];
 			data.forEach((point) => {
+				let dt;
 				if (filter.filter == 'byMonth')
-					datas.push({ x: luxon.DateTime.local(point.year, point.month), y: parseInt(point.y) });
+					dt = luxon.DateTime.local(point.year, point.month);
 				else
-					datas.push({
-						x: luxon.DateTime.local(point.year, point.month, point.day),
-						y: parseInt(
-							point.y)
-					});
+					dt = luxon.DateTime.local(point.year, point.month, point.day);
+				datas.push([dt.toJSDate().getTime(), parseInt(point.y)]);
 			});
 
-			let dataset = {
-				label: options.label,
+			apex.series.push({
+				name: options.label,
 				data: datas,
-				borderColor: options.color,
-				backgroundColor: options.color,
-				borderWidth: 0,
-				fill: false,
-				tension: 0
-			};
+				color: options.color
+			});
 
-			chart.data.datasets.push(dataset);
-			chart.update();
+			apex.chart.updateSeries(apex.series);
 		}
 	});
 }

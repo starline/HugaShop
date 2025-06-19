@@ -182,12 +182,8 @@
 
 {block name=body_script append}
 
-   <script type="text/javascript" src="{'js/chart/chart.umd.js'|asset}"></script>
    <script type="text/javascript" src="{'js/chart/luxon.js'|asset}"></script>
-   <script type="text/javascript" src="{'js/chart/chartjs-adapter-luxon.js'|asset}"></script>
-   <script type="text/javascript" src="{'js/chart/chartjs-plugin-datalabels.js'|asset}"></script>
-   <script type="text/javascript" src="{'js/chart/hammerjs.js'|asset}"></script>
-   <script type="text/javascript" src="{'js/chart/chartjs-plugin-zoom.min.js'|asset}"></script>
+   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
    <script type="module">
       var csrf = "{setCSRF}";
@@ -234,92 +230,42 @@
 
 
       $('#chart_reset').click(function() {
-         myChart.resetZoom();
+         myChart.resetSeries();
       });
 
-      let myChart = new Chart(document.getElementById('financeByMonth'), {
-         type: 'bar',
-         options: {
-            locale: 'ru',
-            maintainAspectRatio: false,
-            plugins: {
-               datalabels: {
-                  color: 'black',
-                  formatter: function(value, context) {
-                     return value.y;
-                  },
-                  align: 'top',
-                  anchor: 'end',
-                  display: 'auto',
-                  font: {
-                     weight: 'bold'
-                  }
-               },
-               zoom: {
-                  pan: {
-                     enabled: true,
-                     mode: 'x',
-                     modifierKey: 'ctrl',
-                  },
-                  zoom: {
-                     drag: {
-                        enabled: true
-                     },
-                     mode: 'x',
-                  },
-               },
-               tooltip: {
-                  yAlign: 'bottom'
-               }
-            },
-            scales: {
-               x: {
-                  type: 'time',
-                  time: {
-                     unit: 'month',
-                     tooltipFormat: 'MMMM yyyy',
-                     displayFormats: {
-                        quarter: 'MMM yy',
-                     }
-                  }
-               },
-               y: {
-                  display: true,
-                  title: {
-                     display: true,
-                     text: php_currency_name
-                  }
-               }
-            }
-         },
-         plugins: [
-            ChartDataLabels
-         ]
+      let myChartData = { series: [] };
+      let myChart = new ApexCharts(document.getElementById('financeByMonth'), {
+         chart: { type: 'bar', height: 350, zoom: { enabled: true } },
+         xaxis: { type: 'datetime' },
+         dataLabels: { enabled: true },
+         tooltip: { x: { format: 'MMMM yyyy' } }
       });
+      myChart.render().then(function() {
+         myChartData.chart = myChart;
 
+         getChartData(myChartData, {
+            'filter': 'byMonth',
+            'type': 'plus',
+            'purse_id': purse_id,
+            'category_id': category_id,
+            'csrf': csrf
+         }, {
+            label: 'Сумма приходов, ' + php_currency_sign,
+            color: '#76c100',
+            url: '/admin/ajax/stats/finance'
+         });
 
-      getChartData(myChart, {
-         'filter': 'byMonth',
-         'type': 'plus',
-         'purse_id': purse_id,
-         'category_id': category_id,
-         'csrf': csrf
-      }, {
-         label: 'Сумма приходов, ' + php_currency_sign,
-         color: '#76c100',
-         url: '/admin/ajax/stats/finance'
-      });
-
-      getChartData(myChart, {
-         'filter': 'byMonth',
-         'type': 'minus',
-         'purse_id': purse_id,
-         'category_id': category_id,
-         'csrf': csrf
-      }, {
-         label: 'Сумма расходов, ' + php_currency_sign,
-         color: '#f8a13f',
-         url: '/admin/ajax/stats/finance'
+         getChartData(myChartData, {
+            'filter': 'byMonth',
+            'type': 'minus',
+            'purse_id': purse_id,
+            'category_id': category_id,
+            'csrf': csrf
+         }, {
+            label: 'Сумма расходов, ' + php_currency_sign,
+            color: '#f8a13f',
+            url: '/admin/ajax/stats/finance'
+         });
       });
    </script>
 {/block}
