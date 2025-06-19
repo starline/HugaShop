@@ -77,10 +77,9 @@
       var csrf = "{setCSRF}";
       let php_currency_name = '{$currency->name}';
       let php_currency_sign = '{$currency->sign}';
-
-      var date = new Date();
-      date.setMonth(date.getMonth() - 2); // 2 месяца
-      var date_format = date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear(); // 30.08.2020
+      
+      let now = luxon.DateTime.now();
+      var fromDate = now.minus({ months: 2 }).toISODate();
 
       {literal}
          $(function() {
@@ -96,19 +95,19 @@
             byDayChart.render().then(function() {
                byDay.chart = byDayChart;
 
-               getChartData(byDay, { filter: 'byDay', fromDate: date_format, csrf: csrf }, {
+               getChartData(byDay, { filter: 'byDay', fromDate: fromDate, csrf: csrf }, {
                   label: 'Сумма заказов, ' + php_currency_sign,
                   color: '#76c100',
                   type: 'totalPrice',
                   url: '/admin/ajax/stats/order'
                });
-               getChartData(byDay, { filter: 'byDay', fromDate: date_format, csrf: csrf }, {
+               getChartData(byDay, { filter: 'byDay', fromDate: fromDate, csrf: csrf }, {
                   label: 'Сумма прибыли, ' + php_currency_sign,
                   color: '#f8a13f',
                   type: 'profitPrice',
                   url: '/admin/ajax/stats/order'
                });
-               getChartData(byDay, { filter: 'byDay', fromDate: date_format, csrf: csrf }, {
+               getChartData(byDay, { filter: 'byDay', fromDate: fromDate, csrf: csrf }, {
                   label: 'Колл-во заказов, шт',
                   color: '#000000',
                   type: 'amount',

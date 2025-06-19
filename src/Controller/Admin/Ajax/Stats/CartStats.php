@@ -19,8 +19,9 @@ class CartStats extends BaseAdminController
 
         $from_date = Request::post('fromDate') ?: null;
         $to_date = Request::post('toDate') ?: null;
+        $type = Request::post('type') ?: null;
 
-        $result = Statistics::cartsByDay($from_date, $to_date);
+        $result = Statistics::cartsByDay($from_date, $to_date, $type);
 
         return new JsonResponse($result);
     }

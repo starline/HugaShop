@@ -420,13 +420,13 @@ class Statistics
     }
 
 
-   /**
+    /**
      * Возвращает историю корзин по дням
      *
      * @param string|null $from_date
      * @param string|null $to_date
      */
-    public static function cartsByDay(?string $from_date = null, ?string $to_date = null): array
+    public static function cartsByDay(?string $from_date = null, ?string $to_date = null, ?string $type = null): array
     {
         $query = Cart::query()->with('order');
 
@@ -465,6 +465,23 @@ class Statistics
         }
 
         ksort($grouped);
+
+        // If type is specified, convert to generic structure compatible with
+        // common.js::getChartData
+        if (in_array($type, ['carts', 'ordered', 'paid'], true)) {
+            $results = [];
+            foreach ($grouped as $date => $stats) {
+                $dt = new \DateTime($date);
+                $results[] = [
+                    'day'   => (int) $dt->format('d'),
+                    'month' => (int) $dt->format('m'),
+                    'year'  => (int) $dt->format('Y'),
+                    'y'     => (int) $stats[$type],
+                ];
+            }
+
+            return $results;
+        }
 
         return array_values($grouped);
     }

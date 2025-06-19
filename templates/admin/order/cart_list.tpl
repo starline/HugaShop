@@ -146,7 +146,7 @@
 	<script type="module">
 		var csrf = "{setCSRF}";
 
-		import { createApexChart, hideOverlappingDataLabels } from '{"js/common.js"|asset}';
+		import { createApexChart, hideOverlappingDataLabels, getChartData } from '{"js/common.js"|asset}';
 
 		let cartsData = { series: [] };
 		let cartsChart = createApexChart(document.getElementById('cartsHistory'), {
@@ -169,7 +169,7 @@
 		});
 
 		function loadCartStats(range = 'month') {
-			let params = { csrf: csrf },
+			let params = { csrf: csrf, filter: 'byDay' },
 				now = luxon.DateTime.now();
 
 			if (range === 'month') {
@@ -180,29 +180,27 @@
 
 			params.toDate = now.toISODate();
 
-			$.post('/admin/ajax/stats/cart', params, function(data) {
-				cartsData.series = [];
-				if (data && data.length > 0) {
-					let carts = [],
-						ordered = [],
-						paid = [];
-					data.forEach((p) => {
-						let dt = luxon.DateTime.fromISO(p.date);
-						carts.push([dt.toJSDate().getTime(), parseInt(p.carts)]);
-						ordered.push([dt.toJSDate().getTime(), parseInt(p.ordered)]);
-						paid.push([dt.toJSDate().getTime(), parseInt(p.paid)]);
-					});
+			cartsData.series = [];
+			cartsChart.updateSeries([]);
 
-					cartsData.series = [
-						{ name: 'Корзин', data: carts, color: '#76c100' },
-						{ name: 'Оформлено в заказ', data: ordered, color: '#f8a13f' },
-						{ name: 'Оплачено', data: paid, color: '#000000' }
-					];
-				}
-				cartsChart.updateSeries(cartsData.series);
-			});
+			const baseOpt = { url: '/admin/ajax/stats/cart' };
+			getChartData(cartsData, Object.assign({}, params), Object.assign({}, baseOpt, {
+				label: 'Корзин',
+				color: '#76c100',
+				type: 'carts'
+			}));
+			getChartData(cartsData, Object.assign({}, params), Object.assign({}, baseOpt, {
+				label: 'Оформлено в заказ',
+				color: '#f8a13f',
+				type: 'ordered'
+			}));
+			getChartData(cartsData, Object.assign({}, params), Object.assign({}, baseOpt, {
+				label: 'Оплачено',
+				color: '#000000',
+				type: 'paid'
+			}));
 		}
-
+		
 		$('#cart_chart_reset').click(function() {
 			cartsChart.resetSeries();
 		});
