@@ -228,7 +228,7 @@
       });
 
 
-
+      // Grafic
       $('#chart_reset').click(function() {
          myChart.resetSeries();
       });
@@ -237,19 +237,7 @@
       let myChart = createApexChart(document.getElementById('financeByMonth'), {
          chart: {
             type: 'bar',
-            height: 350,
-            events: {
-               mounted: hideOverlappingDataLabels,
-               updated: hideOverlappingDataLabels
-            }
-         },
-         xaxis: {
-            type: 'datetime'
-         },
-         plotOptions: {
-            bar: {
-               dataLabels: { position: 'top' }
-            }
+            height: 350
          },
          title: {
             text: 'Доходы и расходы'

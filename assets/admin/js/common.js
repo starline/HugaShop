@@ -170,6 +170,18 @@ export function createApexChart(element, options = {}) {
 			},
 			toolbar: {
 				show: false
+			},
+			events: {
+				mounted: hideOverlappingDataLabels,
+				updated: hideOverlappingDataLabels
+			}
+		},
+		xaxis: {
+			type: 'datetime'
+		},
+		plotOptions: {
+			bar: {
+				dataLabels: { position: 'top' }
 			}
 		},
 		tooltip: { x: { format: 'MMMM yyyy' } },
