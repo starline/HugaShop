@@ -158,9 +158,13 @@
 
 {block name=body_script append}
 
-	{include file='parts/charts_init.tpl'}
+	<script type="text/javascript" src="{'js/chart/luxon.js'|asset}"></script>
 
 	<script type="module">
+		import 'https://cdn.jsdelivr.net/npm/apexcharts';
+		import { createApexChart, getChartData } from '{"js/common.js"|asset}';
+
+
 		var csrf = "{setCSRF}";
 		const php_manager_id = '{$current_user->id}';
 		const php_currency_name = '{$currency->name}';
@@ -169,31 +173,55 @@
 		{literal}
 			$(function() {
 
-				// Выводим график
-				let my_options = {
-					title: {
-						text: 'Статистика продаж менеджера'
-					},
-					subtitle: {
-						text: 'Доход по месяцам'
-					},
-					yAxis: {
-						title: {
-							text: ''
-						}
-					}
-				}
+				let options = {
+					chart: { type: 'bar', height: 350 },
+					xaxis: { type: 'datetime' },
+					plotOptions: { bar: { dataLabels: { position: 'top' } } },
+					tooltip: { x: { format: 'MMMM yyyy' } },
+					title: { text: 'Статистика продаж менеджера' },
+					subtitle: { text: 'Доход по месяцам' },
+					yaxis: { title: { text: '' } }
+				};
 
-				showStatGraphic(
-					'product_stats', {
+				let chartData = { series: [] };
+				let chart = createApexChart(document.getElementById('product_stats'), options);
+
+				chart.render().then(function() {
+					chartData.chart = chart;
+
+					getChartData(chartData, {
 						manager_id: php_manager_id,
 						filter: 'byMonth',
-						'csrf': csrf
-					},
-					['totalPrice', 'amount', 'totalPayments'],
-					my_options,
-					php_currency_sign
-				);
+						csrf: csrf,
+						type: 'totalPrice'
+					}, {
+						label: 'Сумма дохода, ' + php_currency_sign,
+						color: '#76c100',
+						url: '/admin/ajax/stats/order'
+					});
+
+					getChartData(chartData, {
+						manager_id: php_manager_id,
+						filter: 'byMonth',
+						csrf: csrf,
+						type: 'amount'
+					}, {
+						label: 'Колл-во заказов, шт',
+						color: '#000000',
+						url: '/admin/ajax/stats/order'
+					});
+
+					getChartData(chartData, {
+						manager_id: php_manager_id,
+						filter: 'byMonth',
+						csrf: csrf,
+						type: 'totalPayments'
+					}, {
+						label: 'Сумма платежей, ' + php_currency_sign,
+						color: '#f8a13f',
+						url: '/admin/ajax/stats/order'
+					});
+				});
 
 			});
 		{/literal}

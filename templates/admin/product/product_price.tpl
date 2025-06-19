@@ -548,17 +548,76 @@
 				});
 
 
+
 				// Выводим график
-				showStatGraphic(
-					'product_stats', {
+				let statsData = { series: [] };
+				let statsChart = createApexChart(document.getElementById('product_stats'), {
+					chart: { type: 'bar', height: 350 },
+					xaxis: { type: 'datetime' },
+					plotOptions: { bar: { dataLabels: { position: 'top' } } },
+					tooltip: { x: { format: 'MMMM yyyy' } },
+					title: { text: 'Статистика продаж' }
+				});
+
+				statsChart.render().then(function() {
+					statsData.chart = statsChart;
+
+					getChartData(statsData, {
 						product_id: php_product_id,
 						filter: 'byMonth',
-						'csrf': csrf
-					},
-					['totalPrice', 'profitPrice', 'amount', 'add', 'delete'],
-					null,
-					php_currency_sign
-				);
+						csrf: csrf,
+						type: 'totalPrice'
+					}, {
+						label: 'Сумма заказов, ' + php_currency_sign,
+						color: '#76c100',
+						url: '/admin/ajax/stats/order'
+					});
+
+					getChartData(statsData, {
+						product_id: php_product_id,
+						filter: 'byMonth',
+						csrf: csrf,
+						type: 'profitPrice'
+					}, {
+						label: 'Сумма прибыли, ' + php_currency_sign,
+						color: '#f8a13f',
+						url: '/admin/ajax/stats/order'
+					});
+
+					getChartData(statsData, {
+						product_id: php_product_id,
+						filter: 'byMonth',
+						csrf: csrf,
+						type: 'amount'
+					}, {
+						label: 'Продано, шт',
+						color: '#000000',
+						url: '/admin/ajax/stats/order'
+					});
+
+					getChartData(statsData, {
+						product_id: php_product_id,
+						filter: 'byMonth',
+						csrf: csrf,
+						type: 'add'
+					}, {
+						label: 'Поставка, шт',
+						color: '#673ab7',
+						url: '/admin/ajax/stats/order'
+					});
+
+					getChartData(statsData, {
+						product_id: php_product_id,
+						filter: 'byMonth',
+						csrf: csrf,
+						type: 'delete'
+					}, {
+						label: 'Списано, шт',
+						color: '#f00',
+						url: '/admin/ajax/stats/order'
+					});
+				});
+
 
 				let priceChartData = { series: [] };
 				let priceChart = createApexChart(document.getElementById('productPriceHistory'), {
@@ -568,7 +627,6 @@
 					tooltip: { x: { format: 'dd LLL yyyy' } },
 					title: { text: 'История цен' }
 				});
-
 				priceChart.render().then(function() {
 					priceChartData.chart = priceChart;
 
@@ -599,11 +657,10 @@
 					priceChart.resetSeries();
 				});
 
+
 				$('#product_stats_reset').click(function() {
-					priceChart.resetSeries();
+					statsChart.resetSeries();
 				});
-
-
 			});
 		{/literal}
 	</script>

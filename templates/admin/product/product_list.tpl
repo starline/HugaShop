@@ -156,7 +156,7 @@
 				{if 'stats'|user_access AND $category->id}
 					<!-- Статистика продажи товара-->
 					<div class="product_stats">
-						<div id="product_stats"></div>
+						<div id="product_stats" style="height: 250px;"></div>
 					</div>
 				{/if}
 
@@ -354,15 +354,17 @@
 
 {block name=body_script append}
 
-	{include file='parts/charts_init.tpl'}
+	<script type="text/javascript" src="{'js/chart/luxon.js'|asset}"></script>
+	<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 	<script type="module">
+		import { ajax_icon, createApexChart, getChartData } from '{"js/common.js"|asset}';
+
 		var csrf = '{setCSRF}';
 		const php_category_id = '{$category->id}';
 		const php_currency_name = '{$currency->name}';
 		const php_currency_sign = '{$currency->sign}';
 
-		import { ajax_icon } from '{"js/common.js"|asset}';
 
 		{literal}
 			$(function() {
@@ -439,42 +441,107 @@
 					if (!$("div").is('#chart_' + id)) {
 						icon.addClass('loading_icon');
 						row.after("<div id='chart_" + id + "'></div>");
-						showStatGraphic(
-							'chart_' + id, {
+
+						let rowChartData = { series: [] };
+						let rowChart = createApexChart(document.getElementById('chart_' + id), {
+							chart: { type: 'bar', height: 350 },
+							xaxis: { type: 'datetime' },
+							plotOptions: { bar: { dataLabels: { position: 'top' } } },
+							tooltip: { x: { format: 'MMMM yyyy' } },
+							title: { text: 'Статистика продаж' }
+						});
+
+						rowChart.render().then(function() {
+							rowChartData.chart = rowChart;
+
+							getChartData(rowChartData, {
 								product_id: id,
 								filter: 'byMonth',
-								'csrf': csrf
-							},
-							['totalPrice', 'profitPrice', 'amount'],
-							null,
-							php_currency_sign,
-							function(data) {
+								csrf: csrf,
+								type: 'totalPrice'
+							}, {
+								label: 'Сумма заказов, ' + php_currency_sign,
+								color: '#76c100',
+								url: '/admin/ajax/stats/order'
+							});
 
-								// Устанавливаем высоту графика
-								if (data)
-									$("#chart_" + id).css("height", "200px");
-								icon.removeClass('loading_icon');
-							}
-						);
+							getChartData(rowChartData, {
+								product_id: id,
+								filter: 'byMonth',
+								csrf: csrf,
+								type: 'profitPrice'
+							}, {
+								label: 'Сумма прибыли, ' + php_currency_sign,
+								color: '#f8a13f',
+								url: '/admin/ajax/stats/order'
+							});
+
+							getChartData(rowChartData, {
+								product_id: id,
+								filter: 'byMonth',
+								csrf: csrf,
+								type: 'amount'
+							}, {
+								label: 'Продано, шт',
+								color: '#000000',
+								url: '/admin/ajax/stats/order'
+							});
+
+							$("#chart_" + id).css("height", "200px");
+							icon.removeClass('loading_icon');
+						});
 					} else {
 						$('#chart_' + id).remove();
 					}
 				});
 
-				showStatGraphic(
-					'product_stats', {
+				let listChartData = { series: [] };
+				let listChart = createApexChart(document.getElementById('product_stats'), {
+					chart: { type: 'bar', height: 350 },
+					xaxis: { type: 'datetime' },
+					plotOptions: { bar: { dataLabels: { position: 'top' } } },
+					tooltip: { x: { format: 'MMMM yyyy' } },
+					title: { text: 'Статистика продаж' }
+				});
+
+				listChart.render().then(function() {
+					listChartData.chart = listChart;
+
+					getChartData(listChartData, {
 						category_id: php_category_id,
 						filter: 'byMonth',
-						'csrf': csrf
-					},
-					['totalPrice', 'profitPrice', 'amount'],
-					null,
-					php_currency_sign,
-					function(data) {
-						if (data)
-							$("#product_stats").css("height", "250px");
-					}
-				);
+						csrf: csrf,
+						type: 'totalPrice'
+					}, {
+						label: 'Сумма заказов, ' + php_currency_sign,
+						color: '#76c100',
+						url: '/admin/ajax/stats/order'
+					});
+
+					getChartData(listChartData, {
+						category_id: php_category_id,
+						filter: 'byMonth',
+						csrf: csrf,
+						type: 'profitPrice'
+					}, {
+						label: 'Сумма прибыли, ' + php_currency_sign,
+						color: '#f8a13f',
+						url: '/admin/ajax/stats/order'
+					});
+
+					getChartData(listChartData, {
+						category_id: php_category_id,
+						filter: 'byMonth',
+						csrf: csrf,
+						type: 'amount'
+					}, {
+						label: 'Продано, шт',
+						color: '#000000',
+						url: '/admin/ajax/stats/order'
+					});
+
+					$("#product_stats").css("height", "250px");
+				});
 			});
 		{/literal}
 	</script>
