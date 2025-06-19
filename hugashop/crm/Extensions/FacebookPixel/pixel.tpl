@@ -55,7 +55,7 @@
                         currency: '{$FacebookPixel->currency_code}',
                         content_ids: [item.sku],
                         contents: [{
-                            'id': item.variant_sku,
+                            'id': item.sku,
                             'quantity': item.amount,
                             'item_price': item.price
                         }],

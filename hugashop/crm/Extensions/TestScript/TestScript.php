@@ -32,7 +32,6 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Mailer\Transport;
 use HugaShop\Api\Content\ContentComment;
 use HugaShop\Api\Product\ProductRelated;
-use HugaShop\Api\Product\ProductVariant;
 use HugaShop\Api\Product\ProductCategory;
 use Symfony\Component\Filesystem\Filesystem;
 use HugaShop\Api\Warehouse\WarehousePurchase;
@@ -43,6 +42,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 
 #[AsAlias(id: 'app.ext.test_script')]
@@ -324,11 +324,12 @@ class TestScript extends BaseExtension
                         /**
                          * Переход на версию V2
                          * 1. Исправляем типы комментарий 
-                         * 2. Переносим варианты в таблицу product
-                         * 3. Заменить варианты в Сущностях на product_id
+                         * 2. делаем дубликат таблицы s_product_variant в s_product_variant_temp
+                         * 3. Переносим варианты в таблицу product
                          * 
-                         * Удалить s_cart_purchase.variant_id
+                         * Удалить cart_purchase.variant_id
                          * Удалить order_purchase.variant_id
+                         * Удалить wh_move_purchase.variant_id
                          * 
                          */
                         if (1) {
@@ -359,7 +360,9 @@ class TestScript extends BaseExtension
 
                                 Product::chunk(100, function ($products) { #  обрабатывает по 100 записей за раз, чтобы не съесть всю память
                                     foreach ($products as $product) {
-                                        $variants = ProductVariant::where('product_id', $product->id)->get();
+                                        $variants = Capsule::table('s_product_variant_temp')
+                                            ->where('product_id', $product->id)
+                                            ->get();
 
                                         if ($variants->isEmpty()) {
                                             continue;

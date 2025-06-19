@@ -202,46 +202,41 @@ class BackupController extends BaseAdminController
     private function dumpTable($table, $h)
     {
 
-        $result = Capsule::select("SELECT * FROM `$table`");
+        $rows = Capsule::select("SELECT * FROM `$table`");
 
-        if ($result) {
+        if ($rows) {
             fwrite($h, "/* Data for table $table */\n");
             fwrite($h, "TRUNCATE TABLE `$table`;\n");
 
-            $num_rows = $result->num_rows;
-            $num_fields = $this->mysqli->field_count;
+            $num_rows = count($rows);
 
             if ($num_rows > 0) {
-                $field_type = array();
-                $field_name = array();
-                $meta = $result->fetch_fields();
-
+                $meta = Capsule::select("SHOW COLUMNS FROM `$table`");
+                $field_type = [];
+                $field_name = [];
                 foreach ($meta as $m) {
-                    array_push($field_type, $m->type);
-                    array_push($field_name, $m->name);
+                    $field_type[] = $m->Type;
+                    $field_name[] = $m->Field;
                 }
 
                 $fields = join('`, `', $field_name);
                 fwrite($h, "INSERT INTO `$table` (`$fields`) VALUES\n");
                 $index = 0;
 
-                while ($row = $result->fetch_row()) {
+                foreach ($rows as $row) {
                     fwrite($h, "(");
-                    for ($i = 0; $i < $num_fields; $i++) {
-                        if (is_null($row[$i])) {
+                    foreach ($field_name as $i => $name) {
+                        $value = $row->$name;
+                        if (is_null($value)) {
                             fwrite($h, "null");
                         } else {
-                            switch ($field_type[$i]) {
-                                case 'int':
-                                    fwrite($h, $row[$i]);
-                                    break;
-                                case 'string':
-                                case 'blob':
-                                default:
-                                    fwrite($h, "'" . $this->mysqli->real_escape_string($row[$i]) . "'");
+                            if (preg_match('/int|double|float|decimal|numeric/i', $field_type[$i])) {
+                                fwrite($h, $value);
+                            } else {
+                                fwrite($h, "'" . addslashes($value) . "'");
                             }
                         }
-                        if ($i < $num_fields - 1) {
+                        if ($i < count($field_name) - 1) {
                             fwrite($h, ",");
                         }
                     }
@@ -258,7 +253,6 @@ class BackupController extends BaseAdminController
                 }
             }
         }
-        $result->free();
         fwrite($h, "\n");
     }
 
@@ -287,7 +281,11 @@ class BackupController extends BaseAdminController
                     if (substr(trim($line), -1, 1) == ';') {
 
                         // Perform the query
-                        $this->mysqli->query($templine) or print('Error performing query \'<b>' . $templine . '</b>\': ' . $this->mysqli->error . '<br/><br/>');
+                        try {
+                            Capsule::unprepared($templine);
+                        } catch (\Throwable $e) {
+                            print('Error performing query <b>' . $templine . '</b>: ' . $e->getMessage() . '<br/><br/>');
+                        }
 
                         // Reset temp variable to empty
                         $templine = '';

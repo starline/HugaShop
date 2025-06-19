@@ -136,11 +136,6 @@
                     tolerance: "pointer"
                 });
 
-
-
-
-
-
             });
 
         {/literal}
