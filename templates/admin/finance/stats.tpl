@@ -77,18 +77,18 @@
       var csrf = "{setCSRF}";
       let php_currency_name = '{$currency->name}';
       let php_currency_sign = '{$currency->sign}';
-      
+
       let now = luxon.DateTime.now();
       var fromDate = now.minus({ months: 2 }).toISODate();
 
       {literal}
          $(function() {
+
+
             let byDay = { series: [] };
             let byDayChart = new ApexCharts(document.querySelector('#stats_byDay'), {
                series: [],
-               chart: { type: 'bar', height: 350, zoom: { enabled: true } },
-               xaxis: { type: 'datetime' },
-               dataLabels: { enabled: false },
+               chart: { type: 'bar', height: 350 },
                tooltip: { x: { format: 'dd LLL yyyy' } }
             });
 
@@ -115,13 +115,11 @@
                });
             });
 
+
             let byMonth = { series: [] };
             let byMonthChart = new ApexCharts(document.querySelector('#stats_byMonth'), {
                series: [],
-               chart: { type: 'bar', height: 350, zoom: { enabled: true } },
-               xaxis: { type: 'datetime' },
-               dataLabels: { enabled: false },
-               tooltip: { x: { format: 'MMMM yyyy' } }
+               chart: { type: 'bar', height: 350 }
             });
             byMonthChart.render().then(function() {
                byMonth.chart = byMonthChart;
