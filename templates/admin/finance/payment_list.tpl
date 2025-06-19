@@ -235,6 +235,7 @@
 
       let myChartData = { series: [] };
       let myChart = new ApexCharts(document.getElementById('financeByMonth'), {
+         series: [],
          chart: { type: 'bar', height: 350, zoom: { enabled: true } },
          xaxis: { type: 'datetime' },
          dataLabels: { enabled: true },
