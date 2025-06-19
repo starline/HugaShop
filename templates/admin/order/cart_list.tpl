@@ -25,11 +25,12 @@
 
 				<div class="grafic">
 					<div class="chart_actions btn_row">
-						<a class="btn btn-light" id="cart_chart_reset">Reset zoom</a>
-						<a class="btn btn-light" id="cart_chart_year">год</a>
+						<a class="btn btn-light" id="chart_year">год</a>
+						<a class="btn btn-light" id="chart_month">месяц</a>
+						<a class="btn btn-light" id="chart_reset">Reset zoom</a>
 					</div>
 					<div>
-						<div id="cartsHistory" style="height: 250px;"></div>
+						<div id="cartsHistory"></div>
 					</div>
 				</div>
 
@@ -149,16 +150,7 @@
 
 		let cartsData = makeChart(
 			document.getElementById('cartsHistory'), {
-				chart: {
-					type: 'bar',
-					height: 350,
-					events: {
-						mounted: hideOverlappingDataLabels,
-						updated: hideOverlappingDataLabels
-					}
-				},
-				xaxis: { type: 'datetime' },
-				plotOptions: { bar: { dataLabels: { position: 'top' } } },
+				chart: { type: 'bar', height: 250 },
 				tooltip: { x: { format: 'dd LLL yyyy' } },
 				title: { text: 'Корзины по дням' }
 			},
@@ -192,16 +184,16 @@
 			}]
 		);
 
-		cartsData.ready.then(function() {
-			cartsData.load({ range: 'month' });
-		});
-
-		$('#cart_chart_reset').click(function() {
+		$('#chart_reset').click(function() {
 			if (cartsData.chart) cartsData.chart.resetSeries();
 		});
 
-		$('#cart_chart_year').click(function() {
+		$('#chart_year').click(function() {
 			cartsData.load({ range: 'year' });
+		});
+
+		$('#chart_month').click(function() {
+			cartsData.load({ range: 'month' });
 		});
 	</script>
 {/block}

@@ -236,6 +236,7 @@ export function getChartData(apex, filter, options) {
 		console.error('getChartData: options.url is required');
 		return;
 	}
+	options.range = filter.range ?? options.range;
 	if (options.range) {
 		const now = luxon.DateTime.now();
 		if (options.range === 'month') {
@@ -244,6 +245,7 @@ export function getChartData(apex, filter, options) {
 			filter.fromDate = now.minus({ years: 1 }).toISODate();
 		}
 		filter.toDate = now.toISODate();
+		delete filter.range;
 	}
 	if (options.type) {
 		filter.type = options.type;
