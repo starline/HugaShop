@@ -252,19 +252,12 @@
          },
          plotOptions: {
             bar: {
-               dataLabels: { position: 'top', hideOverflowingLabels: true }
+               dataLabels: { position: 'top' }
             }
          },
          title: {
             text: 'Доходы и расходы',
             align: 'left'
-         },
-         dataLabels: {
-            enabled: true,
-            offsetY: -25,
-            style: {
-               colors: ['#000']
-            }
          }
       });
 

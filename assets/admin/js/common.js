@@ -165,7 +165,14 @@ export function createApexChart(element, options = {}) {
 			}],
 			defaultLocale: 'ru'
 		},
-		tooltip: { x: { format: 'MMMM yyyy' } }
+		tooltip: { x: { format: 'MMMM yyyy' } },
+		dataLabels: {
+			enabled: true,
+			offsetY: -25,
+			style: {
+				colors: ['#000']
+			}
+		}
 	};
 
 	const finalOptions = $.extend(true, {}, baseOptions, options);
