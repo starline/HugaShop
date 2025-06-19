@@ -29,7 +29,7 @@
 						<a class="btn btn-light" id="cart_chart_year">год</a>
 					</div>
 					<div>
-						<canvas id="cartsHistory" height="250" role="img"></canvas>
+						<div id="cartsHistory" style="height: 250px;"></div>
 					</div>
 				</div>
 
@@ -139,42 +139,24 @@
 
 
 {block name=body_script append}
-	<script type="text/javascript" src="{'js/chart/chart.umd.js'|asset}"></script>
+
 	<script type="text/javascript" src="{'js/chart/luxon.js'|asset}"></script>
-	<script type="text/javascript" src="{'js/chart/chartjs-adapter-luxon.js'|asset}"></script>
-	<script type="text/javascript" src="{'js/chart/chartjs-plugin-datalabels.js'|asset}"></script>
-	<script type="text/javascript" src="{'js/chart/hammerjs.js'|asset}"></script>
-	<script type="text/javascript" src="{'js/chart/chartjs-plugin-zoom.min.js'|asset}"></script>
+	<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 	<script type="module">
 		var csrf = "{setCSRF}";
 
-		let cartsChart = new Chart(document.getElementById('cartsHistory'), {
-			type: 'line',
-			options: {
-				locale: 'ru',
-				maintainAspectRatio: false,
-				plugins: {
-					datalabels: {
-						color: 'black',
-						formatter: function(value) { return value.y; },
-						align: 'top',
-						anchor: 'end',
-						display: 'auto',
-						font: { weight: 'bold' }
-					},
-					zoom: {
-						pan: { enabled: true, mode: 'x', modifierKey: 'ctrl' },
-						zoom: { drag: { enabled: true }, mode: 'x' }
-					},
-					tooltip: { yAlign: 'bottom' }
-				},
-				scales: {
-					x: { type: 'time', time: { unit: 'day', tooltipFormat: 'dd LLL yyyy' } },
-					y: { display: true, title: { display: true, text: 'шт' } }
-				}
-			},
-			plugins: [ChartDataLabels]
+		let cartsData = { series: [] };
+		let cartsChart = new ApexCharts(document.getElementById('cartsHistory'), {
+			series: [],
+			chart: { type: 'bar', height: 350, zoom: { enabled: true } },
+			xaxis: { type: 'datetime' },
+			dataLabels: { enabled: true },
+			tooltip: { x: { format: 'dd LLL yyyy' } }
+		});
+		cartsChart.render().then(function() {
+			cartsData.chart = cartsChart;
+			loadCartStats('month');
 		});
 
 		function loadCartStats(range = 'month') {
@@ -183,61 +165,37 @@
 
 			if (range === 'month') {
 				params.fromDate = now.minus({ months: 1 }).toISODate();
-				cartsChart.options.scales.x.time.unit = 'day';
 			} else if (range === 'year') {
 				params.fromDate = now.minus({ years: 1 }).toISODate();
-				cartsChart.options.scales.x.time.unit = 'month';
 			}
 
 			params.toDate = now.toISODate();
 
 			$.post('/admin/ajax/stats/cart', params, function(data) {
-				cartsChart.data.datasets = [];
+				cartsData.series = [];
 				if (data && data.length > 0) {
 					let carts = [],
 						ordered = [],
 						paid = [];
 					data.forEach((p) => {
 						let dt = luxon.DateTime.fromISO(p.date);
-						carts.push({ x: dt, y: parseInt(p.carts) });
-						ordered.push({ x: dt, y: parseInt(p.ordered) });
-						paid.push({ x: dt, y: parseInt(p.paid) });
+						carts.push([dt.toJSDate().getTime(), parseInt(p.carts)]);
+						ordered.push([dt.toJSDate().getTime(), parseInt(p.ordered)]);
+						paid.push([dt.toJSDate().getTime(), parseInt(p.paid)]);
 					});
 
-					cartsChart.data.datasets.push({
-						label: 'Корзин',
-						data: carts,
-						borderColor: '#76c100',
-						backgroundColor: '#76c100',
-						fill: false,
-						tension: 0
-					});
-					cartsChart.data.datasets.push({
-						label: 'Оформлено в заказ',
-						data: ordered,
-						borderColor: '#f8a13f',
-						backgroundColor: '#f8a13f',
-						fill: false,
-						tension: 0
-					});
-					cartsChart.data.datasets.push({
-						label: 'Оплачено',
-						data: paid,
-						borderColor: '#000000',
-						backgroundColor: '#000000',
-						fill: false,
-						tension: 0
-					});
-
-					cartsChart.update();
+					cartsData.series = [
+						{ name: 'Корзин', data: carts, color: '#76c100' },
+						{ name: 'Оформлено в заказ', data: ordered, color: '#f8a13f' },
+						{ name: 'Оплачено', data: paid, color: '#000000' }
+					];
 				}
+				cartsChart.updateSeries(cartsData.series);
 			});
 		}
 
-		loadCartStats('month');
-
 		$('#cart_chart_reset').click(function() {
-			cartsChart.resetZoom();
+			cartsChart.resetSeries();
 		});
 
 		$('#cart_chart_year').click(function() {
