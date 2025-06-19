@@ -175,16 +175,7 @@
 		);
 
 		function loadCartStats(range = 'month') {
-			let params = { csrf: csrf, filter: 'byDay' },
-				now = luxon.DateTime.now();
-
-			if (range === 'month') {
-				params.fromDate = now.minus({ months: 1 }).toISODate();
-			} else if (range === 'year') {
-				params.fromDate = now.minus({ years: 1 }).toISODate();
-			}
-
-			params.toDate = now.toISODate();
+			let params = { csrf: csrf, filter: 'byDay' };
 
 			cartsData.series = [];
 			cartsChart.updateSeries([]);
@@ -193,17 +184,20 @@
 			getChartData(cartsData, Object.assign({}, params), Object.assign({}, baseOpt, {
 				label: 'Корзин',
 				color: '#76c100',
-				type: 'carts'
+				type: 'carts',
+				range: range
 			}));
 			getChartData(cartsData, Object.assign({}, params), Object.assign({}, baseOpt, {
 				label: 'Оформлено в заказ',
 				color: '#f8a13f',
-				type: 'ordered'
+				type: 'ordered',
+				range: range
 			}));
 			getChartData(cartsData, Object.assign({}, params), Object.assign({}, baseOpt, {
 				label: 'Оплачено',
 				color: '#000000',
-				type: 'paid'
+				type: 'paid',
+				range: range
 			}));
 		}
 

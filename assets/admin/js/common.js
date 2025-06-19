@@ -223,6 +223,15 @@ export function getChartData(apex, filter, options) {
 		console.error('getChartData: options.url is required');
 		return;
 	}
+	if (options.range) {
+		const now = luxon.DateTime.now();
+		if (options.range === 'month') {
+			filter.fromDate = now.minus({ months: 1 }).toISODate();
+		} else if (options.range === 'year') {
+			filter.fromDate = now.minus({ years: 1 }).toISODate();
+		}
+		filter.toDate = now.toISODate();
+	}
 	if (options.type) {
 		filter.type = options.type;
 	}
