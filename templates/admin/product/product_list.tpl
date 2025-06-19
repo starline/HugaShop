@@ -445,9 +445,6 @@
 						let rowChartData = { series: [] };
 						let rowChart = createApexChart(document.getElementById('chart_' + id), {
 							chart: { type: 'bar', height: 350 },
-							xaxis: { type: 'datetime' },
-							plotOptions: { bar: { dataLabels: { position: 'top' } } },
-							tooltip: { x: { format: 'MMMM yyyy' } },
 							title: { text: 'Статистика продаж' }
 						});
 
@@ -498,9 +495,6 @@
 				let listChartData = { series: [] };
 				let listChart = createApexChart(document.getElementById('product_stats'), {
 					chart: { type: 'bar', height: 350 },
-					xaxis: { type: 'datetime' },
-					plotOptions: { bar: { dataLabels: { position: 'top' } } },
-					tooltip: { x: { format: 'MMMM yyyy' } },
 					title: { text: 'Статистика продаж' }
 				});
 

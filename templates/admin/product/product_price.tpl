@@ -384,7 +384,7 @@
 
 	<script type="module">
 		import '{"js/jquery/datepicker/jquery.ui.datepicker-ru.js"|asset}';
-		import { ajax_icon, getChartData, createApexChart, hideOverlappingDataLabels } from '{"js/common.js"|asset}';
+		import { ajax_icon, makeChart } from '{"js/common.js"|asset}';
 
 		var csrf = "{setCSRF}";
 		let php_product_id = '{$product->id}';
@@ -550,113 +550,121 @@
 
 
 				// Выводим график
-				let statsData = { series: [] };
-				let statsChart = createApexChart(document.getElementById('product_stats'), {
-					chart: { type: 'bar', height: 350 },
-					xaxis: { type: 'datetime' },
-					plotOptions: { bar: { dataLabels: { position: 'top' } } },
-					tooltip: { x: { format: 'MMMM yyyy' } },
-					title: { text: 'Статистика продаж' }
-				});
+				let statsChart;
+				makeChart(
+					document.getElementById('product_stats'), {
+						chart: { type: 'bar', height: 350 },
+						title: { text: 'Статистика продаж' }
+					},
+					[{
+							filter: {
+								product_id: php_product_id,
+								filter: 'byMonth',
+								csrf: csrf
+							},
+							options: {
+								label: 'Сумма заказов, ' + php_currency_sign,
+								color: '#76c100',
+								type: 'totalPrice',
+								url: '/admin/ajax/stats/order'
+							}
+						},
+						{
+							filter: {
+								product_id: php_product_id,
+								filter: 'byMonth',
+								csrf: csrf
+							},
+							options: {
+								label: 'Сумма прибыли, ' + php_currency_sign,
+								color: '#f8a13f',
+								type: 'profitPrice',
+								url: '/admin/ajax/stats/order'
+							}
+						},
+						{
+							filter: {
+								product_id: php_product_id,
+								filter: 'byMonth',
+								csrf: csrf
+							},
+							options: {
+								label: 'Продано, шт',
+								color: '#000000',
+								type: 'amount',
+								url: '/admin/ajax/stats/order'
+							}
+						},
+						{
+							filter: {
+								product_id: php_product_id,
+								filter: 'byMonth',
+								csrf: csrf
+							},
+							options: {
+								label: 'Поставка, шт',
+								color: '#673ab7',
+								type: 'add',
+								url: '/admin/ajax/stats/order'
+							}
+						},
+						{
+							filter: {
+								product_id: php_product_id,
+								filter: 'byMonth',
+								csrf: csrf
+							},
+							options: {
+								label: 'Списано, шт',
+								color: '#f00',
+								type: 'delete',
+								url: '/admin/ajax/stats/order'
+							}
+						}
+					],
+					function(cd) { statsChart = cd.chart; }
+				);
 
-				statsChart.render().then(function() {
-					statsData.chart = statsChart;
-
-					getChartData(statsData, {
-						product_id: php_product_id,
-						filter: 'byMonth',
-						csrf: csrf,
-						type: 'totalPrice'
-					}, {
-						label: 'Сумма заказов, ' + php_currency_sign,
-						color: '#76c100',
-						url: '/admin/ajax/stats/order'
-					});
-
-					getChartData(statsData, {
-						product_id: php_product_id,
-						filter: 'byMonth',
-						csrf: csrf,
-						type: 'profitPrice'
-					}, {
-						label: 'Сумма прибыли, ' + php_currency_sign,
-						color: '#f8a13f',
-						url: '/admin/ajax/stats/order'
-					});
-
-					getChartData(statsData, {
-						product_id: php_product_id,
-						filter: 'byMonth',
-						csrf: csrf,
-						type: 'amount'
-					}, {
-						label: 'Продано, шт',
-						color: '#000000',
-						url: '/admin/ajax/stats/order'
-					});
-
-					getChartData(statsData, {
-						product_id: php_product_id,
-						filter: 'byMonth',
-						csrf: csrf,
-						type: 'add'
-					}, {
-						label: 'Поставка, шт',
-						color: '#673ab7',
-						url: '/admin/ajax/stats/order'
-					});
-
-					getChartData(statsData, {
-						product_id: php_product_id,
-						filter: 'byMonth',
-						csrf: csrf,
-						type: 'delete'
-					}, {
-						label: 'Списано, шт',
-						color: '#f00',
-						url: '/admin/ajax/stats/order'
-					});
-				});
-
-
-				let priceChartData = { series: [] };
-				let priceChart = createApexChart(document.getElementById('productPriceHistory'), {
-					chart: { type: 'line', height: 350, zoom: { enabled: true } },
-					xaxis: { type: 'datetime' },
-					dataLabels: { enabled: false },
-					tooltip: { x: { format: 'dd LLL yyyy' } },
-					title: { text: 'История цен' }
-				});
-				priceChart.render().then(function() {
-					priceChartData.chart = priceChart;
-
-					getChartData(priceChartData, {
-						filter: 'byDay',
-						product_id: php_product_id,
-						csrf: csrf
-					}, {
-						label: 'Цена, ' + php_currency_sign,
-						color: '#76c100',
-						type: 'price',
-						url: '/admin/ajax/stats/product-price'
-					});
-
-					getChartData(priceChartData, {
-						filter: 'byDay',
-						product_id: php_product_id,
-						csrf: csrf
-					}, {
-						label: 'Оптовая цена, ' + php_currency_sign,
-						color: '#f8a13f',
-						type: 'costPrice',
-						url: '/admin/ajax/stats/product-price'
-					});
-				});
+				let priceChart;
+				makeChart(
+					document.getElementById('productPriceHistory'), {
+						chart: { type: 'line', height: 350, zoom: { enabled: true } },
+						tooltip: { x: { format: 'dd LLL yyyy' } },
+						title: { text: 'История цен' }
+					},
+					[{
+							filter: {
+								filter: 'byDay',
+								product_id: php_product_id,
+								csrf: csrf
+							},
+							options: {
+								label: 'Цена, ' + php_currency_sign,
+								color: '#76c100',
+								type: 'price',
+								url: '/admin/ajax/stats/product-price'
+							}
+						},
+						{
+							filter: {
+								filter: 'byDay',
+								product_id: php_product_id,
+								csrf: csrf
+							},
+							options: {
+								label: 'Оптовая цена, ' + php_currency_sign,
+								color: '#f8a13f',
+								type: 'costPrice',
+								url: '/admin/ajax/stats/product-price'
+							}
+						}
+					],
+					function(cd) { priceChart = cd.chart; }
+				);
 
 				$('#productPriceHistory_reset').click(function() {
 					priceChart.resetSeries();
 				});
-
 
 				$('#product_stats_reset').click(function() {
 					statsChart.resetSeries();
