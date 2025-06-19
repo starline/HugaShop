@@ -31,11 +31,11 @@
         {* Product *}
         {if $route == 'Product'}
             fbq('track', 'ViewContent', {
-                value: {$product->variant->price},
+                value: {$product->price},
                 currency: '{$FacebookPixel->currency_code}',
-                content_ids: ['{$product->variant->sku}'],
+                content_ids: ['{$product->sku}'],
                 content_type: 'product',
-                content_category: '{$product->category->name}',
+                content_category: '{$category->name}',
                 content_name: '{$product->name}',
             });
         {/if}
@@ -46,14 +46,14 @@
 
             // $(document).trigger('addToCardEvent', item);
             $(document).on('addToCardEvent', function(e, item) {
-                if (!item.price || !item.amount || !item.variant_sku) {
+                if (!item.price || !item.amount || !item.sku) {
                     return;
                 }
                 try {
                     fbq('track', 'AddToCart', {
                         value: item.price * item.amount,
                         currency: '{$FacebookPixel->currency_code}',
-                        content_ids: [item.variant_sku],
+                        content_ids: [item.sku],
                         contents: [{
                             'id': item.variant_sku,
                             'quantity': item.amount,
@@ -76,7 +76,7 @@
                 currency: '{$FacebookPixel->currency_code}',
                 content_ids: [
                     {foreach $purchases as $purchase}
-                        '{$purchase->variant->sku}'{if !$purchase@last},{/if}
+                        '{$purchase->sku}'{if !$purchase@last},{/if}
                     {/foreach}
                 ],
                 content_type: 'product'
@@ -92,16 +92,16 @@
                 currency: '{$FacebookPixel->currency_code}',
                 content_ids: [
                     {foreach $purchases as $purchase}
-                        '{$purchase->variant->sku}'
+                        '{$purchase->sku}'
                         {if !$purchase@last},{/if}
                     {/foreach}
                 ],
                 contents: [
                     {foreach $purchases as $purchase}
                         {
-                            'id':  '{$purchase->variant->sku}',
+                            'id':  '{$purchase->sku}',
                             'quantity':  {$purchase->amount},
-                            'item_price': {$purchase->variant->price}
+                            'item_price': {$purchase->price}
                         }
                         {if !$purchase@last},{/if}
                     {/foreach}

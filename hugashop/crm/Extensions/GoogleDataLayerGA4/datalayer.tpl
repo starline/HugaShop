@@ -31,14 +31,14 @@
                 'event': 'view_item',
                 'ecommerce': {
                     'currency': '{$GoogleDataLayerGA4->currency_code}',  
-                    'value': {$product->variant->price},
+                    'value': {$product->price},
                     'items': [{
-                        'item_id': '{$product->variant->sku}',
+                        'item_id': '{$product->sku}',
                         'item_name': '{$product->name}',
-                        {if !$product->variant->name|empty}
-                            'variant': '{$product->variant->name}',
+                        {if !$product->variant_name|empty}
+                            'variant': '{$product->variant_name}',
                         {/if}
-                        'price': {$product->variant->price},
+                        'price': {$product->price},
                         'quantity': 1,
                         {if !$product->brand->name|empty}
                             'item_brand': '{$product->brand->name}',
@@ -74,12 +74,12 @@
                     'items': [
                         {foreach $products as $p}
                             {
-                                'item_id': '{$p->variant->sku}',
+                                'item_id': '{$p->sku}',
                                 'item_name': '{$p->name}',
-                                {if $p->variant->name}
-                                    'item_variant': '{$p->variant->name}',
+                                {if $p->variant_name}
+                                    'item_variant': '{$p->variant_name}',
                                 {/if}
-                                'price': {$p->variant->price},
+                                'price': {$p->price},
                                 {if !$p->brand->name|empty}
                                     'item_brand': '{$p->brand->name}',
                                 {/if}
@@ -101,7 +101,7 @@
 
         // $(document).trigger('addToCardEvent', item);
         $(document).on('addToCardEvent', function(e, item) {
-            if (!item.price || !item.amount || !item.variant_sku) {
+            if (!item.price || !item.amount || !item.sku) {
                 return;
             }
 
@@ -121,8 +121,8 @@
                         'item_list_id': item.list_id || cookie_item.list_id || null,
                         'item_list_name': item.list_name || cookie_item.list_name || null,
                         'items': [{
-                            'item_id': item.variant_sku,
-                            'item_name': item.product_name,
+                            'item_id': item.sku,
+                            'item_name': item.name,
                             'item_variant': item.variant_name,
                             'price': item.price,
                             'quantity': item.amount,
@@ -143,7 +143,7 @@
 
         // $(document).trigger('selectItemEvent', item);
         $(document).on('selectItemEvent', function(e, item) {
-            if (!item.variant_sku || !item.list_id || !item.list_name) {
+            if (!item.sku || !item.list_id || !item.list_name) {
                 return;
             }
 
@@ -157,8 +157,8 @@
                         'item_list_id': item.list_id,
                         'item_list_name': item.list_name,
                         'items': [{
-                            'item_id': item.variant_sku,
-                            'item_name': item.product_name,
+                            'item_id': item.sku,
+                            'item_name': item.name,
                             'google_business_vertical': 'retail'
                         }]
                     }
@@ -181,14 +181,14 @@
                     'items': [
                         {foreach $purchases as $purch}
                             {
-                                'item_id': '{$purch->variant->sku}',
+                                'item_id': '{$purch->product->sku}',
                                 'item_name': '{$purch->product->name}',
-                                {if !$purch->variant->name|empty}
-                                    'item_variant': '{$purch->variant->name}',
+                                {if !$purch->product->variant_name|empty}
+                                    'item_variant': '{$purch->product->variant_name}',
                                 {/if}
-                                'price': {$purch->variant->price},
+                                'price': {$purch->product->price},
                                 'quantity': {$purch->amount},
-                                {foreach $purch->category->path as $path}
+                                {foreach $purch->product->category->path as $path}
                                     {if $path@index == 0}
                                         {$cat_index = ''}
                                     {else}
@@ -233,14 +233,14 @@
                     'items': [
                         {foreach $purchases as $purch}
                             {
-                                'item_id': '{$purch->variant->sku}',
+                                'item_id': '{$purch->product->sku}',
                                 'item_name': '{$purch->product->name}',
-                                {if !$purch->variant->name|empty}
-                                    'item_variant': '{$purch->variant->name}',
+                                {if !$purch->product->variant_name|empty}
+                                    'item_variant': '{$purch->product->variant_name}',
                                 {/if}
-                                'price': {$purch->variant->price},
+                                'price': {$purch->product->price},
                                 'quantity': {$purch->amount},
-                                {foreach $purch->category->path as $path}
+                                {foreach $purch->product->category->path as $path}
                                     {if $path@index == 0}
                                         {$cat_index = ''}
                                     {else}
@@ -284,10 +284,10 @@
                     'items': [
                         {foreach $purchases as $purch}
                             {
-                                'item_id': '{$purch->variant->sku}',
-                                'item_name': '{$purch->product->name}',
-                                {if !$purch->variant->name|empty}
-                                    'item_variant': '{$purch->variant->name}',
+                                'item_id': '{$purch->sku}',
+                                'item_name': '{$purch->product_name}',
+                                {if !$purch->variant_name|empty}
+                                    'item_variant': '{$purch->variant_name}',
                                 {/if}
                                 'price': {$purch->price},
                                 'quantity': {$purch->amount},

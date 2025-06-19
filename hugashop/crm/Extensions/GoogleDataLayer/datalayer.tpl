@@ -103,8 +103,8 @@
                                 'variant': '{$purch->product->variant_name}',
                                 'price': '{$purch->price}',
                                 'quantity': {$purch->amount},
-                                'category': '{$purch->category->name}',
-                                'list': '{$purch->category->path[0]->name}',
+                                'category': '{$purch->product->category->name}',
+                                'list': '{$purch->product->category->path[0]->name}',
                                 'position': {$purch@index}
                             }
                             {if !$purch@last},{/if}
@@ -147,12 +147,12 @@
                     'products': [
                         {foreach $purchases as $p}
                             {
-                                'id': '{$p->product->sku}',
-                                'name': '{$p->product->name}',
-                                'variant': '{$p->product->variant_name}',
+                                'id': '{$p->sku}',
+                                'name': '{$p->product_name}',
+                                'variant': '{$p->variant_name}',
                                 'price': {$p->price},
                                 'quantity': {$p->amount},
-                                'category': '{$p->category->name}',
+                                'category': '{$p->product->category->name}',
                                 'position': {$p@index}
                             }
                             {if !$p@last},{/if}

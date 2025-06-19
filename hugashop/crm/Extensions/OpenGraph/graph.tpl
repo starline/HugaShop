@@ -22,25 +22,25 @@
 
     <meta property="product:category" content="{$product->category->name}">
     <meta property="product:availability"
-        content="{if $product->variant->stock > 0 || $product->variant->stock|is_null}in stock{else}out of stock{/if}">
+        content="{if $product->stock > 0 || $product->stock|is_null}in stock{else}out of stock{/if}">
 
-    {if $product->variant->price|isset}
-        {if $product->variant->price < $product->variant->old_price}
-            <meta property="product:sale_price:amount" content="{$product->variant->price}" />
+    {if $product->price|isset}
+        {if $product->price < $product->old_price}
+            <meta property="product:sale_price:amount" content="{$product->price}" />
             <meta property="product:sale_price:currency" content="{$currency->code}" />
             <meta property="product:sale_price_dates:start" content="{'now'|date:'Y-m-d'}T0:00{$timezone_offset}:00" />
             <meta property="product:sale_price_dates:end" content="{'+2 days'|date:'Y-m-d'}T0:00{$timezone_offset}:00" />
 
-            <meta property="product:price:amount" content="{$product->variant->old_price}" />
+            <meta property="product:price:amount" content="{$product->old_price}" />
             <meta property="product:price:currency" content="{$currency->code}" />
         {else}
-            <meta property="product:price:amount" content="{$product->variant->price}" />
+            <meta property="product:price:amount" content="{$product->price}" />
             <meta property="product:price:currency" content="{$currency->code}" />
         {/if}
     {/if}
 
-    {if $product->variant->pretax_price|isset}
-        <meta property="product:pretax_price:amount" content="{$product->variant->pretax_price}" />
+    {if $product->pretax_price|isset}
+        <meta property="product:pretax_price:amount" content="{$product->pretax_price}" />
         <meta property="product:pretax_price:currency" content="{$currency->code}" />
     {/if}
 

@@ -34,8 +34,8 @@
                     "{$image->filename|resize:1080:1080:w}"{if !$image@last},{/if}
                 {/foreach}
             ],
-            "description": "Цена: {$product->variant->price} {$currency->sign}. {$product->annotation|strip_tags}",
-            "sku": "{$product->variant->sku}",
+            "description": "Цена: {$product->price} {$currency->sign}. {$product->annotation|strip_tags}",
+            "sku": "{$product->sku}",
             "brand": {
                 "@type": "Brand",
                 "name":"{$settings->domain}"
@@ -49,10 +49,10 @@
                 "@type": "Offer",
                 "url": "{$config->root_url}/tovar-{$product->url}",
                 "priceCurrency": "{$currency->code}",
-                "price": "{$product->variant->price}",
+                "price": "{$product->price}",
                 "priceValidUntil": "{'+30 days'|date:'Y-m-d'}",
                 "itemCondition": "https://schema.org/NewCondition",
-                "availability": {if $product->variant->stock > 0 || $product->variant->stock|is_null}"https://schema.org/InStock"{else}"https://schema.org/OutOfStock"{/if},
+                "availability": {if $product->stock > 0 || $product->stock|is_null}"https://schema.org/InStock"{else}"https://schema.org/OutOfStock"{/if},
                 "seller": {
                     "@type": "Organization",
                     "name": "{$settings->company_name}"
