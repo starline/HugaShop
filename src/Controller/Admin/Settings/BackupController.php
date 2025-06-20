@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.7
+ * @version 3.8
  *
  * BackupAdmin
  *
@@ -36,8 +36,8 @@ class BackupController extends BaseAdminController
 
         set_time_limit(600);
 
-        $backup_dir = Config::get('root_dir') . 'public/files/backup/';
-        $archive_dir = Config::get('root_dir') . 'public/files/';
+        $backup_dir     = Config::get('root_dir') . 'public/files/backup/';
+        $archive_dir    = Config::get('root_dir') . 'public/files/';
 
         define('PCLZIP_TEMPORARY_DIR', $backup_dir);
 
@@ -233,7 +233,7 @@ class BackupController extends BaseAdminController
                             if (preg_match('/int|double|float|decimal|numeric/i', $field_type[$i])) {
                                 fwrite($h, $value);
                             } else {
-                                fwrite($h, "'" . addslashes($value) . "'");
+                                fwrite($h, Capsule::getPdo()->quote($value));
                             }
                         }
                         if ($i < count($field_name) - 1) {

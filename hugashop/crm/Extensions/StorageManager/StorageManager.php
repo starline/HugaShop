@@ -93,10 +93,12 @@ final class StorageManager extends BaseExtension
             $cur_dir->files = 0;
             $cur_dir->clear = $dir_params['clear'];
 
-            $files = (new Finder())->files()->in($dir_params['path']);
-            foreach ($files as $file) {
-                $cur_dir->size += filesize($file->getRealPath()); # Размер указанного файла в байтах
-                $cur_dir->files++;
+            if (is_dir($dir_params['path'])) {
+                $files = (new Finder())->files()->in($dir_params['path']);
+                foreach ($files as $file) {
+                    $cur_dir->size += filesize($file->getRealPath());
+                    $cur_dir->files++;
+                }
             }
 
             $storages[$dir_name] = $cur_dir;
