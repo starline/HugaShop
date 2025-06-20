@@ -259,6 +259,12 @@
 											</li>
 										{/if}
 
+										{if 'settings'|user_access}
+											<li class="mini {if $route == 'LanguageListAdmin'}active{/if}">
+												<a href="{'LanguageListAdmin'|urll}">Языки</a>
+											</li>
+										{/if}
+
 										{if 'backup'|user_access}
 											<li class="{if $route == 'BackupAdmin'}active{/if}">
 												<a href="{'BackupAdmin'|urll}">Бекап</a>
