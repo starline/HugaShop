@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.1
+ * @version 3.3
  *
  * Этот класс использует шаблон product.tpl
  *
@@ -12,13 +12,11 @@
 
 namespace App\Controller\Front;
 
-use HugaShop\Api\Image;
 use HugaShop\Api\Design;
 use HugaShop\Api\Request;
 use HugaShop\Api\Settings;
 use HugaShop\Api\Product\Product;
 use App\Controller\BaseFrontController;
-use HugaShop\Api\Product\ProductOption;
 use HugaShop\Api\Content\ContentComment;
 use HugaShop\Api\Product\ProductCategory;
 use Symfony\Component\HttpFoundation\Response;
@@ -73,23 +71,7 @@ class ProductController extends BaseFrontController
         // Comments
         ContentComment::handleComments($product->id, Product::class);
 
-
-        // Добавление в историю просмотренных товаров
-        $max_visited_products = 50; # Максимальное число хранимых товаров в истории
-        if (!empty($cookie_bp = Request::getCookie('BP'))) {
-            $browsed_products = explode('.', $cookie_bp);
-
-            // Удалим текущий товар, если он был
-            if (($exists = array_search($product->id, $browsed_products)) !== false) {
-                unset($browsed_products[$exists]);
-            }
-        }
-
-        // Добавим текущий товар
-        $browsed_products[] = $product->id;
-        $cookie_data = join('.', array_slice($browsed_products, -$max_visited_products, $max_visited_products));
-        Request::setCookie("BP", $cookie_data, 30); # Время жизни - 30 дней
-
+        $this->setBrowsedProducts($product->id);
 
         // SEO metateg
         if (empty($product->meta_title)) {
@@ -107,5 +89,28 @@ class ProductController extends BaseFrontController
         Design::assign('meta_description', $product->meta_description);
 
         return $this->fetchResponse('product.tpl');
+    }
+
+
+    /**
+     * setBrowsedProducts
+     */
+    private function setBrowsedProducts($product_id)
+    {
+        // Добавление в историю просмотренных товаров
+        $max_visited_products = 50; # Максимальное число хранимых товаров в истории
+        if (!empty($cookie_bp = Request::getCookie('BP'))) {
+            $browsed_products = explode('.', $cookie_bp);
+
+            // Удалим текущий товар, если он был
+            if (($exists = array_search($product_id, $browsed_products)) !== false) {
+                unset($browsed_products[$exists]);
+            }
+        }
+
+        // Добавим текущий товар
+        $browsed_products[] = $product_id;
+        $cookie_data = join('.', array_slice($browsed_products, -$max_visited_products, $max_visited_products));
+        Request::setCookie("BP", $cookie_data, 30); # Время жизни - 30 дней
     }
 }
