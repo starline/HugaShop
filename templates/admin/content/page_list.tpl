@@ -34,7 +34,7 @@
 								</div>
 								<div class="col-12 col-sm-2 text-end">
 									{if $page->menu}
-										<div class="round_box">меню</div>
+										<div class="badge text-bg-round">меню</div>
 									{/if}
 								</div>
 							</div>

@@ -41,7 +41,7 @@
 
 							<div class="col">
 								<a href="{'OrderDeliveryAdmin'|urll:[id => $delivery->id]}">{$delivery->name}</a>
-								<span class="round_box">{$delivery->public_name}</span>
+								<span class="badge text-bg-round">{$delivery->public_name}</span>
 								<div class="notice">{$delivery->comment|strip_tags|nl2br|raw}</div>
 							</div>
 

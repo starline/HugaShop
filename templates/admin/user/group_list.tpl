@@ -37,7 +37,7 @@
 							</div>
 
 							<div class="col-12 col-sm-2 text-end">
-								<span class="round_box">
+								<span class="badge text-bg-round">
 									{$group->discount} %
 								</span>
 							</div>

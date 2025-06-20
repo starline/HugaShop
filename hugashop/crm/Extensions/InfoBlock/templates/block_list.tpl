@@ -35,7 +35,7 @@
 									<a href="/admin/extension/{$extension->module}/block/{$block->id}">{$block->name}</a>
 								</div>
 								<div class="col-12 col-sm-4 text-end">
-									<span class="round_box">{$block->id}</span>
+									<span class="badge text-bg-round">{$block->id}</span>
 								</div>
 							</div>
 							

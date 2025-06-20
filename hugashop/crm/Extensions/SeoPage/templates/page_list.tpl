@@ -36,7 +36,7 @@
 								</div>
 
 								<div class="col-12 col-sm-4 text-end">
-									<span class="round_box">{$page->url}</span>
+									<span class="badge text-bg-round">{$page->url}</span>
 								</div>
 							</div>
 							

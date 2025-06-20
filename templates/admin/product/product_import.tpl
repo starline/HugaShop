@@ -121,7 +121,7 @@
 				<span class="count">{$num--}</span>
 				<span title="{$item->status}" class="status {$item->status}"></span>
 
-				<span class="round_box mx-2 copy_field" value="{$item->variant->sku}">{$item->variant->sku}
+				<span class="badge text-bg-round mx-2 copy_field" value="{$item->variant->sku}">{$item->variant->sku}
 					<div class="copy_hover" data-bs-toggle="tooltip" data-bs-original-title="Скопировать">
 						<i class="material-icons">content_copy</i>
 					</div>
@@ -145,7 +145,7 @@
 				</span>
 
 				{if $item->variant->weight != $item->prev_variant->weight}
-					<span class="round_box ms-2">Вес: {$item->variant->weight} кг</span>
+					<span class="badge text-bg-round ms-2">Вес: {$item->variant->weight} кг</span>
 				{/if}
 
 			{else}

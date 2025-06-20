@@ -32,14 +32,14 @@
                             <div class="col row">
                                 <div class="col-12 col-sm-10">
                                     <div>
-                                        <span class="round_box me-2">
+                                        <span class="badge text-bg-round me-2">
                                             #{$pricefeed->id}
                                         </span>
 
                                         <a href="/admin/extension/{$extension->module}/feed/{$pricefeed->id}">{$pricefeed->name}</a>
                                     </div>
 
-                                    <div class="round_box copy_field my-2"
+                                    <div class="badge text-bg-round copy_field my-2"
                                         value="{$config->root_url}/ext/{$extension->module}/{$pricefeed->id}/{$pricefeed->token}.csv">
                                         {$config->root_url}/ext/{$extension->module}/{$pricefeed->id}/{$pricefeed->token}.csv
                                         <div class="copy_hover" data-bs-toggle="tooltip" data-bs-original-title="Скопировать">
@@ -54,7 +54,7 @@
 
                                 <div class="col-12 col-sm-2 text-end">
                                     {if !$pricefeed->label|empty}
-                                        <span class="round_box">{$pricefeed->label}</span>
+                                        <span class="badge text-bg-round">{$pricefeed->label}</span>
                                     {/if}
                                 </div>
                             </div>

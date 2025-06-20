@@ -257,7 +257,7 @@
 								<div class="row gx-2">
 									<div class="col-4 text-end sku">
 										{if $purchase->sku}
-											<div class="round_box copy_field" value="{$purchase->sku}">
+											<div class="badge text-bg-round copy_field" value="{$purchase->sku}">
 												<span>{$purchase->sku}</span>
 												<div class="copy_hover" data-bs-toggle="tooltip"
 													data-bs-original-title="Скопировать">
@@ -389,7 +389,7 @@
 						<div class="col-12 col-md-6">
 							<div class="row gx-2">
 								<div class="col-2 text-end sku">
-									<div class="round_box copy_field" value="">
+									<div class="badge text-bg-round copy_field" value="">
 										<span></span>
 										<div class="copy_hover" data-bs-toggle="tooltip"
 											data-bs-original-title="Скопировать">

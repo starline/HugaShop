@@ -41,7 +41,7 @@
 											</div>
 											<div class="col-12 col-md-2 text-end">
 												{if $category->main}
-													<span class="round_box">На главной</span>
+													<span class="badge text-bg-round">На главной</span>
 												{/if}
 											</div>
 										</div>

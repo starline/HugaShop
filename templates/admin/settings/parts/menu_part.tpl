@@ -2,13 +2,19 @@
 
 	{if 'settings'|user_access and $route|in_array:[SettingsAdmin]}
 		<li class="mini active">
-			<span>Настройки</span>
+			<a href="{'SettingsAdmin'|urll}">Настройки</a>
 		</li>
 	{/if}
 
 	{if 'design'|user_access and $route|in_array:[BackupAdmin]}
 		<li class="mini active">
-			<span>Бекап</span>
+			<a href="{'BackupAdmin'|urll}">Бекап</a>
+		</li>
+	{/if}
+
+	{if 'settings'|user_access and $route|in_array:[LanguageListAdmin, LanguageAdmin, LanguageNewAdmin]}
+		<li class="mini active">
+			<a href="{'LanguageListAdmin'|urll}">Языки</a>
 		</li>
 	{/if}
 
@@ -18,15 +24,15 @@
 		</li>
 
 		<li class="mini right {if $route == 'ImagesAdmin'}active{/if}">
-			<a href="/admin/images">Изображения</a>
+			<a href="{'ImagesAdmin'|urll}">Изображения</a>
 		</li>
 
 		<li class="mini right {if $route == 'StylesAdmin'}active{/if}">
-			<a href="/admin/styles">Стили</a>
+			<a href="{'StylesAdmin'|urll}">Стили</a>
 		</li>
 
 		<li class="mini right {if $route == 'TemplatesAdmin'}active{/if}">
-			<a href="/admin/templates">Шаблоны</a>
+			<a href="{'TemplatesAdmin'|urll}">Шаблоны</a>
 		</li>
 	{/if}
 

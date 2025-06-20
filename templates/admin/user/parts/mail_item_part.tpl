@@ -17,13 +17,13 @@
         </div>
 
         <div class="col-4 col-sm-1">
-            <div class="round_box">
+            <div class="badge text-bg-round">
                 {$mailing->count}
             </div>
         </div>
 
         <div class="col-8 col-sm-4">
-            <div class="round_box">
+            <div class="badge text-bg-round">
                 {$mailing->user->notifier_type} via {$mailing->user->notifier_name}
             </div>
         </div>

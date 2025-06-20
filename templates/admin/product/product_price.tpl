@@ -214,7 +214,7 @@
 
 								<div class="col-12 col-md-3">
 									<div class="col sku text-end">
-										<div class="round_box copy_field" value="{$product_variant->product->sku}">
+										<div class="badge text-bg-round copy_field" value="{$product_variant->product->sku}">
 											<span>{$product_variant->product->sku}</span>
 											<div class="copy_hover" data-bs-toggle="tooltip"
 												data-bs-original-title="Скопировать">
@@ -252,7 +252,7 @@
 
 							<div class="col-12 col-md-3">
 								<div class="col sku text-end">
-									<div class="round_box copy_field" value="">
+									<div class="badge text-bg-round copy_field" value="">
 										<span></span>
 										<div class="copy_hover" data-bs-toggle="tooltip"
 											data-bs-original-title="Скопировать">

@@ -8,7 +8,7 @@
  *
  */
 
-namespace App\Controller\Admin\Product;
+namespace App\Controller\Admin\Settings;
 
 use HugaShop\Api\Design;
 use HugaShop\Api\Request;
@@ -20,8 +20,8 @@ use Symfony\Component\Routing\Attribute\Route;
 class LanguageController extends BaseAdminController
 {
 
-    #[Route('/admin//language', name: 'LanguageNewAdmin')]
-    #[Route('/admin//language/{id}', requirements: ['id' => '\d+'], name: 'LanguageAdmin')]
+    #[Route('/admin/language', name: 'LanguageNewAdmin')]
+    #[Route('/admin/language/{id}', requirements: ['id' => '\d+'], name: 'LanguageAdmin')]
     public function index(?int $id = null): Response
     {
 
@@ -54,6 +54,6 @@ class LanguageController extends BaseAdminController
 
         Design::assign('language', $language);
 
-        return $this->fetchResponse('product/language.tpl');
+        return $this->fetchResponse('settings/language.tpl');
     }
 }

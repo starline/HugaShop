@@ -66,7 +66,7 @@
 								<div class="col">
 									<div class="mb-2">
 										<a href="/admin/comment/{$comment->id}">{$comment->name}</a>
-										<span class="round_box">IP: {$comment->ip}</span>
+										<span class="badge text-bg-round">IP: {$comment->ip}</span>
 										{if !$comment->approved}<a class="approve" href="#">Одобрить</a>{/if}
 									</div>
 									

@@ -40,7 +40,7 @@
 
 							<div class="col">
 								<a href="{'OrderPaymentAdmin'|urll:[id => $payment_method->id]}">{$payment_method->name}</a>
-								<span class="round_box">{$payment_method->public_name}</span>
+								<span class="badge text-bg-round">{$payment_method->public_name}</span>
 								<div class="notice">{$payment_method->comment|strip_tags|nl2br|raw}</div>
 							</div>
 

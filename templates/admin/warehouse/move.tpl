@@ -241,7 +241,7 @@
 							<div class="col-3 text-end">
 								{if $purchase->sku}
 									<div class="sku">
-										<div class="round_box copy_field" value="{$purchase->sku}">
+										<div class="badge text-bg-round copy_field" value="{$purchase->sku}">
 											<span>{$purchase->sku}</span>
 											<div class="copy_hover" data-bs-toggle="tooltip" data-bs-original-title="Скопировать">
 												<i class="material-icons">content_copy</i>
@@ -349,7 +349,7 @@
 
 						<div class="col-3 text-end">
 							<div class="sku">
-								<div class="round_box copy_field" value="">
+								<div class="badge text-bg-round copy_field" value="">
 									<span></span>
 									<div class="copy_hover" data-bs-toggle="tooltip" data-bs-original-title="Скопировать">
 										<i class="material-icons">content_copy</i>

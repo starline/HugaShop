@@ -52,7 +52,7 @@
 									<a href="{$config->root_url}/files/backup/{$backup->name}">{$backup->name}</a>
 								</div>
 								<div class="col-12 col-sm-2 text-end">
-									<div class="round_box">
+									<div class="badge text-bg-round">
 										{if $backup->size>1024*1024}
 											{($backup->size/1024/1024)|round:2} МБ
 										{else}

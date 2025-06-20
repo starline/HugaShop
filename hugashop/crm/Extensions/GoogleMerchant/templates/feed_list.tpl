@@ -32,7 +32,7 @@
                             <div class="col">
                                 <a href="/admin/extension/{$extension->module}/feed/{$pricefeed->id}">{$pricefeed->name}</a>
 
-                                <div class="round_box copy_field"
+                                <div class="badge text-bg-round copy_field"
                                     value="{$config->root_url}/ext/{$extension->module}/{$pricefeed->id}/{$pricefeed->token}">
                                     {$config->root_url}/ext/{$extension->module}/{$pricefeed->id}/{$pricefeed->token}
                                     <div class="copy_hover" data-bs-toggle="tooltip" data-bs-original-title="Скопировать">
@@ -48,7 +48,7 @@
 
                             {if $pricefeed->label}
                                 <div>
-                                    <span class="round_box">{$pricefeed->label}</span>
+                                    <span class="badge text-bg-round">{$pricefeed->label}</span>
                                 </div>
                             {/if}
 

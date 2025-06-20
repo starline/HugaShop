@@ -65,7 +65,7 @@
 								</div>
 
 								<div class="number">
-									<div class="round_box">#{$mail_template->id}</div>
+									<div class="badge text-bg-round">#{$mail_template->id}</div>
 								</div>
 
 								<div class="col">
@@ -73,7 +73,7 @@
 								</div>
 
 								<div>
-									<div class="round_box">
+									<div class="badge text-bg-round">
 										{$mail_template->type}
 									</div>
 								</div>

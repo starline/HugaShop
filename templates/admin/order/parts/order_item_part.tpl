@@ -50,11 +50,11 @@
                 </div>
 
                 {if $order->payment_method->name}
-                    <div class="round_box mt-1">{$order->payment_method->name}</div>
+                    <div class="badge text-bg-round mt-1">{$order->payment_method->name}</div>
                 {/if}
 
                 {if $order->delivery_method->name}
-                    <div class="round_box mt-1">{$order->delivery_method->name}</div>
+                    <div class="badge text-bg-round mt-1">{$order->delivery_method->name}</div>
                 {/if}
 
                 <div class="order_phone">

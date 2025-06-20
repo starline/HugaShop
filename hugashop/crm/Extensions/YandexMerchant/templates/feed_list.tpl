@@ -30,7 +30,7 @@
                             </div>
 
                             <div class="number">
-                                <div class="round_box">
+                                <div class="badge text-bg-round">
                                     #{$pricefeed->id}
                                 </div>
                             </div>

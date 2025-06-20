@@ -217,6 +217,17 @@ textarea {
 	font-size: 0.95em;
 }
 
+.badge.text-bg-round {
+	overflow-wrap: anywhere;
+	width: fit-content;
+	cursor: default;
+	font-size: .8rem;
+	font-weight: 400;
+	padding-top: 5px;
+	background-color: var(--background-inside-color);
+	border: 1px solid var(--border-color);
+	color: var(--text-dim-color);
+}
 
 /* input form */
 ol,
@@ -1478,18 +1489,6 @@ div#sort_links b {
 
 .list .tree_row .list_row {
 	padding-right: 0;
-}
-
-.list .list_row .round_box {
-	overflow-wrap: anywhere;
-	width: fit-content;
-	cursor: default;
-	font-size: 0.8rem;
-	padding: 2px 8px;
-	background-color: var(--background-inside-color);
-	border-radius: 6px;
-	border: 1px solid var(--border-color);
-	color: var(--text-dim-color);
 }
 
 .list .list_row .mail_status {

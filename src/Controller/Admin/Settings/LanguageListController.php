@@ -8,7 +8,7 @@
  *
  */
 
-namespace App\Controller\Admin\Product;
+namespace App\Controller\Admin\Settings;
 
 use HugaShop\Api\Design;
 use HugaShop\Api\Request;
