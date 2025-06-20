@@ -55,7 +55,7 @@ class BackupController extends BaseAdminController
 
                         ### Дамп базы
                         // Ложим базу в папку чтобы затем добавить файл в архив
-                        $this->dump($backup_dir . Config::get('database')->name . ".sql");
+                        $this->dumpDB($backup_dir . Config::get('database')->name . ".sql");
                         chmod($backup_dir . Config::get('database')->name . ".sql", 0777);
 
                         ### Архивируем
@@ -173,7 +173,7 @@ class BackupController extends BaseAdminController
      * Сохраняем в вайл
      * @param $filename
      */
-    private function dump($filename)
+    private function dumpDB($filename)
     {
         $h = fopen($filename, 'w');
 

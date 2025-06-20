@@ -17,7 +17,6 @@ use HugaShop\Api\Request;
 use HugaShop\Api\User\User;
 use HugaShop\Api\User\UserPermission;
 use App\Controller\BaseAdminController;
-use HugaShop\Api\Finance\FinancePayment;
 use HugaShop\Api\Warehouse\WarehouseMove;
 use HugaShop\Api\Warehouse\WarehousePlace;
 use HugaShop\Api\Warehouse\WarehousePurchase;
@@ -158,7 +157,15 @@ class MoveController extends BaseAdminController
         if (!empty($id)) {
 
             // Выбираем данные
-            $movement = WarehouseMove::getMovement($id, ['images', 'purchases', 'purchases.warehouse_move', 'payments.category']);
+            $movement = WarehouseMove::getMovement($id, join: [
+                'images',
+                'purchases',
+                'purchases.product',
+                'purchases.product.image',
+                'purchases.warehouse_move',
+                'payments',
+                'payments.category'
+            ]);
 
             if (empty($movement->id)) {
                 return $this->redirectToRoute('MoveListAdmin');

@@ -123,18 +123,18 @@
 				{foreach $purchases as $purchase}
 					<div class="purchase_row">
 						<div class="image">
-							<img loading="lazy" src="{$purchase->image->filename|resize:60:60}"
+							<img loading="lazy" src="{$purchase->product->image->filename|resize:60:60}"
 								alt="{$purchase->product->name}">
 						</div>
 						<div class="name">
 							<div>{$purchase->product->name}
-								{if $purchase->variant->name}
-									- {$purchase->variant->name}
+								{if $purchase->product->variant_name}
+									- {$purchase->product->variant_name}
 								{/if}
 							</div>
 
 							<div class="amount">
-								{$purchase->variant->price|price_html|raw} &times; {$purchase->amount}
+								{$purchase->product->price|price_html|raw} &times; {$purchase->amount}
 								{$settings->units}
 							</div>
 						</div>

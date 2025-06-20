@@ -42,6 +42,24 @@ class OrderPurchase extends BaseModel
 
 
     /**
+     * Total purchase weight
+     */
+    public function getTotalWeightAttribute(): float
+    {
+        return ($this->product?->weight ?? 0) * $this->amount;
+    }
+
+
+    /**
+     * Total purchase price
+     */
+    public function getTotalPriceAttribute(): float
+    {
+        return ($this->product?->price ?? 0) * $this->amount;
+    }
+
+
+    /**
      * Выбираем товары в заказе
      *
      * @param array $filter
@@ -99,10 +117,11 @@ class OrderPurchase extends BaseModel
     /**
      * Обновляем покупки
      */
-    public static function updatePurchase(int $id, array|object $purchase): int
+    public static function updatePurchase(int $purchase_id, array|object $purchase)
     {
         $purchase = (object) $purchase;
-        $old = self::find($id);
+        $old = self::find($purchase_id);
+
         if (!$old) {
             return 0;
         }
@@ -110,6 +129,11 @@ class OrderPurchase extends BaseModel
         $order = Order::getOrder((int) $old->order_id);
         if (!$order) {
             return 0;
+        }
+
+        // If product was deleted
+        if (empty($purchase->product_id)) {
+            unset($purchase->product_id);
         }
 
         if ($order->closed && !empty($purchase->amount) && isset($old->product_id) && isset($purchase->product_id)) {
@@ -125,8 +149,7 @@ class OrderPurchase extends BaseModel
             }
         }
 
-        self::updateOne($id, $purchase);
-        return $id;
+        return self::updateOne($purchase_id, $purchase);
     }
 
     /**

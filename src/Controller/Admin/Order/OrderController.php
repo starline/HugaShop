@@ -365,10 +365,9 @@ class OrderController extends BaseAdminController
 
             // Выбираем товары заказа
             foreach ($order->purchases as $purchase) {
-                $total->purchases_weight += $purchase->product->weight * $purchase->amount; # Общий вес
+                $total->purchases_weight += $purchase->total_weight; # Общий вес
+                $total->purchases_price += $purchase->total_price; # Общая стоимость товаров. Без учета скидок
                 $total->purchases_count += $purchase->amount;
-                $total->purchases_price += $purchase->price * $purchase->amount; # Общая стоимость товаров. Без учета скидок
-
             }
 
 

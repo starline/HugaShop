@@ -30,7 +30,6 @@ class BaseExtension
         $this->ext_config =         Helper::getModule($this->ext_name, Config::get('extension_dir'));
         $this->ext_dir =            Config::get('extension_dir') . $this->ext_name . '/';
         $this->ext_env =            new \stdClass();
-        dump($this->ext_settings);
     }
 
 

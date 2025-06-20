@@ -78,9 +78,9 @@ class Email
         try {
             $mailer->send($email);
         } catch (TransportExceptionInterface $e) {
-            
-            // логируй, уведомляй или используй fallback
-            $logger->error('Mailer failed', ['error' => $e->getMessage()]);
+
+            // TODO: логируй, уведомляй или используй fallback
+
         }
     }
 }

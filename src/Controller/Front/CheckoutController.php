@@ -171,8 +171,13 @@ class CheckoutController extends BaseFrontController
                         }
 
                         // Добавляем товары к заказу
-                        foreach ($purchases as $purchase) {
-                            OrderPurchase::addPurchase(['order_id' => $order->id, 'product_id' => $purchase->product->id, 'amount' => $purchase->amount]);
+                        foreach ($purchases as $i => $purchase) {
+                            OrderPurchase::addPurchase([
+                                'order_id' => $order->id,
+                                'product_id' => $purchase->product->id,
+                                'amount' => $purchase->amount,
+                                'position' => $i
+                            ]);
                         }
 
                         // Определяем стоимость доставки

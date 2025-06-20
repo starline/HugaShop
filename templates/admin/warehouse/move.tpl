@@ -215,6 +215,7 @@
 		<!-- Список поставки -->
 		<div id="purchases">
 			<div class="list purchases">
+			
 				{foreach $movement->purchases as $purchase}
 					<div class="list_row">
 						<input type="hidden" name="purchases[{$purchase->position}][product_id]"
