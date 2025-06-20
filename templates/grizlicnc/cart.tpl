@@ -33,7 +33,8 @@
 									<div class="col-auto">
 										<a href="{'Product'|urll:[url => $purchase->product->url]}">
 											<img class="object-fit-contain" width="120" height="120" loading="lazy"
-												src="{$purchase->image->filename|resize:220:220}" alt="{$purchase->product->name}">
+												src="{$purchase->product->image->filename|resize:220:220}"
+												alt="{$purchase->product->name}">
 										</a>
 									</div>
 									<div class="col">

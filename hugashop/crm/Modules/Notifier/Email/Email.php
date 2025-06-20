@@ -15,6 +15,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mime\Email as SEmail;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 class Email
 {
@@ -73,6 +74,13 @@ class Email
             ->subject($subject)
             ->html($message);
 
-        return $mailer->send($email);
+
+        try {
+            $mailer->send($email);
+        } catch (TransportExceptionInterface $e) {
+            
+            // логируй, уведомляй или используй fallback
+            $logger->error('Mailer failed', ['error' => $e->getMessage()]);
+        }
     }
 }

@@ -29,7 +29,7 @@ class AjaxProductController extends BaseFrontController
         $filter['limit'] = Settings::getParam('products_num');
         $filter['visible'] = 1;
 
-        $products = Product::getProducts($filter, ['image']);
+        $products = Product::getProducts($filter, join: ['image']);
         $suggestions = [];
 
         foreach ($products as $product) {

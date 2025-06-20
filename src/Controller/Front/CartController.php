@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.2
+ * @version 3.3
  *
  * Корзина покупок
  * Этот класс использует шаблон cart.tpl
@@ -74,7 +74,11 @@ class CartController extends BaseFrontController
         if (!empty($cart->id)) {
 
             // Выбираем товары корзины
-            $purchases = CartPurchase::getCartPurchases(['cart_id' => $cart->id, 'disabled' => 0], ['image', 'product', 'category']);
+            $purchases = CartPurchase::getCartPurchases(['cart_id' => $cart->id, 'disabled' => 0], join: [
+                'product',
+                'product.image',
+                'product.category'
+            ]);
             Design::assign('purchases', $purchases);
         }
 

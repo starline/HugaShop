@@ -38,7 +38,7 @@ class CartPurchase extends BaseModel
     /**
      * Get cart purchases
      * @param array $filter
-     * @param array $join = ['product.image', 'product', 'category']
+     * @param array $join = ['product.image', 'product', 'product.category']
      */
     public static function getCartPurchases(array $filter = [], array $join = [])
     {
@@ -56,19 +56,10 @@ class CartPurchase extends BaseModel
             $query->where('disabled', $filter['disabled']);
         }
 
-        $with = [];
-        if (in_array('product.image', $join) || in_array('product.category', $join)) {
-            $with[] = 'product';
-            $with[] = 'product.image';
-            if (in_array('product.category', $join)) {
-                $with[] = 'product.category';
-            }
-        }
-        if ($with) {
-            $query->with($with);
+        if ($join) {
+            $query->with($join);
         }
 
-        $query->orderBy('position');
         return $query->get();
     }
 
@@ -94,7 +85,7 @@ class CartPurchase extends BaseModel
         if (!empty($cart = Cart::getCart())) {
             $cart_id = $cart->id;
 
-            $purchases = self::getCartPurchases(['cart_id' => $cart_id]);
+            $purchases = CartPurchase::getCartPurchases(['cart_id' => $cart_id]);
             foreach ($purchases as $purchase) {
                 if ($purchase->product_id == $product->id) {
                     $amount = max(1, $amount + $purchase->amount);

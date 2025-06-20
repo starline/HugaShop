@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.8
+ * @version 3.9
  *
  * Корзина покупок
  * Этот класс использует шаблон cart.tpl
@@ -33,7 +33,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class CheckoutController extends BaseFrontController
 {
 
-    private $entity_params = [
+    private $fillout = [
         'payment_method_id' =>      ['type' => 'int'],
         'delivery_id' =>            ['type' => 'int'],
         'name' =>                   ['type' => 'string', 'trim' => true],
@@ -60,7 +60,12 @@ class CheckoutController extends BaseFrontController
             Cart::updateCart($cart->id, ['checkout_init' => date('Y-m-d H:i:s')]);
         }
 
-        $purchases = CartPurchase::getCartPurchases(['cart_id' => $cart->id, 'disabled' => 0], ['image', 'product', 'category']);
+        $purchases = CartPurchase::getCartPurchases(['cart_id' => $cart->id, 'disabled' => 0], join: [
+            'product',
+            'product.image',
+            'product.category'
+        ]);
+
         $pre_order = new \stdClass();
 
         // Данные пользователя
@@ -83,7 +88,7 @@ class CheckoutController extends BaseFrontController
 
         #### Update
         ###########
-        if (Request::checkCSRF() and !empty($pre_order = Request::getDataAcces($this->entity_params))) {
+        if (Request::checkCSRF() and !empty($pre_order = Request::getDataAcces($this->fillout))) {
 
             // Купон
             if (!empty($coupon_code = trim(Request::post('coupon_code', 'string')))) {
@@ -215,8 +220,8 @@ class CheckoutController extends BaseFrontController
             Design::assign('coupon_request', true);
         }
 
-        $delivery_methods = OrderDelivery::getDeliveryMethods(['enabled' => 1, 'enabled_public' => 1]);    # Способы доставки
-        $payment_methods = OrderPayment::getPaymentMethods(['enabled' => 1, 'enabled_public' => 1]);       # Варианты оплаты
+        $delivery_methods   = OrderDelivery::getDeliveryMethods(['enabled' => 1, 'enabled_public' => 1]);    # Способы доставки
+        $payment_methods    = OrderPayment::getPaymentMethods(['enabled' => 1, 'enabled_public' => 1]);       # Варианты оплаты
 
         Design::assign('delivery_methods', $delivery_methods);
         Design::assign('payment_methods', $payment_methods);
