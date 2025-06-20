@@ -103,6 +103,8 @@ class ProductsController extends BaseFrontController
             $products_filter['features'] = $selected_features;
         }
 
+
+        
         $options = ProductOption::getOptions($options_filter);
 
         foreach ($options as $option) {
@@ -120,10 +122,10 @@ class ProductsController extends BaseFrontController
 
 
         // Постраничная навигация
-        $items_per_page = Settings::getParam('products_num');
-        $current_page = Request::get('page', 'int');   # Текущая страница в постраничном выводе
-        $current_page = max(1, $current_page);                    # Если не задана, то равна 1
-        $products_count = Product::countProducts($products_filter); # Вычисляем количество страниц
+        $items_per_page     = Settings::getParam('products_num');
+        $current_page       = Request::get('page', 'int');   # Текущая страница в постраничном выводе
+        $current_page       = max(1, $current_page);                    # Если не задана, то равна 1
+        $products_count     = Product::countProducts($products_filter); # Вычисляем количество страниц
 
 
         // Закрываем пагинатор от индексации

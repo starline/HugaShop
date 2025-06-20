@@ -108,8 +108,6 @@ class ProductOption extends BaseModel
         }
 
         $query = self::query()
-            ->select('value', 'feature_id')
-            ->distinct()
             ->with(['product', 'feature']); // eager load отношения
 
         // Присоединение таблицы продуктов для фильтрации по видимости и категории
