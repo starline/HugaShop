@@ -236,24 +236,30 @@ export function getChartData(apex, filter, options) {
 		console.error('getChartData: options.url is required');
 		return;
 	}
+
 	options.range = filter.range ?? options.range;
 	if (options.range) {
-		const now = luxon.DateTime.now();
+
+		const now = luxon.DateTime.utc();
+
 		if (options.range === 'month') {
 			filter.fromDate = now.minus({ months: 1 }).toISODate();
-			filter.toDate = now.toISODate();
+			filter.toDate = now.plus({ day: 1 }).toISODate();
 		} else if (options.range === 'year') {
 			filter.fromDate = now.minus({ years: 1 }).toISODate();
-			filter.toDate = now.toISODate();
+			filter.toDate = now.plus({ day: 1 }).toISODate();
 		} else if (options.range === 'all') {
 			delete filter.fromDate;
 			delete filter.toDate;
 		}
+
 		delete filter.range;
 	}
+
 	if (options.type) {
 		filter.type = options.type;
 	}
+
 	$.post(options.url, filter, function (data) {
 		if (data && data[0] != null) {
 			let datas = [];
