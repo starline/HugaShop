@@ -515,4 +515,27 @@ class Product extends BaseModel
     {
         return self::where('id', $product_id)->whereNotNull('stock')->increment('stock', $amount);
     }
+
+
+    /**
+     * Get translation for product
+     */
+    public static function getTranslation(int $product_id, string $code)
+    {
+        return ProductTranslation::query()
+            ->where('product_id', $product_id)
+            ->where('language_code', $code)
+            ->first();
+    }
+
+    /**
+     * Update or create translation
+     */
+    public static function updateTranslation(int $product_id, string $code, array $data)
+    {
+        return ProductTranslation::query()->updateOrCreate(
+            ['product_id' => $product_id, 'language_code' => $code],
+            $data
+        );
+    }
 }

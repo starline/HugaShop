@@ -149,8 +149,7 @@ class TestScript extends BaseExtension
 
                                 try {
                                     $send = $mailer->send($email);
-                                    //var_dump($send->getDebug());
-                                    //print_r($send->getOriginalMessage());
+                                    //dump($send->getDebug());
                                 } catch (TransportExceptionInterface $e) {
                                     // some error prevented the email sending; display an
                                     // error message or try to resend the message

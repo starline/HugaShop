@@ -16,6 +16,7 @@ use stdClass;
 use HugaShop\Api\Image;
 use HugaShop\Api\Design;
 use HugaShop\Api\Request;
+use HugaShop\Api\Settings;
 use HugaShop\Api\SeoKeywords;
 use HugaShop\Api\Product\Product;
 use HugaShop\Api\User\UserPermission;
@@ -58,9 +59,21 @@ class ProductController extends BaseAdminController
         }
 
 
+        $languages = Settings::getParam('languages') ?: [];
+        $default_language = Settings::getParam('default_language') ?? array_key_first($languages);
+        $current_lang = Request::get('lang', 'string') ?: $default_language;
+        Design::assign('languages', $languages);
+        Design::assign('current_language', $current_lang);
+
+
         #### Update
         ###########
         if (!empty($product = Request::getDataAcces(($this->entity_params)))) {
+
+            if ($current_lang !== $default_language && !empty($product->id)) {
+                Product::updateTranslation($product->id, $current_lang, (array) $product);
+                return $this->redirectToRoute('ProductAdmin', ['id' => $product->id, 'lang' => $current_lang]);
+            }
 
             if (empty($product->id)) {
                 $product = Design::setFlashMessage('add', Product::addProduct($product));
@@ -122,7 +135,11 @@ class ProductController extends BaseAdminController
                 }
             }
 
-            return $this->redirectToRoute('ProductAdmin', ['id' => $product->id]);
+            $params = ['id' => $product->id];
+            if ($current_lang !== $default_language) {
+                $params['lang'] = $current_lang;
+            }
+            return $this->redirectToRoute('ProductAdmin', $params);
         }
 
 
@@ -135,6 +152,14 @@ class ProductController extends BaseAdminController
                 'images_content',
                 'options'
             ]);
+
+            if ($current_lang !== $default_language) {
+                if ($tr = Product::getTranslation($product->id, $current_lang)) {
+                    foreach (['name', 'meta_title', 'meta_description', 'annotation', 'body'] as $f) {
+                        $product->$f = $tr->$f;
+                    }
+                }
+            }
 
             if (empty($product->id)) {
                 return $this->redirectToRoute('ProductListAdmin');
