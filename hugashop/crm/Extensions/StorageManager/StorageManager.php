@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.5
+ * @version 1.6
  *
  */
 
@@ -26,7 +26,7 @@ final class StorageManager extends BaseExtension
 
         $this->dirs = [
             'resize' => [
-                'path' => Config::get('root_dir') . "public/files/resize/",
+                'path' => Config::get('images_resized_dir'),
                 'clear' => true
             ],
             'cache' => [
@@ -34,11 +34,11 @@ final class StorageManager extends BaseExtension
                 'clear' => false # have never clear /var/cache folder with this tool
             ],
             'originals' => [
-                'path' => Config::get('root_dir') . "public/files/originals/",
+                'path' => Config::get('images_originals_dir'),
                 'clear' => false
             ],
             'backup' =>  [
-                'path' => Config::get('root_dir') . "public/files/backup/",
+                'path' => Config::get('backup_dir'),
                 'clear' => false
             ]
         ];
@@ -58,6 +58,10 @@ final class StorageManager extends BaseExtension
             foreach ($this->dirs as $dir_name => $dir_params) {
                 if ($dir_params['clear'] === true) {
                     if (!empty(Request::post($dir_name, 'string'))) {
+
+                        if (!is_dir($dir_params['path'])) { # nothing to clean
+                            continue;
+                        }
 
                         $finder = new Finder();
                         $finder->in($dir_params['path']);

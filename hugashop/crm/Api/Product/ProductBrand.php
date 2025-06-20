@@ -66,7 +66,7 @@ class ProductBrand extends BaseModel
             });
         }
 
-        return $query->distinct()->orderBy('name')->get();
+        return $query->orderBy('name')->get()->keyBy('id');
     }
 
 

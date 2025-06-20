@@ -73,6 +73,7 @@ class ProductController extends BaseFrontController
         // Comments
         ContentComment::handleComments($product->id, Product::class);
 
+
         // Добавление в историю просмотренных товаров
         $max_visited_products = 50; # Максимальное число хранимых товаров в истории
         if (!empty($cookie_bp = Request::getCookie('BP'))) {
@@ -88,6 +89,7 @@ class ProductController extends BaseFrontController
         $browsed_products[] = $product->id;
         $cookie_data = join('.', array_slice($browsed_products, -$max_visited_products, $max_visited_products));
         Request::setCookie("BP", $cookie_data, 30); # Время жизни - 30 дней
+
 
         // SEO metateg
         if (empty($product->meta_title)) {

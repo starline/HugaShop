@@ -283,7 +283,7 @@ class Product extends BaseModel
             $query->limit($limit)->offset(($page - 1) * $limit);
         }
 
-        return $query->get();
+        return $query->get()->keyBy('id');
     }
 
 

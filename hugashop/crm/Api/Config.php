@@ -69,6 +69,7 @@ class Config
 
         self::$vars['import_files_dir'] =           self::$root_dir . 'public/files/imports/';        # Directory for import files
         self::$vars['export_files_dir'] =           self::$root_dir . 'public/files/exports/';        # Directory for export files
+        self::$vars['backup_dir'] =                 self::$root_dir . 'public/files/backup/';
 
         self::$vars['log_dir'] =                    self::$root_dir . 'var/log/';                     # Directory for Logs
         self::$vars['cache_dir'] =                  self::$root_dir . 'var/cache/';                   # Directory for Cache

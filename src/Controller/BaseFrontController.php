@@ -111,7 +111,7 @@ class BaseFrontController extends BaseController
                 $browsed_products_ids = array_slice($browsed_products_ids, 0, $params['limit']);
             }
 
-            $browsed_products = Product::getProducts(['id' => $browsed_products_ids, 'visible' => 1], ['image']);
+            $browsed_products = Product::getProducts(['id' => $browsed_products_ids, 'visible' => 1], join: ['image']);
 
             if (!empty($browsed_products)) {
 
