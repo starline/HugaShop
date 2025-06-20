@@ -233,7 +233,7 @@
          // Grafic
          let myChart = makeChart(
                document.getElementById('financeByMonth'), {
-                  chart: {type: 'bar',height: 250},
+                  chart: {type: 'bar', height: 250},
                   title: {text: 'Доходы и расходы'
                }
             },

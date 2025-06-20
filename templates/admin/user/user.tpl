@@ -172,11 +172,9 @@
 
 			makeChart(
 				document.getElementById('product_stats'), {
-					chart: { type: 'bar', height: 350 },
-					tooltip: { x: { format: 'MMMM yyyy' } },
+					chart: { type: 'bar', height: 250 },
 					title: { text: 'Статистика продаж менеджера' },
-					subtitle: { text: 'Доход по месяцам' },
-					yaxis: { title: { text: 'Статистика Менеджера' } }
+					subtitle: { text: 'Доход по месяцам' }
 				},
 				[{
 						filter: {
