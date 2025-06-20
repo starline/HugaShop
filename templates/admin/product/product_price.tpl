@@ -552,7 +552,7 @@
 				// Выводим график
 				let statsChart = makeChart(
 					document.getElementById('product_stats'), {
-						chart: { type: 'bar', height: 350 },
+						chart: { type: 'bar', height: 250 },
 						title: { text: 'Статистика продаж' }
 					},
 					[{
@@ -625,7 +625,8 @@
 
 				let priceChart = makeChart(
 					document.getElementById('productPriceHistory'), {
-						chart: { type: 'line', height: 350, zoom: { enabled: true } },
+						chart: { type: 'line', height: 250 },
+						tooltip: { x: { format: 'dd MMMM yyyy' } },
 						title: { text: 'История цен' }
 					},
 					[{

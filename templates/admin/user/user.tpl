@@ -124,6 +124,9 @@
 	<!-- Статистика продаж менеджера -->
 	{if 'user_manager'|user_access OR $current_user->id == $user->id}
 		<div class="product_stats">
+			<div class="chart_actions btn_row">
+				<a class="btn btn-light" id="product_stats_reset">Reset zoom</a>
+			</div>
 			<div id="product_stats"></div>
 		</div>
 	{/if}
@@ -170,7 +173,7 @@
 
 		{literal}
 
-			makeChart(
+			let statsChart = makeChart(
 				document.getElementById('product_stats'), {
 					chart: { type: 'bar', height: 250 },
 					title: { text: 'Статистика продаж менеджера' },
@@ -217,6 +220,10 @@
 					}
 				]
 			);
+
+			$('#product_stats_reset').click(function() {
+				if (statsChart.chart) statsChart.chart.resetSeries();
+			});
 
 		{/literal}
 	</script>
