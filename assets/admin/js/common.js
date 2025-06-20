@@ -260,6 +260,14 @@ export function getChartData(apex, filter, options) {
 		filter.type = options.type;
 	}
 
+	if (apex.chart) {
+		if (filter.filter === 'byDay') {
+			apex.chart.updateOptions({ tooltip: { x: { format: 'dd MMMM yyyy' } } });
+		} else if (filter.filter === 'byMonth') {
+			apex.chart.updateOptions({ tooltip: { x: { format: 'MMMM yyyy' } } });
+		}
+	}
+
 	$.post(options.url, filter, function (data) {
 		if (data && data[0] != null) {
 			let datas = [];

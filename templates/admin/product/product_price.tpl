@@ -626,7 +626,6 @@
 				let priceChart = makeChart(
 					document.getElementById('productPriceHistory'), {
 						chart: { type: 'line', height: 250 },
-						tooltip: { x: { format: 'dd MMMM yyyy' } },
 						title: { text: 'История цен' }
 					},
 					[{
