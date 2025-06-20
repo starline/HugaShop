@@ -267,8 +267,8 @@
 										{/if}
 									</div>
 
-									<div class="col-4 text-end price">
-										<div class="view_edit_purchase">
+									<div class="col-4 text-end">
+										<div class="view_edit_purchase price">
 											<div class="row_alert">
 												{if 'order_finance'|user_access}
 													<span class="js_change">{$purchase->cost_price|number:2}</span>
@@ -290,8 +290,8 @@
 									</div>
 
 
-									<div class="col-4 text-end amount">
-										<div class="view_edit_purchase">
+									<div class="col-4 text-end">
+										<div class="view_edit_purchase amount">
 											{if $purchase->product->weight}
 												<div class="row_alert">
 													<span
@@ -398,8 +398,8 @@
 									</div>
 								</div>
 
-								<div class="col-4 text-end price">
-									<div class="view_edit_purchase">
+								<div class="col-4 text-end">
+									<div class="view_edit_purchase price">
 										<div class="row_alert">
 											{if 'order_finance'|user_access}
 												<span class="js_change"></span>
@@ -414,8 +414,8 @@
 									</div>
 								</div>
 
-								<div class="col-3 text-end amount">
-									<div class="view_edit_purchase">
+								<div class="col-3 text-end">
+									<div class="view_edit_purchase amount">
 										<div class="row_alert">
 											<span class="js_change"></span>
 											<span class="price_sign">{$settings->weight_units}</span>

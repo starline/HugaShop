@@ -18,6 +18,7 @@ use HugaShop\Api\Settings;
 use HugaShop\Api\Product\Product;
 use App\Controller\BaseFrontController;
 use HugaShop\Api\Content\ContentComment;
+use HugaShop\Api\Product\ProductVariant;
 use HugaShop\Api\Product\ProductCategory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -47,9 +48,6 @@ class ProductController extends BaseFrontController
             'image',
             'images',
             'brand',
-            'variants',
-            'variants.product',
-            'variants.product.image',
             'related',
             'related.image',
             'features'
@@ -64,6 +62,10 @@ class ProductController extends BaseFrontController
             return $this->redirectToRoute('Product', ['url' => $product->url], 301);
         }
 
+        // Variants
+        $product_variants = ProductVariant::getVariants($product->id, ['product', 'product.image']);
+        Design::assign('product_variants', $product_variants);
+
         // Категория товара
         $category = ProductCategory::getCategory(intval($product->category_id));
         Design::assign('category', $category);
@@ -71,6 +73,7 @@ class ProductController extends BaseFrontController
         // Comments
         ContentComment::handleComments($product->id, Product::class);
 
+        // Browsed products
         $this->setBrowsedProducts($product->id);
 
         // SEO metateg

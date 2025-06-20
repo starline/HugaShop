@@ -354,6 +354,7 @@ class TestScript extends BaseExtension
                             }
 
                             // 2. Перенсти варианты в товары
+                            // 3. Создать колонку variant_id в таблице product
                             if (0) {
 
                                 //$products = Product::query()->orderByDesc('position')->limit(3)->get();

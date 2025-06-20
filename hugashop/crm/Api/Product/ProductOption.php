@@ -143,10 +143,8 @@ class ProductOption extends BaseModel
             foreach ($filter['features'] as $feature => $value) {
                 $query->where(function ($q) use ($feature, $value) {
                     $q->where('feature_id', $feature)
-                        ->orWhereIn('product_id', function ($sub) use ($feature, $value) {
-                            $sub->select('product_id')
-                                ->from('product_options') // ?????????
-                                ->where('feature_id', $feature)
+                        ->orWhereHas('product.options', function ($sub) use ($feature, $value) {
+                            $sub->where('feature_id', $feature)
                                 ->where('value', $value);
                         });
                 });

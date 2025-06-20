@@ -3,12 +3,12 @@
  * 
  */
 
-export function getCartInformer(variant_id = null, amount = null, callback = null) {
+export function getCartInformer(product_id = null, amount = null, callback = null) {
     $.ajax({
         type: "POST",
         url: "/ajax/cart",
         data: {
-            variant_id: variant_id,
+            product_id: product_id,
             amount: amount,
             language: getUiLanguage()
         },

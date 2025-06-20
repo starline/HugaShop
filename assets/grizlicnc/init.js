@@ -77,10 +77,10 @@ $(function () {
     // Select Product
     $('.product_item').on('click', 'a', function () {
         const product_item = $(this).closest('.product_item');
-        const attr_array = ['variant_id', 'variant_sku', 'product_name', 'variant_name', 'price'];
+        const attr_array = ['product_id', 'sku', 'product_name', 'variant_name', 'price'];
         let item = { amount: 1 }
 
-        if (product_item.find('input[name=variant]').length > 0) {
+        if (product_item.find('input[name=product]').length > 0) {
             attr_array.forEach(attr => {
                 item[attr] = product_item.find('form.variants').attr(attr) || null;
             });
@@ -109,7 +109,7 @@ $(function () {
         qty = parseInt(qty);
         qty = isNaN(qty) ? 1 : qty + 1;
 
-        let max_stock = $('.variants input[name=variant]:checked').attr('max_stock') || null;
+        let max_stock = $('.variants input[name=product]:checked').attr('max_stock') || null;
         qty = (max_stock != null && qty > max_stock) ? max_stock : qty;
 
         $('.product_amount input').val(qty);
@@ -117,19 +117,18 @@ $(function () {
     });
 
 
-    // Select variant
-    $('.variants input[name=variant]').on('change', function () {
+    // Select product
+    $('.variants input[name=product]').on('change', function () {
 
         loaderLayer('.variants');
 
-        const attr_array = ['variant_id', 'price', 'old_price'];
-        let variant = {};
+        const attr_array = ['product_id', 'price', 'old_price'];
+        let product = {};
         attr_array.forEach(attr => {
-            variant[attr] = $(this).attr(attr) || null;
+            product[attr] = $(this).attr(attr) || null;
         });
 
-        let currentUrl = window.location.href.split('?')[0] + '?variant=' + variant['variant_id'];
-        window.location.href = currentUrl;
+        window.location.href = '/p/' + product['product_id'];
     });
 
 
@@ -138,21 +137,21 @@ $(function () {
         e.preventDefault(); // Cancel the submit
 
         const product_item = $(this).closest('.product_item');
-        const attr_array = ['variant_id', 'variant_sku', 'product_name', 'variant_name', 'price'];
+        const attr_array = ['product_id', 'sku', 'product_name', 'variant_name', 'price'];
         let item = { amount: 1 }
 
         if ($(this).find('input[name=amount]').val())
             item.amount = $(this).find('input[name=amount]').val();
 
         // Для страницы товара
-        if ($(this).find('input[name=variant][type="radio"]').length > 0) {
+        if ($(this).find('input[name=product][type="radio"]').length > 0) {
             attr_array.forEach(attr => {
-                item[attr] = $(this).find('input[name=variant]:checked').attr(attr) || null;
+                item[attr] = $(this).find('input[name=product]:checked').attr(attr) || null;
             });
         }
 
         // Для товаров в каталоге
-        else if (product_item.find('input[name=variant]').length > 0) {
+        else if (product_item.find('input[name=product]').length > 0) {
             attr_array.forEach(attr => {
                 item[attr] = $(this).attr(attr) || null;
             });
@@ -171,7 +170,7 @@ $(function () {
 
     // Event
     $(document).on('addToCardEvent', function (e, item) {
-        getCartInformer(item.variant_id, item.amount, function () {
+        getCartInformer(item.product_id, item.amount, function () {
 
             // Popup
             $.fancybox.open({
@@ -189,7 +188,7 @@ $(function () {
         // navigator.sendBeacon("/log", 'analyticsData');
     })
 
-    
+
     $(".owl-carousel").owlCarousel({
         loop: true,
         margin: 0,

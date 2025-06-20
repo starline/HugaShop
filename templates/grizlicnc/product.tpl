@@ -70,45 +70,51 @@
 				</div>
 			{/if}
 
-			{if $product->variants|count > 0}
-				<form class="variants" id="variants" action="/cart">
-					{getCSRFInput}
 
-					<span class="price mb-4">
-						{if $product->variant->old_price > $product->variant->price AND !$product->disable}
-							<div class="old-price text-end">{$product->variant->old_price|price_html|raw}</div>
-						{/if}
-						<span class="price_name">Цена:</span> <span
-							class="cur_price">{$product->variant->price|price_html|raw}</span>
-					</span>
+			<form class="variants" id="variants" action="/cart">
+				{getCSRFInput}
 
+				<span class="price mb-4">
+					{if $product->old_price > $product->price AND !$product->disable}
+						<div class="old-price text-end">{$product->old_price|price_html|raw}</div>
+					{/if}
+					<span class="price_name">Цена:</span> <span class="cur_price">{$product->price|price_html|raw}</span>
+				</span>
+
+				{if $product_variants->isNotEmpty()}
 					<div class="d-flex flex-wrap gap-2 my-4">
-						{foreach $product->variants as $v}
+						{foreach $product_variants as $product_variant}
 							<div class="variant">
-								<input type="radio" class="btn-check" name="variant" value="{$v->id}" id="variant_{$v->id}"
-									autocomplete="off" {if $product->variant->id == $v->id}checked{/if}
-									{if !$v->stock AND !$v->custom}disabled{/if} variant_sku="{$v->sku}"
-									product_name="{$product->name}" variant_name="{$v->name}" price="{$v->price|price_html:clean}"
-									max_stock="{$v->stock}" old_price="{$v->old_price|price_html:clean}" />
+								<input type="radio" class="btn-check" name="product" value="{$product_variant->product->id}"
+									id="product_{$product_variant->product->id}" autocomplete="off"
+									{if $product->id === $product_variant->product->id}checked{/if}
+									{if !$product_variant->product->stock AND !$product_variant->product->custom}disabled{/if}
+									product_id="{$product_variant->product->id}" sku="{$product_variant->product->sku}"
+									name="{$product_variant->product->name}"
+									variant_name="{$product_variant->product->variant_name}"
+									price="{$product_variant->product->price|price_html:clean}"
+									max_stock="{$product_variant->product->stock}"
+									old_price="{$product_variant->product->old_price|price_html:clean}" />
 
-								{if $v->name}
-									<label class="btn btn-outline-secondary" for="variant_{$v->id}">
-										<div class="fw-bold">{$v->name}</div>
+								{if $product_variant->product->variant_name}
+									<label class="btn btn-outline-secondary" for="product_{$product_variant->product->id}">
+										<div class="fw-bold">{$product_variant->product->variant_name}</div>
 										<div class="border-top">
 											<div class="status_stock">
 												{if $product->disable}
 													<span class="notinstock">Товар больше не поставляется</span>
-												{elseif $v->stock>0}
+												{elseif $product_variant->product->stock>0}
 													<span class="instock">В наличии</span>
-													{if $v->stock|instock:4:'заканчивается'}
-														<span class="instock_count">{$v->stock|instock:4:'заканчивается'}</span>
+													{if $product_variant->product->stock|instock:4:'заканчивается'}
+														<span
+															class="instock_count">{$product_variant->product->stock|instock:4:'заканчивается'}</span>
 													{/if}
-												{elseif $v->custom}
+												{elseif $product_variant->product->custom}
 													<span class="awaiting">Под заказ</span>
-												{elseif $v->awaiting}
+												{elseif $product_variant->product->awaiting}
 													<span class="awaiting">Ожидается поставка
-														{if !$v->awaiting_date|empty and $smarty.now < $v->awaiting_date|strtotime}
-															<span>{$v->awaiting_date|date}</span>
+														{if !$product_variant->product->awaiting_date|empty and $smarty.now < $product_variant->product->awaiting_date|strtotime}
+															<span>{$product_variant->product->awaiting_date|date}</span>
 														{/if}
 													</span>
 												{else}
@@ -116,68 +122,66 @@
 												{/if}
 											</div>
 
-											<span class="variant_price">{$v->price|price_html|raw}</span>
+											<span class="variant_price">{$product_variant->product->price|price_html|raw}</span>
 										</div>
 									</label>
 								{/if}
 							</div>
 						{/foreach}
 					</div>
+				{/if}
 
+
+
+				<div class="status_stock my-3">
 					{$show_buy_btn = false}
-
-					<div class="status_stock my-3">
-						{if $product->disable}
-							<span class="notinstock">Товар больше не поставляется</span>
-						{elseif $product->variant->stock > 0}
-							{$show_buy_btn = true}
-							<span class="instock">В наличии</span>
-							{if $product->variant->stock|instock:4:'заканчивается'}
-								<span
-									class="instock_count badge text-bg-warning">{$product->variant->stock|instock:4:'заканчивается'}</span>
-							{/if}
-						{elseif $product->variant->custom}
-							{$show_buy_btn = true}
-							<span class="awaiting">Под заказ</span>
-						{elseif $product->variant->awaiting}
-							<span class="awaiting">Ожидается поставка
-								{if !$product->variant->awaiting_date|empty and $smarty.now < $product->variant->awaiting_date|strtotime}
-									<span>{$product->variant->awaiting_date|date}</span>
-								{/if}
-							</span>
-						{else}
-							<span class="notinstock">Нет в наличии</span>
+					{if $product->disable}
+						<span class="notinstock">Товар больше не поставляется</span>
+					{elseif $product->stock > 0}
+						{$show_buy_btn = true}
+						<span class="instock">В наличии</span>
+						{if $product->stock|instock:4:'заканчивается'}
+							<span class="instock_count badge text-bg-warning">{$product->stock|instock:4:'заканчивается'}</span>
 						{/if}
-					</div>
+					{elseif $product->custom}
+						{$show_buy_btn = true}
+						<span class="awaiting">Под заказ</span>
+					{elseif $product->awaiting}
+						<span class="awaiting">Ожидается поставка
+							{if !$product->awaiting_date|empty and $smarty.now < $product->awaiting_date|strtotime}
+								<span>{$product->awaiting_date|date}</span>
+							{/if}
+						</span>
+					{else}
+						<span class="notinstock">Нет в наличии</span>
+					{/if}
+				</div>
 
-
-					{if $show_buy_btn}
-						<div class="row">
-							<div class="col-auto">
-								<div class="product_amount">
-									<label class="d-none">Кол-во:</label>
-									<div class="input-group">
-										<div class="input-group-text items minus">-</div>
-										<input type="text" name="amount" value="1" class="form-control text-center" />
-										<div class="input-group-text items plus">+</div>
-									</div>
+				{if $show_buy_btn}
+					<div class="row">
+						<div class="col-auto">
+							<div class="product_amount">
+								<div class="input-group">
+									<div class="input-group-text items minus">-</div>
+									<input type="text" name="amount" value="1" class="form-control text-center" />
+									<div class="input-group-text items plus">+</div>
 								</div>
 							</div>
-
-							<div class="col-7 col-lg-5 d-grid">
-								<button type="submit" class="btn btn-primary" value="в корзину" data-result-text="Добавлено">
-									<svg class="cart-icon" viewBox="0 0 1024 1024">
-										<path fill="#fff"
-											d="M97.718857 109.714286a109.714286 109.714286 0 0 1 107.349333 87.064381L220.16 268.190476h0.24381l49.005714 234.666667L306.541714 682.666667h459.678476l70.460953-341.333334H285.500952l-15.286857-73.142857h566.491429a73.142857 73.142857 0 0 1 71.631238 87.942095l-70.460952 341.333334A73.142857 73.142857 0 0 1 766.22019 755.809524H306.541714a73.142857 73.142857 0 0 1-71.631238-58.343619l-69.241905-335.335619-0.463238 0.097524-31.695238-150.357334A36.571429 36.571429 0 0 0 97.718857 182.857143H35.157333v-73.142857zM304.761905 926.47619a60.952381 60.952381 0 1 0 0-121.904761 60.952381 60.952381 0 0 0 0 121.904761z m438.857143 0a60.952381 60.952381 0 1 0 0-121.904761 60.952381 60.952381 0 0 0 0 121.904761z">
-										</path>
-									</svg>
-									<span>{'Добавить в корзину'|trans}</span>
-								</button>
-							</div>
 						</div>
-					{/if}
-				</form>
-			{/if}
+
+						<div class="col-7 col-lg-5 d-grid">
+							<button type="submit" class="btn btn-primary" value="в корзину" data-result-text="Добавлено">
+								<svg class="cart-icon" viewBox="0 0 1024 1024">
+									<path fill="#fff"
+										d="M97.718857 109.714286a109.714286 109.714286 0 0 1 107.349333 87.064381L220.16 268.190476h0.24381l49.005714 234.666667L306.541714 682.666667h459.678476l70.460953-341.333334H285.500952l-15.286857-73.142857h566.491429a73.142857 73.142857 0 0 1 71.631238 87.942095l-70.460952 341.333334A73.142857 73.142857 0 0 1 766.22019 755.809524H306.541714a73.142857 73.142857 0 0 1-71.631238-58.343619l-69.241905-335.335619-0.463238 0.097524-31.695238-150.357334A36.571429 36.571429 0 0 0 97.718857 182.857143H35.157333v-73.142857zM304.761905 926.47619a60.952381 60.952381 0 1 0 0-121.904761 60.952381 60.952381 0 0 0 0 121.904761z m438.857143 0a60.952381 60.952381 0 1 0 0-121.904761 60.952381 60.952381 0 0 0 0 121.904761z">
+									</path>
+								</svg>
+								<span>{'Добавить в корзину'|trans}</span>
+							</button>
+						</div>
+					</div>
+				{/if}
+			</form>
 
 			<div class="info-box">
 				{extension name='InfoBlock' id=1}
