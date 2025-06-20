@@ -6,13 +6,12 @@ use HugaShop\Api\BaseModel;
 
 class Language extends BaseModel
 {
-    protected $table = 'languages';
 
     public static $table_fields = [
         'id' =>             ['type' => 'int',      'extra' => 'AUTO_INCREMENT'],
         'code' =>           ['type' => 'varchar'],
         'name' =>           ['type' => 'varchar'],
-        'is_default' =>     ['type' => 'tinyint',  'def' => 0],
+        'main' =>           ['type' => 'tinyint',  'def' => 0],
     ];
 
     public static function getLanguages()

@@ -60,8 +60,8 @@ class ProductController extends BaseAdminController
 
 
         $languages = Settings::getParam('languages') ?: [];
-        $default_language = Settings::getParam('default_language') ?? array_key_first($languages);
-        $current_lang = Request::get('lang', 'string') ?: $default_language;
+        $main_language = Settings::getParam('main_language') ?? array_key_first($languages);
+        $current_lang = Request::get('lang', 'string') ?: $main_language;
         Design::assign('languages', $languages);
         Design::assign('current_language', $current_lang);
 
@@ -70,7 +70,7 @@ class ProductController extends BaseAdminController
         ###########
         if (!empty($product = Request::getDataAcces(($this->entity_params)))) {
 
-            if ($current_lang !== $default_language && !empty($product->id)) {
+            if ($current_lang !== $main_language && !empty($product->id)) {
                 Product::updateTranslation($product->id, $current_lang, (array) $product);
                 return $this->redirectToRoute('ProductAdmin', ['id' => $product->id, 'lang' => $current_lang]);
             }
@@ -136,7 +136,7 @@ class ProductController extends BaseAdminController
             }
 
             $params = ['id' => $product->id];
-            if ($current_lang !== $default_language) {
+            if ($current_lang !== $main_language) {
                 $params['lang'] = $current_lang;
             }
             return $this->redirectToRoute('ProductAdmin', $params);
@@ -153,7 +153,7 @@ class ProductController extends BaseAdminController
                 'options'
             ]);
 
-            if ($current_lang !== $default_language) {
+            if ($current_lang !== $main_language) {
                 if ($tr = Product::getTranslation($product->id, $current_lang)) {
                     foreach (['name', 'meta_title', 'meta_description', 'annotation', 'body'] as $f) {
                         $product->$f = $tr->$f;
