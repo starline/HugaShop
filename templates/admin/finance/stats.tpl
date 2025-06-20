@@ -88,7 +88,6 @@
             let byDay = makeChart(
                document.getElementById('stats_byDay'), {
                   chart: { type: 'bar', height: 350 },
-                  tooltip: { x: { format: 'dd LLL yyyy' } }
                },
                [{
                      filter: { filter: 'byDay', fromDate: fromDate, csrf: csrf },

@@ -186,7 +186,6 @@
    <script type="text/javascript" src="{'js/chart/luxon.js'|asset}"></script>
    <script type="module">
       import 'https://cdn.jsdelivr.net/npm/apexcharts';
-      import '{"js/chart/luxon.js"|asset}';
       import { ajax_icon, makeChart } from '{"js/common.js"|asset}';
 
       var csrf = "{setCSRF}";

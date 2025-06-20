@@ -151,7 +151,6 @@
 		let cartsData = makeChart(
 			document.getElementById('cartsHistory'), {
 				chart: { type: 'bar', height: 250 },
-				tooltip: { x: { format: 'dd LLL yyyy' } },
 				title: { text: 'Корзины по дням' }
 			},
 			[{
@@ -191,7 +190,6 @@
 		$('#chart_year').click(function() {
 			if (cartsData.chart) {
 				cartsData.chart.updateOptions({
-					tooltip: { x: { format: 'LLLL yyyy' } },
 					title: { text: 'Корзины по месяцам' }
 				});
 			}
@@ -201,12 +199,10 @@
 		$('#chart_month').click(function() {
 			if (cartsData.chart) {
 				cartsData.chart.updateOptions({
-					tooltip: { x: { format: 'dd LLL yyyy' } },
 					title: { text: 'Корзины по дням' }
 				});
 			}
 			cartsData.load({ range: 'month', filter: 'byDay' });
 		});
-		
 	</script>
 {/block}
