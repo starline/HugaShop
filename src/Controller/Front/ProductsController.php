@@ -84,7 +84,6 @@ class ProductsController extends BaseFrontController
         $features = [];
         $selected_features = [];
         foreach (ProductFeature::getFeatures(['category_id' => $category->id, 'in_filter' => 1]) as $feature) {
-            $features[$feature->id] = $feature;
             if (($val = strval(Request::get($feature->id))) != '') {
                 $selected_features[$feature->id] = $val;
             }
@@ -103,10 +102,7 @@ class ProductsController extends BaseFrontController
             $products_filter['features'] = $selected_features;
         }
 
-
-        
         $options = ProductOption::getOptions($options_filter);
-
         foreach ($options as $option) {
             if (isset($features[$option->feature_id])) {
                 $features[$option->feature_id]->options[] = $option;

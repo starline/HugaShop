@@ -70,7 +70,7 @@ class ProductFeature extends BaseModel
             $query->limit((int) $filter['limit']);
         }
 
-        return $query->get();
+        return $query->get()->keyBy('id');;
     }
 
 
