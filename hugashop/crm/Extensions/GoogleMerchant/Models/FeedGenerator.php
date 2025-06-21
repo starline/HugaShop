@@ -12,7 +12,7 @@
  * 
  */
 
-namespace HugaShop\Extensions\GoogleMerchant\Model;
+namespace HugaShop\Extensions\GoogleMerchant\Models;
 
 use HugaShop\Models\Image;
 use HugaShop\Models\Config;
@@ -23,7 +23,7 @@ use HugaShop\Models\Product\ProductOption;
 use HugaShop\Models\Finance\FinanceCurrency;
 use HugaShop\Models\Product\ProductCategory;
 use Symfony\Contracts\Cache\ItemInterface;
-use HugaShop\Extensions\GoogleMerchant\Model\GoogleMerchantCategory;
+use HugaShop\Extensions\GoogleMerchant\Models\GoogleMerchantCategory;
 
 class FeedGenerator
 {

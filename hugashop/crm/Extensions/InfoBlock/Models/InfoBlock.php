@@ -1,6 +1,6 @@
 <?php
 
-namespace HugaShop\Extensions\InfoBlock\Model;
+namespace HugaShop\Extensions\InfoBlock\Models;
 
 use HugaShop\Extensions\BaseExtensionModel;
 

@@ -13,7 +13,7 @@
  *
  */
 
-namespace HugaShop\Extensions\YandexMerchant\Model;
+namespace HugaShop\Extensions\YandexMerchant\Models;
 
 use HugaShop\Models\Image;
 use HugaShop\Models\Config;
@@ -24,7 +24,7 @@ use HugaShop\Models\Product\ProductOption;
 use HugaShop\Models\Finance\FinanceCurrency;
 use HugaShop\Models\Product\ProductCategory;
 use Symfony\Contracts\Cache\ItemInterface;
-use HugaShop\Extensions\YandexMerchant\Model\YandexMerchantCategory;
+use HugaShop\Extensions\YandexMerchant\Models\YandexMerchantCategory;
 
 class FeedGenerator
 {

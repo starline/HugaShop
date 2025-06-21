@@ -8,10 +8,10 @@
  *
  */
 
-namespace HugaShop\Extensions\YandexMerchant\Model;
+namespace HugaShop\Extensions\YandexMerchant\Models;
 
 use HugaShop\Extensions\BaseExtensionModel;
-use HugaShop\Extensions\YandexMerchant\Model\YandexMerchantCategory;
+use HugaShop\Extensions\YandexMerchant\Models\YandexMerchantCategory;
 
 final class YandexMerchant extends BaseExtensionModel
 {

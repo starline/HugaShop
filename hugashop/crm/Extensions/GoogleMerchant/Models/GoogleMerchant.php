@@ -9,10 +9,10 @@
  */
 
 
-namespace HugaShop\Extensions\GoogleMerchant\Model;
+namespace HugaShop\Extensions\GoogleMerchant\Models;
 
 use HugaShop\Extensions\BaseExtensionModel;
-use HugaShop\Extensions\GoogleMerchant\Model\GoogleMerchantCategory;
+use HugaShop\Extensions\GoogleMerchant\Models\GoogleMerchantCategory;
 
 final class GoogleMerchant extends BaseExtensionModel
 {

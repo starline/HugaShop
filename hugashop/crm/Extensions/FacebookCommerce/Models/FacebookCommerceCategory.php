@@ -8,7 +8,7 @@
  *
  */
 
-namespace HugaShop\Extensions\FacebookCommerce\Model;
+namespace HugaShop\Extensions\FacebookCommerce\Models;
 
 use HugaShop\Extensions\BaseExtensionModel;
 

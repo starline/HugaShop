@@ -16,7 +16,7 @@ use HugaShop\Models\Request;
 use App\Event\DesignBeforeFetchEvent;
 use HugaShop\Extensions\BaseExtension;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
-use HugaShop\Extensions\SeoPage\Model\SeoPage as SeoPageModel;
+use HugaShop\Extensions\SeoPage\Models\SeoPage as SeoPageModel;
 
 final class SeoPage extends BaseExtension
 {

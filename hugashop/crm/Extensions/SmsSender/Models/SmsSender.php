@@ -8,7 +8,7 @@
  *
  */
 
-namespace HugaShop\Extensions\SmsSender\Model;
+namespace HugaShop\Extensions\SmsSender\Models;
 
 use HugaShop\Extensions\BaseExtensionModel;
 

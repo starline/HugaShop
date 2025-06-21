@@ -20,8 +20,8 @@ use HugaShop\Models\User\UserMailing;
 use HugaShop\Models\User\UserNotifier;
 use HugaShop\Extensions\BaseExtension;
 use HugaShop\Models\User\UserMailTemplate;
-use HugaShop\Extensions\SmsSender\Model\SmsSenderMail;
-use HugaShop\Extensions\SmsSender\Model\SmsSender as ModelSmsSender;
+use HugaShop\Extensions\SmsSender\Models\SmsSenderMail;
+use HugaShop\Extensions\SmsSender\Models\SmsSender as ModelSmsSender;
 
 final class SmsSender extends BaseExtension
 {
