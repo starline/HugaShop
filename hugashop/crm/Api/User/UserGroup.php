@@ -19,7 +19,7 @@ class UserGroup extends BaseModel
     protected $guarded = [];
     public $timestamps = false;
 
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>             ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'name' =>           ['type' => 'varchar',       'req' => true],
         'discount' =>       ['type' => 'decimal',       'lenght' => 10.2, 'def' => 0.00],

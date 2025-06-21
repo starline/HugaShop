@@ -15,7 +15,7 @@ use HugaShop\Api\Product\Product;
 
 class CartPurchase extends BaseModel
 {
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>                 ['type' => 'int',       'extra' => 'AUTO_INCREMENT'],
         'cart_id' =>            ['type' => 'int'],
         'product_id' =>         ['type' => 'int'],

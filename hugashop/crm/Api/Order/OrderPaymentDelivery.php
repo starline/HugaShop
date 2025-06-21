@@ -16,7 +16,7 @@ class OrderPaymentDelivery extends BaseModel
 {
     protected $table = 'order_delivery_payment';
 
-    public static $table_fields = [
+    protected static $table_fields = [
         'delivery_id' =>        ['type' => 'int', 'req' => true],
         'payment_method_id' =>  ['type' => 'int', 'req' => true],
     ];

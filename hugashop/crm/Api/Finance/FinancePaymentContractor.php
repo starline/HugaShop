@@ -18,7 +18,7 @@ class FinancePaymentContractor extends BaseModel
 
      protected $table = 'finance_entity_related';
 
-    public static $table_fields = [
+    protected static $table_fields = [
         'payment_id' =>         ['type' => 'int',            'req' => true],
         'entity_id' =>          ['type' => 'int',           'req' => true],
         'entity_name' =>        ['type' => 'varchar',        'req' => true]

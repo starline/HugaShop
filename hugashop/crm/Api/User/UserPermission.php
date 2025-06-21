@@ -17,7 +17,7 @@ use HugaShop\Api\BaseModel;
 class UserPermission extends BaseModel
 {
 
-    public static $table_fields = [
+    protected static $table_fields = [
         'user_id' =>        ['type' => 'int',           'req' => true],
         'name' =>           ['type' => 'varchar',       'req' => true]
 

@@ -29,7 +29,7 @@ class CouponController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($coupon = Request::getDataAcces(UserCoupon::$table_fields))) {
+        if (!empty($coupon = Request::getDataAcces(UserCoupon::getFields()))) {
 
             $expires = Request::post('expires', 'bool');
             if (!empty($expires) and !empty($coupon->expire)) {

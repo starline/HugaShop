@@ -15,7 +15,7 @@ use HugaShop\Extensions\BaseExtensionModel;
 final class SmsSender extends BaseExtensionModel
 {
 
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>                         ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'name' =>                       ['type' => 'varchar',       'req' => true],
         'notifier_id' =>                ['type' => 'int'],

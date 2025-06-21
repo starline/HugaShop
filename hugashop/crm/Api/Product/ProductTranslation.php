@@ -15,7 +15,7 @@ use HugaShop\Api\BaseModel;
 class ProductTranslation extends BaseModel
 {
 
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>                 ['type' => 'int',      'extra' => 'AUTO_INCREMENT'],
         'product_id' =>         ['type' => 'int'],
         'language_code' =>      ['type' => 'varchar'],

@@ -20,7 +20,7 @@ use HugaShop\Api\DesignTwig;
 
 class UserMailing extends BaseModel
 {
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>                     ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'user_id' =>                ['type' => 'int'],
         'notifier_id' =>            ['type' => 'int',           'req' => true],

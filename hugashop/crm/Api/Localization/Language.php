@@ -7,7 +7,7 @@ use HugaShop\Api\BaseModel;
 class Language extends BaseModel
 {
 
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>             ['type' => 'int',      'extra' => 'AUTO_INCREMENT'],
         'code' =>           ['type' => 'varchar'],
         'name' =>           ['type' => 'varchar'],

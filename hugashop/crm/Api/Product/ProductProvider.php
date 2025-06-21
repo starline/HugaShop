@@ -14,7 +14,7 @@ use HugaShop\Api\BaseModel;
 
 class ProductProvider extends BaseModel
 {
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>                     ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'name' =>                   ['type' => 'varchar',       'req' => true],
         'description' =>            ['type' => 'varchar'],

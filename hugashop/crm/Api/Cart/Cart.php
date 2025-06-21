@@ -18,7 +18,7 @@ use HugaShop\Api\Order\Order;
 
 class Cart extends BaseModel
 {
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>                 ['type' => 'int',       'extra' => 'AUTO_INCREMENT'],
         'token' =>              ['type' => 'varchar'],
         'user_id' =>            ['type' => 'int'],

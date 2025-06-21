@@ -15,7 +15,7 @@ use HugaShop\Extensions\YandexMerchant\Model\YandexMerchantCategory;
 
 final class YandexMerchant extends BaseExtensionModel
 {
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>                 ['type' => 'int',     'extra' => 'AUTO_INCREMENT'],
         'name' =>               ['type' => 'varchar', 'req' => true],
         'currency_code' =>      ['type' => 'varchar'],

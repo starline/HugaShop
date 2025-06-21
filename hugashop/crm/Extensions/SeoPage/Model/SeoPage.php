@@ -16,7 +16,7 @@ use HugaShop\Extensions\BaseExtensionModel;
 final class SeoPage extends BaseExtensionModel
 {
 
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>                     ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'name' =>                   ['type' => 'varchar',       'required' => 'true'],
         'url' =>                    ['type' => 'varchar',       'required' => 'true'],

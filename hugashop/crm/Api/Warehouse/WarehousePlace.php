@@ -16,7 +16,7 @@ class WarehousePlace extends BaseModel
 {
     protected $table = 'wh_place';
 
-    public static $table_fields = [
+    protected static $table_fields = [
         'id'       => ['type' => 'int',     'extra' => 'AUTO_INCREMENT'],
         'name'     => ['type' => 'varchar', 'req' => true],
         'enabled'  => ['type' => 'tinyint', 'def' => 0],

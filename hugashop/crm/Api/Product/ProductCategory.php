@@ -20,7 +20,7 @@ use HugaShop\Api\Product\Product;
 class ProductCategory extends BaseModel
 {
 
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>                 ['type' => 'int'],
         'parent_id' =>          ['type' => 'int'],
         'name' =>               ['type' => 'varchar',           'req' => true],

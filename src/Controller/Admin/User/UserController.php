@@ -18,8 +18,6 @@ use HugaShop\Api\User\UserGroup;
 use HugaShop\Api\Order\Order;
 use HugaShop\Api\User\UserNotifier;
 use HugaShop\Api\User\UserPermission;
-use HugaShop\Api\Order\OrderLabel;
-use HugaShop\Api\Order\OrderPurchase;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -35,7 +33,7 @@ class UserController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($current_user = Request::getDataAcces(User::$table_fields))) {
+        if (!empty($current_user = Request::getDataAcces(User::getFields()))) {
 
             // Не допустить одинаковые email пользователей
             // Разрешить пустые email

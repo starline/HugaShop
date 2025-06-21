@@ -16,7 +16,7 @@ use HugaShop\Api\BaseModel;
 class ProductOption extends BaseModel
 {
 
-    public static $table_fields = [
+    protected static $table_fields = [
         'product_id' =>         ['type' => 'int',           'req' => true],
         'feature_id' =>         ['type' => 'int',           'req' => true],
         'value ' =>             ['type' => 'varchar']

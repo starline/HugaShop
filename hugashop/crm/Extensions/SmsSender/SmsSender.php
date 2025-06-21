@@ -67,7 +67,7 @@ final class SmsSender extends BaseExtension
 
         #### Update
         ###########
-        if (!empty($mailing = Request::getDataAcces(ModelSmsSender::$table_fields))) {
+        if (!empty($mailing = Request::getDataAcces(ModelSmsSender::getFields()))) {
 
             $product_list = preg_split('/\r\n|\r|\n/', Request::post('product_list', 'string')); # Формирум мaссив из строк
             $mailing->product_list = serialize($product_list);

@@ -6,7 +6,7 @@ use HugaShop\Extensions\BaseExtensionModel;
 
 final class InfoBlock extends BaseExtensionModel
 {
-    public static $table_fields = [
+    protected static $table_fields = [
         'id'       => ['type' => 'int',     'extra' => 'AUTO_INCREMENT'],
         'name'     => ['type' => 'varchar', 'required' => 'true'],
         'body'     => ['type' => 'text'],

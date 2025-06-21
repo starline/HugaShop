@@ -30,7 +30,7 @@ class GroupController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($group = Request::getDataAcces(UserGroup::$table_fields))) {
+        if (!empty($group = Request::getDataAcces(UserGroup::getFields()))) {
 
             if (empty($group->id)) {
                 $group = Design::setFlashMessage('add', UserGroup::create($group));

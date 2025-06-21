@@ -25,7 +25,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Order extends BaseModel
 {
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>                     ['type' => 'int'],
         'delivery_id' =>            ['type' => 'int'],
         'delivery_price' =>         ['type' => 'decimal',   'lenght' => 10.2],

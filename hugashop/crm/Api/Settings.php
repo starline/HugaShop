@@ -17,9 +17,8 @@ class Settings extends BaseModel
 {
 
     protected $guarded = ['id'];
-    public $timestamps = false;
 
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'name' =>               ['type' => 'varchar'],
         'value' =>              ['type' => 'varchar',       'length' => 900]

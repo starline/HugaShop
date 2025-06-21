@@ -8,7 +8,7 @@ class ProductPriceHistory extends BaseModel
 {
     protected $table = 'product_price_history';
 
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>             ['type' => 'int',      'extra' => 'AUTO_INCREMENT'],
         'product_id' =>     ['type' => 'int',      'req' => true],
         'price' =>          ['type' => 'decimal',  'lenght' => 14.2, 'def' => 0.00],

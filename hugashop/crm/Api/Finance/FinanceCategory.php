@@ -14,7 +14,7 @@ use HugaShop\Api\BaseModel;
 
 class FinanceCategory extends BaseModel
 {
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>                     ['type' => 'int',       'extra' => 'AUTO_INCREMENT'],
         'name' =>                   ['type' => 'varchar',   'req' => true],
         'type' =>                   ['type' => 'int'],      # Don't set tinyint, if empty set 0

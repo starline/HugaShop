@@ -33,7 +33,7 @@ class MailingController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($mailing = Request::getDataAcces(UserMailing::$table_fields))) {
+        if (!empty($mailing = Request::getDataAcces(UserMailing::getFields()))) {
 
             if (empty($mailing->id)) {
                 $mailing->id = Design::setFlashMessage('add', UserMailing::addMailing($mailing));

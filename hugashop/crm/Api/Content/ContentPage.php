@@ -15,7 +15,7 @@ use HugaShop\Api\Helper;
 
 class ContentPage extends BaseModel
 {
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>                     ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'name' =>                   ['type' => 'varchar',       'required' => 'true'],
         'url' =>                    ['type' => 'varchar',       'required' => 'true'],

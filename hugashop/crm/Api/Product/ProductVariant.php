@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class ProductVariant extends BaseModel
 {
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>               ['type' => 'int', 'extra' => 'AUTO_INCREMENT'],
         'parent_id' =>        ['type' => 'int'],
         'product_id' =>       ['type' => 'int'],

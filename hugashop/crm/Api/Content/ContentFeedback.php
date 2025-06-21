@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Builder;
 class ContentFeedback extends BaseModel
 {
 
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>                 ['type' => 'int',           'lenght' => 11,     'extra' => 'AUTO_INCREMENT'],
         'name' =>               ['type' => 'varchar',       'req' => true],
         'date' =>               ['type' => 'tinyint',       'def' => 'CURRENT_TIMESTAMP'],

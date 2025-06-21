@@ -15,7 +15,7 @@ use HugaShop\Api\User\User;
 
 class FinancePayment extends BaseModel
 {
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>                     ['type' => 'int',       'extra' => 'AUTO_INCREMENT'],
         'purse_id' =>               ['type' => 'int'],
         'finance_category_id' =>    ['type' => 'int'],

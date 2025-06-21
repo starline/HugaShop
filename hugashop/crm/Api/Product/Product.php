@@ -27,7 +27,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Product extends BaseModel
 {
 
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'url' =>                ['type' => 'varchar'],
         'name' =>               ['type' => 'varchar',       'trans' => true,    'req' => true],

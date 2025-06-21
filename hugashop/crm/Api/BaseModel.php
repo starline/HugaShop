@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.8
+ * @version 1.9
  *
  */
 
@@ -23,7 +23,7 @@ abstract class BaseModel extends CheckModel
     protected $guarded = [];
     public $timestamps = false;
 
-    public static $table_fields;
+    protected static $table_fields;
 
     public function __construct(array $attributes = [])
     {

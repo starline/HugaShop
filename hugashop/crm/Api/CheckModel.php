@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * HugaShop - Sell anything
+ *
+ * @author Andri Huga
+ * @version 1.1
+ *
+ * Auto-check tables and columns.
+ * 
+ */
+
 namespace HugaShop\Api;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
@@ -7,12 +17,37 @@ use Illuminate\Database\QueryException;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * Model with auto-check functionality for tables and columns.
- */
 abstract class CheckModel extends Model
 {
+
+    protected static $table_fields;
     protected static array $checkedTables = [];
+
+
+    /**
+     * Execute query and try to create table/columns on missing table/column errors
+     */
+    protected static function runWithInitTable(callable $callback)
+    {
+        try {
+            return $callback();
+        } catch (QueryException $e) {
+            $msg = $e->getMessage();
+            if (
+                stripos($msg, 'no such table') !== false ||
+                stripos($msg, 'base table or view not found') !== false ||
+                stripos($msg, 'doesn\'t exist') !== false ||
+                stripos($msg, 'unknown column') !== false
+            ) {
+                $table = (new static)->getTable();
+                self::initTable($table);
+                return $callback();
+            }
+
+            throw $e;
+        }
+    }
+
 
     /**
      * Ensure that the database table and its fields exist
@@ -42,6 +77,7 @@ abstract class CheckModel extends Model
 
         self::$checkedTables[$table] = true;
     }
+
 
     /**
      * Add columns to Blueprint instance
@@ -101,27 +137,4 @@ abstract class CheckModel extends Model
             }
         }
     }
-
-    /**
-     * Execute query and try to create table/columns on missing table/column errors
-     */
-    protected static function runWithInitTable(callable $callback)
-    {
-        try {
-            return $callback();
-        } catch (QueryException $e) {
-            $msg = $e->getMessage();
-            if (stripos($msg, 'no such table') !== false ||
-                stripos($msg, 'base table or view not found') !== false ||
-                stripos($msg, 'doesn\'t exist') !== false ||
-                stripos($msg, 'unknown column') !== false) {
-                $table = (new static)->getTable();
-                self::initTable($table);
-                return $callback();
-            }
-
-            throw $e;
-        }
-    }
-
 }

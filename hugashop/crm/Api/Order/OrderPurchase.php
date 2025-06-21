@@ -17,7 +17,7 @@ use HugaShop\Api\Product\ProductCategory;
 
 class OrderPurchase extends BaseModel
 {
-    public static $table_fields = [
+    protected static $table_fields = [
         'id'           => ['type' => 'int',      'extra' => 'AUTO_INCREMENT'],
         'order_id'     => ['type' => 'int'],
         'product_id'   => ['type' => 'int'],

@@ -33,7 +33,7 @@ class NotifierController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($notifier = Request::getDataAcces(UserNotifier::$table_fields))) {
+        if (!empty($notifier = Request::getDataAcces(UserNotifier::getFields()))) {
 
             $notifier->settings = Request::post('notifier_settings');
 

@@ -17,7 +17,7 @@ class WarehouseProduct extends BaseModel
 {
     protected $table = 'wh_product';
 
-    public static $table_fields = [
+    protected static $table_fields = [
         'id'         => ['type' => 'int',     'extra' => 'AUTO_INCREMENT'],
         'move_id'    => ['type' => 'int'],
         'product_id' => ['type' => 'int'],

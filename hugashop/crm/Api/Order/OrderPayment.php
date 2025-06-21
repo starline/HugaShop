@@ -19,7 +19,7 @@ use HugaShop\Api\Finance\FinanceCurrency;
 
 class OrderPayment extends BaseModel
 {
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>                     ['type' => 'int',           'lenght' => 11,       'extra' => 'AUTO_INCREMENT'],
         'name' =>                   ['type' => 'varchar',       'lenght' => 255,      'required' => true],
         'public_name' =>            ['type' => 'varchar',       'lenght' => 255,      'required' => true],

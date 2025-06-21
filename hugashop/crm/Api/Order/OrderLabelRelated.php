@@ -15,7 +15,7 @@ use HugaShop\Api\BaseModel;
 
 class OrderLabelRelated extends BaseModel
 {
-    public static $table_fields = [
+    protected static $table_fields = [
         'order_id' => ['type' => 'int', 'req' => true],
         'label_id' => ['type' => 'int', 'req' => true],
     ];

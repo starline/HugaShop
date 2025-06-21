@@ -16,7 +16,7 @@ use HugaShop\Extensions\BaseExtensionModel;
 class SmsSenderMail extends BaseExtensionModel
 {
 
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'sender_id' =>          ['type' => 'int'],
         'mail_id' =>            ['type' => 'int']

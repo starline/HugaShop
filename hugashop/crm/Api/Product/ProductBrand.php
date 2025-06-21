@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ProductBrand extends BaseModel
 {
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'name' =>               ['type' => 'varchar',       'translate' => true, 'req' => true],
         'url' =>                ['type' => 'varchar'],

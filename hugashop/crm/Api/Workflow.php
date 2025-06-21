@@ -16,7 +16,7 @@ use HugaShop\Api\User\User;
 class Workflow extends BaseModel
 {
 
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>             ['type' => 'int',       'extra' => 'AUTO_INCREMENT'],
         'entity_id' =>      ['type' => 'int'],
         'entity_name' =>    ['type' => 'varchar'],

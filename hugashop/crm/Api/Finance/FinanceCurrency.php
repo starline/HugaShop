@@ -19,7 +19,7 @@ use HugaShop\Api\BaseModel;
 
 class FinanceCurrency extends BaseModel
 {
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'name' =>               ['type' => 'varchar',       'req' => true],
         'sign' =>               ['type' => 'varchar',       'lenght' => 20],

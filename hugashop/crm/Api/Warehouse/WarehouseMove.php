@@ -26,7 +26,7 @@ class WarehouseMove extends BaseModel
 {
     protected $table = 'wh_move';
 
-    public static $table_fields = [
+    protected static $table_fields = [
         'id'            => ['type' => 'int',      'extra' => 'AUTO_INCREMENT'],
         'date'          => ['type' => 'datetime', 'def'   => 'CURRENT_TIMESTAMP', 'access' => false],
         'modified'      => ['type' => 'datetime', 'access' => false],

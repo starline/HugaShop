@@ -14,7 +14,7 @@ use HugaShop\Extensions\BaseExtensionModel;
 
 class GoogleMerchantCategory extends BaseExtensionModel
 {
-    public static $table_fields = [
+    protected static $table_fields = [
         'pricefeed_id' => ['type' => 'int'],
         'category_id'  => ['type' => 'int'],
     ];

@@ -15,7 +15,7 @@ use HugaShop\Api\BaseModel;
 class ProductCategorySynonym extends BaseModel
 {
 
-    public static $table_fields = [
+    protected static $table_fields = [
         'id' =>                 ['type' => 'int'],
         'category_id' =>        ['type' => 'int'],
         'name' =>               ['type' => 'varchar',           'req' => true],
