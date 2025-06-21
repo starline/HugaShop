@@ -16,7 +16,6 @@ use stdClass;
 use HugaShop\Api\Image;
 use HugaShop\Api\Design;
 use HugaShop\Api\Request;
-use HugaShop\Api\Settings;
 use HugaShop\Api\SeoKeywords;
 use HugaShop\Api\Product\Product;
 use HugaShop\Api\User\UserPermission;

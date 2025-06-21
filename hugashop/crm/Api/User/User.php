@@ -4,9 +4,9 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.4
+ * @version 3.5
  *
- * Тут работает с данными пользователей
+ * Use BCRYPT
  *
  */
 
