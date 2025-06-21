@@ -82,6 +82,23 @@ abstract class BaseModel extends CheckModel
 
 
     /**
+     * Get translatable fields
+     * @return array Array of field names that have 'trans' => true
+     */
+    public static function getTransFields(): array
+    {
+        $fields = [];
+        foreach (static::getFields() as $name => $params) {
+            if (!empty($params['trans'])) {
+                $fields[] = $name;
+            }
+        }
+
+        return $fields;
+    }
+
+
+    /**
      * WhereId
      * @param int|array $ids
      */
