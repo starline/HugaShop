@@ -10,9 +10,9 @@
 
 namespace App\Controller\Admin\Order;
 
-use HugaShop\Api\Design;
-use HugaShop\Api\Request;
-use HugaShop\Api\Order\OrderLabel;
+use HugaShop\Models\Design;
+use HugaShop\Models\Request;
+use HugaShop\Models\Order\OrderLabel;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

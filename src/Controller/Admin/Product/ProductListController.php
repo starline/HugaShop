@@ -10,14 +10,14 @@
 
 namespace App\Controller\Admin\Product;
 
-use HugaShop\Api\Design;
-use HugaShop\Api\Helper;
-use HugaShop\Api\Request;
-use HugaShop\Api\Settings;
-use HugaShop\Api\Product\Product;
-use HugaShop\Api\Product\ProductBrand;
+use HugaShop\Models\Design;
+use HugaShop\Models\Helper;
+use HugaShop\Models\Request;
+use HugaShop\Models\Settings;
+use HugaShop\Models\Product\Product;
+use HugaShop\Models\Product\ProductBrand;
 use App\Controller\BaseAdminController;
-use HugaShop\Api\Product\ProductCategory;
+use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Illuminate\Database\Capsule\Manager as Capsule;

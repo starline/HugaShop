@@ -10,8 +10,8 @@
 
 namespace App\Controller\Front;
 
-use HugaShop\Api\Image;
-use HugaShop\Api\Helper;
+use HugaShop\Models\Image;
+use HugaShop\Models\Helper;
 use App\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

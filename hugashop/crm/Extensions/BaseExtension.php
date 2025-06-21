@@ -10,10 +10,10 @@
 
 namespace HugaShop\Extensions;
 
-use HugaShop\Api\Config;
-use HugaShop\Api\Design;
-use HugaShop\Api\Helper;
-use HugaShop\Api\Settings;
+use HugaShop\Models\Config;
+use HugaShop\Models\Design;
+use HugaShop\Models\Helper;
+use HugaShop\Models\Settings;
 
 class BaseExtension
 {

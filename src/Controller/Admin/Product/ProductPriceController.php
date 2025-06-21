@@ -12,16 +12,16 @@
 
 namespace App\Controller\Admin\Product;
 
-use HugaShop\Api\Design;
-use HugaShop\Api\Helper;
-use HugaShop\Api\Request;
-use HugaShop\Api\Settings;
-use HugaShop\Api\Order\Order;
-use HugaShop\Api\Product\Product;
-use HugaShop\Api\User\UserPermission;
+use HugaShop\Models\Design;
+use HugaShop\Models\Helper;
+use HugaShop\Models\Request;
+use HugaShop\Models\Settings;
+use HugaShop\Models\Order\Order;
+use HugaShop\Models\Product\Product;
+use HugaShop\Models\User\UserPermission;
 use App\Controller\BaseAdminController;
-use HugaShop\Api\Product\ProductRelated;
-use HugaShop\Api\Product\ProductVariant;
+use HugaShop\Models\Product\ProductRelated;
+use HugaShop\Models\Product\ProductVariant;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 

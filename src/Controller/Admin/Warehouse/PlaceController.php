@@ -10,9 +10,9 @@
 
 namespace App\Controller\Admin\Warehouse;
 
-use HugaShop\Api\Design;
-use HugaShop\Api\Request;
-use HugaShop\Api\Warehouse\WarehousePlace;
+use HugaShop\Models\Design;
+use HugaShop\Models\Request;
+use HugaShop\Models\Warehouse\WarehousePlace;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

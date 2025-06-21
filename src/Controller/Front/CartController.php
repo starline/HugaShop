@@ -13,11 +13,11 @@
 
 namespace App\Controller\Front;
 
-use HugaShop\Api\Cart\Cart;
-use HugaShop\Api\Design;
-use HugaShop\Api\Request;
+use HugaShop\Models\Cart\Cart;
+use HugaShop\Models\Design;
+use HugaShop\Models\Request;
 use App\Event\CartAddEvent;
-use HugaShop\Api\Cart\CartPurchase;
+use HugaShop\Models\Cart\CartPurchase;
 use App\Controller\BaseFrontController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

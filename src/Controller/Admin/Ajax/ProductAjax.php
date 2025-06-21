@@ -10,10 +10,10 @@
 
 namespace App\Controller\Admin\Ajax;
 
-use HugaShop\Api\Request;
+use HugaShop\Models\Request;
 use App\Controller\BaseAdminController;
-use HugaShop\Api\Product\ProductOption;
-use HugaShop\Api\Product\ProductFeature;
+use HugaShop\Models\Product\ProductOption;
+use HugaShop\Models\Product\ProductFeature;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 

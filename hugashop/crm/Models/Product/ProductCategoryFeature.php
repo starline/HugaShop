@@ -1,0 +1,89 @@
+<?php
+
+/**
+ * HugaShop - Sell anything
+ *
+ * @author Andri Huga
+ * @version 2.0
+ *
+ */
+
+namespace HugaShop\Models\Product;
+
+use HugaShop\Models\BaseModel;
+
+class ProductCategoryFeature extends BaseModel
+{
+
+    protected static $table_fields = [
+        'product_id' =>         ['type' => 'int',           'req' => true],
+        'feature_id' =>         ['type' => 'int',           'req' => true],
+    ];
+
+
+    /**
+     * Выбиарем категории в которых есть характеристика
+     * @param $id
+     */
+    public static function getFeatureCategories(int $feature_id)
+    {
+        return self::where('feature_id', $feature_id)
+            ->pluck('category_id')
+            ->toArray();
+    }
+
+
+    /**
+     * Add feature to category
+     * @param int $id
+     * @param int $category_id
+     */
+    public static function addFeatureCategory(int $feature_id, int $category_id)
+    {
+        return self::firstOrCreate([
+            'feature_id' => $feature_id,
+            'category_id' => $category_id,
+        ]) instanceof self;
+    }
+
+
+    /**
+     * Update feature categories
+     * @param integer $feature_id
+     * @param array $categories
+     */
+    public static function updateFeatureCategories(int $feature_id, array $categories)
+    {
+
+        if (empty($feature_id)) {
+            return false;
+        }
+
+        // Удалим все старые связи
+        self::where('feature_id', $feature_id)->delete();
+
+        if (!empty($categories)) {
+
+            // Массовая вставка новых связей
+            $insert = collect($categories)->map(fn($category_id) => [
+                'feature_id' => $feature_id,
+                'category_id' => (int) $category_id,
+            ])->all();
+
+            self::insert($insert);
+
+            // Удалим значения из options, если категория товара не входит в список
+            ProductOption::where('feature_id', $feature_id)
+                ->whereHas('product', function ($query) use ($categories) {
+                    $query->whereNotIn('category_id', $categories);
+                })
+                ->delete();
+        } else {
+
+            // Если список пуст, удалим все опции этой характеристики
+            ProductOption::where('feature_id', $feature_id)->delete();
+        }
+
+        return true;
+    }
+}

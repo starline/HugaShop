@@ -10,9 +10,9 @@
 
 namespace HugaShop\Extensions\StorageManager;
 
-use HugaShop\Api\Config;
-use HugaShop\Api\Design;
-use HugaShop\Api\Request;
+use HugaShop\Models\Config;
+use HugaShop\Models\Design;
+use HugaShop\Models\Request;
 use Symfony\Component\Finder\Finder;
 use HugaShop\Extensions\BaseExtension;
 

@@ -10,14 +10,14 @@
 
 namespace App\Controller\Front;
 
-use HugaShop\Api\Config;
-use HugaShop\Api\Design;
-use HugaShop\Api\Request;
-use HugaShop\Api\Order\Order;
-use HugaShop\Api\Finance\FinanceCurrency;
-use HugaShop\Api\Order\OrderPayment;
-use HugaShop\Api\Order\OrderPurchase;
-use HugaShop\Api\Order\OrderDelivery;
+use HugaShop\Models\Config;
+use HugaShop\Models\Design;
+use HugaShop\Models\Request;
+use HugaShop\Models\Order\Order;
+use HugaShop\Models\Finance\FinanceCurrency;
+use HugaShop\Models\Order\OrderPayment;
+use HugaShop\Models\Order\OrderPurchase;
+use HugaShop\Models\Order\OrderDelivery;
 use App\Controller\BaseFrontController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

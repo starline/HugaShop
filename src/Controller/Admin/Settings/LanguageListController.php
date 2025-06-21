@@ -10,10 +10,10 @@
 
 namespace App\Controller\Admin\Settings;
 
-use HugaShop\Api\Design;
-use HugaShop\Api\Request;
+use HugaShop\Models\Design;
+use HugaShop\Models\Request;
 use App\Controller\BaseAdminController;
-use HugaShop\Api\Localization\Language;
+use HugaShop\Models\Localization\Language;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 

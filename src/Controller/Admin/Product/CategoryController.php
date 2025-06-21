@@ -10,17 +10,17 @@
 
 namespace App\Controller\Admin\Product;
 
-use HugaShop\Api\Seo;
-use HugaShop\Api\Image;
-use HugaShop\Api\Design;
-use HugaShop\Api\Request;
-use HugaShop\Api\SeoFaqs;
-use HugaShop\Api\SeoKeywords;
+use HugaShop\Models\Seo;
+use HugaShop\Models\Image;
+use HugaShop\Models\Design;
+use HugaShop\Models\Request;
+use HugaShop\Models\SeoFaqs;
+use HugaShop\Models\SeoKeywords;
 use App\Controller\BaseAdminController;
-use HugaShop\Api\Product\ProductCategory;
+use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use HugaShop\Api\Product\ProductCategorySynonym;
+use HugaShop\Models\Product\ProductCategorySynonym;
 
 class CategoryController extends BaseAdminController
 {

@@ -9,7 +9,7 @@
 
 namespace App\Controller\Front\Exchange;
 
-use HugaShop\Api\Extension;
+use HugaShop\Models\Extension;
 use App\Controller\BaseFrontController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

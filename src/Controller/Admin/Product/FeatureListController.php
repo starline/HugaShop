@@ -10,15 +10,15 @@
 
 namespace App\Controller\Admin\Product;
 
-use HugaShop\Api\Design;
-use HugaShop\Api\Helper;
-use HugaShop\Api\Request;
+use HugaShop\Models\Design;
+use HugaShop\Models\Helper;
+use HugaShop\Models\Request;
 use App\Controller\BaseAdminController;
-use HugaShop\Api\Product\ProductFeature;
-use HugaShop\Api\Product\ProductCategory;
+use HugaShop\Models\Product\ProductFeature;
+use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use HugaShop\Api\Product\ProductCategoryFeature;
+use HugaShop\Models\Product\ProductCategoryFeature;
 
 class FeatureListController extends BaseAdminController
 {

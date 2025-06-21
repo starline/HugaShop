@@ -10,10 +10,10 @@
 
 namespace App\Controller\Admin\Content;
 
-use HugaShop\Api\Design;
-use HugaShop\Api\Request;
-use HugaShop\Api\Settings;
-use HugaShop\Api\Content\ContentFeedback;
+use HugaShop\Models\Design;
+use HugaShop\Models\Request;
+use HugaShop\Models\Settings;
+use HugaShop\Models\Content\ContentFeedback;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

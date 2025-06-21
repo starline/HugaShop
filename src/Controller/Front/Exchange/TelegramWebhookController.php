@@ -10,10 +10,10 @@
 
 namespace App\Controller\Front\Exchange;
 
-use HugaShop\Api\Config;
+use HugaShop\Models\Config;
 use TelegramBot\NotifyBot;
-use HugaShop\Api\User\UserNotifier;
-use HugaShop\Api\User\UserPermission;;
+use HugaShop\Models\User\UserNotifier;
+use HugaShop\Models\User\UserPermission;;
 use App\Controller\BaseFrontController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

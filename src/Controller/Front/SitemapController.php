@@ -10,12 +10,12 @@
 
 namespace App\Controller\Front;
 
-use HugaShop\Api\Config;
-use HugaShop\Api\Helper;
-use HugaShop\Api\Product\Product;
-use HugaShop\Api\Content\ContentPost;
+use HugaShop\Models\Config;
+use HugaShop\Models\Helper;
+use HugaShop\Models\Product\Product;
+use HugaShop\Models\Content\ContentPost;
 use App\Controller\BaseFrontController;
-use HugaShop\Api\Product\ProductCategory;
+use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 

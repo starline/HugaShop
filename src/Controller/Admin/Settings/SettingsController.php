@@ -11,13 +11,13 @@
 namespace App\Controller\Admin\Settings;
 
 use DateTimeZone;
-use HugaShop\Api\Image;
-use HugaShop\Api\Config;
-use HugaShop\Api\Design;
-use HugaShop\Api\Request;
-use HugaShop\Api\Settings;
+use HugaShop\Models\Image;
+use HugaShop\Models\Config;
+use HugaShop\Models\Design;
+use HugaShop\Models\Request;
+use HugaShop\Models\Settings;
 use App\Controller\BaseAdminController;
-use HugaShop\Api\Finance\FinanceCategory;
+use HugaShop\Models\Finance\FinanceCategory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 

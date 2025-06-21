@@ -3,7 +3,7 @@
 namespace App\Twig;
 
 use Twig\TwigFunction;
-use HugaShop\Api\Settings as SettingsApi;
+use HugaShop\Models\Settings as SettingsApi;
 use Twig\Extension\AbstractExtension;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 

@@ -10,10 +10,10 @@
 
 namespace App\Controller;
 
-use HugaShop\Api\Config;
-use HugaShop\Api\Design;
-use HugaShop\Api\Helper;
-use HugaShop\Api\Request;
+use HugaShop\Models\Config;
+use HugaShop\Models\Design;
+use HugaShop\Models\Helper;
+use HugaShop\Models\Request;
 use App\Event\DesignBeforeFetchEvent;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\Translation\Translator;

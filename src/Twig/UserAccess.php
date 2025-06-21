@@ -3,7 +3,7 @@
 namespace App\Twig;
 
 use Twig\TwigFilter;
-use HugaShop\Api\User\UserPermission;
+use HugaShop\Models\User\UserPermission;
 use Twig\Extension\AbstractExtension;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 

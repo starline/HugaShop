@@ -10,14 +10,14 @@
 
 namespace App\Controller\Admin\User;
 
-use HugaShop\Api\User\User;
-use HugaShop\Api\Design;
-use HugaShop\Api\Request;
-use HugaShop\Api\Settings;
-use HugaShop\Api\User\UserGroup;
-use HugaShop\Api\Order\Order;
-use HugaShop\Api\User\UserNotifier;
-use HugaShop\Api\User\UserPermission;
+use HugaShop\Models\User\User;
+use HugaShop\Models\Design;
+use HugaShop\Models\Request;
+use HugaShop\Models\Settings;
+use HugaShop\Models\User\UserGroup;
+use HugaShop\Models\Order\Order;
+use HugaShop\Models\User\UserNotifier;
+use HugaShop\Models\User\UserPermission;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

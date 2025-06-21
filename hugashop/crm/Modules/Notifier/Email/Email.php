@@ -10,7 +10,7 @@
 
 namespace HugaShop\Modules\Notifier\Email;
 
-use HugaShop\Api\Settings;
+use HugaShop\Models\Settings;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport;

@@ -10,9 +10,9 @@
 
 namespace HugaShop\Extensions\SeoPage;
 
-use HugaShop\Api\Design;
-use HugaShop\Api\Helper;
-use HugaShop\Api\Request;
+use HugaShop\Models\Design;
+use HugaShop\Models\Helper;
+use HugaShop\Models\Request;
 use App\Event\DesignBeforeFetchEvent;
 use HugaShop\Extensions\BaseExtension;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;

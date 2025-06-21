@@ -13,19 +13,19 @@
 
 namespace App\Controller\Front;
 
-use HugaShop\Api\Cart\Cart;
-use HugaShop\Api\User\User;
-use HugaShop\Api\Design;
-use HugaShop\Api\Helper;
-use HugaShop\Api\Request;
+use HugaShop\Models\Cart\Cart;
+use HugaShop\Models\User\User;
+use HugaShop\Models\Design;
+use HugaShop\Models\Helper;
+use HugaShop\Models\Request;
 use App\Event\OrderAddEvent;
-use HugaShop\Api\User\UserCoupon;
-use HugaShop\Api\Order\Order;
-use HugaShop\Api\Cart\CartPurchase;
-use HugaShop\Api\User\UserNotifier;
-use HugaShop\Api\Order\OrderPayment;
-use HugaShop\Api\Order\OrderPurchase;
-use HugaShop\Api\Order\OrderDelivery;
+use HugaShop\Models\User\UserCoupon;
+use HugaShop\Models\Order\Order;
+use HugaShop\Models\Cart\CartPurchase;
+use HugaShop\Models\User\UserNotifier;
+use HugaShop\Models\Order\OrderPayment;
+use HugaShop\Models\Order\OrderPurchase;
+use HugaShop\Models\Order\OrderDelivery;
 use App\Controller\BaseFrontController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

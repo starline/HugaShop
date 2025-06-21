@@ -12,12 +12,12 @@
 
 namespace App\Controller\Front;
 
-use HugaShop\Api\Image;
-use HugaShop\Api\Design;
-use HugaShop\Api\Request;
-use HugaShop\Api\Content\ContentPost;
-use HugaShop\Api\Content\ContentComment;
-use HugaShop\Api\User\UserPermission;
+use HugaShop\Models\Image;
+use HugaShop\Models\Design;
+use HugaShop\Models\Request;
+use HugaShop\Models\Content\ContentPost;
+use HugaShop\Models\Content\ContentComment;
+use HugaShop\Models\User\UserPermission;
 use App\Controller\BaseFrontController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

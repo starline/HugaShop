@@ -11,10 +11,10 @@
 
 namespace HugaShop\Modules\Delivery\Cdek;
 
-use HugaShop\Api\Order\Order;
-use HugaShop\Api\Config;
-use HugaShop\Api\Design;
-use HugaShop\Api\Order\OrderDelivery;
+use HugaShop\Models\Order\Order;
+use HugaShop\Models\Config;
+use HugaShop\Models\Design;
+use HugaShop\Models\Order\OrderDelivery;
 
 class Cdek
 {

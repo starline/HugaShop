@@ -10,11 +10,11 @@
 
 namespace App\Controller\Admin\User;
 
-use HugaShop\Api\Design;
-use HugaShop\Api\Request;
-use HugaShop\Api\DesignTwig;
-use HugaShop\Api\User\UserMailing;
-use HugaShop\Api\User\UserNotifier;
+use HugaShop\Models\Design;
+use HugaShop\Models\Request;
+use HugaShop\Models\DesignTwig;
+use HugaShop\Models\User\UserMailing;
+use HugaShop\Models\User\UserNotifier;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

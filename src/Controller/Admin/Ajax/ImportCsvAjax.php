@@ -12,12 +12,12 @@
 
 namespace App\Controller\Admin\Ajax;
 
-use HugaShop\Api\Config;
-use HugaShop\Api\Helper;
-use HugaShop\Api\Product\Product;
-use HugaShop\Api\Request;
+use HugaShop\Models\Config;
+use HugaShop\Models\Helper;
+use HugaShop\Models\Product\Product;
+use HugaShop\Models\Request;
 use App\Controller\BaseAdminController;
-use HugaShop\Api\Design;
+use HugaShop\Models\Design;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 

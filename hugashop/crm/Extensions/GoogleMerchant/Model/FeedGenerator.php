@@ -14,14 +14,14 @@
 
 namespace HugaShop\Extensions\GoogleMerchant\Model;
 
-use HugaShop\Api\Image;
-use HugaShop\Api\Config;
-use HugaShop\Api\Helper;
-use HugaShop\Api\Settings;
-use HugaShop\Api\Product\Product;
-use HugaShop\Api\Product\ProductOption;
-use HugaShop\Api\Finance\FinanceCurrency;
-use HugaShop\Api\Product\ProductCategory;
+use HugaShop\Models\Image;
+use HugaShop\Models\Config;
+use HugaShop\Models\Helper;
+use HugaShop\Models\Settings;
+use HugaShop\Models\Product\Product;
+use HugaShop\Models\Product\ProductOption;
+use HugaShop\Models\Finance\FinanceCurrency;
+use HugaShop\Models\Product\ProductCategory;
 use Symfony\Contracts\Cache\ItemInterface;
 use HugaShop\Extensions\GoogleMerchant\Model\GoogleMerchantCategory;
 
