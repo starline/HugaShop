@@ -10,15 +10,15 @@
 
 namespace App\Controller\Admin\Finance;
 
-use HugaShop\Api\Design;
-use HugaShop\Api\Request;
-use HugaShop\Api\Order\Order;
-use HugaShop\Api\Product\Product;
-use HugaShop\Api\User\UserCoupon;
-use HugaShop\Api\Order\OrderDelivery;
-use HugaShop\Api\Order\OrderPurchase;
+use HugaShop\Models\Design;
+use HugaShop\Models\Request;
+use HugaShop\Models\Order\Order;
+use HugaShop\Models\Product\Product;
+use HugaShop\Models\User\UserCoupon;
+use HugaShop\Models\Order\OrderDelivery;
+use HugaShop\Models\Order\OrderPurchase;
 use App\Controller\BaseAdminController;
-use HugaShop\Api\Finance\FinanceCurrency;
+use HugaShop\Models\Finance\FinanceCurrency;
 use Illuminate\Database\Capsule\Manager as DB;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

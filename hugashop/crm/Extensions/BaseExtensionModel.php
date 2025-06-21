@@ -10,8 +10,8 @@
 
 namespace HugaShop\Extensions;
 
-use HugaShop\Api\BaseModel;
-use HugaShop\Api\Helper;
+use HugaShop\Models\BaseModel;
+use HugaShop\Models\Helper;
 
 abstract class BaseExtensionModel extends BaseModel
 {

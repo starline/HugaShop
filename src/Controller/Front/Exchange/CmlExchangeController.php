@@ -9,21 +9,21 @@
 
 namespace App\Controller\Front\Exchange;
 
-use HugaShop\Api\Image;
-use HugaShop\Api\Config;
-use HugaShop\Api\Helper;
-use HugaShop\Api\Request;
-use HugaShop\Api\Settings;
-use HugaShop\Api\Order\Order;
-use HugaShop\Api\Product\Product;
-use HugaShop\Api\Order\OrderPurchase;
-use HugaShop\Api\Product\ProductBrand;
+use HugaShop\Models\Image;
+use HugaShop\Models\Config;
+use HugaShop\Models\Helper;
+use HugaShop\Models\Request;
+use HugaShop\Models\Settings;
+use HugaShop\Models\Order\Order;
+use HugaShop\Models\Product\Product;
+use HugaShop\Models\Order\OrderPurchase;
+use HugaShop\Models\Product\ProductBrand;
 use App\Controller\BaseAdminController;
-use HugaShop\Api\Product\ProductOption;
-use HugaShop\Api\Product\ProductFeature;
-use HugaShop\Api\Product\ProductCategory;
+use HugaShop\Models\Product\ProductOption;
+use HugaShop\Models\Product\ProductFeature;
+use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\Routing\Attribute\Route;
-use HugaShop\Api\Product\ProductCategoryFeature;
+use HugaShop\Models\Product\ProductCategoryFeature;
 
 class CmlExchangeController extends BaseAdminController
 {

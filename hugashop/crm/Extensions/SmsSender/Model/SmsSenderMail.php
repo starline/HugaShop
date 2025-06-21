@@ -10,7 +10,7 @@
 
 namespace HugaShop\Extensions\SmsSender\Model;
 
-use HugaShop\Api\User\UserMailing;
+use HugaShop\Models\User\UserMailing;
 use HugaShop\Extensions\BaseExtensionModel;
 
 class SmsSenderMail extends BaseExtensionModel

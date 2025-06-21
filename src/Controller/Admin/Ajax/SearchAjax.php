@@ -2,13 +2,13 @@
 
 namespace App\Controller\Admin\Ajax;
 
-use HugaShop\Api\Image;
-use HugaShop\Api\Request;
-use HugaShop\Api\User\User;
-use HugaShop\Api\Order\Order;
-use HugaShop\Api\Product\Product;
+use HugaShop\Models\Image;
+use HugaShop\Models\Request;
+use HugaShop\Models\User\User;
+use HugaShop\Models\Order\Order;
+use HugaShop\Models\Product\Product;
 use App\Controller\BaseAdminController;
-use HugaShop\Api\Warehouse\WarehouseMove;
+use HugaShop\Models\Warehouse\WarehouseMove;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 

@@ -10,9 +10,9 @@
 
 namespace HugaShop\Extensions\InfoBlock;
 
-use HugaShop\Api\Design;
-use HugaShop\Api\Helper;
-use HugaShop\Api\Request;
+use HugaShop\Models\Design;
+use HugaShop\Models\Helper;
+use HugaShop\Models\Request;
 use HugaShop\Extensions\BaseExtension;
 use HugaShop\Extensions\InfoBlock\Model\InfoBlock as InfoBlockModel;
 

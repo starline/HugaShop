@@ -2,14 +2,14 @@
 
 namespace App\Controller\Admin\Ajax\Export;
 
-use HugaShop\Api\Config;
-use HugaShop\Api\Helper;
-use HugaShop\Api\Request;
-use HugaShop\Api\Settings;
-use HugaShop\Api\Order\Order;
-use HugaShop\Api\Finance\FinanceCurrency;
-use HugaShop\Api\Order\OrderPayment;
-use HugaShop\Api\Order\OrderPurchase;
+use HugaShop\Models\Config;
+use HugaShop\Models\Helper;
+use HugaShop\Models\Request;
+use HugaShop\Models\Settings;
+use HugaShop\Models\Order\Order;
+use HugaShop\Models\Finance\FinanceCurrency;
+use HugaShop\Models\Order\OrderPayment;
+use HugaShop\Models\Order\OrderPurchase;
 use App\Controller\BaseAdminController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;

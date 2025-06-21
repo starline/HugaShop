@@ -10,11 +10,11 @@
 
 namespace App\Controller\Admin\Warehouse;
 
-use HugaShop\Api\Design;
-use HugaShop\Api\Request;
-use HugaShop\Api\Settings;
-use HugaShop\Api\Warehouse\WarehouseMove;
-use HugaShop\Api\User\UserPermission;
+use HugaShop\Models\Design;
+use HugaShop\Models\Request;
+use HugaShop\Models\Settings;
+use HugaShop\Models\Warehouse\WarehouseMove;
+use HugaShop\Models\User\UserPermission;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

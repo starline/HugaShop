@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * HugaShop - Sell anything
+ *
+ * @author Andri Huga
+ * @version 1.0
+ *
+ * Pivot model for order and label relation
+ */
+
+namespace HugaShop\Models\Order;
+
+use HugaShop\Models\BaseModel;
+
+class OrderLabelRelated extends BaseModel
+{
+    protected static $table_fields = [
+        'order_id' => ['type' => 'int', 'req' => true],
+        'label_id' => ['type' => 'int', 'req' => true],
+    ];
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'order_id');
+    }
+
+    public function label()
+    {
+        return $this->belongsTo(OrderLabel::class, 'label_id');
+    }
+}

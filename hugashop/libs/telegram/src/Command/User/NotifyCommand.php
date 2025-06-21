@@ -11,7 +11,7 @@
 namespace Longman\TelegramBot\Commands\UserCommands;
 
 use Spatie\Emoji\Emoji;
-use HugaShop\Api\User\User;
+use HugaShop\Models\User\User;
 use Longman\TelegramBot\Commands\UserCommand;
 use Longman\TelegramBot\Entities\ServerResponse;
 

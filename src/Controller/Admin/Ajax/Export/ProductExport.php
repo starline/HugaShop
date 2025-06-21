@@ -2,11 +2,11 @@
 
 namespace App\Controller\Admin\Ajax\Export;
 
-use HugaShop\Api\Image;
-use HugaShop\Api\Config;
-use HugaShop\Api\Product\Product;
-use HugaShop\Api\Request;
-use HugaShop\Api\Product\ProductCategory;
+use HugaShop\Models\Image;
+use HugaShop\Models\Config;
+use HugaShop\Models\Product\Product;
+use HugaShop\Models\Request;
+use HugaShop\Models\Product\ProductCategory;
 use App\Controller\BaseAdminController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;

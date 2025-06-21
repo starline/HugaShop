@@ -15,8 +15,8 @@
 
 namespace HugaShop\Extensions\GoogleDataLayerGA4;
 
-use HugaShop\Api\Config;
-use HugaShop\Api\Finance\FinanceCurrency;
+use HugaShop\Models\Config;
+use HugaShop\Models\Finance\FinanceCurrency;
 use HugaShop\Extensions\BaseExtension;
 
 final class GoogleDataLayerGA4 extends BaseExtension

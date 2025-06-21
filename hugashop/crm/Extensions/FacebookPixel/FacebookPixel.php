@@ -23,20 +23,20 @@
 namespace HugaShop\Extensions\FacebookPixel;
 
 use FacebookAds\Api;
-use HugaShop\Api\Config;
-use HugaShop\Api\Request;
+use HugaShop\Models\Config;
+use HugaShop\Models\Request;
 // Symfony
 use App\Event\CartAddEvent;
-use HugaShop\Api\User\User;
+use HugaShop\Models\User\User;
 use App\Event\OrderAddEvent;
 // Facebook Bussines
-use HugaShop\Api\Product\Product;
+use HugaShop\Models\Product\Product;
 use FacebookAds\Logger\CurlLogger;
 use App\Event\DesignBeforeFetchEvent;
-use HugaShop\Api\Order\OrderPurchase;
+use HugaShop\Models\Order\OrderPurchase;
 use HugaShop\Extensions\BaseExtension;
 use FacebookAds\Object\ServerSide\Event;
-use HugaShop\Api\Finance\FinanceCurrency;
+use HugaShop\Models\Finance\FinanceCurrency;
 use FacebookAds\Object\ServerSide\Content;
 use FacebookAds\Object\ServerSide\UserData;
 use FacebookAds\Object\ServerSide\CustomData;

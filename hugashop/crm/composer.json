@@ -30,7 +30,7 @@
   },
   "autoload": {
     "psr-4": {
-      "HugaShop\\Api\\": "Api/",
+      "HugaShop\\Models\\": "Models/",
       "HugaShop\\Extensions\\": "Extensions/",
       "HugaShop\\Modules\\": "Modules/"
     }

@@ -10,8 +10,8 @@
 
 namespace App\Controller\Admin\Ajax\Stats;
 
-use HugaShop\Api\Request;
-use HugaShop\Api\Statistics;
+use HugaShop\Models\Request;
+use HugaShop\Models\Statistics;
 use App\Controller\BaseAdminController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;

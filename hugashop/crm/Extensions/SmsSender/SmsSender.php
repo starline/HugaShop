@@ -10,16 +10,16 @@
 
 namespace HugaShop\Extensions\SmsSender;
 
-use HugaShop\Api\Design;
-use HugaShop\Api\Helper;
-use HugaShop\Api\Request;
-use HugaShop\Api\Settings;
-use HugaShop\Api\Order\Order;
-use HugaShop\Api\Product\Product;
-use HugaShop\Api\User\UserMailing;
-use HugaShop\Api\User\UserNotifier;
+use HugaShop\Models\Design;
+use HugaShop\Models\Helper;
+use HugaShop\Models\Request;
+use HugaShop\Models\Settings;
+use HugaShop\Models\Order\Order;
+use HugaShop\Models\Product\Product;
+use HugaShop\Models\User\UserMailing;
+use HugaShop\Models\User\UserNotifier;
 use HugaShop\Extensions\BaseExtension;
-use HugaShop\Api\User\UserMailTemplate;
+use HugaShop\Models\User\UserMailTemplate;
 use HugaShop\Extensions\SmsSender\Model\SmsSenderMail;
 use HugaShop\Extensions\SmsSender\Model\SmsSender as ModelSmsSender;
 

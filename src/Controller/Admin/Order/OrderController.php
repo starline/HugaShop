@@ -11,26 +11,26 @@
 namespace App\Controller\Admin\Order;
 
 use stdClass;
-use HugaShop\Api\Design;
-use HugaShop\Api\Request;
-use HugaShop\Api\Settings;
-use HugaShop\Api\Cart\Cart;
-use HugaShop\Api\User\User;
+use HugaShop\Models\Design;
+use HugaShop\Models\Request;
+use HugaShop\Models\Settings;
+use HugaShop\Models\Cart\Cart;
+use HugaShop\Models\User\User;
 use App\Event\OrderAddEvent;
-use HugaShop\Api\Order\Order;
-use HugaShop\Api\Order\OrderLabel;
-use HugaShop\Api\User\UserNotifier;
-use HugaShop\Api\Order\OrderPayment;
-use HugaShop\Api\Order\OrderDelivery;
-use HugaShop\Api\Order\OrderPurchase;
-use HugaShop\Api\User\UserPermission;
-use HugaShop\Api\Finance\FinancePurse;
+use HugaShop\Models\Order\Order;
+use HugaShop\Models\Order\OrderLabel;
+use HugaShop\Models\User\UserNotifier;
+use HugaShop\Models\Order\OrderPayment;
+use HugaShop\Models\Order\OrderDelivery;
+use HugaShop\Models\Order\OrderPurchase;
+use HugaShop\Models\User\UserPermission;
+use HugaShop\Models\Finance\FinancePurse;
 use App\Controller\BaseAdminController;
-use HugaShop\Api\Finance\FinancePayment;
-use HugaShop\Api\Finance\FinanceCurrency;
+use HugaShop\Models\Finance\FinancePayment;
+use HugaShop\Models\Finance\FinanceCurrency;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use HugaShop\Api\Finance\FinancePaymentContractor;
+use HugaShop\Models\Finance\FinancePaymentContractor;
 
 class OrderController extends BaseAdminController
 {

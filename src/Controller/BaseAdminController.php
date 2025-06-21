@@ -10,15 +10,15 @@
 
 namespace App\Controller;
 
-use HugaShop\Api\User\User;
-use HugaShop\Api\Order\Order;
-use HugaShop\Api\Config;
-use HugaShop\Api\Design;
-use HugaShop\Api\Request;
-use HugaShop\Api\Settings;
-use HugaShop\Api\Content\ContentComment;
-use HugaShop\Api\User\UserPermission;
-use HugaShop\Api\Finance\FinanceCurrency;
+use HugaShop\Models\User\User;
+use HugaShop\Models\Order\Order;
+use HugaShop\Models\Config;
+use HugaShop\Models\Design;
+use HugaShop\Models\Request;
+use HugaShop\Models\Settings;
+use HugaShop\Models\Content\ContentComment;
+use HugaShop\Models\User\UserPermission;
+use HugaShop\Models\Finance\FinanceCurrency;
 use Symfony\Contracts\Service\Attribute\Required;
 
 class BaseAdminController extends BaseController

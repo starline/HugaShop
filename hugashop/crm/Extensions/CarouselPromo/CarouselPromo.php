@@ -10,7 +10,7 @@
 
 namespace HugaShop\Extensions\CarouselPromo;
 
-use HugaShop\Api\Request;
+use HugaShop\Models\Request;
 use HugaShop\Extensions\BaseExtension;
 
 final class CarouselPromo extends BaseExtension

@@ -10,13 +10,13 @@
 
 namespace App\Controller\Admin\Content;
 
-use HugaShop\Api\Seo;
-use HugaShop\Api\Image;
-use HugaShop\Api\Design;
-use HugaShop\Api\Helper;
-use HugaShop\Api\Request;
-use HugaShop\Api\SeoKeywords;
-use HugaShop\Api\Content\ContentPost;
+use HugaShop\Models\Seo;
+use HugaShop\Models\Image;
+use HugaShop\Models\Design;
+use HugaShop\Models\Helper;
+use HugaShop\Models\Request;
+use HugaShop\Models\SeoKeywords;
+use HugaShop\Models\Content\ContentPost;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

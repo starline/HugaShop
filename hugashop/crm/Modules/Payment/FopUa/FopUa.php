@@ -19,15 +19,15 @@ namespace HugaShop\Modules\Payment\FopUa;
 use TCPDF;
 use MessageFormatter;
 use IntlDateFormatter;
-use HugaShop\Api\Config;
-use HugaShop\Api\Design;
-use HugaShop\Api\Helper;
-use HugaShop\Api\Request;
-use HugaShop\Api\Order\Order;
-use HugaShop\Api\Finance\FinanceCurrency;
-use HugaShop\Api\Order\OrderPayment;
-use HugaShop\Api\Order\OrderPurchase;
-use HugaShop\Api\Order\OrderDelivery;
+use HugaShop\Models\Config;
+use HugaShop\Models\Design;
+use HugaShop\Models\Helper;
+use HugaShop\Models\Request;
+use HugaShop\Models\Order\Order;
+use HugaShop\Models\Finance\FinanceCurrency;
+use HugaShop\Models\Order\OrderPayment;
+use HugaShop\Models\Order\OrderPurchase;
+use HugaShop\Models\Order\OrderDelivery;
 
 class FopUa
 {

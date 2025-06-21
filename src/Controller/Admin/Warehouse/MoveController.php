@@ -11,15 +11,15 @@
 namespace App\Controller\Admin\Warehouse;
 
 use stdClass;
-use HugaShop\Api\Image;
-use HugaShop\Api\Design;
-use HugaShop\Api\Request;
-use HugaShop\Api\User\User;
-use HugaShop\Api\User\UserPermission;
+use HugaShop\Models\Image;
+use HugaShop\Models\Design;
+use HugaShop\Models\Request;
+use HugaShop\Models\User\User;
+use HugaShop\Models\User\UserPermission;
 use App\Controller\BaseAdminController;
-use HugaShop\Api\Warehouse\WarehouseMove;
-use HugaShop\Api\Warehouse\WarehousePlace;
-use HugaShop\Api\Warehouse\WarehousePurchase;
+use HugaShop\Models\Warehouse\WarehouseMove;
+use HugaShop\Models\Warehouse\WarehousePlace;
+use HugaShop\Models\Warehouse\WarehousePurchase;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 

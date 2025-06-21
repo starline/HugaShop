@@ -10,11 +10,11 @@
 
 namespace App\Controller\Admin\Finance;
 
-use HugaShop\Api\Design;
-use HugaShop\Api\Helper;
-use HugaShop\Api\Request;
-use HugaShop\Api\Finance\FinancePurse;
-use HugaShop\Api\Finance\FinanceCurrency;
+use HugaShop\Models\Design;
+use HugaShop\Models\Helper;
+use HugaShop\Models\Request;
+use HugaShop\Models\Finance\FinancePurse;
+use HugaShop\Models\Finance\FinanceCurrency;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

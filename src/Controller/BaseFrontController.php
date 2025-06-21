@@ -10,16 +10,16 @@
 
 namespace App\Controller;
 
-use HugaShop\Api\Cart\Cart;
-use HugaShop\Api\User\User;
-use HugaShop\Api\Config;
-use HugaShop\Api\Design;
-use HugaShop\Api\Helper;
-use HugaShop\Api\Product\Product;
-use HugaShop\Api\Request;
-use HugaShop\Api\Settings;
-use HugaShop\Api\Finance\FinanceCurrency;
-use HugaShop\Api\Product\ProductCategory;
+use HugaShop\Models\Cart\Cart;
+use HugaShop\Models\User\User;
+use HugaShop\Models\Config;
+use HugaShop\Models\Design;
+use HugaShop\Models\Helper;
+use HugaShop\Models\Product\Product;
+use HugaShop\Models\Request;
+use HugaShop\Models\Settings;
+use HugaShop\Models\Finance\FinanceCurrency;
+use HugaShop\Models\Product\ProductCategory;
 use Symfony\Contracts\Service\Attribute\Required;
 
 class BaseFrontController extends BaseController

@@ -3,7 +3,7 @@
 namespace App\Twig;
 
 use Twig\TwigFilter;
-use HugaShop\Api\Finance\FinanceCurrency;
+use HugaShop\Models\Finance\FinanceCurrency;
 use Twig\Extension\AbstractExtension;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 

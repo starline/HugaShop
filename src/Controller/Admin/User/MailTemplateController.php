@@ -10,9 +10,9 @@
 
 namespace App\Controller\Admin\User;
 
-use HugaShop\Api\Design;
-use HugaShop\Api\Request;
-use HugaShop\Api\User\UserMailTemplate;
+use HugaShop\Models\Design;
+use HugaShop\Models\Request;
+use HugaShop\Models\User\UserMailTemplate;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

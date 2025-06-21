@@ -17,8 +17,8 @@ namespace HugaShop\Extensions\OpenGraph;
 
 use DateTime;
 use DateTimeZone;
-use HugaShop\Api\Design;
-use HugaShop\Api\Settings;
+use HugaShop\Models\Design;
+use HugaShop\Models\Settings;
 use HugaShop\Extensions\BaseExtension;
 
 final class OpenGraph extends BaseExtension

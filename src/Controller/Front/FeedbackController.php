@@ -13,10 +13,10 @@
 
 namespace App\Controller\Front;
 
-use HugaShop\Api\Design;
-use HugaShop\Api\Request;
-use HugaShop\Api\User\UserNotifier;
-use HugaShop\Api\Content\ContentFeedback;
+use HugaShop\Models\Design;
+use HugaShop\Models\Request;
+use HugaShop\Models\User\UserNotifier;
+use HugaShop\Models\Content\ContentFeedback;
 use App\Controller\BaseFrontController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

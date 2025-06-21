@@ -2,11 +2,11 @@
 
 namespace App\Controller\Front\Ajax;
 
-use HugaShop\Api\Image;
-use HugaShop\Api\Product\Product;
-use HugaShop\Api\Request;
+use HugaShop\Models\Image;
+use HugaShop\Models\Product\Product;
+use HugaShop\Models\Request;
 use App\Event\SearchEvent;
-use HugaShop\Api\Settings;
+use HugaShop\Models\Settings;
 use App\Controller\BaseFrontController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;

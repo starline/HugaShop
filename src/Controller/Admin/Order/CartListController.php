@@ -10,14 +10,14 @@
 
 namespace App\Controller\Admin\Order;
 
-use HugaShop\Api\Design;
-use HugaShop\Api\Helper;
-use HugaShop\Api\Request;
-use HugaShop\Api\Settings;
-use HugaShop\Api\Cart\Cart;
-use HugaShop\Api\User\User;
-use HugaShop\Api\Order\Order;
-use HugaShop\Api\Cart\CartPurchase;
+use HugaShop\Models\Design;
+use HugaShop\Models\Helper;
+use HugaShop\Models\Request;
+use HugaShop\Models\Settings;
+use HugaShop\Models\Cart\Cart;
+use HugaShop\Models\User\User;
+use HugaShop\Models\Order\Order;
+use HugaShop\Models\Cart\CartPurchase;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

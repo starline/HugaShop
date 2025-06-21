@@ -13,21 +13,21 @@
 namespace App\Controller\Admin\Product;
 
 use stdClass;
-use HugaShop\Api\Image;
-use HugaShop\Api\Design;
-use HugaShop\Api\Request;
-use HugaShop\Api\SeoKeywords;
-use HugaShop\Api\Product\Product;
-use HugaShop\Api\User\UserPermission;
-use HugaShop\Api\Product\ProductBrand;
+use HugaShop\Models\Image;
+use HugaShop\Models\Design;
+use HugaShop\Models\Request;
+use HugaShop\Models\SeoKeywords;
+use HugaShop\Models\Product\Product;
+use HugaShop\Models\User\UserPermission;
+use HugaShop\Models\Product\ProductBrand;
 use App\Controller\BaseAdminController;
-use HugaShop\Api\Localization\Language;
-use HugaShop\Api\Product\ProductOption;
-use HugaShop\Api\Product\ProductFeature;
-use HugaShop\Api\Product\ProductCategory;
+use HugaShop\Models\Localization\Language;
+use HugaShop\Models\Product\ProductOption;
+use HugaShop\Models\Product\ProductFeature;
+use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use HugaShop\Api\Product\ProductCategoryFeature;
+use HugaShop\Models\Product\ProductCategoryFeature;
 
 class ProductController extends BaseAdminController
 {

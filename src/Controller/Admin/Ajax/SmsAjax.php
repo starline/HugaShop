@@ -2,9 +2,9 @@
 
 namespace App\Controller\Admin\Ajax;
 
-use HugaShop\Api\Order\Order;
-use HugaShop\Api\Request;
-use HugaShop\Api\User\UserNotifier;
+use HugaShop\Models\Order\Order;
+use HugaShop\Models\Request;
+use HugaShop\Models\User\UserNotifier;
 use App\Controller\BaseAdminController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;

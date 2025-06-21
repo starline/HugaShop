@@ -17,11 +17,11 @@
 
 namespace HugaShop\Modules\Delivery\NovaPoshta;
 
-use HugaShop\Api\Order\Order;
-use HugaShop\Api\Config;
-use HugaShop\Api\Design;
-use HugaShop\Api\Helper;
-use HugaShop\Api\Order\OrderDelivery;
+use HugaShop\Models\Order\Order;
+use HugaShop\Models\Config;
+use HugaShop\Models\Design;
+use HugaShop\Models\Helper;
+use HugaShop\Models\Order\OrderDelivery;
 
 class NovaPoshta
 {

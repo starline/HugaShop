@@ -2,11 +2,11 @@
 
 namespace HugaShop\Modules\Payment\CdekPay;
 
-use HugaShop\Api\Order\Order;
-use HugaShop\Api\Config;
-use HugaShop\Api\Design;
-use HugaShop\Api\Order\OrderPayment;
-use HugaShop\Api\Finance\FinanceCurrency;
+use HugaShop\Models\Order\Order;
+use HugaShop\Models\Config;
+use HugaShop\Models\Design;
+use HugaShop\Models\Order\OrderPayment;
+use HugaShop\Models\Finance\FinanceCurrency;
 
 class CdekPay
 {

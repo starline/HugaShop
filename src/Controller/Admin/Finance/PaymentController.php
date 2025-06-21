@@ -13,19 +13,19 @@
 
 namespace App\Controller\Admin\Finance;
 
-use HugaShop\Api\Image;
-use HugaShop\Api\Design;
-use HugaShop\Api\Helper;
-use HugaShop\Api\Request;
-use HugaShop\Api\User\User;
-use HugaShop\Api\Finance\FinancePurse;
+use HugaShop\Models\Image;
+use HugaShop\Models\Design;
+use HugaShop\Models\Helper;
+use HugaShop\Models\Request;
+use HugaShop\Models\User\User;
+use HugaShop\Models\Finance\FinancePurse;
 use App\Controller\BaseAdminController;
-use HugaShop\Api\Finance\FinancePayment;
-use HugaShop\Api\Finance\FinanceCategory;
-use HugaShop\Api\Finance\FinanceCurrency;
+use HugaShop\Models\Finance\FinancePayment;
+use HugaShop\Models\Finance\FinanceCategory;
+use HugaShop\Models\Finance\FinanceCurrency;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use HugaShop\Api\Finance\FinancePaymentContractor;
+use HugaShop\Models\Finance\FinancePaymentContractor;
 
 class PaymentController extends BaseAdminController
 {

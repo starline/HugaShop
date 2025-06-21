@@ -10,11 +10,11 @@
 
 namespace HugaShop\Extensions\GoogleMerchant;
 
-use HugaShop\Api\Design;
-use HugaShop\Api\Helper;
-use HugaShop\Api\Request;
+use HugaShop\Models\Design;
+use HugaShop\Models\Helper;
+use HugaShop\Models\Request;
 use HugaShop\Extensions\BaseExtension;
-use HugaShop\Api\Product\ProductCategory;
+use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\HttpFoundation\Response;
 use HugaShop\Extensions\GoogleMerchant\Model\FeedGenerator;
 use HugaShop\Extensions\GoogleMerchant\Model\GoogleMerchantCategory;
