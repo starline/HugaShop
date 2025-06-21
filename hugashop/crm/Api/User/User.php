@@ -224,9 +224,9 @@ class User extends BaseModel
             $user->phone = Helper::clearPhoneNummber($user->phone);
         }
 
-        // TODO: прверять старый парол
+        // TODO: проверять старый пароль
         if (!empty($user->password)) {
-            $user->password = md5(Config::get('salt_psw') . $user->password . md5($user->password));
+            $user->password = self::makePasswordHash($user->password);
         }
 
         return User::updateOne($id, $user);
@@ -259,7 +259,11 @@ class User extends BaseModel
 
         $user = User::where('email', $email)->first();
 
-        if (!$user || User::makePasswordHash($password) !== $user->password) {
+        if (!$user) {
+            return false;
+        }
+
+        if (!self::verifyPassword($password, $user->password, $user->id)) {
             return false;
         }
 
@@ -367,7 +371,45 @@ class User extends BaseModel
      */
     public static function makePasswordHash(string $password)
     {
+        return password_hash($password, PASSWORD_BCRYPT);
+    }
+
+    /**
+     * Legacy MD5 password hash
+     * @param string $password
+     * @return string
+     */
+    protected static function makeLegacyPasswordHash(string $password): string
+    {
         return md5(Config::get('salt_psw') . $password . md5($password));
+    }
+
+    /**
+     * Verify password and migrate old hashes when needed
+     *
+     * @param string $password Plain text password
+     * @param string $hash Stored hash
+     * @param int|null $user_id User id for migration
+     * @return bool
+     */
+    public static function verifyPassword(string $password, string $hash, ?int $user_id = null): bool
+    {
+        if (password_verify($password, $hash)) {
+            if (password_needs_rehash($hash, PASSWORD_BCRYPT) && $user_id !== null) {
+                self::updateUser($user_id, ['password' => $password]);
+            }
+            return true;
+        }
+
+        // Fallback to legacy MD5
+        if ($hash === self::makeLegacyPasswordHash($password)) {
+            if ($user_id !== null) {
+                self::updateUser($user_id, ['password' => $password]);
+            }
+            return true;
+        }
+
+        return false;
     }
 
 
