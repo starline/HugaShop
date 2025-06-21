@@ -14,6 +14,11 @@ class Language extends BaseModel
         'main' =>           ['type' => 'tinyint',  'def' => 0],
     ];
 
+    public function main()
+    {
+        return $this->firstWhere('main', true);
+    }
+
     public static function getLanguages()
     {
         return self::query()->orderBy('id')->get();

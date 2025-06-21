@@ -30,11 +30,12 @@ class Product extends BaseModel
     public static $table_fields = [
         'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'url' =>                ['type' => 'varchar'],
-        'name' =>               ['type' => 'varchar',       'translate' => true,    'req' => true],
-        'meta_title' =>         ['type' => 'varchar',       'translate' => true],
-        'meta_description' =>   ['type' => 'varchar',       'translate' => true],
-        'annotation' =>         ['type' => 'varchar',       'translate' => true],
-        'body' =>               ['type' => 'text',          'translate' => true],
+        'name' =>               ['type' => 'varchar',       'trans' => true,    'req' => true],
+        'meta_title' =>         ['type' => 'varchar',       'trans' => true],
+        'meta_description' =>   ['type' => 'varchar',       'trans' => true],
+        'annotation' =>         ['type' => 'varchar',       'trans' => true],
+        'body' =>               ['type' => 'text',          'trans' => true],
+        'variant_name' =>       ['type' => 'varchar',       'trans' => true],
         'brand_id' =>           ['type' => 'int'],
         'category_id' =>        ['type' => 'int'],
         'created' =>            ['type' => 'datetime',      'def' => 'CURRENT_TIMESTAMP'],
@@ -42,7 +43,6 @@ class Product extends BaseModel
         'featured' =>           ['type' => 'tinyint',       'def' => 0],
         'sale' =>               ['type' => 'tinyint',       'def' => 0],
         'visible' =>            ['type' => 'tinyint',       'def' => 0],
-        'variant_name' =>       ['type' => 'varchar'],
         'sku' =>                ['type' => 'varchar',       'req' => true],
         'price' =>              ['type' => 'decimal',       'lenght' => 14.2,   'def' =>    0.00],
         'cost_price' =>         ['type' => 'decimal',       'lenght' => 14.2,   'def' =>    0.00],
@@ -508,8 +508,6 @@ class Product extends BaseModel
 
     /**
      * Live update product stock
-     * @param int $product_id
-     * @param int $amount
      */
     public static function updateStock(int $product_id, int $amount)
     {

@@ -22,6 +22,7 @@ use HugaShop\Api\Product\Product;
 use HugaShop\Api\User\UserPermission;
 use HugaShop\Api\Product\ProductBrand;
 use App\Controller\BaseAdminController;
+use HugaShop\Api\Localization\Language;
 use HugaShop\Api\Product\ProductOption;
 use HugaShop\Api\Product\ProductFeature;
 use HugaShop\Api\Product\ProductCategory;
@@ -59,8 +60,8 @@ class ProductController extends BaseAdminController
         }
 
 
-        $languages = Settings::getParam('languages') ?: [];
-        $main_language = Settings::getParam('main_language') ?? array_key_first($languages);
+        $languages = Language::getList();
+        $main_language = $languages->firstWhere('main', 1);
         $current_lang = Request::get('lang', 'string') ?: $main_language;
         Design::assign('languages', $languages);
         Design::assign('current_language', $current_lang);
@@ -157,6 +158,10 @@ class ProductController extends BaseAdminController
                 if ($tr = Product::getTranslation($product->id, $current_lang)) {
                     foreach (['name', 'meta_title', 'meta_description', 'annotation', 'body'] as $f) {
                         $product->$f = $tr->$f;
+                    }
+                } else {
+                    foreach (['name', 'meta_title', 'meta_description', 'annotation', 'body'] as $f) {
+                        $product->$f = null;
                     }
                 }
             }

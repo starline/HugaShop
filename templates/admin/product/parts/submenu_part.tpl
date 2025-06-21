@@ -23,8 +23,8 @@
 	</ul>
 
 	<select id="language_select" class="form-select form-select-sm w-auto ms-auto">
-		{foreach $languages as $code => $name}
-			<option value="{$code}" {if $current_language == $code}selected{/if}>{$name}</option>
+		{foreach $languages as $language}
+			<option value="{$language->code}" {if $current_language == $language->code}selected{/if}>{$language->name}</option>
 		{/foreach}
 	</select>
 
