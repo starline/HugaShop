@@ -13,10 +13,10 @@ namespace HugaShop\Api;
 use HugaShop\Api\Config;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
-use Illuminate\Database\Eloquent\Model;
+use HugaShop\Api\CheckModel;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
-abstract class BaseModel extends Model
+abstract class BaseModel extends CheckModel
 {
     protected static $IsAutoBooted = false;
 
@@ -100,8 +100,10 @@ abstract class BaseModel extends Model
      */
     public static function create(array|object $values): object
     {
-        $values = self::validateValues($values);
-        return static::query()->create($values);
+        return self::runWithInitTable(function () use ($values) {
+            $vals = self::validateValues($values);
+            return static::query()->create($vals);
+        });
     }
 
 
@@ -146,7 +148,9 @@ abstract class BaseModel extends Model
      */
     public static function deleteBy(string $field, $value): int
     {
-        return static::query()->where($field, $value)->delete();
+        return self::runWithInitTable(function () use ($field, $value) {
+            return static::query()->where($field, $value)->delete();
+        });
     }
 
 
@@ -155,8 +159,10 @@ abstract class BaseModel extends Model
      */
     public static function updateOne(int|array $ids, array|object $values)
     {
-        $values = self::validateValues($values);
-        return static::query()->whereId($ids)->update($values);
+        return self::runWithInitTable(function () use ($ids, $values) {
+            $vals = self::validateValues($values);
+            return static::query()->whereId($ids)->update($vals);
+        });
     }
 
 
@@ -165,7 +171,9 @@ abstract class BaseModel extends Model
      */
     public static function deleteOne(array|int $ids)
     {
-        return static::whereId($ids)->delete();
+        return self::runWithInitTable(function () use ($ids) {
+            return static::whereId($ids)->delete();
+        });
     }
 
 
@@ -215,10 +223,14 @@ abstract class BaseModel extends Model
 
         // Выбор полей
         if ($select) {
-            return $query->pluck($select)->toArray();
+            return self::runWithInitTable(function () use ($query, $select) {
+                return $query->pluck($select)->toArray();
+            });
         }
 
-        return $query->get();
+        return self::runWithInitTable(function () use ($query) {
+            return $query->get();
+        });
     }
 
 
@@ -246,7 +258,9 @@ abstract class BaseModel extends Model
             $query->where('id', $id);
         }
 
-        $result = $query->first();
+        $result = self::runWithInitTable(function () use ($query) {
+            return $query->first();
+        });
 
         // Settings
         if ($result) $result->settings = empty($result->settings) ? new \stdClass() : (object) unserialize($result->settings);
@@ -275,6 +289,8 @@ abstract class BaseModel extends Model
             }
         }
 
-        return $query->count();
+        return self::runWithInitTable(function () use ($query) {
+            return $query->count();
+        });
     }
 }
