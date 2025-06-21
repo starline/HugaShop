@@ -156,11 +156,11 @@ class ProductController extends BaseAdminController
 
             if ($current_lang !== $main_language) {
                 if ($tr = Product::getTranslation($product->id, $current_lang)) {
-                    foreach (['name', 'meta_title', 'meta_description', 'annotation', 'body'] as $f) {
+                    foreach (Product::getTransFields() as $f) {
                         $product->$f = $tr->$f;
                     }
                 } else {
-                    foreach (['name', 'meta_title', 'meta_description', 'annotation', 'body'] as $f) {
+                    foreach (Product::getTransFields() as $f) {
                         $product->$f = null;
                     }
                 }
