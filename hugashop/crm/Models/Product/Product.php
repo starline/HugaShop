@@ -14,9 +14,10 @@ namespace HugaShop\Models\Product;
 
 use HugaShop\Models\Image;
 use HugaShop\Models\Helper;
-use HugaShop\Models\BaseModel;
 use Illuminate\Support\Arr;
+use HugaShop\Models\BaseModel;
 use HugaShop\Models\Order\OrderPurchase;
+use HugaShop\Models\Traits\Translatable;
 use HugaShop\Models\Product\ProductOption;
 use HugaShop\Models\Content\ContentComment;
 use HugaShop\Models\Product\ProductRelated;
@@ -26,6 +27,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends BaseModel
 {
+    use Translatable;
+
+    protected static string $translation_model = ProductTranslation::class;
 
     protected static $table_fields = [
         'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
@@ -512,28 +516,5 @@ class Product extends BaseModel
     public static function updateStock(int $product_id, int $amount)
     {
         return self::where('id', $product_id)->whereNotNull('stock')->increment('stock', $amount);
-    }
-
-
-    /**
-     * Get translation for product
-     */
-    public static function getTranslation(int $product_id, string $code)
-    {
-        return ProductTranslation::query()
-            ->where('product_id', $product_id)
-            ->where('language_code', $code)
-            ->first();
-    }
-
-    /**
-     * Update or create translation
-     */
-    public static function updateTranslation(int $product_id, string $code, array $data)
-    {
-        return ProductTranslation::query()->updateOrCreate(
-            ['product_id' => $product_id, 'language_code' => $code],
-            $data
-        );
     }
 }

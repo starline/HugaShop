@@ -81,8 +81,6 @@ class ProductController extends BaseAdminController
                 Design::setFlashMessage('update', Product::updateProduct($product->id, $product));
             }
 
-            $product = Product::getProduct($product->id);
-
             SeoKeywords::catchKeywords($product->id, 'product');
             Image::catchImages($product->id, 'product', 'images');
             Image::catchImages($product->id, 'product_content', 'images_content');
@@ -154,15 +152,7 @@ class ProductController extends BaseAdminController
             ]);
 
             if ($current_lang !== $main_language) {
-                if ($tr = Product::getTranslation($product->id, $current_lang)) {
-                    foreach (Product::getTransFields() as $f) {
-                        $product->$f = $tr->$f;
-                    }
-                } else {
-                    foreach (Product::getTransFields() as $f) {
-                        $product->$f = null;
-                    }
-                }
+                Product::fillTranslation($product, $current_lang);
             }
 
             if (empty($product->id)) {
