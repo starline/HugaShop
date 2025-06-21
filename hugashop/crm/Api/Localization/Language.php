@@ -11,7 +11,7 @@ class Language extends BaseModel
         'id' =>             ['type' => 'int',      'extra' => 'AUTO_INCREMENT'],
         'code' =>           ['type' => 'varchar'],
         'name' =>           ['type' => 'varchar'],
-        'main' =>           ['type' => 'tinyint',  'def' => 0],
+        'main' =>           ['type' => 'tinyint',  'def' => 0]
     ];
 
     public function main()
