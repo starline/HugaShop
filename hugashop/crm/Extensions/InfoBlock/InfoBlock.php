@@ -14,7 +14,7 @@ use HugaShop\Models\Design;
 use HugaShop\Models\Helper;
 use HugaShop\Models\Request;
 use HugaShop\Extensions\BaseExtension;
-use HugaShop\Extensions\InfoBlock\Model\InfoBlock as InfoBlockModel;
+use HugaShop\Extensions\InfoBlock\Models\InfoBlock as InfoBlockModel;
 
 final class InfoBlock extends BaseExtension
 {

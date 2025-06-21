@@ -18,10 +18,10 @@ use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
-use HugaShop\Extensions\FacebookCommerce\Model\FeedGenerator;
+use HugaShop\Extensions\FacebookCommerce\Models\FeedGenerator;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use HugaShop\Extensions\FacebookCommerce\Model\FacebookCommerceCategory;
-use HugaShop\Extensions\FacebookCommerce\Model\FacebookCommerce as FacebookCommerceModel;
+use HugaShop\Extensions\FacebookCommerce\Models\FacebookCommerceCategory;
+use HugaShop\Extensions\FacebookCommerce\Models\FacebookCommerce as FacebookCommerceModel;
 
 final class FacebookCommerce extends BaseExtension
 {

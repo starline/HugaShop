@@ -8,7 +8,7 @@
  *
  */
 
-namespace HugaShop\Extensions\SeoPage\Model;
+namespace HugaShop\Extensions\SeoPage\Models;
 
 use HugaShop\Models\Helper;
 use HugaShop\Extensions\BaseExtensionModel;

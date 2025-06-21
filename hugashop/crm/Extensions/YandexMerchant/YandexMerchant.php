@@ -16,9 +16,9 @@ use HugaShop\Models\Request;
 use HugaShop\Models\Product\ProductCategory;
 use HugaShop\Extensions\BaseExtension;
 use Symfony\Component\HttpFoundation\Response;
-use HugaShop\Extensions\YandexMerchant\Model\YandexMerchant as YandexMerchantModel;
-use HugaShop\Extensions\YandexMerchant\Model\YandexMerchantCategory;
-use HugaShop\Extensions\YandexMerchant\Model\FeedGenerator;
+use HugaShop\Extensions\YandexMerchant\Models\YandexMerchant as YandexMerchantModel;
+use HugaShop\Extensions\YandexMerchant\Models\YandexMerchantCategory;
+use HugaShop\Extensions\YandexMerchant\Models\FeedGenerator;
 
 final class YandexMerchant extends BaseExtension
 {

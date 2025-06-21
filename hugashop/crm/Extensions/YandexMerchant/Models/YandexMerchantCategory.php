@@ -4,16 +4,17 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.2
  *
  */
 
-namespace HugaShop\Extensions\GoogleMerchant\Model;
+namespace HugaShop\Extensions\YandexMerchant\Models;
 
 use HugaShop\Extensions\BaseExtensionModel;
 
-class GoogleMerchantCategory extends BaseExtensionModel
+class YandexMerchantCategory extends BaseExtensionModel
 {
+
     protected static $table_fields = [
         'pricefeed_id' => ['type' => 'int'],
         'category_id'  => ['type' => 'int'],

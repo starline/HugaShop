@@ -16,9 +16,9 @@ use HugaShop\Models\Request;
 use HugaShop\Extensions\BaseExtension;
 use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\HttpFoundation\Response;
-use HugaShop\Extensions\GoogleMerchant\Model\FeedGenerator;
-use HugaShop\Extensions\GoogleMerchant\Model\GoogleMerchantCategory;
-use HugaShop\Extensions\GoogleMerchant\Model\GoogleMerchant as GoogleMerchantModel;
+use HugaShop\Extensions\GoogleMerchant\Models\FeedGenerator;
+use HugaShop\Extensions\GoogleMerchant\Models\GoogleMerchantCategory;
+use HugaShop\Extensions\GoogleMerchant\Models\GoogleMerchant as GoogleMerchantModel;
 
 final class GoogleMerchant extends BaseExtension
 {
