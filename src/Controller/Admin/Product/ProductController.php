@@ -61,7 +61,7 @@ class ProductController extends BaseAdminController
 
 
         $languages = Language::getList();
-        $main_language = $languages->firstWhere('main', 1);
+        $main_language = $languages->firstWhere('main', 1)->code;
         $current_lang = Request::get('lang', 'string') ?: $main_language;
         Design::assign('languages', $languages);
         Design::assign('current_language', $current_lang);
