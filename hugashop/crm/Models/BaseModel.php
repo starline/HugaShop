@@ -12,11 +12,11 @@ namespace HugaShop\Models;
 
 use HugaShop\Models\Config;
 use Illuminate\Events\Dispatcher;
+use HugaShop\Models\BaseCheckModel;
 use Illuminate\Container\Container;
-use HugaShop\Models\CheckModel;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
-abstract class BaseModel extends CheckModel
+abstract class BaseModel extends BaseCheckModel
 {
     protected static $IsAutoBooted = false;
 

@@ -17,7 +17,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Eloquent\Model;
 
-abstract class CheckModel extends Model
+abstract class BaseCheckModel extends Model
 {
 
     protected static $table_fields;
