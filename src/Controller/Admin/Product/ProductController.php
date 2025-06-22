@@ -18,9 +18,9 @@ use HugaShop\Models\Design;
 use HugaShop\Models\Request;
 use HugaShop\Models\SeoKeywords;
 use HugaShop\Models\Product\Product;
+use App\Controller\BaseAdminController;
 use HugaShop\Models\User\UserPermission;
 use HugaShop\Models\Product\ProductBrand;
-use App\Controller\BaseAdminController;
 use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Product\ProductOption;
 use HugaShop\Models\Product\ProductFeature;
@@ -58,22 +58,12 @@ class ProductController extends BaseAdminController
             }
         }
 
-
-        $languages = Language::getList();
-        $main_language = $languages->firstWhere('main', 1)->code;
-        $current_lang = Request::get('lang', 'string') ?: $main_language;
-        Design::assign('languages', $languages);
-        Design::assign('current_language', $current_lang);
-
+        // Init content language
+        Language::languageCatch();
 
         #### Update
         ###########
         if (!empty($product = Request::getDataAcces(($this->entity_params)))) {
-
-            if ($current_lang !== $main_language && !empty($product->id)) {
-                Product::updateTranslation($product->id, $current_lang, (array) $product);
-                return $this->redirectToRoute('ProductAdmin', ['id' => $product->id, 'lang' => $current_lang]);
-            }
 
             if (empty($product->id)) {
                 $product = Design::setFlashMessage('add', Product::addProduct($product));
@@ -133,11 +123,7 @@ class ProductController extends BaseAdminController
                 }
             }
 
-            $params = ['id' => $product->id];
-            if ($current_lang !== $main_language) {
-                $params['lang'] = $current_lang;
-            }
-            return $this->redirectToRoute('ProductAdmin', $params);
+            return $this->redirectToRoute('ProductAdmin', ['id' => $product->id]);
         }
 
 
@@ -150,10 +136,6 @@ class ProductController extends BaseAdminController
                 'images_content',
                 'options'
             ]);
-
-            if ($current_lang !== $main_language) {
-                Product::fillTranslation($product, $current_lang);
-            }
 
             if (empty($product->id)) {
                 return $this->redirectToRoute('ProductListAdmin');
