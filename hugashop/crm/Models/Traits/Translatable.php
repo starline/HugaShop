@@ -41,6 +41,27 @@ trait Translatable
     }
 
 
+    public static function separateValues(array|object $entity, string $language_code)
+    {
+        $translation_data = [];
+        foreach (self::getTranslatableFields() as $field) {
+            if (is_object($entity) && property_exists($entity, $field)) {
+                $translation_data[$field] = $entity->$field;
+                unset($entity->$field);
+            } elseif (is_array($entity) && array_key_exists($field, $entity)) {
+                $translation_data[$field] = $entity[$field];
+                unset($entity[$field]);
+            }
+        }
+
+        if (!empty($translation_data)) {
+            self::updateTranslation($entity->id, $language_code, $translation_data);
+        }
+
+        return $entity;
+    }
+
+
     /**
      * Fill entity with translated fields for provided language
      */

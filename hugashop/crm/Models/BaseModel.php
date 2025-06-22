@@ -130,7 +130,7 @@ abstract class BaseModel extends BaseCheckModel
      * Prepare values
      * @param object|array $entity
      */
-    public static function validateValues(object|array $values)
+    public static function validateValues(object|array $values): array
     {
 
         $values = is_object($values) ? (array) $values : $values;
@@ -178,6 +178,12 @@ abstract class BaseModel extends BaseCheckModel
      */
     public static function updateOne(int|array $ids, array|object $values)
     {
+        if ($language_code = Language::checkOrGetCode()) {
+            $values = self::runWithInitTable(function () use ($values, $language_code) {
+                return static::separateValues($values, $language_code);
+            });
+        }
+
         return self::runWithInitTable(function () use ($ids, $values) {
             $vals = self::validateValues($values);
             return static::query()->whereId($ids)->update($vals);
