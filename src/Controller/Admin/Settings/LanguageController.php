@@ -32,7 +32,7 @@ class LanguageController extends BaseAdminController
         if (!empty($language = Request::getDataAcces(Language::getFields()))) {
 
             if (empty($language->id)) {
-                $language = Design::setFlashMessage('add', Language::create($language));
+                $language = Design::setFlashMessage('add', Language::createOne($language));
             } else {
                 Design::setFlashMessage('update', Language::updateOne($language->id, $language));
             }
