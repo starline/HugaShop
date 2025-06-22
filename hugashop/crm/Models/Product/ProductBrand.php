@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.6
+ * @version 2.7
  *
  */
 
@@ -13,17 +13,20 @@ namespace HugaShop\Models\Product;
 use HugaShop\Models\Config;
 use HugaShop\Models\Helper;
 use HugaShop\Models\BaseModel;
+use HugaShop\Models\Traits\Translatable;
 use Illuminate\Database\Eloquent\Builder;
 
 class ProductBrand extends BaseModel
 {
+    use Translatable;
+
     protected static $table_fields = [
         'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
-        'name' =>               ['type' => 'varchar',       'translate' => true, 'req' => true],
+        'name' =>               ['type' => 'varchar',       'trans' => true, 'req' => true],
         'url' =>                ['type' => 'varchar'],
-        'meta_title' =>         ['type' => 'varchar',       'translate' => true],
-        'meta_description' =>   ['type' => 'varchar',       'translate' => true],
-        'description' =>        ['type' => 'text',          'translate' => true],
+        'meta_title' =>         ['type' => 'varchar',       'trans' => true],
+        'meta_description' =>   ['type' => 'varchar',       'trans' => true],
+        'description' =>        ['type' => 'text',          'trans' => true],
         'image' =>              ['type' => 'varchar'],
         'featured' =>           ['type' => 'tinyint',       'def' => 0]
     ];

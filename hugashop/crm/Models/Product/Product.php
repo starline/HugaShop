@@ -333,6 +333,7 @@ class Product extends BaseModel
         $ids = is_array($id) ? $id : [$id];
         $new_price = null;
         $new_cost_price = null;
+
         if (is_object($product)) {
             if (isset($product->price)) {
                 $new_price = $product->price;
