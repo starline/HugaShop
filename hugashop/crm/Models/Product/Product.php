@@ -29,8 +29,6 @@ class Product extends BaseModel
 {
     use Translatable;
 
-    protected static string $translation_model = ProductTranslation::class;
-
     protected static $table_fields = [
         'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'url' =>                ['type' => 'varchar'],

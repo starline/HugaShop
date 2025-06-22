@@ -11,9 +11,11 @@
 namespace HugaShop\Models;
 
 use HugaShop\Models\Config;
+use Illuminate\Support\Str;
 use Illuminate\Events\Dispatcher;
 use HugaShop\Models\BaseCheckModel;
 use Illuminate\Container\Container;
+use HugaShop\Models\Localization\Language;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 abstract class BaseModel extends BaseCheckModel
@@ -30,7 +32,7 @@ abstract class BaseModel extends BaseCheckModel
         self::autoBootDB();
 
         // Auto DB table naming
-        $this->table ?? $this->table = Helper::camelToSnakeCase(Helper::class_basename(static::class));
+        $this->table ?? $this->table = Str::snake(Helper::class_basename(static::class));
 
         parent::__construct($attributes);
     }
@@ -85,7 +87,7 @@ abstract class BaseModel extends BaseCheckModel
      * Get translatable fields
      * @return array Array of field names that have 'trans' => true
      */
-    public static function getTransFields(): array
+    public static function getTranslatableFields(): array
     {
         $fields = [];
         foreach (static::getFields() as $name => $params) {
@@ -280,7 +282,13 @@ abstract class BaseModel extends BaseCheckModel
         });
 
         // Settings
-        if ($result) $result->settings = empty($result->settings) ? new \stdClass() : (object) unserialize($result->settings);
+        if ($result) {
+            $result->settings = empty($result->settings) ? new \stdClass() : (object) unserialize($result->settings);
+
+            if ($language_code = Language::checkOrGetCode()) {
+                $result = static::fillTranslation($result, $language_code);
+            }
+        }
 
         return $result;
     }

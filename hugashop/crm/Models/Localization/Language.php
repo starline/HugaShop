@@ -1,5 +1,14 @@
 <?php
 
+
+/**
+ * HugaShop - Sell anything
+ *
+ * @author Andri Huga
+ * @version 1.2
+ *
+ */
+
 namespace HugaShop\Models\Localization;
 
 use HugaShop\Models\Design;
@@ -16,8 +25,8 @@ class Language extends BaseModel
         'main' =>           ['type' => 'tinyint',  'def' => 0]
     ];
 
-    public static $main_language;
-    public static $current_lang;
+    public static $main_language_code;
+    public static $current_language_code;
 
     public function main()
     {
@@ -38,12 +47,23 @@ class Language extends BaseModel
     /**
      * Init content language
      */
-    public function languageCatch()
+    public static function languageCatch()
     {
-        $languages = Language::getList();
-        self::$main_language = $languages->firstWhere('main', 1)->code;
-        self::$current_lang = Request::get('lang', 'string') ?: self::$main_language;
+        $languages = Language::All();
+        self::$main_language_code = $languages->firstWhere('main', 1)->code;
+        self::$current_language_code = Request::get('lang', 'string');
+        self::$current_language_code = $languages->firstWhere('code', self::$current_language_code)?->code ?: self::$main_language_code;
+
         Design::assign('languages', $languages);
-        Design::assign('current_language', self::$current_lang);
+        Design::assign('current_language', self::$current_language_code);
+    }
+
+
+    /**
+     * Check if language is defined
+     */
+    public static function checkOrGetCode()
+    {
+        return (!empty(self::$current_language_code) and !empty(self::$main_language_code) and self::$current_language_code !== self::$main_language_code) ?? false;
     }
 }
