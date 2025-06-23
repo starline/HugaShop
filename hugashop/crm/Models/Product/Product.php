@@ -17,7 +17,6 @@ use HugaShop\Models\Helper;
 use Illuminate\Support\Arr;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\Order\OrderPurchase;
-use HugaShop\Models\Traits\Translatable;
 use HugaShop\Models\Product\ProductOption;
 use HugaShop\Models\Content\ContentComment;
 use HugaShop\Models\Product\ProductRelated;
@@ -27,7 +26,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends BaseModel
 {
-    use Translatable;
 
     protected static $table_fields = [
         'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],

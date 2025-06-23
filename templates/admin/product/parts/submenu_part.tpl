@@ -21,21 +21,4 @@
 		{/if}
 
 	</ul>
-
-	<select id="language_select" class="form-select form-select-sm w-auto ms-auto">
-		{foreach $languages as $language}
-			<option value="{$language->code}" {if $current_language == $language->code}selected{/if}>{$language->name}</option>
-		{/foreach}
-	</select>
-
-	{literal}
-		<script>
-			document.getElementById('language_select').addEventListener('change', function() {
-				const url = new URL(window.location.href);
-				url.searchParams.set('lang', this.value);
-				window.location.href = url.toString();
-			});
-		</script>
-	{/literal}
-
 {/block}

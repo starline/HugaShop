@@ -50,6 +50,7 @@ class Image extends BaseModel
         // Удаление основных изображений
         $images = Request::post($post_name, 'array');
         $current_images = Image::getImages($entity_id, $entity_name);
+
         foreach ($current_images as $image) {
             if (!in_array($image->id, $images)) {
                 Image::deleteImage($image->id);
@@ -200,8 +201,10 @@ class Image extends BaseModel
      */
     public static function uploadAddImage(string $temp_filename, string $original_filename, int $entity_id, string $entity_name, ?int $width = null, ?int $height = null)
     {
-        if ($image_name = self::uploadImage($temp_filename, $original_filename, $width, $height)) {
-            if ($image_id = self::addImage($entity_id, $entity_name, $image_name)) {
+        $image_name = self::uploadImage($temp_filename, $original_filename, $width, $height) ?: '';
+        if (!empty($image_name)) {
+            $image_id = self::addImage($entity_id, $entity_name, $image_name);
+            if ($image_id) {
                 return $image_id;
             }
         }
@@ -419,8 +422,7 @@ class Image extends BaseModel
 
 
     /**
-     * Заливаем файл на сервер
-     * Через эту функцию заливаем оригинальные изображения
+     * Заливаем файл (оригинальные изображения) на сервер
      *
      * @param string $temp_filename
      * @param string $original_filename

@@ -12,8 +12,9 @@ namespace App\Controller\Admin\Content;
 
 use HugaShop\Models\Design;
 use HugaShop\Models\Request;
-use HugaShop\Models\Content\ContentPage;
 use App\Controller\BaseAdminController;
+use HugaShop\Models\Content\ContentPage;
+use HugaShop\Models\Localization\Language;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -25,6 +26,9 @@ class PageController extends BaseAdminController
     {
 
         $this->checkAdminAccess('page');
+
+        // Init content language
+        Language::languageCatch();
 
         #### Update
         ###########

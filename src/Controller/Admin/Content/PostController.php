@@ -10,14 +10,14 @@
 
 namespace App\Controller\Admin\Content;
 
-use HugaShop\Models\Seo;
 use HugaShop\Models\Image;
 use HugaShop\Models\Design;
 use HugaShop\Models\Helper;
 use HugaShop\Models\Request;
 use HugaShop\Models\SeoKeywords;
-use HugaShop\Models\Content\ContentPost;
 use App\Controller\BaseAdminController;
+use HugaShop\Models\Content\ContentPost;
+use HugaShop\Models\Localization\Language;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -30,6 +30,8 @@ class PostController extends BaseAdminController
 
         $this->checkAdminAccess('blog');
 
+        // Init content language
+        Language::languageCatch();
 
         #### Update
         ###########
@@ -55,14 +57,11 @@ class PostController extends BaseAdminController
         #########
         if (!empty($id)) {
 
-            $post = ContentPost::getPost(intval($id));
+            $post = ContentPost::getPost(intval($id), join: ['images']);
 
             if (empty($post->id)) {
                 return $this->redirectToRoute('BlogAdmin');
             }
-
-            // Изображения
-            $post->images = Image::getImages($post->id, 'post');
 
             // SEO keywords
             $seo_keywords = SeoKeywords::getKeywords($post->id, 'post');

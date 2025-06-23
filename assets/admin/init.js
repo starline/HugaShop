@@ -75,4 +75,11 @@ $(function () {
         layer.find("div.edit_note").show();
         return false;
     });
+
+
+    $('#language_select').on('change', function () {
+        const url = new URL(window.location.href);
+        url.searchParams.set('lang', this.value);
+        window.location.href = url.toString();
+    });
 });

@@ -4,30 +4,35 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.5
  *
- * Auto-check tables and columns.
- * 
  */
 
-namespace HugaShop\Models;
+namespace HugaShop\Models\Traits;
 
-use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
-abstract class BaseCheckModel extends Model
+trait CheckModelTrait
 {
 
     protected static $table_fields;
     protected static array $checkedTables = [];
 
 
+    /** 
+     * Get Model Instance
+     */
+    public static function getModel()
+    {
+        return new static;
+    }
+
     /**
      * Execute query and try to create table/columns on missing table/column errors
      */
-    protected static function runWithInitTable(callable $callback)
+    private function runWithInitTable(callable $callback)
     {
         try {
             return $callback();
@@ -39,7 +44,7 @@ abstract class BaseCheckModel extends Model
                 stripos($msg, 'doesn\'t exist') !== false ||
                 stripos($msg, 'unknown column') !== false
             ) {
-                $table = (new static)->getTable();
+                $table = $this->getTable();
                 self::initTable($table);
                 return $callback();
             }

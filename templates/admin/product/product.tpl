@@ -10,6 +10,12 @@
 
 {block name=content}
 
+	<select id="language_select" class="form-select form-select w-auto me-auto">
+		{foreach $languages as $language}
+			<option value="{$language->code}" {if $current_language == $language->code}selected{/if}>{$language->name}</option>
+		{/foreach}
+	</select>
+
 	<!-- Основная форма -->
 	<form method="post" enctype="multipart/form-data">
 		<input name="id" type="hidden" value="{$product->id}" />

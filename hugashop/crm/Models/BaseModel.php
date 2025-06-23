@@ -13,13 +13,18 @@ namespace HugaShop\Models;
 use HugaShop\Models\Config;
 use Illuminate\Support\Str;
 use Illuminate\Events\Dispatcher;
-use HugaShop\Models\BaseCheckModel;
 use Illuminate\Container\Container;
+use Illuminate\Database\Eloquent\Model;
 use HugaShop\Models\Localization\Language;
+use HugaShop\Models\Traits\CheckModelTrait;
+use HugaShop\Models\Traits\TranslationTrait;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
-abstract class BaseModel extends BaseCheckModel
+abstract class BaseModel extends Model
 {
+
+    use TranslationTrait, CheckModelTrait;
+
     protected static $IsAutoBooted = false;
 
     protected $guarded = [];
@@ -119,10 +124,8 @@ abstract class BaseModel extends BaseCheckModel
      */
     public static function create(array|object $values): object
     {
-        return self::runWithInitTable(function () use ($values) {
-            $vals = self::validateValues($values);
-            return static::query()->create($vals);
-        });
+        $vals = self::validateValues($values);
+        return self::query()->create($vals);
     }
 
 
@@ -167,9 +170,7 @@ abstract class BaseModel extends BaseCheckModel
      */
     public static function deleteBy(string $field, $value): int
     {
-        return self::runWithInitTable(function () use ($field, $value) {
-            return static::query()->where($field, $value)->delete();
-        });
+        return self::query()->where($field, $value)->delete();
     }
 
 
@@ -178,15 +179,15 @@ abstract class BaseModel extends BaseCheckModel
      */
     public static function updateOne(int|array $ids, array|object $values)
     {
-        if ($language_code = Language::checkOrGetCode()) {
-            $values = self::runWithInitTable(function () use ($values, $language_code) {
-                return static::separateValues($values, $language_code);
-            });
+        if ($language_code = Language::checkOrGetCode() and static::isTranslatable()) {
+            $values = static::separateValues($values, $language_code);
         }
 
-        return self::runWithInitTable(function () use ($ids, $values) {
+        $model = static::getModel();
+        $query = $model->newQuery();
+        return $model->runWithInitTable(function () use ($query, $ids, $values) {
             $vals = self::validateValues($values);
-            return static::query()->whereId($ids)->update($vals);
+            return $query->whereId($ids)->update($vals);
         });
     }
 
@@ -196,9 +197,7 @@ abstract class BaseModel extends BaseCheckModel
      */
     public static function deleteOne(array|int $ids)
     {
-        return self::runWithInitTable(function () use ($ids) {
-            return static::whereId($ids)->delete();
-        });
+        return self::query()->whereId($ids)->delete();
     }
 
 
@@ -211,7 +210,8 @@ abstract class BaseModel extends BaseCheckModel
      */
     public static function getList(array $filter = [], array|string $order = [], array|string $join = [], ?string $select = null)
     {
-        $query = static::query();
+        $model = static::getModel();
+        $query = $model->newQuery();
 
         // JOINs
         if (!empty($join)) {
@@ -248,12 +248,12 @@ abstract class BaseModel extends BaseCheckModel
 
         // Выбор полей
         if ($select) {
-            return self::runWithInitTable(function () use ($query, $select) {
+            return $model->runWithInitTable(function () use ($query, $select) {
                 return $query->pluck($select)->toArray();
             });
         }
 
-        return self::runWithInitTable(function () use ($query) {
+        return $model->runWithInitTable(function () use ($query) {
             return $query->get();
         });
     }
@@ -266,8 +266,8 @@ abstract class BaseModel extends BaseCheckModel
      */
     public static function getOne(int|array $id, array|string $join = [])
     {
-
-        $query = static::query();
+        $model = static::getModel();
+        $query = $model->newQuery();
 
         // Eager load relationships
         if (!empty($join)) {
@@ -283,7 +283,7 @@ abstract class BaseModel extends BaseCheckModel
             $query->where('id', $id);
         }
 
-        $result = self::runWithInitTable(function () use ($query) {
+        $result = $model->runWithInitTable(function () use ($query) {
             return $query->first();
         });
 
@@ -291,7 +291,7 @@ abstract class BaseModel extends BaseCheckModel
         if ($result) {
             $result->settings = empty($result->settings) ? new \stdClass() : (object) unserialize($result->settings);
 
-            if ($language_code = Language::checkOrGetCode()) {
+            if ($language_code = Language::checkOrGetCode() and static::isTranslatable()) {
                 $result = static::fillTranslation($result, $language_code);
             }
         }
@@ -306,7 +306,8 @@ abstract class BaseModel extends BaseCheckModel
      */
     public static function getCount(array $filter = []): int
     {
-        $query = static::query();
+        $model = static::getModel();
+        $query = $model->newQuery();
 
         // Удаляем параметры пагинации
         unset($filter['page'], $filter['limit']);
@@ -320,7 +321,7 @@ abstract class BaseModel extends BaseCheckModel
             }
         }
 
-        return self::runWithInitTable(function () use ($query) {
+        return $model->runWithInitTable(function () use ($query) {
             return $query->count();
         });
     }

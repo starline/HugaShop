@@ -4,10 +4,9 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 4.4
+ * @version 4.5
  *
  * Smarty 5.x require PHP7.4/PHP8.1
- * Commbine Plugin to collect and minimize css and js
  *
  * For debuging in Smarty 5.x use {$var|debug_print_var}
  * 
@@ -125,6 +124,15 @@ class Design
         self::setModifierPlugin('floor',         'floor');
         self::setModifierPlugin('max',           'max');
         self::setModifierPlugin('min',           'min');
+    }
+
+
+    /**
+     *  Get theme 
+     */
+    public static function getTheme()
+    {
+        return self::$theme ?: null;
     }
 
 

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  */
 
@@ -17,18 +17,32 @@ use Illuminate\Support\Carbon;
 
 class ContentPost extends BaseModel
 {
+
     protected static $table_fields = [
         'id' =>                     ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'url' =>                    ['type' => 'varchar'],
-        'name' =>                   ['type' => 'varchar',       'required' => 'true'],
-        'meta_title' =>             ['type' => 'varchar'],
-        'meta_description' =>       ['type' => 'varchar'],
-        'annotation' =>             ['type' => 'text'],
-        'body' =>                   ['type' => 'mediumtext'],
+        'name' =>                   ['type' => 'varchar',       'trans' => true, 'required' => 'true'],
+        'meta_title' =>             ['type' => 'varchar',       'trans' => true],
+        'meta_description' =>       ['type' => 'varchar',       'trans' => true],
+        'annotation' =>             ['type' => 'text',          'trans' => true],
+        'body' =>                   ['type' => 'mediumtext',    'trans' => true],
         'date' =>                   ['type' => 'datetime',      'def' => 'CURRENT_TIMESTAMP'],
         'visible' =>                ['type' => 'tinyint',       'def' => 0]
     ];
 
+    public function image()
+    {
+        return $this->hasOne(Image::class, 'entity_id')
+            ->where('entity_name', 'post')
+            ->orderBy('position');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(Image::class, 'entity_id')
+            ->where('entity_name', 'post')
+            ->orderBy('position');
+    }
 
     public function comments()
     {
@@ -37,15 +51,14 @@ class ContentPost extends BaseModel
 
 
     /**
-     * Функция возвращает пост по его id или url
-     * (в зависимости от типа аргумента, int - id, string - url)
+     * Get post by ID(string) ot URL(string)
      * @param int|string $id id или url поста
      */
-    public static function getPost(int|string $id)
+    public static function getPost(int|string $id, array $join = [])
     {
         return is_int($id)
-            ? ContentPost::find($id)
-            : ContentPost::where('url', $id)->first();
+            ? ContentPost::getOne($id, $join)
+            : ContentPost::getOne(['url' => $id], $join);
     }
 
 

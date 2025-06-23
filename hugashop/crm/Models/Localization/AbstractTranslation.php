@@ -18,7 +18,7 @@ class AbstractTranslation extends BaseModel
 
     protected static $table_fields = [
         'id' =>                 ['type' => 'int',      'extra' => 'AUTO_INCREMENT'],
-        'entity_id' =>           ['type' => 'int'],
+        'entity_id' =>          ['type' => 'int'],
         'language_code' =>      ['type' => 'varchar']
         // ... Other from Model
     ];
@@ -46,7 +46,7 @@ class AbstractTranslation extends BaseModel
 
         $table_name = Str::snake(class_basename($base_model) . 'Translation');
 
-        $query =  new static;
+        $query = new static;
         $query->setTable($table_name);
 
         return $query;

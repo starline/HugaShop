@@ -10,7 +10,6 @@
 
 namespace HugaShop\Extensions\SeoPage\Models;
 
-use HugaShop\Models\Helper;
 use HugaShop\Extensions\BaseExtensionModel;
 
 final class SeoPage extends BaseExtensionModel

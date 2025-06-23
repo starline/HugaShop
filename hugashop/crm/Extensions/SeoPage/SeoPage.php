@@ -122,7 +122,7 @@ final class SeoPage extends BaseExtension
     #[AsEventListener]
     public function onDesignBeforeFetchEvent(DesignBeforeFetchEvent $event): void
     {
-        if (Request::isAjax()) {
+        if (Request::isAjax() || Design::getTheme() === 'admin') {
             return;
         }
 

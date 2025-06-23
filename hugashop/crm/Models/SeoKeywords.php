@@ -15,7 +15,7 @@ class SeoKeywords extends BaseModel
 
     protected static $table_fields = [
         'id'           => ['type' => 'int',     'extra' => 'AUTO_INCREMENT'],
-        'name'         => ['type' => 'varchar'],
+        'name'         => ['type' => 'varchar', 'trans' => true],
         'entity_name'  => ['type' => 'varchar'],
         'entity_id'    => ['type' => 'int'],
         'position'     => ['type' => 'int',     'def' => 0],
