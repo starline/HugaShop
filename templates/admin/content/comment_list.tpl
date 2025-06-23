@@ -69,7 +69,7 @@
 										<span class="badge text-bg-round">IP: {$comment->ip}</span>
 										{if !$comment->approved}<a class="approve" href="#">Одобрить</a>{/if}
 									</div>
-									
+
 									<div class="comment_text">
 										{$comment->text|strip_tags|nl2br|raw}
 									</div>
@@ -121,8 +121,6 @@
 
 {block name=body_script append}
 	<script type="module">
-		var csrf = "{setCSRF}";
-
 		import { ajax_icon } from '{"js/common.js"|asset}';
 
 		{literal}

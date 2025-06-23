@@ -39,7 +39,7 @@
 									<span class="badge text-bg-round">{$page->url}</span>
 								</div>
 							</div>
-							
+
 							<div class="icons">
 								<a class="material-icons launch" data-bs-toggle="tooltip" title="Предпросмотр в новом окне"
 									href="{$config->root_url}{$page->url}" target="_blank"></a>
@@ -73,8 +73,6 @@
 
 {block name=body_script append}
 	<script type="module">
-		var csrf = "{setCSRF}";
-
 		import { ajax_icon } from '{"js/common.js"|asset}';
 
 		{literal}

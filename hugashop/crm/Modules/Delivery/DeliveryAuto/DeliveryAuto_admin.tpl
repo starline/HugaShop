@@ -29,9 +29,8 @@
 </div>
 
 <script type="module">
-    var csrf = "{setCSRF}";
-
     {literal}
+
         $(function() {
 
             // Отправить SMS c накладной
@@ -59,5 +58,6 @@
             });
 
         });
+
     {/literal}
 </script>

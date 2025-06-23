@@ -38,7 +38,7 @@
 									<span class="badge text-bg-round">{$block->id}</span>
 								</div>
 							</div>
-							
+
 							<div class="icons">
 								<i class="enable material-icons visibility" data-bs-toggle="tooltip" title="Активна"></i>
 								<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
@@ -70,8 +70,6 @@
 
 {block name=body_script append}
 	<script type="module">
-		var csrf = "{setCSRF}";
-
 		import { ajax_icon } from '{"js/common.js"|asset}';
 
 		{literal}

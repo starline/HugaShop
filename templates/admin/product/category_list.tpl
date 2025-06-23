@@ -26,7 +26,7 @@
 								<div class="tree_row">
 									<div class="list_row {if !$category->visible}visible_off{/if}" item_id="{$category->id}">
 										<input type="hidden" name="positions[{$category->id}]" value="{$category->position}">
-										
+
 										<div class="move" style="margin-left:{$level*18}px">
 											<div class="move_zone"></div>
 										</div>
@@ -86,8 +86,6 @@
 
 {block name=body_script append}
 	<script type="module">
-		var csrf = "{setCSRF}";
-
 		import { ajax_icon } from '{"js/common.js"|asset}';
 
 		{literal}

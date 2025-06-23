@@ -146,7 +146,6 @@
 
 	<script type="module">
 		import { makeChart, hideOverlappingDataLabels } from '{"js/common.js"|asset}';
-		var csrf = "{setCSRF}";
 
 		let cartsData = makeChart(
 			document.getElementById('cartsHistory'), {

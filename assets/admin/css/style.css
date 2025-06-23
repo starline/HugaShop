@@ -229,6 +229,10 @@ textarea {
 	color: var(--text-dim-color);
 }
 
+button .material-icons {
+	font-size: 1.35rem;
+}
+
 /* input form */
 ol,
 ul {

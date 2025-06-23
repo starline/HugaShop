@@ -188,7 +188,6 @@
       import 'https://cdn.jsdelivr.net/npm/apexcharts';
       import { ajax_icon, makeChart } from '{"js/common.js"|asset}';
 
-      var csrf = "{setCSRF}";
       let php_currency_name = "{$currency->name}";
       let php_currency_sign = "{$currency->sign}";
       let purse_id = "{$purse_id}";

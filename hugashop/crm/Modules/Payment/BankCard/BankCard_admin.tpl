@@ -15,34 +15,36 @@
 <div><span class='col-form-label'>Номер карты: </span>{$payment_method->settings->card_number}</div>
 <div><span class='col-form-label'>Владелец карты: </span>{$payment_method->settings->card_owner}</div>
 
-<script type="module">
-    var csrf = "{setCSRF}";
+{block name=body_script append}
+    <script type="module">
+        {literal}
 
-    {literal}
-        $(function() {
+            $(function() {
 
-            // Отправить SMS c информацией об оплате
-            $("a.send_payment_sms").on('click', function() {
-                let icon = $(this);
-                let line = icon.closest(".icons");
-                let id = $('input[name="id"]').val();
-                let state = line.hasClass('sms_button') ? 1 : 0;
+                // Отправить SMS c информацией об оплате
+                $("a.send_payment_sms").on('click', function() {
+                    let icon = $(this);
+                    let line = icon.closest(".icons");
+                    let id = $('input[name="id"]').val();
+                    let state = line.hasClass('sms_button') ? 1 : 0;
 
-                icon.addClass('loading_icon');
+                    icon.addClass('loading_icon');
 
-                $.ajax({
-                    type: 'POST',
-                    url: '/admin/ajax/sms',
-                    data: {'id': id, 'type': 'payment', 'csrf': csrf},
-                    success: function(data) {
-                        icon.removeClass('loading_icon');
-                        if (!state)
-                            line.addClass('sms_button');
-                    },
-                    dataType: 'json'
+                    $.ajax({
+                        type: 'POST',
+                        url: '/admin/ajax/sms',
+                        data: {'id': id, 'type': 'payment', 'csrf': csrf},
+                        success: function(data) {
+                            icon.removeClass('loading_icon');
+                            if (!state)
+                                line.addClass('sms_button');
+                        },
+                        dataType: 'json'
+                    });
+                    return false;
                 });
-                return false;
             });
-        });
-    {/literal}
-</script>
+
+        {/literal}
+    </script>
+{/block}

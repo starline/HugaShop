@@ -65,10 +65,7 @@
 
 
 {block name=body_script append}
-	<!-- Script -->
 	<script type="module">
-		var csrf = "{setCSRF}";
-
 		import { ajax_icon } from '{"js/common.js"|asset}';
 
 		{literal}

@@ -386,7 +386,6 @@
 		import '{"js/jquery/datepicker/jquery.ui.datepicker-ru.js"|asset}';
 		import { ajax_icon, makeChart } from '{"js/common.js"|asset}';
 
-		var csrf = "{setCSRF}";
 		let php_product_id = '{$product->id}';
 		let php_currency_name = '{$currency->name}';
 		let php_currency_sign = '{$currency->sign}';

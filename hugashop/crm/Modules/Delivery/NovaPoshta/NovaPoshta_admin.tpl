@@ -39,56 +39,58 @@
     {/if}
 </div>
 
-<script type="module">
-    var csrf = "{setCSRF}";
+{block name=body_script append}
+    <script type="module">
+        {literal}
 
-    {literal}
-        $(function() {
+            $(function() {
 
-            // Проверить статус доставки
-            $("a.delivery_info_update").click(function() {
-                var icon = $(this);
-                var id = $('input[name="id"]').val();
-                var module = $('input[name="delivery[module]"]').val();
+                // Проверить статус доставки
+                $("a.delivery_info_update").click(function() {
+                    var icon = $(this);
+                    var id = $('input[name="id"]').val();
+                    var module = $('input[name="delivery[module]"]').val();
 
-                icon.addClass('loading_icon');
+                    icon.addClass('loading_icon');
 
-                $.ajax({
-                    type: 'POST',
-                    url: '/admin/ajax/get_delivery',
-                    data: {'id': id, 'module': module, 'request_type': 'checkTracking', 'csrf': csrf},
-                    success: function(data) {
-                        icon.removeClass('loading_icon');
-                        $(".tracking_status_content").html(data);
-                    },
-                    dataType: 'json'
+                    $.ajax({
+                        type: 'POST',
+                        url: '/admin/ajax/get_delivery',
+                        data: {'id': id, 'module': module, 'request_type': 'checkTracking', 'csrf': csrf},
+                        success: function(data) {
+                            icon.removeClass('loading_icon');
+                            $(".tracking_status_content").html(data);
+                        },
+                        dataType: 'json'
+                    });
+                    return false;
                 });
-                return false;
+
+                // Отправить SMS c накладной
+                $("a.send-delivery-sms").click(function() {
+                    var icon = $(this);
+                    var line = icon.closest(".icons");
+                    var id = $('input[name="id"]').val();
+                    var state = line.hasClass('sms_button') ? 1 : 0;
+
+                    icon.addClass('loading_icon');
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/admin/ajax/sms',
+                        data: {'id': id, 'type': 'delivery', 'csrf': csrf},
+                        success: function(data) {
+                            icon.removeClass('loading_icon');
+                            if (!state)
+                                line.addClass('sms_button');
+                        },
+                        dataType: 'json'
+                    });
+                    return false;
+                });
+
             });
 
-            // Отправить SMS c накладной
-            $("a.send-delivery-sms").click(function() {
-                var icon = $(this);
-                var line = icon.closest(".icons");
-                var id = $('input[name="id"]').val();
-                var state = line.hasClass('sms_button') ? 1 : 0;
-
-                icon.addClass('loading_icon');
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/admin/ajax/sms',
-                    data: {'id': id, 'type': 'delivery', 'csrf': csrf},
-                    success: function(data) {
-                        icon.removeClass('loading_icon');
-                        if (!state)
-                            line.addClass('sms_button');
-                    },
-                    dataType: 'json'
-                });
-                return false;
-            });
-
-        });
-    {/literal}
-</script>
+        {/literal}
+    </script>
+{/block}

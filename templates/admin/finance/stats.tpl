@@ -74,7 +74,6 @@
    <script type="module">
       import { makeChart, getChartData } from '{"js/common.js"|asset}';
 
-      var csrf = "{setCSRF}";
       let php_currency_name = '{$currency->name}';
       let php_currency_sign = '{$currency->sign}';
 

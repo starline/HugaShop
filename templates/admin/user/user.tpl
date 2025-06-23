@@ -165,8 +165,6 @@
 		import 'https://cdn.jsdelivr.net/npm/apexcharts';
 		import { makeChart } from '{"js/common.js"|asset}';
 
-
-		var csrf = "{setCSRF}";
 		const php_manager_id = '{$current_user->id}';
 		const php_currency_name = '{$currency->name}';
 		const php_currency_sign = '{$currency->sign}';

@@ -19,10 +19,11 @@
 		<div id="currencies_block">
 			<div class="list sortable_on" id="currencies">
 				{foreach $currencies as $c}
-					<div class="list_row {if !$c->enabled} enabled_off{/if}{if $c->cents == 0} cents_off{/if}" item_id="{$c->id}">
+					<div class="list_row {if !$c->enabled} enabled_off{/if}{if $c->cents == 0} cents_off{/if}"
+						item_id="{$c->id}">
 						<input type="hidden" name="check[]" value="{$c->id}" />
 
-						<div class="move">	
+						<div class="move">
 							<div class="move_zone"></div>
 						</div>
 
@@ -135,8 +136,6 @@
 
 {block name=body_script append}
 	<script type="module">
-		var csrf = "{setCSRF}";
-
 		import { ajax_icon } from '{"js/common.js"|asset}';
 
 		{literal}
