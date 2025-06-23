@@ -107,6 +107,14 @@ class Language extends BaseModel
      */
     public static function checkOrGetCode()
     {
-        return (!empty(self::$current_language_code) and !empty(self::$main_language_code) and self::$current_language_code !== self::$main_language_code) ?? false;
+        if (
+            !empty(self::$current_language_code) &&
+            !empty(self::$main_language_code) &&
+            self::$current_language_code !== self::$main_language_code
+        ) {
+            return self::$current_language_code;
+        }
+
+        return false;
     }
 }

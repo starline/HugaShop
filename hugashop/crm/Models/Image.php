@@ -77,7 +77,7 @@ class Image extends BaseModel
                     // Ужимаем изображение до заданого размера
                     $image_name = Image::uploadImage($dropped_images['tmp_name'][$key], $dropped_images['name'][$key]);
                     if ($key !== false && $image_name) {
-                        Image::addImage($entity_id, $entity_name, $image_name);
+                        Image::addImage($entity_id, $entity_name, (string) $image_name);
                     }
                 }
             }
@@ -201,9 +201,9 @@ class Image extends BaseModel
      */
     public static function uploadAddImage(string $temp_filename, string $original_filename, int $entity_id, string $entity_name, ?int $width = null, ?int $height = null)
     {
-        $image_name = self::uploadImage($temp_filename, $original_filename, $width, $height) ?: '';
+        $image_name = self::uploadImage($temp_filename, $original_filename, $width, $height);
         if (!empty($image_name)) {
-            $image_id = self::addImage($entity_id, $entity_name, $image_name);
+            $image_id = self::addImage($entity_id, $entity_name, (string) $image_name);
             if ($image_id) {
                 return $image_id;
             }
@@ -389,9 +389,8 @@ class Image extends BaseModel
     public static function downloadImage(string $filename)
     {
 
-        // Заливаем только если такой файла есть в базе
-        $query = Database::placehold('SELECT 1 FROM __content_image WHERE filename=? LIMIT 1', $filename);
-        if (!self::query($query)->result()) {
+        // Заливаем только если такой файл есть в базе
+        if (!self::where('filename', $filename)->exists()) {
             return false;
         }
 
@@ -412,7 +411,7 @@ class Image extends BaseModel
         $new_name =  pathinfo($image_path, PATHINFO_BASENAME);
 
         // Перед долгим копированием займем это имя
-        self::query('UPDATE __content_image SET filename=? WHERE filename=?', $new_name, $filename);
+        self::where('filename', $filename)->update(['filename' => $new_name]);
 
         fclose(fopen($image_path, 'w'));
         copy($filename, $image_path);

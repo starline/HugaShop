@@ -130,51 +130,6 @@ abstract class BaseModel extends Model
 
 
     /**
-     * Prepare values
-     * @param object|array $entity
-     */
-    public static function validateValues(object|array $values): array
-    {
-
-        $values = is_object($values) ? (array) $values : $values;
-        $valid_values = [];
-
-        // check allowed params
-        if (!empty(static::$table_fields)) {
-            foreach (static::$table_fields as $param_name => $v) {
-                if (array_key_exists($param_name, $values)) {
-                    $valid_values[$param_name] = $values[$param_name];
-                }
-            }
-        } else {
-            $valid_values = $values;
-        }
-
-        // Очищаем primery key
-        unset($valid_values['id']);
-
-        // Convert Settings. Array to json
-        if (isset($valid_values['settings'])) {
-            $valid_values['settings'] = empty($valid_values['settings']) ? [] : (array) $valid_values['settings'];
-            $valid_values['settings'] = serialize($valid_values['settings']);
-        }
-
-        return $valid_values;
-    }
-
-
-    /**
-     * Delete by field
-     * @param string $field
-     * @param $value
-     */
-    public static function deleteBy(string $field, $value): int
-    {
-        return self::query()->where($field, $value)->delete();
-    }
-
-
-    /**
      * Update one by ID
      */
     public static function updateOne(int|array $ids, array|object $values)
@@ -198,6 +153,17 @@ abstract class BaseModel extends Model
     public static function deleteOne(array|int $ids)
     {
         return self::query()->whereId($ids)->delete();
+    }
+
+
+    /**
+     * Delete by field
+     * @param string $field
+     * @param $value
+     */
+    public static function deleteBy(string $field, $value): int
+    {
+        return self::query()->where($field, $value)->delete();
     }
 
 
@@ -324,5 +290,39 @@ abstract class BaseModel extends Model
         return $model->runWithInitTable(function () use ($query) {
             return $query->count();
         });
+    }
+
+
+    /**
+     * Prepare values
+     * @param object|array $entity
+     */
+    public static function validateValues(object|array $values): array
+    {
+
+        $values = is_object($values) ? (array) $values : $values;
+        $valid_values = [];
+
+        // check allowed params
+        if (!empty(static::$table_fields)) {
+            foreach (static::$table_fields as $param_name => $v) {
+                if (array_key_exists($param_name, $values)) {
+                    $valid_values[$param_name] = $values[$param_name];
+                }
+            }
+        } else {
+            $valid_values = $values;
+        }
+
+        // Очищаем primery key
+        unset($valid_values['id']);
+
+        // Convert Settings. Array to json
+        if (isset($valid_values['settings'])) {
+            $valid_values['settings'] = empty($valid_values['settings']) ? [] : (array) $valid_values['settings'];
+            $valid_values['settings'] = serialize($valid_values['settings']);
+        }
+
+        return $valid_values;
     }
 }

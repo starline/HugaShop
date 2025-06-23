@@ -123,7 +123,7 @@ class ProductController extends BaseAdminController
                 }
             }
 
-            return $this->redirectToRoute('ProductAdmin', ['id' => $product->id]);
+            return $this->redirectToRouteLang('ProductAdmin', ['id' => $product->id]);
         }
 
 

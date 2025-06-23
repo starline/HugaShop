@@ -19,6 +19,7 @@ use HugaShop\Models\Settings;
 use HugaShop\Models\Content\ContentComment;
 use HugaShop\Models\User\UserPermission;
 use HugaShop\Models\Finance\FinanceCurrency;
+use HugaShop\Models\Localization\Language;
 use Symfony\Contracts\Service\Attribute\Required;
 
 class BaseAdminController extends BaseController
@@ -69,5 +70,18 @@ class BaseAdminController extends BaseController
             throw $this->createNotFoundException('Access denied'); # 404
         }
         return true;
+    }
+
+
+    /**
+     * Redirect to route with translation 
+     */
+    public function redirectToRouteLang(string $rout_name, array $params = [])
+    {
+
+        if ($language_code = Language::checkOrGetCode()) {
+            $params['lang'] = $language_code;
+        }
+        return $this->redirectToRoute($rout_name, $params);
     }
 }

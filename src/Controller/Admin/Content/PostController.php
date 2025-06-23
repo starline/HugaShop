@@ -49,7 +49,7 @@ class PostController extends BaseAdminController
             Image::catchImages($post->id, 'post', 'images');
 
             // Делаем редирект на страницу с ID
-            return $this->redirectToRoute('PostAdmin', ['id' => $post->id]);
+            return $this->redirectToRouteLang('PostAdmin', ['id' => $post->id]);
         }
 
 
