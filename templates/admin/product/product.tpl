@@ -10,18 +10,25 @@
 
 {block name=content}
 
-        {foreach $languages as $lang}
-                {if $lang->main}{assign var=main_lang_code value=$lang->code}{/if}
-        {/foreach}
+	{if $languages}
+		<div class="row mb-3">
+			<div class="col-auto">
+				<select id="language_select" class="form-select form-select">
+					{foreach $languages as $language}
+						<option value="{$language->code}" {if $current_language->code == $language->code}selected{/if}>
+							{$language->name}
+						</option>
+					{/foreach}
+				</select>
+			</div>
 
-        <select id="language_select" class="form-select form-select w-auto me-auto mb-3">
-                {foreach $languages as $language}
-                        <option value="{$language->code}" {if $current_language == $language->code}selected{/if}>{$language->name}</option>
-                {/foreach}
-        </select>
-        {if $current_language != $main_lang_code}
-                <button id="translate_button" type="button" class="btn btn-secondary ms-2 mb-3">Перевести</button>
-        {/if}
+			{if $current_language->code != $main_language->code}
+				<div class="col-auto">
+					<button id="translate_button" type="button" class="btn btn-secondary">Перевести</button>
+				</div>
+			{/if}
+		</div>
+	{/if}
 
 	<!-- Основная форма -->
 	<form method="post" enctype="multipart/form-data">
@@ -368,40 +375,40 @@
 				$('input[name="url"]').change(function() { url_touched = true; });
 				$('input[name="name"]').keyup(function() { set_meta(); });
 
-                                function set_meta() {
-                                        if (!url_touched)
-                                                $('input[name="url"]').val(generate_url());
-                                }
+				function set_meta() {
+					if (!url_touched)
+						$('input[name="url"]').val(generate_url());
+				}
 
-                                $('#translate_button').on('click', function () {
-                                        const btn = $(this);
-                                        btn.prop('disabled', true);
-                                        $.ajax({
-                                                url: '/admin/ajax/product/translate',
-                                                type: 'POST',
-                                                dataType: 'json',
-                                                data: {
-                                                        product_id: $('input[name=id]').val(),
-                                                        lang: $('#language_select').val(),
-                                                        csrf: csrf
-                                                },
-                                                success: function (data) {
-                                                        for (const field in data) {
-                                                                const el = $('[name="' + field + '"]');
-                                                                if (field === 'body' && typeof tinymce !== 'undefined') {
-                                                                        tinymce.activeEditor.setContent(data[field]);
-                                                                } else if (el.length) {
-                                                                        el.val(data[field]);
-                                                                }
-                                                        }
-                                                },
-                                                complete: function () {
-                                                        btn.prop('disabled', false);
-                                                }
-                                        });
-                                        return false;
-                                });
-                        });
-                {/literal}
-        </script>
+				$('#translate_button').on('click', function() {
+					const btn = $(this);
+					btn.prop('disabled', true);
+					$.ajax({
+						url: '/admin/ajax/product/translate',
+						type: 'POST',
+						dataType: 'json',
+						data: {
+							product_id: $('input[name=id]').val(),
+							lang: $('#language_select').val(),
+							csrf: csrf
+						},
+						success: function(data) {
+							for (const field in data) {
+								const el = $('[name="' + field + '"]');
+								if (field === 'body' && typeof tinymce !== 'undefined') {
+									tinymce.activeEditor.setContent(data[field]);
+								} else if (el.length) {
+									el.val(data[field]);
+								}
+							}
+						},
+						complete: function() {
+							btn.prop('disabled', false);
+						}
+					});
+					return false;
+				});
+			});
+		{/literal}
+	</script>
 {/block}

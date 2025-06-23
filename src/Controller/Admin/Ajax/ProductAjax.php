@@ -4,20 +4,20 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.9
+ * @version 2.1
  *
  */
 
 namespace App\Controller\Admin\Ajax;
 
+use OpenAI;
+use HugaShop\Models\Config;
 use HugaShop\Models\Request;
+use HugaShop\Models\Product\Product;
 use App\Controller\BaseAdminController;
+use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Product\ProductOption;
 use HugaShop\Models\Product\ProductFeature;
-use HugaShop\Models\Product\Product;
-use HugaShop\Models\Config;
-use HugaShop\Models\Localization\Language;
-use OpenAI;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -116,8 +116,8 @@ class ProductAjax extends BaseAdminController
             return new JsonResponse(['error' => 'csrf'], 400);
         }
 
-        $product_id = Request::post('product_id', 'integer');
-        $lang_code = Request::post('lang', 'string');
+        $product_id     = Request::post('product_id', 'integer');
+        $lang_code      = Request::post('lang', 'string');
 
         if (empty($product_id) || empty($lang_code)) {
             return new JsonResponse(['error' => 'params'], 400);
@@ -125,7 +125,7 @@ class ProductAjax extends BaseAdminController
 
         Language::languageCatch();
 
-        if ($lang_code == Language::$main_language_code) {
+        if ($lang_code == Language::$main_language->code) {
             return new JsonResponse(['error' => 'main_language'], 400);
         }
 
@@ -138,8 +138,6 @@ class ProductAjax extends BaseAdminController
         if (empty($product)) {
             return new JsonResponse(['error' => 'product'], 404);
         }
-
-        Product::fillTranslation($product, Language::$main_language_code);
 
         $key = Config::get('openai')->key;
         if (empty($key)) {

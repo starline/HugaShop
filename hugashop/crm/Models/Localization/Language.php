@@ -5,7 +5,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.3
+ * @version 1.4
  *
  */
 
@@ -25,17 +25,31 @@ class Language extends BaseModel
         'main' =>           ['type' => 'tinyint',  'def' => 0]
     ];
 
-    public static $main_language_code;
-    public static $current_language_code;
+    public static $languages;
+    public static $main_language;
+    public static $current_language;
 
+
+    /**
+     * Get main language
+     */
     public function main()
     {
         return $this->firstWhere('main', true);
     }
 
+    /**
+     * Get currentt language
+     */
+    public function current()
+    {
+        return $this->firstWhere('code', self::$current_language->code);
+    }
+
+
     public static function getLanguages()
     {
-        return self::query()->orderBy('id')->get();
+        return self::$languages = self::query()->orderBy('id')->get();
     }
 
 
@@ -92,13 +106,16 @@ class Language extends BaseModel
      */
     public static function languageCatch()
     {
-        $languages = Language::All();
-        self::$main_language_code = $languages->firstWhere('main', 1)->code;
-        self::$current_language_code = Request::get('lang', 'string');
-        self::$current_language_code = $languages->firstWhere('code', self::$current_language_code)?->code ?: self::$main_language_code;
+        self::$languages = Language::All();
+        self::$main_language = self::$languages->firstWhere('main', 1);
+        $language_code = Request::get('lang', 'string');
+        self::$current_language = self::$languages->firstWhere('code', $language_code) ?: self::$main_language;
 
-        Design::assign('languages', $languages);
-        Design::assign('current_language', self::$current_language_code);
+        Design::assign('languages', self::$languages);
+        Design::assign('main_language', self::$main_language);
+        Design::assign('current_language', self::$current_language);
+
+        return self::$current_language;
     }
 
 
@@ -108,11 +125,11 @@ class Language extends BaseModel
     public static function checkOrGetCode()
     {
         if (
-            !empty(self::$current_language_code) &&
-            !empty(self::$main_language_code) &&
-            self::$current_language_code !== self::$main_language_code
+            !empty(self::$current_language) &&
+            !empty(self::$main_language) &&
+            self::$current_language->code !== self::$main_language->code
         ) {
-            return self::$current_language_code;
+            return self::$current_language->code;
         }
 
         return false;
