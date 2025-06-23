@@ -17,6 +17,7 @@ use HugaShop\Models\Request;
 use HugaShop\Models\SeoFaqs;
 use HugaShop\Models\SeoKeywords;
 use App\Controller\BaseAdminController;
+use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -32,6 +33,8 @@ class CategoryController extends BaseAdminController
 
         $this->checkAdminAccess('product_category');
 
+        // Init content language
+        Language::languageCatch();
 
         #### Update
         ###########
@@ -55,7 +58,7 @@ class CategoryController extends BaseAdminController
             ProductCategorySynonym::updateCategorySynonyms($category->id, $synonyms);
 
             // Делаем редирект на страницу с ID
-            return $this->redirectToRoute('CategoryAdmin', ['id' => $category->id]);
+            return $this->redirectToRouteLang('CategoryAdmin', ['id' => $category->id]);
         }
 
 

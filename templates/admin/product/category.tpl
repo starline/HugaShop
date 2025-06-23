@@ -8,16 +8,11 @@
 {/if}
 
 {block name=content}
-
-	{if $message_error}
-		<!-- Системное сообщение -->
-		<div class="message message_error">
-			<span class="text">{if $message_error=='url_exists'}Категория с таким адресом уже
-				существует{else}{$message_error}
-				{/if}</span>
-		</div>
-	{/if}
-
+	<select id="language_select" class="form-select form-select w-auto me-auto mb-3">
+		{foreach $languages as $language}
+			<option value="{$language->code}" {if $current_language == $language->code}selected{/if}>{$language->name}</option>
+		{/foreach}
+	</select>
 
 	<!-- Основная форма -->
 	<form method="post" enctype="multipart/form-data">

@@ -10,7 +10,7 @@
 
 {block name=content}
 
-	<select id="language_select" class="form-select form-select w-auto me-auto">
+	<select id="language_select" class="form-select form-select w-auto me-auto mb-3">
 		{foreach $languages as $language}
 			<option value="{$language->code}" {if $current_language == $language->code}selected{/if}>{$language->name}</option>
 		{/foreach}
