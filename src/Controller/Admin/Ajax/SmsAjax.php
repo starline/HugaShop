@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * HugaShop - Sell anything
+ *
+ * @author Andri Huga
+ * @version 2.0
+ *
+ */
+
 namespace App\Controller\Admin\Ajax;
 
 use HugaShop\Models\Order\Order;
@@ -18,9 +26,10 @@ class SmsAjax extends BaseAdminController
         $this->checkAdminAccess('order_edit');
 
         // Выбрать данные заказа
-        $order = Order::getOrder(Request::post('id', 'integer'));
+        $order_id = Request::post('id', 'int');
+        $order = Order::getOrder($order_id);
 
-        $result["result"]  = 'no';
+        $result['result']  = [];
         if (!empty($order->phone)) {
 
 
@@ -77,10 +86,10 @@ class SmsAjax extends BaseAdminController
 
             // Если не указан type
             else {
-                $result["result"] = "empty type";
+                $result['result'] = ['error' => 'empty type'];
             }
         } else {
-            $result["result"] = "empty phone";
+            $result['result'] = ['error' => 'empty phone'];
         }
 
         return new JsonResponse($result);

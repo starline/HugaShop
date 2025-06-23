@@ -4,7 +4,9 @@
  * Для оператора turbosms.ua
  *
  * @author Andi Huga
- * @author mkuzmych/laravel-turbosms
+ * @author branch from mkuzmych/laravel-turbosms
+ * 
+ * @version 2.1
  *
  */
 
@@ -20,7 +22,7 @@ class TurboSmsSender
     private $sender;
     protected $wsdl = 'http://turbosms.in.ua/api/wsdl.html';
 
-    public function __construct(string $login, string $password, string $sender)
+    public function __construct(string $login, string $password, string $sender_name)
     {
 
         // Данные авторизации
@@ -29,7 +31,16 @@ class TurboSmsSender
             'password' => $password
         ];
 
-        $this->sender = $sender;
+        $this->sender = $sender_name;
+    }
+
+
+    /**
+     * Static initialization
+     */
+    public static function init(string $login, string $password, string $sender_name)
+    {
+        return new static($login, $password, $sender_name);
     }
 
 
@@ -106,6 +117,7 @@ class TurboSmsSender
                 }
             }
         }
+
         return false;
     }
 

@@ -4,12 +4,13 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
+ * @version 2.0
  *
  */
 
 namespace HugaShop\Modules\Notifier\Turbosms;
 
-use HugaShop\Libs\Turbosms\TurboSmsSender;
+use Turbosms\TurboSmsSender;
 
 class Turbosms
 {
@@ -36,13 +37,13 @@ class Turbosms
             return false;
         }
 
-        $SMS = new TurboSmsSender(
+        $SMS = TurboSmsSender::init(
             $params['login'],
             $params['password'],
             $params['name']
         );
 
         // Отправляем СМС
-        return $sms_result = $SMS->sendSms($params['phone'], $message);
+        return $SMS->sendSms($params['phone'], $message);
     }
 }
