@@ -8,7 +8,7 @@
     <!-- Заголовок -->
     <div class="header_top">
         <h1>{$meta_title}</h1>
-        <a class="add" href="{'ExtensionItemNewAdmin'|urll:[module => $extension->module, path => feed]}">Добавить прайс</a>
+        <a class="add" href="{'ExtensionItemNewAdmin'|urll:[name => $extension->module, path => feed]}">Добавить прайс</a>
     </div>
 
     <div id="main_list">

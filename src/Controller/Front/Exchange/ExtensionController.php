@@ -22,7 +22,7 @@ class ExtensionController extends BaseFrontController
     {
 
         if (empty($name) || empty($token) || empty($extension = Extension::makeExtension($name))) {
-            throw $this->createNotFoundException('Product does not found'); # 404
+            throw $this->createNotFoundException('Something is going wrong.'); # 404
         }
 
         if (!method_exists($extension, 'webhook')) {
@@ -37,6 +37,6 @@ class ExtensionController extends BaseFrontController
             return $response;
         }
 
-        throw $this->createNotFoundException('Product does not found'); # 404
+        throw $this->createNotFoundException('Something is going wrong.'); # 404
     }
 }

@@ -17,7 +17,6 @@ use HugaShop\Models\Request;
 use HugaShop\Models\Settings;
 use HugaShop\Models\Order\Order;
 use HugaShop\Models\Product\Product;
-use App\Controller\BaseAdminController;
 use App\Controller\BaseFrontController;
 use HugaShop\Models\Order\OrderPurchase;
 use HugaShop\Models\Product\ProductBrand;

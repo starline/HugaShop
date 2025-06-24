@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  */
 
@@ -40,6 +40,24 @@ class BaseExtension
     public function setEnviroment(string $env_name, $env)
     {
         $this->ext_env->$env_name = $env;
+    }
+
+
+    /**
+     * Get Extension name (Module)
+     */
+    public function getName()
+    {
+        return $this->ext_name;
+    }
+
+
+    /**
+     * Get Extension name (Module)
+     */
+    public function getConfig()
+    {
+        return $this->ext_config;
     }
 
 

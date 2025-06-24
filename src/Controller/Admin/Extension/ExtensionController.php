@@ -20,48 +20,37 @@ use Symfony\Component\Routing\Attribute\Route;
 class ExtensionController extends BaseAdminController
 {
 
-    #[Route('/admin/extension/{module}', name: 'ExtensionAdmin', priority: 1)]
-    public function index(string $module): Response
+    #[Route('/admin/extension/{name}', name: 'ExtensionAdmin', priority: 1)]
+    public function index(string $name): Response
     {
 
         $this->checkAdminAccess('extension');
 
-        if (empty($Extension = Extension::makeExtension($module))) {
+        if (empty($Extension = Extension::makeExtension($name))) {
             return $this->redirectToRoute('ExtensionListAdmin');
         }
 
-
-        // Сохранить настройки
-        if (!empty($extension_settings = Request::post('extension_settings', 'array'))) {
-            Design::setFlashMessage('update', Extension::updateExt($module, $extension_settings));
-            $Extension->ext_settings = (object) $extension_settings;
-            return $this->redirectToRoute('ExtensionAdmin', ['module' => $module]);
-        }
-
-        $extension            = clone $Extension->ext_config;
+        $extension            = clone $Extension->getConfig();
         $extension->settings  = $Extension->ext_settings;
         Design::assign('extension', $extension);
-        Design::assign('extensions', [$Extension->ext_name => $Extension->ext_config]);
 
         if (method_exists($Extension, 'index')) {
             $Extension->setEnviroment('kernel', $this->container->get('kernel'));
-            $template = $Extension->index();
+            return $this->fetchResponse($Extension->index());
         } else {
-            $template = 'extension/extension.tpl';
+            return $this->settings($Extension);
         }
-
-        return $this->fetchResponse($template);
     }
 
 
-    #[Route('/admin/extension/{module}/{path}', name: 'ExtensionItemNewAdmin')]
-    #[Route('/admin/extension/{module}/{path}/{item_id}', requirements: ['id' => '\d+', 'item_id' => '\d+'], name: 'ExtensionItemAdmin')]
-    public function path(string $module, string $path, ?int $item_id = null): Response
+    #[Route('/admin/extension/{name}/{path}', name: 'ExtensionItemNewAdmin')]
+    #[Route('/admin/extension/{name}/{path}/{item_id}', requirements: ['id' => '\d+', 'item_id' => '\d+'], name: 'ExtensionItemAdmin')]
+    public function path(string $name, string $path, ?int $item_id = null): Response
     {
 
         $this->checkAdminAccess('extension');
 
-        if (empty($module) || empty($Extension = Extension::makeExtension($module))) {
+        if (empty($name) || empty($Extension = Extension::makeExtension($name))) {
             return $this->redirectToRoute('ExtensionListAdmin');
         }
 
@@ -69,5 +58,23 @@ class ExtensionController extends BaseAdminController
         Design::assign('extension_settings', $Extension->ext_settings);
 
         return $this->fetchResponse($Extension->$path($item_id));
+    }
+
+
+    /**
+     * Get Settings page
+     */
+    private function settings($Extension)
+    {
+
+        // Сохранить настройки
+        if (!empty($extension_settings = Request::post('extension_settings', 'array'))) {
+            Design::setFlashMessage('update', Extension::updateExt($Extension->getName(), $extension_settings));
+            return $this->redirectToRoute('ExtensionAdmin', ['name' => $Extension->getName()]);
+        }
+
+        Design::assign('extensions', [$Extension->getName() => $Extension->getConfig()]);
+
+        return $this->fetchResponse('extension/extension.tpl');
     }
 }
