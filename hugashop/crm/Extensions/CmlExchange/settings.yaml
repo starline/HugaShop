@@ -1,0 +1,6 @@
+name: "CmlExchange"
+description: "Обмен с 1С через CommerceML"
+settings:
+  - { variable: enabled, name: "Включено", options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }] }
+  - { variable: login, name: "Логин" }
+  - { variable: password, name: "Пароль" }

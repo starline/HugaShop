@@ -1,14 +1,6 @@
 <?php
 
-/**
- * HugaShop - Sell anything
- * 
- * @author Andi Huga
- * @version 1.2
- *
- */
-
-namespace App\Controller\Front\Exchange;
+namespace HugaShop\Extensions\CmlExchange\Services;
 
 use HugaShop\Models\Image;
 use HugaShop\Models\Config;
@@ -17,23 +9,19 @@ use HugaShop\Models\Request;
 use HugaShop\Models\Settings;
 use HugaShop\Models\Order\Order;
 use HugaShop\Models\Product\Product;
-use App\Controller\BaseAdminController;
-use App\Controller\BaseFrontController;
 use HugaShop\Models\Order\OrderPurchase;
 use HugaShop\Models\Product\ProductBrand;
 use HugaShop\Models\Product\ProductOption;
 use HugaShop\Models\Product\ProductFeature;
 use HugaShop\Models\Product\ProductCategory;
-use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Models\Product\ProductCategoryFeature;
+use Symfony\Component\HttpFoundation\Response;
 
-class CmlExchangeController extends BaseFrontController
+class CmlExchangeService
 {
-
-
-    #[Route('/exchange/cml', name: 'CmlExchange')]
-    public function index()
+    public function handle(array $params = []): Response
     {
+        ob_start();
 
         // Обновлять все данные при каждой синхронизации
         $full_update = true;
@@ -41,8 +29,8 @@ class CmlExchangeController extends BaseFrontController
         // Название параметра товара, используемого как бренд
         $brand_option_name = 'Производитель';
 
-        $start_time = microtime(true);
-        $max_exec_time = min(30, @ini_get("max_execution_time"));
+        $start_time    = microtime(true);
+        $max_exec_time = min(30, @ini_get('max_execution_time'));
         if (empty($max_exec_time)) {
             $max_exec_time = 30;
         }
@@ -50,10 +38,9 @@ class CmlExchangeController extends BaseFrontController
         // Папка для хранения временных файлов синхронизации
         $dir = Config::get('root_dir') . '/var/temp/cml/';
 
-        $GLOBALS['dir'] = $dir;
+        $GLOBALS['dir']              = $dir;
         $GLOBALS['brand_option_name'] = $brand_option_name;
-        $GLOBALS['full_update'] = $full_update;
-
+        $GLOBALS['full_update']       = $full_update;
 
         // Sale.checkauth
         if (Request::get('type') == 'sale' && Request::get('mode') == 'checkauth') {
@@ -61,7 +48,6 @@ class CmlExchangeController extends BaseFrontController
             print session_name() . "\n";
             print session_id();
         }
-
 
         // Sale.init
         if (Request::get('type') == 'sale' && Request::get('mode') == 'init') {
@@ -75,11 +61,9 @@ class CmlExchangeController extends BaseFrontController
             print "file_limit=1000000\n";
         }
 
-
         // Sale.file
         if (Request::get('type') == 'sale' && Request::get('mode') == 'file') {
             $filename = Request::get('filename');
-
 
             $f = fopen($dir . $filename, 'ab');
             fwrite($f, file_get_contents('php://input'));
@@ -171,40 +155,35 @@ class CmlExchangeController extends BaseFrontController
                 Order::updateOne($order->id, ['discount' => 0, 'total_price' => $xml_order->Сумма]);
             }
 
-
             print "success";
-            Settings::set('last_1c_orders_export_date', date("Y-m-d H:i:s"));
+            Settings::set('last_1c_orders_export_date', date('Y-m-d H:i:s'));
         }
-
 
         // Sale.query
         if (Request::get('type') == 'sale' && Request::get('mode') == 'query') {
-            $no_spaces = '<?xml version="1.0" encoding="utf-8"?>
-							<КоммерческаяИнформация ВерсияСхемы="2.04" ДатаФормирования="' . Helper::dateFormat($order->date, 'Y-m-d') . '"></КоммерческаяИнформация>';
+            $no_spaces = '<?xml version="1.0" encoding="utf-8"?>\n<КоммерческаяИнформация ВерсияСхемы="2.04" ДатаФормирования="' . Helper::dateFormat($order->date, 'Y-m-d') . '"></КоммерческаяИнформация>';
             $xml = new \SimpleXMLElement($no_spaces);
 
             $orders = Order::getOrders(['modified_since' => Settings::getParam('last_1c_orders_export_date')]);
             foreach ($orders as $order) {
-
-                $doc = $xml->addChild("Документ");
-                $doc->addChild("Ид", $order->id);
-                $doc->addChild("Номер", $order->id);
-                $doc->addChild("Дата", Helper::dateFormat($order->date, 'Y-m-d'));
-                $doc->addChild("ХозОперация", "Заказ товара");
-                $doc->addChild("Роль", "Продавец");
-                $doc->addChild("Курс", "1");
-                $doc->addChild("Сумма", $order->total_price);
-                $doc->addChild("Время", Helper::timeFormat($order->date, 'H:i:s'));
-                $doc->addChild("Комментарий", $order->comment);
-
+                $doc = $xml->addChild('Документ');
+                $doc->addChild('Ид', $order->id);
+                $doc->addChild('Номер', $order->id);
+                $doc->addChild('Дата', Helper::dateFormat($order->date, 'Y-m-d'));
+                $doc->addChild('ХозОперация', 'Заказ товара');
+                $doc->addChild('Роль', 'Продавец');
+                $doc->addChild('Курс', '1');
+                $doc->addChild('Сумма', $order->total_price);
+                $doc->addChild('Время', Helper::timeFormat($order->date, 'H:i:s'));
+                $doc->addChild('Комментарий', $order->comment);
 
                 // Контрагенты
                 $k1 = $doc->addChild('Контрагенты');
                 $k1_1 = $k1->addChild('Контрагент');
-                $k1_2 = $k1_1->addChild("Ид", $order->name);
-                $k1_2 = $k1_1->addChild("Наименование", $order->name);
-                $k1_2 = $k1_1->addChild("Роль", "Покупатель");
-                $k1_2 = $k1_1->addChild("ПолноеНаименование", $order->name);
+                $k1_2 = $k1_1->addChild('Ид', $order->name);
+                $k1_2 = $k1_1->addChild('Наименование', $order->name);
+                $k1_2 = $k1_1->addChild('Роль', 'Покупатель');
+                $k1_2 = $k1_1->addChild('ПолноеНаименование', $order->name);
 
                 // Доп параметры
                 $addr = $k1_1->addChild('АдресРегистрации');
@@ -231,7 +210,6 @@ class CmlExchangeController extends BaseFrontController
                     if (!empty($purchase->product_id) && !empty($purchase->product_id)) {
                         $id_p = Product::whereId($purchase->product_id)->value('external_id');
 
-                        // Если нет внешнего ключа товара - указываем наш id
                         if (!empty($id_p)) {
                             $id = $id_p;
                         } else {
@@ -239,100 +217,89 @@ class CmlExchangeController extends BaseFrontController
                             $id = $purchase->product_id;
                         }
 
-                        // Если нет внешнего ключа варианта - указываем наш id
                         $id = $id . '#' . $purchase->product_id;
 
                         $t1_1 = $t1->addChild('Товар');
 
                         if ($id) {
-                            $t1_2 = $t1_1->addChild("Ид", $id);
+                            $t1_2 = $t1_1->addChild('Ид', $id);
                         }
 
-                        $t1_2 = $t1_1->addChild("Артикул", $purchase->sku);
+                        $t1_2 = $t1_1->addChild('Артикул', $purchase->sku);
 
                         $name = $purchase->product_name;
                         if ($purchase->variant_name) {
-                            $name .= " $purchase->variant_name $id";
+                            $name .= ' ' . $purchase->variant_name . ' ' . $id;
                         }
-                        $t1_2 = $t1_1->addChild("Наименование", $name);
-                        $t1_2 = $t1_1->addChild("ЦенаЗаЕдиницу", $purchase->price * (100 - $order->discount) / 100);
-                        $t1_2 = $t1_1->addChild("Количество", $purchase->amount);
-                        $t1_2 = $t1_1->addChild("Сумма", $purchase->amount * $purchase->price * (100 - $order->discount) / 100);
+                        $t1_2 = $t1_1->addChild('Наименование', $name);
+                        $t1_2 = $t1_1->addChild('ЦенаЗаЕдиницу', $purchase->price * (100 - $order->discount) / 100);
+                        $t1_2 = $t1_1->addChild('Количество', $purchase->amount);
+                        $t1_2 = $t1_1->addChild('Сумма', $purchase->amount * $purchase->price * (100 - $order->discount) / 100);
 
-                        /*
-                            $t1_2 = $t1_1->addChild ( "Скидки" );
-                            $t1_3 = $t1_2->addChild ( "Скидка" );
-                            $t1_4 = $t1_3->addChild ( "Сумма", $purchase->amount*$purchase->price*(100-$order->discount)/100);
-                            $t1_4 = $t1_3->addChild ( "УчтеноВСумме", "true" );
-                            */
+                        $t1_2 = $t1_1->addChild('ЗначенияРеквизитов');
+                        $t1_3 = $t1_2->addChild('ЗначениеРеквизита');
+                        $t1_4 = $t1_3->addChild('Наименование', 'ВидНоменклатуры');
+                        $t1_4 = $t1_3->addChild('Значение', 'Товар');
 
-                        $t1_2 = $t1_1->addChild("ЗначенияРеквизитов");
-                        $t1_3 = $t1_2->addChild("ЗначениеРеквизита");
-                        $t1_4 = $t1_3->addChild("Наименование", "ВидНоменклатуры");
-                        $t1_4 = $t1_3->addChild("Значение", "Товар");
-
-                        $t1_2 = $t1_1->addChild("ЗначенияРеквизитов");
-                        $t1_3 = $t1_2->addChild("ЗначениеРеквизита");
-                        $t1_4 = $t1_3->addChild("Наименование", "ТипНоменклатуры");
-                        $t1_4 = $t1_3->addChild("Значение", "Товар");
+                        $t1_2 = $t1_1->addChild('ЗначенияРеквизитов');
+                        $t1_3 = $t1_2->addChild('ЗначениеРеквизита');
+                        $t1_4 = $t1_3->addChild('Наименование', 'ТипНоменклатуры');
+                        $t1_4 = $t1_3->addChild('Значение', 'Товар');
                     }
                 }
 
                 // Доставка
                 if ($order->delivery_price > 0 && !$order->separate_delivery) {
                     $t1 = $t1->addChild('Товар');
-                    $t1->addChild("Ид", 'ORDER_DELIVERY');
-                    $t1->addChild("Наименование", 'Доставка');
-                    $t1->addChild("ЦенаЗаЕдиницу", $order->delivery_price);
-                    $t1->addChild("Количество", 1);
-                    $t1->addChild("Сумма", $order->delivery_price);
-                    $t1_2 = $t1->addChild("ЗначенияРеквизитов");
-                    $t1_3 = $t1_2->addChild("ЗначениеРеквизита");
-                    $t1_4 = $t1_3->addChild("Наименование", "ВидНоменклатуры");
-                    $t1_4 = $t1_3->addChild("Значение", "Услуга");
+                    $t1->addChild('Ид', 'ORDER_DELIVERY');
+                    $t1->addChild('Наименование', 'Доставка');
+                    $t1->addChild('ЦенаЗаЕдиницу', $order->delivery_price);
+                    $t1->addChild('Количество', 1);
+                    $t1->addChild('Сумма', $order->delivery_price);
+                    $t1_2 = $t1->addChild('ЗначенияРеквизитов');
+                    $t1_3 = $t1_2->addChild('ЗначениеРеквизита');
+                    $t1_4 = $t1_3->addChild('Наименование', 'ВидНоменклатуры');
+                    $t1_4 = $t1_3->addChild('Значение', 'Услуга');
 
-                    $t1_2 = $t1->addChild("ЗначенияРеквизитов");
-                    $t1_3 = $t1_2->addChild("ЗначениеРеквизита");
-                    $t1_4 = $t1_3->addChild("Наименование", "ТипНоменклатуры");
-                    $t1_4 = $t1_3->addChild("Значение", "Услуга");
+                    $t1_2 = $t1->addChild('ЗначенияРеквизитов');
+                    $t1_3 = $t1_2->addChild('ЗначениеРеквизита');
+                    $t1_4 = $t1_3->addChild('Наименование', 'ТипНоменклатуры');
+                    $t1_4 = $t1_3->addChild('Значение', 'Услуга');
                 }
-
 
                 // Статус
                 if ($order->status == 1) {
-                    $s1_2 = $doc->addChild("ЗначенияРеквизитов");
-                    $s1_3 = $s1_2->addChild("ЗначениеРеквизита");
-                    $s1_3->addChild("Наименование", "Статус заказа");
-                    $s1_3->addChild("Значение", "[N] Принят");
+                    $s1_2 = $doc->addChild('ЗначенияРеквизитов');
+                    $s1_3 = $s1_2->addChild('ЗначениеРеквизита');
+                    $s1_3->addChild('Наименование', 'Статус заказа');
+                    $s1_3->addChild('Значение', '[N] Принят');
                 }
                 if ($order->status == 2) {
-                    $s1_2 = $doc->addChild("ЗначенияРеквизитов");
-                    $s1_3 = $s1_2->addChild("ЗначениеРеквизита");
-                    $s1_3->addChild("Наименование", "Статус заказа");
-                    $s1_3->addChild("Значение", "[F] Доставлен");
+                    $s1_2 = $doc->addChild('ЗначенияРеквизитов');
+                    $s1_3 = $s1_2->addChild('ЗначениеРеквизита');
+                    $s1_3->addChild('Наименование', 'Статус заказа');
+                    $s1_3->addChild('Значение', '[F] Доставлен');
                 }
                 if ($order->status == 3) {
-                    $s1_2 = $doc->addChild("ЗначенияРеквизитов");
-                    $s1_3 = $s1_2->addChild("ЗначениеРеквизита");
-                    $s1_3->addChild("Наименование", "Отменен");
-                    $s1_3->addChild("Значение", "true");
+                    $s1_2 = $doc->addChild('ЗначенияРеквизитов');
+                    $s1_3 = $s1_2->addChild('ЗначениеРеквизита');
+                    $s1_3->addChild('Наименование', 'Отменен');
+                    $s1_3->addChild('Значение', 'true');
                 }
             }
 
-            header("Content-type: text/xml; charset=utf-8");
+            header('Content-type: text/xml; charset=utf-8');
             print "\xEF\xBB\xBF";
 
             print $xml->asXML();
 
-            Settings::set('last_1c_orders_export_date', date("Y-m-d H:i:s"));
+            Settings::set('last_1c_orders_export_date', date('Y-m-d H:i:s'));
         }
-
 
         // Sale.success
         if (Request::get('type') == 'sale' && Request::get('mode') == 'success') {
-            Settings::set('last_1c_orders_export_date', date("Y-m-d H:i:s"));
+            Settings::set('last_1c_orders_export_date', date('Y-m-d H:i:s'));
         }
-
 
         // Catalog.checkauth
         if (Request::get('type') == 'catalog' && Request::get('mode') == 'checkauth') {
@@ -340,7 +307,6 @@ class CmlExchangeController extends BaseFrontController
             print session_name() . "\n";
             print session_id();
         }
-
 
         // Catalog.init
         if (Request::get('type') == 'catalog' && Request::get('mode') == 'init') {
@@ -359,26 +325,17 @@ class CmlExchangeController extends BaseFrontController
             print "file_limit=1000000\n";
         }
 
-
         // Catalog.file
         if (Request::get('type') == 'catalog' && Request::get('mode') == 'file') {
-            $filename = basename(Request::get('filename'));
+            $filename = Request::get('filename');
             $f = fopen($dir . $filename, 'ab');
             fwrite($f, file_get_contents('php://input'));
             fclose($f);
-            print "success\n";
-        }
-
-
-        // Catalog.import
-        if (Request::get('type') == 'catalog' && Request::get('mode') == 'import') {
-            $filename = basename(Request::get('filename'));
 
             // Номер текущего товара
             $current_product_num = 0;
 
             if ($filename === 'import.xml') {
-
                 // Категории и свойства (только в первом запросе пакетной передачи)
                 if (empty(Request::getSession('last_1c_imported_product_num'))) {
                     $z = new \XMLReader();
@@ -411,12 +368,13 @@ class CmlExchangeController extends BaseFrontController
 
                         $exec_time = microtime(true) - $start_time;
                         if ($exec_time + 1 >= $max_exec_time) {
-                            header("Content-type: text/xml; charset=utf-8");
+                            header('Content-type: text/xml; charset=utf-8');
                             print "\xEF\xBB\xBF";
                             print "progress\r\n";
                             print "Выгружено товаров: $current_product_num\r\n";
                             Request::setSession('last_1c_imported_product_num', $current_product_num);
-                            exit();
+                            $content = ob_get_clean();
+                            return new Response($content);
                         }
                     }
                     $z->next('Товар');
@@ -427,7 +385,6 @@ class CmlExchangeController extends BaseFrontController
                 //unlink($dir.$filename);
                 Request::deleteSession('last_1c_imported_product_num');
             } elseif ($filename === 'offers.xml') {
-
                 // Варианты
                 $z = new \XMLReader();
                 $z->open($dir . $filename);
@@ -449,12 +406,13 @@ class CmlExchangeController extends BaseFrontController
 
                         $exec_time = microtime(true) - $start_time;
                         if ($exec_time + 1 >= $max_exec_time) {
-                            header("Content-type: text/xml; charset=utf-8");
+                            header('Content-type: text/xml; charset=utf-8');
                             print "\xEF\xBB\xBF";
                             print "progress\r\n";
                             print "Выгружено ценовых предложений: $current_product_num\r\n";
                             Request::setSession('last_1c_imported_product_num', $current_product_num);
-                            exit();
+                            $content = ob_get_clean();
+                            return new Response($content);
                         }
                     }
                     $z->next('Предложение');
@@ -467,12 +425,11 @@ class CmlExchangeController extends BaseFrontController
                 Request::deleteSession('last_1c_imported_product_num');
             }
         }
+
+        $content = ob_get_clean();
+        return new Response($content);
     }
 
-
-    /**
-     * Import Categories
-     */
     public function import_categories($xml, $parent_id = 0)
     {
         global $dir;
@@ -495,11 +452,6 @@ class CmlExchangeController extends BaseFrontController
         }
     }
 
-
-
-    /**
-     * Import features
-     */
     public function import_features($xml)
     {
         global $brand_option_name;
@@ -514,16 +466,12 @@ class CmlExchangeController extends BaseFrontController
         }
 
         foreach ($property as $xml_feature) {
-
             // Если свойство содержит производителя товаров
             if ($xml_feature->Наименование == $brand_option_name) {
-
                 // Запомним в сессии Ид свойства с производителем
                 Request::setSession('brand_option_id', strval($xml_feature->Ид));
-            }
-
-            // Иначе обрабатываем как обычной свойство товара
-            else {
+            } else {
+                // Иначе обрабатываем как обычной свойство товара
                 $feature = ProductFeature::where('name', strval($xml_feature->Наименование))->get();
 
                 if (empty($feature->id)) {
@@ -540,15 +488,10 @@ class CmlExchangeController extends BaseFrontController
         }
     }
 
-
-    /**
-     * Import Product
-     */
     public function import_product($xml_product)
     {
         global $dir;
         global $full_update;
-
 
         // Товары
         //  Id товара и варианта (если есть) по 1С
@@ -562,7 +505,6 @@ class CmlExchangeController extends BaseFrontController
             $category_id = Request::getSession('categories_mapping')[strval($xml_product->Группы->Ид)];
         }
 
-
         // Подгатавливаем вариант
         $product_id = null;
         $product = new \stdClass();
@@ -575,7 +517,7 @@ class CmlExchangeController extends BaseFrontController
         if (!empty($values)) {
             $product->name = join(', ', $values);
         }
-        $product->sku = (string)$xml_product->Артикул;
+        $product->sku = (string) $xml_product->Артикул;
         $product->external_id = $product_1c_id;
 
         // Ищем товар
@@ -589,7 +531,6 @@ class CmlExchangeController extends BaseFrontController
 
         // Если такого товара не нашлось
         if (empty($product->id)) {
-
             // Добавляем товар
             $description = '';
             if (!empty($xml_product->Описание)) {
@@ -621,10 +562,8 @@ class CmlExchangeController extends BaseFrontController
                     }
                 }
             }
-        }
-
-        // Если нашелся товар
-        else {
+        } else {
+            // Если нашелся товар
             if (empty($product_id) && !empty($product_1c_id)) {
                 $product_id = Product::where('product_id', $product->id)->where('external_id', $product_1c_id)->pluk('id');
             }
@@ -690,16 +629,13 @@ class CmlExchangeController extends BaseFrontController
                         }
                         ProductOption::updateOption($product->id, $feature_id, join(' ,', $values));
                     }
-                }
-
-                // Если свойство оказалось названием бренда
-                elseif (!empty(Request::getSession('brand_option_id')) && !empty($xml_option->Значение)) {
+                } elseif (!empty(Request::getSession('brand_option_id')) && !empty($xml_option->Значение)) {
+                    // Если свойство оказалось названием бренда
                     $brand_name = strval($xml_option->Значение);
 
                     // Добавим бренд
                     // Найдем его по имени
                     if (!$brand_id = ProductBrand::where('name', $brand_name)->value('id')) {
-
                         // Создадим, если не найден
                         $brand_id = ProductBrand::addBrand(['name' => $brand_name, 'meta_title' => $brand_name, 'meta_description' => $brand_name]);
                     }
