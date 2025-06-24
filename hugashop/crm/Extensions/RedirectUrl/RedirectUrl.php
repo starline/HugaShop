@@ -138,8 +138,8 @@ final class RedirectUrl extends BaseExtension
 
         while (preg_match('/\{(\w+)(?::([^}]+))?\}/', $mask, $m, PREG_OFFSET_CAPTURE, $offset)) {
             $regex .= preg_quote(substr($mask, $offset, $m[0][1] - $offset), '#');
-            $regex .= '(' . ($m[2][0] ?? '[^/]+') . ')';
             $names[] = $m[1][0];
+            $regex .= '(' . ($m[2][0] ?? '[^/]+') . ')';
             $offset = $m[0][1] + strlen($m[0][0]);
         }
 
