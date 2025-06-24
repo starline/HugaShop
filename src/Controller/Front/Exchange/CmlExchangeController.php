@@ -1,7 +1,8 @@
 <?php
 
 /**
- *
+ * HugaShop - Sell anything
+ * 
  * @author Andi Huga
  * @version 1.2
  *
@@ -16,20 +17,24 @@ use HugaShop\Models\Request;
 use HugaShop\Models\Settings;
 use HugaShop\Models\Order\Order;
 use HugaShop\Models\Product\Product;
+use App\Controller\BaseAdminController;
+use App\Controller\BaseFrontController;
 use HugaShop\Models\Order\OrderPurchase;
 use HugaShop\Models\Product\ProductBrand;
-use App\Controller\BaseAdminController;
 use HugaShop\Models\Product\ProductOption;
 use HugaShop\Models\Product\ProductFeature;
 use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Models\Product\ProductCategoryFeature;
 
-class CmlExchangeController extends BaseAdminController
+class CmlExchangeController extends BaseFrontController
 {
+
+
     #[Route('/exchange/cml', name: 'CmlExchange')]
     public function index()
     {
+
         // Обновлять все данные при каждой синхронизации
         $full_update = true;
 
@@ -49,12 +54,16 @@ class CmlExchangeController extends BaseAdminController
         $GLOBALS['brand_option_name'] = $brand_option_name;
         $GLOBALS['full_update'] = $full_update;
 
+
+        // Sale.checkauth
         if (Request::get('type') == 'sale' && Request::get('mode') == 'checkauth') {
             print "success\n";
             print session_name() . "\n";
             print session_id();
         }
 
+
+        // Sale.init
         if (Request::get('type') == 'sale' && Request::get('mode') == 'init') {
             $tmp_files = glob($dir . '*.*');
             if (is_array($tmp_files)) {
@@ -66,6 +75,8 @@ class CmlExchangeController extends BaseAdminController
             print "file_limit=1000000\n";
         }
 
+
+        // Sale.file
         if (Request::get('type') == 'sale' && Request::get('mode') == 'file') {
             $filename = Request::get('filename');
 
@@ -165,6 +176,8 @@ class CmlExchangeController extends BaseAdminController
             Settings::set('last_1c_orders_export_date', date("Y-m-d H:i:s"));
         }
 
+
+        // Sale.query
         if (Request::get('type') == 'sale' && Request::get('mode') == 'query') {
             $no_spaces = '<?xml version="1.0" encoding="utf-8"?>
 							<КоммерческаяИнформация ВерсияСхемы="2.04" ДатаФормирования="' . Helper::dateFormat($order->date, 'Y-m-d') . '"></КоммерческаяИнформация>';
@@ -314,17 +327,22 @@ class CmlExchangeController extends BaseAdminController
             Settings::set('last_1c_orders_export_date', date("Y-m-d H:i:s"));
         }
 
+
+        // Sale.success
         if (Request::get('type') == 'sale' && Request::get('mode') == 'success') {
             Settings::set('last_1c_orders_export_date', date("Y-m-d H:i:s"));
         }
 
 
+        // Catalog.checkauth
         if (Request::get('type') == 'catalog' && Request::get('mode') == 'checkauth') {
             print "success\n";
             print session_name() . "\n";
             print session_id();
         }
 
+
+        // Catalog.init
         if (Request::get('type') == 'catalog' && Request::get('mode') == 'init') {
             $tmp_files = glob($dir . '*.*');
             if (is_array($tmp_files)) {
@@ -341,6 +359,8 @@ class CmlExchangeController extends BaseAdminController
             print "file_limit=1000000\n";
         }
 
+
+        // Catalog.file
         if (Request::get('type') == 'catalog' && Request::get('mode') == 'file') {
             $filename = basename(Request::get('filename'));
             $f = fopen($dir . $filename, 'ab');
@@ -349,6 +369,8 @@ class CmlExchangeController extends BaseAdminController
             print "success\n";
         }
 
+
+        // Catalog.import
         if (Request::get('type') == 'catalog' && Request::get('mode') == 'import') {
             $filename = basename(Request::get('filename'));
 
@@ -448,6 +470,9 @@ class CmlExchangeController extends BaseAdminController
     }
 
 
+    /**
+     * Import Categories
+     */
     public function import_categories($xml, $parent_id = 0)
     {
         global $dir;
@@ -471,6 +496,10 @@ class CmlExchangeController extends BaseAdminController
     }
 
 
+
+    /**
+     * Import features
+     */
     public function import_features($xml)
     {
         global $brand_option_name;
@@ -512,6 +541,9 @@ class CmlExchangeController extends BaseAdminController
     }
 
 
+    /**
+     * Import Product
+     */
     public function import_product($xml_product)
     {
         global $dir;
@@ -659,6 +691,7 @@ class CmlExchangeController extends BaseAdminController
                         ProductOption::updateOption($product->id, $feature_id, join(' ,', $values));
                     }
                 }
+
                 // Если свойство оказалось названием бренда
                 elseif (!empty(Request::getSession('brand_option_id')) && !empty($xml_option->Значение)) {
                     $brand_name = strval($xml_option->Значение);
