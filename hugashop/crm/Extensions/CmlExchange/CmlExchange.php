@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * HugaShop - Sell anything
+ * 
+ * @author Andi Huga
+ * @version 1.2
+ *
+ */
+
 namespace HugaShop\Extensions\CmlExchange;
 
 use HugaShop\Models\Request;
@@ -9,6 +17,20 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CmlExchange extends BaseExtension
 {
+
+    /**
+     * Основной webhook обмена с 1С
+     */
+    public function webhook(array $params = []): Response
+    {
+        if (Request::get('mode') === 'checkauth' && !$this->checkAuth()) {
+            return new Response("failure\n");
+        }
+        $service = new CmlExchangeService();
+        return $service->handle($params);
+    }
+
+
     /**
      * Check authentication parameters
      */
@@ -26,17 +48,4 @@ class CmlExchange extends BaseExtension
 
         return $login === $reqLogin && $password === $reqPass;
     }
-
-    /**
-     * Основной webhook обмена с 1С
-     */
-    public function webhook(array $params = []): Response
-    {
-        if (Request::get('mode') === 'checkauth' && !$this->checkAuth()) {
-            return new Response("failure\n");
-        }
-        $service = new CmlExchangeService();
-        return $service->handle($params);
-    }
-
 }

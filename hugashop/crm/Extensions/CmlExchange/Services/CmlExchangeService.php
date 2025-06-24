@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * HugaShop - Sell anything
  * 
@@ -8,7 +7,7 @@
  * @version 1.2
  *
  */
- 
+
 namespace HugaShop\Extensions\CmlExchange\Services;
 
 use HugaShop\Models\Image;
@@ -345,6 +344,7 @@ class CmlExchangeService
             $current_product_num = 0;
 
             if ($filename === 'import.xml') {
+
                 // Категории и свойства (только в первом запросе пакетной передачи)
                 if (empty(Request::getSession('last_1c_imported_product_num'))) {
                     $z = new \XMLReader();
@@ -475,11 +475,14 @@ class CmlExchangeService
         }
 
         foreach ($property as $xml_feature) {
+
             // Если свойство содержит производителя товаров
             if ($xml_feature->Наименование == $brand_option_name) {
+
                 // Запомним в сессии Ид свойства с производителем
                 Request::setSession('brand_option_id', strval($xml_feature->Ид));
             } else {
+
                 // Иначе обрабатываем как обычной свойство товара
                 $feature = ProductFeature::where('name', strval($xml_feature->Наименование))->get();
 
@@ -503,7 +506,7 @@ class CmlExchangeService
         global $full_update;
 
         // Товары
-        //  Id товара и варианта (если есть) по 1С
+        // Id товара и варианта (если есть) по 1С
         @list($product_1c_id) = explode('#', $xml_product->Ид);
         if (empty($product_1c_id)) {
             $product_1c_id = '';
@@ -572,6 +575,7 @@ class CmlExchangeService
                 }
             }
         } else {
+
             // Если нашелся товар
             if (empty($product_id) && !empty($product_1c_id)) {
                 $product_id = Product::where('product_id', $product->id)->where('external_id', $product_1c_id)->pluk('id');
