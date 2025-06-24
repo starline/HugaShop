@@ -4,25 +4,25 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.7
+ * @version 2.8
  *
  */
 
 namespace HugaShop\Models\Content;
 
-use HugaShop\Models\BaseModel;
 use HugaShop\Models\Helper;
+use HugaShop\Models\BaseModel;
 
 class ContentPage extends BaseModel
 {
     protected static $table_fields = [
         'id' =>                     ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
-        'name' =>                   ['type' => 'varchar',       'required' => 'true'],
-        'url' =>                    ['type' => 'varchar',       'required' => 'true'],
-        'h1' =>                     ['type' => 'varchar'],
-        'meta_title' =>             ['type' => 'varchar'],
-        'meta_description' =>       ['type' => 'varchar'],
-        'body' =>                   ['type' => 'text'],
+        'url' =>                    ['type' => 'varchar',                               'required' => 'true'],
+        'name' =>                   ['type' => 'varchar',       'trans' => true,        'required' => 'true'],
+        'h1' =>                     ['type' => 'varchar',       'trans' => true],
+        'meta_title' =>             ['type' => 'varchar',       'trans' => true],
+        'meta_description' =>       ['type' => 'varchar',       'trans' => true],
+        'body' =>                   ['type' => 'text',          'trans' => true],
         'menu' =>                   ['type' => 'tinyint',       'def' => 0],
         'position' =>               ['type' => 'int',           'def' => 0],
         'visible' =>                ['type' => 'tinyint',       'def' => 0]
@@ -77,6 +77,16 @@ class ContentPage extends BaseModel
         }
 
         return self::$menu = $menu;
+    }
+
+
+    /**
+     * Create page
+     */
+    public static function addPage(object|array $page)
+    {
+        $page = Helper::makeUniqSlug(ContentPage::class, $page);
+        return static::create($page);
     }
 
 

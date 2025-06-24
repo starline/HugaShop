@@ -25,7 +25,9 @@
 
                 $('#translate_button').on('click', function() {
                     const btn = $(this);
+
                     btn.prop('disabled', true);
+
                     $.ajax({
                         url: '/admin/ajax/product/translate',
                         type: 'POST',

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
@@ -39,13 +39,13 @@ class PageController extends BaseAdminController
                 Design::setFlashMessage('error', 'url_exists');
             } else {
                 if (empty($page->id)) {
-                    $page = Design::setFlashMessage('add', ContentPage::create($page));
+                    $page = Design::setFlashMessage('add', ContentPage::addPage($page));
                 } else {
                     Design::setFlashMessage('update', ContentPage::updatePage($page->id, $page));
                 }
             }
 
-            return $this->redirectToRoute('PageAdmin', ['id' => $page->id]);
+            return $this->redirectToRouteLang('PageAdmin', ['id' => $page->id]);
         }
 
 
