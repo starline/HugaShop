@@ -176,8 +176,8 @@
 									<ul>
 										{if 'blog'|user_access}
 											<li
-												class="mini {if $route|in_array:[PostAdmin, BlogAdmin, PostNewAdmin]}active{/if}">
-												<a href="/admin/blog">Блог</a>
+												class="mini {if $route|in_array:[PostAdmin, PostListAdmin, PostNewAdmin]}active{/if}">
+												<a href="/admin/posts">Блог</a>
 											</li>
 										{/if}
 

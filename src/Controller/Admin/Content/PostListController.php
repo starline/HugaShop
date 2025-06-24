@@ -18,9 +18,9 @@ use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class BlogController extends BaseAdminController
+class PostListController extends BaseAdminController
 {
-    #[Route('/admin/blog', name: 'BlogAdmin')]
+    #[Route('/admin/posts', name: 'PostListAdmin')]
     public function index(): Response
     {
 
@@ -70,6 +70,6 @@ class BlogController extends BaseAdminController
         Design::assign('posts_count', $posts_count);
         Design::assign('posts', $posts);
 
-        return $this->fetchResponse('content/blog.tpl');
+        return $this->fetchResponse('content/post_list.tpl');
     }
 }

@@ -6,8 +6,8 @@
 				<div class="navbar-collapse collapse" id="navbarTogglerDemo03">
 					<div class="navbar-nav me-auto mb-2 mb-lg-0">
 						<div class="nav-item">
-							<a class="nav-link {if $route|in_array:[Blog, Post]}active{/if}"
-								{if $route|in_array:[Blog, Post]}aria-current="page" {/if} href="{'Blog'|urll}">База
+							<a class="nav-link {if $route|in_array:[PostList, Post]}active{/if}"
+								{if $route|in_array:[PostList, Post]}aria-current="page" {/if} href="{'PostList'|urll}">База
 								знаний</a>
 						</div>
 

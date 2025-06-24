@@ -9,11 +9,7 @@
 
 {block name=content}
 
-	{if $message_error}
-		<div class="message message_error">
-			<span class="text">{$message_error}</span>
-		</div>
-	{/if}
+	{include 'parts/translation_btn_part.tpl'}
 
 	<!-- Основная форма -->
 	<form method="post">

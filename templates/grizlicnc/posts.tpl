@@ -22,7 +22,7 @@
 		<div class="col-lg-3" id="catalog_menu">
 			<ul>
 				<li class="category_main">
-					<a class="{if $route|in_array:[Blog, Post]}selected{/if}" href="/blog">База знаний</a>
+					<a class="{if $route|in_array:[PostList, Post]}selected{/if}" href="/blog">База знаний</a>
 				</li>
 				{foreach 'ContentPage'|api:getList:[[visible => 1], position] as $pm}
 					<li class="category_main">

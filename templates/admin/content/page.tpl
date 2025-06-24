@@ -9,6 +9,8 @@
 
 {block name=content}
 
+	{include 'parts/translation_btn_part.tpl'}
+
 	<!-- Основная форма -->
 	<form method="post" enctype="multipart/form-data">
 		<input name="id" type="hidden" value="{$page->id}" />
@@ -115,7 +117,7 @@
 				if ($('input[name="meta_title"]').val() == generate_meta_title() ||
 					$('input[name="meta_title"]').val() == '')
 					meta_title_touched = false;
-					
+
 				if ($('input[name="url"]').val() == generate_url())
 					url_touched = false;
 

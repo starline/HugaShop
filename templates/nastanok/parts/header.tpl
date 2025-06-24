@@ -4,7 +4,7 @@
 
 		<!-- Меню -->
 		<div class="menu col-lg-9">
-			<div class=" {if $route|in_array:[Blog, Post]}selected{/if}">
+			<div class=" {if $route|in_array:[PostList, Post]}selected{/if}">
 				<a href="/blog">База знаний</a>
 			</div>
 

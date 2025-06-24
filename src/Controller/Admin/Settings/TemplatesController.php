@@ -4,9 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.3
- *
- * Templates
+ * @version 1.4
  *
  */
 
@@ -39,7 +37,7 @@ class TemplatesController extends BaseAdminController
             'products.tpl',
             'main.tpl',
             'product.tpl',
-            'blog.tpl',
+            'posts.tpl',
             'post.tpl',
             'cart.tpl',
             'order.tpl',

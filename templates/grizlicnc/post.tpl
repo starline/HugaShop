@@ -12,7 +12,7 @@
 				</a> →
 			</li>
 			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-				<a href="{'Blog'|urll}" itemprop="item">
+				<a href="{'PostList'|urll}" itemprop="item">
 					<span itemprop="name">{'Все статьи'|trans}</span>
 					<meta itemprop="position" content="2" />
 				</a> →
@@ -29,7 +29,7 @@
 		<div class="col-lg-3" id="catalog_menu">
 			<ul>
 				<li class="category_main">
-					<a class="{if $route|in_array:[Blog, Post]}selected{/if}" href="/blog">База знаний</a>
+					<a class="{if $route|in_array:[PostList, Post]}selected{/if}" href="{'PostList'|urll}">База знаний</a>
 				</li>
 				{foreach 'ContentPage'|api:getList:[[visible => 1], position] as $pm}
 					<li class="category_main">

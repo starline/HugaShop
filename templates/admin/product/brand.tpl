@@ -9,15 +9,7 @@
 
 {block name=content}
 
-	{if $message_error}
-		<!-- Системное сообщение -->
-		<div class="message message_error">
-			<span class="text">{if $message_error=='url_exists'}Бренд с таким адресом уже
-				существует{else}{$message_error}
-				{/if}</span>
-		</div>
-	{/if}
-
+	{include 'parts/translation_btn_part.tpl'}
 
 	<!-- Основная форма -->
 	<form method="post" enctype="multipart/form-data">

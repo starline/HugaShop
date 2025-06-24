@@ -21,7 +21,7 @@
             <div class="my-5">
                 <div class="title-wrap">
                     <h3 class="h2">{'Полезная информация'|trans}</h3>
-                    <span> → <a href="{'Blog'|urll}">{'все статьи'|trans}</a></span>
+                    <span> → <a href="{'PostList'|urll}">{'все статьи'|trans}</a></span>
                 </div>
                 <div class="posts_content">
                     {foreach $last_posts as $post}
@@ -67,7 +67,7 @@
                             <a href="{'User'|urll}" rel="nofollow" class="link-secondary">{'Вход в кабинет'|trans}</a>
                         </div>
                         <div class="my-2">
-                            <a href="{'Blog'|urll}" class="link-secondary">{'База знаний'|trans}</a>
+                            <a href="{'PostList'|urll}" class="link-secondary">{'База знаний'|trans}</a>
                         </div>
 
                         {foreach 'ContentPage'|api:getMenu as $m}

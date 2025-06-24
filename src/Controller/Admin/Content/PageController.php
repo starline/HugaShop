@@ -54,7 +54,7 @@ class PageController extends BaseAdminController
         if (!empty($id)) {
             $page = ContentPage::getPage($id);
             if (empty($page->id)) {
-                return $this->redirectToRoute('BlogAdmin');
+                return $this->redirectToRoute('PostListAdmin');
             }
         }
 

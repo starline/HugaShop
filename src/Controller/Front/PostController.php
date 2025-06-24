@@ -6,7 +6,7 @@
  * @author Andri Huga
  * @version 2.5
  *
- * Этот класс использует шаблоны blog.tpl и post.tpl
+ * Этот класс использует шаблоны posts.tpl и post.tpl
  *
  */
 
@@ -22,11 +22,11 @@ use App\Controller\BaseFrontController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class BlogController extends BaseFrontController
+class PostController extends BaseFrontController
 {
 
-    #[Route('/blog', name: 'Blog', priority: 1)]
-    public function blogList(): Response
+    #[Route('/blog', name: 'PostList', priority: 1)]
+    public function postList(): Response
     {
         $items_per_page = 20; # Количество постов на 1 странице
 
@@ -42,9 +42,9 @@ class BlogController extends BaseFrontController
         Design::assign('pages_count', ceil($posts_count / $items_per_page));
         Design::assign('current_page', $filter['page']);
         Design::assign('posts', $posts);
-        Design::assign('canonical', $this->generateUrl('Blog'));
+        Design::assign('canonical', $this->generateUrl('PostList'));
 
-        return $this->fetchResponse('blog.tpl');
+        return $this->fetchResponse('posts.tpl');
     }
 
 

@@ -9,11 +9,7 @@
 
 {block name=content}
 
-	<select id="language_select" class="form-select form-select w-auto me-auto mb-3">
-		{foreach $languages as $language}
-			<option value="{$language->code}" {if $current_language == $language->code}selected{/if}>{$language->name}</option>
-		{/foreach}
-	</select>
+	{include 'parts/translation_btn_part.tpl'}
 
 	<!-- Основная форма -->
 	<form method="post" enctype="multipart/form-data">

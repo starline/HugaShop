@@ -1,7 +1,7 @@
 {block name="tabs"}
-	{if 'blog'|user_access and $route|in_array:[PostAdmin, BlogAdmin, PostNewAdmin]}
+	{if 'blog'|user_access and $route|in_array:[PostAdmin, PostListAdmin, PostNewAdmin]}
 		<li class="mini active">
-			<a href="/admin/blog">Блог</a>
+			<a href="/admin/posts">Блог</a>
 		</li>
 	{/if}
 

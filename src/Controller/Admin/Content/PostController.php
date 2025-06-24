@@ -60,7 +60,7 @@ class PostController extends BaseAdminController
             $post = ContentPost::getPost(intval($id), join: ['images']);
 
             if (empty($post->id)) {
-                return $this->redirectToRoute('BlogAdmin');
+                return $this->redirectToRoute('PostListAdmin');
             }
 
             // SEO keywords
