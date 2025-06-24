@@ -204,7 +204,7 @@ class User extends BaseModel
         $user->last_ip = $_SERVER['REMOTE_ADDR'];
         $user->token = Helper::makeToken(uniqid(), 16);
 
-        return User::create($user)->id();
+        return User::create($user)->id;
     }
 
 

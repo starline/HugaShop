@@ -594,6 +594,9 @@
 							}
 						},
 						{
+							chart: {
+								type: 'scatter',
+							},
 							filter: {
 								product_id: php_product_id,
 								filter: 'byMonth',
@@ -625,6 +628,7 @@
 				let priceChart = makeChart(
 					document.getElementById('productPriceHistory'), {
 						chart: { type: 'line', height: 250 },
+						stroke: { curve: 'stepline' },
 						title: { text: 'История цен' }
 					},
 					[{
