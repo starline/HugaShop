@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.7
+ * @version 1.8
  *
  */
 
@@ -32,7 +32,7 @@ trait CheckModelTrait
     /**
      * Execute query and try to create table/columns on missing table/column errors
      */
-    private function runWithInitTable(callable $callback)
+    public function runWithInitTable(callable $callback)
     {
         try {
             return $callback();

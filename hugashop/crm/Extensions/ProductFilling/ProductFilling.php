@@ -6,7 +6,7 @@
  * Extension calculates content filling percent for products
  */
 
-namespace HugaShop\Extensions\Productsfilling;
+namespace HugaShop\Extensions\ProductFilling;
 
 use HugaShop\Models\Design;
 use HugaShop\Models\Helper;
@@ -16,10 +16,12 @@ use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Product\Product;
 use HugaShop\Models\Product\ProductCategory;
 use HugaShop\Extensions\BaseExtension;
-use HugaShop\Extensions\Productsfilling\Models\Productsfilling as Model;
+use HugaShop\Extensions\ProductFilling\Models\ProductFilling as ProductFillingModel;
 
-final class Productsfilling extends BaseExtension
+final class ProductFilling extends BaseExtension
 {
+
+
     /**
      * Show products with filling percent
      */
@@ -51,7 +53,7 @@ final class Productsfilling extends BaseExtension
         $products_count = Product::countProducts($filter);
 
         foreach ($products as $product) {
-            $product->filling = (int) Model::where('product_id', $product->id)->avg('percent');
+            $product->filling = (int) ProductFillingModel::getAvgPercent($product->id);
         }
 
         $categories = ProductCategory::getCategoriesTree();
@@ -64,6 +66,7 @@ final class Productsfilling extends BaseExtension
 
         return $this->getTemplatePath('templates/product_list.tpl');
     }
+
 
     /**
      * Calculate filling for one product
@@ -80,7 +83,7 @@ final class Productsfilling extends BaseExtension
 
         foreach ($langs as $lang) {
             $filled = 0;
-            if ($lang->code == Language::$main_language_code) {
+            if ($lang->main) {
                 foreach ($fields as $field) {
                     if (!empty(trim($product->$field))) {
                         $filled++;
@@ -95,8 +98,9 @@ final class Productsfilling extends BaseExtension
                     }
                 }
             }
+
             $percent = intval($filled / count($fields) * 100);
-            Model::updateOrCreate([
+            ProductFillingModel::updateOrCreate([
                 'product_id' => $product_id,
                 'language_code' => $lang->code
             ], [
@@ -104,6 +108,7 @@ final class Productsfilling extends BaseExtension
             ]);
         }
     }
+
 
     /**
      * Recalculate filling for all products

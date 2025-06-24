@@ -187,7 +187,8 @@ class Product extends BaseModel
     public static function getProducts(array $filter = [], array $join = [], bool $count = false)
     {
 
-        $query = self::query();
+        $model = static::getModel();
+        $query = $model->newQuery();
 
         // Filters
         if (isset($filter['id'])) {
@@ -283,7 +284,9 @@ class Product extends BaseModel
             $query->limit($limit)->offset(($page - 1) * $limit);
         }
 
-        return $query->get()->keyBy('id');
+        return $model->runWithInitTable(function () use ($query) {
+            return $query->get()->keyBy('id');
+        });
     }
 
 

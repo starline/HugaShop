@@ -75,9 +75,6 @@ class ProductController extends BaseAdminController
             SeoKeywords::catchKeywords($product->id, 'product');
             Image::catchImages($product->id, 'product', 'images');
             Image::catchImages($product->id, 'product_content', 'images_content');
-            if ($Ext = Extension::makeExtension('Productsfilling')) {
-                $Ext->calculateProduct($product->id);
-            }
 
             // Характеристики товара
             // Удалим все из товара

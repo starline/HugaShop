@@ -1,5 +1,5 @@
 {extends 'wrapper/main.tpl'}
-{include 'product/parts/menu_part.tpl'}
+{include 'extension/parts/menu_part.tpl'}
 
 {* Meta Title *}
 {if $category}
@@ -12,9 +12,9 @@
     <div class="two_columns_list">
         <div class="header_top">
             {if $category->name}
-                <h1>{$category->name}<span class="sum_total">{$products_count}{\$products_count|plural:'товар':'товаров':'товара'}</span></h1>
+                <h1>{$category->name}<span class="sum_total">{$products_count} {$products_count|plural:'товар':'товаров':'товара'}</span></h1>
             {else}
-                <h1>Все товары <span class="sum_total">{$products_count}{\$products_count|plural:'товар':'товаров':'товара'}</span></h1>
+                <h1>Все товары <span class="sum_total">{$products_count} {$products_count|plural:'товар':'товаров':'товара'}</span></h1>
             {/if}
             <form method="post" class="d-inline-block ms-2">
                 {getCSRFInput}
