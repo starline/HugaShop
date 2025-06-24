@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.5
+ * @version 1.6
  *
  */
 
@@ -20,14 +20,6 @@ use HugaShop\Extensions\SeoPage\Models\SeoPage as SeoPageModel;
 
 final class SeoPage extends BaseExtension
 {
-
-    /**
-     * Ajax
-     */
-    public function updateOne($id, $entity)
-    {
-        SeoPageModel::updateOne($id, $entity);
-    }
 
     /**
      * Список странниц

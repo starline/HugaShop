@@ -114,21 +114,6 @@ final class GoogleMerchant extends BaseExtension
 
 
     /**
-     * Ajax
-     */
-    public function ajax(int $id)
-    {
-        if (!Request::checkCSRF()) {
-            //...
-        }
-
-        $values = Request::post('values');
-        //$result = Product::updateProduct($id, $values);
-        //return new JsonResponse($result);
-    }
-
-
-    /**
      * Webhook module
      * @param array $params
      */

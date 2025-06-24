@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
@@ -60,5 +60,23 @@ class BaseExtension
     public function getTemplatePath(string $template)
     {
         return $this->ext_dir . $template;
+    }
+
+
+
+    /**
+     * Ajax
+     * Make: HugaShop\Extensions\InfoBlock\Models\InfoBlock
+     * From: HugaShop\Extensions\InfoBlock\InfoBlock
+     */
+    public function updateOne($id, $entity)
+    {
+        // Main Model is always ClassName . Model
+        $full_class = static::class;
+        $class_name =  Helper::class_basename($full_class);
+        $base_namespace = preg_replace('/\\\\' . preg_quote($class_name, '/') . '$/', '', $full_class);
+        $class = $base_namespace . '\\Models\\' . $class_name;
+        $class::updateOne($id, $entity);
+        Helper::cache(static::class)->clear();
     }
 }

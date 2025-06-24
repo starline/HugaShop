@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.2
+ * @version 1.3
  *
  */
 
@@ -20,15 +20,6 @@ use HugaShop\Extensions\RedirectUrl\Models\RedirectUrl as RedirectUrlModel;
 
 final class RedirectUrl extends BaseExtension
 {
-
-    /**
-     * Ajax
-     */
-    public function updateOne($id, $entity)
-    {
-        RedirectUrlModel::updateOne($id, $entity);
-    }
-
 
     /**
      * Url List
@@ -117,18 +108,43 @@ final class RedirectUrl extends BaseExtension
         }
         $links = $cache_item->get();
 
-        //dd($links);
         foreach ($links as $link) {
-            $pattern = '#^' . $link->url . '$#u';
+            [$pattern, $names] = $this->preparePattern($link->url);
             if (preg_match($pattern, $uri, $m)) {
                 $redirect = $link->redirect;
                 foreach ($m as $i => $v) {
                     if ($i === 0) continue;
                     $redirect = str_replace("[$i]", $v, $redirect);
+                    if (isset($names[$i - 1])) {
+                        $redirect = str_replace('[' . $names[$i - 1] . ']', $v, $redirect);
+                    }
                 }
-                RedirectUrlModel::updateOne($link->id, ['transitions' => $link->transitions + 1]);
+
+                RedirectUrlModel::where('id', $link->id)->increment('transitions');
                 Request::makeRedirect($redirect, '301');
             }
         }
+    }
+
+
+    /**
+     * Pattern 
+     */
+    private function preparePattern(string $mask): array
+    {
+        $names = [];
+        $regex = '';
+        $offset = 0;
+
+        while (preg_match('/\{(\w+)(?::([^}]+))?\}/', $mask, $m, PREG_OFFSET_CAPTURE, $offset)) {
+            $regex .= preg_quote(substr($mask, $offset, $m[0][1] - $offset), '#');
+            $regex .= '(' . ($m[2][0] ?? '[^/]+') . ')';
+            $names[] = $m[1][0];
+            $offset = $m[0][1] + strlen($m[0][0]);
+        }
+
+        $regex .= preg_quote(substr($mask, $offset), '#');
+
+        return ['#^' . $regex . '$#u', $names];
     }
 }

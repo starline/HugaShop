@@ -19,17 +19,9 @@ use HugaShop\Extensions\InfoBlock\Models\InfoBlock as InfoBlockModel;
 final class InfoBlock extends BaseExtension
 {
 
-    /**
-     * Ajax
-     */
-    public function updateOne($id, $entity)
-    {
-        InfoBlockModel::updateOne($id, $entity);
-    }
-
 
     /**
-     * Список странниц
+     * InfoBlock List
      */
     public function index()
     {
