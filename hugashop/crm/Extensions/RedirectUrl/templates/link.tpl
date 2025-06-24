@@ -47,6 +47,10 @@
                             <span>/old-page/{id:[\d]+}</span>
                             <span>/new-page/[id] - Одно или более чисел</span>
                         </li>
+                        <li>
+                            <span>/old-page/{id:\d+\/?}</span>
+                            <span>/new-page/[id]/ - Необязательный символ вконце</span>
+                        </li>
                     {/literal}
                 </ul>
 
