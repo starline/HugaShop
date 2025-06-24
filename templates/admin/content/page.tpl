@@ -9,7 +9,7 @@
 
 {block name=content}
 
-	{include 'parts/translation_btn_part.tpl'}
+        {include 'parts/translation_btn_part.tpl' entity='page'}
 
 	<!-- Основная форма -->
 	<form method="post" enctype="multipart/form-data">

@@ -21,6 +21,7 @@
 
     {block name=body_script append}
         <script type="module">
+            const entity = '{$entity|default:"product"}';
             {literal}
 
                 $('#translate_button').on('click', function() {
@@ -29,11 +30,12 @@
                     btn.prop('disabled', true);
 
                     $.ajax({
-                        url: '/admin/ajax/product/translate',
+                        url: '/admin/ajax/translate',
                         type: 'POST',
                         dataType: 'json',
                         data: {
-                            product_id: $('input[name=id]').val(),
+                            entity: entity,
+                            id: $('input[name=id]').val(),
                             lang: $('#language_select').val(),
                             csrf: csrf
                         },
