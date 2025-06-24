@@ -22,6 +22,11 @@
                                 <a href="/admin/extension/{$ext_module->module}">{$ext_module->name}</a>
                                 <div class="notice">{$ext_module->description}</div>
                             </div>
+                            <div class="col-2">
+                                {if $ext_module->version}
+                                    <span class="badge text-bg-round">v {$ext_module->version}</span>
+                                {/if}
+                            </div>
                         </div>
                     {/foreach}
                 </div>

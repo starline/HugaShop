@@ -7,3 +7,4 @@ settings:
       options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
     }
   - { variable: tag_id, name: "Tag id" }
+version: 1.3

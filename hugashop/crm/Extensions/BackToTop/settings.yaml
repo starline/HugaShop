@@ -11,3 +11,4 @@ settings:
       name: "Показывать на мобильном",
       options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
     }
+version: 1.5

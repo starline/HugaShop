@@ -7,3 +7,4 @@ settings:
       options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
     }
   - { variable: currency_code, name: "Код валюты" }
+version: 2.0

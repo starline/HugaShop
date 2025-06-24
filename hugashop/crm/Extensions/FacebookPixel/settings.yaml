@@ -10,3 +10,4 @@ settings:
   - { variable: currency_code, name: "Код валюты" }
   - { variable: domain_verification, name: "Код подтверждения домена" }
   - { variable: api_token, name: "Api токен" }
+version: 2.3

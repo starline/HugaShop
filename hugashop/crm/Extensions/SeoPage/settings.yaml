@@ -6,3 +6,4 @@ settings:
       name: "Включено",
       options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
     }
+version: 1.7
