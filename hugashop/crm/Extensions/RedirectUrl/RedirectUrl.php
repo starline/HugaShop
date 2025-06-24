@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.3
+ * @version 1.4
  *
  */
 
@@ -99,6 +99,11 @@ final class RedirectUrl extends BaseExtension
         }
 
         $uri = urldecode($event->getRequest()->getPathInfo()); # Example: /test-link
+
+        // Исключаем /admin и всё, что под ним
+        if (str_starts_with($uri, '/admin')) {
+            return;
+        }
 
         $cache = Helper::cache(self::class);
         $cache_item = $cache->getItem('redirect_list');
