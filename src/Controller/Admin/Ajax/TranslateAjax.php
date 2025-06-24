@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
  */
 
 namespace App\Controller\Admin\Ajax;
@@ -12,11 +12,12 @@ namespace App\Controller\Admin\Ajax;
 use OpenAI;
 use HugaShop\Models\Config;
 use HugaShop\Models\Request;
-use App\Controller\BaseAdminController;
-use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Product\Product;
-use HugaShop\Models\Content\ContentPost;
+use App\Controller\BaseAdminController;
 use HugaShop\Models\Content\ContentPage;
+use HugaShop\Models\Content\ContentPost;
+use HugaShop\Models\Product\ProductBrand;
+use HugaShop\Models\Localization\Language;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -61,6 +62,10 @@ class TranslateAjax extends BaseAdminController
             case 'page':
                 $this->checkAdminAccess('page');
                 $model = ContentPage::query()->find($id);
+                break;
+            case 'brand':
+                $this->checkAdminAccess('product_brand');
+                $model = ProductBrand::query()->find($id);
                 break;
             default:
                 return new JsonResponse(['error' => 'entity'], 400);

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.0
+ * @version 2.1
  *
  */
 
@@ -13,8 +13,9 @@ namespace App\Controller\Admin\Product;
 use HugaShop\Models\Config;
 use HugaShop\Models\Design;
 use HugaShop\Models\Request;
-use HugaShop\Models\Product\ProductBrand;
 use App\Controller\BaseAdminController;
+use HugaShop\Models\Product\ProductBrand;
+use HugaShop\Models\Localization\Language;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -28,6 +29,9 @@ class BrandController extends BaseAdminController
     {
 
         $this->checkAdminAccess('product_brand');
+
+        // Init content language
+        Language::languageCatch();
 
         #### Update
         ###########
@@ -53,7 +57,7 @@ class BrandController extends BaseAdminController
             }
 
             // Делаем редирект на страницу с ID
-            return $this->redirectToRoute('BrandAdmin', ['id' => $brand->id]);
+            return $this->redirectToRouteLang('BrandAdmin', ['id' => $brand->id]);
         }
 
 

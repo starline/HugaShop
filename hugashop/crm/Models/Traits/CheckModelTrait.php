@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.6
+ * @version 1.7
  *
  */
 
@@ -89,6 +89,7 @@ trait CheckModelTrait
      */
     protected static function addColumns(Blueprint $blueprint, array $fields): void
     {
+
         foreach ($fields as $name => $params) {
             $type    = $params['type'] ?? 'varchar';
             $length  = $params['length'] ?? ($params['lenght'] ?? null);

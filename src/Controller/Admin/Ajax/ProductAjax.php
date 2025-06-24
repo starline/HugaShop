@@ -4,18 +4,14 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  */
 
 namespace App\Controller\Admin\Ajax;
 
-use OpenAI;
-use HugaShop\Models\Config;
 use HugaShop\Models\Request;
-use HugaShop\Models\Product\Product;
 use App\Controller\BaseAdminController;
-use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Product\ProductOption;
 use HugaShop\Models\Product\ProductFeature;
 use Symfony\Component\Routing\Attribute\Route;
@@ -103,62 +99,5 @@ class ProductAjax extends BaseAdminController
         $res->suggestions = $features_value;
 
         return new JsonResponse($res);
-    }
-
-
-    #[Route('/admin/ajax/product/translate')]
-    public function translate()
-    {
-
-        $this->checkAdminAccess('product_content');
-
-        if (!Request::checkCSRF()) {
-            return new JsonResponse(['error' => 'csrf'], 400);
-        }
-
-        $product_id     = Request::post('product_id', 'integer');
-        $lang_code      = Request::post('lang', 'string');
-
-        if (empty($product_id) || empty($lang_code)) {
-            return new JsonResponse(['error' => 'params'], 400);
-        }
-
-        Language::languageCatch();
-
-        if ($lang_code == Language::$main_language->code) {
-            return new JsonResponse(['error' => 'main_language'], 400);
-        }
-
-        $language = Language::where('code', $lang_code)->first();
-        if (empty($language)) {
-            return new JsonResponse(['error' => 'language'], 400);
-        }
-
-        $product = Product::query()->find($product_id);
-        if (empty($product)) {
-            return new JsonResponse(['error' => 'product'], 404);
-        }
-
-        $key = Config::get('openai')->key;
-        if (empty($key)) {
-            return new JsonResponse(['error' => 'openai_key'], 500);
-        }
-
-        $client = OpenAI::client($key);
-
-        $translated = [];
-        foreach (Product::getTranslatableFields() as $field) {
-            if (!empty($product->$field)) {
-                $result = $client->chat()->create([
-                    'model' => 'gpt-4o',
-                    'messages' => [
-                        ['role' => 'user', 'content' => 'Переведи на ' . $language->name . ': ' . $product->$field],
-                    ],
-                ]);
-                $translated[$field] = trim($result->choices[0]->message->content);
-            }
-        }
-
-        return new JsonResponse($translated);
     }
 }

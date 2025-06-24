@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.5
+ * @version 1.6
  *
  */
 
@@ -37,10 +37,11 @@ class AbstractTranslation extends BaseModel
 
         if (class_exists($base_model)) {
             $translatable_fields = $base_model::getTranslatableFields();
+            $base_fields = $base_model::getFields();
 
             // Добавляем их в таблицу полей
             foreach ($translatable_fields as $field) {
-                static::$table_fields[$field] = ['type' => 'varchar'];
+                static::$table_fields[$field] = $base_fields[$field];
             }
         }
 

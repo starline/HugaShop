@@ -21,12 +21,19 @@
 
     {block name=body_script append}
         <script type="module">
-            const entity = '{$entity|default:"product"}';
+            const entity = '{$entity}';
+
             {literal}
 
                 $('#translate_button').on('click', function() {
                     const btn = $(this);
 
+                    // Проверка: если entity не задан — отменяем
+                    if (typeof entity === 'undefined' || !entity) {
+                        console.warn('entity is not defined');
+                        return false;
+                    }
+                    
                     btn.prop('disabled', true);
 
                     $.ajax({
