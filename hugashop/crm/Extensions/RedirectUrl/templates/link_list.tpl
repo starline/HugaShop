@@ -22,6 +22,7 @@
                             <div class="row col">
                                 <div class="col-12 col-sm-8">
                                     <a href="/admin/extension/{$extension->module}/link/{$l->id}">{$l->url}</a>
+                                    <div class="notice">{$l->comment|strip_tags|nl2br|raw}</div>
                                 </div>
                                 <div class="col-12 col-sm-4 text-end">
                                     <span class="badge text-bg-round">{$l->transitions}</span>
@@ -57,7 +58,7 @@
 {block name=body_script append}
     <script type="module">
         import { ajax_icon } from '{"js/common.js"|asset}';
-        
+
         {literal}
             $(function() {
                 $("i.enable").click(function() {

@@ -49,6 +49,13 @@
                         </li>
                     {/literal}
                 </ul>
+
+                <ul class="property_block layer">
+                    <li>
+                        <label for="comment" class="col-form-label">Описание</label>
+                        <textarea class="form-control" name="comment" id="comment">{$link->comment}</textarea>
+                    </li>
+                </ul>
             </div>
 
             <div class="col-lg-6 layer">
@@ -64,6 +71,7 @@
                     </li>
                 </ul>
             </div>
+
 
             <div class="col-12 btn_row">
                 <button class="btn btn-primary" type="submit">Сохранить</button>
