@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.5
+ * @version 1.6
  *
  */
 
@@ -97,12 +97,9 @@ trait CheckModelTrait
 
             switch ($type) {
                 case 'int':
-                case 'created':
-                    if ($extra === 'AUTO_INCREMENT') {
-                        $column = $blueprint->increments($name);
-                    } else {
-                        $column = $blueprint->integer($name);
-                    }
+                    $column = ($extra === 'AUTO_INCREMENT')
+                        ? $blueprint->increments($name)
+                        : $blueprint->integer($name);
                     break;
                 case 'tinyint':
                     $column = $blueprint->tinyInteger($name);
@@ -137,7 +134,13 @@ trait CheckModelTrait
                     $column = $blueprint->string($name, $length ?? 255);
             }
 
-            if ($default !== null && method_exists($column, 'default')) {
+            // Set default only if:
+            // - it is defined
+            // - the column is not AUTO_INCREMENT
+            // - the type supports default values (text/mediumtext do not support it)
+            $type_supports = !in_array($type, ['text', 'mediumtext']);
+            $is_auto_increment = ($type === 'int' && $extra === 'AUTO_INCREMENT');
+            if ($default !== null && $type_supports && !$is_auto_increment) {
                 $column->default($default);
             }
         }
