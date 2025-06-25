@@ -215,7 +215,7 @@ class CmlExchangeService
 
                 $t1 = $doc->addChild('Товары');
                 foreach ($purchases as $purchase) {
-                    if (!empty($purchase->product_id) && !empty($purchase->product_id)) {
+                    if (!empty($purchase->product_id)) {
                         $id_p = Product::whereId($purchase->product_id)->value('external_id');
 
                         if (!empty($id_p)) {
@@ -455,7 +455,9 @@ class CmlExchangeService
                         'meta_description' => $xml_group->Наименование
                     ]);
                 }
-                Request::setSession('categories_mapping', [strval($xml_group->Ид), $category_id]);
+                $categories = Request::getSession('categories_mapping') ?? [];
+                $categories[strval($xml_group->Ид)] = $category_id;
+                Request::setSession('categories_mapping', $categories);
                 $this->import_categories($xml_group, $category_id);
             }
         }
@@ -533,8 +535,10 @@ class CmlExchangeService
         $product->external_id = $product_1c_id;
 
         // Ищем товар
-        $product = Product::where('external_id', $product_1c_id)->get();
-        if (empty($product->id) && !empty($product->sku)) {
+        $existingProduct = Product::where('external_id', $product_1c_id)->first();
+        if ($existingProduct) {
+            $product = $existingProduct;
+        } elseif (!empty($product->sku)) {
             $res = Product::where('sku', $product->sku)->first();
             if (!empty($res)) {
                 $product->id = $res->id;
@@ -554,7 +558,7 @@ class CmlExchangeService
                 'url' => Helper::slugEn($xml_product->Наименование),
                 'name' => $xml_product->Наименование,
                 'meta_title' => $xml_product->Наименование,
-                'meta_description' => $xml_product->$description,
+                'meta_description' => $description,
                 'annotation' => $description,
                 'body' => $description
             ]);
@@ -567,7 +571,7 @@ class CmlExchangeService
             // Добавляем изображение товара
             if (isset($xml_product->Картинка)) {
                 foreach ($xml_product->Картинка as $img) {
-                    $image = basename($xml_product->Картинка);
+                    $image = basename($img);
                     if (!empty($image) && is_file($dir . $image) && is_writable(Config::get('images_originals_dir'))) {
                         rename($dir . $image, Config::get('images_originals_dir') . $image);
                         Image::addImage($product->id, 'product', $image);
@@ -578,7 +582,9 @@ class CmlExchangeService
 
             // Если нашелся товар
             if (empty($product_id) && !empty($product_1c_id)) {
-                $product_id = Product::where('product_id', $product->id)->where('external_id', $product_1c_id)->pluk('id');
+                $product_id = Product::where('product_id', $product->id)
+                    ->where('external_id', $product_1c_id)
+                    ->value('id');
             }
 
             // Обновляем товар
@@ -586,7 +592,6 @@ class CmlExchangeService
                 $p = new \stdClass();
                 if (!empty($xml_product->Описание)) {
                     $description = strval($xml_product->Описание);
-                    $p->meta_description = $description;
                     $p->meta_description = $description;
                     $p->annotation = $description;
                     $p->body = $description;
