@@ -1,5 +1,5 @@
 name: "SchemaOrg"
-description: "Добавляет на сайт Google tag"
+description: "Добавляет на сайт разметку Schema.org"
 settings:
   - {
       variable: enabled,
@@ -9,4 +9,4 @@ settings:
   - { variable: country_code, name: "Код страны" }
   - { variable: return_days, name: "Дней на возврат" }
   - { variable: shipping_cost, name: "Стоимость доставки" }
-version: 1.3
+version: 1.4
