@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.5
+ * @version 1.6
  * 
  * @link https://github.com/get-web/google-translate-custom-widget
  *
