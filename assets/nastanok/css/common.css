@@ -386,37 +386,9 @@ a:hover {
 	padding: 7px 9px;
 }
 
-#all_brands {
-	width: 220px;
-	margin-bottom: 15px;
-}
 
 
 /* @group Brands */
-#brands {
-	clear: both;
-	margin-bottom: 10px;
-	margin-top: 10px;
-}
-
-#brands a {
-	color: #ec0060;
-	margin-right: 10px;
-}
-
-#brands img {
-	vertical-align: middle;
-}
-
-#brands a:hover {
-	color: #000;
-}
-
-#brands a.selected {
-	background-color: #ec0060;
-	color: #fffeff;
-	padding: 2px 2px 2px 2px;
-}
 
 .blog .date {
 	font-weight: normal;
@@ -433,9 +405,6 @@ a:hover {
 	margin-bottom: 25px;
 }
 
-.category_prev_inwrap {
-	width: fit-content;
-}
 
 .category_prev_wrap .category_name {
 	font-size: 1.2rem;
@@ -1424,24 +1393,6 @@ a.admin_bookmark svg {
 	overflow: hidden;
 	background-color: #FFFAE0;
 }
-
-.bottom_cart_row .phone-wrap {
-	float: left;
-	padding: 20px 25px;
-}
-
-.bottom_cart_row .phone-wrap span {
-	font-style: italic;
-}
-
-.bottom_cart_row .phone-wrap input {
-	margin-top: 15px;
-	display: block;
-	width: auto;
-	padding: 5px;
-	font-size: 1.5rem;
-}
-
 .bottom_cart_row .cart_total {
 	padding: 25px;
 	background-color: #FFFAE0;
