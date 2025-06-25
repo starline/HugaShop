@@ -713,14 +713,6 @@ footer .posts_content a {
 	margin-left: 24px;
 }
 
-.product_one .delivery-box {
-	padding: 25px;
-	background-color: #FFFCCD;
-}
-
-.product_one .delivery-box h4 {
-	margin-top: 10px;
-}
 
 .promo_block .sale {
 	padding-left: 8px;
@@ -927,14 +919,6 @@ footer .posts_content a {
 	text-decoration: none;
 }
 
-.featured-brands {
-	margin-top: 15px;
-}
-
-.featured-brands div {
-	display: inline-block;
-	padding: 5px;
-}
 
 /* @group Фильтр по свойствам */
 #features {
@@ -1245,11 +1229,6 @@ footer .posts_content a {
 	overflow: hidden;
 }
 
-.feedback_form .button_send {
-	font-size: 18px;
-	float: right;
-	margin-top: 25px;
-}
 
 
 /* @group Корзина */
@@ -1283,14 +1262,6 @@ footer .posts_content a {
 	width: 100%;
 }
 
-#purchases .purchase_row .download_attachment {
-	white-space: nowrap;
-	color: #3b8500;
-	padding: 5px 10px 7px 10px;
-	border-bottom-color: 1px dotted green;
-	background-color: #ccff72;
-	line-height: 30px;
-}
 
 #purchases .purchase_row .price {
 	color: #868686;
