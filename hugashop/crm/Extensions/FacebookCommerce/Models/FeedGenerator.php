@@ -77,8 +77,15 @@ class FeedGenerator
 
             $pricefeed_categories = FacebookCommerceCategory::getCategoriesIds(self::$pricefeed->id);
 
-            // TODO: Select all child categories
-            $filter['category_id'] = $pricefeed_categories;
+            // Include children categories
+            $categories = [];
+            foreach ($pricefeed_categories as $category_id) {
+                $category = ProductCategory::getCategory($category_id);
+                if (!empty($category->children)) {
+                    $categories = array_merge($categories, $category->children);
+                }
+            }
+            $filter['category_id'] = array_values(array_unique($categories ?: $pricefeed_categories));
             $filter['visible'] = 1;
             $products = Product::getList($filter, order: 'position', join: ['image', 'brand']);
 
