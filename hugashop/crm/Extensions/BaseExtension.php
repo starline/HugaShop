@@ -34,10 +34,10 @@ class BaseExtension
 
 
     /**
-     * Set enviroment
+     * Set environment
      * @param string $env_name
      */
-    public function setEnviroment(string $env_name, $env)
+    public function setEnvironment(string $env_name, $env)
     {
         $this->ext_env->$env_name = $env;
     }

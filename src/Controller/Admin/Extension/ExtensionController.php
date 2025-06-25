@@ -35,7 +35,7 @@ class ExtensionController extends BaseAdminController
         Design::assign('extension', $extension);
 
         if (method_exists($Extension, 'index')) {
-            $Extension->setEnviroment('kernel', $this->container->get('kernel'));
+            $Extension->setEnvironment('kernel', $this->container->get('kernel'));
             return $this->fetchResponse($Extension->index());
         } else {
             return $this->settings($Extension);
