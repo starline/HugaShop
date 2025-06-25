@@ -10,6 +10,8 @@
 
 namespace HugaShop\Extensions\SeoLinker\Services;
 
+use DOMXPath;
+use DOMDocument;
 use Spatie\Crawler\CrawlUrl;
 use Psr\Http\Message\ResponseInterface;
 use Spatie\Crawler\CrawlObservers\CrawlObserver;
@@ -29,9 +31,9 @@ final class CrawlerObserver extends CrawlObserver
         $outInternal = 0;
         $outExternal = 0;
 
-        $dom = new \DOMDocument();
+        $dom = new DOMDocument();
         @($dom->loadHTML($html));
-        $xpath = new \DOMXPath($dom);
+        $xpath = new DOMXPath($dom);
         $nodes = $xpath->evaluate("//a[@href]");
 
         foreach ($nodes as $node) {
