@@ -12,7 +12,7 @@ namespace HugaShop\Extensions\SeoLinker\Services;
 
 use DOMXPath;
 use DOMDocument;
-use Spatie\Crawler\CrawlUrl;
+use Psr\Http\Message\UriInterface;
 use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
@@ -25,14 +25,14 @@ final class CrawlerObserver extends CrawlObserver
 
     public function __construct(private string $scheme, private string $host) {}
 
-    public function crawled(CrawlUrl $url, ResponseInterface $response, ?CrawlUrl $foundOnUrl = null): void
+    public function crawled(UriInterface $url, ResponseInterface $response, ?UriInterface $foundOnUrl = null, ?string $linkText = null): void
     {
         if ($response->getStatusCode() !== 200) {
             return;
         }
 
         $html = (string) $response->getBody();
-        $current = (string) $url->url;
+        $current = (string) $url;
 
         $outInternal = 0;
         $outExternal = 0;
