@@ -603,6 +603,7 @@
 								label: 'Поставка, шт',
 								color: '#673ab7',
 								type: 'add',
+								chartType: 'scatter',
 								url: '/admin/ajax/stats/order'
 							}
 						},

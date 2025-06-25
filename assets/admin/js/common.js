@@ -283,7 +283,8 @@ export function getChartData(apex, filter, options) {
 			apex.series.push({
 				name: options.label,
 				data: datas,
-				color: options.color
+				color: options.color,
+				type: options.chartType
 			});
 
 			apex.chart.updateSeries(apex.series);
