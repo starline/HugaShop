@@ -99,7 +99,14 @@ final class SeoLinker extends BaseExtension
             ]);
 
             foreach ($links as $ln) {
-                $linkModel->create($ln);
+                $exists = $linkModel->newQuery()
+                    ->where('from_url', $ln['from_url'])
+                    ->where('to_url', $ln['to_url'])
+                    ->where('type', $ln['type'])
+                    ->exists();
+                if (!$exists) {
+                    $linkModel->create($ln);
+                }
 
                 if ($ln['type'] === 'internal') {
                     $target = SeoLinkerModel::getOne(['url' => $ln['to_url']]);
