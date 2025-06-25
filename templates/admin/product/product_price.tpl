@@ -552,6 +552,7 @@
 				let statsChart = makeChart(
 					document.getElementById('product_stats'), {
 						chart: { type: 'line', height: 250 },
+						stroke: { width: 0 },
 						title: { text: 'Статистика продаж' }
 					},
 					[{

@@ -216,7 +216,9 @@ export function createApexChart(element, options = {}) {
 		},
 		plotOptions: {
 			bar: {
-				dataLabels: { position: 'top' }
+				dataLabels: { position: 'top' },
+				columnWidth: '60%',
+				rangeBarGroupRows: false
 			}
 		},
 		tooltip: { x: { format: 'MMMM yyyy' } },
