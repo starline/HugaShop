@@ -140,11 +140,16 @@ class FeedGenerator
                  * @link https://support.google.com/merchants/answer/6324406?sjid=9520931803415694483-NC
                  */
                 $product_category = ProductCategory::getCategory($product_raw->category_id);
+                $categories_array = [];
                 if (!empty($product_category)) {
                     foreach ($product_category->path as $cat) {
                         $categories_array[] = $cat->name;
                     }
-                    $product->product_type = join(" > ", $categories_array);
+                    $product->product_type = join(' > ', $categories_array);
+
+                    if (!empty($product_category->url)) {
+                        $product->label_1 = $product_category->url;
+                    }
                 }
 
 
@@ -170,10 +175,6 @@ class FeedGenerator
                  */
                 if (!empty(self::$pricefeed->label)) {
                     $product->label_0 = self::$pricefeed->label;
-                }
-
-                if (!empty($product_category->url)) {
-                    $product->label_1 = $product_category->url;
                 }
 
                 $feed_data[] = $product;
