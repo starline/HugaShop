@@ -594,9 +594,6 @@
 							}
 						},
 						{
-							chart: {
-								type: 'scatter',
-							},
 							filter: {
 								product_id: php_product_id,
 								filter: 'byMonth',
