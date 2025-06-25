@@ -31,9 +31,9 @@ class FacebookCommerceCategory extends BaseExtensionModel
 
 
     /**
-     * Устанавливаем варинат в прайслист
+     * Устанавливаем категории для прайса
      * @param int $pricefeed_id
-     * @param int $pricefeed_id
+     * @param array $category_ids
      */
     public static function setCategories(int $pricefeed_id, array $category_ids = [])
     {
