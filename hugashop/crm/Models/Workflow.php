@@ -42,8 +42,8 @@ class Workflow extends BaseModel
         $workflow = [];
         $workflow['user_id'] = intval(User::authUser('id'));
 
-        // Exaple: HugaShop\\Api\\Product::updateProduct
-        $callable_name = str_replace("HugaShop\\Api\\", "", $callable_name);
+        // Exaple: HugaShop\\Models\\Product::updateProduct
+        $callable_name = str_replace("HugaShop\\Models\\", "", $callable_name);
         $entity_method = explode('::', $callable_name);
 
         $workflow['entity_name'] = $entity_method[0];

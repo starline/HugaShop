@@ -11,11 +11,12 @@
 namespace HugaShop\Extensions\SeoLinker\Services;
 
 use DOMXPath;
+use Throwable;
 use DOMDocument;
-use Psr\Http\Message\UriInterface;
-use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
+use Psr\Http\Message\UriInterface;
+use Psr\Http\Message\ResponseInterface;
 use Spatie\Crawler\CrawlObservers\CrawlObserver;
 
 final class CrawlerObserver extends CrawlObserver
@@ -53,10 +54,12 @@ final class CrawlerObserver extends CrawlObserver
             ) {
                 continue;
             }
+
             $abs = $this->absoluteUrl($href, $current);
             if (!$abs) {
                 continue;
             }
+
             $p = parse_url($abs);
             if (($p['host'] ?? '') === $this->host) {
                 $outInternal++;
@@ -108,7 +111,7 @@ final class CrawlerObserver extends CrawlObserver
             }
 
             return (string) $resolved;
-        } catch (\Throwable) {
+        } catch (Throwable) {
             return null;
         }
     }

@@ -57,21 +57,21 @@ class ContentPage extends BaseModel
 
 
     /**
-     * Get Menu
-     * Use Cache
+     * Get Menu. Use Cache
      */
     public static function getMenu()
     {
+
         if (!empty(self::$menu)) {
             return self::$menu;
         }
 
         // Cache
-        $cache_item = Helper::cache()->getItem(Helper::class_basename(ContentPage::class));
+        $cache_item = Helper::cache(self::class)->getItem('menu');
 
         if (!$cache_item->isHit()) {
             $menu = ContentPage::getList(['menu' => 1, 'visible' => 1], order: 'position');
-            Helper::cache()->save($cache_item->set($menu));
+            Helper::cache(self::class)->save($cache_item->set($menu));
         } else {
             $menu = $cache_item->get();
         }
@@ -85,21 +85,21 @@ class ContentPage extends BaseModel
      */
     public static function addPage(object|array $page)
     {
-        $page = Helper::makeUniqSlug(ContentPage::class, $page);
+        $page = Helper::makeUniqSlug(self::class, $page);
         return static::create($page);
     }
 
 
     public static function updatePage(int|array $id, object|array $entity)
     {
-        Helper::cache()->delete(Helper::class_basename(ContentPage::class)); # Cache clean
+        Helper::cache(self::class)->clear(); # Cache clean
         return ContentPage::updateOne($id, $entity);
     }
 
 
     public static function deletePage(int|array $id)
     {
-        Helper::cache()->delete(Helper::class_basename(ContentPage::class)); # Cache clean
+        Helper::cache(self::class)->clear(); # Cache clean
         return ContentPage::deleteOne($id);
     }
 }

@@ -11,7 +11,6 @@
 namespace HugaShop\Models;
 
 use ReCaptcha\ReCaptcha;
-use HugaShop\Models\Database;
 use Illuminate\Support\Str;
 use Jenssegers\Agent\Agent;
 use Symfony\Component\Yaml\Yaml;

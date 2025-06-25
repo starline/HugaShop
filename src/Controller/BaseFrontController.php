@@ -52,30 +52,30 @@ class BaseFrontController extends BaseController
         // Smarty Plugins
         Design::setFunctionPlugin("get_browsed_products",   $this, 'getBrowsedProducts');
         Design::setModifierPlugin("instock",                $this, 'checkInstock');
-        Design::setModifierPlugin("api",                    $this, 'getApiMethod');
+        Design::setModifierPlugin("api",                    $this, 'getModelMethod');
     }
 
 
     /**
-     * Get Api Method
+     * Get Models Method
      * Use: 'ContentPage'|api:getMenu:[[var1 => value1, var2 => value2], value3]
      */
-    public function getApiMethod(string $api_class, $method, array $params = [])
+    public function getModelMethod(string $model_name, $method, array $params = [])
     {
         // If we have API Class Extensions
-        if (class_exists("HugaShop\\Api\\{$api_class}")) {
-            $ClassName = "HugaShop\\Api\\{$api_class}";
+        if (class_exists("HugaShop\\Models\\{$model_name}")) {
+            $Model = "HugaShop\\Models\\{$model_name}";
         } else {
-            preg_match('/^[A-Z][a-z]*/', $api_class, $matches);
+            preg_match('/^[A-Z][a-z]*/', $model_name, $matches);
             $subfolder = ucfirst($matches[0]);
-            if (class_exists("HugaShop\\Api\\{$subfolder}\\{$api_class}")) {
-                $ClassName = "HugaShop\\Api\\{$subfolder}\\{$api_class}";
+            if (class_exists("HugaShop\\Models\\{$subfolder}\\{$model_name}")) {
+                $Model = "HugaShop\\Models\\{$subfolder}\\{$model_name}";
             } else {
                 return null;
             }
         }
 
-        return $ClassName::$method(...$params);
+        return $Model::$method(...$params);
     }
 
 

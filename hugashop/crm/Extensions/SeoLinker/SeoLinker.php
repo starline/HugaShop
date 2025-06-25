@@ -149,7 +149,7 @@ final class SeoLinker extends BaseExtension
         Crawler::create()
             ->setCrawlObserver($observer)
             ->setCrawlProfile(new CrawlInternalUrls($url))
-            ->setMaximumDepth(0)
+            ->setMaximumDepth($depth)
             ->startCrawling($url);
 
         $res = $observer->results[$url] ?? ['out_internal' => 0, 'out_external' => 0];
