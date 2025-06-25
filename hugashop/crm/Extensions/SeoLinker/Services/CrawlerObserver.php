@@ -1,19 +1,25 @@
 <?php
 
+/**
+ * HugaShop - Sell anything
+ *
+ * @author Andri Huga
+ * @version 1.1
+ *
+ */
+
 namespace HugaShop\Extensions\SeoLinker\Services;
 
-use Spatie\Crawler\CrawlObserver;
 use Spatie\Crawler\CrawlUrl;
 use Psr\Http\Message\ResponseInterface;
+use Spatie\Crawler\CrawlObservers\CrawlObserver;
 
 final class CrawlerObserver extends CrawlObserver
 {
     public array $results = [];
     public array $links = [];
 
-    public function __construct(private string $scheme, private string $host)
-    {
-    }
+    public function __construct(private string $scheme, private string $host) {}
 
     public function crawled(CrawlUrl $url, ResponseInterface $response, ?CrawlUrl $foundOnUrl = null): void
     {
@@ -61,6 +67,7 @@ final class CrawlerObserver extends CrawlObserver
             'out_external' => $outExternal,
         ];
     }
+
 
     private function absoluteUrl(string $href, string $base): ?string
     {

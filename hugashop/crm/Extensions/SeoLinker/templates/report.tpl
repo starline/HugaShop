@@ -44,35 +44,35 @@
 {block name=body_script append}
     <script type="module">
         {literal}
-        $(function() {
-            $('#scan_button').click(function() {
-                let btn = $(this);
-                btn.prop('disabled', true);
+            $(function() {
+                $('#scan_button').click(function() {
+                    let btn = $(this);
+                    btn.prop('disabled', true);
 
-                function iterate(start) {
-                    $.ajax({
-                        type: 'POST',
-                        url: window.location.href,
-                        data: {scan: 1, start: start ? 1 : 0, csrf: csrf},
-                        dataType: 'json',
-                        success: function(data) {
-                            $('#scan_count').text(data.scanned + '/' + data.pending);
-                            if (data.pending > 0) {
-                                iterate(false);
-                            } else {
-                                location.reload();
+                    function iterate(start) {
+                        $.ajax({
+                            type: 'POST',
+                            url: window.location.href,
+                            data: {scan: 1, start: start ? 1 : 0, csrf: csrf},
+                            dataType: 'json',
+                            success: function(data) {
+                                $('#scan_count').text(data.scanned + '/' + data.pending);
+                                if (data.pending > 0) {
+                                    iterate(false);
+                                } else {
+                                    location.reload();
+                                }
+                            },
+                            error: function() {
+                                btn.prop('disabled', false);
                             }
-                        },
-                        error: function() {
-                            btn.prop('disabled', false);
-                        }
-                    });
-                }
+                        });
+                    }
 
-                iterate(true);
-                return false;
+                    iterate(true);
+                    return false;
+                });
             });
-        });
         {/literal}
     </script>
 {/block}

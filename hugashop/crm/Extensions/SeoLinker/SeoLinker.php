@@ -1,23 +1,31 @@
 <?php
 
 /**
+ * HugaShop - Sell anything
+ *
+ * @author Andri Huga
+ * @version 1.1
+ * 
  * SeoLinker extension
+ *
  */
 
 namespace HugaShop\Extensions\SeoLinker;
 
 use HugaShop\Models\Config;
 use HugaShop\Models\Design;
-use HugaShop\Extensions\BaseExtension;
-use HugaShop\Extensions\SeoLinker\Models\SeoLinker as SeoLinkerModel;
-use HugaShop\Extensions\SeoLinker\Models\SeoLinkerLink as SeoLinkerLinkModel;
-use HugaShop\Models\Request;
 use Spatie\Crawler\Crawler;
+use HugaShop\Models\Request;
+use HugaShop\Extensions\BaseExtension;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Spatie\Crawler\CrawlProfiles\CrawlInternalUrls;
 use HugaShop\Extensions\SeoLinker\Services\CrawlerObserver;
+use HugaShop\Extensions\SeoLinker\Models\SeoLinker as SeoLinkerModel;
+use HugaShop\Extensions\SeoLinker\Models\SeoLinkerLink as SeoLinkerLinkModel;
 
 final class SeoLinker extends BaseExtension
 {
+
     /**
      * Show links report
      */
@@ -40,7 +48,7 @@ final class SeoLinker extends BaseExtension
             [$scanned, $pending] = $this->scanBatch($baseUrl, 10);
 
             if (Request::isAjax()) {
-                return new \Symfony\Component\HttpFoundation\JsonResponse([
+                return new JsonResponse([
                     'scanned' => $scanned,
                     'pending' => $pending,
                 ]);
@@ -59,13 +67,17 @@ final class SeoLinker extends BaseExtension
         return $this->getTemplatePath('templates/report.tpl');
     }
 
+
+    /**
+     * Scan Batch
+     */
     private function scanBatch(string $baseUrl, int $limit): array
     {
         $model = SeoLinkerModel::getModel();
         $linkModel = SeoLinkerLinkModel::getModel();
 
-        $model->runWithInitTable(fn () => null);
-        $linkModel->runWithInitTable(fn () => null);
+        $model->runWithInitTable(fn() => null);
+        $linkModel->runWithInitTable(fn() => null);
 
         if (!$model->newQuery()->where('url', $baseUrl)->exists()) {
             $model->newQuery()->insert([
@@ -115,6 +127,10 @@ final class SeoLinker extends BaseExtension
         return [$scanned, $pending];
     }
 
+
+    /**
+     * Crawl
+     */
     private function crawlPage(string $url, int $depth): array
     {
         $parts = parse_url($url);
@@ -138,4 +154,3 @@ final class SeoLinker extends BaseExtension
         ];
     }
 }
-
