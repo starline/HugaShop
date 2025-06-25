@@ -1693,11 +1693,6 @@ div#sort_links b {
 	padding: 3px;
 }
 
-.chart_none {
-	margin: 5px 0;
-	color: var(--text-dim-color);
-	text-align: center;
-}
 
 span.order_label {
 	float: left;
@@ -1840,11 +1835,6 @@ i.material-icons.shopping_cart::before {
 	text-decoration: none;
 }
 
-.icons_start {
-	display: flex;
-	justify-content: flex-start;
-	flex-direction: row;
-}
 
 .icons a.show_chart {
 	background-image: url(../images/map.png);
@@ -2293,9 +2283,6 @@ span.alert {
 	margin-bottom: 15px;
 }
 
-#order .order_ip {
-	color: var(--text-dim-color);
-}
 
 
 
@@ -2622,9 +2609,6 @@ input.input_autocomplete {
 		background-color: var(--background-color);
 	}
 
-	.list .movement_info {
-		width: 16%;
-	}
 
 	#variants_block ul {
 		flex-direction: column;
