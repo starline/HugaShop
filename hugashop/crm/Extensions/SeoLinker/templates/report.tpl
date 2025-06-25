@@ -44,6 +44,7 @@
 {block name=body_script append}
     <script type="module">
         {literal}
+
             $(function() {
                 $('#scan_button').click(function() {
                     let btn = $(this);
@@ -57,10 +58,11 @@
                             dataType: 'json',
                             success: function(data) {
                                 $('#scan_count').text(data.scanned + '/' + data.pending);
+
                                 if (data.pending > 0) {
                                     iterate(false);
                                 } else {
-                                    location.reload();
+                                    //location.reload();
                                 }
                             },
                             error: function() {
@@ -73,6 +75,7 @@
                     return false;
                 });
             });
+
         {/literal}
     </script>
 {/block}

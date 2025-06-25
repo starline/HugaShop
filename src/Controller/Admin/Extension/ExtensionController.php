@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.8
+ * @version 1.9
  *
  */
 
@@ -36,6 +36,12 @@ class ExtensionController extends BaseAdminController
 
         if (method_exists($Extension, 'index')) {
             $Extension->setEnvironment('kernel', $this->container->get('kernel'));
+
+            // Ajax
+            if (Request::isAjax()) {
+                return $Extension->index();
+            }
+
             return $this->fetchResponse($Extension->index());
         } else {
             return $this->settings($Extension);
