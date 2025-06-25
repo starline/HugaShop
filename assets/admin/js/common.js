@@ -157,6 +157,11 @@ export function makeChart(element, chartOptions = {}, datasets = []) {
 		console.warn('makeChart: element not found');
 		return;
 	}
+
+	// Build default marker sizes based on datasets
+	if (!chartOptions.markers) chartOptions.markers = {};
+	chartOptions.markers.size = datasets.map((d) => (d.options && d.options.markerSize) ? d.options.markerSize : 0);
+
 	let chartData = {
 		series: [],
 		chart: null,
@@ -217,7 +222,7 @@ export function createApexChart(element, options = {}) {
 		tooltip: { x: { format: 'MMMM yyyy' } },
 		dataLabels: {
 			enabled: true,
-			offsetY: -25,
+			offsetY: -15,
 			style: {
 				colors: ['#000']
 			}

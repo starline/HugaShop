@@ -551,7 +551,7 @@
 				// Выводим график
 				let statsChart = makeChart(
 					document.getElementById('product_stats'), {
-						chart: { type: 'bar', height: 250 },
+						chart: { type: 'line', height: 250 },
 						title: { text: 'Статистика продаж' }
 					},
 					[{
@@ -564,6 +564,7 @@
 								label: 'Сумма заказов, ' + php_currency_sign,
 								color: '#76c100',
 								type: 'totalPrice',
+								chartType: 'column',
 								url: '/admin/ajax/stats/order'
 							}
 						},
@@ -577,6 +578,7 @@
 								label: 'Сумма прибыли, ' + php_currency_sign,
 								color: '#f8a13f',
 								type: 'profitPrice',
+								chartType: 'column',
 								url: '/admin/ajax/stats/order'
 							}
 						},
@@ -590,6 +592,7 @@
 								label: 'Продано, шт',
 								color: '#000000',
 								type: 'amount',
+								chartType: 'column',
 								url: '/admin/ajax/stats/order'
 							}
 						},
@@ -604,6 +607,7 @@
 								color: '#673ab7',
 								type: 'add',
 								chartType: 'scatter',
+								markerSize: 5,
 								url: '/admin/ajax/stats/order'
 							}
 						},
@@ -617,6 +621,7 @@
 								label: 'Списано, шт',
 								color: '#f00',
 								type: 'delete',
+								chartType: 'column',
 								url: '/admin/ajax/stats/order'
 							}
 						}
