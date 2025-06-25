@@ -82,7 +82,7 @@ function TranslateGetCode(config) {
 function TranslateCookieHandler(val) {
 
     /* Writing down cookies */
-    Cookies.set("googtrans", val);
+    Cookies.set("googtrans", val, { path: "/" });
 }
 
 function TranslateEventHandler(event, selector, handler) {
