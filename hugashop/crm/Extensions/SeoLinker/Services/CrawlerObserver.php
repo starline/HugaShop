@@ -12,6 +12,8 @@ namespace HugaShop\Extensions\SeoLinker\Services;
 
 use Spatie\Crawler\CrawlUrl;
 use Psr\Http\Message\ResponseInterface;
+use GuzzleHttp\Psr7\Uri;
+use GuzzleHttp\Psr7\UriResolver;
 use Spatie\Crawler\CrawlObservers\CrawlObserver;
 
 final class CrawlerObserver extends CrawlObserver
@@ -23,6 +25,10 @@ final class CrawlerObserver extends CrawlObserver
 
     public function crawled(CrawlUrl $url, ResponseInterface $response, ?CrawlUrl $foundOnUrl = null): void
     {
+        if ($response->getStatusCode() !== 200) {
+            return;
+        }
+
         $html = (string) $response->getBody();
         $current = (string) $url->url;
 
@@ -36,7 +42,13 @@ final class CrawlerObserver extends CrawlObserver
 
         foreach ($nodes as $node) {
             $href = trim($node->getAttribute('href'));
-            if ($href === '' || str_starts_with($href, '#') || str_starts_with(strtolower($href), 'javascript:') || str_starts_with($href, 'mailto:')) {
+            if (
+                $href === '' ||
+                str_starts_with($href, '#') ||
+                str_starts_with(strtolower($href), 'javascript:') ||
+                str_starts_with($href, 'mailto:') ||
+                str_starts_with($href, 'tel:')
+            ) {
                 continue;
             }
             $abs = $this->absoluteUrl($href, $current);
@@ -77,16 +89,25 @@ final class CrawlerObserver extends CrawlObserver
         if (str_starts_with($href, '//')) {
             return $this->scheme . ':' . $href;
         }
-        if (str_starts_with($href, '/')) {
-            return $this->scheme . '://' . $this->host . $href;
-        }
         if ($href === '') {
             return null;
         }
-        $path = parse_url($base, PHP_URL_PATH) ?: '/';
-        if (!str_ends_with($path, '/')) {
-            $path = dirname($path) . '/';
+
+        try {
+            $baseUri = new Uri($base);
+            $hrefUri = new Uri($href);
+            $resolved = UriResolver::resolve($baseUri, $hrefUri);
+
+            if ($resolved->getScheme() === '') {
+                $resolved = $resolved->withScheme($this->scheme);
+            }
+            if ($resolved->getHost() === '') {
+                $resolved = $resolved->withHost($this->host);
+            }
+
+            return (string) $resolved;
+        } catch (\Throwable) {
+            return null;
         }
-        return $this->scheme . '://' . $this->host . $path . $href;
     }
 }
