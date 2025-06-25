@@ -110,7 +110,11 @@
                 let cookie_item = {};
                 const cookie_json = getCookie("{$GoogleDataLayerGA4->cookie_key}");
                 if (cookie_json) {
-                    cookie_item = JSON.parse(cookie_json);
+                    try {
+                        cookie_item = JSON.parse(cookie_json);
+                    } catch (err) {
+                        console.warn(err);
+                    }
                 }
 
                 dataLayer.push({
@@ -216,7 +220,11 @@
         let cookie_item = {};
         const cookie_json = getCookie("{$GoogleDataLayerGA4->cookie_key}");
         if (cookie_json) {
-            cookie_item = JSON.parse(cookie_json);
+            try {
+                cookie_item = JSON.parse(cookie_json);
+            } catch (err) {
+                console.warn(err);
+            }
         }
 
         try {
@@ -268,7 +276,11 @@
         let cookie_item = {};
         const cookie_json = getCookie("{$GoogleDataLayerGA4->cookie_key}");
         if (cookie_json) {
-            cookie_item = JSON.parse(cookie_json);
+            try {
+                cookie_item = JSON.parse(cookie_json);
+            } catch (err) {
+                console.warn(err);
+            }
             deleteCookie("{$GoogleDataLayerGA4->cookie_key}");
         }
 
