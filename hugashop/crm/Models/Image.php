@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.4
+ * @version 3.6
  * 
  * Intervention Image
  * @link https://image.intervention.io/v3/getting-started/installation
@@ -239,10 +239,10 @@ class Image extends BaseModel
         $resized_file = self::addResizeParams($original_file, $width, $height, $set_watermark);
 
         // Пути к папкам с картинками
-        $originals_dir = Config::get('images_originals_dir');
-        $resized_dir = Config::get('images_resized_dir');
+        $originals_dir  = Config::get('images_originals_dir');
+        $resized_dir    = Config::get('images_resized_dir');
 
-        // Создадим директорию, если ее нет
+        // Make resize dir
         if (!is_dir($resized_dir)) {
             mkdir($resized_dir, 0777, true);
         }
@@ -252,16 +252,16 @@ class Image extends BaseModel
             return false;
         }
 
-        $watermark_offet_x = Settings::getParam('watermark_offset_x');
-        $watermark_offet_y = Settings::getParam('watermark_offset_y');
-
         if ($set_watermark && is_file(Config::get('images_watermark_file'))) {
             $watermark = Config::get('images_watermark_file');
         } else {
             $watermark = null;
         }
 
-        return self::resizeUploadImage($originals_dir . $original_file, $resized_dir . $resized_file, $width, $height, $watermark, $watermark_offet_x, $watermark_offet_y);
+        $original_file_path = $originals_dir . $original_file;
+        $new_file_path      = $resized_dir . $resized_file;
+
+        return self::resizeUploadImage($original_file_path, $new_file_path, $width, $height, $watermark);
     }
 
 
@@ -274,7 +274,7 @@ class Image extends BaseModel
      * @param $watermark_transparency - прозначность водяного знака 0-100 (больше - прозрачнее)
      * @param $quality - качество изображения
      */
-    public static function resizeUploadImage(string $original_file_path, string $new_file_path, $width = null, $height = null, $watermark = null, $watermark_offet_x = 0, $watermark_offet_y = 0, $watermark_transparency = null, $sharpen = null, $quality = null)
+    public static function resizeUploadImage(string $original_file_path, string $new_file_path, $width = null, $height = null, $watermark = null, $watermark_transparency = null, $sharpen = null, $quality = null)
     {
 
         // Настройки взять в config
@@ -310,8 +310,11 @@ class Image extends BaseModel
 
         // insert watermark
         if (!empty($watermark)) {
-            $water_image = $manager->read($watermark);
-            $image_size = $image->size();
+            $water_image    = $manager->read($watermark);
+            $image_size     = $image->size();
+
+            $watermark_offet_x = Settings::getParam('watermark_offset_x') ?? 0;
+            $watermark_offet_y = Settings::getParam('watermark_offset_y') ?? 0;
 
             // Делаем Watermark меньше на 10% от изображения
             $water_image = $water_image->scaleDown(width: $image_size->width() - $image_size->width() * 0.1, height: $image_size->height() - $image_size->height() * 0.1);
@@ -375,7 +378,7 @@ class Image extends BaseModel
         $file =             $matches[1];            # имя запрашиваемого файла
         $width =            $matches[2];            # ширина будущего изображения
         $height =           $matches[3];            # высота будущего изображения
-        $set_watermark =    $matches[4] == 'w';        # ставить ли водяной знак
+        $set_watermark =    $matches[4] == 'w';     # ставить ли водяной знак
         $ext =              $matches[5];            # расширение файла
 
         return [$file . '.' . $ext, $width, $height, $set_watermark];

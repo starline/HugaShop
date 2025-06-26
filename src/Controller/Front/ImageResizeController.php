@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Attribute\Cache;
 
 /**
  * Use BaseController
- * We don't need BaseAdminController or BaseController
+ * We don't need BaseAdminController or BaseFrontController
  */
 class ImageResizeController extends BaseController
 {

@@ -73,8 +73,8 @@ final class SeoLinker extends BaseExtension
      */
     private function scanBatch(string $baseUrl, int $limit): array
     {
-        $model = SeoLinkerModel::getModel();
-        $linkModel = SeoLinkerLinkModel::getModel();
+        $model          = SeoLinkerModel::getModel();
+        $linkModel      = SeoLinkerLinkModel::getModel();
 
         $model->runWithInitTable(fn() => null);
         $linkModel->runWithInitTable(fn() => null);
@@ -149,7 +149,9 @@ final class SeoLinker extends BaseExtension
         Crawler::create()
             ->setCrawlObserver($observer)
             ->setCrawlProfile(new CrawlInternalUrls($url))
-            ->setMaximumDepth($depth)
+            // Depth `0` in Spatie crawler skips even the start page
+            // so ensure at least depth `1` to crawl the current URL
+            ->setMaximumDepth(max(1, $depth))
             ->startCrawling($url);
 
         $res = $observer->results[$url] ?? ['out_internal' => 0, 'out_external' => 0];
