@@ -50,7 +50,7 @@
 							<div class="col-3">
 								<a href="{$image->filename|resize:1080:1080:w}" class="zoom" data-fancybox="images"
 									data-caption="{$product->name} - Фото: {$i+1}">
-									<img class="img-thumbnail img-fluid" src="{$image->filename|resize:220:220}"
+									<img class="img-thumbnail img-fluid" src="{$image->filename|resize:220:220:c}"
 										alt="{$product->name} - Фото: {$i+1}" title="{$product->name} - Фото: {$i+1}">
 								</a>
 							</div>

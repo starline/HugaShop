@@ -145,7 +145,7 @@ class FeedGenerator
                 // Main image
                 // Don't include text in your images that overlays the product, calls to action, promo codes, watermarks or time-sensitive information like temporary price drops.
                 // Images must be in JPEG or PNG format, at least 500 x 500 pixels and up to 8 MB
-                $product['image_link'] = Image::getURL($product_raw->image->filename, 1080, 1080);
+                $product['image_link'] = Image::getImageURL($product_raw->image->filename, 1080, 1080);
 
 
                 // Additional images
@@ -155,7 +155,7 @@ class FeedGenerator
                 $images = $images->slice(1)->values();
                 if ($images->isNotEmpty()) {
                     $product['additional_image_link'] = $images->map(function ($image) {
-                        return Image::getURL($image->filename, 1080, 1080);
+                        return Image::getImageURL($image->filename, 1080, 1080);
                     })->implode('|');
                 }
 

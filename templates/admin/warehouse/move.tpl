@@ -215,7 +215,7 @@
 		<!-- Список поставки -->
 		<div id="purchases">
 			<div class="list purchases">
-			
+
 				{foreach $movement->purchases as $purchase}
 					<div class="list_row">
 						<input type="hidden" name="purchases[{$purchase->position}][product_id]"
@@ -227,8 +227,7 @@
 						</div>
 
 						<div class="image">
-							<img class="product_icon"
-								src="{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60}{else}{'images/cargo.png'|asset}{/if}"
+							<img src="{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60}{else}{'images/cargo.png'|asset}{/if}"
 								data-bs-toggle="tooltip" title="{$purchase->product->variant_name}" />
 						</div>
 
@@ -338,7 +337,7 @@
 					</div>
 
 					<div class="image">
-						<img class="product_icon" src="">
+						<img src="">
 					</div>
 
 					<div class="col row">
@@ -560,9 +559,9 @@
 								"</option>");
 
 						if (product.image.url)
-							new_item.find('img.product_icon').attr("src", product.image.url);
+							new_item.find('.image img').attr("src", product.image.url);
 						else
-							new_item.find('img.product_icon').remove();
+							new_item.find('.image img').remove();
 
 						$("input#add_purchase").val('').focus().blur();
 

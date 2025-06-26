@@ -201,7 +201,7 @@
 											<div class="move_zone"></div>
 										</div>
 										<div class="image">
-											<img class="product_icon"
+											<img
 												src="{if $product_variant->product->image->filename}{$product_variant->product->image->filename|resize:60}{else}{'images/cargo.png'|asset}{/if}">
 										</div>
 										<div class="col">
@@ -241,7 +241,7 @@
 										<div class="move_zone"></div>
 									</div>
 									<div class="image">
-										<img class="product_icon" src="">
+										<img src="">
 									</div>
 									<div class="col">
 										<a class="product_name" href=""></a>
@@ -295,7 +295,7 @@
 							</div>
 
 							<div class="image">
-								<img class="product_icon"
+								<img
 									src="{if $rel_product->image->filename}{$rel_product->image->filename|resize:60}{else}{'images/cargo.png'|asset}{/if}">
 							</div>
 
@@ -316,7 +316,7 @@
 							<div class="move_zone"></div>
 						</div>
 						<div class="image">
-							<img class="product_icon" src="">
+							<img src="">
 						</div>
 						<div class="col">
 							<a class="related_product_name" href=""></a>
@@ -453,9 +453,9 @@
 						}
 
 						if (product.image)
-							new_item.find('img.product_icon').attr("src", product.image.url);
+							new_item.find('.image img').attr("src", product.image.url);
 						else
-							new_item.find('img.product_icon').remove();
+							new_item.find('.image img').remove();
 
 						if (product.disable == 1)
 							new_item.addClass("disable");
@@ -493,9 +493,9 @@
 						new_item.find('input[name*="related_products"]').val(product.id);
 
 						if (product.image)
-							new_item.find('img.product_icon').attr("src", product.image.url);
+							new_item.find('.image img').attr("src", product.image.url);
 						else
-							new_item.find('img.product_icon').remove();
+							new_item.find('.image img').remove();
 
 						if (product.disable == 1)
 							new_item.addClass("disable");

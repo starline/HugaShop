@@ -107,14 +107,14 @@ class FeedGenerator
                 // Main image
                 // Нельзя использовать изображения рекламного характера или фотографии с надписями, которые закрывают товар.
                 // Водяные знаки, логотипы, названия марок и другие наложения;
-                $product->image_link = Image::getURL($product_raw->image->filename, 1080, 1080);
+                $product->image_link = Image::getImageURL($product_raw->image->filename, 1080, 1080);
 
                 // Обработка дополнительных фотографий
                 $images = Image::getImages($product_raw->id, 'product');
                 $images = $images->slice(1)->values();
                 if ($images->isNotEmpty()) {
                     $product->additional_image_link = $images->map(function ($image) {
-                        return Image::getURL($image->filename, 1080, 1080);
+                        return Image::getImageURL($image->filename, 1080, 1080);
                     });
                 }
 

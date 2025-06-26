@@ -38,7 +38,7 @@ class AjaxProductController extends BaseFrontController
             $product_sug->name = $product->name;
             $product_sug->id = $product->id;
             if (!empty($product->image_filename)) {
-                $product_sug->image = Image::getURL($product->image_filename, 60, 60);
+                $product_sug->image = Image::getImageURL($product->image_filename, 60, 60, 'c');
             }
 
             $suggestion = new \stdClass();

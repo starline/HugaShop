@@ -74,7 +74,7 @@ class Image extends BaseModel
                 } elseif ($dropped_images = Request::files('dropped_' . $post_name)) {
                     $key = array_search($url, $dropped_images['name']);
 
-                    // Ужимаем изображение до заданого размера
+                    // Move and Resize
                     $image_name = Image::uploadImage($dropped_images['tmp_name'][$key], $dropped_images['name'][$key]);
                     if ($key !== false && $image_name) {
                         Image::addImage($entity_id, $entity_name, (string) $image_name);
@@ -153,8 +153,8 @@ class Image extends BaseModel
 
         // If there is NOT image, delete file by name
         if ($count === 0) {
-            $file = pathinfo($filename, PATHINFO_FILENAME);
-            $ext = pathinfo($filename, PATHINFO_EXTENSION);
+            $file   = pathinfo($filename, PATHINFO_FILENAME);
+            $ext    = pathinfo($filename, PATHINFO_EXTENSION);
 
             // Удалить все ресайзы
             $rezised_images = glob(Config::get('images_resized_dir') . $file . ".*x*." . $ext);
@@ -172,10 +172,14 @@ class Image extends BaseModel
     /**
      * Making Image URL
      * @param $filename
+     * @param ?string $flags w - watermark, c - cut for size
      */
-    public static function getURL($filename, $width = 0, $height = 0, $set_watermark = false)
+    public static function getImageURL($filename, $width = 0, $height = 0, string $flags = '')
     {
-        $resized_filename = self::addResizeParams($filename, $width, $height, $set_watermark);
+        $watermark  = str_contains($flags, 'w');
+        $cut        = str_contains($flags, 'c');
+
+        $resized_filename = self::addResizeParams($filename, $width, $height, $watermark, $cut);
         $resized_filename_encoded = $resized_filename;
 
         if (substr($resized_filename_encoded, 0, 7) == 'http://' || substr($resized_filename_encoded, 0, 8) == 'https://') {
@@ -216,14 +220,13 @@ class Image extends BaseModel
      * Создание превью изображения
      *
      * @param $filename файл с изображением (без пути к файлу)
-     * @param $max_w максимальная ширина
-     * @param $max_h максимальная высота
      * @return string имя файла превью
      */
     public static function resize($filename)
     {
 
-        list($source_file, $width, $height, $set_watermark) = self::getResizeParams($filename);
+        list($source_file, $width, $height, $set_watermark, $cut) = self::getResizeParams($filename);
+
 
         // Если файл удаленный (http://|https://), зальем его себе
         if (substr($source_file, 0, 7) == 'http://' || substr($source_file, 0, 8) == 'https://') {
@@ -236,7 +239,8 @@ class Image extends BaseModel
             $original_file = $source_file;
         }
 
-        $resized_file = self::addResizeParams($original_file, $width, $height, $set_watermark);
+
+        $resized_file = self::addResizeParams($original_file, $width, $height, $set_watermark, $cut);
 
         // Пути к папкам с картинками
         $originals_dir  = Config::get('images_originals_dir');
@@ -252,64 +256,46 @@ class Image extends BaseModel
             return false;
         }
 
+        // Get watermarck image
+        $watermark = null;
         if ($set_watermark && is_file(Config::get('images_watermark_file'))) {
             $watermark = Config::get('images_watermark_file');
-        } else {
-            $watermark = null;
         }
 
         $original_file_path = $originals_dir . $original_file;
         $new_file_path      = $resized_dir . $resized_file;
 
-        return self::resizeUploadImage($original_file_path, $new_file_path, $width, $height, $watermark);
+        return self::resizeUploadImage($original_file_path, $new_file_path, $width, $height, $watermark, $cut);
     }
 
 
     /**
      * Ресайз загруженых изображений
-     *
-     * @param string $original_file_path
-     * @param string $new_file_path
-     * @param $sharpen - четкость изображжения 0-100 (0 - без изменений)
-     * @param $watermark_transparency - прозначность водяного знака 0-100 (больше - прозрачнее)
-     * @param $quality - качество изображения
      */
-    public static function resizeUploadImage(string $original_file_path, string $new_file_path, $width = null, $height = null, $watermark = null, $watermark_transparency = null, $sharpen = null, $quality = null)
+    public static function resizeUploadImage(string $original_file_path, string $new_file_path, $width = null, $height = null, $watermark = false, $cut = false)
     {
 
-        // Настройки взять в config
-        if (empty($width)) {
-            $width = Config::get('images_max_size');
-        }
+        $quality = Config::get('images_quality');
 
-        if (empty($height)) {
-            $height = Config::get('images_max_size');
-        }
+        // Четкость изображения. 0-100 (больше - четче)
+        $sharpen = min(100, (int)Settings::getParam('images_sharpen')) / 100;
 
-        if (empty($quality)) {
-            $quality = Config::get('images_quality');
-        }
-
-        // Четкость изображения.
-        // Настройки сайта. 0-100 (больше - четче)
-        if (empty($sharpen)) {
-            $sharpen = min(100, (int)Settings::getParam('images_sharpen')) / 100;
-        }
-
-        // Прозрачность водяного знака. Настройки сайта
-        if (empty($watermark_transparency)) {
-            $watermark_transparency = min(100, (int)Settings::getParam('watermark_transparency'));
-        }
-
+        // Прозрачность водяного знака. Настройки сайта.
+        $watermark_transparency = min(100, (int)Settings::getParam('watermark_transparency'));
 
         // create image manager with desired driver
         $manager = new ImageManager(Driver::class);
 
         $image = $manager->read($original_file_path); # read image from file system
-        $image = $image->scaleDown(width: $width, height: $height); # resize image proportionally to width
+
+        if (!empty($width) and !empty($height) and $cut) {
+            $image = $image->coverDown(width: $width, height: $height); # Cut image proportionally to size
+        } else {
+            $image = $image->scaleDown(width: $width, height: $height); # resize image proportionally to width
+        }
 
         // insert watermark
-        if (!empty($watermark)) {
+        if ($watermark) {
             $water_image    = $manager->read($watermark);
             $image_size     = $image->size();
 
@@ -338,50 +324,54 @@ class Image extends BaseModel
 
     /**
      * Добавляем параметры размера, водяного знака
-     *
-     * @param $filename
-     * @param $width
-     * @param $height
-     * @param $set_watermark
      */
-    public static function addResizeParams($filename, $width = 0, $height = 0, $set_watermark = false)
+    public static function addResizeParams($filename, $width = 0, $height = 0, $watermark = false, $cut = false)
     {
-        if ('.' != ($dirname = pathinfo($filename, PATHINFO_DIRNAME))) {
-            $file = $dirname . '/' . pathinfo($filename, PATHINFO_FILENAME);
-        } else {
-            $file = pathinfo($filename, PATHINFO_FILENAME);
-        }
-        $ext = pathinfo($filename, PATHINFO_EXTENSION);
+        $pathinfo   = pathinfo($filename);
 
+        $dirname    = $pathinfo['dirname'] ?? '';
+        $basename   = $pathinfo['filename'] ?? '';
+        $ext        = $pathinfo['extension'] ?? '';
+
+        $prefix     = ($dirname !== '.' && $dirname !== '') ? $dirname . '/' : '';
+        $flags      = ($cut ? 'c' : '') . ($watermark ? 'w' : '');
+
+        // Если указан хотя бы один размер — добавляем .WIDTHxHEIGHTFLAGS
         if ($width > 0 || $height > 0) {
-            $resized_filename = $file . '.' . ($width > 0 ? $width : '') . 'x' . ($height > 0 ? $height : '') . ($set_watermark ? 'w' : '') . '.' . $ext;
+            return "{$prefix}{$basename}." . ($width > 0 ? $width : '') . 'x' . ($height > 0 ? $height : '') . $flags . '.' . $ext;
         } else {
-            $resized_filename = $file . '.' . ($set_watermark ? 'w.' : '') . $ext;
-        }
 
-        return $resized_filename;
+            // Только водяной знак без размеров
+            return "{$prefix}{$basename}." . (str_contains($flags, 'w') ? 'w' . '.' : '') . $ext;
+        }
     }
 
 
     /**
-     * Разбирает параметры файла на парамеры
+     * Разбирает параметры файла на парамеры.
+     * Поддержка флагов 'c', 'w' в любом порядке (например: 'cw', 'wc')
      * @param string $filename
      */
     public static function getResizeParams(string $filename)
     {
 
         // Определаяем параметры ресайза
-        if (!preg_match('/(.+)\.([0-9]*)x([0-9]*)(w)?\.([^\.]+)$/', $filename, $matches)) {
+        if (!preg_match('/(.+)\.(\d*)x(\d*)([cw]{0,2})\.([a-z0-9]+)$/i', $filename, $matches)) {
             return false;
         }
 
-        $file =             $matches[1];            # имя запрашиваемого файла
-        $width =            $matches[2];            # ширина будущего изображения
-        $height =           $matches[3];            # высота будущего изображения
-        $set_watermark =    $matches[4] == 'w';     # ставить ли водяной знак
-        $ext =              $matches[5];            # расширение файла
+        $file           = $matches[1];            # имя запрашиваемого файла
+        $width          = $matches[2] ?: null;    # ширина будущего изображения
+        $height         = $matches[3] ?: null;    # высота будущего изображения
+        $flags          = $matches[4] ?? '';      # строка флагов
+        $ext            = $matches[5];            # расширение файла
 
-        return [$file . '.' . $ext, $width, $height, $set_watermark];
+        // flags
+        $set_watermark  = str_contains($flags, 'w');
+        $cut            = str_contains($flags, 'c');
+
+        $file_name = $file . '.' . $ext;
+        return [$file_name, $width, $height, $set_watermark, $cut];
     }
 
 
@@ -438,18 +428,21 @@ class Image extends BaseModel
         $original_filename =    Helper::slugEn($original_filename); # Lowcase EN charcters
         $root_name =            substr(pathinfo($original_filename, PATHINFO_FILENAME), 0, 16); # Max 16 characters
         $ext =                  pathinfo($original_filename, PATHINFO_EXTENSION);
-
-        $image_path = Config::get('images_originals_dir') . $root_name . '.' . $ext;
+        $image_path =           Config::get('images_originals_dir') . $root_name . '.' . $ext;
 
         // Пропускаем только разрешенные расширения
-        if (in_array(strtolower($ext), self::$allowed_extentions)) {
+        if (!in_array(strtolower($ext), self::$allowed_extentions)) {
 
             // Если файл с таким именем уже существует, добавим token
             while (file_exists($image_path)) {
 
-                // Google likes '-'
+                // GoogleSearch likes '-'
                 $image_path = Config::get('images_originals_dir') . $root_name . '-' . Helper::makeToken(uniqid(), 8) . '.' . $ext;
             }
+
+            // Настройки взять в config
+            $width  = $width ?: Config::get('images_max_size') ?? null;
+            $height = $height ?: Config::get('images_max_size') ?? null;
 
             // Изменяем размер изображения
             if (!empty($image_path = self::resizeUploadImage($temp_filename, $image_path, $width, $height))) {

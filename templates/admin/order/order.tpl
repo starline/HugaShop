@@ -241,9 +241,9 @@
 									<div class="move">
 										<div class="move_zone"></div>
 									</div>
-									<div class="image">
-										<img class="product_icon"
-											src="{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60:60}{else}{'images/cargo.png'|asset}{/if}" />
+									<div class="col_image">
+										<img
+											src="{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60}{else}{'images/cargo.png'|asset}{/if}" />
 									</div>
 									<div class="col">
 										<a class="product_name"
@@ -377,7 +377,7 @@
 									<div class="move_zone"></div>
 								</div>
 								<div class="image">
-									<img class="product_icon" src="" />
+									<img src="" />
 								</div>
 								<div class="col">
 									<a class="product_name" href=""></a>
@@ -809,9 +809,9 @@
 						}
 
 						if (product.image.url)
-							new_item.find('img.product_icon').attr("src", product.image.url);
+							new_item.find('.image img').attr("src", product.image.url);
 						else
-							new_item.find('img.product_icon').remove();
+							new_item.find('.image img').remove();
 
 						$("input#add_purchase").val('').focus().blur();
 

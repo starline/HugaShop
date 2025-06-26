@@ -114,7 +114,7 @@ class SearchAjax extends BaseAdminController
         foreach ($products as $product) {
 
             if (!empty($product->image->filename)) {
-                $product->image->url = Image::getURL($product->image->filename, 60, 60);
+                $product->image->url = Image::getImageURL($product->image->filename, 60, 60, 'c');
             }
 
             $suggestion = new \stdClass();

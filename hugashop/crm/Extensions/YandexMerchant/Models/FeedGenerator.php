@@ -161,7 +161,7 @@ class FeedGenerator
                 $images = Image::getImages($raw_product->id, 'product');
                 if ($images->isNotEmpty()) {
                     foreach ($images as $img) {
-                        $resp_xml .= '<picture>' . Image::getURL($img->filename, 1080, 1080, true) . '</picture>';
+                        $resp_xml .= '<picture>' . Image::getImageURL($img->filename, 1080, 1080, 'w') . '</picture>';
                     }
                 }
 

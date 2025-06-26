@@ -136,7 +136,7 @@
 									<a href="{$purchase->product->image->filename|resize:1080:1080:w}" class="zoom"
 										data-fancybox="images-{$purchase->sku}"
 										data-caption="{$purchase->product_name} - Фото: 1">
-										<img class="product_icon" src="{$purchase->product->image->filename|resize:60:60}">
+										<img src="{$purchase->product->image->filename|resize:60:60}">
 									</a>
 								{/if}
 							</div>

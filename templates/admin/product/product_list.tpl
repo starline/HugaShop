@@ -187,7 +187,7 @@
 
 
 								<div class="col row">
-									<div class="image">
+									<div class="col_image">
 										<img
 											src="{if $product->image->filename}{$product->image->filename|resize:60}{else}{'images/cargo.png'|asset}{/if}" />
 									</div>
@@ -488,7 +488,7 @@
 								}
 							]
 						);
-						
+
 						chartData.ready.then(function() {
 							$("#chart_" + id).css("height", "200px");
 							icon.removeClass('loading_icon');

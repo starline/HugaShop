@@ -95,7 +95,7 @@ class Design
         self::setFunctionPlugin('getCSRFInput',      Request::class,            'getCSRFInput');
 
         self::setModifierPlugin('asset',             self::class,               'getAssetUrl');
-        self::setModifierPlugin('resize',            Image::class,              'getURL');
+        self::setModifierPlugin('resize',            Image::class,              'getImageURL');
         self::setModifierPlugin('plural',            self::class,               'plural_modifier');
         self::setModifierPlugin('first',             self::class,               'first_modifier');
         self::setModifierPlugin('cut',               self::class,               'cut_modifier');
