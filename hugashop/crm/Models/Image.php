@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.6
+ * @version 3.8
  * 
  * Intervention Image
  * @link https://image.intervention.io/v3/getting-started/installation
@@ -48,36 +48,35 @@ class Image extends BaseModel
     public static function catchImages($entity_id, $entity_name, $post_name = 'images')
     {
         // Удаление основных изображений
-        $images = Request::post($post_name, 'array');
-        $current_images = Image::getImages($entity_id, $entity_name);
+        $images = Request::post($post_name, 'array') ?: [];
+        $current_images = self::getImages($entity_id, $entity_name);
 
         foreach ($current_images as $image) {
-            if (!in_array($image->id, $images)) {
-                Image::deleteImage($image->id);
+            if (!in_array($image->id, $images, true)) {
+                self::deleteImage($image->id);
             }
         }
 
         // Порядок основных изображений
-        $i = 0;
-        foreach ($images as $im_id) {
-            Image::updateOne($im_id, ['position' => $i]);
-            $i++;
+        foreach ($images as $position => $im_id) {
+            self::updateOne($im_id, ['position' => $position]);
         }
 
-        // Загрузка осноных изображений из интернета и drag-n-drop файлов
-        if ($images = Request::post($post_name . '_urls')) {
-            foreach ($images as $url) {
-
+        // Загрузка основных изображений из интернета и drag-n-drop файлов
+        if ($urls = Request::post($post_name . '_urls')) {
+            $dropped_images = Request::files('dropped_' . $post_name);
+            foreach ($urls as $url) {
                 // Если не пустой адрес и файл не локальный
-                if (!empty($url) && $url != 'http://' && strstr($url, '/') !== false) {
-                    Image::addImage($entity_id, $entity_name, $url);
-                } elseif ($dropped_images = Request::files('dropped_' . $post_name)) {
-                    $key = array_search($url, $dropped_images['name']);
-
-                    // Move and Resize
-                    $image_name = Image::uploadImage($dropped_images['tmp_name'][$key], $dropped_images['name'][$key]);
-                    if ($key !== false && $image_name) {
-                        Image::addImage($entity_id, $entity_name, (string) $image_name);
+                if (!empty($url) && $url !== 'http://' && str_contains($url, '/')) {
+                    self::addImage($entity_id, $entity_name, $url);
+                } elseif ($dropped_images) {
+                    $key = array_search($url, $dropped_images['name'], true);
+                    if ($key !== false) {
+                        // Move and Resize
+                        $image_name = self::uploadImage($dropped_images['tmp_name'][$key], $dropped_images['name'][$key]);
+                        if ($image_name) {
+                            self::addImage($entity_id, $entity_name, (string) $image_name);
+                        }
                     }
                 }
             }
@@ -105,23 +104,19 @@ class Image extends BaseModel
      */
     public static function addImage(int $entity_id, string $entity_name, string $filename)
     {
-
         // Check and Make uniq name
         $unique_name = $base_name = $filename;
         $i = 1;
-        while (
-            self::where('filename', $unique_name)
-            ->exists()
-        ) {
+        while (self::where('filename', $unique_name)->exists()) {
             $unique_name = $base_name . '-' . $i++;
         }
 
         // Создаем изображение
-        $image = new self();
-        $image->entity_id = $entity_id;
-        $image->entity_name = $entity_name;
-        $image->filename = $filename;
-        $image->save();
+        $image = self::create([
+            'entity_id'   => $entity_id,
+            'entity_name' => $entity_name,
+            'filename'    => $unique_name,
+        ]);
 
         // Обновляем позицию = id
         $image->position = $image->id;
@@ -137,13 +132,12 @@ class Image extends BaseModel
      */
     public static function deleteImage(int $id)
     {
-        // Select file name
         $image = self::find($id);
-        $filename = $image->filename;
-
         if (!$image) {
             return;
         }
+        // Select file name
+        $filename = $image->filename;
 
         // Delete image by ID
         $image->delete();
@@ -225,7 +219,11 @@ class Image extends BaseModel
     public static function resize($filename)
     {
 
-        list($source_file, $width, $height, $set_watermark, $cut) = self::getResizeParams($filename);
+        $params = self::getResizeParams($filename);
+        if (!$params) {
+            return false;
+        }
+        list($source_file, $width, $height, $set_watermark, $cut) = $params;
 
 
         // Если файл удаленный (http://|https://), зальем его себе
@@ -431,7 +429,7 @@ class Image extends BaseModel
         $image_path =           Config::get('images_originals_dir') . $root_name . '.' . $ext;
 
         // Пропускаем только разрешенные расширения
-        if (!in_array(strtolower($ext), self::$allowed_extentions)) {
+        if (in_array(strtolower($ext), self::$allowed_extentions)) {
 
             // Если файл с таким именем уже существует, добавим token
             while (file_exists($image_path)) {
@@ -462,13 +460,10 @@ class Image extends BaseModel
     {
         $dir = $dir ?: Config::get('images_resized_dir');
 
-        if ($handle = opendir($dir)) {
-            while (false !== ($file = readdir($handle))) {
-                if ($file != "." && $file != "..") {
-                    @unlink($dir . "/" . $file);
-                }
+        foreach (glob($dir . '/*') as $file) {
+            if (is_file($file)) {
+                @unlink($file);
             }
-            closedir($handle);
         }
     }
 }
