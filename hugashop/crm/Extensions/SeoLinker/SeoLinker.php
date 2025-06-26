@@ -153,7 +153,8 @@ final class SeoLinker extends BaseExtension
             // so ensure at least depth `1` to crawl the current URL
             ->setMaximumDepth(max(1, $depth))
             ->startCrawling($url);
-
+dump($observer->results);
+dd($observer->links);
         $res = $observer->results[$url] ?? ['out_internal' => 0, 'out_external' => 0];
 
         return [
