@@ -50,25 +50,25 @@ class PaymentController extends BaseAdminController
                 // Если есть модуль оплаты, собираем его настройки
                 if (!empty($payment_method->module)) {
 
-                    if (!empty($payment_method->module) and !empty($payment_modules[$payment_method->module])) {
+                    if (!empty($payment_modules[$payment_method->module])) {
                         $payment_module = $payment_modules[$payment_method->module];
 
-                        foreach ($payment_module->settings_params as $module_setting) {
-                            if (!empty($module_setting->type) and $module_setting->type == "file") {
+                        foreach ($payment_module->settings_params as $setting_param) {
+                            if (!empty($setting_param->type) and $setting_param->type == "file") {
 
                                 // Upload
                                 // tmp_name - file path
                                 // name - file name
-                                $temp_file_name = Request::files($module_setting->variable, 'tmp_name');
-                                $new_file_name = "files/watermark/" . $module_setting->variable . "_" . $payment_method->module . "_" . $payment_method->id . ".png";
+                                $temp_file_name = Request::files($setting_param->variable, 'tmp_name');
+                                $new_file_name = "files/watermark/" . $setting_param->variable . "_" . $payment_method->module . "_" . $payment_method->id . ".png";
                                 $dir_to_save = "public/" . $new_file_name;
 
-                                if (!empty($temp_file_name) && in_array(pathinfo(Request::files($module_setting->variable, 'name'), PATHINFO_EXTENSION), $this->allowed_image_extentions)) {
+                                if (!empty($temp_file_name) && in_array(pathinfo(Request::files($setting_param->variable, 'name'), PATHINFO_EXTENSION), $this->allowed_image_extentions)) {
                                     if (@move_uploaded_file($temp_file_name, Config::get('root_dir') . $dir_to_save)) {
-                                        $payment_method_settings[$module_setting->variable] = $new_file_name;
+                                        $payment_method_settings[$setting_param->variable] = $new_file_name;
                                     }
                                 } elseif (file_exists(Config::get('root_dir') . $dir_to_save)) {
-                                    $payment_method_settings[$module_setting->variable] = $new_file_name;
+                                    $payment_method_settings[$setting_param->variable] = $new_file_name;
                                 }
                             }
                         }

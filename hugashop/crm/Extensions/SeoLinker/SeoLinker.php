@@ -32,7 +32,7 @@ final class SeoLinker extends BaseExtension
     public function index()
     {
 
-        $base_url = $this->getConfig('base_url') ?? rtrim(Config::get('root_url'), '/') . '/';
+        $base_url = $this->getSetting('base_url') ?? rtrim(Config::get('root_url'), '/') . '/';
 
         if (Request::post('scan')) {
 

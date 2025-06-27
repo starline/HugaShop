@@ -30,12 +30,12 @@ class ExtensionController extends BaseAdminController
             return $this->redirectToRoute('ExtensionListAdmin');
         }
 
-        if (!method_exists($Extension, 'index')) {
+        if (!$Extension->hasIndex()) {
             return $this->redirectToRoute('ExtensionSettingsAdmin', ['name' => $Extension->getName()]);
         }
 
         $Extension->setEnvironment('kernel', $this->container->get('kernel'));
-        Design::assign('extension', $Extension->getConfig());
+        Design::assign('extension', $Extension->getExtension());
 
         // Ajax
         if (Request::isAjax()) {
@@ -57,10 +57,7 @@ class ExtensionController extends BaseAdminController
             return $this->redirectToRoute('ExtensionListAdmin');
         }
 
-        $extension                     = clone $Extension->getConfig();
-        $extension->settings           = $Extension->getSetting();
-
-        Design::assign('extension', $extension);
+        Design::assign('extension', $Extension->getExtension());
 
         return $this->fetchResponse($Extension->$path($item_id));
     }
@@ -84,11 +81,8 @@ class ExtensionController extends BaseAdminController
             Design::setFlashMessage('update', Extension::updateExt($Extension->getName(), $extension_settings));
             return $this->redirectToRoute('ExtensionSettingsAdmin', ['name' => $Extension->getName()]);
         }
-
-        $extension                     = clone $Extension->getConfig();
-        $extension->settings           = $Extension->getSetting();
-
-        Design::assign('extension', $extension);
+        
+        Design::assign('extension', $Extension->getExtension());
         Design::assign('extensions', [$Extension->getName() => $Extension->getConfig()]);
 
         return $this->fetchResponse('extension/extension.tpl');

@@ -25,7 +25,7 @@ class BaseExtension
     public function __construct()
     {
         $this->class_name =         Helper::class_basename(static::class);
-        $this->settings =           (object) Settings::getParam($this->class_name); # was array
+        $this->settings =           (object) (Settings::getParam($this->class_name) ?? []); # was array
         $this->config =             Helper::getModule($this->class_name, Config::get('extension_dir'));
     }
 
@@ -37,6 +37,17 @@ class BaseExtension
     {
         $extension = $this->getConfig();
         $extension->settings = $this->getSetting();
+        $extension->hasIndex = $this->hasIndex();
+        return $extension;
+    }
+
+
+    /**
+     * Has index function
+     */
+    public function hasIndex()
+    {
+        return method_exists($this, 'index') ? true : false;
     }
 
 
@@ -128,7 +139,7 @@ class BaseExtension
         $class_name         =  Helper::class_basename($full_class);
         $base_namespace     = preg_replace('/\\\\' . preg_quote($class_name, '/') . '$/', '', $full_class);
         $class              = $base_namespace . '\\Models\\' . $class_name;
-        
+
         $class::updateOne($id, $entity);
         Helper::cache(static::class)->clear();
     }

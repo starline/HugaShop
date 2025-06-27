@@ -93,7 +93,7 @@ class Settings extends BaseModel
         self::getInstance();
 
         // Cache clean
-        Helper::cache()->delete(Helper::class_basename(self::class));
+        Helper::cache()->delete(Helper::class_basename(static::class));
 
         self::$vars[$name] = $value;
 
@@ -101,7 +101,7 @@ class Settings extends BaseModel
             $value = serialize($value);
         }
 
-        self::query()->updateOrCreate(['name' => $name], ['name' => $name, 'value' => $value]);
+        return self::query()->updateOrCreate(['name' => $name], ['name' => $name, 'value' => $value]);
     }
 
 

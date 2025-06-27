@@ -7,16 +7,16 @@
     {/if}
 
 
-    {if !$extension->module|empty and 'extension'|user_access}
+    {if !$extension->hasIndex|empty and 'extension'|user_access}
         <li class="mini {if $route|in_array:[ExtensionAdmin, ExtensionItemNewAdmin, ExtensionItemAdmin]}active{/if}">
             <a href="/admin/extension/{$extension->module}">{$extension->name}</a>
         </li>
+    {/if}
 
-        {if $extension->settings|count > 0}
-            <li class="mini {if $route == 'ExtensionSettingsAdmin'}active{/if}">
-                <a href="/admin/extension/{$extension->module}/settings">Настройки</a>
-            </li>
-        {/if}
+    {if $extension->settings_params and 'extension'|user_access}
+        <li class="mini right {if $route == 'ExtensionSettingsAdmin'}active{/if}">
+            <a href="/admin/extension/{$extension->module}/settings">Настройки</a>
+        </li>
     {/if}
 
 {/block}

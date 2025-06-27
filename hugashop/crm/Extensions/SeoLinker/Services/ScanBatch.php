@@ -25,8 +25,8 @@ final class ScanBatch
      */
     public static function scanBatch(string $base_url, int $limit): array
     {
-        
-        $linkModel      = SeoLinkerLink::getModel();
+
+        $linkModel = SeoLinkerLink::getModel();
         $linkModel->runWithInitTable(fn() => null);
 
         if (!SeoLinker::where('url', $base_url)->exists()) {

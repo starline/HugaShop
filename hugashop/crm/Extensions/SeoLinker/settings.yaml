@@ -1,4 +1,5 @@
 name: "SeoLinker"
 description: "Анализ внутренних ссылок сайта"
-base_url: "https://grizlicnc.com.ua/"
+settings_params:
+  - { variable: base_url, name: "Стартовая страница сканирования" }
 version: 1.1

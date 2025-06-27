@@ -4,53 +4,55 @@
         module="{$module_key}">
 
         <h2>{$module->name}</h2>
-
+        
         {* Параметры модуля *}
         <ul class="property_block">
-            {foreach $module->settings_params as $setting}
-                {if count((array)$setting->options) > 1}
+            {foreach $module->settings_params as $setting_param}
+                {if count((array)$setting_param->options) > 1}
                     <li>
-                        <label class="col-form-label" for="{$module_key}-{$setting->variable}">{$setting->name}</label>
-                        <select class="form-select" name="{$module_type}_settings[{$setting->variable}]"
-                            id="{$module_key}-{$setting->variable}">
-                            {foreach $setting->options as $option}
+                        <label class="col-form-label" for="{$module_key}-{$setting_param->variable}">{$setting_param->name}</label>
+                        <select class="form-select" name="{$module_type}_settings[{$setting_param->variable}]"
+                            id="{$module_key}-{$setting_param->variable}">
+                            {foreach $setting_param->options as $option}
                                 <option value='{$option->value}' {if $option->value == ${$module_type}->settings->
-                                    {$setting->variable}}selected{/if}>
+                                    {$setting_param->variable}}selected{/if}>
                                     {$option->name}</option>
                             {/foreach}
                         </select>
                     </li>
-                {elseif count((array)$setting->options) == 1}
-                    {$option = $setting->options|@first}
+                {elseif count((array)$setting_param->options) == 1}
+                    {$option = $setting_param->options|@first}
                     <li>
-                        <label class="form-check-label" for="{$module_key}-{$setting->variable}">{$setting->name}</label>
-                        <input class="form-check-input" name="{$module_type}_settings[{$setting->variable}]" type="checkbox"
+                        <label class="form-check-label"
+                            for="{$module_key}-{$setting_param->variable}">{$setting_param->name}</label>
+                        <input class="form-check-input" name="{$module_type}_settings[{$setting_param->variable}]" type="checkbox"
                             value="{$option->value}"
-                            {if $option->value == ${$module_type}->settings->{$setting->variable}}checked{/if}
-                        id="{$module_key}-{$setting->variable}" />
+                            {if $option->value == ${$module_type}->settings->{$setting_param->variable}}checked{/if}
+                        id="{$module_key}-{$setting_param->variable}" />
                     </li>
 
 
-                {elseif !empty($setting->type) and $setting->type == "file"}
+                {elseif !empty($setting_param->type) and $setting_param->type == "file"}
                     {* File upload *}
                     <li>
-                        <label class="col-form-label" for="{$module_key}-{$setting->variable}">{$setting->name}</label>
-                        <input class="form-control" name="{$setting->variable}" type="file"
-                            id="{$module_key}-{$setting->variable}" />
+                        <label class="col-form-label" for="{$module_key}-{$setting_param->variable}">{$setting_param->name}</label>
+                        <input class="form-control" name="{$setting_param->variable}" type="file"
+                            id="{$module_key}-{$setting_param->variable}" />
                     </li>
 
-                    {if ${$module_type}->settings->{$setting->variable}}
+                    {if ${$module_type}->settings->{$setting_param->variable}}
                         <li>
                             <img
-                                src="{$config->root_url}/{${$module_type}->settings->{$setting->variable}}?{math equation='rand(10,10000)'}" />
+                                src="{$config->root_url}/{${$module_type}->settings->{$setting_param->variable}}?{math equation='rand(10,10000)'}" />
                         </li>
                     {/if}
                 {else}
                     <li>
-                        <label class="col-form-label" for="{$module_key}-{$setting->variable}">{$setting->name}</label>
-                        <input class="form-control" name="{$module_type}_settings[{$setting->variable}]" type="text"
-                            value="{${$module_type}->settings->{$setting->variable}}" id="{$module_key}-{$setting->variable}"
-                            {if !$setting->placeholder|empty}placeholder="{$setting->placeholder}" {/if} />
+                        <label class="col-form-label" for="{$module_key}-{$setting_param->variable}">{$setting_param->name}</label>
+                        <input class="form-control" name="{$module_type}_settings[{$setting_param->variable}]" type="text"
+                            value="{${$module_type}->settings->{$setting_param->variable}}"
+                            id="{$module_key}-{$setting_param->variable}"
+                            {if !$setting_param->placeholder|empty}placeholder="{$setting_param->placeholder}" {/if} />
                     </li>
                 {/if}
             {/foreach}
