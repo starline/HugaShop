@@ -1,3 +1,4 @@
 name: "SeoLinker"
 description: "Анализ внутренних ссылок сайта"
+base_url: "https://grizlicnc.com.ua/"
 version: 1.1

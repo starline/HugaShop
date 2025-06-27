@@ -187,7 +187,7 @@
 
 
 								<div class="col row">
-									<div class="col_image">
+									<div class="col_image image">
 										<img
 											src="{if $product->image->filename}{$product->image->filename|resize:60}{else}{'images/cargo.png'|asset}{/if}" />
 									</div>

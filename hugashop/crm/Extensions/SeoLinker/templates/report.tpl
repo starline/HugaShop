@@ -62,7 +62,7 @@
                                 if (data.pending > 0) {
                                     iterate(false);
                                 } else {
-                                    //location.reload();
+                                    location.reload();
                                 }
                             },
                             error: function() {

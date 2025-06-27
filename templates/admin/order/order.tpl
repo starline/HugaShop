@@ -241,7 +241,7 @@
 									<div class="move">
 										<div class="move_zone"></div>
 									</div>
-									<div class="col_image">
+									<div class="col_image image">
 										<img
 											src="{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60}{else}{'images/cargo.png'|asset}{/if}" />
 									</div>
@@ -376,7 +376,7 @@
 								<div class="move">
 									<div class="move_zone"></div>
 								</div>
-								<div class="image">
+								<div class="col_image image">
 									<img src="" />
 								</div>
 								<div class="col">
@@ -388,7 +388,7 @@
 
 						<div class="col-12 col-md-6">
 							<div class="row gx-2">
-								<div class="col-2 text-end sku">
+								<div class="col-4 text-end sku">
 									<div class="badge text-bg-round copy_field" value="">
 										<span></span>
 										<div class="copy_hover" data-bs-toggle="tooltip"
@@ -414,7 +414,7 @@
 									</div>
 								</div>
 
-								<div class="col-3 text-end">
+								<div class="col-4 text-end">
 									<div class="view_edit_purchase amount">
 										<div class="row_alert">
 											<span class="js_change"></span>

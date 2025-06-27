@@ -17,6 +17,7 @@ use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
 use Psr\Http\Message\UriInterface;
 use Psr\Http\Message\ResponseInterface;
+use GuzzleHttp\Exception\RequestException;
 use Spatie\Crawler\CrawlObservers\CrawlObserver;
 
 final class CrawlerObserver extends CrawlObserver
@@ -26,14 +27,21 @@ final class CrawlerObserver extends CrawlObserver
 
     public function __construct(private string $scheme, private string $host) {}
 
+
+    /*
+     * Called when the crawler will crawl the url.
+     */
+    public function willCrawl(UriInterface $url, ?string $linkText): void {}
+
+
     public function crawled(UriInterface $url, ResponseInterface $response, ?UriInterface $foundOnUrl = null, ?string $linkText = null): void
     {
         if ($response->getStatusCode() !== 200) {
             return;
         }
 
-        $html = (string) $response->getBody();
-        $current = (string) $url;
+        $html       = (string) $response->getBody();
+        $current    = (string) $url;
 
         $outInternal = 0;
         $outExternal = 0;
@@ -84,6 +92,26 @@ final class CrawlerObserver extends CrawlObserver
             'out_external' => $outExternal,
         ];
     }
+
+
+    /*
+     * Called when the crawler had a problem crawling the given url.
+     */
+    public function crawlFailed(
+        UriInterface $url,
+        RequestException $requestException,
+        ?UriInterface $foundOnUrl = null,
+        ?string $linkText = null,
+    ): void {
+
+        dd($requestException);
+    }
+
+    
+    /*
+     * Called when the crawl has ended.
+     */
+    public function finishedCrawling(): void {}
 
 
     private function absoluteUrl(string $href, string $base): ?string

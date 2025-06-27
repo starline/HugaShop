@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.4
+ * @version 2.5
  *
  */
 
@@ -53,11 +53,26 @@ class BaseExtension
 
 
     /**
-     * Get Extension name (Module)
+     * Get setting param
      */
-    public function getConfig()
+    public function getSetting(?string $param = null)
     {
-        return $this->ext_config;
+        if (is_null($param)) {
+            return $this->ext_settings;
+        }
+        return $this->ext_settings->$param ?? null;
+    }
+
+
+    /**
+     * Get Extension config
+     */
+    public function getConfig(?string $param = null)
+    {
+        if (is_null($param)) {
+            return $this->ext_config;
+        }
+        return $this->ext_config->$param ?? null;
     }
 
 
@@ -79,7 +94,6 @@ class BaseExtension
     {
         return $this->ext_dir . $template;
     }
-
 
 
     /**
