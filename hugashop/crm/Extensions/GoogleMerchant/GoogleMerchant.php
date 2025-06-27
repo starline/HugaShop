@@ -85,7 +85,7 @@ final class GoogleMerchant extends BaseExtension
             GoogleMerchantCategory::setCategories($pricefeed->id, $pricefeed_categories);
 
             // Делаем редирект на страницу с ID
-            Request::makeRedirect("/admin/extension/$this->ext_name/feed/$pricefeed->id");
+            Request::makeRedirect("/admin/extension/$this->class_name/feed/$pricefeed->id");
         }
 
 
@@ -96,7 +96,7 @@ final class GoogleMerchant extends BaseExtension
             $pricefeed = GoogleMerchantModel::getOne($pricefeed_id);
 
             if (empty($pricefeed->id)) {
-                Request::makeRedirect("/admin/extension/$this->ext_name");
+                Request::makeRedirect("/admin/extension/$this->class_name");
             }
 
             $pricefeed_categories = GoogleMerchantCategory::getCategoriesIds($pricefeed->id);

@@ -30,22 +30,19 @@ class ExtensionController extends BaseAdminController
             return $this->redirectToRoute('ExtensionListAdmin');
         }
 
-        $extension                     = clone $Extension->getConfig();
-        $extension->settings           = $Extension->getSetting();
-        Design::assign('extension', $extension);
-
-        if (method_exists($Extension, 'index')) {
-            $Extension->setEnvironment('kernel', $this->container->get('kernel'));
-
-            // Ajax
-            if (Request::isAjax()) {
-                return $Extension->index();
-            }
-
-            return $this->fetchResponse($Extension->index());
-        } else {
+        if (!method_exists($Extension, 'index')) {
             return $this->redirectToRoute('ExtensionSettingsAdmin', ['name' => $Extension->getName()]);
         }
+
+        $Extension->setEnvironment('kernel', $this->container->get('kernel'));
+        Design::assign('extension', $Extension->getConfig());
+
+        // Ajax
+        if (Request::isAjax()) {
+            return $Extension->index();
+        }
+
+        return $this->fetchResponse($Extension->index());
     }
 
 

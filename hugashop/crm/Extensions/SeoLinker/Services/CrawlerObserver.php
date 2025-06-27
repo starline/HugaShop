@@ -28,7 +28,7 @@ final class CrawlerObserver extends CrawlObserver
     public function __construct(private string $scheme, private string $host) {}
 
 
-    /*
+    /**
      * Called when the crawler will crawl the url.
      */
     public function willCrawl(UriInterface $url, ?string $linkText): void {}
