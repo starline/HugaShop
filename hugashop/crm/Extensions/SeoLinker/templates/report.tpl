@@ -5,7 +5,11 @@
 
 {block name=content}
     <div class="header_top">
-        <h1>{$meta_title}</h1>
+        {if $pages_total > 0}
+            <h1>{$meta_title} <span class="sum_total">{$pages_total} {$pages_total|plural:'страница':'страниц':'страницы'}</span></h1>
+        {else}
+            <h1>{$meta_title}</h1>
+        {/if}
         <button id="scan_button" class="btn btn-primary ms-2">Сканировать</button>
         <span id="scan_count" class="badge text-bg-round ms-2"></span>
     </div>

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.2
+ * @version 1.3
  * 
  * SeoLinker extension
  * @link https://github.com/spatie/crawler
@@ -58,6 +58,7 @@ final class SeoLinker extends BaseExtension
         $pages_count = SeoLinkerModel::getCount();
 
         Design::assign('pages', $pages);
+        Design::assign('pages_total', $pages_count);
         Design::assign('pages_count', ceil($pages_count / Settings::getParam('products_num_admin')));
         Design::assign('current_page', $filter['limit'] == 'all' ? 'all' : $filter['page']);
 
