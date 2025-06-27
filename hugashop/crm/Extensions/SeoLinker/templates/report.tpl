@@ -11,30 +11,23 @@
     </div>
     <div id="main_list">
         {if $pages}
+            {include file='parts/pagination.tpl'}
             <div class="list">
                 {foreach $pages as $p}
                     <div class="list_row">
                         <div class="row col">
-                            <div class="col-12 col-lg-4 text-break">{$p->url}</div>
+                            <div class="col-12 col-lg-4 text-break">
+                                <a href="/admin/extension/{$extension->module}/page/{$p->id}">{$p->url}</a>
+                            </div>
                             <div class="col-3 col-lg-2"><span class="badge text-bg-round">{$p->depth}</span></div>
                             <div class="col-3 col-lg-2"><span class="badge text-bg-round">{$p->out_internal}</span></div>
                             <div class="col-3 col-lg-2"><span class="badge text-bg-round">{$p->out_external}</span></div>
                             <div class="col-3 col-lg-2 text-end"><span class="badge text-bg-round">{$p->in_internal}</span></div>
                         </div>
                     </div>
-                    {if $links_map[$p->url]}
-                        <div class="list_row bg-light">
-                            <div class="col">
-                                <ul class="mb-0 small">
-                                    {foreach $links_map[$p->url] as $ln}
-                                        <li><a href="{$ln->to_url}" target="_blank">{$ln->to_url}</a> ({$ln->type})</li>
-                                    {/foreach}
-                                </ul>
-                            </div>
-                        </div>
-                    {/if}
                 {/foreach}
             </div>
+            {include file='parts/pagination.tpl'}
         {else}
             Нет ссылок
         {/if}
