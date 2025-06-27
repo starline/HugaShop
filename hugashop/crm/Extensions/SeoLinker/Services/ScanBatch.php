@@ -25,39 +25,37 @@ final class ScanBatch
      */
     public static function scanBatch(string $base_url, int $limit): array
     {
-        $model          = SeoLinker::getModel();
+        
         $linkModel      = SeoLinkerLink::getModel();
-
-        $model->runWithInitTable(fn() => null);
         $linkModel->runWithInitTable(fn() => null);
 
-        if (!$model->newQuery()->where('url', $base_url)->exists()) {
-            $model->newQuery()->insert([
+        if (!SeoLinker::where('url', $base_url)->exists()) {
+            SeoLinker::insert([
                 'url' => $base_url,
                 'depth' => 0,
                 'scanned' => 0,
             ]);
         }
 
-        $pages = $model->newQuery()->where('scanned', 0)->limit($limit)->get();
+        $pages = SeoLinker::where('scanned', 0)->limit($limit)->get();
 
         foreach ($pages as $page) {
             [$outInternal, $outExternal, $links] = self::crawlPage($page->url);
 
-            $model->newQuery()->where('id', $page->id)->update([
+            SeoLinker::where('id', $page->id)->update([
                 'scanned' => 1,
                 'out_internal' => $outInternal,
                 'out_external' => $outExternal,
             ]);
 
             foreach ($links as $ln) {
-                $exists = $linkModel->newQuery()
+                $exists = SeoLinkerLink::query()
                     ->where('from_url', $ln['from_url'])
                     ->where('to_url', $ln['to_url'])
                     ->where('type', $ln['type'])
                     ->exists();
                 if (!$exists) {
-                    $linkModel->create($ln);
+                    SeoLinkerLink::create($ln);
                 }
 
                 if ($ln['type'] === 'image') {
@@ -84,8 +82,8 @@ final class ScanBatch
             }
         }
 
-        $scanned = $model->newQuery()->where('scanned', 1)->count();
-        $pending = $model->newQuery()->where('scanned', 0)->count();
+        $scanned = SeoLinker::where('scanned', 1)->count();
+        $pending = SeoLinker::where('scanned', 0)->count();
 
         return [$scanned, $pending];
     }
