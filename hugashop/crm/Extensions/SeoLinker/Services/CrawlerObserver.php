@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.2
+ * @version 1.3
  *
  */
 
@@ -82,7 +82,9 @@ final class CrawlerObserver extends CrawlObserver
                 continue;
             }
 
-            if (($p['host'] ?? '') === $this->host) {
+            $scheme = strtolower($p['scheme'] ?? $this->scheme);
+
+            if (($p['host'] ?? '') === $this->host && $scheme === strtolower($this->scheme)) {
                 $outInternal++;
                 $this->links[] = [
                     'from_url' => $current,
