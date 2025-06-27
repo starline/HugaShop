@@ -120,11 +120,10 @@ final class CrawlerObserver extends CrawlObserver
         ?string $linkText = null,
     ): void {
 
-        // Ignore crawl errors such as unsupported protocols
-        return;
+        dd($requestException);
     }
 
-    
+
     /*
      * Called when the crawl has ended.
      */
