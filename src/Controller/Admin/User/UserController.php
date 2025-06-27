@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.7
+ * @version 1.8
  *
  */
 
@@ -13,7 +13,7 @@ namespace App\Controller\Admin\User;
 use HugaShop\Models\User\User;
 use HugaShop\Models\Design;
 use HugaShop\Models\Request;
-use HugaShop\Models\Settings;
+use App\Services\PaginationService;
 use HugaShop\Models\User\UserGroup;
 use HugaShop\Models\Order\Order;
 use HugaShop\Models\User\UserNotifier;
@@ -68,9 +68,7 @@ class UserController extends BaseAdminController
             return $this->redirectToRoute('UserListAdmin');
         }
 
-        $filter = [];
-        $filter['page'] = max(1, Request::get('page', 'int'));
-        $filter['limit'] = Request::get('page', 'string') == 'all' ? 'all' : Settings::getParam('products_num_admin');
+        $filter = PaginationService::initFilter();
         $filter['user_id'] = $current_user->id;
 
 
@@ -91,8 +89,7 @@ class UserController extends BaseAdminController
 
         $groups = UserGroup::orderBy('position')->get(); # Выбираем все группы пользователей
 
-        Design::assign('pages_count', ceil($orders_count / Settings::getParam('products_num_admin')));
-        Design::assign('current_page', $filter['limit'] == 'all' ? 'all' : $filter['page']);
+        Design::assign('pagination', PaginationService::getPagination($orders_count, $filter));
 
         Design::assign([
             'current_user' => $current_user,

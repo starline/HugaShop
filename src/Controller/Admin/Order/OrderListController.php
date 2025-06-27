@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  * 
  * status: 0 - Новый, 1 - Принят, 4 - Отгружен,  2 - Выполнен, 3 - Отмена
  *
@@ -14,7 +14,7 @@ namespace App\Controller\Admin\Order;
 
 use HugaShop\Models\Design;
 use HugaShop\Models\Request;
-use HugaShop\Models\Settings;
+use App\Services\PaginationService;
 use HugaShop\Models\Order\Order;
 use HugaShop\Models\User\UserPermission;
 use HugaShop\Models\Order\OrderLabel;
@@ -115,7 +115,7 @@ class OrderListController extends BaseAdminController
             }
         }
 
-        $filter = [];
+        $filter = PaginationService::initFilter();
 
         // Поиск
         $keyword = Request::get('keyword', 'string');
@@ -144,8 +144,6 @@ class OrderListController extends BaseAdminController
             Design::assign('status', $status);
         }
 
-        $filter['page'] = max(1, Request::get('page', 'int'));
-        $filter['limit'] = Request::get('page', 'string') == 'all' ? 'all' : Settings::getParam('products_num_admin');
 
         // Ограничиваем просмотр кол-во страниц
         // для выполненых(2) отмененых(3) и поиска(keyword)
@@ -168,8 +166,7 @@ class OrderListController extends BaseAdminController
         $orders_price   = Order::getOrdersPrice($filter); # Выбираем общую сумму заказов
         $labels         = OrderLabel::getLabels(); # Метки заказов
 
-        Design::assign('pages_count', ceil($orders_count / Settings::getParam('products_num_admin')));
-        Design::assign('current_page', $filter['limit'] == 'all' ? 'all' : $filter['page']);
+        Design::assign('pagination', PaginationService::getPagination($orders_count, $filter));
 
         Design::assign('orders_count', $orders_count);
         Design::assign('orders_price', $orders_price);

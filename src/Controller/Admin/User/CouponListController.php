@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
@@ -12,7 +12,7 @@ namespace App\Controller\Admin\User;
 
 use HugaShop\Models\Design;
 use HugaShop\Models\Request;
-use HugaShop\Models\Settings;
+use App\Services\PaginationService;
 use HugaShop\Models\User\UserCoupon;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,9 +41,7 @@ class CouponListController extends BaseAdminController
             }
         }
 
-        $filter = [];
-        $filter['page'] =  max(1, Request::get('page', 'int'));
-        $filter['limit'] = Request::get('page', 'string') == 'all' ? 'all' : Settings::getParam('products_num_admin');
+        $filter = PaginationService::initFilter();
 
         // Поиск
         $keyword = Request::get('keyword', 'string');
@@ -55,8 +53,7 @@ class CouponListController extends BaseAdminController
         $coupons_count =    UserCoupon::countCoupons($filter);
         $coupons =          UserCoupon::getCoupons($filter);
 
-        Design::assign('pages_count', ceil($coupons_count / Settings::getParam('products_num_admin')));
-        Design::assign('current_page', $filter['limit'] == 'all' ? 'all' : $filter['page']);
+        Design::assign('pagination', PaginationService::getPagination($coupons_count, $filter));
 
         Design::assign('coupons', $coupons);
         Design::assign('coupons_count', $coupons_count);

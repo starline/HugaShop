@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  */
 
@@ -14,7 +14,7 @@ use HugaShop\Models\Image;
 use HugaShop\Models\Design;
 use HugaShop\Models\Helper;
 use HugaShop\Models\Request;
-use HugaShop\Models\Settings;
+use App\Services\PaginationService;
 use HugaShop\Models\Finance\FinancePurse;
 use App\Controller\BaseAdminController;
 use HugaShop\Models\Finance\FinancePayment;
@@ -38,9 +38,7 @@ class PaymentListController extends BaseAdminController
             (object) ['id' => 2, "name" => "Перевод", 'type' => 'transfer']
         ];
 
-        $filter = [];
-        $filter['page'] = max(1, Request::get('page', 'int'));
-        $filter['limit'] = Request::get('page', 'string') == 'all' ? 'all' : Settings::getParam('products_num_admin');
+        $filter = PaginationService::initFilter();
 
         // Поиск
         $keyword = Request::get('keyword');
@@ -113,8 +111,7 @@ class PaymentListController extends BaseAdminController
         // Выбираем все кошельки
         $purses = FinancePurse::getPurses(['enabled' => 1]);
 
-        Design::assign('pages_count', ceil($payments_count / Settings::getParam('products_num_admin')));
-        Design::assign('current_page', $filter['limit'] == 'all' ? 'all' : $filter['page']);
+        Design::assign('pagination', PaginationService::getPagination($payments_count, $filter));
 
         Design::assign('payments_types', $payments_types);
         Design::assign('payments_type', $payments_type);
