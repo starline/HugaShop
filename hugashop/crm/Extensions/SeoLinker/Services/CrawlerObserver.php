@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.3
+ * @version 1.4
  *
  */
 
@@ -58,7 +58,8 @@ final class CrawlerObserver extends CrawlObserver
                 str_starts_with($href, '#') ||
                 str_starts_with(strtolower($href), 'javascript:') ||
                 str_starts_with($href, 'mailto:') ||
-                str_starts_with($href, 'tel:')
+                str_starts_with($href, 'tel:') ||
+                str_starts_with(strtolower($href), 'tg:')
             ) {
                 continue;
             }
@@ -119,7 +120,8 @@ final class CrawlerObserver extends CrawlObserver
         ?string $linkText = null,
     ): void {
 
-        dd($requestException);
+        // Ignore crawl errors such as unsupported protocols
+        return;
     }
 
     
@@ -138,6 +140,10 @@ final class CrawlerObserver extends CrawlObserver
             return $this->scheme . ':' . $href;
         }
         if ($href === '') {
+            return null;
+        }
+
+        if (preg_match('/^[a-zA-Z][a-zA-Z0-9+.-]*:/', $href) && !preg_match('/^https?:\/\//i', $href)) {
             return null;
         }
 
