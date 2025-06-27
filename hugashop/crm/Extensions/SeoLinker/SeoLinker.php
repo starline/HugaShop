@@ -16,12 +16,12 @@ namespace HugaShop\Extensions\SeoLinker;
 use HugaShop\Models\Config;
 use HugaShop\Models\Design;
 use HugaShop\Models\Request;
-use HugaShop\Models\Settings;
+use App\Services\PaginationService;
 use HugaShop\Extensions\BaseExtension;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use HugaShop\Extensions\SeoLinker\Services\ScanBatch;
-use HugaShop\Extensions\SeoLinker\Models\SeoLinker as SeoLinkerModel;
 use HugaShop\Extensions\SeoLinker\Models\SeoLinkerLink;
+use HugaShop\Extensions\SeoLinker\Models\SeoLinker as SeoLinkerModel;
 
 final class SeoLinker extends BaseExtension
 {
@@ -51,17 +51,14 @@ final class SeoLinker extends BaseExtension
             }
         }
 
-        $filter = [];
-        $filter['page'] = max(1, Request::get('page', 'int'));
-        $filter['limit'] = Request::get('page', 'string') == 'all' ? 'all' : Settings::getParam('products_num_admin');
+        $filter = PaginationService::initFilter();
 
         $pages          = SeoLinkerModel::getList($filter, order: ['in_internal', 'desc']);
         $pages_count    = SeoLinkerModel::getCount();
 
+        Design::assign('pagination', PaginationService::getPagination($pages_count, $filter));
         Design::assign('pages', $pages);
         Design::assign('pages_total', $pages_count);
-        Design::assign('pages_count', ceil($pages_count / Settings::getParam('products_num_admin')));
-        Design::assign('current_page', $filter['limit'] == 'all' ? 'all' : $filter['page']);
 
         return $this->getTemplatePath('templates/report.tpl');
     }

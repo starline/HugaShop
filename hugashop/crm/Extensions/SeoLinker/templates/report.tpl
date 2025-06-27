@@ -6,7 +6,8 @@
 {block name=content}
     <div class="header_top">
         {if $pages_total > 0}
-            <h1>{$meta_title} <span class="sum_total">{$pages_total} {$pages_total|plural:'страница':'страниц':'страницы'}</span></h1>
+            <h1>{$meta_title} <span class="sum_total">{$pages_total}
+                    {$pages_total|plural:'страница':'страниц':'страницы'}</span></h1>
         {else}
             <h1>{$meta_title}</h1>
         {/if}
@@ -15,7 +16,9 @@
     </div>
     <div id="main_list">
         {if $pages}
+
             {include file='parts/pagination.tpl'}
+
             <div class="list">
                 {foreach $pages as $p}
                     <div class="list_row">
@@ -39,6 +42,7 @@
                     </div>
                 {/foreach}
             </div>
+
             {include file='parts/pagination.tpl'}
         {else}
             Нет ссылок
