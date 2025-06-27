@@ -13,7 +13,6 @@ namespace App\Controller\Admin\Product;
 use HugaShop\Models\Design;
 use HugaShop\Models\Helper;
 use HugaShop\Models\Request;
-use HugaShop\Models\Settings;
 use HugaShop\Models\Product\Product;
 use HugaShop\Models\Product\ProductBrand;
 use App\Controller\BaseAdminController;
@@ -32,7 +31,6 @@ class ProductListController extends BaseAdminController
         $this->checkAdminAccess(['product_view', 'product_content']);
 
         $filter = PaginationService::initFilter();
-
 
         // Текущая категория
         $category_id = Request::get('category_id', 'int');
@@ -226,13 +224,12 @@ class ProductListController extends BaseAdminController
         // Категории
         $categories = ProductCategory::getCategoriesTree();
 
-        PaginationService::assign($products_count, $filter);
-
-        Design::assign('products', $products);
-        Design::assign('products_count', $products_count);
-        Design::assign('categories', $categories);
-        Design::assign('all_brands', $all_brands);
-        Design::assign('brands', $brands);
+        Design::assign('pagination',        PaginationService::getPagination($products_count, $filter));
+        Design::assign('products',          $products);
+        Design::assign('products_count',    $products_count);
+        Design::assign('categories',        $categories);
+        Design::assign('all_brands',        $all_brands);
+        Design::assign('brands',            $brands);
 
         return $this->fetchResponse('product/product_list.tpl');
     }

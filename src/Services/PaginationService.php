@@ -6,17 +6,17 @@
  * @author Andri Huga
  * @version 1.0
  *
- * Service for static pagination helpers
+ * Service for pagination helpers
  */
 
 namespace App\Services;
 
-use HugaShop\Models\Design;
 use HugaShop\Models\Request;
 use HugaShop\Models\Settings;
 
 class PaginationService
 {
+
     /**
      * Initialize pagination filter
      */
@@ -30,14 +30,17 @@ class PaginationService
         ];
     }
 
+
     /**
      * Assign pagination data to template
      */
-    public static function assign(int $itemsCount, array $filter): void
+    public static function getPagination(int $itemsCount, array $filter)
     {
-        Design::assign('pages_count', ceil(
-            $itemsCount / Settings::getParam('products_num_admin')
-        ));
-        Design::assign('current_page', $filter['limit'] === 'all' ? 'all' : $filter['page']);
+        $pagination = new \stdClass();
+        $pagination->pages_count = ceil($itemsCount / max((int) Settings::getParam('products_num_admin'), 1));
+        $pagination->current_page = $filter['limit'] === 'all'
+            ? 'all'
+            : $filter['page'];
+        return $pagination;
     }
 }

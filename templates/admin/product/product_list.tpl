@@ -310,7 +310,7 @@
 									<option value="set_sale">Сделать Акцию</option>
 									<option value="unset_sale">Отменить Акцию</option>
 									<option value="duplicate">Создать дубликат</option>
-									{if $pages_count > 1}
+									{if $pagination->pages_count > 1}
 										<option value="move_to_page">Переместить на страницу</option>
 									{/if}
 									{if $brands|count > 0}
@@ -324,7 +324,7 @@
 
 							<span id="move_to_page">
 								<select class="form-select" name="target_page">
-									{section target_page $pages_count}
+									{section target_page $pagination->pages_count}
 										<option value="{$smarty.section.target_page.index+1}">{$smarty.section.target_page.index+1}
 										</option>
 									{/section}
