@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.2
+ * @version 1.3
  *
  */
 
@@ -58,6 +58,10 @@ final class ScanBatch
                     ->exists();
                 if (!$exists) {
                     $linkModel->create($ln);
+                }
+
+                if ($ln['type'] === 'image') {
+                    continue;
                 }
 
                 if ($ln['type'] === 'internal') {
