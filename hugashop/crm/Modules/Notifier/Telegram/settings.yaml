@@ -1,6 +1,6 @@
 name: "Telegram Bot"
 type: telegram
-settings:
+settings_params:
   - { variable: api_key, name: "api key" }
   - { variable: bot_username, name: "Имя бота (без @)" }
   - { variable: secret_token, name: "Секрет" }

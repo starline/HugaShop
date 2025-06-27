@@ -1,5 +1,5 @@
 name: "Оплата через OLX"
-settings:
+settings_params:
   - { variable: fee_inside, name: "Комиссия сервиса % (платит продавец)" }
   - {
       variable: fee_fix_inside,

@@ -1,5 +1,5 @@
 name: "Счет на оплату без НДС - ФОП Украина"
-settings:
+settings_params:
   - { variable: recipient, name: "Одержувача" }
   - { variable: ipn, name: "ІПН одержувача" }
   - { variable: account, name: "Рахунок одержувача" }

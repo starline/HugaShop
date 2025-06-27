@@ -1,6 +1,6 @@
 name: "SchemaOrg"
 description: "Добавляет на сайт разметку Schema.org"
-settings:
+settings_params:
   - {
       variable: enabled,
       name: "Включено",

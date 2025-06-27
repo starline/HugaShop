@@ -1,6 +1,6 @@
 name: "Кнопка «Вернуться вверх»"
 description: "Добавляет на сайт кнопку для возврата вверх страницы"
-settings:
+settings_params:
   - {
       variable: enabled,
       name: "Включено",

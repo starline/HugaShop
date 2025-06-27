@@ -1,6 +1,6 @@
 name: "Google DataLayer GA4"
 description: "Добавляет на сайт Google DataLayer для GA4"
-settings:
+settings_params:
   - {
       variable: enabled,
       name: "Включено",

@@ -1,6 +1,6 @@
 name: "CmlExchange"
 description: "Обмен с 1С через CommerceML"
-settings:
+settings_params:
   - {
       variable: enabled,
       name: "Включено",

@@ -1,6 +1,6 @@
 name: "Open Graph protocol"
 description: "Добавляет на сайт Open Graph protocol"
-settings:
+settings_params:
   - {
       variable: enabled,
       name: "Включено",

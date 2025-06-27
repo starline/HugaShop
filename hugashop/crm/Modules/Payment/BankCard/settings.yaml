@@ -1,5 +1,5 @@
 name: "Оплата на карту Банка"
-settings:
+settings_params:
   - { variable: bank_name, name: "Название Банка" }
   - { variable: card_number, name: "Номер карты" }
   - { variable: card_owner, name: "Владелец карты" }

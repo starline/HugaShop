@@ -1,6 +1,6 @@
 name: "Информационные блоки"
 description: "Создаем информационные блоки для вставки на страницы сайта"
-settings:
+settings_params:
   - {
       variable: enabled,
       name: "Включено",

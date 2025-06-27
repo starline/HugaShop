@@ -1,6 +1,6 @@
 name: "Баннер согласия. Consent Banner"
 description: "Выводит баннер согласия для выбора режима сбора данных пользователя. Consent Banner"
-settings:
+settings_params:
   - {
       variable: enabled,
       name: "Включено",
