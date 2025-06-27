@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  */
 
@@ -17,6 +17,7 @@ use HugaShop\Models\Settings;
 use HugaShop\Models\Product\Product;
 use HugaShop\Models\Product\ProductBrand;
 use App\Controller\BaseAdminController;
+use App\Services\PaginationService;
 use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -30,9 +31,7 @@ class ProductListController extends BaseAdminController
 
         $this->checkAdminAccess(['product_view', 'product_content']);
 
-        $filter = [];
-        $filter['page'] = max(1, Request::get('page', 'int'));
-        $filter['limit'] = Request::get('page', 'string') == 'all' ? 'all' : Settings::getParam('products_num_admin');
+        $filter = PaginationService::initFilter();
 
 
         // Текущая категория
@@ -227,8 +226,7 @@ class ProductListController extends BaseAdminController
         // Категории
         $categories = ProductCategory::getCategoriesTree();
 
-        Design::assign('pages_count', ceil($products_count / Settings::getParam('products_num_admin')));
-        Design::assign('current_page', $filter['limit'] == 'all' ? 'all' : $filter['page']);
+        PaginationService::assign($products_count, $filter);
 
         Design::assign('products', $products);
         Design::assign('products_count', $products_count);
