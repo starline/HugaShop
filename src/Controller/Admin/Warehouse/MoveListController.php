@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  */
 
@@ -12,7 +12,7 @@ namespace App\Controller\Admin\Warehouse;
 
 use HugaShop\Models\Design;
 use HugaShop\Models\Request;
-use HugaShop\Models\Settings;
+use App\Services\PaginationService;
 use HugaShop\Models\Warehouse\WarehouseMove;
 use HugaShop\Models\User\UserPermission;
 use App\Controller\BaseAdminController;
@@ -49,9 +49,7 @@ class MoveListController extends BaseAdminController
             }
         }
 
-        $filter = [];
-        $filter['page'] = max(1, Request::get('page', 'int'));
-        $filter['limit'] = Request::get('page', 'string') == 'all' ? 'all' : Settings::getParam('products_num_admin');
+        $filter = PaginationService::initFilter();
         $filter['status'] = Request::get('status', 'integer'); # Тип перемещения
 
         // Поиск
@@ -86,8 +84,7 @@ class MoveListController extends BaseAdminController
 
         Design::assign('total', $total);
 
-        Design::assign('pages_count', ceil($movements_count / Settings::getParam('products_num_admin')));
-        Design::assign('current_page', $filter['limit'] == 'all' ? 'all' : $filter['page']);
+        Design::assign('pagination', PaginationService::getPagination($movements_count, $filter));
 
         Design::assign('movements', $movements);
         Design::assign('movements_count', $movements_count);

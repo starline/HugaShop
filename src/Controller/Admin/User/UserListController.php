@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.0
+ * @version 2.1
  *
  */
 
@@ -13,7 +13,7 @@ namespace App\Controller\Admin\User;
 use HugaShop\Models\User\User;
 use HugaShop\Models\Design;
 use HugaShop\Models\Request;
-use HugaShop\Models\Settings;
+use App\Services\PaginationService;
 use HugaShop\Models\User\UserGroup;
 use HugaShop\Models\User\UserPermission;
 use App\Controller\BaseAdminController;
@@ -56,7 +56,7 @@ class UserListController extends BaseAdminController
             }
         }
 
-        $filter = [];
+        $filter = PaginationService::initFilter();
 
         // Ограничеваем просмотр списка только 1-й страницей
         if (!UserPermission::checkAccess('user_edit')) {
@@ -95,15 +95,12 @@ class UserListController extends BaseAdminController
             $filter['sort'] = 'name';
         }
 
-        $filter['page'] = max(1, Request::get('page', 'int'));
-        $filter['limit'] = Request::get('page', 'string') == 'all' ? 'all' : Settings::getParam('products_num_admin');
 
         $users_count =  User::countUsers($filter);
         $users =        User::getUsers($filter);
         $groups =       UserGroup::orderBy('position')->get();
 
-        Design::assign('pages_count', ceil($users_count / Settings::getParam('products_num_admin')));
-        Design::assign('current_page', $filter['limit'] == 'all' ? 'all' : $filter['page']);
+        Design::assign('pagination', PaginationService::getPagination($users_count, $filter));
 
         Design::assign('groups', $groups);
         Design::assign('users', $users);

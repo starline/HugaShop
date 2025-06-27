@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.0
+ * @version 2.1
  *
  */
 
@@ -12,7 +12,7 @@ namespace App\Controller\Admin\User;
 
 use HugaShop\Models\Design;
 use HugaShop\Models\Request;
-use HugaShop\Models\Settings;
+use App\Services\PaginationService;
 use HugaShop\Models\User\UserMailing;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,15 +41,12 @@ class MailingListController extends BaseAdminController
             }
         }
 
-        $filter = [];
-        $filter['page'] =  max(1, Request::get('page', 'int'));
-        $filter['limit'] = Request::get('page', 'string') == 'all' ? 'all' : Settings::getParam('products_num_admin');
+        $filter = PaginationService::initFilter();
 
         $mailing_list = UserMailing::getList($filter, order: ['id', 'DESC'], join: ['user', 'notifier']);
         $mailing_count = UserMailing::getCount($filter);
 
-        Design::assign('pages_count', ceil($mailing_count / Settings::getParam('products_num_admin')));
-        Design::assign('current_page', $filter['limit'] == 'all' ? 'all' : $filter['page']);
+        Design::assign('pagination', PaginationService::getPagination($mailing_count, $filter));
 
         Design::assign('mailing_count', $mailing_count);
         Design::assign('mailing_list', $mailing_list);

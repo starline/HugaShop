@@ -4,7 +4,7 @@
  * HugaShop - Selling anything
  *
  * @author Andri Huga
- * @version 2.6
+ * @version 2.7
  * 
  * ProductPriceAdmin
  *
@@ -15,7 +15,7 @@ namespace App\Controller\Admin\Product;
 use HugaShop\Models\Design;
 use HugaShop\Models\Helper;
 use HugaShop\Models\Request;
-use HugaShop\Models\Settings;
+use App\Services\PaginationService;
 use HugaShop\Models\Order\Order;
 use HugaShop\Models\Product\Product;
 use HugaShop\Models\User\UserPermission;
@@ -118,11 +118,8 @@ class ProductPriceController extends BaseAdminController
     private function getProductOrders(int $product_id)
     {
         // Заказы с этим товаром
-        $filter = [
-            'page' => max(1, Request::get('page', type: 'int')),
-            'limit' => Request::get('page', type: 'string') == 'all' ? 'all' : Settings::getParam('products_num_admin'),
-            'product_id' => $product_id
-        ];
+        $filter = PaginationService::initFilter();
+        $filter['product_id'] = $product_id;
 
         $orders_count = Order::getOrdersCount($filter);     # Кол-во заказов
         $orders =       Order::getOrders($filter, join: [   # Выбираем заказы с этим товаром
@@ -137,8 +134,7 @@ class ProductPriceController extends BaseAdminController
         $paid_filter = ['paid' => 1, 'product_id' => $product_id]; # только оплаченые
         $orders_paid_price = Order::getOrdersPrice($paid_filter); # Выбираем общую сумму заказов
 
-        Design::assign('pages_count', ceil($orders_count / Settings::getParam('products_num_admin')));
-        Design::assign('current_page', $filter['limit'] == 'all' ? 'all' : $filter['page']);
+        Design::assign('pagination', PaginationService::getPagination($orders_count, $filter));
 
         Design::assign('orders', $orders);
         Design::assign('orders_count', $orders_count);
