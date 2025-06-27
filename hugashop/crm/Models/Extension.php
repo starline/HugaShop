@@ -90,7 +90,7 @@ class Extension
                 if (!empty($Ext = self::makeExtension($ext->module))) {
                     foreach (self::$places as $place_name) {
                         if (method_exists($Ext, 'get' . ucfirst(Helper::snakeToCamelCase($place_name)) . 'Template')) { # Example: getFrontHeadTemplate
-                            if (!empty($Ext->ext_settings->enabled)) {
+                            if (!empty($Ext->settings->enabled)) {
                                 $places[$place_name][]  = $ext->module;
                             }
                         }

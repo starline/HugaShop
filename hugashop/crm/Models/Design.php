@@ -335,7 +335,7 @@ class Design
             $place_ext_template = '';
             foreach ($place_extensions as $ext_name) {
                 if (!empty($extension = Extension::makeExtension($ext_name))) {
-                    Design::assign($extension->ext_name, $extension->ext_settings);
+                    Design::assign($extension->ext_name, $extension->settings);
                     $place_ext_template .= $extension->{'get' . ucfirst(Helper::snakeToCamelCase($place)) . 'Template'}();
                 }
             }
@@ -344,7 +344,7 @@ class Design
 
         // Get Extension by name
         if (isset($ext_params['name']) and !empty($extension = Extension::makeExtension($ext_params['name']))) {
-            Design::assign($extension->ext_name, $extension->ext_settings);
+            Design::assign($extension->ext_name, $extension->settings);
             return $extension->getTemplate($ext_params);
         }
 

@@ -18,7 +18,7 @@ use HugaShop\Models\Settings;
 class BaseExtension
 {
     public $ext_config;     # extension config
-    public $ext_settings;   # extension settings
+    public $settings;       # extension settings
     public $ext_name;
     public $ext_dir;
     public $ext_env;
@@ -26,7 +26,7 @@ class BaseExtension
     public function __construct()
     {
         $this->ext_name =           Helper::class_basename(static::class);
-        $this->ext_settings =       (object) Settings::getParam($this->ext_name); # was array
+        $this->settings =           (object) Settings::getParam($this->ext_name); # was array
         $this->ext_config =         Helper::getModule($this->ext_name, Config::get('extension_dir'));
         $this->ext_dir =            Config::get('extension_dir') . $this->ext_name . '/';
         $this->ext_env =            new \stdClass();
@@ -58,9 +58,9 @@ class BaseExtension
     public function getSetting(?string $param = null)
     {
         if (is_null($param)) {
-            return $this->ext_settings;
+            return $this->settings;
         }
-        return $this->ext_settings->$param ?? null;
+        return $this->settings->$param ?? null;
     }
 
 

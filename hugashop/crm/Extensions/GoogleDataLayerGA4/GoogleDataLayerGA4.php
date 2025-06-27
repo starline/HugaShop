@@ -29,14 +29,14 @@ final class GoogleDataLayerGA4 extends BaseExtension
      */
     public function getFrontBodyTemplate()
     {
-        if (!empty($this->ext_settings->enabled)) {
+        if (!empty($this->settings->enabled)) {
 
             // Set currency
-            if (empty($this->ext_settings->currency_code)) {
-                $this->ext_settings->currency_code = FinanceCurrency::getMainCurrency()->code;
+            if (empty($this->settings->currency_code)) {
+                $this->settings->currency_code = FinanceCurrency::getMainCurrency()->code;
             }
 
-            $this->ext_settings->cookie_key = Config::get('cookie_prefix') . $this->cookie_key;
+            $this->settings->cookie_key = Config::get('cookie_prefix') . $this->cookie_key;
 
             return $this->fetchTemplate('datalayer.tpl');
         }

@@ -51,11 +51,11 @@ final class FacebookPixel extends BaseExtension
      */
     public function getFrontHeadTemplate()
     {
-        if (!empty($this->ext_settings->enabled)) {
+        if (!empty($this->settings->enabled)) {
 
             // Set currency
-            if (empty($this->ext_settings->currency_code)) {
-                $this->ext_settings->currency_code = FinanceCurrency::getMainCurrency()->code;
+            if (empty($this->settings->currency_code)) {
+                $this->settings->currency_code = FinanceCurrency::getMainCurrency()->code;
             }
             return $this->fetchTemplate('pixel.tpl');
         }
@@ -70,15 +70,15 @@ final class FacebookPixel extends BaseExtension
     #[AsEventListener]
     public function onCartAddEvent(CartAddEvent $event): void
     {
-        if (empty($this->ext_settings->enabled)) {
+        if (empty($this->settings->enabled)) {
             return;
         }
 
         $item = $event->getItem();
 
         // Should fill in value before running this script
-        $access_token = $this->ext_settings->api_token;
-        $pixel_id = $this->ext_settings->pixel_id;
+        $access_token = $this->settings->api_token;
+        $pixel_id = $this->settings->pixel_id;
 
         if (empty($access_token) || empty($pixel_id) || empty($item->product_id)) {
             return;
@@ -156,7 +156,7 @@ final class FacebookPixel extends BaseExtension
     #[AsEventListener]
     public function onOrderAddEvent(OrderAddEvent $event): void
     {
-        if (empty($this->ext_settings->enabled)) {
+        if (empty($this->settings->enabled)) {
             return;
         }
 
@@ -164,8 +164,8 @@ final class FacebookPixel extends BaseExtension
         $purchases = OrderPurchase::getPurchases(['order_id' => $order->id], ['product']);
 
         // Should fill in value before running this script
-        $access_token = $this->ext_settings->api_token;
-        $pixel_id = $this->ext_settings->pixel_id;
+        $access_token = $this->settings->api_token;
+        $pixel_id = $this->settings->pixel_id;
 
 
         if (empty($access_token) || empty($pixel_id) || empty($purchases)) {
@@ -268,7 +268,7 @@ final class FacebookPixel extends BaseExtension
     #[AsEventListener]
     public function onDesignBeforeFetchEvent(DesignBeforeFetchEvent $event): void
     {
-        if (empty($this->ext_settings->enabled)) {
+        if (empty($this->settings->enabled)) {
             return;
         }
 

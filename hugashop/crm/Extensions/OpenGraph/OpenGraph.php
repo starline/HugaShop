@@ -33,7 +33,7 @@ final class OpenGraph extends BaseExtension
         $timezone_offset = $timezone_offset > 0 ? '+' . $timezone_offset : $timezone_offset;
         Design::assign('timezone_offset', $timezone_offset);
 
-        if (!empty($this->ext_settings->enabled)) {
+        if (!empty($this->settings->enabled)) {
             return $this->fetchTemplate('graph.tpl');
         }
         return null;

@@ -31,8 +31,7 @@ class ExtensionController extends BaseAdminController
         }
 
         $extension                     = clone $Extension->getConfig();
-        $extension->settings_structure = $extension->settings ?? [];
-        $extension->settings           = $Extension->ext_settings;
+        $extension->settings           = $Extension->getSetting();
         Design::assign('extension', $extension);
 
         if (method_exists($Extension, 'index')) {
@@ -45,21 +44,8 @@ class ExtensionController extends BaseAdminController
 
             return $this->fetchResponse($Extension->index());
         } else {
-            return $this->settings($Extension);
+            return $this->redirectToRoute('ExtensionSettingsAdmin', ['name' => $Extension->getName()]);
         }
-    }
-
-
-    #[Route('/admin/extension/{name}/settings', name: 'ExtensionSettingsAdmin', priority: 2)]
-    public function settingsPage(string $name): Response
-    {
-        $this->checkAdminAccess('extension');
-
-        if (empty($Extension = Extension::makeExtension($name))) {
-            return $this->redirectToRoute('ExtensionListAdmin');
-        }
-
-        return $this->settings($Extension);
     }
 
 
@@ -75,8 +61,7 @@ class ExtensionController extends BaseAdminController
         }
 
         $extension                     = clone $Extension->getConfig();
-        $extension->settings_structure = $extension->settings ?? [];
-        $extension->settings           = $Extension->ext_settings;
+        $extension->settings           = $Extension->getSetting();
 
         Design::assign('extension', $extension);
 
@@ -87,18 +72,24 @@ class ExtensionController extends BaseAdminController
     /**
      * Get Settings page
      */
-    private function settings($Extension)
+    #[Route('/admin/extension/{name}/settings', name: 'ExtensionSettingsAdmin', priority: 2)]
+    public function settingsPage(string $name): Response
     {
+
+        $this->checkAdminAccess('extension');
+
+        if (empty($Extension = Extension::makeExtension($name))) {
+            return $this->redirectToRoute('ExtensionListAdmin');
+        }
 
         // Сохранить настройки
         if (!empty($extension_settings = Request::post('extension_settings', 'array'))) {
             Design::setFlashMessage('update', Extension::updateExt($Extension->getName(), $extension_settings));
-            return $this->redirectToRoute('ExtensionAdmin', ['name' => $Extension->getName()]);
+            return $this->redirectToRoute('ExtensionSettingsAdmin', ['name' => $Extension->getName()]);
         }
 
         $extension                     = clone $Extension->getConfig();
-        $extension->settings_structure = $extension->settings ?? [];
-        $extension->settings           = $Extension->ext_settings;
+        $extension->settings           = $Extension->getSetting();
 
         Design::assign('extension', $extension);
         Design::assign('extensions', [$Extension->getName() => $Extension->getConfig()]);
