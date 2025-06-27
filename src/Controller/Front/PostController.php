@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.5
+ * @version 2.6
  *
  * Этот класс использует шаблоны posts.tpl и post.tpl
  *
@@ -15,10 +15,11 @@ namespace App\Controller\Front;
 use HugaShop\Models\Image;
 use HugaShop\Models\Design;
 use HugaShop\Models\Request;
-use HugaShop\Models\Content\ContentPost;
-use HugaShop\Models\Content\ContentComment;
-use HugaShop\Models\User\UserPermission;
+use App\Services\PaginationService;
 use App\Controller\BaseFrontController;
+use HugaShop\Models\Content\ContentPost;
+use HugaShop\Models\User\UserPermission;
+use HugaShop\Models\Content\ContentComment;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -28,20 +29,18 @@ class PostController extends BaseFrontController
     #[Route('/blog', name: 'PostList', priority: 1)]
     public function postList(): Response
     {
-        $items_per_page = 20; # Количество постов на 1 странице
 
-        $filter = [];
-        $filter['page'] = max(1, Request::get('page', 'int'));
-        $filter['limit'] = $items_per_page;
+
+        $filter = PaginationService::initFilter(20);
         $filter['visible'] = 1; # Выбираем только видимые посты
 
-        $posts_count =  ContentPost::countPosts($filter); # Вычисляем количество страниц
         $posts =        ContentPost::getPosts($filter); # Выбираем статьи из базы
+        $posts_count =  ContentPost::countPosts($filter); # Вычисляем количество страниц
 
         // Передаем в шаблон
-        Design::assign('pages_count', ceil($posts_count / $items_per_page));
-        Design::assign('current_page', $filter['page']);
         Design::assign('posts', $posts);
+        Design::assign('posts_count', $posts_count);
+        Design::assign('pagination', PaginationService::getPagination($posts_count, $filter));
         Design::assign('canonical', $this->generateUrl('PostList'));
 
         return $this->fetchResponse('posts.tpl');

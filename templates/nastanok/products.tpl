@@ -81,9 +81,10 @@
 
 
 			{* Описание бренда *}
-			{if $current_page == 1}
+			{if $pagination->current_page == 1}
 				{$brand->description|raw}
 			{/if}
+
 
 
 			<!--Каталог товаров-->

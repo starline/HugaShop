@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.8
+ * @version 3.9
  *
  * Этот класс использует шаблон products.tpl
  * Отображение списка товаров, каталог товаров
@@ -16,6 +16,7 @@ namespace App\Controller\Front;
 use HugaShop\Models\Design;
 use HugaShop\Models\Request;
 use HugaShop\Models\Settings;
+use App\Services\PaginationService;
 use HugaShop\Models\Product\Product;
 use App\Controller\BaseFrontController;
 use HugaShop\Models\Product\ProductOption;
@@ -54,8 +55,10 @@ class ProductsController extends BaseFrontController
         }
 
 
-        $products_filter = [];
-        $products_filter['visible'] = 1;
+        // Постраничная навигация
+        $filter = PaginationService::initFilter();
+        $filter['visible'] = 1;
+
         $noindex = true; # Right away close indexation
 
 
@@ -66,18 +69,18 @@ class ProductsController extends BaseFrontController
             $noindex = false; # Open indexation
         }
 
-        $products_filter['category_id'] = $category->children;
+        $filter['category_id'] = $category->children;
 
         // Сортировка
         if ($sort = Request::get('sort', 'string')) {
-            $products_filter['sort'] = $sort;
+            $filter['sort'] = $sort;
             $noindex = true; # Close indexation
         } else {
-            $products_filter['sort'] = 'position';
+            $filter['sort'] = 'position';
         }
 
-        $products_filter['sort_in_stock'] = true;
-        $products_filter['sort_disable'] = true;
+        $filter['sort_in_stock'] = true;
+        $filter['sort_disable'] = true;
 
 
         // Характеристики
@@ -99,7 +102,7 @@ class ProductsController extends BaseFrontController
         if (!empty($selected_features)) {
             Design::assign('canonical', Request::url($selected_features, true)); // Set canonical, clear other params
             $options_filter['features'] = $selected_features;
-            $products_filter['features'] = $selected_features;
+            $filter['features'] = $selected_features;
         }
 
         $options = ProductOption::getOptions($options_filter);
@@ -116,24 +119,15 @@ class ProductsController extends BaseFrontController
             }
         }
 
-
-        // Постраничная навигация
-        $items_per_page     = Settings::getParam('products_num');
-        $current_page       = Request::get('page', 'int');   # Текущая страница в постраничном выводе
-        $current_page       = max(1, $current_page);                    # Если не задана, то равна 1
-        $products_count     = Product::countProducts($products_filter); # Вычисляем количество страниц
+        //  Выбираем товары
+        $products        = Product::getProducts($filter, ['image']);
+        $products_count  = Product::countProducts($filter); # Вычисляем количество страниц
 
 
         // Закрываем пагинатор от индексации
         if (!empty(Request::get('page'))) {
             $noindex = true; # Close indexation
         }
-
-        $products_filter['page'] = $current_page;
-        $products_filter['limit'] = $items_per_page;
-
-        //  Выбираем товары
-        $products = Product::getProducts($products_filter, ['image']);
 
         if (empty($category->meta_title)) {
             $category->meta_title = $category->name;
@@ -148,14 +142,14 @@ class ProductsController extends BaseFrontController
         Design::assign('meta_title', $category->meta_title);
         Design::assign('meta_description', $category->meta_description);
 
-        Design::assign('current_page', $current_page);
-        Design::assign('pages_count', ceil($products_count / $items_per_page));
-        Design::assign('total_products_num', $products_count);
+
+        Design::assign('products', $products);
+        Design::assign('products_count', $products_count);
 
         Design::assign('noindex', $noindex);
-        Design::assign('sort', $products_filter['sort']);
+        Design::assign('pagination', PaginationService::getPagination($products_count, $filter));
+        Design::assign('sort', $filter['sort']);
         Design::assign('category', $category);
-        Design::assign('products', $products);
         Design::assign('features', $features);
 
         return $this->fetchResponse('products.tpl');

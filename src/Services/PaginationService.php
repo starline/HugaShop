@@ -20,13 +20,15 @@ class PaginationService
     /**
      * Initialize pagination filter
      */
-    public static function initFilter(): array
+    public static function initFilter(?int $per_page = null): array
     {
+        $per_page - $per_page ?: Settings::getParam('products_num_admin');
+        
         return [
             'page'  => max(1, Request::get('page', 'int')),
             'limit' => Request::get('page', 'string') === 'all'
                 ? 'all'
-                : Settings::getParam('products_num_admin'),
+                : $per_page,
         ];
     }
 

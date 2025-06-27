@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  */
 
@@ -13,6 +13,7 @@ namespace App\Controller\Front;
 use HugaShop\Models\Design;
 use HugaShop\Models\Request;
 use HugaShop\Models\Settings;
+use App\Services\PaginationService;
 use HugaShop\Models\Product\Product;
 use App\Controller\BaseFrontController;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,50 +30,38 @@ class ProductSearchController extends BaseFrontController
         $search_query = trim(substr(urldecode($_SERVER['REQUEST_URI']), 3));
 
         $noindex = false; # Open indexation
-        $products_filter['keyword'] = $search_query;
+
+        $filter = PaginationService::initFilter();
+        $filter['keyword'] = $search_query;
+        $filter['visible'] = 1;
 
 
         // Сортировка
         if ($sort = Request::get('sort', 'string')) {
-            $products_filter['sort'] = $sort;
+            $filter['sort'] = $sort;
             $noindex = true; # Close indexation
         } else {
-            $products_filter['sort'] = 'position';
+            $filter['sort'] = 'position';
         }
 
-        $products_filter['sort_in_stock'] = true;
-        $products_filter['sort_disable'] = true;
+        $filter['sort_in_stock'] = true;
+        $filter['sort_disable'] = true;
 
 
-        // Постраничная навигация
-        $items_per_page = Settings::getParam('products_num');
-        $current_page = Request::get('page', 'int');   # Текущая страница в постраничном выводе
-        $current_page = max(1, $current_page);                    # Если не задана, то равна 1
-
-        $products_count = Product::countProducts($products_filter); # Вычисляем количество страниц
-
+        //  Выбираем товары
+        $products           = Product::getProducts($filter, ['image']);
+        $products_count     = Product::countProducts($filter); # Вычисляем количество страниц
 
         // Закрываем пагинатор от индексации
         if (!empty(Request::get('page'))) {
             $noindex = true; # Close indexation
         }
 
-        $products_filter['page'] = $current_page;
-        $products_filter['limit'] = $items_per_page;
-
-
-        //  Выбираем товары
-        $products_sku = [];
-        $products = Product::getProducts($products_filter, ['image']);
-
         Design::assign('keyword', $search_query);
-
-        Design::assign('pages_count', ceil($products_count / $items_per_page));
-        Design::assign('total_products_num', $products_count);
-        Design::assign('current_page', $current_page);
-
+        Design::assign('products_count', $products_count);
         Design::assign('products', $products);
-        Design::assign('sort', $products_filter['sort']);
+        Design::assign('pagination', PaginationService::getPagination($products_count, $filter));
+        Design::assign('sort', $filter['sort']);
         Design::assign('noindex', $noindex);
         Design::assign('meta_title', $search_query);
         Design::assign('meta_description', $search_query . ' ' . Settings::getParam('product_meta_description'));
