@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.9
+ * @version 2.0
  *
  */
 
@@ -30,8 +30,9 @@ class ExtensionController extends BaseAdminController
             return $this->redirectToRoute('ExtensionListAdmin');
         }
 
-        $extension            = clone $Extension->getConfig();
-        $extension->settings  = $Extension->ext_settings;
+        $extension                     = clone $Extension->getConfig();
+        $extension->settings_structure = $extension->settings ?? [];
+        $extension->settings           = $Extension->ext_settings;
         Design::assign('extension', $extension);
 
         if (method_exists($Extension, 'index')) {
@@ -49,6 +50,19 @@ class ExtensionController extends BaseAdminController
     }
 
 
+    #[Route('/admin/extension/{name}/settings', name: 'ExtensionSettingsAdmin', priority: 2)]
+    public function settingsPage(string $name): Response
+    {
+        $this->checkAdminAccess('extension');
+
+        if (empty($Extension = Extension::makeExtension($name))) {
+            return $this->redirectToRoute('ExtensionListAdmin');
+        }
+
+        return $this->settings($Extension);
+    }
+
+
     #[Route('/admin/extension/{name}/{path}', name: 'ExtensionItemNewAdmin')]
     #[Route('/admin/extension/{name}/{path}/{item_id}', requirements: ['id' => '\d+', 'item_id' => '\d+'], name: 'ExtensionItemAdmin')]
     public function path(string $name, string $path, ?int $item_id = null): Response
@@ -60,8 +74,11 @@ class ExtensionController extends BaseAdminController
             return $this->redirectToRoute('ExtensionListAdmin');
         }
 
-        Design::assign('extension', $Extension->ext_config);
-        Design::assign('extension_settings', $Extension->ext_settings);
+        $extension                     = clone $Extension->getConfig();
+        $extension->settings_structure = $extension->settings ?? [];
+        $extension->settings           = $Extension->ext_settings;
+
+        Design::assign('extension', $extension);
 
         return $this->fetchResponse($Extension->$path($item_id));
     }
@@ -79,6 +96,11 @@ class ExtensionController extends BaseAdminController
             return $this->redirectToRoute('ExtensionAdmin', ['name' => $Extension->getName()]);
         }
 
+        $extension                     = clone $Extension->getConfig();
+        $extension->settings_structure = $extension->settings ?? [];
+        $extension->settings           = $Extension->ext_settings;
+
+        Design::assign('extension', $extension);
         Design::assign('extensions', [$Extension->getName() => $Extension->getConfig()]);
 
         return $this->fetchResponse('extension/extension.tpl');
