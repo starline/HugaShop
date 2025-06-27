@@ -19,10 +19,18 @@
                             <div class="col-12 col-lg-4 text-break">
                                 <a href="/admin/extension/{$extension->module}/page/{$p->id}">{$p->url}</a>
                             </div>
-                            <div class="col-3 col-lg-2"><span class="badge text-bg-round">{$p->depth}</span></div>
-                            <div class="col-3 col-lg-2"><span class="badge text-bg-round">{$p->out_internal}</span></div>
-                            <div class="col-3 col-lg-2"><span class="badge text-bg-round">{$p->out_external}</span></div>
-                            <div class="col-3 col-lg-2 text-end"><span class="badge text-bg-round">{$p->in_internal}</span></div>
+                            <div class="col-3 col-lg-2">
+                                <span class="badge text-bg-round" title="Глуба страницы">{$p->depth}</span>
+                            </div>
+                            <div class="col-3 col-lg-2">
+                                <span class="badge text-bg-round" title="Исходящие внутрение ссылки">{$p->out_internal}</span>
+                            </div>
+                            <div class="col-3 col-lg-2">
+                                <span class="badge text-bg-round" title="Исходящие внешник ссылки">{$p->out_external}</span>
+                            </div>
+                            <div class="col-3 col-lg-2 text-end">
+                                <span class="badge text-bg-round" title="Входящие внутрение ссылки">{$p->in_internal}</span>
+                            </div>
                         </div>
                     </div>
                 {/foreach}
