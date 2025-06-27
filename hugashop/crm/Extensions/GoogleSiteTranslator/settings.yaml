@@ -1,6 +1,6 @@
 name: "Переводчик сайта Google Translator"
 description: "Переводит сайта на разные языки с помощью Google Translator. Коды языков(ISO-639-1)"
-settings:
+settings_params:
   - {
       variable: enabled,
       name: "Включено",

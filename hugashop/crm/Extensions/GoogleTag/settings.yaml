@@ -1,6 +1,6 @@
 name: "Google Tag"
 description: "Добавляет на сайт Google tag"
-settings:
+settings_params:
   - {
       variable: enabled,
       name: "Включено",

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.0
+ * @version 3.1
  *
  */
 
@@ -291,7 +291,7 @@ class Helper
      * Get Modules
      *
      * @param string $module_dir
-     * @return $modules['module']:{'settings', 'name'}
+     * @return $modules['module']:{'settings_params', 'name'}
      */
     public static function getModules(string $module_dir)
     {

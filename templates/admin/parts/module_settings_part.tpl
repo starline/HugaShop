@@ -7,7 +7,7 @@
 
         {* Параметры модуля *}
         <ul class="property_block">
-            {foreach $module->settings as $setting}
+            {foreach $module->settings_params as $setting}
                 {if count((array)$setting->options) > 1}
                     <li>
                         <label class="col-form-label" for="{$module_key}-{$setting->variable}">{$setting->name}</label>

@@ -1,6 +1,6 @@
 name: "Facebook pixel"
 description: "Добавляет на сайт Facebook pixel"
-settings:
+settings_params:
   - {
       variable: enabled,
       name: "Включено",

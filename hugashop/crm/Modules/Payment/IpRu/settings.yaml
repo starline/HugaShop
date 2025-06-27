@@ -1,5 +1,5 @@
 name: "Счет на оплату без НДС - ИП Россия"
-settings:
+settings_params:
   - { variable: business_form, name: "Тип организации" }
   - { variable: recipient, name: "Получатель (ФИО)" }
   - { variable: ipn, name: "ИНН получателя" }

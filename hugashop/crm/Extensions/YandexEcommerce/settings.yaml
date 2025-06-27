@@ -1,5 +1,5 @@
 name: "Яндекс Электронная коммерция"
 description: "Добавляет обмен clientID"
-settings:
+settings_params:
   - { variable: counter_id, name: "ID Счетчика" }
 version: 1.4

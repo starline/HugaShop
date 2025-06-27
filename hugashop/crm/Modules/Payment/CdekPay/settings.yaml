@@ -1,5 +1,5 @@
 name: "Наложеный платеж CDEK"
-settings:
+settings_params:
   - { variable: tax, name: "Налоги ИП % (платит покупатель)" }
   - { variable: tax_inside, name: "Налоги ИП % (платит продавец)" }
   - { variable: fee, name: "Комиссия CDEK % (платит покупатель)" }

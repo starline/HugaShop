@@ -1,6 +1,6 @@
 name: "Google DataLayer UA (Устарело)"
 description: "Добавляет на сайт Google DataLayer Universal Analitic"
-settings:
+settings_params:
   - {
       variable: enabled,
       name: "Включено",

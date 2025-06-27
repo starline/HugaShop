@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.22
+ * @version 2.23
  *
  */
 
@@ -53,7 +53,7 @@ class PaymentController extends BaseAdminController
                     if (!empty($payment_method->module) and !empty($payment_modules[$payment_method->module])) {
                         $payment_module = $payment_modules[$payment_method->module];
 
-                        foreach ($payment_module->settings as $module_setting) {
+                        foreach ($payment_module->settings_params as $module_setting) {
                             if (!empty($module_setting->type) and $module_setting->type == "file") {
 
                                 // Upload

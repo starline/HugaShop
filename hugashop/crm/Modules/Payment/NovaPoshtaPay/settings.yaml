@@ -1,4 +1,4 @@
 name: "Наложеный платеж НоваПошта"
-settings:
+settings_params:
   - { variable: tax, name: "Комиссия на покупателе %" }
   - { variable: tax_inside, name: "Комиссия внутренняя %" }
