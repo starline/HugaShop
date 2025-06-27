@@ -14,7 +14,6 @@ namespace App\Controller\Front;
 
 use HugaShop\Models\Image;
 use HugaShop\Models\Design;
-use HugaShop\Models\Request;
 use App\Services\PaginationService;
 use App\Controller\BaseFrontController;
 use HugaShop\Models\Content\ContentPost;
