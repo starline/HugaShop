@@ -35,9 +35,10 @@ final class SeoLinker extends BaseExtension
         $base_url = $this->getConfig('base_url') ?? rtrim(Config::get('root_url'), '/') . '/';
 
         if (Request::post('scan')) {
+
             if (Request::post('start')) {
-                SeoLinkerModel::delete();
-                SeoLinkerLink::delete();
+                SeoLinkerModel::query()->delete();
+                SeoLinkerLink::query()->delete();
             }
 
             [$scanned, $pending] = ScanBatch::scanBatch($base_url, limit: 1);
