@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.3
+ * @version 1.4
  *
  */
 
@@ -106,6 +106,7 @@ final class ScanBatch
             //->acceptNofollowLinks()
             ->setCrawlProfile(new CrawlInternalUrls($url))
             ->setMaximumDepth(0)
+            ->setParseableMimeTypes(['text/html'])
             ->startCrawling($url);
 
         $res = $observer->results[$url] ?? ['out_internal' => 0, 'out_external' => 0];
