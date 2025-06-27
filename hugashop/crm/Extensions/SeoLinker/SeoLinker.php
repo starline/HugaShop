@@ -36,17 +36,11 @@ final class SeoLinker extends BaseExtension
 
         if (Request::post('scan')) {
             if (Request::post('start')) {
-                $model = SeoLinkerModel::getModel();
-                $model->runWithInitTable(function () use ($model) {
-                    $model->newQuery()->delete();
-                });
-                $linkModel = SeoLinkerLinkModel::getModel();
-                $linkModel->runWithInitTable(function () use ($linkModel) {
-                    $linkModel->newQuery()->delete();
-                });
+                SeoLinkerModel::delete();
+                SeoLinkerLinkModel::delete();
             }
 
-            [$scanned, $pending] = ScanBatch::scanBatch($base_url, 1);
+            [$scanned, $pending] = ScanBatch::scanBatch($base_url, limit: 1);
 
             if (Request::isAjax()) {
                 return new JsonResponse([
@@ -71,6 +65,9 @@ final class SeoLinker extends BaseExtension
     }
 
 
+    /** 
+     * Page view
+     */
     public function page(?int $id = null)
     {
         if (empty($id)) {

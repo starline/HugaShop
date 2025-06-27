@@ -17,6 +17,7 @@ services:
             - "../src/DependencyInjection/"
             - "../src/Entity/"
             - "../src/Model/"
+            - "../src/Services/"
             - "../src/Kernel.php"
 
     # add more service definitions when explicit configuration is needed
