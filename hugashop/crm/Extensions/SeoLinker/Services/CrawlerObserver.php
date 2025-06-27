@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.2
  *
  */
 
@@ -68,7 +68,20 @@ final class CrawlerObserver extends CrawlObserver
                 continue;
             }
 
+            $path = parse_url($abs, PHP_URL_PATH) ?? '';
+            $ext  = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+            $isImage = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'tiff']);
+
             $p = parse_url($abs);
+            if ($isImage) {
+                $this->links[] = [
+                    'from_url' => $current,
+                    'to_url'   => $abs,
+                    'type'     => 'image',
+                ];
+                continue;
+            }
+
             if (($p['host'] ?? '') === $this->host) {
                 $outInternal++;
                 $this->links[] = [
