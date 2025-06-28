@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.3
+ * @version 1.5
  * 
  * SeoLinker extension
  * @link https://github.com/spatie/crawler
@@ -80,8 +80,19 @@ final class SeoLinker extends BaseExtension
 
         $links = SeoLinkerLink::getList(['from_url' => $page->url]);
 
+        $links_in = SeoLinkerLink::getList([
+            'to_url' => $page->url,
+            'type'   => 'internal',
+        ]);
+
+        foreach ($links_in as $ln) {
+            $src = SeoLinkerModel::getOne(['url' => $ln->from_url]);
+            $ln->from_id = $src->id ?? null;
+        }
+
         Design::assign('page', $page);
         Design::assign('links', $links);
+        Design::assign('links_in', $links_in);
 
         return $this->getTemplatePath('templates/page.tpl');
     }
