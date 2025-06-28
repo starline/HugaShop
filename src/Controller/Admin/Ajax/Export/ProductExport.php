@@ -74,7 +74,7 @@ class ProductExport extends BaseAdminController
         $filter['limit'] = $this->products_count;
 
         // Выбираем подкатегории
-        $category_id = Request::get('category_id', 'int');
+        $category_id = Request::getInt('category_id');
         $filter['category_id'] = $category_id;
         if ($category_id && $category = ProductCategory::getCategoryById($category_id)) {
             $filter['category_id'] = $category->children;

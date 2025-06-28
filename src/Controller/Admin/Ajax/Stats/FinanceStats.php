@@ -32,7 +32,7 @@ class FinanceStats extends BaseAdminController
         $request_type   = Request::post('type', 'string');
         $from_date      = Request::post('fromDate') ?: null;
         $to_date        = Request::post('toDate') ?: null;
-        $category_id    = Request::post('category_id', 'integer') ?: null;
+        $category_id    = Request::postInt('category_id') ?: null;
 
         // В месяц
         if (Request::post('filter', 'string')  === 'byMonth') {
@@ -49,7 +49,7 @@ class FinanceStats extends BaseAdminController
                 $params['toDate'] = $to_date;
             }
 
-            if (!empty($purse_id = Request::post('purse_id', 'integer'))) {
+            if (!empty($purse_id = Request::postInt('purse_id'))) {
                 $params['purse_id'] = $purse_id;
                 $result = Statistics::financeByMonth($params);
             }

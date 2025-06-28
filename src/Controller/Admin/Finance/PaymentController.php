@@ -60,7 +60,7 @@ class PaymentController extends BaseAdminController
             }
 
             // Если перевод, создаем второй платеж
-            if (!empty($purse_to_id = Request::post('purse_to_id', 'int'))) {
+            if (!empty($purse_to_id = Request::postInt('purse_to_id'))) {
                 $rel_payment = clone $payment;
                 $rel_payment->purse_id = $purse_to_id;
             }
@@ -123,7 +123,7 @@ class PaymentController extends BaseAdminController
             }
 
             // Обработка связи с сущностью
-            if (!is_null(Request::post('entity_name', 'string')) and !is_null(Request::post('entity_id', 'int'))) {
+            if (!is_null(Request::post('entity_name', 'string')) and !is_null(Request::postInt('entity_id'))) {
                 $contractor->payment_id = $payment->id;
                 $contractor->entity_id = Request::post('entity_id');
                 $contractor->entity_name = Request::post('entity_name');
@@ -165,9 +165,9 @@ class PaymentController extends BaseAdminController
         else {
 
             // Определяем предопределенного контрагента
-            if (!empty(Request::get('contractor_entity_name', 'string')) and !empty(Request::get('contractor_entity_id', 'integer'))) {
+            if (!empty(Request::get('contractor_entity_name', 'string')) and !empty(Request::getInt('contractor_entity_id'))) {
                 $contractor->entity_name = Request::get('contractor_entity_name', 'string');
-                $contractor->entity_id = Request::get('contractor_entity_id', 'integer');
+                $contractor->entity_id = Request::getInt('contractor_entity_id');
                 $contractor = FinancePaymentContractor::setContractorName($contractor);
             }
         }

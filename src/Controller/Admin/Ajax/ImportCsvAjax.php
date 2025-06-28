@@ -68,7 +68,7 @@ class ImportCsvAjax extends BaseAdminController
         }
 
         // Переходим на заданную позицию, если импортируем не сначала
-        if ($from = Request::get('from', 'int')) {
+        if ($from = Request::getInt('from')) {
             fseek($file, $from);
         }
 
@@ -104,7 +104,7 @@ class ImportCsvAjax extends BaseAdminController
         $result->end        = feof($file);                      # И закончили ли полностью весь файл
         $result->from       = ftell($file);                     # На каком месте остановились
         $result->file_size  = filesize($import_file_path);      # Размер всего файла
-        $result->num =      $num = Request::get('num', 'int') + count($imported_items);
+        $result->num =      $num = Request::getInt('num') + count($imported_items);
 
         Design::assign('num', $num);
         Design::assign('items', $imported_items);
@@ -113,7 +113,7 @@ class ImportCsvAjax extends BaseAdminController
 
         fclose($file);
 
-        if (empty(Request::get('from', 'int'))) {
+        if (empty(Request::getInt('from'))) {
             $result->file_size_h = Helper::convertBytes(filesize($import_file_path));
             $result->file_rows = count(file($import_file_path));
         }
@@ -155,7 +155,7 @@ class ImportCsvAjax extends BaseAdminController
             $product = new \stdClass();
 
             // Price
-            if (Request::get('no_price', 'int') != 1 and $new_product['price'] != $prev_product->price) {
+            if (Request::getInt('no_price') != 1 and $new_product['price'] != $prev_product->price) {
                 $product->price = $new_product['price'];
 
                 // Вычисляем старую цену

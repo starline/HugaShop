@@ -212,7 +212,7 @@ class ContentComment extends BaseModel
             $comment = new \stdClass();
             $comment->name =        Request::post('comment_name', 'string');
             $comment->text =        Request::post('comment_text', 'string');
-            $comment->related_id =  Request::post('comment_related_id', 'int');
+            $comment->related_id =  Request::postInt('comment_related_id');
             $check_bot_email =      Request::post('comment_email', 'string');
 
             $comment->text = strip_tags($comment->text);

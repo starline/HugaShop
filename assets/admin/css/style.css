@@ -218,6 +218,7 @@ textarea {
 }
 
 .badge.text-bg-round {
+	white-space: normal;
 	overflow-wrap: anywhere;
 	width: fit-content;
 	cursor: default;
@@ -1559,7 +1560,7 @@ div#sort_links b {
 }
 
 .list .list_row .order_date {
-	padding-top: 19px;
+	padding-top: 4px;
 	text-align: end;
 }
 
@@ -1718,7 +1719,7 @@ span.order_label {
 }
 
 /* Icons */
-.copy_field {
+.badge.copy_field {
 	cursor: pointer;
 	text-align: center;
 	position: relative;

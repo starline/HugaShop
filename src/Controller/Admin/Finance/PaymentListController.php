@@ -48,12 +48,12 @@ class PaymentListController extends BaseAdminController
         }
 
         // Кошелек
-        if ($purse_id = Request::get('purse_id', 'integer')) {
+        if ($purse_id = Request::getInt('purse_id')) {
             $filter['purse_id'] = $purse_id;
         }
 
         // Категория
-        if ($category_id = Request::get('category_id', 'integer')) {
+        if ($category_id = Request::getInt('category_id')) {
             $filter['category_id'] = $category_id;
         }
 

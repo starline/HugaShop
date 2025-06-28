@@ -12,10 +12,11 @@ use HugaShop\Models\Design;
 use HugaShop\Models\Helper;
 use HugaShop\Models\Request;
 use HugaShop\Models\Settings;
-use HugaShop\Models\Localization\Language;
+use App\Services\PaginationService;
 use HugaShop\Models\Product\Product;
-use HugaShop\Models\Product\ProductCategory;
 use HugaShop\Extensions\BaseExtension;
+use HugaShop\Models\Localization\Language;
+use HugaShop\Models\Product\ProductCategory;
 use HugaShop\Extensions\ProductFilling\Models\ProductFilling as ProductFillingModel;
 
 final class ProductFilling extends BaseExtension
@@ -33,11 +34,11 @@ final class ProductFilling extends BaseExtension
             Request::makeRedirect('/admin/extension/Productsfilling');
         }
 
-        $filter = [];
-        $filter['page'] = max(1, Request::get('page', 'int'));
-        $filter['limit'] = Request::get('page', 'string') == 'all' ? 'all' : Settings::getParam('products_num_admin');
 
-        $category_id = Request::get('category_id', 'int');
+        $filter = PaginationService::initFilter();
+
+
+        $category_id = Request::getInt('category_id');
         $filter['category_id'] = $category_id;
         if ($category_id && ($category = ProductCategory::getCategoryById($category_id))) {
             $filter['category_id'] = $category->children;
@@ -61,8 +62,7 @@ final class ProductFilling extends BaseExtension
         Design::assign('categories', $categories);
         Design::assign('products', $products);
         Design::assign('products_count', $products_count);
-        Design::assign('pages_count', ceil($products_count / Settings::getParam('products_num_admin')));
-        Design::assign('current_page', $filter['limit'] == 'all' ? 'all' : $filter['page']);
+        Design::assign('pagination', PaginationService::getPagination($products_count, $filter));
 
         return $this->getTemplatePath('templates/product_list.tpl');
     }

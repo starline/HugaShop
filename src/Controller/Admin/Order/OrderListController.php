@@ -136,7 +136,7 @@ class OrderListController extends BaseAdminController
         if (empty($keyword)) {
 
             // если status не задан, ставим 0
-            if (!$status = Request::get('status', 'integer')) {
+            if (!$status = Request::getInt('status')) {
                 $status = 0;
             }
 
@@ -182,7 +182,7 @@ class OrderListController extends BaseAdminController
      */
     private function applyLabelFilter(&$filter)
     {
-        if ($label_id = Request::get('label', 'int')) {
+        if ($label_id = Request::getInt('label')) {
             if ($label = OrderLabel::getOne($label_id)) {
                 $filter['label'] = $label->id;
                 Design::assign('label', $label);

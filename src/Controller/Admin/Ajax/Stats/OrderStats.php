@@ -57,7 +57,7 @@ class OrderStats extends BaseAdminController
 
 
             // Для  опред. товара
-            if (!empty($product_id = Request::post('product_id', 'int'))) {
+            if (!empty($product_id = Request::postInt('product_id'))) {
 
                 // Поставка или списание со склада
                 // add - поставка
@@ -76,7 +76,7 @@ class OrderStats extends BaseAdminController
 
 
             // Для  опред. категории
-            elseif (!empty($category_id = Request::post('category_id', 'int'))) {
+            elseif (!empty($category_id = Request::postInt('category_id'))) {
 
                 // totalPrice - Сумма выручки
                 // profitPrice -  Сумма прибыли
@@ -88,7 +88,7 @@ class OrderStats extends BaseAdminController
 
 
             // Для опред. менеджера
-            elseif (!empty($manager_id = Request::post('manager_id', 'int'))) {
+            elseif (!empty($manager_id = Request::postInt('manager_id'))) {
 
                 // totalPrice - Общая сумма комиссии менеджера
                 // amount - кол-во обработаных заказов
@@ -118,8 +118,8 @@ class OrderStats extends BaseAdminController
             // amout - кол-во заказов
             else {
                 $filters = array();
-                if (Request::post('paymentMethod', 'int')) {
-                    $filters['payment_method_id'] = Request::post('paymentMethod', 'int');
+                if (Request::postInt('paymentMethod')) {
+                    $filters['payment_method_id'] = Request::postInt('paymentMethod');
                 }
 
                 $result = Statistics::ordersSum($request_type, "byMonth", null, null, $filters);

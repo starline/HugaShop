@@ -50,7 +50,7 @@ class MoveListController extends BaseAdminController
         }
 
         $filter = PaginationService::initFilter();
-        $filter['status'] = Request::get('status', 'integer'); # Тип перемещения
+        $filter['status'] = Request::getInt('status'); # Тип перемещения
 
         // Поиск
         $keyword = Request::get('keyword', 'string');
@@ -71,7 +71,7 @@ class MoveListController extends BaseAdminController
         if ($movements->isNotEmpty()) {
 
             // Товары
-           /* foreach (WarehousePurchase::getPurchases(['move_id' => array_keys($movements)], ["image"]) as $move_p) {
+            /* foreach (WarehousePurchase::getPurchases(['move_id' => array_keys($movements)], ["image"]) as $move_p) {
                 $movements[$move_p->move_id]->purchases[] = $move_p;
 
                 $total->product_amount += $move_p->amount;

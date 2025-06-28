@@ -74,8 +74,8 @@ class ProductImportController extends BaseAdminController
             }
         }
 
-        
-        Design::assign('no_price', Request::post('no_price', 'int'));
+
+        Design::assign('no_price', Request::postInt('no_price'));
         return $this->fetchResponse('product/product_import.tpl');
     }
 

@@ -33,7 +33,7 @@ class ProductListController extends BaseAdminController
         $filter = PaginationService::initFilter();
 
         // Текущая категория
-        $category_id = Request::get('category_id', 'int');
+        $category_id = Request::getInt('category_id');
         $filter['category_id'] = $category_id;
 
         // Если категория существует Выбираем всех деток категории
@@ -42,7 +42,7 @@ class ProductListController extends BaseAdminController
         }
 
         // Текущий бренд
-        $brand_id = Request::get('brand_id', 'int');
+        $brand_id = Request::getInt('brand_id');
         if ($brand_id && $brand = ProductBrand::getBrand($brand_id)) {
             $filter['brand_id'] = $brand->id;
         }
@@ -133,14 +133,14 @@ class ProductListController extends BaseAdminController
                         }
                     case 'move_to_page': {
 
-                            $target_page = Request::post('target_page', 'int');
+                            $target_page = Request::postInt('target_page');
 
                             // Сразу потом откроем эту страницу
                             $filter['page'] = $target_page;
 
                             // До какого товара перемещать
                             $limit = $filter['limit'] * ($target_page - 1);
-                            if ($target_page > Request::get('page', 'int')) {
+                            if ($target_page > Request::getInt('page')) {
                                 $limit += count($ids) - 1;
                             } else {
                                 $ids = array_reverse($ids, true);
@@ -153,7 +153,7 @@ class ProductListController extends BaseAdminController
                             $target_position = $target_product->position;
 
                             // Если вылезли за последний товар - берем позицию последнего товара в качестве цели перемещения
-                            if ($target_page > Request::get('page', 'int') && !$target_position) {
+                            if ($target_page > Request::getInt('page') && !$target_position) {
                                 $target_position = Product::getLastProductPosition();
                             }
 
@@ -180,7 +180,7 @@ class ProductListController extends BaseAdminController
                             break;
                         }
                     case 'move_to_brand': {
-                            $brand_id = Request::post('target_brand', 'int');
+                            $brand_id = Request::postInt('target_brand');
                             $brand = ProductBrand::getBrand($brand_id);
                             $filter['page'] = 1;
                             $filter['brand_id'] = $brand_id;

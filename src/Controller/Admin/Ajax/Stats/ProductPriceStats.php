@@ -17,7 +17,7 @@ class ProductPriceStats extends BaseAdminController
             throw $this->createNotFoundException('Access denied CSRF');
         }
 
-        $product_id = Request::post('product_id', 'int');
+        $product_id = Request::postInt('product_id');
         if (empty($product_id)) {
             return new JsonResponse([]);
         }

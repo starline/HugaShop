@@ -25,8 +25,8 @@ class ProductAjax extends BaseAdminController
 
         $this->checkAdminAccess(['product_content', 'product_price']);
 
-        $category_id = Request::get('category_id', 'integer');
-        $product_id = Request::get('product_id', 'integer');
+        $category_id = Request::getInt('category_id');
+        $product_id = Request::getInt('product_id');
 
         if (!empty($category_id)) {
             $features = ProductFeature::getFeatures(['category_id' => $category_id]);
@@ -62,7 +62,7 @@ class ProductAjax extends BaseAdminController
 
         $limit = 100;
         $keyword = Request::get('query', 'string');
-        $feature_id = Request::get('feature_id', 'integer');
+        $feature_id = Request::getInt('feature_id');
 
         $options = ProductOption::getOptions(array("feature_id" => $feature_id, "keyword" => $keyword, "limit" => $limit));
 

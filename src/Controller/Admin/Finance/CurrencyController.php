@@ -155,7 +155,7 @@ class CurrencyController extends BaseAdminController
 
             // Действия с выбранными
             $action = Request::post('action');
-            $id = Request::post('action_id', 'int');
+            $id = Request::postInt('action_id');
 
             if (!empty($action) && !empty($id)) {
                 switch ($action) {

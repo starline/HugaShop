@@ -64,7 +64,7 @@ class UserListController extends BaseAdminController
             Design::assign('pagination_hide', true);
         }
 
-        if (!empty($group_id = Request::get('group_id', 'int'))) {
+        if (!empty($group_id = Request::getInt('group_id'))) {
             $group = UserGroup::find($group_id);
             $filter['group_id'] = $group->id;
             Design::assign('group', $group);

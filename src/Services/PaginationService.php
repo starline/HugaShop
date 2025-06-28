@@ -22,10 +22,10 @@ class PaginationService
      */
     public static function initFilter(?int $per_page = null): array
     {
-        $per_page - $per_page ?: Settings::getParam('products_num_admin');
-        
+        $per_page = $per_page ?: Settings::getParam('products_num_admin');
+
         return [
-            'page'  => max(1, Request::get('page', 'int')),
+            'page'  => max(1, Request::getInt('page')),
             'limit' => Request::get('page', 'string') === 'all'
                 ? 'all'
                 : $per_page,

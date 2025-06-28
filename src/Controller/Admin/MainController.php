@@ -34,7 +34,7 @@ class MainController extends BaseAdminController
         $user['isLoggedIn'] = true;
         $user['id'] = 3;
 
-        $filter['page'] = max(1, Request::get('page', 'int'));
+        $filter['page'] = max(1, Request::getInt('page'));
         $filter['limit'] = Request::get('page', 'string') == 'all' ? 'all' : Settings::getParam('products_num_admin');
         $orders = Order::getOrders($filter, false, ['delivery_method', 'payment_method']); # Выбираем все заказы
 

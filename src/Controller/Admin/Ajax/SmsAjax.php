@@ -26,7 +26,7 @@ class SmsAjax extends BaseAdminController
         $this->checkAdminAccess('order_edit');
 
         // Выбрать данные заказа
-        $order_id = Request::post('id', 'int');
+        $order_id = Request::postInt('id');
         $order = Order::getOrder($order_id);
 
         $result['result']  = [];

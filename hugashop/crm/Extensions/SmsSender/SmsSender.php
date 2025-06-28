@@ -161,7 +161,7 @@ final class SmsSender extends BaseExtension
             }
 
             $filter = [];
-            $filter['page'] = max(1, Request::get('page', 'int'));
+            $filter['page'] = max(1, Request::getInt('page'));
             $filter['limit'] = Request::get('page', 'string') == 'all' ? 'all' : Settings::getParam('products_num_admin');
 
             $mailing_list = SmsSenderMail::getMailingList($mailing->id, $filter);

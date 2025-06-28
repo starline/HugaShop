@@ -153,7 +153,7 @@ class OrderController extends BaseAdminController
             ////////////////////////////////////////////
             // Статус заказа, обновление склада товаров
             ///////////////////////////////////////////
-            $order_status = Request::post('status', 'int');
+            $order_status = Request::postInt('status');
 
 
             if ($order_status == 0) { # Новый

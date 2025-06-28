@@ -80,6 +80,15 @@ class Request
 
 
     /**
+     * Get int $_GET
+     */
+    public static function getInt(string $name)
+    {
+        return self::get($name, 'int');
+    }
+
+
+    /**
      * Выбираем все значения $_GET
      */
     public static function gets(): array
@@ -126,6 +135,14 @@ class Request
         return $val;
     }
 
+
+    /**
+     * Get int $_GET
+     */
+    public static function postInt(string $name)
+    {
+        return self::post($name, 'int');
+    }
 
     /**
      * Выбираем все значения $_POST

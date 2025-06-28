@@ -94,7 +94,7 @@ class MoveController extends BaseAdminController
                 // Cтатус перемещения, обновление склада товаров
                 // Меняем статус поставки после того как purchases отредактированы
                 ////////////////////////////////////////////////
-                $move_status = Request::post('status', 'int');
+                $move_status = Request::postInt('status');
 
                 // Новый
                 if ($move_status == 0) {

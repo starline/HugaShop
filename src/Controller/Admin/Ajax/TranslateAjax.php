@@ -31,7 +31,7 @@ class TranslateAjax extends BaseAdminController
         }
 
         $entity    = Request::post('entity', 'string');
-        $id        = Request::post('id', 'integer');
+        $id        = Request::postInt('id');
         $lang_code = Request::post('lang', 'string');
 
         if (empty($entity) || empty($id) || empty($lang_code)) {
