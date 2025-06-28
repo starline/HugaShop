@@ -8,6 +8,9 @@
         <h1>{$page->url}</h1>
     </div>
     <div id="main_list">
+        <div class="row gx-5">
+            <div class="col-lg-6 layer">
+                <h2>Исходящие ссылки</h2>
         {if $links}
             <div class="list">
                 {foreach $links as $ln}
@@ -26,5 +29,32 @@
         {else}
             Нет ссылок
         {/if}
+
+            </div>
+            <div class="col-lg-6 layer">
+                <h2>Входящие внутренние ссылки</h2>
+                {if $links_in}
+                    <div class="list">
+                        {foreach $links_in as $ln}
+                            <div class="list_row">
+                                <div class="row col">
+                                    <div class="col-12 col-lg-8 text-break">
+                                        {if $ln->from_id}
+                                            <a href="/admin/extension/{$extension->module}/page/{$ln->from_id}">
+                                                {$ln->from_url}
+                                            </a>
+                                        {else}
+                                            {$ln->from_url}
+                                        {/if}
+                                    </div>
+                                </div>
+                            </div>
+                        {/foreach}
+                    </div>
+                {else}
+                    Нет ссылок
+                {/if}
+            </div>
+        </div>
     </div>
 {/block}
