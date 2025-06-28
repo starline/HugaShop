@@ -54,10 +54,12 @@ class PageListController extends BaseAdminController
             foreach (Helper::getPositions() as $id => $position) {
                 ContentPage::updatePage($id, ['position' => $position]);
             }
+
+            Helper::cache(ContentPage::class)->clear(); # Cache clean
         }
 
         // Отображение
-        $pages = ContentPage::getList([], 'position');
+        $pages = ContentPage::getList(order: 'position');
         Design::assign('pages', $pages);
 
         return $this->fetchResponse('content/page_list.tpl');

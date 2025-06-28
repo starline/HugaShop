@@ -39,13 +39,6 @@ class ContentPage extends BaseModel
     public static function getPage(int|string $id, array $filter = [])
     {
 
-        // Check Cache
-        foreach (ContentPage::getMenu() as $menu_page) {
-            if ($menu_page->id == $id || $menu_page->url == $id) {
-                return $menu_page;
-            }
-        }
-
         if (is_numeric($id) and is_int(intval($id))) {
             $filter['id'] = $id;
         } else {
