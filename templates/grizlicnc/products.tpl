@@ -119,11 +119,11 @@
 									{$f->name}:
 								</td>
 								<td class="feature_values">
-									<a href="{url params=[$f->id=>null, page=>null]}" {if !$smarty.get.$key}class="selected"
-										{/if}>Все</a>
+									<a href="{url params=[$f->id=>null, page=>null]}" {if !$smarty.get.$key}class="selected" {/if}
+										rel="nofollow">Все</a>
 									{foreach $f->options as $o}
 										<a href="{url params=[$f->id=>$o->value, page=>null]}"
-											{if $smarty.get.$key == $o->value}class="selected" {/if}>{$o->value}</a>
+											{if $smarty.get.$key == $o->value}class="selected" {/if} rel="nofollow">{$o->value}</a>
 									{/foreach}
 								</td>
 							</tr>
@@ -136,9 +136,10 @@
 				{if $products|count > 0}
 					<div class="sort">
 						{'Сортировать по'|trans}
-						<a {if $sort=='position'} class="selected" {/if}
-							href="{url sort=position page=null}">{'умолчанию'|trans}</a>
-						<a {if $sort=='price'} class="selected" {/if} href="{url sort=price page=null}">{'цене'|trans}</a>
+						<a {if $sort=='position'} class="selected" {/if} href="{url sort=position page=null}"
+							rel="nofollow">{'умолчанию'|trans}</a>
+						<a {if $sort=='price'} class="selected" {/if} href="{url sort=price page=null}"
+							rel="nofollow">{'цене'|trans}</a>
 					</div>
 				{/if}
 

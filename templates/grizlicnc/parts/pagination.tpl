@@ -23,7 +23,7 @@
 		{$page_to = min($page_from + $visible_pages, $pagination->pages_count - 1)}
 
 		{* Ссылка на 1 страницу отображается всегда *}
-		<a {if $pagination->current_page == 1}class="selected" {/if} href="{url page=null}">1</a>
+		<a {if $pagination->current_page == 1}class="selected" {/if} href="{url page=null}" rel="nofollow">1</a>
 
 		{* Выводим страницы нашего "окна" *}
 		{section name=pages loop=$page_to start=$page_from}
@@ -33,17 +33,17 @@
 
 			{* Для крайних страниц "окна" выводим троеточие, если окно не возле границы навигации *}
 			{if ($p == $page_from + 1 && $p != 2)}
-				<a class="between" href="{url page = ceil($p / 2)}">...</a>
+				<a class="between" href="{url page = ceil($p / 2)}" rel="nofollow">...</a>
 			{elseif ($p == $page_to && $p != $pagination->pages_count - 1)}
-				<a class="between" href="{url page = $p + ceil(($pagination->pages_count - $p) / 2)}">...</a>
+				<a class="between" href="{url page = $p + ceil(($pagination->pages_count - $p) / 2)}" rel="nofollow">...</a>
 			{else}
-				<a class="{if $p == $pagination->current_page}selected{/if}" href="{url page=$p}">{$p}</a>
+				<a class="{if $p == $pagination->current_page}selected{/if}" href="{url page=$p}" rel="nofollow">{$p}</a>
 			{/if}
 		{/section}
 
 		{* Ссылка на последнююю страницу отображается всегда *}
 		<a {if $pagination->current_page == $pagination->pages_count}class="selected" {/if}
-			href="{url page=$pagination->pages_count}">{$pagination->pages_count}</a>
+			href="{url page=$pagination->pages_count}" rel="nofollow">{$pagination->pages_count}</a>
 
 	</div>
 {/if}
