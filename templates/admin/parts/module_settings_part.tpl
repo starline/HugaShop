@@ -8,14 +8,19 @@
         {* Параметры модуля *}
         <ul class="property_block">
             {foreach $module->settings_params as $setting_param}
+                {$setting_value = ''}
+                {if isset(${$module_type}->settings->{$setting_param->variable})}
+                    {$setting_value = ${$module_type}->settings->{$setting_param->variable}}
+                {elseif isset($setting_param->default)}
+                    {$setting_value = $setting_param->default}
+                {/if}
                 {if count((array)$setting_param->options) > 1}
                     <li>
                         <label class="col-form-label" for="{$module_key}-{$setting_param->variable}">{$setting_param->name}</label>
                         <select class="form-select" name="{$module_type}_settings[{$setting_param->variable}]"
                             id="{$module_key}-{$setting_param->variable}">
                             {foreach $setting_param->options as $option}
-                                <option value='{$option->value}' {if $option->value == ${$module_type}->settings->
-                                    {$setting_param->variable}}selected{/if}>
+                                <option value='{$option->value}' {if $option->value == $setting_value}selected{/if}>
                                     {$option->name}</option>
                             {/foreach}
                         </select>
@@ -27,7 +32,7 @@
                             for="{$module_key}-{$setting_param->variable}">{$setting_param->name}</label>
                         <input class="form-check-input" name="{$module_type}_settings[{$setting_param->variable}]" type="checkbox"
                             value="{$option->value}"
-                            {if $option->value == ${$module_type}->settings->{$setting_param->variable}}checked{/if}
+                            {if $option->value == $setting_value}checked{/if}
                         id="{$module_key}-{$setting_param->variable}" />
                     </li>
 
@@ -50,7 +55,7 @@
                     <li>
                         <label class="col-form-label" for="{$module_key}-{$setting_param->variable}">{$setting_param->name}</label>
                         <input class="form-control" name="{$module_type}_settings[{$setting_param->variable}]" type="text"
-                            value="{${$module_type}->settings->{$setting_param->variable}}"
+                            value="{$setting_value}"
                             id="{$module_key}-{$setting_param->variable}"
                             {if !$setting_param->placeholder|empty}placeholder="{$setting_param->placeholder}" {/if} />
                     </li>
