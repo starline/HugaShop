@@ -4,22 +4,38 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.2
  *
  * Import products to warehouse from CSV file
  */
 
 namespace HugaShop\Extensions\WarehouseImport;
 
-use HugaShop\Models\Design;
-use HugaShop\Models\Request;
 use HugaShop\Models\Config;
-use HugaShop\Models\Warehouse\WarehousePlace;
+use HugaShop\Models\Design;
+use HugaShop\Models\Helper;
+use HugaShop\Models\Request;
+
 use HugaShop\Extensions\BaseExtension;
+use HugaShop\Models\Warehouse\WarehousePlace;
+
+use Symfony\Component\HttpFoundation\JsonResponse;
+use HugaShop\Extensions\WarehouseImport\Services\ProductImport;
 
 final class WarehouseImport extends BaseExtension
 {
-    private string $importFile = 'wh_import.csv';
+    private array $columns_names = [
+        'sku'        => ['sku', 'артикул', 'Арт'],
+        'amount'     => ['amount', 'qty', 'количество', 'кол-во'],
+        'price'      => ['price', 'цена'],
+        'cost_price' => ['cost price', 'оптовая цена']
+    ];
+
+    private string $import_file = 'wh_import.csv';
+    private string $column_delimiter = ',';
+
+    private int $products_count = 20;
+
     private string $locale = 'ru_RU.UTF-8';
 
     /**
@@ -37,13 +53,15 @@ final class WarehouseImport extends BaseExtension
 
         if (Request::checkCSRF() && Request::files('file')) {
             $place_id = Request::postInt('place_id');
+
             if ($place_id) {
                 $uploaded_name = Request::files('file', 'tmp_name');
                 $temp_name = tempnam(Config::get('import_files_dir'), 'temp_');
 
                 if (move_uploaded_file($uploaded_name, $temp_name)) {
-                    $dest = Config::get('import_files_dir') . $this->importFile;
-                    if ($this->convertFile($temp_name, $dest)) {
+                    $dest = Config::get('import_files_dir') . $this->import_file;
+
+                    if (ProductImport::convertFile($temp_name, $dest)) {
                         Design::assign('place_id', $place_id);
                         Design::assign('filename', Request::files('file', 'name'));
                     } else {
@@ -62,63 +80,75 @@ final class WarehouseImport extends BaseExtension
         return $this->getTemplatePath('templates/index.tpl');
     }
 
-    private function convertFile(string $source, string $dest): bool
+
+    /**
+     * Import products
+     */
+    public function import()
     {
-        $teststring = file_get_contents($source, false, null, 0, 1000000);
-        if (preg_match('//u', $teststring)) {
-            return copy($source, $dest);
+
+        setlocale(LC_ALL, $this->locale);
+
+        $place_id = Request::getInt('place_id');
+        if (!WarehousePlace::find($place_id)) {
+            return new JsonResponse(['error' => 'place'], 400);
         }
 
-        $src = fopen($source, 'r');
-        $dst = fopen($dest, 'w');
-        if (!$src || !$dst) {
-            return false;
+        $import_file_path = Config::get('import_files_dir') . $this->import_file;
+        $file = fopen($import_file_path, 'r');
+
+        $columns = fgetcsv($file, null, $this->column_delimiter);
+        foreach ($columns as &$column) {
+            if ($internal = ProductImport::internalColumnName($column, $this->columns_names)) {
+                $column = $internal;
+            }
         }
 
-        while (($line = fgets($src, 4096)) !== false) {
-            $line = $this->winToUTF($line);
-            fwrite($dst, $line);
+        if (!in_array('sku', $columns)) {
+            return new JsonResponse(['error' => 'columns'], 400);
         }
 
-        fclose($src);
-        fclose($dst);
-        return true;
-    }
-
-    private function winToUTF(string $text): string
-    {
-        if (function_exists('iconv')) {
-            return @iconv('windows-1251', 'UTF-8', $text);
+        if ($from = Request::getInt('from')) {
+            fseek($file, $from);
         }
 
-        $t = '';
-        for ($i = 0, $m = strlen($text); $i < $m; $i++) {
-            $c = ord($text[$i]);
-            if ($c <= 127) {
-                $t .= chr($c);
-                continue;
-            }
-            if ($c >= 192 && $c <= 207) {
-                $t .= chr(208) . chr($c - 48);
-                continue;
-            }
-            if ($c >= 208 && $c <= 239) {
-                $t .= chr(208) . chr($c - 48);
-                continue;
-            }
-            if ($c >= 240 && $c <= 255) {
-                $t .= chr(209) . chr($c - 112);
-                continue;
-            }
-            if ($c == 184) {
-                $t .= chr(209) . chr(145);
-                continue;
-            }
-            if ($c == 168) {
-                $t .= chr(208) . chr(129);
-                continue;
+        $imported_items = [];
+        for ($k = 0; !feof($file) && $k < $this->products_count; $k++) {
+            $line = fgetcsv($file, 0, $this->column_delimiter);
+            if (is_array($line)) {
+
+                $csv_product = [];
+                foreach ($columns as $num => $name) {
+                    $csv_product[$name] = $line[$num] ?? null;
+                }
+
+                $items = ProductImport::importItem($csv_product, $place_id);
+                foreach ($items as $it) {
+                    $imported_items[] = $it;
+                }
             }
         }
-        return $t;
+
+        $result = new \stdClass();
+        $result->end = feof($file);
+        $result->from = ftell($file);
+        $result->file_size = filesize($import_file_path);
+        $result->num = $num = Request::getInt('num') + count($imported_items);
+
+        Design::assign('num', $num);
+        Design::assign('items', $imported_items);
+        Design::assign('ajax_block', 'imported_products');
+
+        $content_tpl = $this->getTemplatePath('templates/import_part.tpl');
+        $result->items = Design::fetch($content_tpl);
+
+        fclose($file);
+
+        if (empty(Request::getInt('from'))) {
+            $result->file_size_h = Helper::convertBytes(filesize($import_file_path));
+            $result->file_rows = count(file($import_file_path));
+        }
+
+        return $result;
     }
 }

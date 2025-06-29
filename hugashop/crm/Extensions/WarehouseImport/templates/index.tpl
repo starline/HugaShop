@@ -24,7 +24,8 @@
         {if $filename}
             <h1 class="mb-2">Импорт {$filename}</h1>
             <div class="progress mt-2" id="progressbar">
-                <div class="progress-bar bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                <div class="progress-bar bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                    style="width: 0%"></div>
             </div>
             <ul class="list" id="import_result"></ul>
         {else}
@@ -48,8 +49,8 @@
                     </div>
                 </div>
                 <p class="mt-2">
-                    (максимальный размер файла &mdash;
-                    {if $config->max_upload_filesize>1024*1024}{$config->max_upload_filesize/1024/1024|round:'2'} МБ{else}{$config->max_upload_filesize/1024|round:'2'} КБ{/if})
+                    максимальный размер файла &mdash; {$config->max_upload_filesize|byte_convert}
+
                 </p>
             </form>
         {/if}
@@ -72,52 +73,74 @@
     {/foreach}
 {/block}
 
+
 {block name=body_script append}
     <script type="module">
         import '{"js/piecon/piecon.js"|asset}';
+
         {if $filename}
             const place_id = {$place_id};
             let in_process = false;
             let file_rows = 0;
             let file_size = 0;
             let num = 0;
+            let ajax_url = "/admin/extension/{$extension->module}/ajax/import";
+
             {literal}
-            $(function() {
-                Piecon.setOptions({fallback:'force'});
-                Piecon.setProgress(0);
-                in_process = true;
-                do_import();
-                function do_import(from) {
-                    from = typeof(from) != 'undefined' ? from : 0;
-                    $.ajax({
-                        url: '/admin/ajax/warehouse_import',
-                        data: {from: from, num: num, place_id: place_id},
-                        dataType: 'json',
-                        success: function(data) {
-                            $('ul#import_result').prepend(data.items);
-                            file_rows = data.file_rows ?? file_rows;
-                            file_size = data.file_size ?? file_size;
-                            num = data.num ?? num;
-                            Piecon.setProgress(Math.round(100 * data.from / file_size));
-                            $('.progress-bar').css('width', Math.round(100 * data.from / file_size) + '%');
-                            if (data != false && !data.end) {
-                                do_import(data.from);
-                            } else {
-                                Piecon.setProgress(100);
-                                $('#progressbar').hide('fast');
-                                in_process = false;
+                $(function() {
+                    Piecon.setOptions({fallback:'force'});
+                    Piecon.setProgress(0);
+                    in_process = true;
+                    do_import();
+
+                    function do_import(from) {
+                        from = typeof(from) != 'undefined' ? from : 0;
+                        
+                        $.ajax({
+                            url: ajax_url,
+                            data: {from: from, num: num, place_id: place_id},
+                            dataType: 'json',
+                            success: function(data) {
+                                $('ul#import_result').prepend(data.items);
+                                file_rows = data.file_rows ?? file_rows;
+                                file_size = data.file_size ?? file_size;
+                                num = data.num ?? num;
+                                Piecon.setProgress(Math.round(100 * data.from / file_size));
+                                $('.progress-bar').css('width', Math.round(100 * data.from / file_size) + '%');
+                                if (data != false && !data.end) {
+                                    do_import(data.from);
+                                } else {
+                                    Piecon.setProgress(100);
+                                    $('#progressbar').hide('fast');
+                                    in_process = false;
+                                }
                             }
-                        }
-                    });
-                }
-            });
+                        });
+                    }
+                });
             {/literal}
         {/if}
     </script>
+
     <style>
-        ul#import_result {display:block;padding-top:10px;}
-        ul#import_result li {margin-bottom:5px;}
-        ul#import_result li .count {width:30px;display:inline-block;}
-        ul#import_result li .status {padding:0 16px 0 0;background-image:url({'images/accept.png'|asset});background-repeat:no-repeat;}
+        ul#import_result {
+            display: block;
+            padding-top: 10px;
+        }
+
+        ul#import_result li {
+            margin-bottom: 5px;
+        }
+
+        ul#import_result li .count {
+            width: 30px;
+            display: inline-block;
+        }
+
+        ul#import_result li .status {
+            padding: 0 16px 0 0;
+            background-image:url({'images/accept.png'|asset});
+            background-repeat: no-repeat;
+        }
     </style>
 {/block}

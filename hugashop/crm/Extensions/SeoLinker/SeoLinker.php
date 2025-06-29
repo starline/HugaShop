@@ -55,8 +55,7 @@ final class SeoLinker extends BaseExtension
             }
         }
 
-        $filter = PaginationService::initFilter();
-
+        $filter         = PaginationService::initFilter();
         $pages          = SeoLinkerModel::getList($filter, order: ['in_internal', 'desc']);
         $pages_count    = SeoLinkerModel::getCount();
 

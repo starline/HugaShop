@@ -16,6 +16,7 @@ use HugaShop\Models\Extension;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ExtensionController extends BaseAdminController
 {
@@ -64,6 +65,25 @@ class ExtensionController extends BaseAdminController
 
 
     /**
+     * Ajax Request
+     */
+    #[Route('/admin/extension/{name}/ajax/{path}', name: 'ExtensionAjaxAdmin', priority: 2)]
+    public function ajax(string $name, string $path): Response
+    {
+
+        $this->checkAdminAccess('extension');
+
+        if (empty($name) || empty($Extension = Extension::makeExtension($name))) {
+            return $this->redirectToRoute('ExtensionListAdmin');
+        }
+
+        Design::assign('extension', $Extension->getExtension());
+
+        return new JsonResponse($Extension->$path());
+    }
+
+
+    /**
      * Get Settings page
      */
     #[Route('/admin/extension/{name}/settings', name: 'ExtensionSettingsAdmin', priority: 2)]
@@ -81,7 +101,7 @@ class ExtensionController extends BaseAdminController
             Design::setFlashMessage('update', Extension::updateExt($Extension->getName(), $extension_settings));
             return $this->redirectToRoute('ExtensionSettingsAdmin', ['name' => $Extension->getName()]);
         }
-        
+
         Design::assign('extension', $Extension->getExtension());
         Design::assign('extensions', [$Extension->getName() => $Extension->getConfig()]);
 
