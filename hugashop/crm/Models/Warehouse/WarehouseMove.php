@@ -247,7 +247,7 @@ class WarehouseMove extends BaseModel
         if (!$movement->closed) {
             foreach (WarehousePurchase::where('move_id', $movement->id)->get() as $purchase) {
                 if ($purchase->amount) {
-                    Product::updateStock($purchase->product_id, $factor * $purchase->amount);
+                    Product::changeAmount($purchase->product_id, $factor * $purchase->amount);
                     WarehouseProduct::changeAmount($purchase->product_id, $movement->place_id, $factor * $purchase->amount);
                 }
             }
@@ -276,8 +276,8 @@ class WarehouseMove extends BaseModel
         if ($movement->closed) {
             foreach (WarehousePurchase::where('move_id', $movement->id)->get() as $purchase) {
                 if ($purchase->amount) {
-                    Product::updateStock($purchase->product_id, - ($factor) * $purchase->amount);
-                    WarehouseProduct::changeAmount($purchase->product_id, $movement->place_id, -($factor) * $purchase->amount);
+                    Product::changeAmount($purchase->product_id, - ($factor) * $purchase->amount);
+                    WarehouseProduct::changeAmount($purchase->product_id, $movement->place_id, - ($factor) * $purchase->amount);
                 }
             }
             $movement->update(['closed' => 0]);

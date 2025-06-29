@@ -354,7 +354,7 @@ class Order extends BaseModel
                 if (!empty($purchase->product) and !is_null($purchase->product->stock)) {
 
                     // Кол-во нужно добавлять/вычетать в SQL запросе. Чтобы не произошла коллизия при одновременных запросах
-                    Product::updateStock($purchase->product->id, -$purchase->amount);
+                    Product::changeAmount($purchase->product->id, -$purchase->amount);
                 }
             }
 
@@ -387,7 +387,7 @@ class Order extends BaseModel
                 if (!empty($purchase->product) && !is_null($purchase->product->stock)) {
 
                     // Кол-во нужно добавлять/вычетать в SQL запросе. Чтобы не произошла коллизия при одновременных запросах
-                    Product::updateStock($purchase->product->id, $purchase->amount);
+                    Product::changeAmount($purchase->product->id, $purchase->amount);
                 }
             }
             self::where('id', $order->id)->update(['closed' => 0]);

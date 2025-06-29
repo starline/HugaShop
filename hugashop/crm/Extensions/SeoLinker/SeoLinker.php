@@ -41,7 +41,6 @@ final class SeoLinker extends BaseExtension
                 SeoLinkerLink::query()->delete();
             }
 
-
             [$scanned, $pending] = ScanBatch::scanBatch(
                 $base_url,
                 limit: 1,

@@ -26,13 +26,6 @@ class WarehouseProduct extends BaseModel
         'amount'     => ['type' => 'int',     'def'  => 0],
     ];
 
-    public static function updateStock(array $purchase)
-    {
-        return self::updateOrCreate(
-            ['product_id' => $purchase['product_id'], 'place_id' => $purchase['place_id']],
-            $purchase
-        );
-    }
 
     /**
      * Increment or decrement stock count for a product on specific place

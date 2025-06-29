@@ -513,7 +513,7 @@ class Product extends BaseModel
     /**
      * Live update product stock
      */
-    public static function updateStock(int $product_id, int $amount)
+    public static function changeAmount(int $product_id, int $amount)
     {
         return self::where('id', $product_id)->whereNotNull('stock')->increment('stock', $amount);
     }

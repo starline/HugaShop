@@ -95,17 +95,17 @@ class WarehousePurchase extends BaseModel
 
                 // забираем со старого варианта
                 if ($old->product_id) {
-                    Product::updateStock($old->product_id, -$factor * $old->amount);
+                    Product::changeAmount($old->product_id, -$factor * $old->amount);
                     WarehouseProduct::changeAmount($old->product_id, $movement->place_id, -$factor * $old->amount);
                 }
 
                 // добавляем в новый вариант
-                Product::updateStock($purchase->product_id, $factor * $purchase->amount);
+                Product::changeAmount($purchase->product_id, $factor * $purchase->amount);
                 WarehouseProduct::changeAmount($purchase->product_id, $movement->place_id, $factor * $purchase->amount);
 
                 // обновляем склад с новым значением поставки
             } elseif (!empty($purchase->product_id)) {
-                Product::updateStock($old->product_id, -$factor * ($old->amount - $purchase->amount));
+                Product::changeAmount($old->product_id, -$factor * ($old->amount - $purchase->amount));
                 WarehouseProduct::changeAmount($old->product_id, $movement->place_id, -$factor * ($old->amount - $purchase->amount));
             }
         }
@@ -148,7 +148,7 @@ class WarehousePurchase extends BaseModel
         // Если заказ закрыт, нужно обновить склад при добавлении покупки
         if ($movement->closed && !empty($purchase->amount)) {
             $factor = in_array($movement->status, [3, 4]) ? -1 : 1;
-            Product::updateStock($product->id, $factor * $purchase->amount);
+            Product::changeAmount($product->id, $factor * $purchase->amount);
             WarehouseProduct::changeAmount($product->id, $movement->place_id, $factor * $purchase->amount);
         }
 
@@ -178,7 +178,7 @@ class WarehousePurchase extends BaseModel
             // Если списание, прибавляем на складе
             // Если поставка, отнимаем со склада
             $factor = in_array($movement->status, [3, 4]) ? 1 : -1;
-            Product::updateStock($purchase->product_id, $factor * $purchase->amount);
+            Product::changeAmount($purchase->product_id, $factor * $purchase->amount);
             WarehouseProduct::changeAmount($purchase->product_id, $movement->place_id, $factor * $purchase->amount);
         }
 

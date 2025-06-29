@@ -178,7 +178,7 @@ class OrderPurchase extends BaseModel
         $purchase->amount       = $purchase->amount       ?? 1;
 
         if ($order->closed && !empty($purchase->amount) && !empty($purchase->product_id)) {
-            Product::updateStock($purchase->product_id, -$purchase->amount);
+            Product::changeAmount($purchase->product_id, -$purchase->amount);
         }
 
         return static::createOne($purchase);
@@ -200,7 +200,7 @@ class OrderPurchase extends BaseModel
         }
 
         if ($order->closed && !empty($purchase->amount)) {
-            Product::updateStock($purchase->product_id, $purchase->amount);
+            Product::changeAmount($purchase->product_id, $purchase->amount);
         }
 
         return self::deleteOne($id) > 0;

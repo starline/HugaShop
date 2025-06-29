@@ -331,7 +331,7 @@ class TestScript extends BaseExtension
                          * Удалить wh_move_purchase.variant_id
                          * 
                          */
-                        if (1) {
+                        if (0) {
 
                             // 1. Исправляем типы комментарий
                             if (0) {
@@ -452,7 +452,7 @@ class TestScript extends BaseExtension
                             }
 
                             // Тоже самое для Cart
-                            if (1) {
+                            if (0) {
                                 $purchases = CartPurchase::query()->get();
                                 foreach ($purchases as $purchase) {
 
@@ -469,6 +469,11 @@ class TestScript extends BaseExtension
 
                             // В ProductRelated удалить $table 
                             // В таблице переименовать product_product_relates на product_related
+
+                            // Перенос всех товаров в первый склад по списку
+                            if (1) {
+                                // TODO: перенеси все товары В первый склад по списку
+                            }
 
 
                             $this->result[] = 'done';
