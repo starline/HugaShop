@@ -54,7 +54,7 @@ class MoveListController extends BaseAdminController
             Design::assign('keyword', $keyword);
         }
 
-        $movements =        WarehouseMove::getMovements($filter, join: ['images', 'purchases']); # Выбираем все поставки
+        $movements =        WarehouseMove::getMovements($filter, join: ['images', 'purchases', 'purchases.product', 'purchases.product.image']); # Выбираем все поставки
         $movements_count =  WarehouseMove::countMovements($filter);
 
         // Собираем статистические данные
@@ -65,16 +65,11 @@ class MoveListController extends BaseAdminController
 
         if ($movements->isNotEmpty()) {
 
-            // Товары
-            /* foreach (WarehousePurchase::getPurchases(['move_id' => array_keys($movements)], ["image"]) as $move_p) {
-                $movements[$move_p->move_id]->purchases[] = $move_p;
+            // TODO: сделай подсчет общей себестоимости всех выбранных поставок(cost_price) 
+            // Обзей розничной стоимости (retail_price)
+            // Кол-во единиц товара во всех выбранных поставках (product_amount)
+            // только для status=0 и status=1
 
-                $total->product_amount += $move_p->amount;
-                $total->retail_price += $move_p->price * $move_p->amount;
-                $total->cost_price += $move_p->cost_price * $move_p->amount;
-            }
-
-            $total->await_movements_count = $movements_count;*/
         }
 
         Design::assign('total', $total);

@@ -162,12 +162,11 @@ class OrderListController extends BaseAdminController
             'labels'
         ]);
         $orders_count   = Order::getOrdersCount($filter);
-
         $orders_price   = Order::getOrdersPrice($filter); # Выбираем общую сумму заказов
         $labels         = OrderLabel::getLabels(); # Метки заказов
 
+        
         Design::assign('pagination', PaginationService::getPagination($orders_count, $filter));
-
         Design::assign('orders_count', $orders_count);
         Design::assign('orders_price', $orders_price);
         Design::assign('orders', $orders);
