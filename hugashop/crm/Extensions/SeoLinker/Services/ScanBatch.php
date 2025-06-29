@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.5
+ * @version 1.7
  *
  */
 
@@ -20,11 +20,20 @@ use HugaShop\Extensions\SeoLinker\Services\CrawlerObserver;
 final class ScanBatch
 {
 
+    private static $delay;
+    private static $deth;
+    private static $limit;
+
     /**
      * Scan Batch
      */
-    public static function scanBatch(string $base_url, int $limit): array
+    public static function scanBatch(string $base_url, int $limit = 1, int $delay = 0, int $deth = 0): array
     {
+
+        // Params
+        self::$delay    = $delay ?: 0;
+        self::$limit    = $limit ?: 1;
+        self::$deth     = $deth ?: 0;
 
         if (!SeoLinker::where('url', $base_url)->exists()) {
             SeoLinker::insert([
@@ -34,7 +43,7 @@ final class ScanBatch
             ]);
         }
 
-        $pages = SeoLinker::where('scanned', 0)->limit($limit)->get();
+        $pages = SeoLinker::where('scanned', 0)->limit(self::$limit)->get();
 
         foreach ($pages as $page) {
             [$outInternal, $outExternal, $links] = self::crawlPage($page->url);
@@ -103,8 +112,9 @@ final class ScanBatch
             ->setCrawlObserver($observer)
             //->ignoreRobots() # ignore robots.txt rules
             //->acceptNofollowLinks()
+            ->setDelayBetweenRequests(self::$delay) // After every page crawled, the crawler will wait for 150ms
             ->setCrawlProfile(new CrawlInternalUrls($url))
-            ->setMaximumDepth(0)
+            ->setMaximumDepth(self::$deth)
             ->setParseableMimeTypes(['text/html'])
             ->startCrawling($url);
 

@@ -2,5 +2,5 @@ name: "SeoLinker"
 description: "Анализ внутренних ссылок сайта"
 settings_params:
   - { variable: base_url, name: "Стартовая страница сканирования" }
-  - { variable: delay, name: "Задержка сканирования, сек.", default: 0 }
+  - { variable: delay, name: "Задержка сканирования, мсек.", default: 0 }
 version: 1.2
