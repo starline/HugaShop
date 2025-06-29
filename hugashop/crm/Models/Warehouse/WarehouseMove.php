@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.5
+ * @version 2.7
  *
  * Работаем со складом, закупками, поставками, списанием
  *
@@ -129,6 +129,42 @@ class WarehouseMove extends BaseModel
     public static function countMovements(array $filter = []): int
     {
         return self::getMovements($filter, count: true);
+    }
+
+
+    /**
+     * Подсчитываем общую себестоимость, розничную стоимость и количество
+     * товаров в выбранных перемещениях
+     * @param array $filter
+     * @return object
+     */
+    public static function getMovementsTotals(array $filter = []): object
+    {
+        $query = self::query();
+
+        if (isset($filter['status'])) {
+            $query->where('status', $filter['status']);
+        } else {
+            $query->whereNotIn('status', [3, 4]);
+        }
+
+        $movements = $query->with('purchases')->get();
+
+        $totals = [
+            'cost_price'     => 0.0,
+            'retail_price'   => 0.0,
+            'product_amount' => 0,
+        ];
+
+        foreach ($movements as $move) {
+            foreach ($move->purchases as $purchase) {
+                $totals['cost_price']   += $purchase->cost_price * $purchase->amount;
+                $totals['retail_price'] += $purchase->price * $purchase->amount;
+                $totals['product_amount'] += $purchase->amount;
+            }
+        }
+
+        return (object) $totals;
     }
 
 

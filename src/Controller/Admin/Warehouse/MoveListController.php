@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.5
  *
  */
 
@@ -63,13 +63,11 @@ class MoveListController extends BaseAdminController
         $total->retail_price = 0;
         $total->product_amount = 0;
 
-        if ($movements->isNotEmpty()) {
-
-            // TODO: сделай подсчет общей себестоимости всех выбранных поставок(cost_price) 
-            // Обзей розничной стоимости (retail_price)
-            // Кол-во единиц товара во всех выбранных поставках (product_amount)
-            // только для status=0 и status=1
-
+        if (in_array($filter['status'], [0, 1], true)) {
+            $totals = WarehouseMove::getMovementsTotals($filter);
+            $total->cost_price = $totals->cost_price;
+            $total->retail_price = $totals->retail_price;
+            $total->product_amount = $totals->product_amount;
         }
 
         Design::assign('total', $total);
