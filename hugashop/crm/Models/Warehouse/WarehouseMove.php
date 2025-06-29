@@ -144,8 +144,6 @@ class WarehouseMove extends BaseModel
 
         if (isset($filter['status'])) {
             $query->where('status', $filter['status']);
-        } else {
-            $query->whereNotIn('status', [3, 4]);
         }
 
         $movements = $query->with('purchases')->get();
@@ -158,9 +156,9 @@ class WarehouseMove extends BaseModel
 
         foreach ($movements as $move) {
             foreach ($move->purchases as $purchase) {
-                $totals['cost_price']   += $purchase->cost_price * $purchase->amount;
-                $totals['retail_price'] += $purchase->price * $purchase->amount;
-                $totals['product_amount'] += $purchase->amount;
+                $totals['cost_price']       += $purchase->cost_price * $purchase->amount;
+                $totals['retail_price']     += $purchase->price * $purchase->amount;
+                $totals['product_amount']   += $purchase->amount;
             }
         }
 

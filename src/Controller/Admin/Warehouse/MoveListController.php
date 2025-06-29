@@ -58,22 +58,12 @@ class MoveListController extends BaseAdminController
         $movements_count =  WarehouseMove::countMovements($filter);
 
         // Собираем статистические данные
-        $total = new \stdClass();
-        $total->cost_price = 0;
-        $total->retail_price = 0;
-        $total->product_amount = 0;
-
         if (in_array($filter['status'], [0, 1], true)) {
-            $totals = WarehouseMove::getMovementsTotals($filter);
-            $total->cost_price = $totals->cost_price;
-            $total->retail_price = $totals->retail_price;
-            $total->product_amount = $totals->product_amount;
+            $total = WarehouseMove::getMovementsTotals($filter);
+            Design::assign('total', $total);
         }
 
-        Design::assign('total', $total);
-
         Design::assign('pagination', PaginationService::getPagination($movements_count, $filter));
-
         Design::assign('movements', $movements);
         Design::assign('movements_count', $movements_count);
         Design::assign('status', $filter['status']);
