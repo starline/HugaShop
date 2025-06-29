@@ -15,11 +15,10 @@ use HugaShop\Models\BaseModel;
 
 class WarehouseProduct extends BaseModel
 {
-    protected $table = 'wh_product';
+    protected $table = 'wh_place_product';
 
     protected static $table_fields = [
         'id'         => ['type' => 'int',     'extra' => 'AUTO_INCREMENT'],
-        'move_id'    => ['type' => 'int'],
         'product_id' => ['type' => 'int'],
         'place_id'   => ['type' => 'int'],
         'cost_price' => ['type' => 'decimal', 'def'  => 0.00],
@@ -40,7 +39,6 @@ class WarehouseProduct extends BaseModel
             'product_id' => $product_id,
             'place_id'   => $place_id,
         ], [
-            'move_id'    => 0,
             'cost_price' => 0,
             'amount'     => 0,
         ]);

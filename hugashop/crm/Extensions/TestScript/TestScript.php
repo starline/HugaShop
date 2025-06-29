@@ -333,7 +333,7 @@ class TestScript extends BaseExtension
                          * Удалить wh_move_purchase.variant_id
                          * 
                          */
-                        if (0) {
+                        if (1) {
 
                             // 1. Исправляем типы комментарий
                             if (0) {
@@ -473,15 +473,12 @@ class TestScript extends BaseExtension
                             // В таблице переименовать product_product_relates на product_related
 
                             // Перенос всех товаров в первый склад по списку
-                            if (1) {
+                            if (0) {
                                 $place = WarehousePlace::getList(order: 'position')->first();
                                 if ($place) {
-                                    WarehouseProduct::query()->delete();
-
                                     Product::chunk(100, function ($products) use ($place) {
                                         foreach ($products as $product) {
                                             WarehouseProduct::createOne([
-                                                'move_id'    => 0,
                                                 'product_id' => $product->id,
                                                 'place_id'   => $place->id,
                                                 'cost_price' => $product->cost_price ?? 0,
@@ -494,6 +491,11 @@ class TestScript extends BaseExtension
                                 } else {
                                     $this->result[] = 'No warehouse places found';
                                 }
+                            }
+
+
+                            if (1) {
+                                // TODO:
                             }
 
 
