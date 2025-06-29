@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  * 
  * @author Andri Huga
- * @version 2.7
+ * @version 2.8
  * 
  */
 
@@ -12,6 +12,7 @@ namespace HugaShop\Models\Warehouse;
 
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\Product\Product;
+use HugaShop\Models\Warehouse\WarehouseProduct;
 use Illuminate\Support\Collection;
 
 class WarehousePurchase extends BaseModel
@@ -95,14 +96,17 @@ class WarehousePurchase extends BaseModel
                 // забираем со старого варианта
                 if ($old->product_id) {
                     Product::updateStock($old->product_id, -$factor * $old->amount);
+                    WarehouseProduct::changeAmount($old->product_id, $movement->place_id, -$factor * $old->amount);
                 }
 
                 // добавляем в новый вариант
                 Product::updateStock($purchase->product_id, $factor * $purchase->amount);
+                WarehouseProduct::changeAmount($purchase->product_id, $movement->place_id, $factor * $purchase->amount);
 
                 // обновляем склад с новым значением поставки
             } elseif (!empty($purchase->product_id)) {
                 Product::updateStock($old->product_id, -$factor * ($old->amount - $purchase->amount));
+                WarehouseProduct::changeAmount($old->product_id, $movement->place_id, -$factor * ($old->amount - $purchase->amount));
             }
         }
 
@@ -145,6 +149,7 @@ class WarehousePurchase extends BaseModel
         if ($movement->closed && !empty($purchase->amount)) {
             $factor = in_array($movement->status, [3, 4]) ? -1 : 1;
             Product::updateStock($product->id, $factor * $purchase->amount);
+            WarehouseProduct::changeAmount($product->id, $movement->place_id, $factor * $purchase->amount);
         }
 
         return WarehousePurchase::create($purchase);
@@ -174,6 +179,7 @@ class WarehousePurchase extends BaseModel
             // Если поставка, отнимаем со склада
             $factor = in_array($movement->status, [3, 4]) ? 1 : -1;
             Product::updateStock($purchase->product_id, $factor * $purchase->amount);
+            WarehouseProduct::changeAmount($purchase->product_id, $movement->place_id, $factor * $purchase->amount);
         }
 
         return self::deleteOne($id) > 0;

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  * Работаем со складом, закупками, поставками, списанием
  *
@@ -17,6 +17,7 @@ use HugaShop\Models\Helper;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\User\User;
 use HugaShop\Models\Product\Product;
+use HugaShop\Models\Warehouse\WarehouseProduct;
 use Illuminate\Support\Collection;
 use HugaShop\Models\Finance\FinancePayment;
 use HugaShop\Models\Finance\FinancePaymentContractor;
@@ -247,6 +248,7 @@ class WarehouseMove extends BaseModel
             foreach (WarehousePurchase::where('move_id', $movement->id)->get() as $purchase) {
                 if ($purchase->amount) {
                     Product::updateStock($purchase->product_id, $factor * $purchase->amount);
+                    WarehouseProduct::changeAmount($purchase->product_id, $movement->place_id, $factor * $purchase->amount);
                 }
             }
             $movement->update(['closed' => 1]);
@@ -275,6 +277,7 @@ class WarehouseMove extends BaseModel
             foreach (WarehousePurchase::where('move_id', $movement->id)->get() as $purchase) {
                 if ($purchase->amount) {
                     Product::updateStock($purchase->product_id, - ($factor) * $purchase->amount);
+                    WarehouseProduct::changeAmount($purchase->product_id, $movement->place_id, -($factor) * $purchase->amount);
                 }
             }
             $movement->update(['closed' => 0]);
