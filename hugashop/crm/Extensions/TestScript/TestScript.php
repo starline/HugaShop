@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.4
+ * @version 2.5
  *
  */
 
@@ -35,6 +35,8 @@ use HugaShop\Models\Product\ProductRelated;
 use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\Filesystem\Filesystem;
 use HugaShop\Models\Warehouse\WarehousePurchase;
+use HugaShop\Models\Warehouse\WarehousePlace;
+use HugaShop\Models\Warehouse\WarehouseProduct;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Mailer\Transport\Transports;
 use Symfony\Component\Process\PhpExecutableFinder;
@@ -472,7 +474,26 @@ class TestScript extends BaseExtension
 
                             // Перенос всех товаров в первый склад по списку
                             if (1) {
-                                // TODO: перенеси все товары В первый склад по списку
+                                $place = WarehousePlace::getList(order: 'position')->first();
+                                if ($place) {
+                                    WarehouseProduct::query()->delete();
+
+                                    Product::chunk(100, function ($products) use ($place) {
+                                        foreach ($products as $product) {
+                                            WarehouseProduct::createOne([
+                                                'move_id'    => 0,
+                                                'product_id' => $product->id,
+                                                'place_id'   => $place->id,
+                                                'cost_price' => $product->cost_price ?? 0,
+                                                'amount'     => $product->stock ?? 0,
+                                            ]);
+                                        }
+                                    });
+
+                                    $this->result[] = 'All products moved to warehouse #' . $place->id;
+                                } else {
+                                    $this->result[] = 'No warehouse places found';
+                                }
                             }
 
 
