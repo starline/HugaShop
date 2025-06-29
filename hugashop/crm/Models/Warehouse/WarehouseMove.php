@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.4
+ * @version 2.5
  *
  * Работаем со складом, закупками, поставками, списанием
  *
@@ -69,6 +69,7 @@ class WarehouseMove extends BaseModel
 
     /**
      * Выбрать список поставок
+     * join: purchases.product.image |images
      * @param array $filter
      * @param $count
      */
@@ -105,17 +106,8 @@ class WarehouseMove extends BaseModel
             return $query->count();
         }
 
-        if (in_array('images', $join)) {
-            $with[] = 'images';
-        }
-        if (in_array('purchases', $join)) {
-            $with[] = 'purchases';
-            $with[] = 'purchases.product';
-            $with[] = 'purchases.product.image'; # добавляем фото товара
-        }
-
-        if (!empty($with)) {
-            $query->with($with);
+        if (!empty($join)) {
+            $query->with($join);
         }
 
         $query->orderBy('id', 'desc');
@@ -141,34 +133,16 @@ class WarehouseMove extends BaseModel
 
 
     /**
-     * Выбрать определенную поставку
+     * Выбрать определенную поставку.
+     * join: payments.category | purchases.product.image | purchases.warehouse_move |images
      * @param int $id
      */
     public static function getMovement(int $id, $join = []): ?self
     {
         $query = self::query();
 
-        if (in_array('images', $join)) {
-            $with[] = 'images';
-        }
-        if (in_array('purchases', $join) || in_array('purchases.warehouse_move', $join)) {
-            $with[] = 'purchases';
-            $with[] = 'purchases.product';
-            $with[] = 'purchases.product.image';
-            if (in_array('purchases.warehouse_move', $join)) {
-                $with[] = 'purchases.warehouse_move';
-            }
-        }
-
-        if (in_array('payments', $join) || in_array('payments.category', $join)) {
-            $with[] = 'payments';
-            if (in_array('payments.category', $join)) {
-                $with[] = 'payments.category';
-            }
-        }
-
-        if (!empty($with)) {
-            $query->with($with);
+        if (!empty($join)) {
+            $query->with($join);
         }
 
         return $query->find($id);
@@ -202,8 +176,12 @@ class WarehouseMove extends BaseModel
      */
     public static function deleteMovement(int $id): bool
     {
-        WarehousePurchase::where('move_id', $id)->delete();
-        return self::deleteOne($id) > 0;
+        $move = WarehouseMove::getMovement($id);
+        if ($move->status == 4) { // Отменен
+            WarehousePurchase::where('move_id', $id)->delete();
+            return self::deleteOne($id);
+        }
+        return false;
     }
 
 
@@ -245,7 +223,7 @@ class WarehouseMove extends BaseModel
         $factor = $subtract ? -1 : 1;
 
         if (!$movement->closed) {
-            foreach (WarehousePurchase::where('move_id', $movement->id)->get() as $purchase) {
+            foreach (WarehousePurchase::getList(['move_id' => $movement->id]) as $purchase) {
                 if ($purchase->amount) {
                     Product::changeAmount($purchase->product_id, $factor * $purchase->amount);
                     WarehouseProduct::changeAmount($purchase->product_id, $movement->place_id, $factor * $purchase->amount);
@@ -274,7 +252,7 @@ class WarehouseMove extends BaseModel
 
         // Если поставка была как "выполнен/closed", отнимаем || добавляем товар на склад
         if ($movement->closed) {
-            foreach (WarehousePurchase::where('move_id', $movement->id)->get() as $purchase) {
+            foreach (WarehousePurchase::getList(['move_id' => $movement->id]) as $purchase) {
                 if ($purchase->amount) {
                     Product::changeAmount($purchase->product_id, - ($factor) * $purchase->amount);
                     WarehouseProduct::changeAmount($purchase->product_id, $movement->place_id, - ($factor) * $purchase->amount);

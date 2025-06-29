@@ -385,8 +385,6 @@ class Order extends BaseModel
         if ($order->closed) {
             foreach ($order->purchases as $purchase) {
                 if (!empty($purchase->product) && !is_null($purchase->product->stock)) {
-
-                    // Кол-во нужно добавлять/вычетать в SQL запросе. Чтобы не произошла коллизия при одновременных запросах
                     Product::changeAmount($purchase->product->id, $purchase->amount);
                 }
             }

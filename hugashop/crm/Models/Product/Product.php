@@ -512,6 +512,7 @@ class Product extends BaseModel
 
     /**
      * Live update product stock
+     * Кол-во нужно добавлять/вычетать в SQL запросе. Чтобы не произошла коллизия при одновременных запросах
      */
     public static function changeAmount(int $product_id, int $amount)
     {

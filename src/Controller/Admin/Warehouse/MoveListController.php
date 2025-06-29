@@ -31,17 +31,12 @@ class MoveListController extends BaseAdminController
         if (Request::checkCSRF() and UserPermission::checkAccess("warehouse_edit")) {
 
             // Действия с выбранными
-            $ids = Request::post('check');
+            $ids = Request::post('check', 'array');
             if (is_array($ids)) {
                 switch (Request::post('action')) {
                     case 'delete': {
                             foreach ($ids as $id) {
-                                $whm = WarehouseMove::getMovement(intval($id));
-
-                                // Удалять можно только отмененный (4)
-                                if ($whm->status == 4) {
-                                    WarehouseMove::deleteMovement(intval($whm->id));
-                                }
+                                WarehouseMove::deleteMovement($id);
                             }
                             break;
                         }
