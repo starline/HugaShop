@@ -159,7 +159,7 @@ class FinancePayment extends BaseModel
         $purse = FinancePurse::getOne($payment->purse_id);
         $payment->purse_amount = $purse->amount;
 
-        return self::create($payment)->id;
+        return self::createOne($payment)->id;
     }
 
 

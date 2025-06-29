@@ -223,7 +223,7 @@ class WarehouseMove extends BaseModel
         // Закрепляем за менеджером
         $movement->manager_id = User::authUser('id');
 
-        return self::create($movement);
+        return self::createOne($movement);
     }
 
 

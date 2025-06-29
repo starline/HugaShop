@@ -35,7 +35,7 @@ class DeliveryController extends BaseAdminController
             $delivery_payments = Request::post('delivery_payments');
 
             if (empty($delivery->id)) {
-                $delivery = Design::setFlashMessage('add', OrderDelivery::create($delivery));
+                $delivery = Design::setFlashMessage('add', OrderDelivery::createOne($delivery));
             } else {
                 Design::setFlashMessage('update', OrderDelivery::updateOne($delivery->id, $delivery));
                 OrderDelivery::updateDeliveryPayments($delivery->id, $delivery_payments);

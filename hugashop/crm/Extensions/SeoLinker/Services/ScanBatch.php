@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.4
+ * @version 1.5
  *
  */
 
@@ -26,9 +26,6 @@ final class ScanBatch
     public static function scanBatch(string $base_url, int $limit): array
     {
 
-        $linkModel = SeoLinkerLink::getModel();
-        $linkModel->runWithInitTable(fn() => null);
-
         if (!SeoLinker::where('url', $base_url)->exists()) {
             SeoLinker::insert([
                 'url' => $base_url,
@@ -49,23 +46,25 @@ final class ScanBatch
             ]);
 
             foreach ($links as $ln) {
-                $exists = SeoLinkerLink::query()
-                    ->where('from_url', $ln['from_url'])
-                    ->where('to_url', $ln['to_url'])
-                    ->where('type', $ln['type'])
-                    ->exists();
+                $exists = SeoLinkerLink::getOne([
+                    'from_url'  => $ln['from_url'],
+                    'to_url'    => $ln['to_url'],
+                    'type'      => $ln['type']
+                ]);
+
                 if (!$exists) {
-                    SeoLinkerLink::create($ln);
+                    SeoLinkerLink::createOne($ln);
                 }
 
                 if ($ln['type'] === 'image') {
                     continue;
                 }
 
-                if ($ln['type'] === 'internal') {
+                // Add internal links to scan line. Except nofollow
+                if ($ln['type'] === 'internal' && !$ln['nofollow']) {
                     $target = SeoLinker::getOne(['url' => $ln['to_url']]);
                     if (!$target) {
-                        SeoLinker::create([
+                        SeoLinker::createOne([
                             'url' => $ln['to_url'],
                             'depth' => $page->depth + 1,
                             'scanned' => 0,

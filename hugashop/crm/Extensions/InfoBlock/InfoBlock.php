@@ -76,7 +76,7 @@ final class InfoBlock extends BaseExtension
         if (!empty($block = Request::getDataAcces(InfoBlockModel::getFields()))) {
 
             if (empty($block->id)) {
-                $block = Design::setFlashMessage('add', InfoBlockModel::create($block));
+                $block = Design::setFlashMessage('add', InfoBlockModel::createOne($block));
             } else {
                 Design::setFlashMessage('update', InfoBlockModel::updateOne($block->id, $block));
                 Helper::cache(self::class)->clear();

@@ -31,7 +31,7 @@ class PlaceController extends BaseAdminController
         if (!empty($place = Request::getDataAcces(WarehousePlace::getFields()))) {
 
             if (empty($place->id)) {
-                $place = Design::setFlashMessage('add', WarehousePlace::create($place));
+                $place = Design::setFlashMessage('add', WarehousePlace::createOne($place));
             } else {
                 Design::setFlashMessage('update', WarehousePlace::updateOne($place->id, $place));
             }

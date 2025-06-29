@@ -53,6 +53,11 @@ final class CrawlerObserver extends CrawlObserver
 
         foreach ($nodes as $node) {
             $href = trim($node->getAttribute('href'));
+            $rel  = strtolower($node->getAttribute('rel'));
+
+            $nofollow = str_contains($rel, 'nofollow');
+
+            // Пропускаем ссылки 
             if (
                 $href === '' ||
                 str_starts_with($href, '#') ||
@@ -69,6 +74,8 @@ final class CrawlerObserver extends CrawlObserver
                 continue;
             }
 
+
+            // Image
             $path = parse_url($abs, PHP_URL_PATH) ?? '';
             $ext  = strtolower(pathinfo($path, PATHINFO_EXTENSION));
             $isImage = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'tiff']);
@@ -79,29 +86,38 @@ final class CrawlerObserver extends CrawlObserver
                     'from_url' => $current,
                     'to_url'   => $abs,
                     'type'     => 'image',
+                    'nofollow' => (int) $nofollow,
                 ];
                 continue;
             }
 
+
             $scheme = strtolower($p['scheme'] ?? $this->scheme);
 
+            // Internal links
             if (($p['host'] ?? '') === $this->host && $scheme === strtolower($this->scheme)) {
                 $outInternal++;
                 $this->links[] = [
                     'from_url' => $current,
                     'to_url'   => $abs,
                     'type'     => 'internal',
+                    'nofollow' => (int) $nofollow,
                 ];
-            } else {
+            }
+
+            // External links
+            else {
                 $outExternal++;
                 $this->links[] = [
                     'from_url' => $current,
                     'to_url'   => $abs,
                     'type'     => 'external',
+                    'nofollow' => (int) $nofollow,
                 ];
             }
         }
 
+        // Result
         $this->results[$current] = [
             'url' => $current,
             'out_internal' => $outInternal,
@@ -130,6 +146,9 @@ final class CrawlerObserver extends CrawlObserver
     public function finishedCrawling(): void {}
 
 
+    /**
+     * Make absolute url
+     */
     private function absoluteUrl(string $href, string $base): ?string
     {
         if (preg_match('/^https?:\/\//i', $href)) {

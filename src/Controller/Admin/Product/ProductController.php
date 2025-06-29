@@ -115,7 +115,7 @@ class ProductController extends BaseAdminController
 
                         $feature = ProductFeature::getFeature($name);
                         if (empty($feature)) {
-                            $feature = ProductFeature::create(['name' => trim($name)]);
+                            $feature = ProductFeature::createOne(['name' => trim($name)]);
                         }
 
                         ProductCategoryFeature::addFeatureCategory($feature->id, $product->category_id);

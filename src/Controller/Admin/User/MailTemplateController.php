@@ -31,7 +31,7 @@ class MailTemplateController extends BaseAdminController
         if (!empty($mail_template = Request::getDataAcces(UserMailTemplate::getFields()))) {
 
             if (empty($mail_template->id)) {
-                $mail_template = Design::setFlashMessage('add', UserMailTemplate::create($mail_template));
+                $mail_template = Design::setFlashMessage('add', UserMailTemplate::createOne($mail_template));
             } else {
                 UserMailTemplate::updateOne($mail_template->id, $mail_template);
             }

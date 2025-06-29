@@ -41,7 +41,7 @@ class FeatureController extends BaseAdminController
         if (!empty($feature = Request::getDataAcces(ProductFeature::getFields()))) {
 
             if (empty($feature->id)) {
-                $feature = Design::setFlashMessage('add', ProductFeature::create($feature));
+                $feature = Design::setFlashMessage('add', ProductFeature::createOne($feature));
             } else {
                 Design::setFlashMessage('update', ProductFeature::updateOne($feature->id, $feature));
             }

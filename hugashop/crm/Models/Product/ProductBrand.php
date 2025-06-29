@@ -96,7 +96,7 @@ class ProductBrand extends BaseModel
     public static function addBrand($brand)
     {
         $brand = Helper::makeUniqSlug(self::class, $brand);
-        return self::create($brand);
+        return self::createOne($brand);
     }
 
 

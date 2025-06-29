@@ -43,7 +43,7 @@ class PaymentController extends BaseAdminController
             $payment_method_deliveries      = Request::post('payment_method_deliveries', 'array');
 
             if (empty($payment_method->id)) {
-                $payment_method = Design::setFlashMessage('add', OrderPayment::create($payment_method));
+                $payment_method = Design::setFlashMessage('add', OrderPayment::createOne($payment_method));
             } else {
                 Design::setFlashMessage('update', OrderPayment::updateOne($payment_method->id, $payment_method));
 

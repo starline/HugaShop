@@ -291,7 +291,7 @@ class ProductCategory extends BaseModel
     public static function addCategory($category)
     {
         $category = Helper::makeUniqSlug(self::class, $category);
-        $category = self::create($category);
+        $category = self::createOne($category);
 
 
         Helper::cache()->delete(Helper::class_basename(self::class)); # Cache clean

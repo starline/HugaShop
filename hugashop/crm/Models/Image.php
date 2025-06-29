@@ -112,7 +112,7 @@ class Image extends BaseModel
         }
 
         // Создаем изображение
-        $image = self::create([
+        $image = self::createOne([
             'entity_id'   => $entity_id,
             'entity_name' => $entity_name,
             'filename'    => $unique_name,

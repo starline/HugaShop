@@ -57,6 +57,6 @@ class Workflow extends BaseModel
             $workflow['params'] = json_encode($params[1]);
         }
 
-        return Workflow::create($workflow);
+        return Workflow::createOne($workflow);
     }
 }

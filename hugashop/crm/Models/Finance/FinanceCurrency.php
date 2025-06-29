@@ -135,7 +135,7 @@ class FinanceCurrency extends BaseModel
 
         Helper::cache()->delete(Helper::class_basename(self::class)); # Cache clean
 
-        $currency = self::create($currency);
+        $currency = self::createOne($currency);
         self::initCurrencies();
         return $currency->id;
     }

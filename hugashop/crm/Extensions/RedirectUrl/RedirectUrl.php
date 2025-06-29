@@ -64,7 +64,7 @@ final class RedirectUrl extends BaseExtension
         ###########
         if (!empty($link = Request::getDataAcces(RedirectUrlModel::getFields()))) {
             if (empty($link->id)) {
-                $link = Design::setFlashMessage('add', RedirectUrlModel::create($link));
+                $link = Design::setFlashMessage('add', RedirectUrlModel::createOne($link));
             } else {
                 Design::setFlashMessage('update', RedirectUrlModel::updateOne($link->id, $link));
             }

@@ -73,7 +73,7 @@ final class GoogleMerchant extends BaseExtension
         if (!empty($pricefeed = Request::getDataAcces(GoogleMerchantModel::getFields()))) {
             if (empty($pricefeed->id)) {
                 $pricefeed->token = Helper::makeToken();
-                $pricefeed = Design::setFlashMessage('add', GoogleMerchantModel::create($pricefeed));
+                $pricefeed = Design::setFlashMessage('add', GoogleMerchantModel::createOne($pricefeed));
             } else {
                 Design::setFlashMessage('update', GoogleMerchantModel::updateOne($pricefeed->id, $pricefeed) >= 0);
 

@@ -106,7 +106,7 @@ final class SmsSender extends BaseExtension
 
             if (empty($mailing->id)) {
                 $mailing->token = Helper::makeToken(uniqid(), 5);
-                $mailing = Design::setFlashMessage('add', ModelSmsSender::create($mailing));
+                $mailing = Design::setFlashMessage('add', ModelSmsSender::createOne($mailing));
             } else {
                 Design::setFlashMessage('update', ModelSmsSender::updateOne($mailing->id, $mailing));
             }
@@ -154,7 +154,7 @@ final class SmsSender extends BaseExtension
 
                         $mail->id = UserMailing::addMailing($mail, false);
                         if (!empty($mail->id)) {
-                            SmsSenderMail::create(['sender_id' => $mailing->id, 'mail_id' => $mail->id]);
+                            SmsSenderMail::createOne(['sender_id' => $mailing->id, 'mail_id' => $mail->id]);
                         }
                     }
                 }

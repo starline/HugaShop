@@ -84,7 +84,7 @@ class UserMailing extends BaseModel
             $mailing->user_id = $user->id;
         }
 
-        $mailing = UserMailing::create($mailing);
+        $mailing = UserMailing::createOne($mailing);
 
         if (!empty($mailing->id) and $send === true) {
             UserMailing::sendOne($mailing->id);

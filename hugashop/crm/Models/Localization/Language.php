@@ -71,7 +71,7 @@ class Language extends BaseModel
     /**
      * Create language. If it's marked as main, remove main flag from others
      */
-    public static function createOne(array|object $values)
+    public static function createOne(array|object $values): object
     {
         $vals = is_object($values) ? (array) $values : $values;
         if (!empty($vals['main'])) {

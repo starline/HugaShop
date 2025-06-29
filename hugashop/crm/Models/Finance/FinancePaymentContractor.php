@@ -84,7 +84,7 @@ class FinancePaymentContractor extends BaseModel
                 return self::updateOne(intval($payment->payment_id), $payment);
             }
         } else {
-            return self::create($payment);
+            return self::createOne($payment);
         }
     }
 

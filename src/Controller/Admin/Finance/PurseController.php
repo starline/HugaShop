@@ -32,7 +32,7 @@ class PurseController extends BaseAdminController
         if (!empty($purse = Request::getDataAcces(FinancePurse::getFields()))) {
 
             if (empty($purse->id)) {
-                $purse = Design::setFlashMessage('add', FinancePurse::create($purse));
+                $purse = Design::setFlashMessage('add', FinancePurse::createOne($purse));
             } else {
                 Design::setFlashMessage('update', FinancePurse::updateOne($purse->id, $purse));
             }

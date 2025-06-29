@@ -33,7 +33,7 @@ class ProviderController extends BaseAdminController
         if (!empty($provider = Request::getDataAcces(ProductProvider::getFields()))) {
 
             if (empty($provider->id)) {
-                $provider = Design::setFlashMessage('add', ProductProvider::create($provider));
+                $provider = Design::setFlashMessage('add', ProductProvider::createOne($provider));
             } else {
                 Design::setFlashMessage('update', ProductProvider::updateOne($provider->id, $provider));
             }

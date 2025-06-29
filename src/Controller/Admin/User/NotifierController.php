@@ -43,7 +43,7 @@ class NotifierController extends BaseAdminController
             }
 
             if (empty($notifier->id)) {
-                $notifier = Design::setFlashMessage('add', UserNotifier::create($notifier));
+                $notifier = Design::setFlashMessage('add', UserNotifier::createOne($notifier));
             } else {
                 Design::setFlashMessage('update', UserNotifier::updateOne($notifier->id, $notifier));
             }

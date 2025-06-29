@@ -23,7 +23,7 @@ class ProductPriceHistory extends BaseModel
 
     public static function addRecord(int $product_id, float $price, float $cost_price)
     {
-        $record = self::create([
+        $record = self::createOne([
             'product_id' => $product_id,
             'price' => $price,
             'cost_price' => $cost_price,

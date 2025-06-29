@@ -260,7 +260,7 @@ class ContentComment extends BaseModel
                     }
 
                     // Добавляем комментарий в базу
-                    $comment = ContentComment::create($comment);
+                    $comment = ContentComment::createOne($comment);
 
                     // Отправляем email
                     UserNotifier::sendNotifierToManager('commentToAdmin', message_params: ['comment_id' => $comment->id]);

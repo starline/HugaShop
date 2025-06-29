@@ -11,24 +11,27 @@
         <div class="row gx-5">
             <div class="col-lg-6 layer">
                 <h2>Исходящие ссылки</h2>
-        {if $links}
-            <div class="list">
-                {foreach $links as $ln}
-                    <div class="list_row">
-                        <div class="row col">
-                            <div class="col-12 col-lg-8 text-break">
-                                <a href="{$ln->to_url}" target="_blank">{$ln->to_url}</a>
+
+                {if $links}
+                    <div class="list">
+                        {foreach $links as $ln}
+                            <div class="list_row">
+                                <div class="row col">
+                                    <div class="col-12 col-lg-8 text-break">
+                                        <a href="{$ln->to_url}" target="_blank">{$ln->to_url}</a>
+                                    </div>
+                                    <div class="col-12 col-lg-4 text-end">
+                                        <span class="badge text-bg-round">
+                                            {$ln->type}{if $ln->nofollow} / nofollow{/if}
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-12 col-lg-4 text-end">
-                                <span class="badge text-bg-round">{$ln->type}</span>
-                            </div>
-                        </div>
+                        {/foreach}
                     </div>
-                {/foreach}
-            </div>
-        {else}
-            Нет ссылок
-        {/if}
+                {else}
+                    Нет ссылок
+                {/if}
 
             </div>
             <div class="col-lg-6 layer">
@@ -45,6 +48,11 @@
                                             </a>
                                         {else}
                                             {$ln->from_url}
+                                        {/if}
+                                    </div>
+                                    <div class="col-12 col-lg-4 text-end">
+                                        {if $ln->nofollow}
+                                            <span class="badge text-bg-round">nofollow</span>
                                         {/if}
                                     </div>
                                 </div>

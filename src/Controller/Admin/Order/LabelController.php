@@ -35,7 +35,7 @@ class LabelController extends BaseAdminController
             }
 
             if (empty($label->id)) {
-                $label = Design::setFlashMessage('add', OrderLabel::create($label));
+                $label = Design::setFlashMessage('add', OrderLabel::createOne($label));
             } else {
                 Design::setFlashMessage('update', OrderLabel::updateOne($label->id, $label));
             }

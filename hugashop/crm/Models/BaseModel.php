@@ -122,10 +122,15 @@ abstract class BaseModel extends Model
      * Create. Return Object with all added params
      * @return object
      */
-    public static function create(array|object $values): object
+    public static function createOne(array|object $values): object
     {
-        $vals = self::validateValues($values);
-        return self::query()->create($vals);
+        $values = self::validateValues($values);
+
+        $model = static::getModel();
+        $query = $model->newQuery();
+        return $model->runWithInitTable(function () use ($query, $values) {
+            return $query->create($values);
+        });
     }
 
 
@@ -138,11 +143,12 @@ abstract class BaseModel extends Model
             $values = static::separateValues($values, $language_code);
         }
 
+        $values = self::validateValues($values);
+
         $model = static::getModel();
         $query = $model->newQuery();
         return $model->runWithInitTable(function () use ($query, $ids, $values) {
-            $vals = self::validateValues($values);
-            return $query->whereId($ids)->update($vals);
+            return $query->whereId($ids)->update($values);
         });
     }
 

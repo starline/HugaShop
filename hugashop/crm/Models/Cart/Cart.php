@@ -160,7 +160,7 @@ class Cart extends BaseModel
         Request::setSession(self::$cookie_cart, $cart->token);
         Request::setCookie(self::$cookie_cart, $cart->token, 360);
 
-        return Cart::create((array)$cart)->id;
+        return Cart::createOne((array)$cart)->id;
     }
 
 

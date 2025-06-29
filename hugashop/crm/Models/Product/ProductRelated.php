@@ -51,7 +51,7 @@ class ProductRelated extends BaseModel
      */
     public static function addRelatedProduct(int $product_id, int $related_id, ?int $position = 0)
     {
-        return self::create([
+        return self::createOne([
             'product_id' => $product_id,
             'related_id' => $related_id,
             'position' => $position,

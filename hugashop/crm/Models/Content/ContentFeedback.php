@@ -83,6 +83,6 @@ class ContentFeedback extends BaseModel
     public static function addFeedback($feedback)
     {
         $feedback->date = date("Y-m-d H:i:s");
-        return ContentFeedback::create($feedback);
+        return ContentFeedback::createOne($feedback);
     }
 }

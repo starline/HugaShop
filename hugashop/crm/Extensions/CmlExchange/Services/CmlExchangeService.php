@@ -489,7 +489,7 @@ class CmlExchangeService
                 $feature = ProductFeature::where('name', strval($xml_feature->Наименование))->get();
 
                 if (empty($feature->id)) {
-                    $feature = ProductFeature::create(['name' => strval($xml_feature->Наименование)]);
+                    $feature = ProductFeature::createOne(['name' => strval($xml_feature->Наименование)]);
                 }
 
                 Request::setSession('features_mapping', [strval($xml_feature->Ид), $feature->id]);

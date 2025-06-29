@@ -380,7 +380,7 @@ class Product extends BaseModel
     public static function addProduct(object|array $product)
     {
         $product = Helper::makeUniqSlug(self::class, $product); # If the URL exists, change it
-        $product = self::create($product);
+        $product = self::createOne($product);
 
         // Make position same as id
         self::updateOne($product->id, ['position' => $product->id]);

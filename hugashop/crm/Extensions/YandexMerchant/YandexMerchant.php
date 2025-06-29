@@ -73,7 +73,7 @@ final class YandexMerchant extends BaseExtension
 
             if (empty($pricefeed->id)) {
                 $pricefeed->token = Helper::makeToken();
-                $pricefeed = Design::setFlashMessage('add', YandexMerchantModel::create($pricefeed));
+                $pricefeed = Design::setFlashMessage('add', YandexMerchantModel::createOne($pricefeed));
             } else {
                 Design::setFlashMessage('update', YandexMerchantModel::updateOne($pricefeed->id, $pricefeed) >= 0);
 

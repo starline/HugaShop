@@ -81,7 +81,7 @@ final class SeoPage extends BaseExtension
                 Design::setFlashMessage('error', 'url_exists');
             } else {
                 if (empty($page->id)) {
-                    $page = Design::setFlashMessage('add', SeoPageModel::create($page));
+                    $page = Design::setFlashMessage('add', SeoPageModel::createOne($page));
                 } else {
                     Design::setFlashMessage('update', SeoPageModel::updateOne($page->id, $page));
                     Helper::cache(self::class)->clear(); # Cache clean

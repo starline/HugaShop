@@ -79,7 +79,7 @@ class ContentPage extends BaseModel
     public static function addPage(object|array $page)
     {
         $page = Helper::makeUniqSlug(self::class, $page);
-        return static::create($page);
+        return static::createOne($page);
     }
 
 

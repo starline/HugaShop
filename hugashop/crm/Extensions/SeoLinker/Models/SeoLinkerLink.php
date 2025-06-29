@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.2
  *
  */
 
@@ -15,9 +15,10 @@ use HugaShop\Extensions\BaseExtensionModel;
 final class SeoLinkerLink extends BaseExtensionModel
 {
     protected static $table_fields = [
-        'id'       => ['type' => 'int', 'extra' => 'AUTO_INCREMENT'],
+        'id'       => ['type' => 'int',     'extra' => 'AUTO_INCREMENT'],
         'from_url' => ['type' => 'varchar'],
         'to_url'   => ['type' => 'varchar'],
         'type'     => ['type' => 'varchar'],
+        'nofollow' => ['type' => 'tinyint', 'def'  => 0]
     ];
 }

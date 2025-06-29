@@ -181,7 +181,7 @@ class OrderPurchase extends BaseModel
             Product::updateStock($purchase->product_id, -$purchase->amount);
         }
 
-        return static::create($purchase);
+        return static::createOne($purchase);
     }
 
     /**

@@ -116,7 +116,7 @@ class CartPurchase extends BaseModel
         ];
 
         if ($new_purchase === true) {
-            return self::create($data)->id;
+            return self::createOne($data)->id;
         }
 
         return self::updatePurchase($cart_id, $product->id, ['amount' => $amount, 'disabled' => 0]);

@@ -31,7 +31,7 @@ class CategoryController extends BaseAdminController
         if (!empty($category = Request::getDataAcces(FinanceCategory::getFields()))) {
 
             if (empty($category->id)) {
-                $category = Design::setFlashMessage('add', FinanceCategory::create($category));
+                $category = Design::setFlashMessage('add', FinanceCategory::createOne($category));
             } else {
                 Design::setFlashMessage('update', FinanceCategory::updateOne($category->id, $category));
             }

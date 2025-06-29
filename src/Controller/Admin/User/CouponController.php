@@ -44,7 +44,7 @@ class CouponController extends BaseAdminController
             } else {
 
                 if (empty($coupon->id)) {
-                    $coupon = Design::setFlashMessage('add', UserCoupon::create($coupon));
+                    $coupon = Design::setFlashMessage('add', UserCoupon::createOne($coupon));
                 } else {
                     Design::setFlashMessage('update', UserCoupon::updateOne($coupon->id, $coupon));
                 }

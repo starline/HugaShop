@@ -306,7 +306,7 @@ class Order extends BaseModel
             $order->phone = Helper::clearPhoneNummber($order->phone);
         }
 
-        return self::create((array)$order);
+        return self::createOne($order);
     }
 
 

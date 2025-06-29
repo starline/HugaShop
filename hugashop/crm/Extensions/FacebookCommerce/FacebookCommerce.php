@@ -74,7 +74,7 @@ final class FacebookCommerce extends BaseExtension
         if (!empty($pricefeed = Request::getDataAcces(FacebookCommerceModel::getFields()))) {
             if (empty($pricefeed->id)) {
                 $pricefeed->token = Helper::makeToken();
-                $pricefeed = Design::setFlashMessage('add', FacebookCommerceModel::create($pricefeed));
+                $pricefeed = Design::setFlashMessage('add', FacebookCommerceModel::createOne($pricefeed));
             } else {
                 Design::setFlashMessage('update', FacebookCommerceModel::updateOne($pricefeed->id, $pricefeed) >= 0);
 

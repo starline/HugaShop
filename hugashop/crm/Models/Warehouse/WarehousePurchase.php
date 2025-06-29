@@ -147,7 +147,7 @@ class WarehousePurchase extends BaseModel
             Product::updateStock($product->id, $factor * $purchase->amount);
         }
 
-        return WarehousePurchase::create($purchase);
+        return WarehousePurchase::createOne($purchase);
     }
 
 
