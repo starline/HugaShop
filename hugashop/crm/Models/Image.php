@@ -29,6 +29,7 @@ class Image extends BaseModel
         'entity_id' =>          ['type' => 'int'],
         'entity_name' =>        ['type' => 'varchar',       'lenght' => 25],
         'filename' =>           ['type' => 'varchar'],
+        'visible' =>            ['type' => 'tinyint',       'def' => 1],
         'position' =>           ['type' => 'created',       'def' => 0],
         'created' =>            ['type' => 'varchar',       'def' => 'CURRENT_TIMESTAMP']
     ];
@@ -59,24 +60,35 @@ class Image extends BaseModel
         }
 
         // Порядок основных изображений
+        $images_visible = Request::post($post_name . '_visible', 'array') ?: [];
         foreach ($images as $position => $im_id) {
-            self::updateOne($im_id, ['position' => $position]);
+            $visible = isset($images_visible[$im_id]) ? intval($images_visible[$im_id]) : 1;
+            self::updateOne($im_id, ['position' => $position, 'visible' => $visible]);
         }
 
         // Загрузка основных изображений из интернета и drag-n-drop файлов
         if ($urls = Request::post($post_name . '_urls')) {
+            $urls_visible = Request::post($post_name . '_urls_visible', 'array') ?: [];
             $dropped_images = Request::files('dropped_' . $post_name);
-            foreach ($urls as $url) {
+            foreach ($urls as $index => $url) {
                 // Если не пустой адрес и файл не локальный
                 if (!empty($url) && $url !== 'http://' && str_contains($url, '/')) {
-                    self::addImage($entity_id, $entity_name, $url);
+                    $new_id = self::addImage($entity_id, $entity_name, $url);
+                    if ($new_id) {
+                        $visible = isset($urls_visible[$index]) ? intval($urls_visible[$index]) : 1;
+                        self::updateOne($new_id, ['visible' => $visible]);
+                    }
                 } elseif ($dropped_images) {
                     $key = array_search($url, $dropped_images['name'], true);
                     if ($key !== false) {
                         // Move and Resize
                         $image_name = self::uploadImage($dropped_images['tmp_name'][$key], $dropped_images['name'][$key]);
                         if ($image_name) {
-                            self::addImage($entity_id, $entity_name, (string) $image_name);
+                            $new_id = self::addImage($entity_id, $entity_name, (string) $image_name);
+                            if ($new_id) {
+                                $visible = isset($urls_visible[$index]) ? intval($urls_visible[$index]) : 1;
+                                self::updateOne($new_id, ['visible' => $visible]);
+                            }
                         }
                     }
                 }
@@ -90,9 +102,13 @@ class Image extends BaseModel
      * @param int|array $entity_id
      * @param string $entity_name - product
      */
-    public static function getImages(int|array $entity_id, string $entity_name)
+    public static function getImages(int|array $entity_id, string $entity_name, bool $public = false)
     {
-        return self::getList(filter: ['entity_id' => $entity_id, 'entity_name' => $entity_name], order: 'position');
+        $filter = ['entity_id' => $entity_id, 'entity_name' => $entity_name];
+        if ($public) {
+            $filter['visible'] = 1;
+        }
+        return self::getList(filter: $filter, order: 'position');
     }
 
 

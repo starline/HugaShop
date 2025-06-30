@@ -1029,15 +1029,36 @@ select.multiple_categories option {
 }
 
 .images ul li i.delete {
-	top: 10px;
-	font-size: 1.5rem;
-	right: 11px;
-	position: absolute;
-	visibility: hidden;
+        top: 10px;
+        font-size: 1.5rem;
+        right: 11px;
+        position: absolute;
+        visibility: hidden;
+}
+
+.images ul li .image_icons {
+        top: 5px;
+        right: 5px;
+        position: absolute;
+        display: flex;
+        visibility: hidden;
+}
+
+.images ul li .image_icons i {
+        font-size: 1.5rem;
+        margin-left: 5px;
 }
 
 .images ul li:hover i.delete {
-	visibility: visible;
+        visibility: visible;
+}
+
+.images ul li:hover .image_icons {
+        visibility: visible;
+}
+
+.images ul li.visible_off {
+        opacity: 0.4;
 }
 
 .images .dropZone {
