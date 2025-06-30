@@ -37,3 +37,10 @@
         </div>
     </div>
 {/block}
+
+{block name=body_script append}
+    <script type="module">
+        import { initNoticeBlocks } from '{"js/common.js"|asset}';
+        $(function() { initNoticeBlocks(); });
+    </script>
+{/block}

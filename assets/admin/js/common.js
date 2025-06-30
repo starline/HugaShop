@@ -151,6 +151,31 @@ export function ajax_icon(icon, entity, var_name, csrf) {
 }
 
 
+// Notice blocks show/hide
+export function initNoticeBlocks(context = document) {
+	$(context).find('.notice_block').each(function () {
+		const height = $(this).height();
+		const minimize_height = 60;
+		if (height > minimize_height && (height - minimize_height) > 40) {
+			$(this).addClass('minimizeble minimize');
+			$(this).find('.show_link_block a').text("раскрыть ↓");
+		}
+	});
+
+	$(context).find('.show_link_block a').off('click.notice').on('click.notice', function () {
+		const block = $(this).closest('div.notice_block');
+		if (block.hasClass('minimize')) {
+			block.removeClass('minimize');
+			$(this).text('скрыть ↑');
+		} else {
+			block.addClass('minimize');
+			$(this).text('раскрыть ↓');
+		}
+		return false;
+	});
+}
+
+
 // Create chart and load datasets
 export function makeChart(element, chartOptions = {}, datasets = []) {
 	if (!element) {
