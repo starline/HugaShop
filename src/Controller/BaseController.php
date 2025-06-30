@@ -11,9 +11,9 @@
 namespace App\Controller;
 
 use HugaShop\Models\Config;
-use HugaShop\Services\Design;
 use HugaShop\Models\Helper;
 use HugaShop\Models\Request;
+use HugaShop\Services\Design;
 use App\Event\DesignBeforeFetchEvent;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\Translation\Translator;
