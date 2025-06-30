@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.3
+ * @version 3.4
  *
  */
 
@@ -14,7 +14,7 @@ use HugaShop\Models\Cart\Cart;
 use HugaShop\Models\User\User;
 use HugaShop\Models\Config;
 use HugaShop\Services\Design;
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Models\Product\Product;
 use HugaShop\Services\Request;
 use HugaShop\Models\Settings;

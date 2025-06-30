@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.6
+ * @version 3.7
  *
  * Use BCRYPT
  *
@@ -13,7 +13,7 @@
 namespace HugaShop\Models\User;
 
 use HugaShop\Models\Config;
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\Order\Order;

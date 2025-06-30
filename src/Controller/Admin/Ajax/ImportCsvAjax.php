@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.0
+ * @version 2.1
  * 
  * Import gooogle doc csv
  *
@@ -13,7 +13,7 @@
 namespace App\Controller\Admin\Ajax;
 
 use HugaShop\Models\Config;
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Models\Product\Product;
 use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;

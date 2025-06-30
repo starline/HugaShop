@@ -4,7 +4,7 @@
  * HugaShop - Selling anything
  *
  * @author Andri Huga
- * @version 2.8
+ * @version 2.9
  * 
  * ProductPriceAdmin
  *
@@ -13,7 +13,7 @@
 namespace App\Controller\Admin\Product;
 
 use HugaShop\Services\Design;
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use App\Services\PaginationService;
 use HugaShop\Models\Order\Order;

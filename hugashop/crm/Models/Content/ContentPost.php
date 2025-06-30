@@ -4,14 +4,14 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.4
+ * @version 2.5
  *
  */
 
 namespace HugaShop\Models\Content;
 
 use HugaShop\Models\Image;
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
 use Illuminate\Support\Carbon;
 

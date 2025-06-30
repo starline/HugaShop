@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.8
+ * @version 2.9
  *
  * Работаем со складом, закупками, поставками, списанием
  *
@@ -13,7 +13,7 @@
 namespace HugaShop\Models\Warehouse;
 
 use HugaShop\Models\Image;
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\User\User;
 use HugaShop\Models\Product\Product;

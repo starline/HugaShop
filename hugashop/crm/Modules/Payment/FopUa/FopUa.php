@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  * Использует библиотку intl (MessageFormatter)
  * Установка на Linus: sudo apt-get install php7.4-intl
@@ -21,7 +21,7 @@ use MessageFormatter;
 use IntlDateFormatter;
 use HugaShop\Models\Config;
 use HugaShop\Services\Design;
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use HugaShop\Models\Order\Order;
 use HugaShop\Models\Finance\FinanceCurrency;

@@ -3,7 +3,7 @@
 /**
  *
  * @author Andi Huga
- * @version 4.0
+ * @version 4.1
  *
  * Google feed generator
  * Uses Cache
@@ -16,7 +16,7 @@ namespace HugaShop\Extensions\GoogleMerchant\Models;
 
 use HugaShop\Models\Image;
 use HugaShop\Models\Config;
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Models\Settings;
 use HugaShop\Models\Product\Product;
 use HugaShop\Models\Product\ProductOption;

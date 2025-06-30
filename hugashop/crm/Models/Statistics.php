@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.5
+ * @version 2.6
  *
  * Выбираем статистику
  *
@@ -12,7 +12,7 @@
 
 namespace HugaShop\Models;
 
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Models\Cart\Cart;
 use HugaShop\Models\Order\Order;
 use HugaShop\Models\Product\Product;

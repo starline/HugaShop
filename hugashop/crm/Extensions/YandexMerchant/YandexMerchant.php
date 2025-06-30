@@ -4,14 +4,14 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.8
+ * @version 1.9
  *
  */
 
 namespace HugaShop\Extensions\YandexMerchant;
 
 use HugaShop\Services\Design;
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use HugaShop\Models\Product\ProductCategory;
 use HugaShop\Extensions\BaseExtension;

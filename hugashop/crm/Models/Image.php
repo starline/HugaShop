@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.8
+ * @version 3.9
  * 
  * Intervention Image
  * @link https://image.intervention.io/v3/getting-started/installation
@@ -13,7 +13,7 @@
 
 namespace HugaShop\Models;
 
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Imagick\Driver;

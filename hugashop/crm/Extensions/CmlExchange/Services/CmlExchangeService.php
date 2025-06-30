@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  * 
  * @author Andi Huga
- * @version 1.3
+ * @version 1.4
  *
  */
 
@@ -12,7 +12,7 @@ namespace HugaShop\Extensions\CmlExchange\Services;
 
 use HugaShop\Models\Image;
 use HugaShop\Models\Config;
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use HugaShop\Models\Settings;
 use HugaShop\Models\Order\Order;

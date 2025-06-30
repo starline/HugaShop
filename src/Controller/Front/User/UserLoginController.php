@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.8
+ * @version 2.9
  *
  */
 
@@ -13,7 +13,7 @@ namespace App\Controller\Front\User;
 use HugaShop\Models\User\User;
 use HugaShop\Models\Config;
 use HugaShop\Services\Design;
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use HugaShop\Models\User\UserNotifier;
 use App\Controller\BaseFrontController;

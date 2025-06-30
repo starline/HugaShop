@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.6
+ * @version 3.7
  *
  * Product Content
  *
@@ -13,7 +13,7 @@
 namespace HugaShop\Models\Product;
 
 use HugaShop\Models\Image;
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use Illuminate\Support\Arr;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\Order\OrderPurchase;

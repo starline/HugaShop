@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.3
+ * @version 1.4
  *
  * Import products to warehouse from CSV file
  */
@@ -13,7 +13,7 @@ namespace HugaShop\Extensions\WarehouseImport;
 
 use HugaShop\Models\Config;
 use HugaShop\Services\Design;
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 
 use HugaShop\Extensions\BaseExtension;
