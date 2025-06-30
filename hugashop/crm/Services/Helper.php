@@ -11,8 +11,10 @@
 namespace HugaShop\Services;
 
 use ReCaptcha\ReCaptcha;
+use HugaShop\Models\Config;
 use Illuminate\Support\Str;
 use Jenssegers\Agent\Agent;
+use HugaShop\Models\Settings;
 use HugaShop\Services\Request;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
