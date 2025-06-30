@@ -91,6 +91,12 @@ class WarehouseMove extends BaseModel
             $query->where('modified', '>', $filter['modified_since']);
         }
 
+        if (isset($filter['product_id'])) {
+            $query->whereHas('purchases', function ($q) use ($filter) {
+                $q->whereIn('product_id', (array) $filter['product_id']);
+            });
+        }
+
         if (!empty($filter['keyword'])) {
             $keywords = explode(' ', $filter['keyword']);
             foreach ($keywords as $word) {
@@ -144,6 +150,12 @@ class WarehouseMove extends BaseModel
 
         if (isset($filter['status'])) {
             $query->where('status', $filter['status']);
+        }
+
+        if (isset($filter['product_id'])) {
+            $query->whereHas('purchases', function ($q) use ($filter) {
+                $q->whereIn('product_id', (array) $filter['product_id']);
+            });
         }
 
         $movements = $query->with('purchases')->get();
