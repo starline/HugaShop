@@ -4,13 +4,13 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
  *
  * CSV reader service
  * 
  */
 
-namespace HugaShop\Extensions\WarehouseImport\Services;
+namespace HugaShop\Extensions\ProductsImport\Services;
 
 use SplFileObject;
 

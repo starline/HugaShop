@@ -4,12 +4,12 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.4
+ * @version 1.5
  *
  * Import products to warehouse from CSV file
  */
 
-namespace HugaShop\Extensions\WarehouseImport;
+namespace HugaShop\Extensions\ProductsImport;
 
 use HugaShop\Models\Config;
 use HugaShop\Services\Design;
@@ -18,10 +18,10 @@ use HugaShop\Services\Request;
 use HugaShop\Extensions\BaseExtension;
 use HugaShop\Models\Warehouse\WarehousePlace;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use HugaShop\Extensions\WarehouseImport\Services\CsvReader;
-use HugaShop\Extensions\WarehouseImport\Services\ProductImport;
+use HugaShop\Extensions\ProductsImport\Services\CsvReader;
+use HugaShop\Extensions\ProductsImport\Services\ProductImport;
 
-final class WarehouseImport extends BaseExtension
+final class ProductsImport extends BaseExtension
 {
     private array $columns_names = [
         'sku'        => ['sku', 'артикул', 'Арт'],

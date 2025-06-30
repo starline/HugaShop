@@ -4,11 +4,11 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.2
+ * @version 1.3
  * 
  */
 
-namespace HugaShop\Extensions\WarehouseImport\Services;
+namespace HugaShop\Extensions\ProductsImport\Services;
 
 use HugaShop\Models\Product\Product;
 use HugaShop\Models\Warehouse\WarehouseProduct;
