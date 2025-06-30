@@ -165,14 +165,14 @@
 
 			<!-- Статистика продажи товара-->
 			{if ('stats'|user_access and $product->id)}
-				<div class="col-12 layer product_stats">
+				<div class="col-lg-6 layer product_stats">
 					<div class="chart_actions btn_row">
 						<a class="btn btn-light" id="product_stats_reset">Reset zoom</a>
 					</div>
 					<div id="product_stats"></div>
 				</div>
 
-				<div class="col-12 layer product_price_history">
+				<div class="col-lg-6 layer product_price_history">
 					<div class="chart_actions btn_row">
 						<a class="btn btn-light" id="productPriceHistory_reset">Reset zoom</a>
 					</div>
