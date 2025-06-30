@@ -133,7 +133,7 @@
 
 									<div class="col-12 col-md-6 mt-3 mt-md-0">
 										{if $movement->status != 0}
-											<div class="order_price">{$movement->awaiting_date|date}</div>
+											<div class="badge text-bg-round">{$movement->awaiting_date|date:m}</div>
 										{/if}
 
 										<div class="order_address">
