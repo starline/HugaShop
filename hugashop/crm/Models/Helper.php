@@ -13,6 +13,7 @@ namespace HugaShop\Models;
 use ReCaptcha\ReCaptcha;
 use Illuminate\Support\Str;
 use Jenssegers\Agent\Agent;
+use HugaShop\Services\Request;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;

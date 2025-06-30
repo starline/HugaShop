@@ -14,6 +14,7 @@
 namespace HugaShop\Models;
 
 use HugaShop\Models\Helper;
+use HugaShop\Services\Request;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Imagick\Driver;
 

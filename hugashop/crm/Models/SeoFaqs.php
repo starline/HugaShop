@@ -10,6 +10,8 @@
 
 namespace HugaShop\Models;
 
+use HugaShop\Services\Request;
+
 class SeoFaqs extends BaseModel
 {
 
