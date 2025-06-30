@@ -12,7 +12,7 @@ namespace App\Controller\Front\User;
 
 use HugaShop\Models\User\User;
 use HugaShop\Models\Order\Order;
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Request;
 use App\Controller\BaseFrontController;
 use Symfony\Component\HttpFoundation\Response;

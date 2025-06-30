@@ -10,7 +10,7 @@
 
 namespace App\Controller\Admin\User;
 
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Request;
 use App\Services\PaginationService;
 use HugaShop\Models\User\UserCoupon;

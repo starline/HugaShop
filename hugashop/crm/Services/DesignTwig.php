@@ -8,11 +8,13 @@
  *
  */
 
-namespace HugaShop\Models;
+namespace HugaShop\Services;
 
 use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
+use HugaShop\Models\Config;
 use Twig\Loader\ArrayLoader;
+use HugaShop\Models\Settings;
+use Twig\Loader\FilesystemLoader;
 
 class DesignTwig
 {

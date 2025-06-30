@@ -13,10 +13,10 @@
 
 namespace HugaShop\Models\User;
 
-use HugaShop\Models\BaseModel;
 use HugaShop\Models\Config;
 use HugaShop\Models\Helper;
-use HugaShop\Models\DesignTwig;
+use HugaShop\Models\BaseModel;
+use HugaShop\Services\DesignTwig;
 
 class UserMailing extends BaseModel
 {

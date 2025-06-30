@@ -10,7 +10,7 @@
 
 namespace HugaShop\Extensions\InfoBlock;
 
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Helper;
 use HugaShop\Models\Request;
 use HugaShop\Extensions\BaseExtension;

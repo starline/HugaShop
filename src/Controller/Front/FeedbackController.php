@@ -13,7 +13,7 @@
 
 namespace App\Controller\Front;
 
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Request;
 use HugaShop\Models\User\UserNotifier;
 use HugaShop\Models\Content\ContentFeedback;

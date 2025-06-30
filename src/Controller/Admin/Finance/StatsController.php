@@ -10,7 +10,7 @@
 
 namespace App\Controller\Admin\Finance;
 
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Product\Product;
 use HugaShop\Models\Order\OrderPayment;
 use App\Controller\BaseAdminController;

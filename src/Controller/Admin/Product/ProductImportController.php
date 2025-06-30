@@ -13,7 +13,7 @@
 namespace App\Controller\Admin\Product;
 
 use HugaShop\Models\Config;
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Request;
 use App\Controller\BaseAdminController;
 use Symfony\Component\Routing\Attribute\Route;

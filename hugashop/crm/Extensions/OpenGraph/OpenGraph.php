@@ -17,7 +17,7 @@ namespace HugaShop\Extensions\OpenGraph;
 
 use DateTime;
 use DateTimeZone;
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Settings;
 use HugaShop\Extensions\BaseExtension;
 

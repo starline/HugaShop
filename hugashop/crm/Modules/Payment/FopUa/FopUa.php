@@ -20,7 +20,7 @@ use TCPDF;
 use MessageFormatter;
 use IntlDateFormatter;
 use HugaShop\Models\Config;
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Helper;
 use HugaShop\Models\Request;
 use HugaShop\Models\Order\Order;

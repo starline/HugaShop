@@ -11,7 +11,7 @@
 namespace HugaShop\Extensions\StorageManager;
 
 use HugaShop\Models\Config;
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Request;
 use Symfony\Component\Finder\Finder;
 use HugaShop\Extensions\BaseExtension;

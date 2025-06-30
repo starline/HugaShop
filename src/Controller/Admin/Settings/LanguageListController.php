@@ -10,7 +10,7 @@
 
 namespace App\Controller\Admin\Settings;
 
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Request;
 use App\Controller\BaseAdminController;
 use HugaShop\Models\Localization\Language;

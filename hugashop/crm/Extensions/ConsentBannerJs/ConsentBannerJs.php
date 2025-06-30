@@ -12,7 +12,7 @@
 
 namespace HugaShop\Extensions\ConsentBannerJs;
 
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Extensions\BaseExtension;
 
 final class ConsentBannerJs extends BaseExtension

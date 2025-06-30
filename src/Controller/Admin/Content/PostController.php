@@ -11,7 +11,7 @@
 namespace App\Controller\Admin\Content;
 
 use HugaShop\Models\Image;
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Helper;
 use HugaShop\Models\Request;
 use HugaShop\Models\SeoKeywords;

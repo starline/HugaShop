@@ -11,7 +11,7 @@
 namespace App\Controller\Front\Ajax;
 
 use HugaShop\Models\Cart\Cart;
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Request;
 use App\Event\CartAddEvent;
 use HugaShop\Models\Cart\CartPurchase;

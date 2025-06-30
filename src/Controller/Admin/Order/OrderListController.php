@@ -12,7 +12,7 @@
 
 namespace App\Controller\Admin\Order;
 
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Request;
 use App\Services\PaginationService;
 use HugaShop\Models\Order\Order;

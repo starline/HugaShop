@@ -10,9 +10,9 @@
 
 namespace App\Controller\Admin\User;
 
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Request;
-use HugaShop\Models\DesignTwig;
+use HugaShop\Services\DesignTwig;
 use HugaShop\Models\User\UserMailing;
 use HugaShop\Models\User\UserNotifier;
 use App\Controller\BaseAdminController;

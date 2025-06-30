@@ -10,9 +10,8 @@
 
 namespace App\Controller\Admin\Product;
 
-use HugaShop\Models\Seo;
 use HugaShop\Models\Image;
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Request;
 use HugaShop\Models\SeoFaqs;
 use HugaShop\Models\SeoKeywords;

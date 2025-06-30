@@ -12,7 +12,7 @@ namespace App\Controller\Admin\Warehouse;
 
 use stdClass;
 use HugaShop\Models\Image;
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Request;
 use HugaShop\Models\User\User;
 use HugaShop\Models\User\UserPermission;

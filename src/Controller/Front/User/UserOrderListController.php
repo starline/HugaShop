@@ -11,7 +11,7 @@
 namespace App\Controller\Front\User;
 
 use HugaShop\Models\User\User;
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Order\Order;
 use HugaShop\Models\Order\OrderPurchase;
 use App\Controller\BaseFrontController;

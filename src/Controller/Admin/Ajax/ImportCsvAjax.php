@@ -17,7 +17,7 @@ use HugaShop\Models\Helper;
 use HugaShop\Models\Product\Product;
 use HugaShop\Models\Request;
 use App\Controller\BaseAdminController;
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 

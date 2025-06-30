@@ -4,7 +4,7 @@ namespace HugaShop\Modules\Payment\CdekPay;
 
 use HugaShop\Models\Order\Order;
 use HugaShop\Models\Config;
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Order\OrderPayment;
 use HugaShop\Models\Finance\FinanceCurrency;
 

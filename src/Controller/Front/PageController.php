@@ -12,7 +12,7 @@
 
 namespace App\Controller\Front;
 
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Content\ContentPage;
 use HugaShop\Models\User\UserPermission;
 use App\Controller\BaseFrontController;

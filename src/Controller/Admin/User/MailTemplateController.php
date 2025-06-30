@@ -10,7 +10,7 @@
 
 namespace App\Controller\Admin\User;
 
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Request;
 use HugaShop\Models\User\UserMailTemplate;
 use App\Controller\BaseAdminController;

@@ -15,9 +15,15 @@
  *
  */
 
-namespace HugaShop\Models;
+namespace HugaShop\Services;
 
 use Smarty\Smarty;
+use HugaShop\Models\Image;
+use HugaShop\Models\Config;
+use HugaShop\Models\Helper;
+use HugaShop\Models\Request;
+use HugaShop\Models\Settings;
+use HugaShop\Models\Extension;
 use HugaShop\Models\User\UserPermission;
 use HugaShop\Models\Finance\FinanceCurrency;
 

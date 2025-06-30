@@ -12,7 +12,7 @@
 
 namespace App\Controller\Front;
 
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Request;
 use HugaShop\Models\Settings;
 use HugaShop\Models\Product\Product;

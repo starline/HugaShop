@@ -14,7 +14,7 @@ namespace App\Controller\Admin\Product;
 
 use stdClass;
 use HugaShop\Models\Image;
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Request;
 use HugaShop\Models\SeoKeywords;
 use HugaShop\Models\Product\Product;

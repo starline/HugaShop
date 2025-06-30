@@ -11,7 +11,7 @@
 namespace HugaShop\Models\User;
 
 use HugaShop\Models\Config;
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Helper;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\Order\Order;

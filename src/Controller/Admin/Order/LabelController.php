@@ -10,7 +10,7 @@
 
 namespace App\Controller\Admin\Order;
 
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Request;
 use HugaShop\Models\Order\OrderLabel;
 use App\Controller\BaseAdminController;

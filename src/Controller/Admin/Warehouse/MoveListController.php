@@ -10,7 +10,7 @@
 
 namespace App\Controller\Admin\Warehouse;
 
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Request;
 use App\Services\PaginationService;
 use HugaShop\Models\Warehouse\WarehouseMove;

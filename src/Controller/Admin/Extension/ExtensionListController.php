@@ -10,7 +10,7 @@
 
 namespace App\Controller\Admin\Extension;
 
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use HugaShop\Models\Extension;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;

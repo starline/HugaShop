@@ -11,7 +11,7 @@
 namespace App\Controller\Admin;
 
 use HugaShop\Models\Config;
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

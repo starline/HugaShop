@@ -13,7 +13,7 @@
 namespace App\Controller\Front;
 
 use HugaShop\Models\Image;
-use HugaShop\Models\Design;
+use HugaShop\Services\Design;
 use App\Services\PaginationService;
 use App\Controller\BaseFrontController;
 use HugaShop\Models\Content\ContentPost;
