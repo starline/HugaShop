@@ -31,7 +31,7 @@
         <div class="row gx-5">
 
 
-            <!-- Simpl List -->
+            <!-- Simple List -->
             <div class="col-lg-6 layer">
                 <h2>Простой список</h2>
                 <div id="list_name" class="list">
@@ -64,7 +64,7 @@
                     </div>
                 </div>
             </div>
-            <!-- End Simpl List -->
+            <!-- End Simple List -->
 
 
 
