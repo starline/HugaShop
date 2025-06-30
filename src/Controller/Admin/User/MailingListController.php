@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
@@ -42,6 +42,15 @@ class MailingListController extends BaseAdminController
         }
 
         $filter = PaginationService::initFilter();
+
+        // Фильтр по типу отправки
+        $type = Request::get('type', 'string');
+        if (!empty($type)) {
+            $filter['type'] = $type;
+            Design::assign('type', $type);
+        } else {
+            Design::assign('type', null);
+        }
 
         $mailing_list = UserMailing::getList($filter, order: ['id', 'DESC'], join: ['user', 'notifier']);
         $mailing_count = UserMailing::getCount($filter);
