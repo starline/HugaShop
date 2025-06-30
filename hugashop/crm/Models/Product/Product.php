@@ -320,7 +320,7 @@ class Product extends BaseModel
 
 
     /**
-     * Обновляем товар
+     * Обновляем товар. Save price history
      * @param int|array $id
      * @param object|array $product
      */
@@ -353,8 +353,8 @@ class Product extends BaseModel
             foreach ($ids as $pid) {
                 $old_product = self::getOne($pid);
                 if ($old_product) {
-                    $final_price = $new_price !== null ? $new_price : $old_product->price;
-                    $final_cost = $new_cost_price !== null ? $new_cost_price : $old_product->cost_price;
+                    $final_price    = $new_price !== null ? $new_price : $old_product->price;
+                    $final_cost     = $new_cost_price !== null ? $new_cost_price : $old_product->cost_price;
                     if (
                         floatval($old_product->price) != floatval($final_price) ||
                         floatval($old_product->cost_price) != floatval($final_cost)

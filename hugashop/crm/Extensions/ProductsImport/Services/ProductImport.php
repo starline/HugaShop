@@ -28,7 +28,9 @@ final class ProductImport
             }
         }
 
+        
         $products = Product::getList(['sku' => $item['sku']]);
+        
         $result = [];
         foreach ($products as $product) {
             $amount = (int) $item['amount'];
@@ -53,6 +55,9 @@ final class ProductImport
     }
 
 
+    /**
+     * Get column name
+     */
     public static function internalColumnName(string $name, array $columns_names)
     {
         $name = trim(str_replace(['/', '\\'], '', $name));
@@ -66,6 +71,10 @@ final class ProductImport
         return false;
     }
 
+
+    /**
+     * Convert file
+     */
     public static function convertFile(string $source, string $dest): bool
     {
         $teststring = file_get_contents($source, false, null, 0, 1000000);
@@ -90,6 +99,9 @@ final class ProductImport
     }
 
 
+    /**
+     * Win to UTF
+     */
     public static function winToUTF(string $text): string
     {
         if (function_exists('iconv')) {
