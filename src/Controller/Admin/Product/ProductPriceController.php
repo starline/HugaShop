@@ -22,6 +22,7 @@ use HugaShop\Models\User\UserPermission;
 use App\Controller\BaseAdminController;
 use HugaShop\Models\Product\ProductRelated;
 use HugaShop\Models\Product\ProductVariant;
+use HugaShop\Models\Warehouse\WarehouseProduct;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -104,6 +105,11 @@ class ProductPriceController extends BaseAdminController
 
             $product_variants = ProductVariant::getVariants($product->id, ['product', 'product.image']);
             Design::assign('product_variants', $product_variants);
+
+            $warehouse_products = WarehouseProduct::getList([
+                'product_id' => $product->id
+            ], join: 'place');
+            Design::assign('warehouse_products', $warehouse_products);
         }
 
         return $this->fetchResponse('product/product_price.tpl');
