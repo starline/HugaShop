@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 4.2
+ * @version 4.3
  *
  */
 
@@ -193,6 +193,7 @@ class MoveController extends BaseAdminController
         if ((in_array('warehouse_add', User::authUser('permissions')) and empty($movement->status)) or in_array('warehouse_edit', User::authUser('permissions'))) {
             $can_edit = true;
         }
+        $can_change_place = $can_edit && !in_array($movement->status, [2, 3], true);
 
         $warehouse_places = WarehousePlace::getList(['enabled' => 1], 'position');
 
@@ -200,6 +201,7 @@ class MoveController extends BaseAdminController
             'movement'          => $movement,
             'total'             => $total,
             'can_edit'          => $can_edit,
+            'can_change_place'  => $can_change_place,
             'warehouse_places'  => $warehouse_places
         ]);
 

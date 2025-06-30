@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.9
+ * @version 3.0
  *
  * Работаем со складом, закупками, поставками, списанием
  *
@@ -198,6 +198,12 @@ class WarehouseMove extends BaseModel
         if (!empty($movement->awaiting_date)) {
             $movement->awaiting_date = Helper::dateConvert($movement->awaiting_date . ' 12:00', 'Y-m-d');
         }
+
+        $current = self::find(is_array($id) ? $id['id'] : $id);
+        if ($current && in_array($current->status, [2, 3]) && isset($movement->place_id)) {
+            unset($movement->place_id);
+        }
+
         $movement->modified = date('Y-m-d H:i:s');
 
         return self::updateOne($id, $movement);
