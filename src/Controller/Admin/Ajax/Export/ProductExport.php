@@ -117,7 +117,7 @@ class ProductExport extends BaseAdminController
 
 
         // Изображения товаров
-        $images = Image::getImages(array_keys($products), 'product');
+        $images = Image::getImages(array_keys($products), 'product', true);
 
         foreach ($images as $image) {
 

@@ -19,6 +19,20 @@
                 return false;
             });
 
+            // Показать/скрыть изображение
+            $(".images").on('click', 'i.enable.visibility', function() {
+                let li = $(this).closest('li');
+                let input = li.find("input[name*='_visible']");
+                let state = input.val() == '1' ? '0' : '1';
+                input.val(state);
+                if (state == '0') {
+                    li.addClass('visible_off');
+                } else {
+                    li.removeClass('visible_off');
+                }
+                return false;
+            });
+
             // Загрузить изображение с компьютера
             $('.upload_image').click(function() {
                 let name = $(this).closest('.images').attr('id');
@@ -78,13 +92,15 @@
 
                             // Render thumbnail.
                             $("<li class='wizard'>" +
-                                "<i class='delete material-icons' title='Удалить'>cancel</i>" +
+                                "<div class='image_icons'>" +
+                                "<i class='enable material-icons visibility' title='Показать'></i>" +
+                                "<i class='delete material-icons' title='Удалить'>cancel</i></div>" +
                                 "<a href='" + e.target.result +
                                 "' class='zoom' data-fancybox='images_content'>" +
                                 "<img onerror='$(this).closest(\"li\").remove();' src='" +
                                 e.target.result + "' />" +
                                 "<input name=" + name + "_urls[] type='hidden' value='" +
-                                theFile.name + "'/></a></li>").appendTo('#' + name + ' ul');
+                                theFile.name + "'/><input name=" + name + "_urls_visible[] type='hidden' value='1'/></a></li>").appendTo('#' + name + ' ul');
 
                             let temp_input = dropInput.clone().show();
 

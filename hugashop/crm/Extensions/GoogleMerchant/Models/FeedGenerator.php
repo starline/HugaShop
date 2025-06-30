@@ -110,7 +110,7 @@ class FeedGenerator
                 $product->image_link = Image::getImageURL($product_raw->image->filename, 1080, 1080);
 
                 // Обработка дополнительных фотографий
-                $images = Image::getImages($product_raw->id, 'product');
+                $images = Image::getImages($product_raw->id, 'product', true);
                 $images = $images->slice(1)->values();
                 if ($images->isNotEmpty()) {
                     $product->additional_image_link = $images->map(function ($image) {

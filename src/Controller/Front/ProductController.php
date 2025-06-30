@@ -53,6 +53,13 @@ class ProductController extends BaseFrontController
             'features'
         ]);
 
+        if ($product) {
+            $product->images = $product->images->filter(fn($i) => $i->visible);
+            if ($product->image && !$product->image->visible) {
+                $product->image = $product->images->first();
+            }
+        }
+
         if (empty($product)) {
             throw $this->createNotFoundException('Product does not found'); # 404
         }

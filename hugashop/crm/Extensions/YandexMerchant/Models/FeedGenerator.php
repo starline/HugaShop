@@ -158,7 +158,7 @@ class FeedGenerator
 
                 // Добавляйте не больше 20 фотографий для одного товара.
                 // На фотографиях может использоваться водяной знак и иная информация о товаре
-                $images = Image::getImages($raw_product->id, 'product');
+                $images = Image::getImages($raw_product->id, 'product', true);
                 if ($images->isNotEmpty()) {
                     foreach ($images as $img) {
                         $resp_xml .= '<picture>' . Image::getImageURL($img->filename, 1080, 1080, 'w') . '</picture>';

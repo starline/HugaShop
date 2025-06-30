@@ -151,7 +151,7 @@ class FeedGenerator
                 // Additional images
                 // Links to up to 20 additional images of your item, separated by a comma (,), semicolon (;), space ( ) or vertical bar (|).
                 // Follow the same image specifications as image_link.
-                $images = Image::getImages($product_raw->id, 'product');
+                $images = Image::getImages($product_raw->id, 'product', true);
                 $images = $images->slice(1)->values();
                 if ($images->isNotEmpty()) {
                     $product['additional_image_link'] = $images->map(function ($image) {
