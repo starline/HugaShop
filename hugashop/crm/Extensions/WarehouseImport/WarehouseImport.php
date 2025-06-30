@@ -15,11 +15,10 @@ use HugaShop\Models\Config;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
-
 use HugaShop\Extensions\BaseExtension;
 use HugaShop\Models\Warehouse\WarehousePlace;
-
 use Symfony\Component\HttpFoundation\JsonResponse;
+use HugaShop\Extensions\WarehouseImport\Services\CsvReader;
 use HugaShop\Extensions\WarehouseImport\Services\ProductImport;
 
 final class WarehouseImport extends BaseExtension
@@ -95,9 +94,9 @@ final class WarehouseImport extends BaseExtension
         }
 
         $import_file_path = Config::get('import_files_dir') . $this->import_file;
-        $file = fopen($import_file_path, 'r');
+        $csv = new CsvReader($import_file_path, $this->column_delimiter);
 
-        $columns = fgetcsv($file, null, $this->column_delimiter);
+        $columns = $csv->getHeader();
         foreach ($columns as &$column) {
             if ($internal = ProductImport::internalColumnName($column, $this->columns_names)) {
                 $column = $internal;
@@ -109,30 +108,25 @@ final class WarehouseImport extends BaseExtension
         }
 
         if ($from = Request::getInt('from')) {
-            fseek($file, $from);
+            $csv->seekTo($from);
         }
 
         $imported_items = [];
-        for ($k = 0; !feof($file) && $k < $this->products_count; $k++) {
-            $line = fgetcsv($file, 0, $this->column_delimiter);
-            if (is_array($line)) {
+        foreach ($csv->readRows($this->products_count) as $line) {
+            $csv_product = [];
+            foreach ($columns as $num => $name) {
+                $csv_product[$name] = $line[$num] ?? null;
+            }
 
-                $csv_product = [];
-                foreach ($columns as $num => $name) {
-                    $csv_product[$name] = $line[$num] ?? null;
-                }
-
-                $items = ProductImport::importItem($csv_product, $place_id);
-                foreach ($items as $it) {
-                    $imported_items[] = $it;
-                }
+            foreach (ProductImport::importItem($csv_product, $place_id) as $it) {
+                $imported_items[] = $it;
             }
         }
 
         $result = new \stdClass();
-        $result->end = feof($file);
-        $result->from = ftell($file);
-        $result->file_size = filesize($import_file_path);
+        $result->end = $csv->eof();
+        $result->from = $csv->tell();
+        $result->file_size = $csv->fileSize();
         $result->num = $num = Request::getInt('num') + count($imported_items);
 
         Design::assign('num', $num);
@@ -142,11 +136,11 @@ final class WarehouseImport extends BaseExtension
         $content_tpl = $this->getTemplatePath('templates/import_part.tpl');
         $result->items = Design::fetch($content_tpl);
 
-        fclose($file);
+        // CsvReader uses SplFileObject which doesn't require explicit closing
 
         if (empty(Request::getInt('from'))) {
-            $result->file_size_h = Helper::convertBytes(filesize($import_file_path));
-            $result->file_rows = count(file($import_file_path));
+            $result->file_size_h = Helper::convertBytes($csv->fileSize());
+            $result->file_rows = $csv->countRows();
         }
 
         return $result;
