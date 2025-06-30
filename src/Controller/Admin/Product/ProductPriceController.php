@@ -4,7 +4,7 @@
  * HugaShop - Selling anything
  *
  * @author Andri Huga
- * @version 2.9
+ * @version 3.0
  * 
  * ProductPriceAdmin
  *
@@ -104,40 +104,10 @@ class ProductPriceController extends BaseAdminController
 
             $product_variants = ProductVariant::getVariants($product->id, ['product', 'product.image']);
             Design::assign('product_variants', $product_variants);
-
-            $this->getProductOrders($product->id);
         }
 
         return $this->fetchResponse('product/product_price.tpl');
     }
 
 
-    /**
-     * Get all products order  
-     */
-    private function getProductOrders(int $product_id)
-    {
-        // Заказы с этим товаром
-        $filter = PaginationService::initFilter();
-        $filter['product_id'] = $product_id;
-
-        $orders_count = Order::getOrdersCount($filter);     # Кол-во заказов
-        $orders =       Order::getOrders($filter, join: [   # Выбираем заказы с этим товаром
-            'delivery_method',
-            'payment_method',
-            'purchases',
-            'purchases.product',
-            'purchases.product.image',
-            'labels'
-        ]);
-
-        $paid_filter = ['paid' => 1, 'product_id' => $product_id]; # только оплаченые
-        $orders_paid_price = Order::getOrdersPrice($paid_filter); # Выбираем общую сумму заказов
-
-        Design::assign('pagination', PaginationService::getPagination($orders_count, $filter));
-
-        Design::assign('orders', $orders);
-        Design::assign('orders_count', $orders_count);
-        Design::assign('orders_paid_price', $orders_paid_price);
-    }
 }

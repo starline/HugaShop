@@ -8,11 +8,17 @@
 			</li>
 		{/if}
 
-		{if 'product_price'|user_access and $product->id}
-			<li class="{if $route == 'ProductPriceAdmin'}active{/if}">
-				<a href="/admin/product/{$product->id}/price">Цены</a>
-			</li>
-		{/if}
+                {if 'product_price'|user_access and $product->id}
+                        <li class="{if $route == 'ProductPriceAdmin'}active{/if}">
+                                <a href="/admin/product/{$product->id}/price">Цены</a>
+                        </li>
+                {/if}
+
+                {if 'order'|user_access and $product->id}
+                        <li class="{if $route == 'ProductOrdersAdmin'}active{/if}">
+                                <a href="/admin/product/{$product->id}/orders">Заказы</a>
+                        </li>
+                {/if}
 
 		{if $smarty.get.return}
 			<li class="back">
