@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.5
+ * @version 3.6
  *
  */
 
@@ -12,7 +12,7 @@ namespace HugaShop\Models\Order;
 
 use stdClass;
 use HugaShop\Models\Config;
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\Finance\FinancePurse;
 use HugaShop\Models\Finance\FinanceCurrency;

@@ -4,14 +4,14 @@
  * Сначало проверяетя есть ли уже файл на сервере через Ngix
  *
  * @author Andi Huga
- * @version 2.7
+ * @version 2.8
  *
  */
 
 namespace App\Controller\Front;
 
 use HugaShop\Models\Image;
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use App\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

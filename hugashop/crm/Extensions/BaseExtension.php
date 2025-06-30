@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.5
+ * @version 2.6
  *
  */
 
@@ -12,7 +12,7 @@ namespace HugaShop\Extensions;
 
 use HugaShop\Models\Config;
 use HugaShop\Services\Design;
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Models\Settings;
 
 class BaseExtension

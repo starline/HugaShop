@@ -3,7 +3,7 @@
 /**
  *
  * @author Andi Huga
- * @version 3.2
+ * @version 3.3
  *
  * Use Cache
  * Яндекс фид YXM
@@ -17,7 +17,7 @@ namespace HugaShop\Extensions\YandexMerchant\Models;
 
 use HugaShop\Models\Image;
 use HugaShop\Models\Config;
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Models\Settings;
 use HugaShop\Models\Product\Product;
 use HugaShop\Models\Product\ProductOption;

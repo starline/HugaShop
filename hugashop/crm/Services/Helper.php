@@ -4,11 +4,11 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.1
+ * @version 3.2
  *
  */
 
-namespace HugaShop\Models;
+namespace HugaShop\Services;
 
 use ReCaptcha\ReCaptcha;
 use Illuminate\Support\Str;

@@ -8,7 +8,7 @@
 
 namespace HugaShop\Extensions\ProductFilling;
 
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use HugaShop\Services\Design;
 use App\Services\PaginationService;

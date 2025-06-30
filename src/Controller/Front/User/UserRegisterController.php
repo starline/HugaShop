@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.4
+ * @version 3.5
  *
  */
 
@@ -12,7 +12,7 @@ namespace App\Controller\Front\User;
 
 use HugaShop\Models\User\User;
 use HugaShop\Services\Design;
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use App\Controller\BaseFrontController;
 use Symfony\Component\HttpFoundation\Response;

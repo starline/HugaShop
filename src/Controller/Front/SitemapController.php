@@ -4,14 +4,14 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.5
+ * @version 3.6
  *
  */
 
 namespace App\Controller\Front;
 
 use HugaShop\Models\Config;
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Models\Product\Product;
 use HugaShop\Models\Content\ContentPost;
 use App\Controller\BaseFrontController;

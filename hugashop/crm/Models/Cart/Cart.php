@@ -4,13 +4,13 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 5.0
+ * @version 5.1
  *
  */
 
 namespace HugaShop\Models\Cart;
 
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\User\User;

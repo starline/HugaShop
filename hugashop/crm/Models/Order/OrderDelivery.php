@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.1
+ * @version 3.2
  *
  * Класс для работы с доставкой
  *
@@ -13,7 +13,7 @@
 namespace HugaShop\Models\Order;
 
 use HugaShop\Models\Config;
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\Finance\FinancePurse;
 use HugaShop\Models\Order\OrderPaymentDelivery;

@@ -4,13 +4,13 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  */
 
 namespace HugaShop\Models\Product;
 
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
 
 class ProductOption extends BaseModel

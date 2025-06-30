@@ -4,14 +4,14 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.0
+ * @version 2.1
  *
  */
 
 namespace App\Controller;
 
 use HugaShop\Models\Config;
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Services\Design;
 use HugaShop\Services\Request;
 use App\Event\DesignBeforeFetchEvent;

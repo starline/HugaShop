@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.4
+ * @version 1.5
  *
  * Список рассылки сообщений
  * Запускается по cron каждые
@@ -14,7 +14,7 @@
 namespace HugaShop\Models\User;
 
 use HugaShop\Models\Config;
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
 use HugaShop\Services\DesignTwig;
 

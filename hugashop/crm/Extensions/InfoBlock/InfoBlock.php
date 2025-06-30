@@ -4,14 +4,14 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.7
+ * @version 1.8
  *
  */
 
 namespace HugaShop\Extensions\InfoBlock;
 
 use HugaShop\Services\Design;
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use HugaShop\Extensions\BaseExtension;
 use HugaShop\Extensions\InfoBlock\Models\InfoBlock as InfoBlockModel;

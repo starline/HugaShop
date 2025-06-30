@@ -3,7 +3,7 @@
 /**
  *
  * @author Andri Huga
- * @version 1.6
+ * @version 1.7
  *
  * Facebook feed generator
  * Uses Cache
@@ -48,7 +48,7 @@ namespace HugaShop\Extensions\FacebookCommerce\Models;
 
 use HugaShop\Models\Image;
 use HugaShop\Models\Config;
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Models\Settings;
 use HugaShop\Models\Product\Product;
 use HugaShop\Models\Product\ProductOption;

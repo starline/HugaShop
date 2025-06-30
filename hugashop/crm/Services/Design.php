@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 4.6
+ * @version 4.7
  *
  * Smarty 5.x require PHP7.4/PHP8.1
  *
@@ -20,7 +20,7 @@ namespace HugaShop\Services;
 use Smarty\Smarty;
 use HugaShop\Models\Image;
 use HugaShop\Models\Config;
-use HugaShop\Models\Helper;
+use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use HugaShop\Models\Settings;
 use HugaShop\Models\Extension;
