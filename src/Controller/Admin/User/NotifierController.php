@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.3
+ * @version 1.4
  *
  * User Notyfi
  *
@@ -13,7 +13,7 @@
 namespace App\Controller\Admin\User;
 
 use HugaShop\Services\Design;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\User\UserNotifier;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;

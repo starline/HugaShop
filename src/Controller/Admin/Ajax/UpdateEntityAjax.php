@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.6
+ * @version 1.7
  *
  */
 
@@ -13,7 +13,7 @@ namespace App\Controller\Admin\Ajax;
 use HugaShop\Models\User\User;
 use HugaShop\Models\Order\Order;
 use HugaShop\Models\Product\Product;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\Extension;
 use HugaShop\Models\Order\OrderLabel;
 use HugaShop\Models\Content\ContentPage;

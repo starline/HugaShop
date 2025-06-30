@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.2
+ * @version 3.3
  * 
  * Use Cache
  *
@@ -13,7 +13,7 @@
 namespace HugaShop\Models\Finance;
 
 use HugaShop\Models\Helper;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\Settings;
 use HugaShop\Models\BaseModel;
 

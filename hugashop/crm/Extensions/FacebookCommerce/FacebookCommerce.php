@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.3
+ * @version 1.4
  *
  */
 
@@ -12,7 +12,7 @@ namespace HugaShop\Extensions\FacebookCommerce;
 
 use HugaShop\Services\Design;
 use HugaShop\Models\Helper;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Extensions\BaseExtension;
 use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\Serializer\Serializer;

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  * 
  * status: 0 - Новый, 1 - Принят, 4 - Отгружен,  2 - Выполнен, 3 - Отмена
  *
@@ -13,7 +13,7 @@
 namespace App\Controller\Admin\Order;
 
 use HugaShop\Services\Design;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use App\Services\PaginationService;
 use HugaShop\Models\Order\Order;
 use HugaShop\Models\User\UserPermission;

@@ -5,14 +5,14 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.4
+ * @version 1.5
  *
  */
 
 namespace HugaShop\Models\Localization;
 
 use HugaShop\Services\Design;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\BaseModel;
 
 class Language extends BaseModel

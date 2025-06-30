@@ -5,7 +5,7 @@
  *
  * @author Andri Huga
  * @author Artem Sabelnikov
- * @version 2.2
+ * @version 2.3
  *
  * При переводе выбираем два связаных платежа
  * 
@@ -16,7 +16,7 @@ namespace App\Controller\Admin\Finance;
 use HugaShop\Models\Image;
 use HugaShop\Services\Design;
 use HugaShop\Models\Helper;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\User\User;
 use HugaShop\Models\Finance\FinancePurse;
 use App\Controller\BaseAdminController;

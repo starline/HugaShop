@@ -4,13 +4,13 @@
  * HugaShop - Selling anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
 namespace App\Controller\Admin\Ajax\Stats;
 
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\Statistics;
 use App\Controller\BaseAdminController;
 use Symfony\Component\Routing\Attribute\Route;

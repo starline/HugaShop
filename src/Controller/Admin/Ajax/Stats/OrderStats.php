@@ -4,13 +4,13 @@
  * HugaShop - Selling anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  */
 
 namespace App\Controller\Admin\Ajax\Stats;
 
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\Statistics;
 use HugaShop\Models\Finance\FinancePayment;
 use App\Controller\BaseAdminController;

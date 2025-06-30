@@ -4,14 +4,14 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.0
+ * @version 2.1
  *
  */
 
 namespace App\Controller\Admin\Ajax;
 
 use HugaShop\Models\Order\Order;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\User\UserNotifier;
 use App\Controller\BaseAdminController;
 use Symfony\Component\Routing\Attribute\Route;

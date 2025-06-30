@@ -3,7 +3,7 @@
 namespace App\Controller\Admin\Ajax;
 
 use HugaShop\Models\Image;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\User\User;
 use HugaShop\Models\Order\Order;
 use HugaShop\Models\Product\Product;

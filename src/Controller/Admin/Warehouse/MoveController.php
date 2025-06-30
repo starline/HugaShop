@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 4.1
+ * @version 4.2
  *
  */
 
@@ -13,7 +13,7 @@ namespace App\Controller\Admin\Warehouse;
 use stdClass;
 use HugaShop\Models\Image;
 use HugaShop\Services\Design;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\User\User;
 use HugaShop\Models\User\UserPermission;
 use App\Controller\BaseAdminController;

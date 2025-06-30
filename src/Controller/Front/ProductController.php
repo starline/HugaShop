@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.3
+ * @version 3.4
  *
  * Этот класс использует шаблон product.tpl
  *
@@ -13,7 +13,7 @@
 namespace App\Controller\Front;
 
 use HugaShop\Services\Design;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\Settings;
 use HugaShop\Models\Product\Product;
 use App\Controller\BaseFrontController;

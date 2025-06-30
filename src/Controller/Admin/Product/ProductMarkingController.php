@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  * 
  * ProductMaarkingAdmin
  *
@@ -13,7 +13,7 @@
 namespace App\Controller\Admin\Product;
 
 use HugaShop\Services\Design;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\Product\Product;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;

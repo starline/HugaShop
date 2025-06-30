@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.7
+ * @version 2.8
  *
  */
 
@@ -14,7 +14,7 @@ use HugaShop\Models\User\User;
 use HugaShop\Models\Config;
 use HugaShop\Services\Design;
 use HugaShop\Models\Helper;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\User\UserNotifier;
 use App\Controller\BaseFrontController;
 use Symfony\Component\HttpFoundation\Response;

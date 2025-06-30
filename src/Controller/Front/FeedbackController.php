@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  * Отображение статей на сайте
  * Этот класс использует шаблоны articles.tpl и article.tpl
@@ -14,7 +14,7 @@
 namespace App\Controller\Front;
 
 use HugaShop\Services\Design;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\User\UserNotifier;
 use HugaShop\Models\Content\ContentFeedback;
 use App\Controller\BaseFrontController;

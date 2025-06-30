@@ -4,14 +4,14 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.2
  */
 
 namespace App\Controller\Admin\Ajax;
 
 use OpenAI;
 use HugaShop\Models\Config;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\Product\Product;
 use App\Controller\BaseAdminController;
 use HugaShop\Models\Content\ContentPage;

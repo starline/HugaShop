@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.7
+ * @version 1.8
  *
  */
 
@@ -12,7 +12,7 @@ namespace HugaShop\Extensions\YandexMerchant;
 
 use HugaShop\Services\Design;
 use HugaShop\Models\Helper;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\Product\ProductCategory;
 use HugaShop\Extensions\BaseExtension;
 use Symfony\Component\HttpFoundation\Response;

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  */
 
@@ -12,7 +12,7 @@ namespace App\Controller\Admin\User;
 
 use HugaShop\Models\User\User;
 use HugaShop\Services\Design;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use App\Services\PaginationService;
 use HugaShop\Models\User\UserGroup;
 use HugaShop\Models\User\UserPermission;

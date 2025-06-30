@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  */
 
@@ -12,7 +12,7 @@ namespace App\Controller\Admin\Content;
 
 use HugaShop\Services\Design;
 use HugaShop\Models\Product\Product;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use App\Services\PaginationService;
 use HugaShop\Models\Content\ContentPost;
 use HugaShop\Models\Content\ContentComment;

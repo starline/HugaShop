@@ -4,13 +4,13 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.1
+ * @version 3.2
  *
  * Класс-обертка для обращения к переменным $_GET, $_POST, $_FILES, $_COOKIE, $_SESSION
  *
  */
 
-namespace HugaShop\Models;
+namespace HugaShop\Services;
 
 use HugaShop\Models\User\UserPermission;
 
@@ -400,9 +400,13 @@ class Request
                 // Triming varchar
                 if ($param_data['type'] == 'varchar') {
                     $res->$param_name = trim($res->$param_name);
-                }
 
-                // TODO: Cut string by MySQL lenght
+                    // Cut string by MySQL length if specified
+                    if (!empty($param_data['lenght']) && is_string($res->$param_name)) {
+                        $maxLen = (int) $param_data['lenght'];
+                        $res->$param_name = mb_substr($res->$param_name, 0, $maxLen);
+                    }
+                }
             }
         }
         if ($decline === true) {

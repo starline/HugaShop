@@ -4,14 +4,14 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.5
+ * @version 2.6
  *
  */
 
 namespace HugaShop\Models\User;
 
 use HugaShop\Models\BaseModel;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 
 class UserCoupon extends BaseModel
 {

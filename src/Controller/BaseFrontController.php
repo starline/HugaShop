@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.2
+ * @version 3.3
  *
  */
 
@@ -16,7 +16,7 @@ use HugaShop\Models\Config;
 use HugaShop\Services\Design;
 use HugaShop\Models\Helper;
 use HugaShop\Models\Product\Product;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\Settings;
 use HugaShop\Models\Finance\FinanceCurrency;
 use HugaShop\Models\Product\ProductCategory;

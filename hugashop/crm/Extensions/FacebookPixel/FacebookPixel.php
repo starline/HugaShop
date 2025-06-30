@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.7
+ * @version 2.8
  *
  * @link https://github.com/facebook/facebook-php-business-sdk
  * Composer require facebook/php-business-sdk
@@ -24,7 +24,7 @@ namespace HugaShop\Extensions\FacebookPixel;
 
 use FacebookAds\Api;
 use HugaShop\Models\Config;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 // Symfony
 use App\Event\CartAddEvent;
 use HugaShop\Models\User\User;

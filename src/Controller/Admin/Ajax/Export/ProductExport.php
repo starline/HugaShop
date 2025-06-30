@@ -5,7 +5,7 @@ namespace App\Controller\Admin\Ajax\Export;
 use HugaShop\Models\Image;
 use HugaShop\Models\Config;
 use HugaShop\Models\Product\Product;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\Product\ProductCategory;
 use App\Controller\BaseAdminController;
 use Symfony\Component\Routing\Attribute\Route;
