@@ -111,17 +111,7 @@ class Helper
         $date->setTimeZone(new \DateTimeZone(Settings::getParam('timezone')));
 
         if ($format === 'm') {
-            $locale = Design::$Translator?->getLocale() ?? 'ru_RU';
-            $formatter = new \IntlDateFormatter(
-                $locale,
-                \IntlDateFormatter::FULL,
-                \IntlDateFormatter::NONE,
-                Settings::getParam('timezone'),
-                \IntlDateFormatter::GREGORIAN,
-                'd MMMM yyyy'
-            );
-
-            return $formatter->format($date);
+            return $date->format('j ') . Design::$Translator->trans('month.' . $date->format('F')) . $date->format(' Y');
         }
 
         return $date->format(empty($format) ? Settings::getParam('date_format') : $format);

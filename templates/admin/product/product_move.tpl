@@ -9,7 +9,9 @@
 {block name=content}
     {if $message_error}
         <div class="message message_error">
-            <span class="text">{if $message_error=='error_closing'}Нехватка некоторых товаров на складе{else}{$message_error}{/if}</span>
+            <span class="text">{if $message_error=='error_closing'}Нехватка некоторых товаров на
+                складе{else}{$message_error}
+                {/if}</span>
         </div>
     {/if}
 
@@ -32,15 +34,13 @@
                     постав{$movements_count|plural:'ка':'ок':'ки'}
                     {if 'finance'|user_access AND !$total|empty AND $status !== null }
                         <span class="sum_total">на сумму: {$total->cost_price|price_html|raw}
-                            <span class="sum_profit_price">{($total->retail_price - $total->cost_price)|price_html:profit|raw}</span>
+                            <span
+                                class="sum_profit_price">{($total->retail_price - $total->cost_price)|price_html:profit|raw}</span>
                         </span>
                         <span class="sum_total"> ({$total->product_amount} единиц товара)</span>
                     {/if}
                 {/if}
             </h1>
-            {if 'warehouse_edit'|user_access OR 'warehouse_add'|user_access}
-                <a class="add" href="{'MoveNewAdmin'|urll}">Добавить перемещение товара</a>
-            {/if}
         </div>
 
         <div class="navbar-expand-lg" id="right_menu">
@@ -57,7 +57,8 @@
 
                 <div class="offcanvas-body">
                     <ul class="menu_list">
-                        <li {if $status === null}class="selected" {/if}><a href='{url status=null clear=true}'>Все поставки</a></li>
+                        <li {if $status === null}class="selected" {/if}><a href='{url status=null clear=true}'>Все
+                                поставки</a></li>
                         <li {if $status === 0}class="selected" {/if}><a href='{url status='0' clear=true}'>Новые</a></li>
                         <li {if $status == 1}class="selected" {/if}><a href='{url status=1 clear=true}'>Ожидаем</a></li>
                         <li {if $status == 2}class="selected" {/if}><a href='{url status=2 clear=true}'>Поступило</a></li>
@@ -85,16 +86,19 @@
                                     </div>
                                 {/if}
                                 <div class="order_date">
-                                    <a class="order_id" href="{'MoveAdmin'|urll:[id => $movement->id]}"><span>{$movement->id}</span></a>
+                                    <a class="order_id"
+                                        href="{'MoveAdmin'|urll:[id => $movement->id]}"><span>{$movement->id}</span></a>
                                     <div class="date">{$movement->date|date}</div>
                                 </div>
-                                <div class="colrow">
+                                <div class="col row">
                                     <div class="col-12 col-md-6">
                                         <div class="purchases">
                                             {foreach $movement->purchases as $purchase}
                                                 <div class="image">
                                                     <div class="amount">{$purchase->amount}</div>
-                                                    <img data-bs-toggle="tooltip" title="{$purchase->product_name}{if $purchase->variant_name}- {$purchase->variant_name}{/if}" src='{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}' />
+                                                    <img data-bs-toggle="tooltip"
+                                                        title="{$purchase->product_name}{if $purchase->variant_name}- {$purchase->variant_name}{/if}"
+                                                        src='{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}' />
                                                 </div>
                                             {/foreach}
                                         </div>
@@ -113,11 +117,16 @@
                                     </div>
                                 </div>
                                 <div class="icons flex-column">
-                                    {if $movement->status == 0}<i><img src="{'images/new.png'|asset}" data-bs-toggle="tooltip" title='Новый'></i>{/if}
-                                    {if $movement->status == 1}<i><img src="{'images/time.png'|asset}" data-bs-toggle="tooltip" title='Ожидаем'></i>{/if}
-                                    {if $movement->status == 2}<i><img src="{'images/tick.png'|asset}" data-bs-toggle="tooltip" title='Принят'></i>{/if}
-                                    {if $movement->status == 3 || $movement->status == 4}<i><img src="{'images/cross.png'|asset}" data-bs-toggle="tooltip" title='Списан'></i>{/if}
-                                    {if $movement->images->isNotEmpty()}<i><img src="{'images/clipboard.png'|asset}" data-bs-toggle="tooltip" title="Фотоотчет"></i>{/if}
+                                    {if $movement->status == 0}<i><img src="{'images/new.png'|asset}" data-bs-toggle="tooltip"
+                                            title='Новый'></i>{/if}
+                                    {if $movement->status == 1}<i><img src="{'images/time.png'|asset}" data-bs-toggle="tooltip"
+                                            title='Ожидаем'></i>{/if}
+                                    {if $movement->status == 2}<i><img src="{'images/tick.png'|asset}" data-bs-toggle="tooltip"
+                                            title='Принят'></i>{/if}
+                                    {if $movement->status == 3 || $movement->status == 4}<i><img src="{'images/cross.png'|asset}"
+                                            data-bs-toggle="tooltip" title='Списан'></i>{/if}
+                                    {if $movement->images->isNotEmpty()}<i><img src="{'images/clipboard.png'|asset}"
+                                            data-bs-toggle="tooltip" title="Фотоотчет"></i>{/if}
                                 </div>
                             </div>
                         {/foreach}
