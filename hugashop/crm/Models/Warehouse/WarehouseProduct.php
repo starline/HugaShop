@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.5
+ * @version 1.6
  *
  */
 
@@ -12,6 +12,7 @@
 namespace HugaShop\Models\Warehouse;
 
 use HugaShop\Models\BaseModel;
+use HugaShop\Models\Warehouse\WarehousePlace;
 
 class WarehouseProduct extends BaseModel
 {
@@ -44,5 +45,10 @@ class WarehouseProduct extends BaseModel
         ]);
 
         $item->increment('amount', $amount);
+    }
+
+    public function place()
+    {
+        return $this->belongsTo(WarehousePlace::class, 'place_id');
     }
 }

@@ -272,14 +272,28 @@
 				<input type="text" id="product_variants" class="input_autocomplete form-control"
 					placeholder='Выберите товар чтобы добавить его'>
 
-				<div class="btn_row">
-					<button class="btn btn-primary" type="submit">Сохранить</button>
-				</div>
-			</div>
+                        <div class="btn_row">
+                                <button class="btn btn-primary" type="submit">Сохранить</button>
+                        </div>
+                </div>
 
 
-			<!-- Связанные товары --->
-			<div class="col-lg-6 layer">
+                        <!-- Товары по складам -->
+                        <div class="col-lg-6 layer">
+                                <h2>Товары по складам</h2>
+                                <ul class="warehouse_products list-unstyled">
+                                        {foreach $warehouse_products as $wp}
+                                                <li class="d-flex justify-content-between">
+                                                        <span>{$wp->place->name}</span>
+                                                        <span>{$wp->amount}</span>
+                                                </li>
+                                        {/foreach}
+                                </ul>
+                        </div>
+
+
+                        <!-- Связанные товары --->
+                        <div class="col-lg-6 layer">
 				<h2>
 					Связанные товары
 					<span class="sum_total">{$product->related|count}
