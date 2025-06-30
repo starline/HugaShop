@@ -31,6 +31,44 @@
         <div class="row gx-5">
 
 
+            <!-- Simpl List -->
+            <div class="col-lg-6 layer">
+                <h2>Простой список</h2>
+                <div id="list_name" class="list">
+                    <div class="list_row">
+                        <div class="col">
+                            <a href="#">Название</a>
+                            <div class="notice">Примечание, комментарий, заметки</div>
+                        </div>
+                        <div class="col-2">
+                            <span class="badge text-bg-round">отметка</span>
+                        </div>
+                    </div>
+                    <div class="list_row">
+                        <div class="col">
+                            <a href="#">Название второй позиции</a>
+                            <div class="notice">Примечание, комментарий, заметки для второй позиции</div>
+                        </div>
+                        <div class="col-2">
+                            <span class="badge text-bg-round">отметка</span>
+                        </div>
+                    </div>
+                    <div class="list_row">
+                        <div class="col">
+                            <a href="#">Название третьей позиции</a>
+                            <div class="notice">Примечание, комментарий, заметки для третьей позиции</div>
+                        </div>
+                        <div class="col-2">
+                            <span class="badge text-bg-round">отметка</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Simpl List -->
+
+
+
+
             <!-- Param Value -->
             <div class="col-lg-6 layer">
                 <h2>Заголовок</h2>
@@ -48,7 +86,7 @@
                     <button class="btn btn-primary" name="" value="1" type="submit">Кнопка</button>
                 </div>
             </div>
-
+            <!-- End Param Value -->
 
 
 
@@ -90,54 +128,48 @@
                 </div>
             </div>
 
+            <script type="module">
+                {literal}
+
+                    $(function() {
+
+                        // Mini input list
+                        const s_variant = $('.mini_list #new').clone(true);
+                        $('.mini_list #new').remove().removeAttr('id');
+
+                        $('.add').click(function() {
+                            s_variant.clone().appendTo('.mini_list').show().find(
+                                'input[name="synonyms[]"]').focus();
+                            return false;
+                        });
+
+                        // delete input list
+                        $(".mini_list").on('click', '.delete', function() {
+                            $(this).closest(".list_row").fadeOut(200, function() {
+                                $(this).remove();
+                            });
+                            return false;
+                        });
+
+                        // Dort inpot list
+                        $("#sort").sortable({
+                            items: ".list_row:not(.sort_disabled)",
+                            cancel: ".sort_disabled",
+                            handle: ".move_zone",
+                            axis: 'y',
+                            opacity: 0.90,
+                            tolerance: "pointer"
+                        });
+
+                    });
+
+                {/literal}
+            </script>
+            <!-- End Mini input list -->
 
 
 
 
         </div>
     </form>
-{/block}
-
-
-
-{block name=body_script append}
-    <script type="module">
-        {literal}
-
-
-
-            $(function() {
-
-                // Mini input list
-                const s_variant = $('.mini_list #new').clone(true);
-                $('.mini_list #new').remove().removeAttr('id');
-
-                $('.add').click(function() {
-                    s_variant.clone().appendTo('.mini_list').show().find(
-                        'input[name="synonyms[]"]').focus();
-                    return false;
-                });
-
-                // delete input list
-                $(".mini_list").on('click', '.delete', function() {
-                    $(this).closest(".list_row").fadeOut(200, function() {
-                        $(this).remove();
-                    });
-                    return false;
-                });
-
-                // Dort inpot list
-                $("#sort").sortable({
-                    items: ".list_row:not(.sort_disabled)",
-                    cancel: ".sort_disabled",
-                    handle: ".move_zone",
-                    axis: 'y',
-                    opacity: 0.90,
-                    tolerance: "pointer"
-                });
-
-            });
-
-        {/literal}
-    </script>
 {/block}
