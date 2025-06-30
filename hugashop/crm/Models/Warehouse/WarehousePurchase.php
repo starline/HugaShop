@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  * 
  * @author Andri Huga
- * @version 2.8
+ * @version 2.9
  * 
  */
 
@@ -183,5 +183,62 @@ class WarehousePurchase extends BaseModel
         }
 
         return self::deleteOne($id) > 0;
+    }
+
+
+    /**
+     * Get purchases for specific product with optional join
+     */
+    public static function getProductPurchases(array $filter = [], array $join = [], bool $count = false): Collection|int
+    {
+        $query = self::query();
+
+        if (empty($filter['product_id'])) {
+            return $count ? 0 : collect();
+        }
+        $query->whereIn('product_id', (array) $filter['product_id']);
+
+        if (isset($filter['status'])) {
+            $query->whereHas('warehouse_move', function ($q) use ($filter) {
+                $q->where('status', $filter['status']);
+            });
+        }
+
+        if ($count) {
+            return $query->count();
+        }
+
+        $with = [];
+        if (in_array('warehouse_move', $join) || in_array('warehouse_move.place', $join)) {
+            $with[] = 'warehouse_move';
+            if (in_array('warehouse_move.place', $join)) {
+                $with[] = 'warehouse_move.place';
+            }
+        }
+        if (in_array('product', $join)) {
+            $with[] = 'product';
+            $with[] = 'product.image';
+        }
+        if ($with) {
+            $query->with($with);
+        }
+
+        $query->orderByDesc('id');
+
+        if (isset($filter['limit']) && $filter['limit'] !== 'all') {
+            $limit = max(1, (int) $filter['limit']);
+            $page = max(1, (int) ($filter['page'] ?? 1));
+            $query->skip(($page - 1) * $limit)->take($limit);
+        }
+
+        return $query->get();
+    }
+
+    /**
+     * Count product purchases
+     */
+    public static function countProductPurchases(array $filter = []): int
+    {
+        return self::getProductPurchases($filter, count: true);
     }
 }

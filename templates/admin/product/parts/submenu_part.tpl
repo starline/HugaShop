@@ -20,6 +20,12 @@
                         </li>
                 {/if}
 
+                {if 'warehouse'|user_access and $product->id}
+                        <li class="{if $route == 'ProductMoveAdmin'}active{/if}">
+                                <a href="/admin/product/{$product->id}/move">Поставки</a>
+                        </li>
+                {/if}
+
 		{if $smarty.get.return}
 			<li class="back">
 				<a class="out_link" href="{$smarty.get.return}">Назад</a>
