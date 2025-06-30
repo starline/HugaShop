@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.2
+ * @version 3.3
  *
  */
 
@@ -16,6 +16,7 @@ use Illuminate\Support\Str;
 use Jenssegers\Agent\Agent;
 use HugaShop\Models\Settings;
 use HugaShop\Services\Request;
+use HugaShop\Services\Design;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
@@ -105,8 +106,24 @@ class Helper
         if (empty($date)) {
             $date = date("Y-m-d");
         }
+
         $date = new \DateTime($date);
         $date->setTimeZone(new \DateTimeZone(Settings::getParam('timezone')));
+
+        if ($format === 'm') {
+            $locale = Design::$Translator?->getLocale() ?? 'ru_RU';
+            $formatter = new \IntlDateFormatter(
+                $locale,
+                \IntlDateFormatter::FULL,
+                \IntlDateFormatter::NONE,
+                Settings::getParam('timezone'),
+                \IntlDateFormatter::GREGORIAN,
+                'd MMMM yyyy'
+            );
+
+            return $formatter->format($date);
+        }
+
         return $date->format(empty($format) ? Settings::getParam('date_format') : $format);
     }
 
