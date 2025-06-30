@@ -166,38 +166,3 @@
 
 	</div>
 {/block}
-
-
-{block name=body_script append}
-	<!-- Script -->
-	<script type="module">
-		{literal}
-
-			// On document load 
-			$(function() {
-
-				// Минимизировать комментарии менеджера
-				$(".notice_block").each(function(index) {
-					let height = $(this).height();
-					let minimize_height = 60;
-					if (height > minimize_height & (height - minimize_height) > 40) {
-						$(this).addClass("minimizeble minimize");
-					}
-				});
-
-				$(".show_link_block a").click(function() {
-					if ($(this).closest("div.notice_block").hasClass("minimize")) {
-						$(this).closest("div.notice_block").removeClass("minimize");
-						$(this).text("скрыть ↑");
-					} else {
-						$(this).closest("div.notice_block").addClass("minimize");
-						$(this).text("раскрыть ↓");
-					}
-					return false;
-				});
-
-			});
-
-		{/literal}
-	</script>
-{/block}

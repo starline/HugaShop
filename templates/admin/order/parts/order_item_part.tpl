@@ -73,7 +73,7 @@
                     <div class="notice_block">
                         <div class="notice_block_text">{$order->note|strip_tags|nl2br|raw}</div>
                         <div class="show_link_block">
-                            <a class="show_link" href="#">раскрыть ↓</a>
+                            <a class="show_link" href="#"></a>
                         </div>
                     </div>
                 {/if}
@@ -108,3 +108,36 @@
         </div>
     {/if}
 </div>
+
+
+<script type="module">
+    {literal}
+
+        // On document load 
+        $(function() {
+
+            // Минимизировать notice_block
+            $(".notice_block").each(function(index) {
+                let height = $(this).height();
+                let minimize_height = 60;
+                if (height > minimize_height & (height - minimize_height) > 40) {
+                    $(this).addClass("minimizeble minimize");
+                    $(this).find('.show_link_block a').text("раскрыть ↓");
+                }
+            });
+
+            $(".show_link_block a").on('click', function() {
+                if ($(this).closest("div.notice_block").hasClass("minimize")) {
+                    $(this).closest("div.notice_block").removeClass("minimize");
+                    $(this).text("скрыть ↑");
+                } else {
+                    $(this).closest("div.notice_block").addClass("minimize");
+                    $(this).text("раскрыть ↓");
+                }
+                return false;
+            });
+
+        });
+
+    {/literal}
+</script>

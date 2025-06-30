@@ -319,7 +319,7 @@
 
 	</div>
 
-
+	<!-- Body Script -->
 	{block name=body_script}{/block}
 
 
