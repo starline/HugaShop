@@ -18,28 +18,28 @@
 			<div class="col-12">
 				<div class="over_name">
 					<div class="checkbox_line">
-						<div class="form-check">
-							<input class="form-check-input" name="visible" value="1" type="checkbox" id="active_checkbox"
-								{if $product->visible}checked{/if} />
+						<div class="form-check form-switch">
+							<input class="form-check-input" name="visible" value="1" type="checkbox" role="switch"
+								id="active_checkbox" {if $product->visible}checked{/if} />
 							<label class="form-check-label" for="active_checkbox">Показывать в каталоге</label>
 						</div>
 
-						<div class="form-check">
-							<input class="form-check-input" name="disable" value="1" type="checkbox" id="disable_checkbox"
-								{if $product->disable}checked{/if} />
+						<div class="form-check form-switch">
+							<input class="form-check-input" name="disable" value="1" type="checkbox" role="switch"
+								id="disable_checkbox" {if $product->disable}checked{/if} />
 							<label class="form-check-label" for="disable_checkbox">Не поставляется</label>
 						</div>
 
-						<div class="form-check">
-							<input class="form-check-input" name="featured" value="1" type="checkbox" id="featured_checkbox"
-								{if $product->featured}checked{/if} />
+						<div class="form-check form-switch">
+							<input class="form-check-input" name="featured" value="1" type="checkbox" role="switch"
+								id="featured_checkbox" {if $product->featured}checked{/if} />
 							<label class="form-check-label" for="featured_checkbox" data-bs-toggle="tooltip"
 								title="Товар выводиться на главное странице">Рекомендуемый</label>
 						</div>
 
-						<div class="form-check">
-							<input class="form-check-input" name="sale" value="1" type="checkbox" id="sale_checkbox"
-								{if $product->sale}checked{/if} />
+						<div class="form-check form-switch">
+							<input class="form-check-input" name="sale" value="1" type="checkbox" role="switch"
+								id="sale_checkbox" {if $product->sale}checked{/if} />
 							<label class="form-check-label" for="sale_checkbox">Распродажа</label>
 						</div>
 					</div>
