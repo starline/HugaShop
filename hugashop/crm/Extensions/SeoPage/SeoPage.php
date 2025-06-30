@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.6
+ * @version 1.7
  *
  */
 
@@ -12,7 +12,7 @@ namespace HugaShop\Extensions\SeoPage;
 
 use HugaShop\Services\Design;
 use HugaShop\Models\Helper;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use App\Event\DesignBeforeFetchEvent;
 use HugaShop\Extensions\BaseExtension;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;

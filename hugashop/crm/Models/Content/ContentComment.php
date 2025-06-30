@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.5
+ * @version 2.6
  *
  */
 
@@ -12,7 +12,7 @@ namespace HugaShop\Models\Content;
 
 use HugaShop\Services\Design;
 use HugaShop\Models\Helper;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\Product\Product;
 use HugaShop\Models\User\User;

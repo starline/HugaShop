@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  * Работаем над страницей импорта товаров
  *
@@ -14,7 +14,7 @@ namespace App\Controller\Admin\Product;
 
 use HugaShop\Models\Config;
 use HugaShop\Services\Design;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
 use Symfony\Component\Routing\Attribute\Route;
 

@@ -4,14 +4,14 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
  *
  * Service for pagination helpers
  */
 
 namespace App\Services;
 
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\Settings;
 
 class PaginationService

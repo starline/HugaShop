@@ -4,7 +4,7 @@ namespace App\Controller\Front\Ajax;
 
 use HugaShop\Models\Image;
 use HugaShop\Models\Product\Product;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use App\Event\SearchEvent;
 use HugaShop\Models\Settings;
 use App\Controller\BaseFrontController;

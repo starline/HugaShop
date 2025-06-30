@@ -4,14 +4,14 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.5
+ * @version 2.6
  *
  */
 
 namespace App\Controller\Admin\Warehouse;
 
 use HugaShop\Services\Design;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use App\Services\PaginationService;
 use HugaShop\Models\Warehouse\WarehouseMove;
 use HugaShop\Models\User\UserPermission;

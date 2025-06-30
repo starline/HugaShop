@@ -3,7 +3,7 @@
 namespace App\Controller\Admin\Ajax;
 
 use HugaShop\Models\Config;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;

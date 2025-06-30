@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.5
+ * @version 1.6
  * 
  * SeoLinker extension
  * @link https://github.com/spatie/crawler
@@ -15,7 +15,7 @@ namespace HugaShop\Extensions\SeoLinker;
 
 use HugaShop\Models\Config;
 use HugaShop\Services\Design;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use App\Services\PaginationService;
 use HugaShop\Extensions\BaseExtension;
 use Symfony\Component\HttpFoundation\JsonResponse;

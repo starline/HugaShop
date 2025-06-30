@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.9
+ * @version 2.0
  * 
  * Import gooogle doc csv
  *
@@ -15,7 +15,7 @@ namespace App\Controller\Admin\Ajax;
 use HugaShop\Models\Config;
 use HugaShop\Models\Helper;
 use HugaShop\Models\Product\Product;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
 use HugaShop\Services\Design;
 use Symfony\Component\Routing\Attribute\Route;

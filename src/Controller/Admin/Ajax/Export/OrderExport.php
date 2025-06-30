@@ -5,7 +5,7 @@ namespace App\Controller\Admin\Ajax\Export;
 use HugaShop\Models\Order\Order;
 use HugaShop\Models\Config;
 use HugaShop\Models\Helper;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\Settings;
 use HugaShop\Models\Finance\FinanceCurrency;
 use App\Controller\BaseAdminController;

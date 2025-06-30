@@ -4,13 +4,13 @@
  * HugaShop - Sell anything
  * 
  * @author Andi Huga
- * @version 1.2
+ * @version 1.3
  *
  */
 
 namespace HugaShop\Extensions\CmlExchange;
 
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Extensions\CmlExchange\Services\CmlExchangeService;
 use HugaShop\Extensions\BaseExtension;
 use Symfony\Component\HttpFoundation\Response;

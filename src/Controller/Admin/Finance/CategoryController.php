@@ -4,14 +4,14 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.4
+ * @version 2.5
  * 
  */
 
 namespace App\Controller\Admin\Finance;
 
 use HugaShop\Services\Design;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\Finance\FinanceCategory;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;

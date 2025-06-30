@@ -4,14 +4,14 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
 namespace App\Controller\Admin\Warehouse;
 
 use HugaShop\Services\Design;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\Product\ProductProvider;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;

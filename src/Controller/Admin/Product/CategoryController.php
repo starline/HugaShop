@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  */
 
@@ -12,7 +12,7 @@ namespace App\Controller\Admin\Product;
 
 use HugaShop\Models\Image;
 use HugaShop\Services\Design;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\SeoFaqs;
 use HugaShop\Models\SeoKeywords;
 use App\Controller\BaseAdminController;

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.9
+ * @version 2.0
  *
  */
 
@@ -13,7 +13,7 @@ namespace App\Controller;
 use HugaShop\Models\Config;
 use HugaShop\Models\Design;
 use HugaShop\Models\Helper;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use App\Event\DesignBeforeFetchEvent;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\Translation\Translator;

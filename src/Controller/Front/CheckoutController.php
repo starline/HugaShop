@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.9
+ * @version 4.0
  *
  * Корзина покупок
  * Этот класс использует шаблон cart.tpl
@@ -17,7 +17,7 @@ use HugaShop\Models\Cart\Cart;
 use HugaShop\Models\User\User;
 use HugaShop\Services\Design;
 use HugaShop\Models\Helper;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use App\Event\OrderAddEvent;
 use HugaShop\Models\User\UserCoupon;
 use HugaShop\Models\Order\Order;

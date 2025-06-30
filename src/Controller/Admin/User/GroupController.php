@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.5
+ * @version 2.6
  *
  * Users Group
  *
@@ -13,7 +13,7 @@
 namespace App\Controller\Admin\User;
 
 use HugaShop\Services\Design;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\User\UserGroup;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  */
 
@@ -12,7 +12,7 @@ namespace App\Controller\Front\Ajax;
 
 use HugaShop\Models\Cart\Cart;
 use HugaShop\Services\Design;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use App\Event\CartAddEvent;
 use HugaShop\Models\Cart\CartPurchase;
 use App\Controller\BaseFrontController;

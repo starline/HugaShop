@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
@@ -12,7 +12,7 @@ namespace HugaShop\Extensions\SmsSender;
 
 use HugaShop\Services\Design;
 use HugaShop\Models\Helper;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\Settings;
 use HugaShop\Models\Order\Order;
 use HugaShop\Models\Product\Product;

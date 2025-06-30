@@ -4,13 +4,13 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.3
+ * @version 1.5
  *
  */
 
 namespace HugaShop\Extensions\CarouselPromo;
 
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Extensions\BaseExtension;
 
 final class CarouselPromo extends BaseExtension

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.0
+ * @version 3.1
  *
  */
 
@@ -12,7 +12,7 @@ namespace App\Controller\Front;
 
 use HugaShop\Models\Config;
 use HugaShop\Services\Design;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\Order\Order;
 use HugaShop\Models\Finance\FinanceCurrency;
 use HugaShop\Models\Order\OrderPayment;

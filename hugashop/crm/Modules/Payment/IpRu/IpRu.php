@@ -22,7 +22,7 @@ use IntlDateFormatter;
 use HugaShop\Models\Config;
 use HugaShop\Services\Design;
 use HugaShop\Models\Helper;
-use HugaShop\Models\Request;
+use HugaShop\Services\Request;
 use HugaShop\Models\Order\Order;
 use HugaShop\Models\Finance\FinanceCurrency;
 use HugaShop\Models\Order\OrderPayment;
