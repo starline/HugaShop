@@ -11,8 +11,8 @@
 namespace App\Controller;
 
 use HugaShop\Models\Config;
-use HugaShop\Models\Design;
 use HugaShop\Models\Helper;
+use HugaShop\Services\Design;
 use HugaShop\Services\Request;
 use App\Event\DesignBeforeFetchEvent;
 use Symfony\Component\Asset\Packages;

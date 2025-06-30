@@ -33,7 +33,8 @@
     "psr-4": {
       "HugaShop\\Models\\": "Models/",
       "HugaShop\\Extensions\\": "Extensions/",
-      "HugaShop\\Modules\\": "Modules/"
+      "HugaShop\\Modules\\": "Modules/",
+      "HugaShop\\Services\\": "Services/"
     }
   },
   "config": {

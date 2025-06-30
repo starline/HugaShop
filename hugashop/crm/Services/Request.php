@@ -12,6 +12,8 @@
 
 namespace HugaShop\Services;
 
+use HugaShop\Models\Config;
+use HugaShop\Models\Settings;
 use HugaShop\Models\User\UserPermission;
 
 class Request
