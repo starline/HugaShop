@@ -20,14 +20,14 @@
 			<div class="col-12">
 				<div class="over_name">
 					<div class="checkbox_line">
-						<div class="form-check">
-							<input class="form-check-input" name="visible" value="1" type="checkbox" id="visible_checkbox"
-								{if $category->visible}checked{/if} />
+						<div class="form-check form-switch">
+							<input class="form-check-input" name="visible" value="1" type="checkbox" role="switch"
+								id="visible_checkbox" {if $category->visible}checked{/if} />
 							<label class="form-check-label" for="visible_checkbox">Активна</label>
 						</div>
-						<div class="form-check">
-							<input class="form-check-input" name="main" value="1" type="checkbox" id="main_checkbox"
-								{if $category->main}checked{/if} />
+						<div class="form-check form-switch">
+							<input class="form-check-input" name="main" value="1" type="checkbox" role="switch"
+								id="main_checkbox" {if $category->main}checked{/if} />
 							<label class="form-check-label" for="main_checkbox">Показыват на главной</label>
 						</div>
 					</div>
@@ -219,7 +219,7 @@
 		import '{"js/fancybox/jquery.fancybox.min.js"|asset}';
 		import '{"js/jquery/chosen/chosen.jquery.js"|asset}';
 		import { initImagesUpload } from '{"js/image.js"|asset}';
-		import { generate_meta_title, generate_url } from '{"js/common.js"|asset}';
+		import { generate_meta_title, generate_url, initFancybox } from '{"js/common.js"|asset}';
 
 		var first_edit = {if $category->id|empty}true{else}false{/if};
 
