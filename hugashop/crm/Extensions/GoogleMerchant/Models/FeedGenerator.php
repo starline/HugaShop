@@ -15,7 +15,7 @@
 namespace HugaShop\Extensions\GoogleMerchant\Models;
 
 use HugaShop\Models\Image;
-use HugaShop\Models\Config;
+use HugaShop\Services\Config;
 use HugaShop\Services\Helper;
 use HugaShop\Models\Settings;
 use HugaShop\Models\Product\Product;

@@ -11,7 +11,7 @@
 namespace HugaShop\Models\Order;
 
 use stdClass;
-use HugaShop\Models\Config;
+use HugaShop\Services\Config;
 use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\Finance\FinancePurse;

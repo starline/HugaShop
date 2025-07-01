@@ -18,7 +18,7 @@
 namespace HugaShop\Modules\Delivery\NovaPoshta;
 
 use HugaShop\Models\Order\Order;
-use HugaShop\Models\Config;
+use HugaShop\Services\Config;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Models\Order\OrderDelivery;

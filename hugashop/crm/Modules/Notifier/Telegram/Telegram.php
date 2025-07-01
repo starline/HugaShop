@@ -10,7 +10,7 @@
 
 namespace HugaShop\Modules\Notifier\Telegram;
 
-use HugaShop\Models\Config;
+use HugaShop\Services\Config;
 use TelegramBot\NotifyBot;
 
 class Telegram

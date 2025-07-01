@@ -16,7 +16,7 @@
 namespace App\Controller\Admin\Settings;
 
 use PhpZip\ZipFile;
-use HugaShop\Models\Config;
+use HugaShop\Services\Config;
 use HugaShop\Services\Design;
 use HugaShop\Services\Request;
 use HugaShop\Models\Settings;

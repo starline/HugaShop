@@ -23,7 +23,7 @@
 namespace HugaShop\Extensions\FacebookPixel;
 
 use FacebookAds\Api;
-use HugaShop\Models\Config;
+use HugaShop\Services\Config;
 use HugaShop\Services\Request;
 // Symfony
 use App\Event\CartAddEvent;

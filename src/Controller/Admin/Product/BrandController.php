@@ -10,7 +10,7 @@
 
 namespace App\Controller\Admin\Product;
 
-use HugaShop\Models\Config;
+use HugaShop\Services\Config;
 use HugaShop\Services\Design;
 use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;

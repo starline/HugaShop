@@ -11,7 +11,7 @@
 namespace HugaShop\Extensions\CmlExchange\Services;
 
 use HugaShop\Models\Image;
-use HugaShop\Models\Config;
+use HugaShop\Services\Config;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use HugaShop\Models\Settings;

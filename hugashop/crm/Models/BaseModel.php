@@ -10,7 +10,7 @@
 
 namespace HugaShop\Models;
 
-use HugaShop\Models\Config;
+use HugaShop\Services\Config;
 use Illuminate\Support\Str;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;

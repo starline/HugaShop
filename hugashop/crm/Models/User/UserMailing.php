@@ -13,7 +13,7 @@
 
 namespace HugaShop\Models\User;
 
-use HugaShop\Models\Config;
+use HugaShop\Services\Config;
 use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
 use HugaShop\Services\DesignTwig;

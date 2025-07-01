@@ -9,7 +9,7 @@
 
 namespace App\Controller\Front\Exchange;
 
-use HugaShop\Models\Config;
+use HugaShop\Services\Config;
 use HugaShop\Models\User\UserMailing;
 use App\Controller\BaseFrontController;
 use Symfony\Component\Routing\Attribute\Route;
