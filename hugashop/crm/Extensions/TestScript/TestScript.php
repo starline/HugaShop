@@ -552,13 +552,13 @@ class TestScript extends BaseExtension
                                 $this->result[] = 'Images sorted for all products';
                             }
 
-                            
+
                             if (1) {
                                 ContentComment::query()
-                                    ->where('entity_type', 'like', '%\\Api\\%')
+                                    ->where('entity_type', 'like', '%Api%')
                                     ->chunk(100, function ($comments) {
                                         foreach ($comments as $comment) {
-                                            $comment->entity_type = str_replace('\\Api\\', '\\Models\\', $comment->entity_type);
+                                            $comment->entity_type = str_replace('Api', 'Models', $comment->entity_type);
                                             $comment->save();
                                         }
                                     });
