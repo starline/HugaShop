@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.9
+ * @version 3.0
  *
  */
 
@@ -553,8 +553,16 @@ class TestScript extends BaseExtension
                             }
 
                             if (1) {
-                                // TODO: в моделе ContentComment для всех комментарий в поле entity_type замнить \Api\ на \Models\
+                                ContentComment::query()
+                                    ->where('entity_type', 'like', '%\\Api\\%')
+                                    ->chunk(100, function ($comments) {
+                                        foreach ($comments as $comment) {
+                                            $comment->entity_type = str_replace('\\Api\\', '\\Models\\', $comment->entity_type);
+                                            $comment->save();
+                                        }
+                                    });
 
+                                $this->result[] = 'Comments entity_type updated';
                             }
 
 
