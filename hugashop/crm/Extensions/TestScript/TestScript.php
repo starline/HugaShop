@@ -496,7 +496,7 @@ class TestScript extends BaseExtension
 
 
                             // переносим изображения
-                            if (1) {
+                            if (0) {
                                 Image::query()
                                     ->where('entity_name', 'product_content')
                                     ->chunk(100, function ($images) {
@@ -510,9 +510,9 @@ class TestScript extends BaseExtension
                                 $this->result[] = 'Images changed to type product';
                             }
 
-
-                            if (0) {
-                                // TODO: 
+                            // Сортировка изображений
+                            if (1) {
+                                // TODO: все скрытые изображение помести последними по очереди для заданого товара
                             }
 
 
