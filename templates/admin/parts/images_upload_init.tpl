@@ -65,17 +65,18 @@
                     );
                 });
 
-                $('.images').on("change", '.dropInput', handleFileSelect);
+                $('.images').off("change.image").on("change.image", '.dropInput', handleFileSelect);
             }
 
 
+            // Add image
             function handleFileSelect(evt) {
 
                 $(".dropZone").css('border', '').css('background-color', '');
 
-                let files = evt.target.files; // FileList object
-                let dropInput = $(this).first();
-                let name = $(this).closest('.images').attr('id');
+                let files       = evt.target.files; // FileList object
+                let dropInput   = $(evt.target).first();
+                let name        = $(evt.target).closest('.images').attr('id');
 
                 // Loop through the FileList and render image files as thumbnails.
                 for (var i = 0, file; file = files[i]; i++) {
@@ -84,6 +85,7 @@
                     if (!file.type.match('image.*')) {
                         continue;
                     }
+
                     let reader = new FileReader();
 
                     // Closure to capture the file information.
@@ -97,15 +99,18 @@
                                 "<i class='delete material-icons' title='Удалить'>cancel</i></div>" +
                                 "<a href='" + e.target.result +
                                 "' class='zoom' data-fancybox='images_content'>" +
-                                "<img onerror='$(this).closest(\"li\").remove();' src='" +
+                                "<img class='img-thumbnail img-fluid' onerror='$(this).closest(\"li\").remove();' src='" +
                                 e.target.result + "' />" +
                                 "<input name=" + name + "_urls[] type='hidden' value='" +
-                                theFile.name + "'/><input name=" + name + "_urls_visible[] type='hidden' value='1'/></a></li>").appendTo('#' + name + ' ul');
+                                theFile.name + "'/><input name=" + name +
+                                "_urls_visible[] type='hidden' value='1'/></a></li>").appendTo('#' +
+                                name + ' ul');
 
                             let temp_input = dropInput.clone().show();
+                            let block = $('#' + name);
 
-                            $('#' + name + ' .dropInput').hide();
-                            $('#' + name + ' .dropZone').prepend(temp_input);
+                            block.find('.dropInput').remove();
+                            block.find('.dropZone').prepend(temp_input);
 
                             initFancybox();
                         }

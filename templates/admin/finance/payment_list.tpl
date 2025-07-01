@@ -159,7 +159,7 @@
                         <div class="icons flex-column">
                            <a class="verified edit" data-bs-toggle="tooltip" title="Cверка с бухгалтерией"></a>
 
-                           {if $p->images}
+                           {if $p->images|count}
                               <i>
                                  <img loading="lazy" src="{'images/clipboard.png'|asset}" data-bs-toggle="tooltip"
                                     title="Фотоотчет">

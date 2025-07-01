@@ -1008,13 +1008,6 @@ select.multiple_categories option {
 
 .images ul li {
 	position: relative;
-	border: 1px solid var(--border-color);
-	border-radius: 6px;
-	display: inline-block;
-	text-align: center;
-	padding: 5px;
-	height: 11em;
-	overflow: hidden;
 }
 
 .images ul li a {
@@ -1028,37 +1021,30 @@ select.multiple_categories option {
 	max-height: 100%;
 }
 
-.images ul li i.delete {
-        top: 10px;
-        font-size: 1.5rem;
-        right: 11px;
-        position: absolute;
-        visibility: hidden;
-}
-
 .images ul li .image_icons {
-        top: 5px;
-        right: 5px;
-        position: absolute;
-        display: flex;
-        visibility: hidden;
+	top: 5px;
+	right: 5px;
+	position: absolute;
+	display: flex;
+	visibility: hidden;
+	z-index: 99;
 }
 
 .images ul li .image_icons i {
-        font-size: 1.5rem;
-        margin-left: 5px;
+	font-size: 1.5rem;
+	margin-left: 5px;
 }
 
 .images ul li:hover i.delete {
-        visibility: visible;
+	visibility: visible;
 }
 
 .images ul li:hover .image_icons {
-        visibility: visible;
+	visibility: visible;
 }
 
-.images ul li.visible_off {
-        opacity: 0.4;
+.images ul li.visible_off .zoom {
+	opacity: 0.4;
 }
 
 .images .dropZone {

@@ -10,6 +10,7 @@
 
 namespace HugaShop\Models\Finance;
 
+use HugaShop\Models\Image;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\User\User;
 
@@ -56,6 +57,13 @@ class FinancePayment extends BaseModel
     public function contractor()
     {
         return $this->hasOne(FinancePaymentContractor::class, 'payment_id');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(Image::class, 'entity_id')
+            ->where('entity_name', 'payment')
+            ->orderBy('position');
     }
 
     /**

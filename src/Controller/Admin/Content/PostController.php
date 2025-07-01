@@ -10,12 +10,12 @@
 
 namespace App\Controller\Admin\Content;
 
-use HugaShop\Models\Image;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use HugaShop\Models\SeoKeywords;
 use App\Controller\BaseAdminController;
+use App\Services\ImageService;
 use HugaShop\Models\Content\ContentPost;
 use HugaShop\Models\Localization\Language;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,7 +46,7 @@ class PostController extends BaseAdminController
             }
 
             SeoKeywords::catchKeywords($post->id, 'post');
-            Image::catchImages($post->id, 'post', 'images');
+            ImageService::catchImages($post->id, 'post', 'images');
 
             // Делаем редирект на страницу с ID
             return $this->redirectToRouteLang('PostAdmin', ['id' => $post->id]);

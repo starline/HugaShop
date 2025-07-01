@@ -16,10 +16,11 @@ namespace App\Controller\Admin\Finance;
 use HugaShop\Models\Image;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
-use HugaShop\Services\Request;
+use App\Services\ImageService;
 use HugaShop\Models\User\User;
-use HugaShop\Models\Finance\FinancePurse;
+use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
+use HugaShop\Models\Finance\FinancePurse;
 use HugaShop\Models\Finance\FinancePayment;
 use HugaShop\Models\Finance\FinanceCategory;
 use HugaShop\Models\Finance\FinanceCurrency;
@@ -132,7 +133,7 @@ class PaymentController extends BaseAdminController
                 FinancePaymentContractor::deleteContractor($payment->id);
             }
 
-            Image::catchImages($payment->id, 'payment', 'images');
+            ImageService::catchImages($payment->id, 'payment', 'images');
 
             return $this->redirectToRoute('PaymentAdmin', ['id' => $payment->id]);
         }
@@ -142,14 +143,11 @@ class PaymentController extends BaseAdminController
         #########
         if (!empty($id)) {
 
-            $payment = FinancePayment::getPayment(intval($id));
+            $payment = FinancePayment::getOne($id, join: ['category', 'purse', 'purse.currency', 'images']);
 
             if (empty($payment->id)) {
                 return $this->redirectToRoute('PaymentListAdmin');
             }
-
-            // Изображения
-            $payment->images = Image::getImages($payment->id, 'payment');
 
             if (!empty($payment->related_payment_id)) {
                 $rel_payment = FinancePayment::getPayment(intval($payment->related_payment_id));

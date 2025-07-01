@@ -31,6 +31,9 @@
         <div class="row gx-5">
 
 
+
+        
+
             <!-- Simple List -->
             <div class="col-lg-6 layer">
                 <h2>Простой список</h2>
@@ -65,6 +68,7 @@
                 </div>
             </div>
             <!-- End Simple List -->
+
 
 
 

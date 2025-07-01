@@ -13,8 +13,8 @@
 namespace App\Controller\Admin\Product;
 
 use stdClass;
-use HugaShop\Models\Image;
 use HugaShop\Services\Design;
+use App\Services\ImageService;
 use HugaShop\Services\Request;
 use HugaShop\Models\SeoKeywords;
 use HugaShop\Models\Product\Product;
@@ -25,7 +25,6 @@ use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Product\ProductOption;
 use HugaShop\Models\Product\ProductFeature;
 use HugaShop\Models\Product\ProductCategory;
-use HugaShop\Models\Extension;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Models\Product\ProductCategoryFeature;
@@ -73,8 +72,9 @@ class ProductController extends BaseAdminController
             }
 
             SeoKeywords::catchKeywords($product->id, 'product');
-            Image::catchImages($product->id, 'product', 'images');
-            Image::catchImages($product->id, 'product_content', 'images_content');
+            
+            ImageService::catchImages($product->id, 'product', 'images');
+            ImageService::catchImages($product->id, 'product_content', 'images_content');
 
             // Характеристики товара
             // Удалим все из товара

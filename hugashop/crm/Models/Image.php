@@ -14,7 +14,6 @@
 namespace HugaShop\Models;
 
 use HugaShop\Services\Helper;
-use HugaShop\Services\Request;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Imagick\Driver;
 
@@ -41,59 +40,6 @@ class Image extends BaseModel
     public function entity()
     {
         return $this->morphTo();
-    }
-
-
-    /**
-     * Catch image from POST
-     */
-    public static function catchImages($entity_id, $entity_name, $post_name = 'images')
-    {
-        // Удаление основных изображений
-        $images = Request::post($post_name, 'array') ?: [];
-        $current_images = self::getImages($entity_id, $entity_name);
-
-        foreach ($current_images as $image) {
-            if (!in_array($image->id, $images, true)) {
-                self::deleteImage($image->id);
-            }
-        }
-
-        // Порядок основных изображений
-        $images_visible = Request::post($post_name . '_visible', 'array') ?: [];
-        foreach ($images as $position => $im_id) {
-            $visible = isset($images_visible[$im_id]) ? intval($images_visible[$im_id]) : 1;
-            self::updateOne($im_id, ['position' => $position, 'visible' => $visible]);
-        }
-
-        // Загрузка основных изображений из интернета и drag-n-drop файлов
-        if ($urls = Request::post($post_name . '_urls')) {
-            $urls_visible = Request::post($post_name . '_urls_visible', 'array') ?: [];
-            $dropped_images = Request::files('dropped_' . $post_name);
-            foreach ($urls as $index => $url) {
-                // Если не пустой адрес и файл не локальный
-                if (!empty($url) && $url !== 'http://' && str_contains($url, '/')) {
-                    $new_id = self::addImage($entity_id, $entity_name, $url);
-                    if ($new_id) {
-                        $visible = isset($urls_visible[$index]) ? intval($urls_visible[$index]) : 1;
-                        self::updateOne($new_id, ['visible' => $visible]);
-                    }
-                } elseif ($dropped_images) {
-                    $key = array_search($url, $dropped_images['name'], true);
-                    if ($key !== false) {
-                        // Move and Resize
-                        $image_name = self::uploadImage($dropped_images['tmp_name'][$key], $dropped_images['name'][$key]);
-                        if ($image_name) {
-                            $new_id = self::addImage($entity_id, $entity_name, (string) $image_name);
-                            if ($new_id) {
-                                $visible = isset($urls_visible[$index]) ? intval($urls_visible[$index]) : 1;
-                                self::updateOne($new_id, ['visible' => $visible]);
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 
 

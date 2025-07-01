@@ -11,17 +11,17 @@
 namespace App\Controller\Admin\Warehouse;
 
 use stdClass;
-use HugaShop\Models\Image;
 use HugaShop\Services\Design;
-use HugaShop\Services\Request;
+use App\Services\ImageService;
 use HugaShop\Models\User\User;
-use HugaShop\Models\User\UserPermission;
+use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
+use HugaShop\Models\User\UserPermission;
 use HugaShop\Models\Warehouse\WarehouseMove;
 use HugaShop\Models\Warehouse\WarehousePlace;
-use HugaShop\Models\Warehouse\WarehousePurchase;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use HugaShop\Models\Warehouse\WarehousePurchase;
 
 class MoveController extends BaseAdminController
 {
@@ -149,7 +149,7 @@ class MoveController extends BaseAdminController
             }
 
 
-            Image::catchImages($movement->id, 'warehouse', 'images');
+            ImageService::catchImages($movement->id, 'warehouse', 'images');
 
             return $this->redirectToRoute('MoveAdmin', ['id' => $movement->id]);
         }
