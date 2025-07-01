@@ -57,9 +57,7 @@
 			</div>
 
 			<div class="col-lg-6 layer">
-				{$modules = $notifier_modules}
-				{$module_type = 'notifier'}
-				{include file='parts/module_settings_part.tpl'}
+				{include file='parts/module_settings_part.tpl' module_type='notifier' modules=$notifier_modules}
 			</div>
 
 			<div class="col-12 btn_row">

@@ -11,11 +11,8 @@
         {getCSRFInput}
 
         <div class="row gx-5">
-
             <div class="col-lg-6">
-                {$modules = $extensions}
-                {$module_type = 'extension'}
-                {include file='parts/module_settings_part.tpl'}
+                {include file='parts/module_settings_part.tpl' module_type='extension' modules=$extensions}
             </div>
 
             <div class="col-lg-6 layer">

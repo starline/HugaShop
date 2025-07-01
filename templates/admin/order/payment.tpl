@@ -72,9 +72,7 @@
 			</div>
 
 			<div class="col-lg-6 layer">
-				{$modules = $payment_modules}
-				{$module_type = 'payment_method'}
-				{include file='parts/module_settings_part.tpl'}
+				{include file='parts/module_settings_part.tpl' module_type='payment_method' modules=$payment_modules}
 			</div>
 
 			<div class="col-lg-6 layer">

@@ -122,9 +122,7 @@
 			</div>
 
 			<div class="col-lg-6 layer">
-				{$modules = $delivery_modules}
-				{$module_type = 'delivery'}
-				{include 'parts/module_settings_part.tpl'}
+				{include file='parts/module_settings_part.tpl' module_type='delivery' modules=$delivery_modules}
 			</div>
 
 			<div class="col-12 layer">
