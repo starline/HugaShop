@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.7
+ * @version 1.8
  *
  */
 
@@ -14,7 +14,7 @@ use HugaShop\Models\User\User;
 use HugaShop\Models\Order\Order;
 use HugaShop\Models\Product\Product;
 use HugaShop\Services\Request;
-use HugaShop\Models\Extension;
+use HugaShop\Services\Extension;
 use HugaShop\Models\Order\OrderLabel;
 use HugaShop\Models\Content\ContentPage;
 use HugaShop\Models\Content\ContentPost;

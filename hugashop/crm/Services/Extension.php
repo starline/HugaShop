@@ -4,12 +4,14 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.3
+ * @version 1.4
  *
  */
 
-namespace HugaShop\Models;
+namespace HugaShop\Services;
 
+use HugaShop\Services\Config;
+use HugaShop\Services\Helper;
 use HugaShop\Models\Settings;
 
 class Extension
