@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 4.7
+ * @version 4.8
  *
  * Smarty 5.x require PHP7.4/PHP8.1
  *
@@ -23,7 +23,7 @@ use HugaShop\Services\Config;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use HugaShop\Models\Settings;
-use HugaShop\Models\Extension;
+use HugaShop\Services\Extension;
 use HugaShop\Models\User\UserPermission;
 use HugaShop\Models\Finance\FinanceCurrency;
 
