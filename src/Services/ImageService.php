@@ -54,8 +54,7 @@ class ImageService
                 }
                 
                 // Загрузка с компьютера
-                elseif ($dropped_images) {
-                    dd($dropped_images);
+                elseif ($dropped_images) {          
                     $key = array_search($url, $dropped_images['name'], true);
                     if ($key !== false) {
 
