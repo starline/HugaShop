@@ -11,9 +11,10 @@
 namespace App\Controller\Admin\Product;
 
 use HugaShop\Models\Image;
-use HugaShop\Services\Design;
-use HugaShop\Services\Request;
 use HugaShop\Models\SeoFaqs;
+use HugaShop\Services\Design;
+use App\Services\ImageService;
+use HugaShop\Services\Request;
 use HugaShop\Models\SeoKeywords;
 use App\Controller\BaseAdminController;
 use HugaShop\Models\Localization\Language;
@@ -49,7 +50,7 @@ class CategoryController extends BaseAdminController
             SeoKeywords::catchKeywords($category->id, 'category');
             SeoFaqs::catchKeywords($category->id, 'category');
 
-            Image::catchImages($category->id, 'category', 'images');
+            ImageService::catchImages($category->id, 'category', 'images');
 
             // Обновляем синонимы
             $synonyms = Request::post('synonyms', 'array');
