@@ -355,13 +355,10 @@
 		</div>
 	</form>
 
-
 {/block}
 
 
 {block name=body_script append}
-
-	{include file='parts/charts_init.tpl'}
 
 	<script type="text/javascript" src="{'js/chart/luxon.js'|asset}"></script>
 	<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>

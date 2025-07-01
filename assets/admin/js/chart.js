@@ -3,7 +3,7 @@
  * Functions related to rendering ApexCharts graphs
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.2
  */
 
 export function makeChart(element, chartOptions = {}, datasets = []) {
@@ -158,6 +158,9 @@ export function hideOverlappingDataLabels(chartContext) {
 
     nodes.forEach((label) => {
         label.style.display = '';
+        if (label.parentElement && label.parentElement !== label) {
+            label.parentElement.style.display = '';
+        }
     });
 
     const items = nodes.map((label) => ({ label, rect: label.getBoundingClientRect() }));
@@ -177,6 +180,9 @@ export function hideOverlappingDataLabels(chartContext) {
         });
         if (overlap) {
             item.label.style.display = 'none';
+            if (item.label.parentElement && item.label.parentElement !== item.label) {
+                item.label.parentElement.style.display = 'none';
+            }
         } else {
             boxes.push(rect);
         }
