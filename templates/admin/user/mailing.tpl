@@ -26,16 +26,16 @@
 			<div class="col-12">
 				<div class="over_name">
 					<div class="checkbox_line">
-						<div class="form-check">
-							<input class="form-check-input" name="send" value="1" type="checkbox" id="send"
-								{if $mailing->send}checked{/if} />
-							<label class="form-check-label" for="send">Отправлен</label>
-						</div>
-						<div class="form-check">
-							<input class="form-check-input" name="frozen" value="1" type="checkbox" id="frozen"
-								{if $mailing->frozen}checked{/if} />
-							<label class="form-check-label" for="frozen">Заморожен</label>
-						</div>
+                                                <div class="form-check form-switch">
+                                                        <input class="form-check-input" name="send" value="1" type="checkbox" role="switch" id="send"
+                                                                {if $mailing->send}checked{/if} />
+                                                        <label class="form-check-label" for="send">Отправлен</label>
+                                                </div>
+                                                <div class="form-check form-switch">
+                                                        <input class="form-check-input" name="frozen" value="1" type="checkbox" role="switch" id="frozen"
+                                                                {if $mailing->frozen}checked{/if} />
+                                                        <label class="form-check-label" for="frozen">Заморожен</label>
+                                                </div>
 					</div>
 				</div>
 				<div class="name_row">

@@ -19,8 +19,8 @@
             <div class="col-12">
                 <div class="over_name">
                     <div class="checkbox_line">
-                        <div class="form-check">
-                            <input class="form-check-input" name="enabled" value="1" type="checkbox" id="enabled_checkbox"
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" name="enabled" value="1" type="checkbox" role="switch" id="enabled_checkbox"
                                 {if $place->enabled}checked{/if} />
                             <label class="form-check-label" for="enabled_checkbox">Активный</label>
                         </div>

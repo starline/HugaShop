@@ -21,11 +21,11 @@
 			<div class="col-12">
 				<div class="over_name">
 					<div class="checkbox_line">
-						<div class="form-check">
-							<input class="form-check-input" name="featured" value="1" type="checkbox" id="featured_checkbox"
-								{if $brand->featured}checked{/if} />
-							<label class="form-check-label" for="featured_checkbox">Избранный</label>
-						</div>
+                                                <div class="form-check form-switch">
+                                                        <input class="form-check-input" name="featured" value="1" type="checkbox" role="switch" id="featured_checkbox"
+                                                                {if $brand->featured}checked{/if} />
+                                                        <label class="form-check-label" for="featured_checkbox">Избранный</label>
+                                                </div>
 					</div>
 				</div>
 				<div class="name_row">
