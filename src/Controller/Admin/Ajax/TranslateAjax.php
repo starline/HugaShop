@@ -10,7 +10,7 @@
 namespace App\Controller\Admin\Ajax;
 
 use OpenAI;
-use HugaShop\Models\Config;
+use HugaShop\Services\Config;
 use HugaShop\Services\Request;
 use HugaShop\Models\Product\Product;
 use App\Controller\BaseAdminController;

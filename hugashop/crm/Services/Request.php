@@ -12,7 +12,7 @@
 
 namespace HugaShop\Services;
 
-use HugaShop\Models\Config;
+use HugaShop\Services\Config;
 use HugaShop\Models\Settings;
 use HugaShop\Models\User\UserPermission;
 

@@ -12,7 +12,7 @@
 
 namespace HugaShop\Models\User;
 
-use HugaShop\Models\Config;
+use HugaShop\Services\Config;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use HugaShop\Models\BaseModel;

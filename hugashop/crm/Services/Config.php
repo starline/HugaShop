@@ -4,14 +4,14 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.8
+ * @version 2.9
  *
  * Класс-обертка для конфигурационного файла с настройками магазина
  * В отличие от класса Settings, Config оперирует низкоуровневыми настройками, например найстройками базы данных.
  *
  */
 
-namespace HugaShop\Models;
+namespace HugaShop\Services;
 
 use Symfony\Component\Yaml\Yaml;
 

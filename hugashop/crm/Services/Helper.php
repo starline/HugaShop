@@ -11,7 +11,7 @@
 namespace HugaShop\Services;
 
 use ReCaptcha\ReCaptcha;
-use HugaShop\Models\Config;
+use HugaShop\Services\Config;
 use Illuminate\Support\Str;
 use Jenssegers\Agent\Agent;
 use HugaShop\Models\Settings;

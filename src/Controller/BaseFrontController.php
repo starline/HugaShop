@@ -12,7 +12,7 @@ namespace App\Controller;
 
 use HugaShop\Models\Cart\Cart;
 use HugaShop\Models\User\User;
-use HugaShop\Models\Config;
+use HugaShop\Services\Config;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Models\Product\Product;

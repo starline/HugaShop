@@ -12,7 +12,7 @@
 namespace HugaShop\Modules\Delivery\PochtaRussia;
 
 use HugaShop\Models\Order\Order;
-use HugaShop\Models\Config;
+use HugaShop\Services\Config;
 use HugaShop\Services\Design;
 use HugaShop\Models\Order\OrderDelivery;
 

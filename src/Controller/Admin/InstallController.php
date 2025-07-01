@@ -10,7 +10,7 @@
 
 namespace App\Controller\Admin;
 
-use HugaShop\Models\Config;
+use HugaShop\Services\Config;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

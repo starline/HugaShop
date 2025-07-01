@@ -11,7 +11,7 @@
 namespace HugaShop\Services;
 
 use Twig\Environment;
-use HugaShop\Models\Config;
+use HugaShop\Services\Config;
 use Twig\Loader\ArrayLoader;
 use HugaShop\Models\Settings;
 use Twig\Loader\FilesystemLoader;

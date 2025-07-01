@@ -19,7 +19,7 @@ namespace HugaShop\Services;
 
 use Smarty\Smarty;
 use HugaShop\Models\Image;
-use HugaShop\Models\Config;
+use HugaShop\Services\Config;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use HugaShop\Models\Settings;

@@ -10,7 +10,7 @@
 
 namespace App\Controller\Front\Exchange;
 
-use HugaShop\Models\Config;
+use HugaShop\Services\Config;
 use TelegramBot\NotifyBot;
 use HugaShop\Models\User\UserNotifier;
 use HugaShop\Models\User\UserPermission;;

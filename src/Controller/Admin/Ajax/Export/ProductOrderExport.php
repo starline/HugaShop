@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin\Ajax\Export;
 
-use HugaShop\Models\Config;
+use HugaShop\Services\Config;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use HugaShop\Models\Settings;

@@ -13,7 +13,7 @@ namespace HugaShop\Extensions\TestScript;
 use OpenAI;
 use stdClass;
 use HugaShop\Models\Image;
-use HugaShop\Models\Config;
+use HugaShop\Services\Config;
 use HugaShop\Models\Settings;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
