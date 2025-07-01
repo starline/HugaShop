@@ -234,7 +234,11 @@
 
 						<div class="col row">
 							<div class="col">
-								<a href="/admin/product/{$purchase->product->id}/price">{$purchase->product_name}</a>
+								{if $purchase->product->id}
+									<a href="/admin/product/{$purchase->product->id}/price">{$purchase->product_name}</a>
+								{else}
+									<span>{$purchase->product_name}</span>
+								{/if}
 								<span class="variant_name">{$purchase->variant_name}</span>
 							</div>
 
