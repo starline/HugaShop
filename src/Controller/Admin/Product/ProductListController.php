@@ -206,7 +206,7 @@ class ProductListController extends BaseAdminController
 
         // TODO: Фильтр по характеристике
 
-        $products = Product::getProducts($filter, join: ['image', 'movements']);
+        $products       = Product::getProducts($filter, join: ['image', 'movements']);
         $products_count = Product::countProducts($filter);
 
         if ($products->isNotEmpty()) {
