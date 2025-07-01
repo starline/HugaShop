@@ -3,7 +3,7 @@
  * Handles image sorting, visibility and uploading
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
  */
 
 import { initFancybox } from './common.js';
@@ -36,10 +36,12 @@ export function initImagesUpload() {
     });
 
     $('.upload_image').click(function () {
-        let name = $(this).closest('.images').attr('id');
-        $("<input class='form-control upload_image' name=" + name +
-            "[] type=file multiple  accept='image/jpeg,image/png,image/gif,image/webp' />")
-            .appendTo('#' + name + ' .add_image').focus().click();
+        let block = $(this).closest('.images');
+        let name = block.attr('id');
+        $("<input class='form-control upload_image dropInput' name='dropped_" + name +
+            "[]' type='file' multiple accept='image/jpeg,image/png,image/gif,image/webp'>")
+            .appendTo('#' + name + ' .add_image')
+            .click();
     });
 
     $('.add_image_url').click(function () {
@@ -71,8 +73,8 @@ export function initImagesUpload() {
         $(".dropZone").css('border', '').css('background-color', '');
 
         let files = evt.target.files;
-        let dropInput = $(evt.target).first();
-        let name = $(evt.target).closest('.images').attr('id');
+        let dropInput = $(evt.target);
+        let name = dropInput.closest('.images').attr('id');
 
         for (let i = 0, file; file = files[i]; i++) {
             if (!file.type.match('image.*')) {
@@ -96,17 +98,18 @@ export function initImagesUpload() {
                         "_urls_visible[] type='hidden' value='1'/></a></li>").appendTo('#' +
                         name + ' ul');
 
-                    let temp_input = dropInput.clone().show();
-                    let block = $('#' + name);
-
-                    block.find('.dropInput').remove();
-                    block.find('.dropZone').prepend(temp_input);
-
                     initFancybox();
                 };
             })(file);
 
             reader.readAsDataURL(file);
         }
+
+        // Hide current input but keep it for submitting files
+        dropInput.hide();
+
+        // Add new empty input for next selection
+        const newInput = dropInput.clone().val('');
+        dropInput.closest('.dropZone').prepend(newInput);
     }
 }
