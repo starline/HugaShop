@@ -495,7 +495,11 @@ class TestScript extends BaseExtension
 
 
                             if (1) {
-                                // TODO:
+                                // TODO: измени для всех изображений с типом product_content в тип product и отметь их невидимыми
+                            }
+
+                            if (0) {
+                                // TODO: 
                             }
 
 
