@@ -552,6 +552,7 @@ class TestScript extends BaseExtension
                                 $this->result[] = 'Images sorted for all products';
                             }
 
+                            
                             if (1) {
                                 ContentComment::query()
                                     ->where('entity_type', 'like', '%\\Api\\%')
