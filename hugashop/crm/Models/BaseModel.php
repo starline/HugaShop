@@ -12,6 +12,7 @@ namespace HugaShop\Models;
 
 use HugaShop\Models\Config;
 use Illuminate\Support\Str;
+use HugaShop\Services\Helper;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Model;
