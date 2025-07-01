@@ -4,14 +4,14 @@
  * HugaShop - Selling anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  */
 
 namespace App\Controller\Admin\Ajax\Stats;
 
 use HugaShop\Services\Request;
-use HugaShop\Models\Statistics;
+use HugaShop\Services\Statistics;
 use App\Controller\BaseAdminController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
