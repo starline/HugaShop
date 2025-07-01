@@ -72,9 +72,8 @@ class ProductController extends BaseAdminController
             }
 
             SeoKeywords::catchKeywords($product->id, 'product');
-            
+
             ImageService::catchImages($product->id, 'product', 'images');
-            ImageService::catchImages($product->id, 'product_content', 'images_content');
 
             // Характеристики товара
             // Удалим все из товара

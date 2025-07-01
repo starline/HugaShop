@@ -135,14 +135,6 @@
 					<div class="dropMessage">Перетащите файлы сюда</div>
 				</div>
 
-				<div class="add_image"></div>
-
-				<span class="upload_image">
-					<i class="dash_link" id="upload_image">Добавить изображение</i>
-				</span> или
-				<span class="add_image_url">
-					<i class="dash_link" id="add_image_url">загрузить из интернета</i>
-				</span>
 			</div>
 
 

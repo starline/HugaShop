@@ -34,22 +34,6 @@ export function initImagesUpload() {
     });
 
 
-    $('.upload_image').off('click.upload').on('click.upload', function () {
-        let block = $(this).closest('.images');
-        let name = block.attr('id');
-        $("<input class='form-control upload_image dropInput' name='dropped_" + name +
-            "[]' type='file' multiple accept='image/jpeg,image/png,image/gif,image/webp'>")
-            .appendTo('#' + name + ' .add_image').click();
-    });
-
-
-    $('.add_image_url').off('click.add_image').on('click.add_image', function () {
-        let name = $(this).closest('.images').attr('id');
-        $("<input class='remote_image' name=" + name + "_urls[] type=text value='http://'>")
-            .appendTo('#' + name + ' .add_image').focus().select();
-    });
-
-
     if (window.File && window.FileReader && window.FileList) {
         $(document).on('dragenter', function () {
             $(".dropZone").css('border', '1px dotted var(--lightin-color)');
@@ -66,7 +50,7 @@ export function initImagesUpload() {
             );
         });
 
-        $('.images').off("change.image").on("change.image", '.dropInput', handleFileSelect);
+        $('.images .dropInput').off("change.image").on("change.image", handleFileSelect);
     }
 
 

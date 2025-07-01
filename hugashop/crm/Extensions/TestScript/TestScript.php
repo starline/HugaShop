@@ -510,8 +510,12 @@ class TestScript extends BaseExtension
                                 $this->result[] = 'Images changed to type product';
                             }
 
+
+                            // другие сущности
+
+
                             // Сортировка изображений
-                            if (1) {
+                            if (0) {
                                 Product::chunk(100, function ($products) {
                                     foreach ($products as $product) {
                                         $images = Image::query()
