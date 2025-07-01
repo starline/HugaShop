@@ -19,11 +19,11 @@
 			<div class="col-12">
 				<div class="over_name">
 					<div class="checkbox_line">
-						<div class="form-check">
-							<input class="form-check-input" name="enabled" value='1' type="checkbox" id="active_checkbox"
-								{if $purse->enabled}checked{/if} />
-							<label class="form-check-label" for="active_checkbox">Активен</label>
-						</div>
+                                                <div class="form-check form-switch">
+                                                        <input class="form-check-input" name="enabled" value='1' type="checkbox" role="switch" id="active_checkbox"
+                                                                {if $purse->enabled}checked{/if} />
+                                                        <label class="form-check-label" for="active_checkbox">Активен</label>
+                                                </div>
 					</div>
 				</div>
 				<div class="name_row">

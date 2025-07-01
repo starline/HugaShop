@@ -20,13 +20,13 @@
 
 			<div class="col-12">
 				<div class="over_name">
-					<div class=checkbox_line>
-						<div class="form-check">
-							<input class="form-check-input" name="visible" value="1" type="checkbox" id="active_checkbox"
-								{if $post->visible}checked{/if} />
-							<label class="form-check-label" for="active_checkbox">Активна</label>
-						</div>
-					</div>
+                                        <div class="checkbox_line">
+                                                <div class="form-check form-switch">
+                                                        <input class="form-check-input" name="visible" value="1" type="checkbox" role="switch" id="active_checkbox"
+                                                                {if $post->visible}checked{/if} />
+                                                        <label class="form-check-label" for="active_checkbox">Активна</label>
+                                                </div>
+                                        </div>
 					<a class="out_link" target="_self" href="{$config->root_url}/blog/{$post->url}">Открыть статью на
 						сайте</a>
 				</div>
