@@ -17,11 +17,11 @@ use HugaShop\Services\Design;
 use App\Services\ImageService;
 use HugaShop\Services\Request;
 use HugaShop\Models\SeoKeywords;
+use App\Services\LanguageService;
 use HugaShop\Models\Product\Product;
 use App\Controller\BaseAdminController;
 use HugaShop\Models\User\UserPermission;
 use HugaShop\Models\Product\ProductBrand;
-use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Product\ProductOption;
 use HugaShop\Models\Product\ProductFeature;
 use HugaShop\Models\Product\ProductCategory;
@@ -59,7 +59,7 @@ class ProductController extends BaseAdminController
         }
 
         // Init content language
-        Language::languageCatch();
+        LanguageService::languageCatch();
 
         #### Update
         ###########

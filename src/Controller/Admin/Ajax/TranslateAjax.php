@@ -12,6 +12,7 @@ namespace App\Controller\Admin\Ajax;
 use OpenAI;
 use HugaShop\Services\Config;
 use HugaShop\Services\Request;
+use App\Services\LanguageService;
 use HugaShop\Models\Product\Product;
 use App\Controller\BaseAdminController;
 use HugaShop\Models\Content\ContentPage;
@@ -32,21 +33,19 @@ class TranslateAjax extends BaseAdminController
 
         $entity    = Request::post('entity', 'string');
         $id        = Request::postInt('id');
-        $lang_code = Request::post('lang', 'string');
 
         if (empty($entity) || empty($id) || empty($lang_code)) {
             return new JsonResponse(['error' => 'params'], 400);
         }
 
-        Language::languageCatch();
+        $language = LanguageService::languageCatch();
 
-        if ($lang_code == Language::$main_language->code) {
-            return new JsonResponse(['error' => 'main_language'], 400);
-        }
-
-        $language = Language::where('code', $lang_code)->first();
         if (empty($language)) {
             return new JsonResponse(['error' => 'language'], 400);
+        }
+
+        if ($language->code == Language::getMainLanguage()->code) {
+            return new JsonResponse(['error' => 'is_main_language'], 400);
         }
 
         $model = null;

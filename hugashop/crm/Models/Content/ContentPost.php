@@ -129,7 +129,7 @@ class ContentPost extends BaseModel
             $post->date = Carbon::now();
         }
         $post = Helper::makeUniqSlug(ContentPost::class, $post);
-        return ContentPost::createOne($post);
+        return parent::createOne($post);
     }
 
 

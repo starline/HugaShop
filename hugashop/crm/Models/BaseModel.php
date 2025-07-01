@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.9
+ * @version 2.0
  *
  */
 
@@ -128,9 +128,8 @@ abstract class BaseModel extends Model
         $values = self::validateValues($values);
 
         $model = static::getModel();
-        $query = $model->newQuery();
-        return $model->runWithInitTable(function () use ($query, $values) {
-            return $query->create($values);
+        return $model->runWithInitTable(function () use ($model, $values) {
+            return $model->newQuery()->create($values);
         });
     }
 
@@ -147,9 +146,8 @@ abstract class BaseModel extends Model
         $values = self::validateValues($values);
 
         $model = static::getModel();
-        $query = $model->newQuery();
-        return $model->runWithInitTable(function () use ($query, $ids, $values) {
-            return $query->whereId($ids)->update($values);
+        return $model->runWithInitTable(function () use ($model, $ids, $values) {
+            return $model->newQuery()->whereId($ids)->update($values);
         });
     }
 

@@ -16,8 +16,8 @@ use HugaShop\Services\Design;
 use App\Services\ImageService;
 use HugaShop\Services\Request;
 use HugaShop\Models\SeoKeywords;
+use App\Services\LanguageService;
 use App\Controller\BaseAdminController;
-use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -34,7 +34,7 @@ class CategoryController extends BaseAdminController
         $this->checkAdminAccess('product_category');
 
         // Init content language
-        Language::languageCatch();
+        LanguageService::languageCatch();
 
         #### Update
         ###########

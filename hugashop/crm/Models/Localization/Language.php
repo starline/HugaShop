@@ -5,7 +5,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.5
+ * @version 1.6
  *
  */
 
@@ -31,25 +31,41 @@ class Language extends BaseModel
 
 
     /**
-     * Get main language
+     * Get All lenguages. Use cache 
      */
-    public function main()
+    public static function getLanguages()
     {
-        return $this->firstWhere('main', true);
+        if (empty(self::$languages)) {
+            self::$languages = self::query()->orderBy('id')->get();
+        }
+        return self::$languages;
     }
+
+
+    /**
+     * Get Main Language. Use Cache
+     */
+    public static function getMainLanguage()
+    {
+        if (empty(self::$main_language)) {
+            self::$main_language = self::getLanguages()->firstWhere('main', 1);
+        }
+        return self::$main_language;
+    }
+
 
     /**
      * Get currentt language
      */
-    public function current()
+    public function getCurrent(?string $code = null)
     {
-        return $this->firstWhere('code', self::$current_language->code);
-    }
-
-
-    public static function getLanguages()
-    {
-        return self::$languages = self::query()->orderBy('id')->get();
+        if (is_null($code)) {
+            return self::getMainLanguage();
+        }
+        if (empty(self::$current_language)) {
+            self::$current_language = self::getLanguages()->firstWhere('code', $code);
+        }
+        return self::$current_language;
     }
 
 
@@ -68,28 +84,32 @@ class Language extends BaseModel
         return self::deleteOne($language_id);
     }
 
+
     /**
      * Create language. If it's marked as main, remove main flag from others
      */
     public static function createOne(array|object $values): object
     {
-        $vals = is_object($values) ? (array) $values : $values;
-        if (!empty($vals['main'])) {
 
-            // Reset main flag for other languages
+        $values = is_object($values) ? (array) $values : $values;
+
+        // Reset main flag for other languages
+        if (!empty($values->main)) {
             self::query()->where('main', 1)->update(['main' => 0]);
         }
 
-        return parent::create($values);
+        return parent::createOne($values);
     }
+
 
     /**
      * Update language. If it's marked as main, remove main flag from others
      */
     public static function updateOne(int|array $ids, array|object $values)
     {
-        $vals = is_object($values) ? (array) $values : $values;
-        if (!empty($vals['main'])) {
+        $values = is_object($values) ? (array) $values : $values;
+
+        if (!empty($values->main)) {
             $ids_array = is_array($ids) ? (array) ($ids['id'] ?? $ids) : [$ids];
             self::query()
                 ->where('main', 1)
@@ -98,24 +118,6 @@ class Language extends BaseModel
         }
 
         return parent::updateOne($ids, $values);
-    }
-
-
-    /**
-     * Init content language
-     */
-    public static function languageCatch()
-    {
-        self::$languages = Language::All();
-        self::$main_language = self::$languages->firstWhere('main', 1);
-        $language_code = Request::get('lang', 'string');
-        self::$current_language = self::$languages->firstWhere('code', $language_code) ?: self::$main_language;
-
-        Design::assign('languages', self::$languages);
-        Design::assign('main_language', self::$main_language);
-        Design::assign('current_language', self::$current_language);
-
-        return self::$current_language;
     }
 
 
