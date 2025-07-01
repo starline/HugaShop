@@ -33,18 +33,19 @@ class TranslateAjax extends BaseAdminController
 
         $entity    = Request::post('entity', 'string');
         $id        = Request::postInt('id');
+        $lang_code = Request::post('lang', 'string');
 
         if (empty($entity) || empty($id) || empty($lang_code)) {
             return new JsonResponse(['error' => 'params'], 400);
         }
 
-        $language = LanguageService::languageCatch();
+        $language = Language::getOne(['code' => $lang_code]);
 
         if (empty($language)) {
             return new JsonResponse(['error' => 'language'], 400);
         }
 
-        if ($language->code == Language::getMainLanguage()->code) {
+        if ($language->code == Language::getMain()->code) {
             return new JsonResponse(['error' => 'is_main_language'], 400);
         }
 

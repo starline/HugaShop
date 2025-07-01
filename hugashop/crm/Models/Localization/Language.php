@@ -5,14 +5,12 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.6
+ * @version 1.7
  *
  */
 
 namespace HugaShop\Models\Localization;
 
-use HugaShop\Services\Design;
-use HugaShop\Services\Request;
 use HugaShop\Models\BaseModel;
 
 class Language extends BaseModel
@@ -45,7 +43,7 @@ class Language extends BaseModel
     /**
      * Get Main Language. Use Cache
      */
-    public static function getMainLanguage()
+    public static function getMain()
     {
         if (empty(self::$main_language)) {
             self::$main_language = self::getLanguages()->firstWhere('main', 1);
@@ -57,10 +55,10 @@ class Language extends BaseModel
     /**
      * Get currentt language
      */
-    public function getCurrent(?string $code = null)
+    public static function getCurrent(?string $code = null)
     {
         if (is_null($code)) {
-            return self::getMainLanguage();
+            return self::getMain();
         }
         if (empty(self::$current_language)) {
             self::$current_language = self::getLanguages()->firstWhere('code', $code);

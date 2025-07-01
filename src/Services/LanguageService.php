@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.2
  *
  * Service for panguage helpers
  */
@@ -25,7 +25,7 @@ class LanguageService
     public static function languageCatch()
     {
         $languages          = Language::getLanguages();
-        $main_language      = Language::getMainLanguage();
+        $main_language      = Language::getMain();
         $current_language   = Language::getCurrent(Request::get('lang', 'string'));
 
         Design::assign('languages', $languages);
