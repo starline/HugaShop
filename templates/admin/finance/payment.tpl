@@ -232,12 +232,10 @@
 		</div>
 	</form>
 
-	{* Подключаем Fancybox*}
-	{include file='parts/images_upload_init.tpl'}
-
 	<link rel="stylesheet" href="{'js/fancybox/jquery.fancybox.min.css'|asset}" />
 
 	<script type="module">
+		import { initImagesUpload } from '{"js/image.js"|asset}';
 		import '{"js/fancybox/jquery.fancybox.min.js"|asset}';
 		import '{"js/jquery/jquery.numbermask.js"|asset}';
 		import { initFancybox } from '{"js/common.js"|asset}';
@@ -262,6 +260,9 @@
 		{literal}
 
 			$(function() {
+
+				// Image uploads
+				initImagesUpload();
 
 				// Image Zoom init
 				initFancybox();

@@ -84,7 +84,8 @@
 
 					<li class="wh_place">
 						<label class="col-form-label" for="place_id">Склад</label>
-                                                <select class="form-select" name="place_id" id="place_id" {if !$can_edit || !$can_change_place}disabled{/if}>
+						<select class="form-select" name="place_id" id="place_id"
+							{if !$can_edit || !$can_change_place}disabled{/if}>
 							{foreach $warehouse_places as $place}
 								<option class="" value="{$place->id}" {if $movement->place_id == $place->id}selected{/if}>
 									{$place->name}</option>
@@ -451,11 +452,10 @@
 
 {block name=body_script append}
 
-	{include file='parts/images_upload_init.tpl'}
-
 	<link href="{'js/fancybox/jquery.fancybox.min.css'|asset}" rel="stylesheet" />
 
 	<script type="module">
+		import { initImagesUpload } from '{"js/image.js"|asset}';
 		import "{'js/jquery/datepicker/jquery.ui.datepicker-ru.js'|asset}";
 		import "{'js/fancybox/jquery.fancybox.min.js'|asset}";
 		import { initFancybox } from '{"js/common.js"|asset}';
@@ -465,9 +465,10 @@
 		const units = '{$settings->units}';
 
 		{literal}
-
-			// On document load 
 			$(function() {
+
+				// Image uploads
+				initImagesUpload();
 
 				// Image Zoom init
 				initFancybox();

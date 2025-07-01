@@ -252,14 +252,13 @@
 	<link rel="stylesheet" href="{'js/fancybox/jquery.fancybox.min.css'|asset}" />
 {/block}
 
-
 {block name=body_script append}
 
 	{* Подключаем Tiny MCE *}
 	{include file='parts/tinymce_init.tpl'}
-	{include file='parts/images_upload_init.tpl'}
 
 	<script type="module">
+		import { initImagesUpload } from '{"js/image.js"|asset}';
 		import '{"js/fancybox/jquery.fancybox.min.js"|asset}';
 		import '{"js/jquery/chosen/chosen.jquery.js"|asset}';
 		import { generate_url } from '{"js/common.js"|asset}';
@@ -267,6 +266,9 @@
 
 		{literal}
 			$(function() {
+
+				// Image uploads
+				initImagesUpload();
 
 				// Image Zoom init
 				initFancybox();

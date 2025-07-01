@@ -9,7 +9,7 @@
 
 {block name=content}
 
-        {include 'parts/translation_btn_part.tpl' entity='blog'}
+	{include 'parts/translation_btn_part.tpl' entity='blog'}
 
 	<!-- Основная форма -->
 	<form method="post" enctype="multipart/form-data">
@@ -125,17 +125,20 @@
 
 	{* Подключаем Tiny MCE *}
 	{include file='parts/tinymce_init.tpl'}
-	{include file='parts/images_upload_init.tpl'}
 
 	<link rel="stylesheet" href="{'js/fancybox/jquery.fancybox.min.css'|asset}" />
 
 	<script type="module">
+		import { initImagesUpload } from '{"js/image.js"|asset}';
 		import '{"js/jquery/datepicker/jquery.ui.datepicker-ru.js"|asset}';
 		import '{"js/fancybox/jquery.fancybox.min.js"|asset}';
 		import { generate_meta_title, generate_url } from '{"js/common.js"|asset}';
 
 		{literal}
 			$(function() {
+
+				// Image uploads
+				initImagesUpload();
 
 				$('input[name="date"]').datepicker({
 					regional: 'ru'

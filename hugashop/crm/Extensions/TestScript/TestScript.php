@@ -494,10 +494,22 @@ class TestScript extends BaseExtension
                             }
 
 
+                            // перегносим изображения
                             if (1) {
-                                // TODO: измени для всех изображений с типом product_content в тип product и отметь их невидимыми
+                                Image::query()
+                                    ->where('entity_name', 'product_content')
+                                    ->chunk(100, function ($images) {
+                                        foreach ($images as $image) {
+                                            $image->entity_name = 'product';
+                                            $image->visible = 0;
+                                            $image->save();
+                                        }
+                                    });
+
+                                $this->result[] = 'Images changed to type product';
                             }
 
+                            
                             if (0) {
                                 // TODO: 
                             }
