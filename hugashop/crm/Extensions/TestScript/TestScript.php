@@ -510,8 +510,19 @@ class TestScript extends BaseExtension
                                 $this->result[] = 'Images changed to type product';
                             }
 
+                            if (0) {
+                                Image::query()
+                                    ->where('entity_name', 'category_content')
+                                    ->chunk(100, function ($images) {
+                                        foreach ($images as $image) {
+                                            $image->entity_name = 'category';
+                                            $image->visible = 0;
+                                            $image->save();
+                                        }
+                                    });
 
-                            // другие сущности
+                                $this->result[] = 'Images changed to type category';
+                            }
 
 
                             // Сортировка изображений

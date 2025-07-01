@@ -122,7 +122,7 @@
 							</div>
 							<a href="{$image->filename|resize:1080:1080:w}" class="zoom" data-fancybox="product_images"
 								data-caption="{$product->name}">
-								<img class="img-thumbnail img-fluid" src="{$image->filename|resize:220:220:c}" />
+								<img class="img-thumbnail" src="{$image->filename|resize:220:220:c}" />
 							</a>
 							<input type="hidden" name="images[]" value="{$image->id}" />
 							<input type="hidden" name="images_visible[{$image->id}]" value="{$image->visible}" />
@@ -134,7 +134,6 @@
 					<input type="file" name="dropped_images[]" multiple class="dropInput" />
 					<div class="dropMessage">Перетащите файлы сюда</div>
 				</div>
-
 			</div>
 
 

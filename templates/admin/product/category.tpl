@@ -120,18 +120,23 @@
 					<h2>Изображения категории</h2>
 					<ul class="sortable">
 						{foreach $images as $image}
-							<li>
-								<i class="delete material-icons" title="Удалить">cancel</i>
+							<li class="{if !$image->visible}visible_off{/if}">
+								<div class="image_icons">
+									<i class="enable material-icons visibility" title="Показать"></i>
+									<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
+								</div>
 								<a href="{$image->filename|resize:1080:1080:w}" class="zoom" data-fancybox="images"
 									data-caption="{$category->name}">
-									<img loading="lazy" src="{$image->filename|resize:220:220}" alt="" />
+									<img class="img-thumbnail" src="{$image->filename|resize:220:220:c}" alt="" />
 								</a>
 								<input type="hidden" name="images[]" value="{$image->id}" />
+								<input type="hidden" name="images_visible[{$image->id}]" value="{$image->visible}" />
 							</li>
 						{/foreach}
 					</ul>
+
 					<div class="dropZone">
-						<input class="dropInput" type="file" name="dropped_images[]" multiple />
+						<input type="file" name="dropped_images[]" multiple class="dropInput" />
 						<div class="dropMessage">Перетащите файлы сюда</div>
 					</div>
 				</div>
@@ -191,28 +196,6 @@
 			<div class="col-12 layer">
 				<h2>Описание</h2>
 				<textarea name="description" class="html_editor editor_large">{$category->description}</textarea>
-			</div>
-
-
-			<div id="images_content" class="col-12 layer images">
-				<h2>Картинки описания</h2>
-				<ul class="sortable">
-					{foreach $images_content as $image}
-						<li>
-							<i class="delete material-icons" title="Удалить">cancel</i>
-							<a href="{$image->filename|resize:1080:1080:w}" class="zoom" data-fancybox="images_content"
-								data-caption="{$category->name}">
-								<img loading="lazy" src="{$image->filename|resize:220:220}" />
-							</a>
-							<input type="hidden" name="images_content[]" value="{$image->id}" />
-						</li>
-					{/foreach}
-				</ul>
-
-				<div class="dropZone">
-					<input class="dropInput" type="file" name="dropped_images_content[]" multiple />
-					<div class="dropMessage">Перетащите файлы сюда</div>
-				</div>
 			</div>
 
 

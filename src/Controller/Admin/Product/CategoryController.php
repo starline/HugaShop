@@ -50,7 +50,6 @@ class CategoryController extends BaseAdminController
             SeoFaqs::catchKeywords($category->id, 'category');
 
             Image::catchImages($category->id, 'category', 'images');
-            Image::catchImages($category->id, 'category_content', 'images_content');
 
             // Обновляем синонимы
             $synonyms = Request::post('synonyms', 'array');
