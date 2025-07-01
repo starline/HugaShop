@@ -13,6 +13,7 @@
 
 namespace HugaShop\Models;
 
+use HugaShop\Services\Config;
 use HugaShop\Services\Helper;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Imagick\Driver;

@@ -10,9 +10,10 @@
 
 namespace App\Controller\Admin;
 
-use HugaShop\Models\Order\Order;
-use HugaShop\Services\Request;
 use HugaShop\Models\Settings;
+use HugaShop\Services\Config;
+use HugaShop\Services\Request;
+use HugaShop\Models\Order\Order;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
