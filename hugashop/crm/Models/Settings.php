@@ -13,6 +13,8 @@
 
 namespace HugaShop\Models;
 
+use HugaShop\Services\Helper;
+
 class Settings extends BaseModel
 {
 

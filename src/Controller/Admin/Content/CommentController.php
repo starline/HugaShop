@@ -41,6 +41,7 @@ class CommentController extends BaseAdminController
         #########
         if (!empty($id)) {
             $comment = ContentComment::getOne($id, ['user', 'entity']);
+            
             if (empty($comment->id)) {
                 return $this->redirectToRoute('CommentsAdmin');
             }
