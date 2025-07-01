@@ -552,6 +552,11 @@ class TestScript extends BaseExtension
                                 $this->result[] = 'Images sorted for all products';
                             }
 
+                            if (1) {
+                                // TODO: в моделе ContentComment для всех комментарий в поле entity_type замнить \Api\ на \Models\
+
+                            }
+
 
                             $this->result[] = 'done';
                         }

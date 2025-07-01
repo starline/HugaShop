@@ -11,6 +11,8 @@
 namespace HugaShop\Models;
 
 use HugaShop\Models\Settings;
+use HugaShop\Services\Config;
+use HugaShop\Services\Helper;
 
 class Extension
 {
