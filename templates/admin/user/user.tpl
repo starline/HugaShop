@@ -163,7 +163,7 @@
 	<script type="text/javascript" src="{'js/chart/luxon.js'|asset}"></script>
 	<script type="module">
 		import 'https://cdn.jsdelivr.net/npm/apexcharts';
-		import { makeChart } from '{"js/common.js"|asset}';
+		import { makeChart } from '{"js/chart.js"|asset}';
 
 		const php_manager_id = '{$current_user->id}';
 		const php_currency_name = '{$currency->name}';

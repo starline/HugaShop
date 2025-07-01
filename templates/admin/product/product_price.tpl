@@ -278,22 +278,22 @@
 			</div>
 
 
-                        <!-- Товары по складам -->
-                        <div class="col-lg-6 layer">
-                                <h2>Товары по складам</h2>
-                                <div id="warehouse_products" class="list">
-                                        {foreach $warehouse_products as $wp}
-                                                <div class="list_row">
-                                                        <div class="col">
-                                                                {$wp->place->name}
-                                                        </div>
-                                                        <div class="col-2">
-                                                                <span class="badge text-bg-round">{$wp->amount} {$settings->units}</span>
-                                                        </div>
-                                                </div>
-                                        {/foreach}
-                                </div>
-                        </div>
+			<!-- Товары по складам -->
+			<div class="col-lg-6 layer">
+				<h2>Товары по складам</h2>
+				<div id="warehouse_products" class="list">
+					{foreach $warehouse_products as $wp}
+						<div class="list_row">
+							<div class="col">
+								{$wp->place->name}
+							</div>
+							<div class="col-2">
+								<span class="badge text-bg-round">{$wp->amount} {$settings->units}</span>
+							</div>
+						</div>
+					{/foreach}
+				</div>
+			</div>
 
 
 			<!-- Связанные товары --->
@@ -368,7 +368,8 @@
 
 	<script type="module">
 		import '{"js/jquery/datepicker/jquery.ui.datepicker-ru.js"|asset}';
-		import { ajax_icon, makeChart } from '{"js/common.js"|asset}';
+		import { ajax_icon } from '{"js/common.js"|asset}';
+		import { makeChart } from '{"js/chart.js"|asset}';
 
 		let php_product_id = '{$product->id}';
 		let php_currency_name = '{$currency->name}';

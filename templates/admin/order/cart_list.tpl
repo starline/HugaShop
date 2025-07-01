@@ -145,7 +145,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 	<script type="module">
-		import { makeChart, hideOverlappingDataLabels } from '{"js/common.js"|asset}';
+		import { makeChart } from '{"js/chart.js"|asset}';
 
 		let cartsData = makeChart(
 			document.getElementById('cartsHistory'), {

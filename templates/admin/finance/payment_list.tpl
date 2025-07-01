@@ -184,9 +184,12 @@
 
 {block name=body_script append}
    <script type="text/javascript" src="{'js/chart/luxon.js'|asset}"></script>
+   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
    <script type="module">
-      import 'https://cdn.jsdelivr.net/npm/apexcharts';
-      import { ajax_icon, makeChart } from '{"js/common.js"|asset}';
+      import { ajax_icon } from '{"js/common.js"|asset}';
+      import { makeChart } from '{"js/chart.js"|asset}';
+
 
       let php_currency_name = "{$currency->name}";
       let php_currency_sign = "{$currency->sign}";

@@ -358,7 +358,8 @@
 	<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 	<script type="module">
-		import { ajax_icon, makeChart } from '{"js/common.js"|asset}';
+		import { ajax_icon } from '{"js/common.js"|asset}';
+		import { makeChart } from '{"js/chart.js"|asset}';
 
 		var csrf = '{setCSRF}';
 		const php_category_id = '{$category->id}';

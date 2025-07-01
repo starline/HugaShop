@@ -72,7 +72,7 @@
 
 
    <script type="module">
-      import { makeChart, getChartData } from '{"js/common.js"|asset}';
+      import { makeChart } from '{"js/chart.js"|asset}';
 
       let php_currency_name = '{$currency->name}';
       let php_currency_sign = '{$currency->sign}';
