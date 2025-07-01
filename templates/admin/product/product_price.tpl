@@ -278,18 +278,22 @@
 			</div>
 
 
-			<!-- Товары по складам -->
-			<div class="col-lg-6 layer">
-				<h2>Товары по складам</h2>
-				<ul class="warehouse_products list-unstyled">
-					{foreach $warehouse_products as $wp}
-						<li class="d-flex justify-content-between">
-							<span>{$wp->place->name}</span>
-							<span>{$wp->amount} шт</span>
-						</li>
-					{/foreach}
-				</ul>
-			</div>
+                        <!-- Товары по складам -->
+                        <div class="col-lg-6 layer">
+                                <h2>Товары по складам</h2>
+                                <div id="warehouse_products" class="list">
+                                        {foreach $warehouse_products as $wp}
+                                                <div class="list_row">
+                                                        <div class="col">
+                                                                {$wp->place->name}
+                                                        </div>
+                                                        <div class="col-2">
+                                                                <span class="badge text-bg-round">{$wp->amount} {$settings->units}</span>
+                                                        </div>
+                                                </div>
+                                        {/foreach}
+                                </div>
+                        </div>
 
 
 			<!-- Связанные товары --->
