@@ -2,20 +2,23 @@
 
 /**
  * HugaShop - Sell anything
- *
+ * 
+ * @author Andri Huga
+ * @version 1.2
+ * 
  * Extension calculates content filling percent for products
  */
 
 namespace HugaShop\Extensions\ProductFilling;
 
+use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
-use HugaShop\Services\Design;
 use App\Services\PaginationService;
-use HugaShop\Models\Product\Product;
 use HugaShop\Extensions\BaseExtension;
 use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Product\ProductCategory;
+use HugaShop\Extensions\ProductFilling\Models\Product;
 use HugaShop\Extensions\ProductFilling\Models\ProductFilling as ProductFillingModel;
 
 final class ProductFilling extends BaseExtension
@@ -27,6 +30,7 @@ final class ProductFilling extends BaseExtension
      */
     public function index()
     {
+
         if (Request::post('calculate')) {
             $this->calculateAll();
             Helper::cache(self::class)->clear();
@@ -49,7 +53,7 @@ final class ProductFilling extends BaseExtension
             Design::assign('keyword', $keyword);
         }
 
-        $products = Product::getProducts($filter, join: ['image']);
+        $products       = Product::getProducts($filter, join: ['image']);
         $products_count = Product::countProducts($filter);
 
         foreach ($products as $product) {
