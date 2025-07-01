@@ -12,39 +12,40 @@ namespace HugaShop\Extensions\TestScript;
 
 use OpenAI;
 use stdClass;
+use HugaShop\Models\Image;
 use HugaShop\Models\Config;
+use HugaShop\Models\Settings;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
-use HugaShop\Services\Request;
-use HugaShop\Models\Settings;
 use HugaShop\Models\User\User;
+use HugaShop\Services\Request;
 use HugaShop\Models\Order\Order;
-use HugaShop\Models\Product\Product;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Address;
+use HugaShop\Models\Product\Product;
+use Symfony\Component\Finder\Finder;
+use HugaShop\Extensions\BaseExtension;
 use HugaShop\Models\Cart\CartPurchase;
 use HugaShop\Models\User\UserNotifier;
-use Symfony\Component\Mime\Address;
-use Symfony\Component\Finder\Finder;
-use HugaShop\Models\Content\ContentPost;
-use HugaShop\Models\Order\OrderPurchase;
-use HugaShop\Extensions\BaseExtension;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Mailer\Transport;
+use HugaShop\Models\Content\ContentPost;
+use HugaShop\Models\Order\OrderPurchase;
 use HugaShop\Models\Content\ContentComment;
 use HugaShop\Models\Product\ProductRelated;
 use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\Filesystem\Filesystem;
-use HugaShop\Models\Warehouse\WarehousePurchase;
 use HugaShop\Models\Warehouse\WarehousePlace;
 use HugaShop\Models\Warehouse\WarehouseProduct;
 use Symfony\Component\Console\Input\ArrayInput;
+use HugaShop\Models\Warehouse\WarehousePurchase;
 use Symfony\Component\Mailer\Transport\Transports;
 use Symfony\Component\Process\PhpExecutableFinder;
+use Illuminate\Database\Capsule\Manager as Capsule;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-use Illuminate\Database\Capsule\Manager as Capsule;
 
 
 #[AsAlias(id: 'app.ext.test_script')]
@@ -494,7 +495,7 @@ class TestScript extends BaseExtension
                             }
 
 
-                            // перегносим изображения
+                            // переносим изображения
                             if (1) {
                                 Image::query()
                                     ->where('entity_name', 'product_content')
@@ -509,7 +510,7 @@ class TestScript extends BaseExtension
                                 $this->result[] = 'Images changed to type product';
                             }
 
-                            
+
                             if (0) {
                                 // TODO: 
                             }

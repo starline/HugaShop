@@ -134,6 +134,15 @@
 					<input type="file" name="dropped_images[]" multiple class="dropInput" />
 					<div class="dropMessage">Перетащите файлы сюда</div>
 				</div>
+
+				<div class="add_image"></div>
+
+				<span class="upload_image">
+					<i class="dash_link" id="upload_image">Добавить изображение</i>
+				</span> или
+				<span class="add_image_url">
+					<i class="dash_link" id="add_image_url">загрузить из интернета</i>
+				</span>
 			</div>
 
 
@@ -200,42 +209,6 @@
 			<div class="col-12 layer">
 				<h2>Полное описание</h2>
 				<textarea name="body" class="html_editor editor_large">{$product->body}</textarea>
-			</div>
-
-
-			<!-- Картинки описания -->
-			<div id="images_content" class="col-12 layer images">
-				<h2>Картинки описания</h2>
-				<ul>
-					{foreach $product->images_content as $image}
-						<li class="{if !$image->visible}visible_off{/if}">
-							<div class="image_icons">
-								<i class="enable material-icons visibility" title="Показать"></i>
-								<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
-							</div>
-							<a href="{$image->filename|resize:1080:1080:w}" class="zoom" data-fancybox="images_content"
-								data-caption="{$product->name}">
-								<img loading="lazy" src="{$image->filename|resize:220:220}" />
-							</a>
-							<input type="hidden" name="images_content[]" value="{$image->id}" />
-							<input type="hidden" name="images_content_visible[{$image->id}]" value="{$image->visible}" />
-						</li>
-					{/foreach}
-				</ul>
-
-				<div class="dropZone">
-					<input type="file" name="dropped_images_content[]" multiple class="dropInput" />
-					<div class="dropMessage">Перетащите файлы сюда</div>
-				</div>
-
-				<div class="add_image"></div>
-
-				<span class="upload_image">
-					<i class="dash_link" id="upload_image">Добавить изображение</i>
-				</span> или
-				<span class="add_image_url">
-					<i class="dash_link" id="add_image_url">загрузить из интернета</i>
-				</span>
 			</div>
 
 			<div class="col-12 btn_row">
