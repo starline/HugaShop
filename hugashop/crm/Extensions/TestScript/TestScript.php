@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.7
+ * @version 2.9
  *
  */
 
@@ -512,7 +512,29 @@ class TestScript extends BaseExtension
 
                             // Сортировка изображений
                             if (1) {
-                                // TODO: все скрытые изображение помести последними по очереди для заданого товара
+                                Product::chunk(100, function ($products) {
+                                    foreach ($products as $product) {
+                                        $images = Image::query()
+                                            ->where('entity_name', 'product')
+                                            ->where('entity_id', $product->id)
+                                            ->orderBy('position')
+                                            ->get();
+
+                                        if ($images->isNotEmpty()) {
+                                            $position = 0;
+                                            foreach ($images->where('visible', 1) as $image) {
+                                                $image->position = ++$position;
+                                                $image->save();
+                                            }
+                                            foreach ($images->where('visible', 0) as $image) {
+                                                $image->position = ++$position;
+                                                $image->save();
+                                            }
+                                        }
+                                    }
+                                });
+
+                                $this->result[] = 'Images sorted for all products';
                             }
 
 
