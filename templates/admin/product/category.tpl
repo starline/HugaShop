@@ -233,9 +233,9 @@
 	<link rel="stylesheet" href="{'js/fancybox/jquery.fancybox.min.css'|asset}" />
 
 	<script type="module">
-		import { initImagesUpload } from '{"js/image.js"|asset}';
 		import '{"js/fancybox/jquery.fancybox.min.js"|asset}';
 		import '{"js/jquery/chosen/chosen.jquery.js"|asset}';
+		import { initImagesUpload } from '{"js/image.js"|asset}';
 		import { generate_meta_title, generate_url } from '{"js/common.js"|asset}';
 
 		var first_edit = {if $category->id|empty}true{else}false{/if};
@@ -245,6 +245,9 @@
 
 				// Image uploads
 				initImagesUpload();
+
+				// Image Zoom init
+				initFancybox();
 
 				// Useful select
 				$(".chosen_select").chosen();

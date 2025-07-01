@@ -6,8 +6,6 @@
  * @version 1.1
  */
 
-import { initFancybox } from './common.js';
-
 export function initImagesUpload() {
     $(".images ul").sortable({
         tolerance: "pointer",
@@ -96,9 +94,7 @@ export function initImagesUpload() {
                         "<input name=" + name + "_urls[] type='hidden' value='" +
                         theFile.name + "'/><input name=" + name +
                         "_urls_visible[] type='hidden' value='1'/></a></li>").appendTo('#' +
-                        name + ' ul');
-
-                    initFancybox();
+                            name + ' ul');
                 };
             })(file);
 

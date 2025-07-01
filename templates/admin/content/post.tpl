@@ -129,16 +129,19 @@
 	<link rel="stylesheet" href="{'js/fancybox/jquery.fancybox.min.css'|asset}" />
 
 	<script type="module">
-		import { initImagesUpload } from '{"js/image.js"|asset}';
 		import '{"js/jquery/datepicker/jquery.ui.datepicker-ru.js"|asset}';
 		import '{"js/fancybox/jquery.fancybox.min.js"|asset}';
-		import { generate_meta_title, generate_url } from '{"js/common.js"|asset}';
+		import { initImagesUpload } from '{"js/image.js"|asset}';
+		import { generate_meta_title, generate_url, initFancybox } from '{"js/common.js"|asset}';
 
 		{literal}
 			$(function() {
 
 				// Image uploads
 				initImagesUpload();
+
+				// Image Zoom init
+				initFancybox();
 
 				$('input[name="date"]').datepicker({
 					regional: 'ru'

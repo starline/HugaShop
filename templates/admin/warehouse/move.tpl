@@ -455,9 +455,9 @@
 	<link href="{'js/fancybox/jquery.fancybox.min.css'|asset}" rel="stylesheet" />
 
 	<script type="module">
-		import { initImagesUpload } from '{"js/image.js"|asset}';
 		import "{'js/jquery/datepicker/jquery.ui.datepicker-ru.js'|asset}";
 		import "{'js/fancybox/jquery.fancybox.min.js'|asset}";
+		import { initImagesUpload } from '{"js/image.js"|asset}';
 		import { initFancybox } from '{"js/common.js"|asset}';
 
 		const currency = '{$currency->sign}';

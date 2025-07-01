@@ -231,11 +231,10 @@
 	{include file='parts/tinymce_init.tpl'}
 
 	<script type="module">
-		import { initImagesUpload } from '{"js/image.js"|asset}';
 		import '{"js/fancybox/jquery.fancybox.min.js"|asset}';
 		import '{"js/jquery/chosen/chosen.jquery.js"|asset}';
-		import { generate_url } from '{"js/common.js"|asset}';
-		import { initFancybox } from '{"js/common.js"|asset}';
+		import { initImagesUpload } from '{"js/image.js"|asset}';
+		import { generate_url, initFancybox } from '{"js/common.js"|asset}';
 
 		{literal}
 			$(function() {

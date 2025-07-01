@@ -235,9 +235,9 @@
 	<link rel="stylesheet" href="{'js/fancybox/jquery.fancybox.min.css'|asset}" />
 
 	<script type="module">
-		import { initImagesUpload } from '{"js/image.js"|asset}';
 		import '{"js/fancybox/jquery.fancybox.min.js"|asset}';
 		import '{"js/jquery/jquery.numbermask.js"|asset}';
+		import { initImagesUpload } from '{"js/image.js"|asset}';
 		import { initFancybox } from '{"js/common.js"|asset}';
 
 		{if $cur_type != 2}
