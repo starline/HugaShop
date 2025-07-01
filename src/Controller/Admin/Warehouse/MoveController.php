@@ -32,12 +32,8 @@ class MoveController extends BaseAdminController
 
         $this->checkAdminAccess('warehouse');
 
-        $total =  new \stdClass();
-        $total->purchases = 0;
-        $payments = [];
 
         $movement = Request::getDataAcces(WarehouseMove::getFields());
-
 
 
         #### Update
@@ -174,16 +170,37 @@ class MoveController extends BaseAdminController
                 return $this->redirectToRoute('MoveListAdmin');
             }
 
+
+            // Total
+            $total =  new \stdClass();
             $total->cost_price = 0;
             $total->retail_price = 0;
             $total->weight = 0;
             $total->payments_price = 0;
+            $total->purchases = 0;
+
+            foreach ($movement->purchases as $purchase) {
+
+                // Подсчитываем общую стоимость
+                if (!empty($purchase->product)) {
+                    $total->cost_price += $purchase->cost_price * $purchase->amount; # Вычисляем по себестоимости поставки
+                    $total->retail_price += $purchase->price * $purchase->amount;
+
+                    // Вычисляеми вес
+                    $total->weight += $purchase->product->weight * $purchase->amount;
+                }
+
+                $total->purchases += $purchase->amount;
+            }
 
             foreach ($movement->payments as $payment) {
                 $sign = ($payment->type == 1) ? 1 : -1;
                 $payment->amount = $sign * abs($payment->amount);
                 $total->payments_price += $sign * $payment->currency_amount ?? $sign * $payment->amount;
             }
+
+            Design::assign('total',  $total);
+
 
             // Выбранный Менеджер
             if (!empty($movement->manager_id)) {
@@ -201,13 +218,13 @@ class MoveController extends BaseAdminController
         if ((in_array('warehouse_add', User::authUser('permissions')) and empty($movement->status)) or in_array('warehouse_edit', User::authUser('permissions'))) {
             $can_edit = true;
         }
+
         $can_change_place = $can_edit && !in_array($movement->status, [2, 3], true);
 
         $warehouse_places = WarehousePlace::getList(['enabled' => 1], 'position');
 
         Design::assign([
             'movement'          => $movement,
-            'total'             => $total,
             'can_edit'          => $can_edit,
             'can_change_place'  => $can_change_place,
             'warehouse_places'  => $warehouse_places

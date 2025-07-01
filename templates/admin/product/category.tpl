@@ -118,27 +118,7 @@
 				<!-- Изображение категории -->
 				<div id="images" class="layer images">
 					<h2>Изображения категории</h2>
-					<ul class="sortable">
-						{foreach $images as $image}
-							<li class="{if !$image->visible}visible_off{/if}">
-								<div class="image_icons">
-									<i class="enable material-icons visibility" title="Показать"></i>
-									<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
-								</div>
-								<a href="{$image->filename|resize:1080:1080:w}" class="zoom" data-fancybox="images"
-									data-caption="{$category->name}">
-									<img class="img-thumbnail" src="{$image->filename|resize:220:220:c}" alt="" />
-								</a>
-								<input type="hidden" name="images[]" value="{$image->id}" />
-								<input type="hidden" name="images_visible[{$image->id}]" value="{$image->visible}" />
-							</li>
-						{/foreach}
-					</ul>
-
-					<div class="dropZone">
-						<input type="file" name="dropped_images[]" multiple class="dropInput" />
-						<div class="dropMessage">Перетащите файлы сюда</div>
-					</div>
+					{include file='parts\image_upload_part.tpl' images=$images can_edit=true}
 				</div>
 
 
@@ -213,24 +193,16 @@
 	{include file='parts/tinymce_init.tpl'}
 
 	<link rel="stylesheet" href="{'js/jquery/chosen/chosen.css'|asset}" />
-	<link rel="stylesheet" href="{'js/fancybox/jquery.fancybox.min.css'|asset}" />
 
 	<script type="module">
 		import '{"js/fancybox/jquery.fancybox.min.js"|asset}';
 		import '{"js/jquery/chosen/chosen.jquery.js"|asset}';
-		import { initImagesUpload } from '{"js/image.js"|asset}';
-		import { generate_meta_title, generate_url, initFancybox } from '{"js/common.js"|asset}';
+		import { generate_meta_title, generate_url } from '{"js/common.js"|asset}';
 
 		var first_edit = {if $category->id|empty}true{else}false{/if};
 
 		{literal}
 			$(function() {
-
-				// Image uploads
-				initImagesUpload();
-
-				// Image Zoom init
-				initFancybox();
 
 				// Useful select
 				$(".chosen_select").chosen();

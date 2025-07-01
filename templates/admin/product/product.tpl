@@ -113,27 +113,7 @@
 			<!-- Изображения товара -->
 			<div id="images" class="col-lg-6 layer images">
 				<h2>Изображения товара</h2>
-				<ul>
-					{foreach $product->images as $image}
-						<li class="{if !$image->visible}visible_off{/if}">
-							<div class="image_icons">
-								<i class="enable material-icons visibility" title="Показать"></i>
-								<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
-							</div>
-							<a href="{$image->filename|resize:1080:1080:w}" class="zoom" data-fancybox="product_images"
-								data-caption="{$product->name}">
-								<img class="img-thumbnail" src="{$image->filename|resize:220:220:c}" />
-							</a>
-							<input type="hidden" name="images[]" value="{$image->id}" />
-							<input type="hidden" name="images_visible[{$image->id}]" value="{$image->visible}" />
-						</li>
-					{/foreach}
-				</ul>
-
-				<div class="dropZone">
-					<input type="file" name="dropped_images[]" multiple class="dropInput" />
-					<div class="dropMessage">Перетащите файлы сюда</div>
-				</div>
+				{include file='parts\image_upload_part.tpl' images=$product->images can_edit=true}
 			</div>
 
 
@@ -213,7 +193,6 @@
 
 {block name=head_css append}
 	<link rel="stylesheet" href="{'js/jquery/chosen/chosen.css'|asset}" />
-	<link rel="stylesheet" href="{'js/fancybox/jquery.fancybox.min.css'|asset}" />
 {/block}
 
 {block name=body_script append}
@@ -222,19 +201,12 @@
 	{include file='parts/tinymce_init.tpl'}
 
 	<script type="module">
-		import '{"js/fancybox/jquery.fancybox.min.js"|asset}';
 		import '{"js/jquery/chosen/chosen.jquery.js"|asset}';
-		import { initImagesUpload } from '{"js/image.js"|asset}';
-		import { generate_url, initFancybox } from '{"js/common.js"|asset}';
+
+		import { generate_url } from '{"js/common.js"|asset}';
 
 		{literal}
 			$(function() {
-
-				// Image uploads
-				initImagesUpload();
-
-				// Image Zoom init
-				initFancybox();
 
 				// Useful select
 				$(".chosen_select").chosen();

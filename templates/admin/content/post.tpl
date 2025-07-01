@@ -84,7 +84,7 @@
 
 			<div class="col-lg-6 layer">
 				<h2>Изображения поста</h2>
-				{include file='parts/module_settings_part.tpl' images=$post->images}
+				{include file='parts\image_upload_part.tpl' images=$post->images can_edit=true}
 			</div>
 
 			<div class="col-12 layer">
@@ -105,22 +105,12 @@
 	{* Подключаем Tiny MCE *}
 	{include file='parts/tinymce_init.tpl'}
 
-	<link rel="stylesheet" href="{'js/fancybox/jquery.fancybox.min.css'|asset}" />
-
 	<script type="module">
 		import '{"js/jquery/datepicker/jquery.ui.datepicker-ru.js"|asset}';
-		import '{"js/fancybox/jquery.fancybox.min.js"|asset}';
-		import { initImagesUpload } from '{"js/image.js"|asset}';
-		import { generate_meta_title, generate_url, initFancybox } from '{"js/common.js"|asset}';
+		import { generate_meta_title, generate_url } from '{"js/common.js"|asset}';
 
 		{literal}
 			$(function() {
-
-				// Image uploads
-				initImagesUpload();
-
-				// Image Zoom init
-				initFancybox();
 
 				$('input[name="date"]').datepicker({
 					regional: 'ru'

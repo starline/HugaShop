@@ -1006,6 +1006,10 @@ select.multiple_categories option {
 	margin-bottom: 5px;
 }
 
+.col-12 .images ul {
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
 .images ul li {
 	position: relative;
 }
