@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 4.4
+ * @version 4.5
  *
  */
 
@@ -33,12 +33,9 @@ class MoveController extends BaseAdminController
         $this->checkAdminAccess('warehouse');
 
 
-        $movement = Request::getDataAcces(WarehouseMove::getFields());
-
-
         #### Update
         ###########
-        if (!empty($movement)) {
+        if (!empty($movement = Request::getDataAcces(WarehouseMove::getFields()))) {
 
             // Создаем новую поставку/списание
             if (empty($movement->id)) {
@@ -173,11 +170,11 @@ class MoveController extends BaseAdminController
 
             // Total
             $total =  new \stdClass();
-            $total->cost_price = 0;
-            $total->retail_price = 0;
-            $total->weight = 0;
-            $total->payments_price = 0;
-            $total->purchases = 0;
+            $total->cost_price      = 0;
+            $total->retail_price    = 0;
+            $total->weight          = 0;
+            $total->payments_price  = 0;
+            $total->purchases       = 0;
 
             foreach ($movement->purchases as $purchase) {
 

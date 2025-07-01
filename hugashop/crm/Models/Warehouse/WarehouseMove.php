@@ -31,7 +31,7 @@ class WarehouseMove extends BaseModel
         'id'            => ['type' => 'int',      'extra' => 'AUTO_INCREMENT'],
         'date'          => ['type' => 'datetime', 'def'   => 'CURRENT_TIMESTAMP', 'access' => false],
         'modified'      => ['type' => 'datetime', 'access' => false],
-        'place_id'      => ['type' => 'int',      'access' => ['warehouse_add', 'warehouse_edit'], 'req' => true],
+        'place_id'      => ['type' => 'int',      'access' => ['warehouse_add', 'warehouse_edit']],
         'awaiting_date' => ['type' => 'date',     'access' => ['warehouse_add', 'warehouse_edit']],
         'manager_id'    => ['type' => 'int',      'access' => false],
         'note'          => ['type' => 'varchar'],
