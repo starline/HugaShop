@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  * 
  * @author Andri Huga
- * @version 1.3
+ * @version 1.4
  * 
  * Extension calculates content filling percent for products
  */
@@ -17,11 +17,10 @@ use App\Services\PaginationService;
 use HugaShop\Extensions\BaseExtension;
 use HugaShop\Models\Product\ProductCategory;
 use HugaShop\Extensions\ProductFilling\Models\Product;
-use HugaShop\Extensions\ProductsImport\Services\Calculate;
+use HugaShop\Extensions\ProductFilling\Services\Calculate;
 
 final class ProductFilling extends BaseExtension
 {
-    private int $batch = 100;
 
 
     /**
@@ -63,31 +62,25 @@ final class ProductFilling extends BaseExtension
      */
     public function calculate()
     {
-        if (Request::isAjax()) {
-            $from = max(0, Request::getInt('from'));
-            $filter = [
-                'limit' => $this->batch,
-                'page'  => intdiv($from, $this->batch) + 1
-            ];
+        $batch = 100;
+        $from = max(0, Request::getInt('from'));
+        $filter = [
+            'limit' => $batch,
+            'page'  => intdiv($from, $batch) + 1
+        ];
 
-            $products = Product::getProducts($filter);
-            foreach ($products as $product) {
-                Calculate::calculateProduct($product->id);
-            }
-
-            $total = Product::countProducts();
-            $processed = $from + $products->count();
-
-            return (object) [
-                'from'  => $processed,
-                'total' => $total,
-                'end'   => $processed >= $total,
-            ];
+        $products = Product::getProducts($filter);
+        foreach ($products as $product) {
+            Calculate::calculateProduct($product->id);
         }
 
-        if (Request::post('calculate')) {
-            Calculate::calculateAllProducts();
-            Request::makeRedirect('/admin/extension/ProductFilling');
-        }
+        $total = Product::countProducts();
+        $processed = $from + $products->count();
+
+        return (object) [
+            'from'  => $processed,
+            'total' => $total,
+            'end'   => $processed >= $total,
+        ];
     }
 }
