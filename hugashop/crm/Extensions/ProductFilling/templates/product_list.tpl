@@ -35,6 +35,11 @@
         </div>
 
         <div class="navbar-expand-lg" id="right_menu">
+            <div class="mb-4">
+                <label for="range" class="form-label">Степень заполнености</label>
+                <input type="range" class="form-range" min="0" max="100" step="10" id="range">
+            </div>
+
             <div class="popup_menu_btn navbar-toggler" data-bs-toggle="offcanvas" data-bs-target="#filter_menu_block">
                 <span class="material-icons">menu</span>
                 <span class="popup_btn_text">Фильтр</span>
