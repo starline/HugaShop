@@ -19,8 +19,12 @@
                         {$products_count|plural:'товар':'товаров':'товара'}</span></h1>
             {/if}
 
-            <button class="btn btn-primary ms-2" id="calculate_btn" type="button">Посчитать</button>
-            <span id="calculate_result" class="ms-1"></span>
+            <button class="btn btn-primary ms-2" id="calculate_btn" type="button">
+                <span class="d-none spinner-border spinner-border-sm" aria-hidden="true"></span>
+                <span>Посчитать</span>
+                <span id="calculate_result" class="ms-1"></span>
+            </button>
+
 
             <form method="get" id="search">
                 {getCSRFInput}
@@ -145,6 +149,7 @@
                             } else {
                                 Piecon.setProgress(100);
                                 in_process = false;
+                                location.reload();
                             }
                         }
                     });

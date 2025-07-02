@@ -106,6 +106,7 @@
                                 num = data.num ?? num;
                                 Piecon.setProgress(Math.round(100 * data.from / file_size));
                                 $('.progress-bar').css('width', Math.round(100 * data.from / file_size) + '%');
+                                
                                 if (data != false && !data.end) {
                                     do_import(data.from);
                                 } else {
