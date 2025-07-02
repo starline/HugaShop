@@ -35,9 +35,11 @@
         </div>
 
         <div class="navbar-expand-lg" id="right_menu">
-            <div class="mb-4">
+
+            <div class="mb-4 position-relative">
                 <label for="range" class="form-label">Степень заполнености</label>
                 <input type="range" class="form-range" min="0" max="100" step="10" id="range">
+                <div id="range_tooltip" class="range-tooltip" data-bs-toggle="tooltip" data-bs-placement="top"></div>
             </div>
 
             <div class="popup_menu_btn navbar-toggler" data-bs-toggle="offcanvas" data-bs-target="#filter_menu_block">
@@ -157,6 +159,36 @@
                         }
                     });
                 }
+
+
+                // Range slader
+                const range = document.getElementById('range');
+                const tooltipAnchor = document.getElementById('range_tooltip');
+                const tooltip = new bootstrap.Tooltip(tooltipAnchor, {
+                    title: range.value,
+                    trigger: 'manual',
+                    placement: 'top'
+                });
+
+                function updateTooltip() {
+                    const value = Number(range.value);
+                    const min = Number(range.min);
+                    const max = Number(range.max);
+                    const percent = (value - min) * 100 / (max - min);
+                    const offset = 10 - percent * 0.2;
+                    tooltipAnchor.style.left = `calc(${percent}% + (${offset}px))`;
+                    tooltip.setContent({ '.tooltip-inner': String(value) });
+                    tooltip.update();
+                }
+
+                range.addEventListener('input', () => {
+                    updateTooltip();
+                    tooltip.show();
+                });
+
+                ['change', 'blur', 'mouseup'].forEach(evt =>
+                    range.addEventListener(evt, () => tooltip.hide())
+                );
             });
         {/literal}
     </script>

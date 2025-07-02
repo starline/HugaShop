@@ -234,6 +234,32 @@ button .material-icons {
 	font-size: 1.35rem;
 }
 
+input[type="range"].form-range {
+	height: 5px;
+	background: var(--lightin-dark-color);
+}
+
+/* WebKit (Chrome, Safari) */
+input[type="range"].form-range::-webkit-slider-thumb {
+	background-color: var(--lightin-dark-color);
+	border: none;
+	height: 16px;
+	width: 16px;
+	border-radius: 50%;
+	cursor: pointer;
+	-webkit-appearance: none;
+	margin-top: -5px;
+}
+
+.range-tooltip {
+	position: absolute;
+	top: 0;
+	transform: translateX(-50%);
+	width: 0;
+	height: 0;
+	pointer-events: none;
+}
+
 /* input form */
 ol,
 ul {
