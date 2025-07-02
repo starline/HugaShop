@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  * 
  * @author Andri Huga
- * @version 1.2
+ * @version 1.3
  * 
  * Extension calculates content filling percent for products
  */
@@ -21,6 +21,7 @@ use HugaShop\Extensions\ProductsImport\Services\Calculate;
 
 final class ProductFilling extends BaseExtension
 {
+    private int $batch = 100;
 
 
     /**
@@ -58,10 +59,32 @@ final class ProductFilling extends BaseExtension
 
 
     /**
-     * Ajax
+     * Recalculate products filling
      */
     public function calculate()
     {
+        if (Request::isAjax()) {
+            $from = max(0, Request::getInt('from'));
+            $filter = [
+                'limit' => $this->batch,
+                'page'  => intdiv($from, $this->batch) + 1
+            ];
+
+            $products = Product::getProducts($filter);
+            foreach ($products as $product) {
+                Calculate::calculateProduct($product->id);
+            }
+
+            $total = Product::countProducts();
+            $processed = $from + $products->count();
+
+            return (object) [
+                'from'  => $processed,
+                'total' => $total,
+                'end'   => $processed >= $total,
+            ];
+        }
+
         if (Request::post('calculate')) {
             Calculate::calculateAllProducts();
             Request::makeRedirect('/admin/extension/ProductFilling');

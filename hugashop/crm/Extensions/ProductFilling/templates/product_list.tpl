@@ -19,10 +19,8 @@
                         {$products_count|plural:'товар':'товаров':'товара'}</span></h1>
             {/if}
             
-            <form method="post" class="d-inline-block ms-2">
-                {getCSRFInput}
-                <button class="btn btn-primary" type="submit" name="calculate" value="1">Посчитать</button>
-            </form>
+            <button class="btn btn-primary ms-2" id="calculate_btn" type="button">Посчитать</button>
+            <span id="calculate_result" class="ms-1"></span>
 
             <form method="get" id="search">
                 {getCSRFInput}
@@ -104,4 +102,48 @@
             {/if}
         </div>
     </div>
+{/block}
+
+{block name=body_script append}
+    <script type="module">
+        import '{"js/piecon/piecon.js"|asset}';
+
+        $(function() {
+            let ajax_url = '/admin/extension/{$extension->module}/ajax/calculate';
+            let in_process = false;
+            let total = {$products_count};
+            let processed = 0;
+
+            $('#calculate_btn').on('click', function(e) {
+                e.preventDefault();
+                if (in_process) {
+                    return;
+                }
+                in_process = true;
+                Piecon.setOptions({fallback: 'force'});
+                Piecon.setProgress(0);
+                $('#calculate_result').text('0/' + total);
+                do_calculate(processed);
+            });
+
+            function do_calculate(from) {
+                $.ajax({
+                    url: ajax_url,
+                    data: {from: from},
+                    dataType: 'json',
+                    success: function(data) {
+                        processed = data.from;
+                        Piecon.setProgress(Math.round(100 * processed / total));
+                        $('#calculate_result').text(processed + '/' + total);
+                        if (data && !data.end) {
+                            do_calculate(processed);
+                        } else {
+                            Piecon.setProgress(100);
+                            in_process = false;
+                        }
+                    }
+                });
+            }
+        });
+    </script>
 {/block}
