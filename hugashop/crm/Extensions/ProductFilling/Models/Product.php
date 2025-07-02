@@ -11,9 +11,16 @@
 namespace HugaShop\Extensions\ProductFilling\Models;
 
 use HugaShop\Models\Product\Product as ProductBase;
+use HugaShop\Extensions\ProductFilling\Models\ProductFilling;
 
 final class Product extends ProductBase
 {
+
+
+    public function fillings()
+    {
+        return $this->hasMany(ProductFilling::class, 'product_id');
+    }
 
 
     /**
@@ -21,6 +28,31 @@ final class Product extends ProductBase
      */
     public static function getProducts(array $filter = [], array $join = [], bool $count = false)
     {
-        return parent::getProducts($filter, $join, $count);
+
+        $model = static::getModel();
+        $query = $model->newQuery();
+
+
+        if (isset($filter['category_id'])) {
+            $query->whereIn('category_id', (array)$filter['category_id']);
+        }
+
+        if ($count) {
+            return $query->count();
+        }
+
+        if (!empty($join)) {
+            $query->with($join);
+        }
+
+        if (!empty($filter['limit']) && $filter['limit'] !== 'all') {
+            $limit = max(1, (int)$filter['limit']);
+            $page = max(1, (int)($filter['page'] ?? 1));
+            $query->limit($limit)->offset(($page - 1) * $limit);
+        }
+
+        return $model->runWithInitTable(function () use ($query) {
+            return $query->get()->keyBy('id');
+        });
     }
 }

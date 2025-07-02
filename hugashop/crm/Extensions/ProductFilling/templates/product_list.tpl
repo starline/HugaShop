@@ -12,9 +12,11 @@
     <div class="two_columns_list">
         <div class="header_top">
             {if $category->name}
-                <h1>{$category->name}<span class="sum_total">{$products_count} {$products_count|plural:'товар':'товаров':'товара'}</span></h1>
+                <h1>{$category->name}<span class="sum_total">{$products_count}
+                        {$products_count|plural:'товар':'товаров':'товара'}</span></h1>
             {else}
-                <h1>Все товары <span class="sum_total">{$products_count} {$products_count|plural:'товар':'товаров':'товара'}</span></h1>
+                <h1>Все товары <span class="sum_total">{$products_count}
+                        {$products_count|plural:'товар':'товаров':'товара'}</span></h1>
             {/if}
             <form method="post" class="d-inline-block ms-2">
                 {getCSRFInput}
@@ -23,14 +25,25 @@
             <form method="get" id="search">
                 {getCSRFInput}
                 <div class="input-group">
-                    <input class="search form-control" type="text" name="keyword" value="{$keyword}" placeholder="Название, артикул"/>
+                    <input class="search form-control" type="text" name="keyword" value="{$keyword}"
+                        placeholder="Название, артикул" />
                     <input class="input-group-text search_button" type="submit" value="" />
                 </div>
             </form>
         </div>
 
         <div class="navbar-expand-lg" id="right_menu">
-            <div class="offcanvas offcanvas-start show-static">
+            <div class="popup_menu_btn navbar-toggler" data-bs-toggle="offcanvas" data-bs-target="#filter_menu_block">
+                <span class="material-icons">menu</span>
+                <span class="popup_btn_text">Фильтр</span>
+            </div>
+
+            <div class="offcanvas offcanvas-start" id="filter_menu_block" tabindex="-1" aria-labelledby="offcanvasLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+
                 <div class="offcanvas-body">
                     {include file='parts/categories_tree_part.tpl'}
                 </div>
@@ -44,15 +57,25 @@
                     {foreach $products as $product}
                         <div class="list_row">
                             <div class="image">
-                                <img src="{if $product->image->filename}{$product->image->filename|resize:60}{else}{'images/cargo.png'|asset}{/if}" />
+                                <img
+                                    src="{if $product->image->filename}{$product->image->filename|resize:60}{else}{'images/cargo.png'|asset}{/if}" />
                             </div>
                             <div class="col">
-                                <a href="{'ProductAdmin'|urll:[id=>$product->id]}?return={$smarty.server.REQUEST_URI}">{$product->name}</a>
+                                <a
+                                    href="{'ProductAdmin'|urll:[id=>$product->id]}?return={$smarty.server.REQUEST_URI}">{$product->name}</a>
                                 {if $product->variant_name}
                                     <div class="small text-muted">{$product->variant_name}</div>
                                 {/if}
                             </div>
-                            <div class="col-auto fw-bold align-self-center">{$product->filling}%</div>
+                            <div class="col-auto">
+                                {foreach $product->fillings as $lang}
+                                    <div class="mb-2 text-end">
+                                        <span
+                                            class="badge {if $lang->percent<20}text-bg-danger{elseif $lang->percent<80}text-bg-warning{else}text-bg-success{/if} ">{$lang->percent}%
+                                            {$lang->language_code}</span>
+                                    </div>
+                                {/foreach}
+                            </div>
                         </div>
                     {/foreach}
                 </div>

@@ -53,12 +53,8 @@ final class ProductFilling extends BaseExtension
             Design::assign('keyword', $keyword);
         }
 
-        $products       = Product::getProducts($filter, join: ['image']);
+        $products       = Product::getProducts($filter, join: ['image', 'fillings']);
         $products_count = Product::countProducts($filter);
-
-        foreach ($products as $product) {
-            $product->filling = (int) ProductFillingModel::getAvgPercent($product->id);
-        }
 
         $categories = ProductCategory::getCategoriesTree();
 
