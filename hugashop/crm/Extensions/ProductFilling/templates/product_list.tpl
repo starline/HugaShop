@@ -24,7 +24,6 @@
                 <span id="calculate_result" class="badge text-bg-round ms-1"></span>
             </button>
 
-
             <form method="get" id="search">
                 {getCSRFInput}
                 <div class="input-group">
