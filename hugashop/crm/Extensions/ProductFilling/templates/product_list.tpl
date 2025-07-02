@@ -22,7 +22,7 @@
             <button class="btn btn-primary ms-2" id="calculate_btn" type="button">
                 <span class="d-none spinner-border spinner-border-sm" aria-hidden="true"></span>
                 <span>Посчитать</span>
-                <span id="calculate_result" class="ms-1"></span>
+                <span id="calculate_result" class="badge text-bg-round ms-1"></span>
             </button>
 
 
