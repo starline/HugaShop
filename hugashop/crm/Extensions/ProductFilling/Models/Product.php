@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.2
+ * @version 1.3
  * 
  */
 
@@ -35,6 +35,18 @@ final class Product extends ProductBase
 
         if (isset($filter['category_id'])) {
             $query->whereIn('category_id', (array)$filter['category_id']);
+        }
+
+        // Keyword search
+        if (!empty($filter['keyword'])) {
+            $keywords = explode(' ', trim($filter['keyword']));
+            $query->where(function ($q) use ($keywords) {
+                foreach ($keywords as $kw) {
+                    $q->orWhere('name', 'like', "%$kw%")
+                        ->orWhere('sku', 'like', "%$kw%")
+                        ->orWhere('variant_name', 'like', "%$kw%");
+                }
+            });
         }
 
         if ($count) {

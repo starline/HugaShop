@@ -12,10 +12,10 @@
     <div class="two_columns_list">
         <div class="header_top">
             {if $category->name}
-                <h1>{$category->name}<span class="sum_total">{$products_count}
-                        {$products_count|plural:'товар':'товаров':'товара'}</span></h1>
+                <h1>{$category->name}<span
+                        class="sum_total">{$products_count}{$products_count|plural:'товар':'товаров':'товара'}</span></h1>
             {else}
-                <h1>Все товары <span class="sum_total">{$products_count}
+                <h1>Все товары <span class="sum_total">{$products_count} 
                         {$products_count|plural:'товар':'товаров':'товара'}</span></h1>
             {/if}
             <form method="post" class="d-inline-block ms-2">
@@ -60,21 +60,40 @@
                                 <img
                                     src="{if $product->image->filename}{$product->image->filename|resize:60}{else}{'images/cargo.png'|asset}{/if}" />
                             </div>
-                            <div class="col">
-                                <a
-                                    href="{'ProductAdmin'|urll:[id=>$product->id]}?return={$smarty.server.REQUEST_URI}">{$product->name}</a>
-                                {if $product->variant_name}
-                                    <div class="small text-muted">{$product->variant_name}</div>
-                                {/if}
-                            </div>
-                            <div class="col-auto">
-                                {foreach $product->fillings as $lang}
-                                    <div class="mb-2 text-end">
-                                        <span
-                                            class="badge {if $lang->percent<20}text-bg-danger{elseif $lang->percent<80}text-bg-warning{else}text-bg-success{/if} ">{$lang->percent}%
-                                            {$lang->language_code}</span>
+
+                            <div class="col row">
+                                <div class="col">
+                                    <a
+                                        href="{'ProductAdmin'|urll:[id=>$product->id]}?return={$smarty.server.REQUEST_URI}">{$product->name}</a>
+                                    {if $product->variant_name}
+                                        <span class="small"> - {$product->variant_name}</span>
+                                    {/if}
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <div class="row">
+                                        <div class="col-6 text-end">
+                                            {if $product->sku}
+                                                <div class="badge text-bg-round copy_field" value="{$product->sku}">{$product->sku}
+                                                    <div class="copy_hover" data-bs-toggle="tooltip"
+                                                        data-bs-original-title="Скопировать">
+                                                        <i class="material-icons">content_copy</i>
+                                                    </div>
+                                                </div>
+                                            {/if}
+                                        </div>
+
+                                        <div class="col-6">
+                                            {foreach $product->fillings as $lang}
+                                                <div class="mb-2 text-end">
+                                                    <span
+                                                        class="badge {if $lang->percent<20}text-bg-danger{elseif $lang->percent<80}text-bg-warning{else}text-bg-success{/if} ">{$lang->percent}%
+                                                        {$lang->language_code}</span>
+                                                </div>
+                                            {/foreach}
+                                        </div>
                                     </div>
-                                {/foreach}
+                                </div>
                             </div>
                         </div>
                     {/foreach}

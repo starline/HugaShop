@@ -33,8 +33,7 @@ final class ProductFilling extends BaseExtension
 
         if (Request::post('calculate')) {
             $this->calculateAll();
-            Helper::cache(self::class)->clear();
-            Request::makeRedirect('/admin/extension/Productsfilling');
+            Request::makeRedirect('/admin/extension/ProductFilling');
         }
 
 

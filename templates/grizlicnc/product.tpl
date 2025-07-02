@@ -61,7 +61,7 @@
 		</div>
 
 		<div class="col-12 col-lg-6">
-			<h1>{$product->name}</h1>
+			<h1>{$product->name} {if $product->variant_name} - {$product->variant_name}{/if}</h1>
 
 			{if 'product_content'|user_access AND $product->id}
 				<div class="admin_edit">

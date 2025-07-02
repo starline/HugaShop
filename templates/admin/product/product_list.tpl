@@ -17,8 +17,7 @@
 
 			{if $products_count}
 				{if $category->name || $brand->name}
-					<h1>{$category->name} {$brand->name}
-						<span class="sum_total">{$products_count}
+					<h1>{$category->name} {$brand->name}<span class="sum_total">{$products_count}
 							{$products_count|plural:'товар':'товаров':'товара'}</span>
 					</h1>
 				{elseif $keyword}
@@ -27,7 +26,7 @@
 							{$products_count|plural:'товар':'товаров':'товара'}</span>
 					</h1>
 				{else}
-					<h1>Все товары <span class="sum_total">{$products_count}
+					<h1>Все товары<span class="sum_total">{$products_count}
 							{$products_count|plural:'товар':'товаров':'товара'}</span></h1>
 				{/if}
 			{else}
@@ -201,6 +200,10 @@
 											{$product->name}
 										{/if}
 
+										{if $product->variant_name}
+											<i class="small"> - {$product->variant_name}</i>
+										{/if}
+
 
 										{if $product->order_date}
 											<div class="notice" data-bs-toggle="tooltip" title="Дата последнего заказа">
@@ -244,14 +247,9 @@
 										</div>
 									</div>
 
-									<div class="col-12 col-md-5 variants">
+									<div class="col-12 col-md-4 variants">
 										<div class="row">
-											<div class="col-6 text-end">
-												{if $product->variant_name}
-													<i class="small" data-bs-toggle="tooltip"
-														{if $product->variant_name|count_characters:true > 20}title="{$product->variant_name}{/if}">{$product->variant_name|truncate:20:'…':true:false}</i>
-												{/if}
-
+											<div class="col-4 text-end">
 												{if $product->sku}
 													<div class="badge text-bg-round copy_field" value="{$product->sku}">{$product->sku}
 														<div class="copy_hover" data-bs-toggle="tooltip"
@@ -262,7 +260,7 @@
 												{/if}
 											</div>
 
-											<span class="col-3 price">
+											<span class="col-4 price">
 												{if 'product_price'|user_access}
 													<a data-bs-toggle="tooltip" data-bs-html="true" {if $product->cost_price > 0}
 															title="Оптовая цена &mdash; {$product->cost_price|number} {$currency->sign}</br>Доход &mdash; {$product->profit_price|number} {$currency->sign}</br> Старая цена  &mdash; {$product->old_price|number} {$currency->sign}"
@@ -273,7 +271,7 @@
 												{/if}
 											</span>
 
-											<span class="col-3 ">
+											<span class="col-4">
 												<div class="stock">
 													{if $product->stock|is_null}
 														∞

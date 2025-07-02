@@ -512,6 +512,10 @@ footer {
 	color: var(--text-color);
 }
 
+h1 .sum_total {
+	margin-left: 5px;
+}
+
 .sum_profit_price {
 	display: block;
 	position: absolute;
