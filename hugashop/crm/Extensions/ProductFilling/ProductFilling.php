@@ -62,7 +62,7 @@ final class ProductFilling extends BaseExtension
      */
     public function calculate()
     {
-        $batch = 100;
+        $batch = 20;
         $from = max(0, Request::getInt('from'));
         $filter = [
             'limit' => $batch,
