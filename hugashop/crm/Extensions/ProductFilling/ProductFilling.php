@@ -12,14 +12,12 @@
 namespace HugaShop\Extensions\ProductFilling;
 
 use HugaShop\Services\Design;
-use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use App\Services\PaginationService;
 use HugaShop\Extensions\BaseExtension;
-use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Product\ProductCategory;
 use HugaShop\Extensions\ProductFilling\Models\Product;
-use HugaShop\Extensions\ProductFilling\Models\ProductFilling as ProductFillingModel;
+use HugaShop\Extensions\ProductsImport\Services\Calculate;
 
 final class ProductFilling extends BaseExtension
 {
@@ -31,14 +29,7 @@ final class ProductFilling extends BaseExtension
     public function index()
     {
 
-        if (Request::post('calculate')) {
-            $this->calculateAll();
-            Request::makeRedirect('/admin/extension/ProductFilling');
-        }
-
-
         $filter = PaginationService::initFilter();
-
 
         $category_id = Request::getInt('category_id');
         $filter['category_id'] = $category_id;
@@ -67,55 +58,13 @@ final class ProductFilling extends BaseExtension
 
 
     /**
-     * Calculate filling for one product
+     * Ajax
      */
-    public function calculateProduct(int $product_id)
+    public function calculate()
     {
-        $product = Product::getProduct($product_id);
-        if (!$product) {
-            return;
-        }
-
-        $fields = ['name', 'meta_title', 'meta_description', 'annotation', 'body'];
-        $langs = Language::getLanguages();
-
-        foreach ($langs as $lang) {
-            $filled = 0;
-            if ($lang->main) {
-                foreach ($fields as $field) {
-                    if (!empty(trim($product->$field))) {
-                        $filled++;
-                    }
-                }
-            } else {
-                $translation = Product::getTranslation($product_id, $lang->code);
-                foreach ($fields as $field) {
-                    $val = $translation->$field ?? null;
-                    if (!empty(trim($val))) {
-                        $filled++;
-                    }
-                }
-            }
-
-            $percent = intval($filled / count($fields) * 100);
-            ProductFillingModel::updateOrCreate([
-                'product_id' => $product_id,
-                'language_code' => $lang->code
-            ], [
-                'percent' => $percent
-            ]);
-        }
-    }
-
-
-    /**
-     * Recalculate filling for all products
-     */
-    public function calculateAll()
-    {
-        $ids = Product::getList(select: 'id');
-        foreach ($ids as $id) {
-            $this->calculateProduct($id);
+        if (Request::post('calculate')) {
+            Calculate::calculateAllProducts();
+            Request::makeRedirect('/admin/extension/ProductFilling');
         }
     }
 }

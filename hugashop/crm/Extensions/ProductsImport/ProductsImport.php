@@ -37,7 +37,7 @@ final class ProductsImport extends BaseExtension
 
     private string $locale = 'ru_RU.UTF-8';
 
-    
+
     /**
      * Show import page and handle file upload
      */
@@ -82,7 +82,7 @@ final class ProductsImport extends BaseExtension
 
 
     /**
-     * Import products
+     * Import products. Ajax
      */
     public function import()
     {

@@ -50,7 +50,6 @@
                 </div>
                 <p class="mt-2">
                     максимальный размер файла &mdash; {$config->max_upload_filesize|byte_convert}
-
                 </p>
             </form>
         {/if}
@@ -95,7 +94,7 @@
 
                     function do_import(from) {
                         from = typeof(from) != 'undefined' ? from : 0;
-                        
+
                         $.ajax({
                             url: ajax_url,
                             data: {from: from, num: num, place_id: place_id},

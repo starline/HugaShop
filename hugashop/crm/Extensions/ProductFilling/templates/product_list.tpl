@@ -18,10 +18,12 @@
                 <h1>Все товары <span class="sum_total">{$products_count} 
                         {$products_count|plural:'товар':'товаров':'товара'}</span></h1>
             {/if}
+            
             <form method="post" class="d-inline-block ms-2">
                 {getCSRFInput}
                 <button class="btn btn-primary" type="submit" name="calculate" value="1">Посчитать</button>
             </form>
+
             <form method="get" id="search">
                 {getCSRFInput}
                 <div class="input-group">
