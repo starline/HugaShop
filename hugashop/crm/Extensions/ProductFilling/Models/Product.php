@@ -81,7 +81,7 @@ final class Product extends ProductModel
             $query->with($join);
         }
 
-        $query->orderByDe('percent');
+        $query->orderBy('percent');
 
         if (!empty($filter['limit']) && $filter['limit'] !== 'all') {
             $limit = max(1, (int)$filter['limit']);
