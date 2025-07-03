@@ -171,7 +171,7 @@
 			$(function() {
 
 				// Скрыт/Видим
-				$("i.enable.edit").click(function() {
+				$("i.enable.edit").on('click', function() {
 					ajax_icon($(this), 'user', 'enabled', csrf);
 					return false;
 				});

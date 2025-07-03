@@ -12,7 +12,6 @@ namespace App\Controller\Admin\Ajax;
 use OpenAI;
 use HugaShop\Services\Config;
 use HugaShop\Services\Request;
-use App\Services\LanguageService;
 use HugaShop\Models\Product\Product;
 use App\Controller\BaseAdminController;
 use HugaShop\Models\Content\ContentPage;

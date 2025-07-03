@@ -36,10 +36,13 @@
 
         <div class="navbar-expand-lg" id="right_menu">
 
-            <div class="mb-4 position-relative">
+            <div class="mb-4">
                 <label for="range" class="form-label">Степень заполнености</label>
-                <input type="range" class="form-range" min="0" max="100" step="10" id="range" value="{$filling}">
-                <div id="range_tooltip" class="range-tooltip" data-bs-toggle="tooltip" data-bs-placement="top"></div>
+                <div class="position-relative">
+                    <div id="range_tooltip" class="range-tooltip" data-bs-toggle="tooltip" data-bs-placement="top"></div>
+                </div>
+                <input type="range" class="form-range" min="0" max="100" step="5" id="range" value="{$filling}">
+
             </div>
 
             <div class="popup_menu_btn navbar-toggler" data-bs-toggle="offcanvas" data-bs-target="#filter_menu_block">
@@ -104,6 +107,16 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="icons flex-column">
+                                <i class="edit filling material-icons" data-bs-toggle="tooltip" aria-label="Заполнить"
+                                    data-bs-original-title="Заполнить">library_books</i>
+
+                                {if $languages|count > 1}
+                                    <i class="edit translate material-icons" data-bs-toggle="tooltip" aria-label="Перевести"
+                                        data-bs-original-title="Перевести">translate</i>
+                                {/if}
+                            </div>
                         </div>
                     {/foreach}
                 </div>
@@ -160,13 +173,18 @@
                     });
                 }
 
+                $("i.translate.edit").on('click', function() {
+
+
+
+                });
 
                 // Range slader
                 const range = document.getElementById('range');
                 const tooltipAnchor = document.getElementById('range_tooltip');
                 const tooltip = new bootstrap.Tooltip(tooltipAnchor, {
                     title: range.value,
-                    trigger: 'hover',
+                    trigger: 'manual',
                     placement: 'top'
                 });
 
@@ -179,23 +197,17 @@
                     tooltipAnchor.style.left = `calc(${percent}% + (${offset}px))`;
                     tooltip.setContent({ '.tooltip-inner': String(value) });
                     tooltip.update();
+                    tooltip.show();
                 }
 
-                range.addEventListener('input', () => {
-                    updateTooltip();
-                    tooltip.show();
-                });
-
+                range.addEventListener('input', updateTooltip);
                 range.addEventListener('change', () => {
                     const url = new URL(window.location.href);
                     url.searchParams.set('filling', range.value);
                     url.searchParams.delete('page');
                     window.location.href = url.toString();
+                    tooltip.show();
                 });
-
-                ['blur', 'mouseup'].forEach(evt =>
-                    range.addEventListener(evt, () => tooltip.hide())
-                );
 
                 updateTooltip();
             });

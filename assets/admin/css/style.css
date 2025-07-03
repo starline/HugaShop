@@ -176,6 +176,10 @@ textarea {
 	background: transparent var(--bs-btn-close-bg) center/2em auto no-repeat;
 }
 
+.badge {
+	line-height: normal;
+}
+
 .input-group-text {
 	border: none;
 }
@@ -1845,9 +1849,12 @@ i.material-icons.shopping_cart::before {
 
 .icons i,
 .icons a {
+	color: var(--text-color);
+	user-select: none;
 	cursor: pointer;
 	opacity: 0.55;
 	margin-left: 6px;
+	margin-bottom: 6px;
 	width: 21px;
 	height: 21px;
 }

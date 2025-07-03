@@ -18,6 +18,7 @@ use HugaShop\Extensions\BaseExtension;
 use HugaShop\Models\Product\ProductCategory;
 use HugaShop\Extensions\ProductFilling\Models\Product;
 use HugaShop\Extensions\ProductFilling\Services\Calculate;
+use HugaShop\Models\Localization\Language;
 
 final class ProductFilling extends BaseExtension
 {
@@ -57,6 +58,7 @@ final class ProductFilling extends BaseExtension
         Design::assign('products', $products);
         Design::assign('products_count', $products_count);
         Design::assign('filling', $filter['filling'] ?? 100);
+        Design::assign('languages', Language::getLanguages());
         Design::assign('pagination', PaginationService::getPagination($products_count, $filter));
 
         return $this->getTemplatePath('templates/product_list.tpl');
