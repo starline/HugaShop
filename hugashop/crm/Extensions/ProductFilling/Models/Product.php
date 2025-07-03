@@ -10,16 +10,23 @@
 
 namespace HugaShop\Extensions\ProductFilling\Models;
 
-use HugaShop\Models\Product\Product as ProductBase;
+use HugaShop\Models\Localization\Language;
+use HugaShop\Models\Product\Product as ProductModel;
 use HugaShop\Extensions\ProductFilling\Models\ProductFilling;
 
-final class Product extends ProductBase
+final class Product extends ProductModel
 {
 
 
     public function fillings()
     {
         return $this->hasMany(ProductFilling::class, 'product_id');
+    }
+
+    public function mainFilling()
+    {
+        return $this->hasOne(ProductFilling::class, 'product_id')
+            ->where('language_code', Language::getMain()->code);
     }
 
 
@@ -31,6 +38,18 @@ final class Product extends ProductBase
 
         $model = static::getModel();
         $query = $model->newQuery();
+        $products_table = $model->getTable();
+
+        $main_lang = Language::getMain()->code;
+        $query->select("$products_table.*");
+        $query->selectSub(
+            ProductFilling::query()
+                ->select('percent')
+                ->whereColumn('product_id', "$products_table.id")
+                ->where('language_code', $main_lang)
+                ->limit(1),
+            'filling_percent'
+        );
 
 
         if (isset($filter['category_id'])) {
@@ -49,6 +68,10 @@ final class Product extends ProductBase
             });
         }
 
+        if (isset($filter['filling'])) {
+            $query->having('filling_percent', '<=', $filter['filling']);
+        }
+
         if ($count) {
             return $query->count();
         }
@@ -56,6 +79,8 @@ final class Product extends ProductBase
         if (!empty($join)) {
             $query->with($join);
         }
+
+        $query->orderBy('filling_percent');
 
         if (!empty($filter['limit']) && $filter['limit'] !== 'all') {
             $limit = max(1, (int)$filter['limit']);
@@ -66,5 +91,14 @@ final class Product extends ProductBase
         return $model->runWithInitTable(function () use ($query) {
             return $query->get()->keyBy('id');
         });
+    }
+
+
+    /**
+     * Count
+     */
+    public static function countProducts(array $filter = [], array $join = [])
+    {
+        return self::getProducts($filter, count: true);
     }
 }

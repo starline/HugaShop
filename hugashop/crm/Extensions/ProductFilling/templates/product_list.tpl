@@ -38,7 +38,7 @@
 
             <div class="mb-4 position-relative">
                 <label for="range" class="form-label">Степень заполнености</label>
-                <input type="range" class="form-range" min="0" max="100" step="10" id="range">
+                <input type="range" class="form-range" min="0" max="100" step="10" id="range" value="{$filling}">
                 <div id="range_tooltip" class="range-tooltip" data-bs-toggle="tooltip" data-bs-placement="top"></div>
             </div>
 
@@ -186,9 +186,18 @@
                     tooltip.show();
                 });
 
-                ['change', 'blur', 'mouseup'].forEach(evt =>
+                range.addEventListener('change', () => {
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('filling', range.value);
+                    url.searchParams.delete('page');
+                    window.location.href = url.toString();
+                });
+
+                ['blur', 'mouseup'].forEach(evt =>
                     range.addEventListener(evt, () => tooltip.hide())
                 );
+
+                updateTooltip();
             });
         {/literal}
     </script>

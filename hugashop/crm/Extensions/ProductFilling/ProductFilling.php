@@ -43,6 +43,11 @@ final class ProductFilling extends BaseExtension
             Design::assign('keyword', $keyword);
         }
 
+        $filling = Request::getInt('filling');
+        if (!is_null($filling)) {
+            $filter['filling'] = max(0, min(100, $filling));
+        }
+
         $products       = Product::getProducts($filter, join: ['image', 'fillings']);
         $products_count = Product::countProducts($filter);
 
@@ -51,6 +56,7 @@ final class ProductFilling extends BaseExtension
         Design::assign('categories', $categories);
         Design::assign('products', $products);
         Design::assign('products_count', $products_count);
+        Design::assign('filling', $filter['filling'] ?? 100);
         Design::assign('pagination', PaginationService::getPagination($products_count, $filter));
 
         return $this->getTemplatePath('templates/product_list.tpl');
