@@ -166,7 +166,7 @@
                 const tooltipAnchor = document.getElementById('range_tooltip');
                 const tooltip = new bootstrap.Tooltip(tooltipAnchor, {
                     title: range.value,
-                    trigger: 'manual',
+                    trigger: 'hover',
                     placement: 'top'
                 });
 
