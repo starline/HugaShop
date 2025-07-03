@@ -41,7 +41,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use HugaShop\Models\Warehouse\WarehousePurchase;
 use Symfony\Component\Mailer\Transport\Transports;
 use Symfony\Component\Process\PhpExecutableFinder;
-use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Capsule\Manager as DB;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\DependencyInjection\Attribute\AsAlias;
@@ -363,7 +363,7 @@ class TestScript extends BaseExtension
 
                                 Product::chunk(100, function ($products) { #  обрабатывает по 100 записей за раз, чтобы не съесть всю память
                                     foreach ($products as $product) {
-                                        $variants = Capsule::table('s_product_variant_temp')
+                                        $variants = DB::table('s_product_variant_temp')
                                             ->where('product_id', $product->id)
                                             ->get();
 

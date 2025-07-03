@@ -23,7 +23,7 @@ use HugaShop\Models\Order\OrderPurchase;
 use HugaShop\Models\Content\ContentComment;
 use HugaShop\Models\Content\ContentFeedback;
 use HugaShop\Models\Finance\FinanceCurrency;
-use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Capsule\Manager as DB;
 
 
 
@@ -452,7 +452,7 @@ class UserNotifier extends BaseModel
     public static function updateUserNotifierTypes(int $user_id, ?array $notifier_types = null): bool
     {
         // Удаляем все старые записи
-        Capsule::table('user_notifier_type')
+        DB::table('user_notifier_type')
             ->where('user_id', $user_id)
             ->delete();
 
@@ -473,7 +473,7 @@ class UserNotifier extends BaseModel
             }
 
             if (!empty($insertData)) {
-                Capsule::table('user_notifier_type')->insert($insertData);
+                DB::table('user_notifier_type')->insert($insertData);
             }
         }
 
@@ -489,7 +489,7 @@ class UserNotifier extends BaseModel
 
     public static function getUserNotifierTypes(int $user_id, ?string $type = null): array
     {
-        $query = Capsule::table('user_notifier_type')
+        $query = DB::table('user_notifier_type')
             ->select('user_id', 'notifier_id', 'type')
             ->where('user_id', $user_id);
 

@@ -23,7 +23,7 @@ use HugaShop\Models\Settings;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Capsule\Manager as DB;
 
 class BackupController extends BaseAdminController
 {
@@ -179,7 +179,7 @@ class BackupController extends BaseAdminController
 
         // Выбираем все таблицы
 
-        $result = Capsule::select("SHOW FULL TABLES LIKE '__%';");
+        $result = DB::select("SHOW FULL TABLES LIKE '__%';");
 
         foreach ($result as $row) {
 
@@ -202,7 +202,7 @@ class BackupController extends BaseAdminController
     private function dumpTable($table, $h)
     {
 
-        $rows = Capsule::select("SELECT * FROM `$table`");
+        $rows = DB::select("SELECT * FROM `$table`");
 
         if ($rows) {
             fwrite($h, "/* Data for table $table */\n");
@@ -211,7 +211,7 @@ class BackupController extends BaseAdminController
             $num_rows = count($rows);
 
             if ($num_rows > 0) {
-                $meta = Capsule::select("SHOW COLUMNS FROM `$table`");
+                $meta = DB::select("SHOW COLUMNS FROM `$table`");
                 $field_type = [];
                 $field_name = [];
                 foreach ($meta as $m) {
@@ -233,7 +233,7 @@ class BackupController extends BaseAdminController
                             if (preg_match('/int|double|float|decimal|numeric/i', $field_type[$i])) {
                                 fwrite($h, $value);
                             } else {
-                                fwrite($h, Capsule::getPdo()->quote($value));
+                                fwrite($h, DB::getPdo()->quote($value));
                             }
                         }
                         if ($i < count($field_name) - 1) {
@@ -282,7 +282,7 @@ class BackupController extends BaseAdminController
 
                         // Perform the query
                         try {
-                            Capsule::unprepared($templine);
+                            DB::unprepared($templine);
                         } catch (\Throwable $e) {
                             print('Error performing query <b>' . $templine . '</b>: ' . $e->getMessage() . '<br/><br/>');
                         }

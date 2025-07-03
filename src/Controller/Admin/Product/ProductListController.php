@@ -20,7 +20,7 @@ use App\Services\PaginationService;
 use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Capsule\Manager as DB;
 
 class ProductListController extends BaseAdminController
 {
@@ -165,13 +165,13 @@ class ProductListController extends BaseAdminController
                                     Product::where('position', '>', $initial_position)
                                         ->where('position', '<=', $target_position)
                                         ->update([
-                                            'position' => Capsule::raw('position - 1')
+                                            'position' => DB::raw('position - 1')
                                         ]);
                                 } else {
                                     Product::where('position', '<', $initial_position)
                                         ->where('position', '>=', $target_position)
                                         ->update([
-                                            'position' => Capsule::raw('position + 1')
+                                            'position' => DB::raw('position + 1')
                                         ]);
                                 }
 

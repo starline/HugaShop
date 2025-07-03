@@ -133,7 +133,6 @@ class ProductController extends BaseAdminController
 
             $product = Product::getProduct(intval($id), join: [
                 'images',
-                'images_content',
                 'options'
             ]);
 

@@ -1109,34 +1109,14 @@ select.multiple_categories option {
 	cursor: pointer;
 }
 
-.images .add_image {
-	display: flex;
-	flex-direction: column;
-}
-
-.images span.upload_image,
-.images span.add_image_url {
+.images span.upload_image {
 	margin-top: 5px;
 	background-repeat: no-repeat;
 	padding-left: 21px;
 	margin-right: 5px;
 	display: inline-block;
-}
-
-.images span.upload_image {
 	background-image: url(../images/picture_add.png);
 	background-position-y: 4px;
-}
-
-.images span.add_image_url,
-.images_content span.add_image_content_url {
-	background-image: url(../images/world_link.png);
-	background-position-y: 4px;
-	margin-left: 12px;
-}
-
-.images #add_image {
-	margin-top: 15px;
 }
 
 .images.upload_image span#upload_image {

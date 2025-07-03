@@ -12,7 +12,7 @@ namespace HugaShop\Models\Traits;
 
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Capsule\Manager as DB;
 
 trait CheckModelTrait
 {
@@ -64,7 +64,7 @@ trait CheckModelTrait
             return;
         }
 
-        $schema = Capsule::schema();
+        $schema = DB::schema();
 
         if (!$schema->hasTable($table)) {
             $schema->create($table, function (Blueprint $blueprint) {

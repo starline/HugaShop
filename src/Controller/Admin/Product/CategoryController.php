@@ -73,8 +73,6 @@ class CategoryController extends BaseAdminController
 
             // Изображения товара
             $images = Image::getImages($category->id, 'category');
-            $images_content = Image::getImages($category->id, 'category_content');
-
 
             $seo_keywords_arr = SeoKeywords::getKeywords($category->id, 'category');
             $seo_keywords = join("\n", $seo_keywords_arr);
@@ -86,7 +84,6 @@ class CategoryController extends BaseAdminController
             $synonyms = ProductCategorySynonym::getSynonyms(['category_id' => $category->id]);
 
             Design::assign('images', $images);
-            Design::assign('images_content', $images_content);
             Design::assign('seo_keywords', $seo_keywords);
             Design::assign('seo_faqs', $seo_faqs);
             Design::assign('synonyms', $synonyms);

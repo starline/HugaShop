@@ -13,6 +13,7 @@ namespace HugaShop\Extensions\ProductFilling\Models;
 use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Product\Product as ProductModel;
 use HugaShop\Extensions\ProductFilling\Models\ProductFilling;
+use Illuminate\Database\Capsule\Manager as DB;
 
 final class Product extends ProductModel
 {
@@ -48,7 +49,7 @@ final class Product extends ProductModel
                 ->whereColumn('product_id', "$products_table.id")
                 ->where('language_code', $main_lang)
                 ->limit(1),
-            'filling_percent'
+            'percent'
         );
 
 
@@ -69,7 +70,7 @@ final class Product extends ProductModel
         }
 
         if (isset($filter['filling'])) {
-            $query->having('filling_percent', '<=', $filter['filling']);
+            $query->having('percent', '<=', $filter['filling']);
         }
 
         if ($count) {
@@ -80,7 +81,7 @@ final class Product extends ProductModel
             $query->with($join);
         }
 
-        $query->orderBy('filling_percent');
+        $query->orderByDe('percent');
 
         if (!empty($filter['limit']) && $filter['limit'] !== 'all') {
             $limit = max(1, (int)$filter['limit']);

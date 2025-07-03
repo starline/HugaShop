@@ -90,12 +90,6 @@ class Product extends BaseModel
             ->orderBy('position');
     }
 
-    public function images_content()
-    {
-        return $this->hasMany(Image::class, 'entity_id')
-            ->where('entity_name', 'product_content')
-            ->orderBy('position');
-    }
 
     /**
      * Future warehouse movements for the product

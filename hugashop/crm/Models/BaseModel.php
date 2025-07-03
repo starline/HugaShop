@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
 use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Traits\CheckModelTrait;
 use HugaShop\Models\Traits\TranslationTrait;
-use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Capsule\Manager as DB;
 
 abstract class BaseModel extends Model
 {
@@ -53,7 +53,7 @@ abstract class BaseModel extends Model
             return;
         }
 
-        $capsule = new Capsule;
+        $capsule = new DB;
         $capsule->addConnection([
             'driver'    => Config::get('database')->driver,
             'host'      => Config::get('database')->server,
@@ -69,7 +69,7 @@ abstract class BaseModel extends Model
         $capsule->bootEloquent();
 
         // DB query Debuging
-        Capsule::connection()->listen(function ($query) {
+        DB::connection()->listen(function ($query) {
             $dump_result =  "SQL: {$query->sql}\n";
             $dump_result .= "Binding: " . implode(', ', $query->bindings) . "\n";
             $dump_result .= "Time: {$query->time}ms";

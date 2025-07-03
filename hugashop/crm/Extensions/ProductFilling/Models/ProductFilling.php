@@ -28,12 +28,8 @@ final class ProductFilling extends BaseExtensionModel
     ];
 
 
-    public static function getAvgPercent(int $product_id)
+    public function product()
     {
-
-        $model = static::getModel();
-        return $model->runWithInitTable(function () use ($model, $product_id) {
-            return $model->newQuery()->where('product_id', $product_id)->avg('percent');
-        });
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }
