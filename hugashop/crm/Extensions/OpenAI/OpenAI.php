@@ -124,7 +124,7 @@ final class OpenAI extends BaseExtension
             return ['error' => 'openai_key'];
         }
 
-        $client = OpenAI::client($key);
+        $client = AI::client($key);
 
         $result = $client->chat()->create([
             'model' => 'gpt-4o',
