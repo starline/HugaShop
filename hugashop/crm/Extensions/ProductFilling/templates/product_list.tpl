@@ -187,6 +187,8 @@
                     });
                 }
 
+
+                // translate
                 $("i.translate.edit").on('click', function() {
                     const icon = $(this);
                     const row = icon.closest('.list_row');
@@ -220,6 +222,24 @@
 
                     translateNext(0);
                 });
+
+
+                // filling
+                $("i.filling.edit").on('click', function() {
+                    const id = $(this).closest('.list_row').attr('item_id');
+                    $.ajax({
+                        type: 'POST',
+                        url: '/admin/extension/OpenAI/ajax/filling',
+                        data: {id: id, csrf: csrf},
+                        dataType: 'json',
+                        success: function(res) {
+                            if (res.description) {
+                                alert(res.description);
+                            }
+                        }
+                    });
+                });
+
 
                 // Range slader
                 const range = document.getElementById('range');

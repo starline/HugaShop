@@ -97,4 +97,44 @@ final class OpenAI extends BaseExtension
 
         return $translated;
     }
+
+
+
+    /**
+     * Generate product description using OpenAI
+     */
+    public function filling()
+    {
+        if (!Request::checkCSRF()) {
+            return ['error' => 'csrf'];
+        }
+
+        $id = Request::postInt('id');
+        if (empty($id)) {
+            return ['error' => 'params'];
+        }
+
+        $product = Product::query()->find($id);
+        if (empty($product)) {
+            return ['error' => 'not_found'];
+        }
+
+        $key = $this->getSetting('api_key');
+        if (empty($key)) {
+            return ['error' => 'openai_key'];
+        }
+
+        $client = OpenAI::client($key);
+
+        $result = $client->chat()->create([
+            'model' => 'gpt-4o',
+            'messages' => [
+                ['role' => 'user', 'content' => 'сделай описание для карточки товара'],
+            ],
+        ]);
+
+        return [
+            'description' => trim($result->choices[0]->message->content ?? ''),
+        ];
+    }
 }
