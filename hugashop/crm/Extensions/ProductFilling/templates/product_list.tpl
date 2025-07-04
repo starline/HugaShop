@@ -9,6 +9,12 @@
 {/if}
 
 {block name=content}
+    {foreach $languages as $l}
+        {if $l->main}
+            {assign var=main_language_code value=$l->code}
+        {/if}
+    {/foreach}
+
     <div class="two_columns_list">
         <div class="header_top">
             {if $category->name}
@@ -67,7 +73,7 @@
                 {include file='parts/pagination.tpl'}
                 <div class="list">
                     {foreach $products as $product}
-                        <div class="list_row">
+                        <div class="list_row" item_id="{$product->id}">
                             <div class="image">
                                 <img
                                     src="{if $product->image->filename}{$product->image->filename|resize:60}{else}{'images/cargo.png'|asset}{/if}" />
@@ -108,12 +114,20 @@
                                 </div>
                             </div>
 
+                            {assign var=translate_langs value=''}
+                            {foreach $product->fillings as $lang}
+                                {if $lang->language_code != $main_language_code && $lang->percent < 100}
+                                    {assign var=translate_langs value=$translate_langs|cat:$lang->language_code|cat:','}
+                                {/if}
+                            {/foreach}
+
                             <div class="icons flex-column">
                                 <i class="edit filling material-icons" data-bs-toggle="tooltip" aria-label="Заполнить"
                                     data-bs-original-title="Заполнить">library_books</i>
 
                                 {if $languages|count > 1}
                                     <i class="edit translate material-icons" data-bs-toggle="tooltip" aria-label="Перевести"
+                                        data-langs="{$translate_langs|regex_replace:'/,$/':''}"
                                         data-bs-original-title="Перевести">translate</i>
                                 {/if}
                             </div>
@@ -174,9 +188,37 @@
                 }
 
                 $("i.translate.edit").on('click', function() {
+                    const icon = $(this);
+                    const row = icon.closest('.list_row');
+                    const langs = String(icon.data('langs')).split(',').filter(Boolean);
+                    if (!langs.length) {
+                        return;
+                    }
+                    const productId = row.attr('item_id');
+                    icon.addClass('loading_icon');
 
+                    const translateNext = function(index) {
+                        if (index >= langs.length) {
+                            location.reload();
+                            return;
+                        }
+                        $.ajax({
+                            url: '/admin/extension/OpenAI/ajax/translate',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {
+                                entity: 'product',
+                                id: productId,
+                                lang: langs[index],
+                                csrf: csrf
+                            },
+                            complete: function() {
+                                translateNext(index + 1);
+                            }
+                        });
+                    };
 
-
+                    translateNext(0);
                 });
 
                 // Range slader
