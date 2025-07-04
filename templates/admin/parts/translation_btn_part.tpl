@@ -33,11 +33,11 @@
                         console.warn('entity is not defined');
                         return false;
                     }
-                    
+
                     btn.prop('disabled', true);
 
                     $.ajax({
-                        url: '/admin/ajax/translate',
+                        url: '/admin/extension/OpenAI/ajax/translate',
                         type: 'POST',
                         dataType: 'json',
                         data: {

@@ -11,13 +11,13 @@
 
 namespace HugaShop\Extensions\OpenAI;
 
-use OpenAI;
-use HugaShop\Services\Config;
+use OpenAI as AI;
 use HugaShop\Services\Request;
-use HugaShop\Extensions\BaseExtension;
 use HugaShop\Models\Product\Product;
+use HugaShop\Extensions\BaseExtension;
 use HugaShop\Models\Content\ContentPage;
 use HugaShop\Models\Content\ContentPost;
+use HugaShop\Models\User\UserPermission;
 use HugaShop\Models\Product\ProductBrand;
 use HugaShop\Models\Localization\Language;
 
@@ -52,19 +52,19 @@ final class OpenAI extends BaseExtension
         $model = null;
         switch ($entity) {
             case 'product':
-                $this->checkAdminAccess('product_content');
+                UserPermission::checkAccess('product_content');
                 $model = Product::query()->find($id);
                 break;
             case 'blog':
-                $this->checkAdminAccess('blog');
+                UserPermission::checkAccess('blog');
                 $model = ContentPost::query()->find($id);
                 break;
             case 'page':
-                $this->checkAdminAccess('page');
+                UserPermission::checkAccess('page');
                 $model = ContentPage::query()->find($id);
                 break;
             case 'brand':
-                $this->checkAdminAccess('product_brand');
+                UserPermission::checkAccess('product_brand');
                 $model = ProductBrand::query()->find($id);
                 break;
             default:
@@ -75,12 +75,12 @@ final class OpenAI extends BaseExtension
             return ['error' => 'not_found'];
         }
 
-        $key = $this->getSetting('api_key') ?? Config::get('openai')->key;
+        $key = $this->getSetting('api_key');
         if (empty($key)) {
             return ['error' => 'openai_key'];
         }
 
-        $client = OpenAI::client($key);
+        $client = AI::client($key);
 
         $translated = [];
         foreach ($model::getTranslatableFields() as $field) {
