@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.6
+ * @version 3.7
  *
  */
 
@@ -16,6 +16,7 @@ use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\Finance\FinancePurse;
 use HugaShop\Models\Finance\FinanceCurrency;
+use HugaShop\Models\Localization\Language;
 
 class OrderPayment extends BaseModel
 {
@@ -116,7 +117,27 @@ class OrderPayment extends BaseModel
      */
     public static function getPaymentModules()
     {
-        return Helper::getModules(Config::get('payment_dir'));
+        $modules = Helper::getModules(Config::get('payment_dir'));
+
+        $languages = Language::getLanguages();
+        foreach ($modules as $module) {
+            if (empty($module->settings_params)) {
+                continue;
+            }
+            foreach ($module->settings_params as $param) {
+                if ($param->variable === 'document_language') {
+                    $param->options = [];
+                    foreach ($languages as $lang) {
+                        $param->options[] = (object) [
+                            'name'  => $lang->name,
+                            'value' => $lang->code
+                        ];
+                    }
+                }
+            }
+        }
+
+        return $modules;
     }
 
 

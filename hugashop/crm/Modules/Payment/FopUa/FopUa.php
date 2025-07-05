@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  * Использует библиотку intl (MessageFormatter)
  * Установка на Linus: sudo apt-get install php7.4-intl
@@ -28,6 +28,8 @@ use HugaShop\Models\Finance\FinanceCurrency;
 use HugaShop\Models\Order\OrderPayment;
 use HugaShop\Models\Order\OrderPurchase;
 use HugaShop\Models\Order\OrderDelivery;
+use HugaShop\Models\Localization\Language;
+use HugaShop\Models\Product\Product;
 
 class FopUa
 {
@@ -104,7 +106,18 @@ class FopUa
             // Выбираем товары заказа
             $purchases = [];
             if (!empty($order) and !empty($purchases = OrderPurchase::getPurchases(['order_id' => $order->id], ['image']))) {
+                $doc_lang = $payment_method->settings->document_language ?? Language::getMain()->code;
                 foreach ($purchases as &$purchase) {
+
+                    if (!empty($purchase->product_id) && $doc_lang) {
+                        $translation = Product::getTranslation($purchase->product_id, $doc_lang);
+                        if (!empty($translation->name)) {
+                            $purchase->product_name = $translation->name;
+                        }
+                        if (!empty($translation->variant_name)) {
+                            $purchase->variant_name = $translation->variant_name;
+                        }
+                    }
 
                     // Вычисляем скидку %
                     $purchase->price = $purchase->price - ($purchase->price * ($order->discount / 100));
