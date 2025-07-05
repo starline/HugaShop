@@ -101,7 +101,7 @@
                                             {/if}
                                         </div>
 
-                                        <div class="col-6">
+                                        <div class="col-6 languages" >
                                             {foreach $product->fillings as $lang}
                                                 <div class="mb-2 text-end">
                                                     <span data-lang="{$lang->language_code}"
