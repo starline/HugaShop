@@ -13,7 +13,6 @@ namespace HugaShop\Extensions\ProductFilling\Models;
 use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Product\Product as ProductModel;
 use HugaShop\Extensions\ProductFilling\Models\ProductFilling;
-use Illuminate\Database\Capsule\Manager as DB;
 
 final class Product extends ProductModel
 {
@@ -32,7 +31,7 @@ final class Product extends ProductModel
 
 
     /**
-     * Get Products 
+     * Get Products
      */
     public static function getProducts(array $filter = [], array $join = [], bool $count = false)
     {

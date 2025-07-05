@@ -50,29 +50,29 @@ final class OpenAI extends BaseExtension
             return ['error' => 'is_main_language'];
         }
 
-        $model = null;
+        $product = null;
         switch ($entity) {
             case 'product':
                 UserPermission::checkAccess('product_content');
-                $model = Product::query()->find($id);
+                $product = Product::query()->find($id);
                 break;
             case 'blog':
                 UserPermission::checkAccess('blog');
-                $model = ContentPost::query()->find($id);
+                $product = ContentPost::query()->find($id);
                 break;
             case 'page':
                 UserPermission::checkAccess('page');
-                $model = ContentPage::query()->find($id);
+                $product = ContentPage::query()->find($id);
                 break;
             case 'brand':
                 UserPermission::checkAccess('product_brand');
-                $model = ProductBrand::query()->find($id);
+                $product = ProductBrand::query()->find($id);
                 break;
             default:
                 return ['error' => 'entity'];
         }
 
-        if (empty($model)) {
+        if (empty($product)) {
             return ['error' => 'not_found'];
         }
 
@@ -84,12 +84,12 @@ final class OpenAI extends BaseExtension
         $client = AI::client($key);
 
         $translated = [];
-        foreach ($model::getTranslatableFields() as $field) {
-            if (!empty($model->$field)) {
+        foreach ($product::getTranslatableFields() as $field) {
+            if (!empty($product->$field)) {
                 $result = $client->chat()->create([
                     'model' => 'gpt-4o',
                     'messages' => [
-                        ['role' => 'user', 'content' => 'Переведи на ' . $language->name . ': ' . $model->$field],
+                        ['role' => 'user', 'content' => 'Переведи на ' . $language->name . ': ' . $product->$field],
                     ],
                 ]);
                 $translated[$field] = trim($result->choices[0]->message->content);
@@ -97,7 +97,7 @@ final class OpenAI extends BaseExtension
         }
 
         if ($save && !empty($translated)) {
-            $model::updateTranslation($model->id, $language->code, $translated);
+            $product::updateTranslation($product->id, $language->code, $translated);
         }
 
         return $translated;

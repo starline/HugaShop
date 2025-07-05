@@ -106,6 +106,7 @@ class Product extends BaseModel
             });
     }
 
+    
     /**
      * Amount of future warehouse movements
      */

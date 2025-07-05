@@ -1794,6 +1794,9 @@ a.material-icons {
 	margin-top: 0 !important;
 }
 
+i.material-icons.delete {
+	color: var(--flash-color);
+}
 
 /* enabled and visible*/
 i.material-icons.visibility::before {
@@ -1805,6 +1808,14 @@ i.material-icons.visibility::before {
 .visible_off i.material-icons.visibility::before {
 	color: var(--text-dim-color);
 	content: 'visibility_off';
+}
+
+i.material-icons.library_books::before {
+	content: 'library_books';
+}
+
+i.material-icons.translate::before {
+	content: 'translate';
 }
 
 i.material-icons.library_add::before {
@@ -1830,7 +1841,6 @@ i.material-icons.shopping_cart::before {
 }
 
 .material-icons.launch::before {
-	display: block;
 	content: 'launch';
 }
 

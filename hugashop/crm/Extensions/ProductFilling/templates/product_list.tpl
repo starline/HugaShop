@@ -122,13 +122,13 @@
                             {/foreach}
 
                             <div class="icons flex-column">
-                                <i class="edit filling material-icons" data-bs-toggle="tooltip" aria-label="Заполнить"
-                                    data-bs-original-title="Заполнить">library_books</i>
+                                <i class="edit filling library_books material-icons" data-bs-toggle="tooltip" aria-label="Заполнить"
+                                    data-bs-original-title="Заполнить"></i>
 
                                 {if $languages|count > 1}
                                     <i class="edit translate material-icons" data-bs-toggle="tooltip" aria-label="Перевести"
                                         data-langs="{$translate_langs|regex_replace:'/,$/':''}"
-                                        data-bs-original-title="Перевести">translate</i>
+                                        data-bs-original-title="Перевести"></i>
                                 {/if}
                             </div>
                         </div>
