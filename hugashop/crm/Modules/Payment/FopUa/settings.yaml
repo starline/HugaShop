@@ -9,5 +9,6 @@ settings_params:
   - { variable: recipient_adress, name: "Юр. адреса:" }
   - { variable: pense, name: "Обозначение копеек", default: "коп." }
   - { variable: tax, name: "Налоги ФОП % (платит покупатель)", default: 0 }
+  - { variable: document_language, name: "Язык документов" }
   - { variable: stamp_file, name: "Штамп (.png)", type: file }
   - { variable: sign_file, name: "Подпись (.png)", type: file }
