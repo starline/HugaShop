@@ -36,10 +36,10 @@ class FopUa
 
         if (!empty($order_id)) {
 
-            $order = Order::getOrder((int)$order_id);
-            $payment_method = OrderPayment::getOne($order->payment_method_id);
-            $payment_currency = FinanceCurrency::getCurrency(intval($payment_method->currency_id));
-            $final_price = $order->total_price;
+            $order              = Order::getOrder((int)$order_id);
+            $payment_method     = OrderPayment::getOne($order->payment_method_id);
+            $payment_currency   = FinanceCurrency::getCurrency(intval($payment_method->currency_id));
+            $final_price        = $order->total_price;
 
             // Учитываем стоимость доставки
             if ($order->separate_delivery == 0 and !empty($order->delivery_price)) {
@@ -54,7 +54,7 @@ class FopUa
 
             // Проверим сущестование файла
             if (!empty($view_type)) {
-                $file_path = Config::get('payment_dir') . $payment_method->module . "/" . $payment_method->module . "_" . "$view_type.tpl";
+                $file_path = Config::get('payment_dir') . $payment_method->module . '/templates/' . $payment_method->module . '_' . "$view_type.tpl";
                 if (is_file($file_path)) {
                     return Design::fetch($file_path);
                 }
@@ -97,8 +97,8 @@ class FopUa
                 $order->name = $order->settings->payment_name;
             }
 
-            $payment_method = OrderPayment::getOne($order->payment_method_id);
-            $delivery_method = OrderDelivery::getOne($order->delivery_id);
+            $payment_method     = OrderPayment::getOne($order->payment_method_id);
+            $delivery_method    = OrderDelivery::getOne($order->delivery_id);
 
 
             // Выбираем товары заказа
@@ -181,7 +181,7 @@ class FopUa
             $pdf->SetFontSize(9);
 
 
-            $file_path = Config::get('payment_dir') . $payment_method->module . '/' . $payment_method->module . '_invoice.tpl';
+            $file_path = Config::get('payment_dir') . $payment_method->module . '/templates/' . $payment_method->module . '_invoice.tpl';
             $html =  Design::fetch($file_path);
             $pdf->writeHTML($html, true, false, true, false, '');
 
