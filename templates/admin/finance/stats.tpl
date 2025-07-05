@@ -76,15 +76,11 @@
    <script type="text/javascript" src="{'js/chart/luxon.js'|asset}"></script>
    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
-
    <script type="module">
       import { makeChart } from '{"js/chart.js"|asset}';
 
       let php_currency_name = '{$currency->name}';
       let php_currency_sign = '{$currency->sign}';
-
-      let now = luxon.DateTime.now();
-      var fromDate = now.minus({ months: 2 }).toISODate();
 
       {literal}
          $(function() {
@@ -94,30 +90,33 @@
                   chart: { type: 'bar', height: 350 },
                },
                [{
-                     filter: { filter: 'byDay', fromDate: fromDate, csrf: csrf },
+                     filter: { filter: 'byDay', csrf: csrf },
                      options: {
                         label: 'Сумма заказов, ' + php_currency_sign,
                         color: '#76c100',
                         type: 'totalPrice',
-                        url: '/admin/ajax/stats/order'
+                        url: '/admin/ajax/stats/order',
+                        range: 'quarter'
                      }
                   },
                   {
-                     filter: { filter: 'byDay', fromDate: fromDate, csrf: csrf },
+                     filter: { filter: 'byDay', csrf: csrf },
                      options: {
                         label: 'Сумма прибыли, ' + php_currency_sign,
                         color: '#f8a13f',
                         type: 'profitPrice',
-                        url: '/admin/ajax/stats/order'
+                        url: '/admin/ajax/stats/order',
+                        range: 'quarter'
                      }
                   },
                   {
-                     filter: { filter: 'byDay', fromDate: fromDate, csrf: csrf },
+                     filter: { filter: 'byDay', csrf: csrf },
                      options: {
                         label: 'Колл-во заказов, шт',
                         color: '#000000',
                         type: 'amount',
-                        url: '/admin/ajax/stats/order'
+                        url: '/admin/ajax/stats/order',
+                        range: 'quarter'
                      }
                   }
                ]
@@ -164,11 +163,7 @@
 
             $('select[name="payment_method"]').change(function() {
                let paymentMethod = $('select[name="payment_method"]').val();
-               if (paymentMethod) {
-                  byMonth.load({ paymentMethod: paymentMethod });
-               } else {
-                  byMonth.load();
-               }
+               byMonth.load({ paymentMethod: paymentMethod });
             });
 
             $('#day_chart_month').click(function() {
@@ -183,17 +178,17 @@
             $('#day_chart_reset').click(function() {
                if (byDay.chart) byDay.chart.resetSeries();
             });
-            $('#month_chart_reset').click(function() {
-               if (byMonth.chart) byMonth.chart.resetSeries();
-            });
             $('#month_chart_year').click(function() {
-               byMonth.load({ range: 'year' });
+               let paymentMethod = $('select[name="payment_method"]').val();
+               byMonth.load({ range: 'year', paymentMethod: paymentMethod });
             });
             $('#month_chart_two_years').click(function() {
-               byMonth.load({ range: 'two_years' });
+               let paymentMethod = $('select[name="payment_method"]').val();
+               byMonth.load({ range: 'two_years', paymentMethod: paymentMethod });
             });
             $('#month_chart_all').click(function() {
-               byMonth.load({ range: 'all' });
+               let paymentMethod = $('select[name="payment_method"]').val();
+               byMonth.load({ range: 'all', paymentMethod: paymentMethod });
             });
          });
       {/literal}
