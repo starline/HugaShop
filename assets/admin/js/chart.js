@@ -107,6 +107,9 @@ export function getChartData(apex, filter, options) {
         } else if (options.range === 'year') {
             filter.fromDate = now.minus({ years: 1 }).toISODate();
             filter.toDate = now.plus({ day: 1 }).toISODate();
+        } else if (options.range === 'two_years') {
+            filter.fromDate = now.minus({ years: 2 }).toISODate();
+            filter.toDate = now.plus({ day: 1 }).toISODate();
         } else if (options.range === 'all') {
             delete filter.fromDate;
             delete filter.toDate;

@@ -55,6 +55,7 @@
          <div class="grafic">
             <div class="chart_actions btn_row">
                <a class="btn btn-light" id="month_chart_year">год</a>
+               <a class="btn btn-light" id="month_chart_two_years">2 года</a>
                <a class="btn btn-light" id="month_chart_all">все</a>
                <a class="btn btn-light" id="month_chart_reset">Reset zoom</a>
             </div>
@@ -84,7 +85,6 @@
 
       {literal}
          $(function() {
-
 
             let byDay = makeChart(
                document.getElementById('stats_byDay'), {
@@ -176,6 +176,9 @@
             });
             $('#month_chart_year').click(function() {
                byMonth.load({ range: 'year' });
+            });
+            $('#month_chart_two_years').click(function() {
+               byMonth.load({ range: 'two_years' });
             });
             $('#month_chart_all').click(function() {
                byMonth.load({ range: 'all' });
