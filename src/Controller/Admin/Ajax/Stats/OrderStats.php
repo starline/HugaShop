@@ -4,7 +4,7 @@
  * HugaShop - Selling anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  */
 
@@ -122,7 +122,13 @@ class OrderStats extends BaseAdminController
                     $filters['payment_method_id'] = Request::postInt('paymentMethod');
                 }
 
-                $result = Statistics::ordersSum($request_type, "byMonth", null, null, $filters);
+                $result = Statistics::ordersSum(
+                    $request_type,
+                    "byMonth",
+                    $from_date,
+                    $to_date,
+                    $filters
+                );
             }
         }
 

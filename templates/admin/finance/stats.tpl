@@ -171,16 +171,16 @@
             $('#day_chart_reset').click(function() {
                if (byDay.chart) byDay.chart.resetSeries();
             });
-           $('#month_chart_reset').click(function() {
-              if (byMonth.chart) byMonth.chart.resetSeries();
-           });
-           $('#month_chart_year').click(function() {
-              byMonth.load({ range: 'year' });
-           });
-           $('#month_chart_all').click(function() {
-              byMonth.load({ range: 'all' });
-           });
-        });
+            $('#month_chart_reset').click(function() {
+               if (byMonth.chart) byMonth.chart.resetSeries();
+            });
+            $('#month_chart_year').click(function() {
+               byMonth.load({ range: 'year' });
+            });
+            $('#month_chart_all').click(function() {
+               byMonth.load({ range: 'all' });
+            });
+         });
       {/literal}
    </script>
 {/block}

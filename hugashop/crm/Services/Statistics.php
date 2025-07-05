@@ -4,9 +4,9 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.7
+ * @version 2.8
  *
- * Выбираем статистику
+ * Get statistic data
  *
  */
 
@@ -63,7 +63,12 @@ class Statistics
 
         if (!empty($from_date)) {
             $from_date = Helper::dateConvert($from_date . ' 12:00', 'Y-m-d');
-            $query->where('date', '>', $from_date);
+            $query->where('date', '>=', $from_date);
+        }
+
+        if (!empty($to_date)) {
+            $to_date = Helper::dateConvert($to_date . ' 12:00', 'Y-m-d');
+            $query->where('date', '<=', $to_date);
         }
 
         foreach ($filters as $field => $value) {

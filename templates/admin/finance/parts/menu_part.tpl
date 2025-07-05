@@ -19,15 +19,15 @@
 
 	{if 'stats'|user_access and $route|in_array:[StatsAdmin]}
 		<li class="mini active">
-			<span>Статистика продаж</span>
+			<a href="{'StatsAdmin'|urll}">Статистика продаж</a>
 		</li>
 	{/if}
+
 
 	{if 'finance'|user_access and $route|in_array:[CurrencyAdmin]}
 		<li class="mini active">
-			<span>Валюты</span>
+			<a href="{'CurrencyAdmin'|urll}">Валюты</a>
 		</li>
 	{/if}
-
 
 {/block}
