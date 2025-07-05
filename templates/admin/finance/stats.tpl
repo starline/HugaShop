@@ -54,6 +54,8 @@
 
          <div class="grafic">
             <div class="chart_actions btn_row">
+               <a class="btn btn-light" id="month_chart_year">год</a>
+               <a class="btn btn-light" id="month_chart_all">все</a>
                <a class="btn btn-light" id="month_chart_reset">Reset zoom</a>
             </div>
             <div>
@@ -129,7 +131,8 @@
                         label: 'Сумма заказов, ' + php_currency_sign,
                         color: '#76c100',
                         type: 'totalPrice',
-                        url: '/admin/ajax/stats/order'
+                        url: '/admin/ajax/stats/order',
+                        range: 'year'
                      }
                   },
                   {
@@ -138,7 +141,8 @@
                         label: 'Сумма прибыли, ' + php_currency_sign,
                         color: '#f8a13f',
                         type: 'profitPrice',
-                        url: '/admin/ajax/stats/order'
+                        url: '/admin/ajax/stats/order',
+                        range: 'year'
                      }
                   },
                   {
@@ -147,7 +151,8 @@
                         label: 'Колл-во заказов, шт',
                         color: '#000000',
                         type: 'amount',
-                        url: '/admin/ajax/stats/order'
+                        url: '/admin/ajax/stats/order',
+                        range: 'year'
                      }
                   }
                ]
@@ -166,10 +171,16 @@
             $('#day_chart_reset').click(function() {
                if (byDay.chart) byDay.chart.resetSeries();
             });
-            $('#month_chart_reset').click(function() {
-               if (byMonth.chart) byMonth.chart.resetSeries();
-            });
-         });
+           $('#month_chart_reset').click(function() {
+              if (byMonth.chart) byMonth.chart.resetSeries();
+           });
+           $('#month_chart_year').click(function() {
+              byMonth.load({ range: 'year' });
+           });
+           $('#month_chart_all').click(function() {
+              byMonth.load({ range: 'all' });
+           });
+        });
       {/literal}
    </script>
 {/block}
