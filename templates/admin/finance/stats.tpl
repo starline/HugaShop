@@ -178,6 +178,8 @@
             $('#day_chart_reset').click(function() {
                if (byDay.chart) byDay.chart.resetSeries();
             });
+
+
             $('#month_chart_year').click(function() {
                let paymentMethod = $('select[name="payment_method"]').val();
                byMonth.load({ range: 'year', paymentMethod: paymentMethod });
@@ -189,6 +191,9 @@
             $('#month_chart_all').click(function() {
                let paymentMethod = $('select[name="payment_method"]').val();
                byMonth.load({ range: 'all', paymentMethod: paymentMethod });
+            });
+            $('#month_chart_reset').click(function() {
+               if (byMonth.chart) byMonth.chart.resetSeries();
             });
          });
       {/literal}
