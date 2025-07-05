@@ -51,8 +51,7 @@ final class ProductFilling extends BaseExtension
 
         $products       = Product::getProducts($filter, join: ['image', 'fillings']);
         $products_count = Product::countProducts($filter);
-
-        $categories = ProductCategory::getCategoriesTree();
+        $categories     = ProductCategory::getCategoriesTree();
 
         Design::assign('categories', $categories);
         Design::assign('products', $products);
@@ -66,7 +65,7 @@ final class ProductFilling extends BaseExtension
 
 
     /**
-     * Recalculate products filling
+     * Recalculate products filling. Ajax
      */
     public function calculate()
     {

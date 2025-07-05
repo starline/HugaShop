@@ -104,7 +104,7 @@
                                         <div class="col-6">
                                             {foreach $product->fillings as $lang}
                                                 <div class="mb-2 text-end">
-                                                    <span
+                                                    <span data-lang="{$lang->language_code}"
                                                         class="badge {if $lang->percent<20}text-bg-danger{elseif $lang->percent<80}text-bg-warning{else}text-bg-success{/if} ">{$lang->percent}%
                                                         {$lang->language_code}</span>
                                                 </div>
