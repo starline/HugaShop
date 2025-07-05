@@ -7,7 +7,7 @@ settings_params:
   - { variable: mfo, name: "МФО" }
   - { variable: edrpou, name: "ЄДРПОУ" }
   - { variable: recipient_adress, name: "Юр. адреса:" }
-  - { variable: pense, name: "Обозначение копеек" }
-  - { variable: tax, name: "Налоги ФОП % (платит покупатель)" }
+  - { variable: pense, name: "Обозначение копеек", default: "коп." }
+  - { variable: tax, name: "Налоги ФОП % (платит покупатель)", default: 0 }
   - { variable: stamp_file, name: "Штамп (.png)", type: file }
   - { variable: sign_file, name: "Подпись (.png)", type: file }
