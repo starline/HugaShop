@@ -3,7 +3,7 @@
  * Functions related to rendering ApexCharts graphs
  *
  * @author Andri Huga
- * @version 1.2
+ * @version 1.3
  */
 
 export function makeChart(element, chartOptions = {}, datasets = []) {
@@ -103,6 +103,12 @@ export function getChartData(apex, filter, options) {
 
         if (options.range === 'month') {
             filter.fromDate = now.minus({ months: 1 }).toISODate();
+            filter.toDate = now.plus({ day: 1 }).toISODate();
+        } else if (options.range === 'quarter') {
+            filter.fromDate = now.minus({ months: 3 }).toISODate();
+            filter.toDate = now.plus({ day: 1 }).toISODate();
+        } else if (options.range === 'half_year') {
+            filter.fromDate = now.minus({ months: 6 }).toISODate();
             filter.toDate = now.plus({ day: 1 }).toISODate();
         } else if (options.range === 'year') {
             filter.fromDate = now.minus({ years: 1 }).toISODate();
