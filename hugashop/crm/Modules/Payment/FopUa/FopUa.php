@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  * Использует библиотку intl (MessageFormatter)
  * Установка на Linus: sudo apt-get install php7.4-intl
@@ -181,8 +181,8 @@ class FopUa
             $pdf->SetFontSize(9);
 
 
-            $file_path = Config::get('payment_dir') . $payment_method->module . '/templates/' . $payment_method->module . '_invoice.tpl';
-            $html =  Design::fetch($file_path);
+            $file_path  = Config::get('payment_dir') . $payment_method->module . '/templates/' . $payment_method->module . '_invoice.tpl';
+            $html       = Design::fetch($file_path);
             $pdf->writeHTML($html, true, false, true, false, '');
 
 
