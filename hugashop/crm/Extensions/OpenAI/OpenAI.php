@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
  *
  * OpenAI integration
  */
@@ -35,6 +35,7 @@ final class OpenAI extends BaseExtension
         $entity    = Request::post('entity', 'string');
         $id        = Request::postInt('id');
         $lang_code = Request::post('lang', 'string');
+        $save      = Request::post('save', 'int');
 
         if (empty($entity) || empty($id) || empty($lang_code)) {
             return ['error' => 'params'];
@@ -93,6 +94,10 @@ final class OpenAI extends BaseExtension
                 ]);
                 $translated[$field] = trim($result->choices[0]->message->content);
             }
+        }
+
+        if ($save && !empty($translated)) {
+            $model::updateTranslation($model->id, $language->code, $translated);
         }
 
         return $translated;

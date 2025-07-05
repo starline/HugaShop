@@ -219,6 +219,7 @@
                                 entity: 'product',
                                 id: productId,
                                 lang: lang,
+                                save: 1,
                                 csrf: csrf
                             },
                             success: function() {
