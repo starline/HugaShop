@@ -4,7 +4,7 @@
             <li class="{if !$image->visible}visible_off{/if}">
                 {if $can_edit}
                     <div class="image_icons">
-                        <i class="enable material-icons visibility" title="Показать"></i>
+                        <i class="enable material-icons visibility" data-bs-toggle="tooltip" title="Показать"></i>
                         <i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
                     </div>
                 {/if}

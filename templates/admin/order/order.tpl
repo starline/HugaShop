@@ -25,7 +25,8 @@
 					</div>
 				</span>
 
-				<select class="form-select form-select-lg status" class="status" name="status" {if !$can_edit}disabled{/if}>
+				<select class="form-select form-select-lg status mx-3" class="status" name="status"
+					{if !$can_edit}disabled{/if}>
 					<option value="0" {if $order->status == 0}selected{/if}>Новый</option>
 					<option value="1" {if $order->status == 1}selected{/if}>Принят</option>
 					<option value="4" {if $order->status == 4}selected{/if}>Отгружен</option>
