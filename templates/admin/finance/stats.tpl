@@ -29,6 +29,9 @@
       <div class="col-12">
          <div class="grafic">
             <div class="chart_actions btn_row">
+               <a class="btn btn-light" id="day_chart_month">месяц</a>
+               <a class="btn btn-light" id="day_chart_quarter">квартал</a>
+               <a class="btn btn-light" id="day_chart_half_year">полгода</a>
                <a class="btn btn-light" id="day_chart_reset">Reset zoom</a>
             </div>
             <div>
@@ -168,6 +171,15 @@
                }
             });
 
+            $('#day_chart_month').click(function() {
+               byDay.load({ range: 'month' });
+            });
+            $('#day_chart_quarter').click(function() {
+               byDay.load({ range: 'quarter' });
+            });
+            $('#day_chart_half_year').click(function() {
+               byDay.load({ range: 'half_year' });
+            });
             $('#day_chart_reset').click(function() {
                if (byDay.chart) byDay.chart.resetSeries();
             });
