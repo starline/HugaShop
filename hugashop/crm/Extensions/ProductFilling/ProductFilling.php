@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  * 
  * @author Andri Huga
- * @version 1.4
+ * @version 1.5
  * 
  * Extension calculates content filling percent for products
  */
@@ -89,5 +89,33 @@ final class ProductFilling extends BaseExtension
             'total' => $total,
             'end'   => $processed >= $total,
         ];
+    }
+
+
+    /**
+     * Recalculate filling for one product. Ajax
+     */
+    public function calculateProduct()
+    {
+        if (!Request::checkCSRF()) {
+            return ['error' => 'csrf'];
+        }
+
+        $id = Request::postInt('id');
+        if (empty($id)) {
+            return ['error' => 'id'];
+        }
+
+        Calculate::calculateProduct($id);
+
+        if ($product = Product::getProduct($id, ['fillings'])) {
+            $result = [];
+            foreach ($product->fillings as $fill) {
+                $result[$fill->language_code] = $fill->percent;
+            }
+            return $result;
+        }
+
+        return [];
     }
 }

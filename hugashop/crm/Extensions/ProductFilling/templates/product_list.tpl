@@ -147,6 +147,8 @@
 
         let total = {$products_count};
         let ajax_url = '/admin/extension/{$extension->module}/ajax/calculate';
+        let calculate_product_url = '/admin/extension/{$extension->module}/ajax/calculateProduct';
+        const main_lang = '{$main_language_code}';
 
         {literal}
             $(function() {
@@ -192,7 +194,11 @@
                 $("i.translate.edit").on('click', function() {
                     const icon = $(this);
                     const row = icon.closest('.list_row');
-                    const langs = String(icon.data('langs')).split(',').filter(Boolean);
+                    const langs = row.find('.languages [data-lang]').map(function() {
+                        const lang = $(this).data('lang');
+                        const percent = parseInt($(this).text());
+                        return lang !== main_lang && percent < 100 ? lang : null;
+                    }).get().filter(Boolean);
                     if (!langs.length) {
                         return;
                     }
@@ -201,9 +207,10 @@
 
                     const translateNext = function(index) {
                         if (index >= langs.length) {
-                            location.reload();
+                            icon.removeClass('loading_icon');
                             return;
                         }
+                        const lang = langs[index];
                         $.ajax({
                             url: '/admin/extension/OpenAI/ajax/translate',
                             type: 'POST',
@@ -211,10 +218,36 @@
                             data: {
                                 entity: 'product',
                                 id: productId,
-                                lang: langs[index],
+                                lang: lang,
                                 csrf: csrf
                             },
-                            complete: function() {
+                            success: function() {
+                                $.ajax({
+                                    url: calculate_product_url,
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    data: { id: productId, csrf: csrf },
+                                    success: function(res) {
+                                        if (res && res[lang] !== undefined) {
+                                            const badge = row.find(`[data-lang="${lang}"]`);
+                                            const percent = parseInt(res[lang]);
+                                            badge.text(percent + '% ' + lang);
+                                            badge.removeClass('text-bg-danger text-bg-warning text-bg-success');
+                                            if (percent < 20) {
+                                                badge.addClass('text-bg-danger');
+                                            } else if (percent < 80) {
+                                                badge.addClass('text-bg-warning');
+                                            } else {
+                                                badge.addClass('text-bg-success');
+                                            }
+                                        }
+                                    },
+                                    complete: function() {
+                                        translateNext(index + 1);
+                                    }
+                                });
+                            },
+                            error: function() {
                                 translateNext(index + 1);
                             }
                         });
