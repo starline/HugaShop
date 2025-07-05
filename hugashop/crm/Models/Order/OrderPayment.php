@@ -119,6 +119,7 @@ class OrderPayment extends BaseModel
     {
         $modules = Helper::getModules(Config::get('payment_dir'));
 
+        // add language setting
         $languages = Language::getLanguages();
         foreach ($modules as $module) {
             if (empty($module->settings_params)) {
