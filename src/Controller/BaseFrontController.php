@@ -44,14 +44,15 @@ class BaseFrontController extends BaseController
         }
 
         Design::assign([
-            'config'        => Config::get(), # Configuration
-            'settings'      => Settings::getAllParams(),
-            'user'          => User::authUser(),
-            'currency'      => FinanceCurrency::getMainCurrency(),
-            'currencies'    => FinanceCurrency::getCurrencies(['enabled' => 1]), # All enabled currencies
-            'categories'    => ProductCategory::getCategoriesTree(['visible' => 1]),
-            'cart'          => Cart::getCurrentCart(), # current cart
-            'languages'     => Language::getLanguages()
+            'config'            => Config::get(), # Configuration
+            'settings'          => Settings::getAllParams(),
+            'user'              => User::authUser(),
+            'currency'          => FinanceCurrency::getMainCurrency(),
+            'currencies'        => FinanceCurrency::getCurrencies(['enabled' => 1]), # All enabled currencies
+            'categories'        => ProductCategory::getCategoriesTree(['visible' => 1]),
+            'cart'              => Cart::getCurrentCart(), # current cart
+            'languages'         => Language::getLanguages(),
+            'current_language'  => $locale
         ]);
 
         // Smarty Plugins
