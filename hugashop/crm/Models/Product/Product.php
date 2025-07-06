@@ -284,7 +284,22 @@ class Product extends BaseModel
             $query->with($join);
         }
 
+
         // Sorting
+        if (Arr::has($filter, 'sort_disable')) {
+            $query->orderByRaw(
+                "CASE WHEN {$base_table_prefix}.disable = 1 THEN 2 " .
+                    "WHEN {$base_table_prefix}.stock IS NULL OR {$base_table_prefix}.stock > 0 THEN 0 ELSE 1 END"
+            );
+        }
+
+        if (Arr::has($filter, 'sort_in_stock')) {
+            $query->orderByRaw(
+                "CASE WHEN {$base_table_prefix}.stock IS NULL OR " .
+                    "{$base_table_prefix}.stock > 0 THEN 0 ELSE 1 END"
+            );
+        }
+
         $sort = $filter['sort'] ?? 'position';
         switch ($sort) {
             case 'name':
@@ -296,10 +311,11 @@ class Product extends BaseModel
             case 'price':
                 $query->orderBy('price');
                 break;
-            default:
+            case 'position':
                 $query->orderByDesc('position');
                 break;
         }
+
 
         // Pagination
         if (!empty($filter['limit']) && $filter['limit'] !== 'all') {
