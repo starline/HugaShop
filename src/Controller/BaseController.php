@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
@@ -156,9 +156,19 @@ class BaseController extends AbstractController
      */
     public function generateUrlWithLocale(string $routeName, array $params = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
     {
-        $url = $this->UrlGenerator->generate($routeName, $params, $referenceType);
+        if ($routeName === 'current') {
+            $request = $this->requestStack->getCurrentRequest();
+            $url = $request->getPathInfo();
+            $query = $request->getQueryString();
+            if ($query) {
+                $url .= '?' . $query;
+            }
+        } else {
+            $url = $this->UrlGenerator->generate($routeName, $params, $referenceType);
+        }
 
-        if ($languageCode = Language::checkOrGetCode()) {
+        $languageCode = $params['locale'] ?? Language::checkOrGetCode();
+        if ($languageCode && $languageCode !== Language::getMain()->code) {
             $url = '/' . $languageCode . $url;
         }
 
