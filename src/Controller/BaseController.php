@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  */
 
@@ -15,6 +15,7 @@ use HugaShop\Services\Helper;
 use HugaShop\Services\Design;
 use HugaShop\Services\Request;
 use App\Event\DesignBeforeFetchEvent;
+use HugaShop\Models\Localization\Language;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,7 +41,7 @@ class BaseController extends AbstractController
         // Inject Symfony session
         Request::startSession($this->requestStack->getSession());
 
-        Design::setModifierPlugin('urll', $this->UrlGenerator, 'generate');
+        Design::setModifierPlugin('urll', $this, 'generateUrlWithLocale');
         Design::assign('route', $this->requestStack->getCurrentRequest()->attributes->get('_route'));
     }
 
@@ -147,5 +148,20 @@ class BaseController extends AbstractController
             return;
         }
         return $this->container->get('twig')->getRuntime(ImportMapRuntime::class)->importmap($params['point']);
+    }
+
+
+    /**
+     * Generate URL with locale prefix
+     */
+    public function generateUrlWithLocale(string $routeName, array $params = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
+    {
+        $url = $this->UrlGenerator->generate($routeName, $params, $referenceType);
+
+        if ($languageCode = Language::checkOrGetCode()) {
+            $url = '/' . $languageCode . $url;
+        }
+
+        return $url;
     }
 }
