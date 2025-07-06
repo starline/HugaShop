@@ -80,6 +80,7 @@ class Product extends BaseModel
     {
         return $this->hasOne(Image::class, 'entity_id')
             ->where('entity_name', 'product')
+            ->where('visible', 1)
             ->orderBy('position');
     }
 
@@ -106,7 +107,7 @@ class Product extends BaseModel
             });
     }
 
-    
+
     /**
      * Amount of future warehouse movements
      */
