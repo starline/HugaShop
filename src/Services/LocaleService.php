@@ -29,13 +29,13 @@ class LocaleService
         $segments = array_values(array_filter(explode('/', trim($raw_path, '/'))));
 
         $main    = Language::getMain();                 # Главная локаль (например: 'en')
-        $prefix  = $segments[0] ?? null;                # Первый сегмент пути
+        $locale  = $segments[0] ?? null;                # Первый сегмент пути
 
         // Если путь начинается с валидной локали
-        if ($prefix && Language::isLanguage($prefix)) {
+        if ($locale && Language::isLanguage($locale)) {
 
             // Если это дефолтная локаль — редиректим на путь без неё
-            if ($prefix === $main->code) {
+            if ($locale === $main->code) {
                 array_shift($segments); # удаляем локаль
                 $redirect = '/' . implode('/', $segments);
                 $redirect = $redirect === '' ? '/' : '/' . rtrim($redirect, '/');
@@ -45,7 +45,7 @@ class LocaleService
             }
 
             // Устанавливаем текущую локаль
-            Language::getCurrent($prefix);
+            Language::setCurrent($locale);
 
             // Убираем локаль из пути
             array_shift($segments);
@@ -58,13 +58,16 @@ class LocaleService
 
             return;
         }
+
+        // Устанавливаем основной язык
+        Language::setCurrent();
     }
 
 
     /**
      * Return detected locale code
      */
-    public static function detect(): string
+    public static function detectCode(): string
     {
         return Language::checkOrGetCode() ?: Language::getMain()->code;
     }

@@ -8,8 +8,14 @@
 
 	<link rel="shortcut icon" type="image/x-icon" href="{'images/favicon.ico'|asset}">
 
+	<meta name="language" content="{$current_language->code}">
+
+	{foreach from=$languages item=lang}
+		<link rel="alternate" hreflang="{$lang->code}" href="{'current'|urll:['locale' => $lang->code]}" />
+	{/foreach}
+
 	{if !$canonical|empty}
-		<link rel="canonical" href="{$config->root_url}{$canonical}">
+		<link rel="canonical" href="{$config->root_url}{$canonical}" />
 	{/if}
 
 	{if !$noindex|empty}

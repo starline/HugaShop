@@ -17,7 +17,6 @@ use HugaShop\Services\Helper;
 use HugaShop\Models\Cart\Cart;
 use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
-use App\Services\LocaleService;
 use HugaShop\Models\Product\Product;
 use HugaShop\Models\Finance\FinanceCurrency;
 use HugaShop\Models\Localization\Language;
@@ -34,8 +33,8 @@ class BaseFrontController extends BaseController
         // Setup
         Design::initSettings(['theme' => Settings::getParam('theme'), 'packages' => $this->Packages]);
 
-        $locale = LocaleService::detect();
-        $this->setTranslator($locale, Settings::getParam('theme'));
+        $locale = Language::getCurrent();
+        $this->setTranslator($locale->code, Settings::getParam('theme'));
 
         Cart::catchCartSession();
 

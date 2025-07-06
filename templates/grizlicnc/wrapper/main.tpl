@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="{$current_language->code}">
 {include file='parts/head.tpl'}
 
 <body>

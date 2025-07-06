@@ -81,29 +81,24 @@ class Extension
 
         // Get Places Extensions
         // Example: array('front_head' => ['ExtensionFirst', 'ExtensionSecond'], 'front_body' => ['ExtensionThird'])
-        // Cache
-        $cache_item = Helper::cache()->getItem(Helper::class_basename(self::class));
-        if (!$cache_item->isHit()) {
 
-            $places = [];
 
-            $ext_list = self::getExtensionsList();
-            foreach ($ext_list as $ext) {
-                if (!empty($Ext = self::makeExtension($ext->module))) {
-                    foreach (self::$places as $place_name) {
-                        if (method_exists($Ext, 'get' . ucfirst(Helper::snakeToCamelCase($place_name)) . 'Template')) { # Example: getFrontHeadTemplate
-                            if (!empty($Ext->settings->enabled)) {
-                                $places[$place_name][]  = $ext->module;
-                            }
+        $places = [];
+
+        $ext_list = self::getExtensionsList();
+        foreach ($ext_list as $ext) {
+            if (!empty($Ext = self::makeExtension($ext->module))) {
+                foreach (self::$places as $place_name) {
+                    if (method_exists($Ext, 'get' . ucfirst(Helper::snakeToCamelCase($place_name)) . 'Template')) { # Example: getFrontHeadTemplate
+                        if (!empty($Ext->settings->enabled)) {
+                            $places[$place_name][]  = $ext->module;
                         }
                     }
                 }
             }
-
-            Helper::cache()->save($cache_item->set($places));
         }
 
-        $places = $cache_item->get();
+
 
         if (!empty($places[$place])) {
             return $places[$place];

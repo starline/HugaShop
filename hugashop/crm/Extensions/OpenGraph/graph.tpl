@@ -1,6 +1,7 @@
-{*<meta property="og:locale" content="ua_UA">*}
 
 <!-- Open Graph -->
+<meta property="og:locale" content="{$current_language->code}_{$current_language->country_code}">
+
 {if $route == 'Main'}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="{$settings->company_name} {$settings->company_description}" />

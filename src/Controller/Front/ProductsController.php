@@ -119,9 +119,9 @@ class ProductsController extends BaseFrontController
             }
         }
 
-        //  Выбираем товары
+        // Выбираем товары
         $products        = Product::getProducts($filter, ['image']);
-        $products_count  = Product::countProducts($filter); # Вычисляем количество страниц
+        $products_count  = Product::countProducts($filter);
 
 
         // Закрываем пагинатор от индексации
@@ -135,22 +135,21 @@ class ProductsController extends BaseFrontController
 
         // Если description пустой, берем title + product_meta_description
         if (empty($category->meta_description)) {
-            $category->meta_description =  $category->meta_title . ' ' . Settings::getParam('product_meta_description');
+            $category->meta_description = $category->meta_title . ' ' . Settings::getParam('product_meta_description');
         }
 
 
-        Design::assign('meta_title', $category->meta_title);
-        Design::assign('meta_description', $category->meta_description);
+        Design::assign('meta_title',        $category->meta_title);
+        Design::assign('meta_description',  $category->meta_description);
 
+        Design::assign('products',          $products);
+        Design::assign('products_count',    $products_count);
 
-        Design::assign('products', $products);
-        Design::assign('products_count', $products_count);
-
-        Design::assign('noindex', $noindex);
-        Design::assign('pagination', PaginationService::getPagination($products_count, $filter));
-        Design::assign('sort', $filter['sort']);
-        Design::assign('category', $category);
-        Design::assign('features', $features);
+        Design::assign('noindex',           $noindex);
+        Design::assign('pagination',        PaginationService::getPagination($products_count, $filter));
+        Design::assign('sort',              $filter['sort']);
+        Design::assign('category',          $category);
+        Design::assign('features',          $features);
 
         return $this->fetchResponse('products.tpl');
     }

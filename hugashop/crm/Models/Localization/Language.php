@@ -5,7 +5,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.0
+ * @version 2.1
  *
  */
 
@@ -73,17 +73,25 @@ class Language extends BaseModel
 
 
     /**
-     * Get currentt language
+     * Get current language
      */
-    public static function getCurrent(?string $code = null)
+    public static function getCurrent()
+    {
+        return self::$current_language ?: self::getMain();
+    }
+
+
+    /**
+     * set Current language
+     */
+    public static function setCurrent(?string $code = null)
     {
         if (is_null($code)) {
-            return self::getMain();
+            self::$current_language = self::getMain();
         }
-        if (empty(self::$current_language)) {
+        if (!empty($code)) {
             self::$current_language = self::getLanguages()->firstWhere('code', $code);
         }
-
         return self::$current_language;
     }
 

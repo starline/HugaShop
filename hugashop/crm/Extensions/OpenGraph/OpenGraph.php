@@ -23,6 +23,7 @@ use HugaShop\Extensions\BaseExtension;
 
 final class OpenGraph extends BaseExtension
 {
+
     /**
      * Get block template
      */

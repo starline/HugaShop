@@ -26,7 +26,7 @@ class LanguageService
     {
         $languages          = Language::getLanguages();
         $main_language      = Language::getMain();
-        $current_language   = Language::getCurrent(Request::get('lang', 'string'));
+        $current_language   = Language::setCurrent(Request::get('lang', 'string'));
 
         Design::assign('languages', $languages);
         Design::assign('main_language',  $main_language);
