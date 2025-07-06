@@ -131,7 +131,7 @@ class ProductController extends BaseAdminController
         #########
         if (!empty($id)) {
 
-            $product = Product::getProduct(intval($id), join: [
+            $product = Product::getOneEditTranslate($id, join: [
                 'images',
                 'options'
             ]);

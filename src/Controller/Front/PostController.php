@@ -47,20 +47,15 @@ class PostController extends BaseFrontController
 
 
     #[Route('/blog/{url}', name: 'Post')]
-    public function blogPost(string $url): Response
+    public function post(string $url): Response
     {
 
-        $post = ContentPost::getPost($url);
+        $post = ContentPost::getOneTranslate(['url' => $url], join: ['image']);
 
         // Check if availiable
         if (empty($post) || (empty($post->visible) && empty(UserPermission::checkAccess('blog')))) {
             throw $this->createNotFoundException('Post does not found'); # 404
         }
-
-        // Images
-        $images = Image::getImages($post->id, 'post');
-        $post->images = $images;
-        $post->image = reset($images);
 
         // Comments
         ContentComment::handleComments($post->id, ContentPost::class);

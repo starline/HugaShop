@@ -4,12 +4,13 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.6
+ * @version 1.7
  *
  */
 
 namespace HugaShop\Models\Traits;
 
+use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Localization\AbstractTranslation;
 
 trait TranslationTrait
@@ -53,11 +54,17 @@ trait TranslationTrait
     /**
      * Fill entity with translated fields for provided language
      */
-    public static function fillTranslation(object $entity, string $code): object
+    public static function fillTranslation(object $entity, string $code, bool $merge_fields = false): object
     {
         $translation = static::getTranslation($entity->id, $code);
         foreach (static::getTranslatableFields() as $field) {
-            $entity->$field = $translation->$field ?? null;
+            if ($merge_fields === true) {
+                if (!empty($translation->$field)) {
+                    $entity->$field = $translation->$field;
+                }
+            } else {
+                $entity->$field = $translation->$field ?? null;
+            }
         }
         return $entity;
     }
@@ -92,5 +99,33 @@ trait TranslationTrait
                 $data
             );
         });
+    }
+
+
+    /**
+     * Get Entity with all traslated fields 
+     */
+    public static function getOneEditTranslate(int|array $id, array|string $join = [])
+    {
+        $result = self::getOne($id, $join);
+
+        if ($language_code = Language::checkOrGetCode() and static::isTranslatable()) {
+            $result = static::fillTranslation($result, $language_code, merge_fields: false);
+        }
+        return $result;
+    }
+
+
+    /**
+     * Get Entity with only traslated fields 
+     */
+    public static function getOneTranslate(int|array $id, array|string $join = [])
+    {
+        $result = self::getOne($id, $join);
+
+        if ($language_code = Language::checkOrGetCode() and static::isTranslatable()) {
+            $result = static::fillTranslation($result, $language_code, merge_fields: true);
+        }
+        return $result;
     }
 }

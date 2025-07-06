@@ -344,7 +344,7 @@ class Product extends BaseModel
     /**
      * Функция возвращает товар
      * @param int|string $id - id или name
-     * @param array $join 'variant'|'related'|'relared.image'|'image'|'images'
+     * @param array $join [ 'variant', 'related', 'relared.image', 'image', 'images' ]
      * @return object
      */
     public static function getProduct(int|string $id, array $join = [])

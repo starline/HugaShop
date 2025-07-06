@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
@@ -64,15 +64,13 @@ class BrandController extends BaseAdminController
         #### View
         #########
         if (!empty($id)) {
-            $brand = ProductBrand::getBrand($id);
-
+            $brand = ProductBrand::getOneEditTranslate($id);
             if (empty($brand->id)) {
                 return $this->redirectToRoute('BrandListAdmin');
             }
         }
 
         Design::assign('brand', $brand);
-
         return $this->fetchResponse('product/brand.tpl');
     }
 }

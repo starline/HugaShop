@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.5
+ * @version 2.6
  *
  */
 
@@ -57,8 +57,7 @@ class PostController extends BaseAdminController
         #########
         if (!empty($id)) {
 
-            $post = ContentPost::getPost(intval($id), join: ['images']);
-
+            $post = ContentPost::getOneEditTranslate($id, join: ['images']);
             if (empty($post->id)) {
                 return $this->redirectToRoute('PostListAdmin');
             }

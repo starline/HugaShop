@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.4
+ * @version 2.5
  *
  */
 
@@ -34,15 +34,11 @@ class PageController extends BaseAdminController
         ###########
         if (!empty($page = Request::getDataAcces(ContentPage::getFields()))) {
 
-            // Не допустить одинаковые URL разделов.
-            if (($p = ContentPage::getPage($page->url)) && $p->id != $page->id) {
-                Design::setFlashMessage('error', 'url_exists');
+
+            if (empty($page->id)) {
+                $page = Design::setFlashMessage('add', ContentPage::addPage($page));
             } else {
-                if (empty($page->id)) {
-                    $page = Design::setFlashMessage('add', ContentPage::addPage($page));
-                } else {
-                    Design::setFlashMessage('update', ContentPage::updatePage($page->id, $page));
-                }
+                Design::setFlashMessage('update', ContentPage::updatePage($page->id, $page));
             }
 
             return $this->redirectToRouteLang('PageAdmin', ['id' => $page->id]);
@@ -52,14 +48,14 @@ class PageController extends BaseAdminController
         #### View
         #########
         if (!empty($id)) {
-            $page = ContentPage::getPage($id);
+            $page = ContentPage::getOneEditTranslate($id);
             if (empty($page->id)) {
                 return $this->redirectToRoute('PostListAdmin');
             }
         }
 
-        Design::assign('page', $page);
 
+        Design::assign('page', $page);
         return $this->fetchResponse('content/page.tpl');
     }
 }

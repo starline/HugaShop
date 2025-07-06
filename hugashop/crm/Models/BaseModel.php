@@ -262,10 +262,6 @@ abstract class BaseModel extends Model
         // Settings
         if ($result) {
             $result->settings = empty($result->settings) ? new \stdClass() : (object) unserialize($result->settings);
-
-            if ($language_code = Language::checkOrGetCode() and static::isTranslatable()) {
-                $result = static::fillTranslation($result, $language_code);
-            }
         }
 
         return $result;

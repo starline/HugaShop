@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.7
+ * @version 2.8
  *
  * Этот класс использует шаблон page.tpl
  *
@@ -25,7 +25,7 @@ class PageController extends BaseFrontController
     public function page(string $url): Response
     {
 
-        $page = ContentPage::getPage($url);
+        $page = ContentPage::getOneTranslate(['url' => $url]);
 
         if (empty($page) || (!UserPermission::checkAccess('page') and !$page->visible)) {
             throw $this->createNotFoundException('Page does not found'); # 404

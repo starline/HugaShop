@@ -45,7 +45,7 @@ class ProductController extends BaseFrontController
     {
 
         // Выбираем товар из базы
-        $product = Product::getProduct(id: $url, join: [
+        $product = Product::getOneTranslate(['url' => $url], join: [
             'image',
             'images',
             'brand',
