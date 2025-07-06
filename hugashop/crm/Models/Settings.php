@@ -13,6 +13,7 @@
 
 namespace HugaShop\Models;
 
+use HugaShop\Services\Cache;
 use HugaShop\Services\Helper;
 
 class Settings extends BaseModel
@@ -37,7 +38,7 @@ class Settings extends BaseModel
         if (empty(self::$vars)) {
 
             // The callable will only be executed on a cache miss.
-            $settings = Helper::cache()->get(Helper::class_basename(static::class), function (): array {
+            $settings = Cache::cache(self::class)->get('settings', function (): array {
 
                 // Select settings from DB
                 $settings_vars = [];
@@ -94,8 +95,7 @@ class Settings extends BaseModel
     {
         self::getInstance();
 
-        // Cache clean
-        Helper::cache()->delete(Helper::class_basename(static::class));
+        Cache::cache(self::class)->clear(); # Cache clean
 
         self::$vars[$name] = $value;
 

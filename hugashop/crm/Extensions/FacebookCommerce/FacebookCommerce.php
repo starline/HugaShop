@@ -10,6 +10,7 @@
 
 namespace HugaShop\Extensions\FacebookCommerce;
 
+use HugaShop\Services\Cache;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
@@ -18,8 +19,8 @@ use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
-use HugaShop\Extensions\FacebookCommerce\Models\FeedGenerator;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use HugaShop\Extensions\FacebookCommerce\Models\FeedGenerator;
 use HugaShop\Extensions\FacebookCommerce\Models\FacebookCommerceCategory;
 use HugaShop\Extensions\FacebookCommerce\Models\FacebookCommerce as FacebookCommerceModel;
 
@@ -50,7 +51,7 @@ final class FacebookCommerce extends BaseExtension
                 FacebookCommerceModel::updateOne($id, ['position' => $position]);
             }
 
-            Helper::cache(FeedGenerator::class)->clear();
+            Cache::cache(FeedGenerator::class)->clear();
         }
 
         $pricefeeds = FacebookCommerceModel::getList(order: 'position');
@@ -79,7 +80,7 @@ final class FacebookCommerce extends BaseExtension
                 Design::setFlashMessage('update', FacebookCommerceModel::updateOne($pricefeed->id, $pricefeed) >= 0);
 
                 // Cache clean
-                Helper::cache(FeedGenerator::class)->delete('item_' . $pricefeed->id);
+                Cache::cache(FeedGenerator::class)->delete('item_' . $pricefeed->id);
             }
 
             $pricefeed_categories = Request::post('pricefeed_categories', 'array');

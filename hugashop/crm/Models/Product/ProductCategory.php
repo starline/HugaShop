@@ -11,8 +11,9 @@
 namespace HugaShop\Models\Product;
 
 use HugaShop\Models\Image;
-use HugaShop\Services\Helper;
 use HugaShop\Models\SeoFaqs;
+use HugaShop\Services\Cache;
+use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\SeoKeywords;
 use HugaShop\Models\Product\Product;
@@ -51,7 +52,7 @@ class ProductCategory extends BaseModel
      */
     private static function initCategories()
     {
-        $cache_item = Helper::cache()->getItem(Helper::class_basename(self::class));
+        $cache_item = Cache::cache()->getItem(class_basename(self::class));
 
         if (!$cache_item->isHit()) {
 
@@ -124,7 +125,7 @@ class ProductCategory extends BaseModel
             $result_cache['categories_tree'] = $tree->subcategories;
             $result_cache['all_categories'] = $pointers;
 
-            Helper::cache()->save($cache_item->set($result_cache));
+            Cache::cache()->save($cache_item->set($result_cache));
         }
 
         $categories_cache = $cache_item->get();
@@ -294,7 +295,7 @@ class ProductCategory extends BaseModel
         $category = self::createOne($category);
 
 
-        Helper::cache()->delete(Helper::class_basename(self::class)); # Cache clean
+        Cache::cache()->delete(class_basename(self::class)); # Cache clean
         self::initCategories();
         return $category;
     }
@@ -310,7 +311,7 @@ class ProductCategory extends BaseModel
         $category = Helper::makeUniqSlug(self::class, $category);
         $result = self::updateOne($id, $category);
 
-        Helper::cache()->delete(Helper::class_basename(self::class)); # Cache clean
+        Cache::cache()->delete(class_basename(self::class)); # Cache clean
         self::initCategories();
         return $result;
     }
@@ -356,7 +357,7 @@ class ProductCategory extends BaseModel
             }
         }
 
-        Helper::cache()->delete(Helper::class_basename(self::class)); # Cache clean
+        Cache::cache()->delete(class_basename(self::class)); # Cache clean
         self::initCategories();
         return true;
     }

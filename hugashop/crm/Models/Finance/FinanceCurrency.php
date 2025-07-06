@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.4
+ * @version 3.5
  * 
  * Use Cache
  *
@@ -12,10 +12,11 @@
 
 namespace HugaShop\Models\Finance;
 
-use HugaShop\Services\Helper;
-use HugaShop\Services\Request;
+use HugaShop\Services\Cache;
 use HugaShop\Models\Settings;
+use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
+use HugaShop\Services\Request;
 
 class FinanceCurrency extends BaseModel
 {
@@ -43,7 +44,7 @@ class FinanceCurrency extends BaseModel
     {
 
         // Cache
-        $cache_item = Helper::cache()->getItem(Helper::class_basename(self::class));
+        $cache_item = Cache::getCacheItem(self::class);
 
         if (!$cache_item->isHit()) {
 
@@ -55,7 +56,7 @@ class FinanceCurrency extends BaseModel
                 $currencies[$c->id] = $c;
             }
 
-            Helper::cache()->save($cache_item->set($currencies));
+            Cache::saveCacheItem($cache_item->set($currencies));
         }
 
         self::$currencies = $cache_item->get();
@@ -132,9 +133,7 @@ class FinanceCurrency extends BaseModel
      */
     public static function addCurrency($currency)
     {
-
-        Helper::cache()->delete(Helper::class_basename(self::class)); # Cache clean
-
+        Cache::deleteCacheItem(self::class); # Cache clean
         $currency = self::createOne($currency);
         self::initCurrencies();
         return $currency->id;
@@ -147,7 +146,7 @@ class FinanceCurrency extends BaseModel
      */
     public static function updateCurrency(int|array $id, $currency)
     {
-        Helper::cache()->delete(Helper::class_basename(self::class)); # Cache clean
+        Cache::deleteCacheItem(self::class); # Cache clean
         $result = self::updateOne($id, $currency);
         self::initCurrencies();
         return $result;
@@ -160,7 +159,7 @@ class FinanceCurrency extends BaseModel
      */
     public static function deleteCurrency(int $id)
     {
-        Helper::cache()->delete(Helper::class_basename(self::class)); # Cache clean
+        Cache::deleteCacheItem(self::class); # Cache clean
         $result = self::deleteOne($id);
         self::initCurrencies();
         return $result;

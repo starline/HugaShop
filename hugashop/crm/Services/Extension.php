@@ -10,6 +10,7 @@
 
 namespace HugaShop\Services;
 
+use HugaShop\Services\Cache;
 use HugaShop\Models\Settings;
 use HugaShop\Services\Config;
 use HugaShop\Services\Helper;
@@ -34,7 +35,7 @@ class Extension
     public static function updateExt(string $name, array $settings = [])
     {
         // Cache clean
-        Helper::cache()->delete($name); # clean cache
+        Cache::cache()->delete($name); # clean cache
         $settings = empty($settings) ? [] : $settings;
         return Settings::set($name, $settings);
     }
@@ -84,7 +85,7 @@ class Extension
             return self::$place_cache[$place];
         }
 
-        $cache_item = Helper::cache(self::class)->getItem('place_' . $place);
+        $cache_item = Cache::cache(self::class)->getItem('place_' . $place);
         if (!$cache_item->isHit()) {
             $places = [];
             $ext_list = self::getExtensionsList();
@@ -101,7 +102,7 @@ class Extension
             }
 
             $cache_value = $places[$place] ?? [];
-            Helper::cache(self::class)->save($cache_item->set($cache_value));
+            Cache::cache(self::class)->save($cache_item->set($cache_value));
         } else {
             $cache_value = $cache_item->get();
         }

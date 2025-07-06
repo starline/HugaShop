@@ -19,7 +19,7 @@ abstract class BaseExtensionModel extends BaseModel
     {
 
         // Auto DB table naming
-        $this->table ?? $this->table = 'ext_' . Helper::camelToSnakeCase(Helper::class_basename(static::class));
+        $this->table ?? $this->table = 'ext_' . Helper::camelToSnakeCase(class_basename(static::class));
 
         parent::__construct($attributes);
     }

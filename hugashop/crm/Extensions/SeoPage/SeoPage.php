@@ -10,13 +10,14 @@
 
 namespace HugaShop\Extensions\SeoPage;
 
+use HugaShop\Services\Cache;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use App\Event\DesignBeforeFetchEvent;
 use HugaShop\Extensions\BaseExtension;
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use HugaShop\Extensions\SeoPage\Models\SeoPage as SeoPageModel;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 final class SeoPage extends BaseExtension
 {
@@ -55,7 +56,7 @@ final class SeoPage extends BaseExtension
                 SeoPageModel::updateOne($id, ['position' => $position]);
             }
 
-            Helper::cache(self::class)->clear(); # Cache clean
+            Cache::cache(self::class)->clear(); # Cache clean
         }
 
         $pages = SeoPageModel::getList([], order: 'position');
@@ -84,7 +85,7 @@ final class SeoPage extends BaseExtension
                     $page = Design::setFlashMessage('add', SeoPageModel::createOne($page));
                 } else {
                     Design::setFlashMessage('update', SeoPageModel::updateOne($page->id, $page));
-                    Helper::cache(self::class)->clear(); # Cache clean
+                    Cache::cache(self::class)->clear(); # Cache clean
                 }
             }
 
@@ -122,7 +123,7 @@ final class SeoPage extends BaseExtension
         // Example: /info/pravila+кирилица
         $page_uri = urldecode($_SERVER['REQUEST_URI']);
 
-        $cache_item = Helper::cache(self::class)->getItem('item_' . Helper::makeToken($page_uri));
+        $cache_item = Cache::cache(self::class)->getItem('item_' . Helper::makeToken($page_uri));
         if (!$cache_item->isHit()) {
 
             // SEO page
@@ -131,7 +132,7 @@ final class SeoPage extends BaseExtension
                 return;
             }
 
-            Helper::cache(self::class)->save($cache_item->set($seo));
+            Cache::cache(self::class)->save($cache_item->set($seo));
         }
 
         $seo = $cache_item->get();

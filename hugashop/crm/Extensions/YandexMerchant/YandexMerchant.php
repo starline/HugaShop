@@ -10,15 +10,16 @@
 
 namespace HugaShop\Extensions\YandexMerchant;
 
+use HugaShop\Services\Cache;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
-use HugaShop\Models\Product\ProductCategory;
 use HugaShop\Extensions\BaseExtension;
+use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\HttpFoundation\Response;
-use HugaShop\Extensions\YandexMerchant\Models\YandexMerchant as YandexMerchantModel;
-use HugaShop\Extensions\YandexMerchant\Models\YandexMerchantCategory;
 use HugaShop\Extensions\YandexMerchant\Models\FeedGenerator;
+use HugaShop\Extensions\YandexMerchant\Models\YandexMerchantCategory;
+use HugaShop\Extensions\YandexMerchant\Models\YandexMerchant as YandexMerchantModel;
 
 final class YandexMerchant extends BaseExtension
 {
@@ -49,7 +50,7 @@ final class YandexMerchant extends BaseExtension
                 YandexMerchantModel::updateOne($id, ['position' => $position]);
             }
 
-            Helper::cache(FeedGenerator::class)->clear();
+            Cache::cache(FeedGenerator::class)->clear();
         }
 
         $pricefeeds = YandexMerchantModel::getList([], 'position');
@@ -78,7 +79,7 @@ final class YandexMerchant extends BaseExtension
                 Design::setFlashMessage('update', YandexMerchantModel::updateOne($pricefeed->id, $pricefeed) >= 0);
 
                 // Cache clean
-                Helper::cache(FeedGenerator::class)->delete('item_' . $pricefeed->id);
+                Cache::cache(FeedGenerator::class)->delete('item_' . $pricefeed->id);
             }
 
             $category_ids = Request::post('pricefeed_categories', 'array');

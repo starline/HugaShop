@@ -10,11 +10,12 @@
 
 namespace App\Controller\Admin\Content;
 
+use HugaShop\Services\Cache;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
-use HugaShop\Models\Content\ContentPage;
 use App\Controller\BaseAdminController;
+use HugaShop\Models\Content\ContentPage;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -55,7 +56,7 @@ class PageListController extends BaseAdminController
                 ContentPage::updatePage($id, ['position' => $position]);
             }
 
-            Helper::cache(ContentPage::class)->clear(); # Cache clean
+            Cache::cache(ContentPage::class)->clear(); # Cache clean
         }
 
         // Отображение

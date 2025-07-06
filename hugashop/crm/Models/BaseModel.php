@@ -38,7 +38,7 @@ abstract class BaseModel extends Model
         self::autoBootDB();
 
         // Auto DB table naming
-        $this->table ?? $this->table = Str::snake(Helper::class_basename(static::class));
+        $this->table ?? $this->table = Str::snake(class_basename(static::class));
 
         parent::__construct($attributes);
     }

@@ -10,12 +10,13 @@
 
 namespace HugaShop\Extensions\RedirectUrl;
 
+use HugaShop\Services\Cache;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
-use Symfony\Component\HttpKernel\Event\RequestEvent;
 use HugaShop\Extensions\BaseExtension;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use HugaShop\Extensions\RedirectUrl\Models\RedirectUrl as RedirectUrlModel;
 
 final class RedirectUrl extends BaseExtension
@@ -44,7 +45,7 @@ final class RedirectUrl extends BaseExtension
                 }
             }
 
-            Helper::cache(self::class)->clear(); # Cache clean
+            Cache::cache(self::class)->clear(); # Cache clean
         }
 
         $links = RedirectUrlModel::getList();
@@ -69,7 +70,7 @@ final class RedirectUrl extends BaseExtension
                 Design::setFlashMessage('update', RedirectUrlModel::updateOne($link->id, $link));
             }
 
-            Helper::cache(self::class)->clear(); # Cache clean
+            Cache::cache(self::class)->clear(); # Cache clean
             Request::makeRedirect("/admin/extension/RedirectUrl/link/$link->id");
         }
 
@@ -105,7 +106,7 @@ final class RedirectUrl extends BaseExtension
             return;
         }
 
-        $cache = Helper::cache(self::class);
+        $cache = Cache::cache(self::class);
         $cache_item = $cache->getItem('redirect_list');
         if (!$cache_item->isHit()) {
             $cache_item->set(RedirectUrlModel::getList(['enabled' => 1]));
