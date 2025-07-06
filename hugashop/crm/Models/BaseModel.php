@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.0
+ * @version 2.1
  *
  */
 
@@ -12,7 +12,6 @@ namespace HugaShop\Models;
 
 use HugaShop\Services\Config;
 use Illuminate\Support\Str;
-use HugaShop\Services\Helper;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Model;
