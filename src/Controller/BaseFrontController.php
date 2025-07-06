@@ -33,6 +33,7 @@ class BaseFrontController extends BaseController
         // Setup
         Design::initSettings(['theme' => Settings::getParam('theme'), 'packages' => $this->Packages]);
 
+        // Locale
         $locale = Language::getCurrent();
         $this->setTranslator($locale->code, Settings::getParam('theme'));
 
