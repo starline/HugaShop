@@ -5,13 +5,14 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.8
+ * @version 1.9
  *
  */
 
 namespace HugaShop\Models\Localization;
 
 use HugaShop\Models\BaseModel;
+use HugaShop\Services\Helper;
 
 class Language extends BaseModel
 {
@@ -27,15 +28,32 @@ class Language extends BaseModel
     public static $main_language;
     public static $current_language;
 
+    /**
+     * Init languages from cache
+     */
+    private static function initLanguages()
+    {
+        $cache_item = Helper::cache()->getItem(Helper::class_basename(self::class));
+
+        if (!$cache_item->isHit()) {
+            $languages = self::query()->orderBy('id')->get();
+            Helper::cache()->save($cache_item->set($languages));
+        }
+
+        self::$languages = $cache_item->get();
+        self::$main_language = self::$languages->firstWhere('main', 1);
+    }
+
 
     /**
-     * Get All lenguages. Use cache 
+     * Get All lenguages. Use cache
      */
     public static function getLanguages()
     {
         if (empty(self::$languages)) {
-            self::$languages = self::query()->orderBy('id')->get();
+            self::initLanguages();
         }
+
         return self::$languages;
     }
 
@@ -46,8 +64,9 @@ class Language extends BaseModel
     public static function getMain()
     {
         if (empty(self::$main_language)) {
-            self::$main_language = self::getLanguages()->firstWhere('main', 1);
+            self::initLanguages();
         }
+
         return self::$main_language;
     }
 
@@ -63,6 +82,7 @@ class Language extends BaseModel
         if (empty(self::$current_language)) {
             self::$current_language = self::getLanguages()->firstWhere('code', $code);
         }
+
         return self::$current_language;
     }
 
@@ -88,7 +108,12 @@ class Language extends BaseModel
             return false;
         }
 
-        return self::deleteOne($language_id);
+        $result = self::deleteOne($language_id);
+
+        Helper::cache()->delete(Helper::class_basename(self::class)); # Cache clean
+        self::initLanguages();
+
+        return $result;
     }
 
 
@@ -105,7 +130,12 @@ class Language extends BaseModel
             self::query()->where('main', 1)->update(['main' => 0]);
         }
 
-        return parent::createOne($values);
+        $language = parent::createOne($values);
+
+        Helper::cache()->delete(Helper::class_basename(self::class)); # Cache clean
+        self::initLanguages();
+
+        return $language;
     }
 
 
@@ -124,7 +154,12 @@ class Language extends BaseModel
                 ->update(['main' => 0]);
         }
 
-        return parent::updateOne($ids, $values);
+        $result = parent::updateOne($ids, $values);
+
+        Helper::cache()->delete(Helper::class_basename(self::class)); # Cache clean
+        self::initLanguages();
+
+        return $result;
     }
 
 
