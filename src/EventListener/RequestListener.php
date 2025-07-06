@@ -4,23 +4,23 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
 namespace App\EventListener;
 
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use App\Services\LocaleService;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 class RequestListener
 {
     #[AsEventListener(priority: 2304)]
     public function onKernelRequest(RequestEvent $event): void
     {
-        // HugaShop init
-        //if ($event->isMainRequest()) {
-        // ...
-        //}
+        if ($event->isMainRequest()) {
+            LocaleService::prepare($event->getRequest());
+        }
     }
 }

@@ -131,7 +131,7 @@ class FopUa
             if (empty($order->separate_delivery) and $order->delivery_price > 0) {
                 $product = new \stdClass();
                 $product->product_name = 'Пакувальний матеріал';
-                $product->variant_name = ''; // . $delivery_method->name;
+                $product->variant_name = ''; # . $delivery_method->name;
                 $product->sku = 'sku000';
                 $product->amount = 1;
                 $product->price = $order->delivery_price / ((100 - $payment_method->settings->tax) / 100);

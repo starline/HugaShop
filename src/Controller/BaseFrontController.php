@@ -4,20 +4,21 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.4
+ * @version 3.5
  *
  */
 
 namespace App\Controller;
 
-use HugaShop\Models\Cart\Cart;
-use HugaShop\Models\User\User;
+use HugaShop\Models\Settings;
 use HugaShop\Services\Config;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
-use HugaShop\Models\Product\Product;
+use HugaShop\Models\Cart\Cart;
+use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
-use HugaShop\Models\Settings;
+use App\Services\LocaleService;
+use HugaShop\Models\Product\Product;
 use HugaShop\Models\Finance\FinanceCurrency;
 use HugaShop\Models\Product\ProductCategory;
 use Symfony\Contracts\Service\Attribute\Required;
@@ -31,7 +32,9 @@ class BaseFrontController extends BaseController
 
         // Setup
         Design::initSettings(['theme' => Settings::getParam('theme'), 'packages' => $this->Packages]);
-        $this->setTranslator('ru', Settings::getParam('theme'));
+
+        $locale = LocaleService::detect();
+        $this->setTranslator($locale, Settings::getParam('theme'));
 
         Cart::catchCartSession();
 

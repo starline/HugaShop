@@ -5,7 +5,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.7
+ * @version 1.8
  *
  */
 
@@ -64,6 +64,15 @@ class Language extends BaseModel
             self::$current_language = self::getLanguages()->firstWhere('code', $code);
         }
         return self::$current_language;
+    }
+
+
+    /**
+     * Check if language code exists
+     */
+    public static function isLanguage(string $code): bool
+    {
+        return (bool) self::getLanguages()->firstWhere('code', $code);
     }
 
 
