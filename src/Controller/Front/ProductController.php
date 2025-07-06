@@ -59,13 +59,6 @@ class ProductController extends BaseFrontController
             throw $this->createNotFoundException('Product does not found'); # 404
         }
 
-        $currentLanguage = Language::getCurrent();
-        if ($currentLanguage && $currentLanguage->code !== Language::getMain()->code) {
-            if (!Product::getTranslation($product->id, $currentLanguage->code)) {
-                throw $this->createNotFoundException('Product does not found');
-            }
-        }
-
         // Redirect to canonical page
         if ($product->url !== $url) {
             return $this->redirectToRoute('Product', ['url' => $product->url], 301);
