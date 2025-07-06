@@ -20,6 +20,7 @@ use HugaShop\Services\Request;
 use App\Services\LocaleService;
 use HugaShop\Models\Product\Product;
 use HugaShop\Models\Finance\FinanceCurrency;
+use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Product\ProductCategory;
 use Symfony\Contracts\Service\Attribute\Required;
 
@@ -43,13 +44,14 @@ class BaseFrontController extends BaseController
         }
 
         Design::assign([
-            'config' =>     Config::get(), # Configuration
-            'settings' =>   Settings::getAllParams(),
-            'user' =>       User::authUser(),
-            'currency' =>   FinanceCurrency::getMainCurrency(),
-            'currencies' => FinanceCurrency::getCurrencies(['enabled' => 1]), # All enabled currencies
-            'categories' => ProductCategory::getCategoriesTree(['visible' => 1]),
-            'cart' =>       Cart::getCurrentCart() # current cart
+            'config'        => Config::get(), # Configuration
+            'settings'      => Settings::getAllParams(),
+            'user'          => User::authUser(),
+            'currency'      => FinanceCurrency::getMainCurrency(),
+            'currencies'    => FinanceCurrency::getCurrencies(['enabled' => 1]), # All enabled currencies
+            'categories'    => ProductCategory::getCategoriesTree(['visible' => 1]),
+            'cart'          => Cart::getCurrentCart(), # current cart
+            'languages'     => Language::getLanguages()
         ]);
 
         // Smarty Plugins

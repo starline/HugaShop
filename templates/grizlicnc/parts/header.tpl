@@ -7,7 +7,8 @@
 					<div class="navbar-nav me-auto mb-2 mb-lg-0">
 						<div class="nav-item">
 							<a class="nav-link {if $route|in_array:[PostList, Post]}active{/if}"
-								{if $route|in_array:[PostList, Post]}aria-current="page" {/if} href="{'PostList'|urll}">База
+								{if $route|in_array:[PostList, Post]}aria-current="page" {/if}
+								href="{'PostList'|urll}">База
 								знаний</a>
 						</div>
 
@@ -31,11 +32,11 @@
 					<div class="row">
 
 						<div class="col-2">
-							<div class="lang notranslate">
-								<span alt="UA" title="Українська мова" data-bs-toggle="tooltip" data-google-lang="uk"
-									class="language__img">UA</span>
-								<span alt="RU" title="Руский язык" data-bs-toggle="tooltip" data-google-lang="ru"
-									class="language__img">RU</span>
+							<div class="lang">
+								{foreach $languages as $lang}
+									<a href="{'current'|urll:['locale' => $lang->code]}" title="{$lang->name}"
+										data-bs-toggle="tooltip">{$lang->code}</a>
+								{/foreach}
 							</div>
 						</div>
 
