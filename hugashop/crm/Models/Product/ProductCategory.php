@@ -52,7 +52,7 @@ class ProductCategory extends BaseModel
      */
     private static function initCategories()
     {
-        $cache_item = Cache::cache()->getItem(class_basename(self::class));
+        $cache_item = Cache::cache(self::class)->getItem('categories');
 
         if (!$cache_item->isHit()) {
 
@@ -125,13 +125,13 @@ class ProductCategory extends BaseModel
             $result_cache['categories_tree'] = $tree->subcategories;
             $result_cache['all_categories'] = $pointers;
 
-            Cache::cache()->save($cache_item->set($result_cache));
+            Cache::cache(self::class)->save($cache_item->set($result_cache));
         }
 
         $categories_cache = $cache_item->get();
 
-        self::$categories_tree = $categories_cache['categories_tree'];
-        self::$all_categories = $categories_cache['all_categories'];
+        self::$categories_tree  = $categories_cache['categories_tree'];
+        self::$all_categories   = $categories_cache['all_categories'];
     }
 
 
@@ -295,7 +295,7 @@ class ProductCategory extends BaseModel
         $category = self::createOne($category);
 
 
-        Cache::cache()->delete(class_basename(self::class)); # Cache clean
+        Cache::cache(self::class)->clear(); # Cache clean
         self::initCategories();
         return $category;
     }
@@ -311,7 +311,7 @@ class ProductCategory extends BaseModel
         $category = Helper::makeUniqSlug(self::class, $category);
         $result = self::updateOne($id, $category);
 
-        Cache::cache()->delete(class_basename(self::class)); # Cache clean
+        Cache::cache(self::class)->clear(); # Cache clean
         self::initCategories();
         return $result;
     }
@@ -357,7 +357,7 @@ class ProductCategory extends BaseModel
             }
         }
 
-        Cache::cache()->delete(class_basename(self::class)); # Cache clean
+        Cache::cache(self::class)->clear(); # Cache clean
         self::initCategories();
         return true;
     }

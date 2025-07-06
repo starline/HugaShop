@@ -35,7 +35,8 @@ class Extension
     public static function updateExt(string $name, array $settings = [])
     {
         // Cache clean
-        Cache::cache()->delete($name); # clean cache
+        Cache::mainCache()->delete($name); # clean cache
+        Cache::cache(self::class)->clear();
         $settings = empty($settings) ? [] : $settings;
         return Settings::set($name, $settings);
     }

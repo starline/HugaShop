@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  */
 
@@ -12,7 +12,6 @@ namespace HugaShop\Services;
 
 use HugaShop\Models\Localization\Language;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
-
 
 class Cache
 {
@@ -26,43 +25,14 @@ class Cache
      */
     public static function cache(?string $name = null, int $time = 0, $lang = false)
     {
-        $name = is_null($name) ? 'HugaShop' : str_replace('\\', '', $name);
+        $name = class_basename($name);
 
         if ($lang === true) {
             $locale = Language::getCurrent()->code;
             $name .= '_' . $locale;
         }
 
-        return self::$cache[$name] ?? self::$cache[$name] = new FilesystemAdapter($name, $time, Config::get('api_cache_dir'));
-    }
-
-
-    /**
-     * Get item from mane cache
-     */
-    public static function getCacheItem(string $item_name, int $time = 0)
-    {
-        $item_name = class_basename($item_name);
-        return self::cache(null, $time)->getItem($item_name);
-    }
-
-
-    /**
-     * Save item to main chache
-     */
-    public static function saveCacheItem($cache_item)
-    {
-        self::cache()->save($cache_item);
-    }
-
-
-    /**
-     * Delete item from main chache
-     */
-    public static function deleteCacheItem(string $item_name)
-    {
-        $item_name = class_basename($item_name);
-        self::cache()->delete($item_name);
+        return self::$cache[$name] ?? self::$cache[$name] = new FilesystemAdapter($name, $time, Config::get('app_cache_dir'));
     }
 
 
@@ -72,5 +42,40 @@ class Cache
     public static function cacheLang(?string $name = null, int $time = 0)
     {
         self::cache($name, $time, true);
+    }
+
+
+    public static function mainCache(int $time = 0)
+    {
+        return self::cache('HugaShop', $time);
+    }
+
+
+    /**
+     * Get item from mane cache
+     */
+    public static function getCacheItem(string $item_name, int $time = 0)
+    {
+        $item_name = class_basename($item_name);
+        return self::mainCache($time)->getItem($item_name);
+    }
+
+
+    /**
+     * Save item to main chache
+     */
+    public static function saveCacheItem($cache_item)
+    {
+        self::mainCache()->save($cache_item);
+    }
+
+
+    /**
+     * Delete item from main chache
+     */
+    public static function deleteCacheItem(string $item_name)
+    {
+        $item_name = class_basename($item_name);
+        self::mainCache()->delete($item_name);
     }
 }

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.9
+ * @version 3.0
  *
  * Управление настройками магазина, хранящимися в базе данных
  * В отличие от класса Config оперирует настройками доступными админу и хранящимися в базе данных.
@@ -14,7 +14,6 @@
 namespace HugaShop\Models;
 
 use HugaShop\Services\Cache;
-use HugaShop\Services\Helper;
 
 class Settings extends BaseModel
 {
@@ -27,7 +26,7 @@ class Settings extends BaseModel
         'value' =>              ['type' => 'varchar',       'length' => 900]
     ];
 
-    private static $vars = [];
+    private static $settings = [];
 
 
     /**
@@ -35,10 +34,11 @@ class Settings extends BaseModel
      */
     private static function getInstance()
     {
-        if (empty(self::$vars)) {
+        if (empty(self::$settings)) {
 
-            // The callable will only be executed on a cache miss.
-            $settings = Cache::cache(self::class)->get('settings', function (): array {
+            $cache_item = Cache::getCacheItem(self::class);
+
+            if (!$cache_item->isHit()) {
 
                 // Select settings from DB
                 $settings_vars = [];
@@ -48,10 +48,10 @@ class Settings extends BaseModel
                     }
                 }
 
-                return $settings_vars;
-            });
+                Cache::saveCacheItem($cache_item->set($settings_vars));
+            }
 
-            self::$vars = $settings;
+            self::$settings = $cache_item->get();
         }
     }
 
@@ -65,12 +65,12 @@ class Settings extends BaseModel
         self::getInstance();
 
         if (is_null($param_name)) {
-            return (object) self::$vars;
+            return (object) self::$settings;
         }
 
         // Для определения Settings vars
-        if (isset(self::$vars[$param_name])) {
-            return self::$vars[$param_name];
+        if (isset(self::$settings[$param_name])) {
+            return self::$settings[$param_name];
         } else {
             return null;
         }
@@ -94,10 +94,8 @@ class Settings extends BaseModel
     public static function set(string $name, mixed $value)
     {
         self::getInstance();
-
-        Cache::cache(self::class)->clear(); # Cache clean
-
-        self::$vars[$name] = $value;
+        Cache::deleteCacheItem(self::class); # Cache clean
+        self::$settings[$name] = $value;
 
         if (is_array($value)) {
             $value = serialize($value);

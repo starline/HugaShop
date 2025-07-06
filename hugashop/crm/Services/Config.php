@@ -73,7 +73,7 @@ class Config
 
         self::$vars['log_dir'] =                    self::$root_dir . 'var/log/';                     # Directory for Logs
         self::$vars['cache_dir'] =                  self::$root_dir . 'var/cache/';                   # Directory for Cache
-        self::$vars['api_cache_dir'] =              self::$root_dir . 'var/cache/hugashop/';          # Directory for API Cache
+        self::$vars['app_cache_dir'] =              self::$root_dir . 'var/cache/hugashop/';          # Directory for API Cache
         self::$vars['compiled_dir'] =               self::$root_dir . 'var/compiled/';                # Directory for Compiled templates
 
         self::$vars['max_upload_filesize'] =        self::getMaxUploadFilesize();

@@ -12,7 +12,6 @@ namespace HugaShop\Extensions\RedirectUrl;
 
 use HugaShop\Services\Cache;
 use HugaShop\Services\Design;
-use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use HugaShop\Extensions\BaseExtension;
 use Symfony\Component\HttpKernel\Event\RequestEvent;

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.5
+ * @version 3.6
  * 
  * Use Cache
  *
@@ -40,7 +40,7 @@ class FinanceCurrency extends BaseModel
      * Выбираем все валюты self::$currencies
      * Определяем оcновную валюту $this->main_currency
      */
-    public static function initCurrencies()
+    public static function getInstance()
     {
 
         // Cache
@@ -60,8 +60,6 @@ class FinanceCurrency extends BaseModel
         }
 
         self::$currencies = $cache_item->get();
-
-        // Основная валюта
         self::$main_currency = reset(self::$currencies);
     }
 
@@ -72,7 +70,7 @@ class FinanceCurrency extends BaseModel
     public static function getCurrencies(array $filter = [])
     {
         if (!isset(self::$currencies)) {
-            self::initCurrencies();
+            self::getInstance();
         }
 
         $currencies = [];
@@ -92,7 +90,7 @@ class FinanceCurrency extends BaseModel
     public static function getCurrency(int|string|null $id = null)
     {
         if (!isset(self::$currencies)) {
-            self::initCurrencies();
+            self::getInstance();
         }
 
         // по id
@@ -120,7 +118,7 @@ class FinanceCurrency extends BaseModel
     public static function getMainCurrency()
     {
         if (!isset(self::$main_currency)) {
-            self::initCurrencies();
+            self::getInstance();
         }
 
         return self::$main_currency;
@@ -135,7 +133,7 @@ class FinanceCurrency extends BaseModel
     {
         Cache::deleteCacheItem(self::class); # Cache clean
         $currency = self::createOne($currency);
-        self::initCurrencies();
+        self::getInstance();
         return $currency->id;
     }
 
@@ -148,7 +146,7 @@ class FinanceCurrency extends BaseModel
     {
         Cache::deleteCacheItem(self::class); # Cache clean
         $result = self::updateOne($id, $currency);
-        self::initCurrencies();
+        self::getInstance();
         return $result;
     }
 
@@ -161,7 +159,7 @@ class FinanceCurrency extends BaseModel
     {
         Cache::deleteCacheItem(self::class); # Cache clean
         $result = self::deleteOne($id);
-        self::initCurrencies();
+        self::getInstance();
         return $result;
     }
 
