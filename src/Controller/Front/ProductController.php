@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.4
+ * @version 3.5
  *
  * Этот класс использует шаблон product.tpl
  *
@@ -20,6 +20,8 @@ use App\Controller\BaseFrontController;
 use HugaShop\Models\Content\ContentComment;
 use HugaShop\Models\Product\ProductVariant;
 use HugaShop\Models\Product\ProductCategory;
+use App\Services\LanguageService;
+use HugaShop\Models\Localization\Language;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -42,6 +44,7 @@ class ProductController extends BaseFrontController
     #[Route('/tovar-{url}', name: 'Product')]
     public function product_url(string $url, ?int $id = null): Response
     {
+        $currentLanguage = LanguageService::languageCatch();
 
         // Выбираем товар из базы
         $product = Product::getProduct(id: $url, join: [
@@ -62,6 +65,12 @@ class ProductController extends BaseFrontController
 
         if (empty($product)) {
             throw $this->createNotFoundException('Product does not found'); # 404
+        }
+
+        if ($currentLanguage && $currentLanguage->code !== Language::getMain()->code) {
+            if (!Product::getTranslation($product->id, $currentLanguage->code)) {
+                throw $this->createNotFoundException('Product does not found');
+            }
         }
 
         // Redirect to canonical page
