@@ -69,12 +69,14 @@ abstract class BaseModel extends Model
         $capsule->bootEloquent();
 
         // DB query Debuging
-        DB::connection()->listen(function ($query) {
-            $dump_result =  "SQL: {$query->sql}\n";
-            $dump_result .= "Binding: " . implode(', ', $query->bindings) . "\n";
-            $dump_result .= "Time: {$query->time}ms";
-            dump($dump_result);
-        });
+        if (Config::get('database')->debug) {
+            DB::connection()->listen(function ($query) {
+                $dump_result =  "SQL: {$query->sql}\n";
+                $dump_result .= "Binding: " . implode(', ', $query->bindings) . "\n";
+                $dump_result .= "Time: {$query->time}ms";
+                dump($dump_result);
+            });
+        }
 
         self::$IsAutoBooted = true;
     }

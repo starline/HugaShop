@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.4
+ * @version 1.5
  *
  */
 
@@ -24,6 +24,7 @@ class Extension
     ];
 
     private static $extension_pool = [];
+    private static $place_cache = [];
 
     /**
      * Update
@@ -72,35 +73,39 @@ class Extension
 
 
     /**
-     * Get Extensions by place
+     * Get Extensions name list by place
      * Use Cache
      * @param string $places
      */
     public static function getExtensionsByPlace(string $place)
     {
 
-        // Get Places Extensions
-        // Example: array('front_head' => ['ExtensionFirst', 'ExtensionSecond'], 'front_body' => ['ExtensionThird'])
+        if (isset(self::$place_cache[$place])) {
+            return self::$place_cache[$place];
+        }
 
-        $places = [];
-
-        $ext_list = self::getExtensionsList();
-        foreach ($ext_list as $ext) {
-            if (!empty($Ext = self::makeExtension($ext->module))) {
-                foreach (self::$places as $place_name) {
-                    if (method_exists($Ext, 'get' . ucfirst(Helper::snakeToCamelCase($place_name)) . 'Template')) { # Example: getFrontHeadTemplate
-                        if (!empty($Ext->settings->enabled)) {
-                            $places[$place_name][]  = $ext->module;
+        $cache_item = Helper::cache(self::class)->getItem('place_' . $place);
+        if (!$cache_item->isHit()) {
+            $places = [];
+            $ext_list = self::getExtensionsList();
+            foreach ($ext_list as $ext) {
+                if (!empty($Ext = self::makeExtension($ext->module))) {
+                    foreach (self::$places as $place_name) {
+                        if (method_exists($Ext, 'get' . ucfirst(Helper::snakeToCamelCase($place_name)) . 'Template')) {
+                            if (!empty($Ext->settings->enabled)) {
+                                $places[$place_name][] = $ext->module;
+                            }
                         }
                     }
                 }
             }
+
+            $cache_value = $places[$place] ?? [];
+            Helper::cache(self::class)->save($cache_item->set($cache_value));
+        } else {
+            $cache_value = $cache_item->get();
         }
 
-        if (!empty($places[$place])) {
-            return $places[$place];
-        }
-
-        return [];
+        return self::$place_cache[$place] = $cache_value;
     }
 }
