@@ -169,7 +169,11 @@ class BaseController extends AbstractController
 
         $languageCode = $params['locale'] ?? Language::checkOrGetCode();
         if ($languageCode && $languageCode !== Language::getMain()->code) {
-            $url = '/' . $languageCode . $url;
+            if ($url === '/' || $url === '') {
+                $url = '/' . $languageCode;
+            } else {
+                $url = '/' . $languageCode . $url;
+            }
         }
 
         return $url;
