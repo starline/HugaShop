@@ -26,8 +26,20 @@
             <div class="col-lg-6 layer">
                 <ul class="property_block">
                     <li class="row_sm">
-                        <label class="col-form-label" for="code">Код</label>
-                        <input class="form-control" id="code" name="code" type="text" value="{$language->code}" />
+                        <label class="col-form-label" for="code">Код языка</label>
+                        <select class="form-select" id="code" name="code">
+                            {foreach $language_codes as $lc}
+                                <option value="{$lc}" {if $language->code == $lc}selected{/if}>{$lc}</option>
+                            {/foreach}
+                        </select>
+                    </li>
+                    <li class="row_sm">
+                        <label class="col-form-label" for="country_code">Код страны</label>
+                        <select class="form-select" id="country_code" name="country_code">
+                            {foreach $country_codes as $cc}
+                                <option value="{$cc}" {if $language->country_code == $cc}selected{/if}>{$cc}</option>
+                            {/foreach}
+                        </select>
                     </li>
                     <li class="row_sm">
                         <div class="form-check">
