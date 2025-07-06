@@ -5,7 +5,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.9
+ * @version 2.0
  *
  */
 
@@ -20,6 +20,7 @@ class Language extends BaseModel
     protected static $table_fields = [
         'id' =>             ['type' => 'int',      'extra' => 'AUTO_INCREMENT'],
         'code' =>           ['type' => 'varchar'],
+        'country_code' =>   ['type' => 'varchar'],
         'name' =>           ['type' => 'varchar'],
         'main' =>           ['type' => 'tinyint',  'def' => 0]
     ];
