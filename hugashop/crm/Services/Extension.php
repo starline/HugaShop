@@ -82,7 +82,6 @@ class Extension
         // Get Places Extensions
         // Example: array('front_head' => ['ExtensionFirst', 'ExtensionSecond'], 'front_body' => ['ExtensionThird'])
 
-
         $places = [];
 
         $ext_list = self::getExtensionsList();
@@ -97,8 +96,6 @@ class Extension
                 }
             }
         }
-
-
 
         if (!empty($places[$place])) {
             return $places[$place];
