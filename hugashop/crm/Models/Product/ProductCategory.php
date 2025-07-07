@@ -47,6 +47,7 @@ class ProductCategory extends BaseModel
             ->orderBy('position');
     }
 
+    
     /**
      * Инициализация категорий, после которой категории будем выбирать из локальной переменной
      */

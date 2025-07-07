@@ -202,9 +202,6 @@ class ProductListController extends BaseAdminController
             }
         }
 
-        // Все Бренды
-        $all_brands = ProductBrand::getBrands();
-
         // Бренды категории
         $brands = ProductBrand::getBrands(['category_id' => $filter['category_id']]);
 

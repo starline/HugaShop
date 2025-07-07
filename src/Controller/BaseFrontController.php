@@ -34,8 +34,8 @@ class BaseFrontController extends BaseController
         Design::initSettings(['theme' => Settings::getParam('theme'), 'packages' => $this->Packages]);
 
         // Locale
-        $locale = Language::getCurrent();
-        $this->setTranslator($locale->code, Settings::getParam('theme'));
+        $current_language = Language::getCurrent();
+        $this->setTranslator($current_language->code, Settings::getParam('theme'));
 
         Cart::catchCartSession();
 
@@ -52,7 +52,8 @@ class BaseFrontController extends BaseController
             'categories'        => ProductCategory::getCategoriesTree(['visible' => 1]),
             'cart'              => Cart::getCurrentCart(), # current cart
             'languages'         => Language::getLanguages(),
-            'current_language'  => $locale
+            'current_language'  => $current_language,
+            'main_language'     => Language::getMain()
         ]);
 
         // Smarty Plugins

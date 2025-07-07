@@ -21,11 +21,11 @@
 			<div class="col-12">
 				<div class="over_name">
 					<div class="checkbox_line">
-                                                <div class="form-check form-switch">
-                                                        <input class="form-check-input" name="featured" value="1" type="checkbox" role="switch" id="featured_checkbox"
-                                                                {if $brand->featured}checked{/if} />
-                                                        <label class="form-check-label" for="featured_checkbox">Избранный</label>
-                                                </div>
+						<div class="form-check form-switch">
+							<input class="form-check-input" name="featured" value="1" type="checkbox" role="switch"
+								id="featured_checkbox" {if $brand->featured}checked{/if} />
+							<label class="form-check-label" for="featured_checkbox">Избранный</label>
+						</div>
 					</div>
 				</div>
 				<div class="name_row">
@@ -83,7 +83,8 @@
 
 			<div class="col-12 layer">
 				<h2>Описание</h2>
-				<textarea name="description" class="html_editor editor_large">{$brand->description}</textarea>
+				<textarea id="description" name="description"
+					class="html_editor editor_large">{$brand->description}</textarea>
 
 				<div class="btn_row">
 					<button class="btn btn-primary" type="submit">Сохранить</button>

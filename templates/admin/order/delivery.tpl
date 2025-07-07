@@ -21,16 +21,16 @@
 			<div class="col-12">
 				<div class="over_name">
 					<div class="checkbox_line">
-                                                <div class="form-check form-switch">
-                                                        <input class="form-check-input" name="enabled" value="1" type="checkbox" role="switch" id="active_checkbox"
-                                                                {if $delivery->enabled}checked{/if} />
-                                                        <label class="form-check-label" for="active_checkbox">Показывать меннеджеру</label>
-                                                </div>
-                                                <div class="form-check form-switch">
-                                                        <input class="form-check-input" name="enabled_public" value="1" type="checkbox" role="switch"
-                                                                id="enabled_public" {if $delivery->enabled_public}checked{/if} />
-                                                        <label class="form-check-label" for="enabled_public">Показывать клиенту при заказе</label>
-                                                </div>
+						<div class="form-check form-switch">
+							<input class="form-check-input" name="enabled" value="1" type="checkbox" role="switch"
+								id="active_checkbox" {if $delivery->enabled}checked{/if} />
+							<label class="form-check-label" for="active_checkbox">Показывать меннеджеру</label>
+						</div>
+						<div class="form-check form-switch">
+							<input class="form-check-input" name="enabled_public" value="1" type="checkbox" role="switch"
+								id="enabled_public" {if $delivery->enabled_public}checked{/if} />
+							<label class="form-check-label" for="enabled_public">Показывать клиенту при заказе</label>
+						</div>
 					</div>
 				</div>
 
@@ -127,7 +127,8 @@
 
 			<div class="col-12 layer">
 				<h2>Описание</h2>
-				<textarea name="description" class="html_editor editor_small">{$delivery->description}</textarea>
+				<textarea id="description" name="description"
+					class="html_editor editor_small">{$delivery->description}</textarea>
 			</div>
 
 			<div class="col-12 btn_row">

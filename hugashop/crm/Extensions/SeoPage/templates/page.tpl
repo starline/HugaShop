@@ -18,13 +18,13 @@
 
 			<div class="col-12">
 				<div class="over_name">
-                                        <div class="checkbox_line">
-                                                <div class="form-check form-switch">
-                                                        <input class="form-check-input" name="enabled" value="1" type="checkbox" role="switch" id="enabled"
-                                                                {if $page->enabled}checked{/if} />
-                                                        <label class="form-check-label" for="enabled">Активна</label>
-                                                </div>
-                                        </div>
+					<div class="checkbox_line">
+						<div class="form-check form-switch">
+							<input class="form-check-input" name="enabled" value="1" type="checkbox" role="switch"
+								id="enabled" {if $page->enabled}checked{/if} />
+							<label class="form-check-label" for="enabled">Активна</label>
+						</div>
+					</div>
 
 					{if $page->url}
 						<a class="out_link" target="_self" href="{$config->root_url}/{$page->url}">
@@ -72,7 +72,7 @@
 
 			<div class="col-12 layer">
 				<h2>Текст страницы</h2>
-				<textarea name="body" class="html_editor editor_large form-control">{$page->body}</textarea>
+				<textarea id="body" name="body" class="html_editor editor_large form-control">{$page->body}</textarea>
 			</div>
 
 			<div class="col-12 btn_row">

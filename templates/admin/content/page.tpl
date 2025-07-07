@@ -9,7 +9,7 @@
 
 {block name=content}
 
-        {include 'parts/translation_btn_part.tpl' entity='page'}
+	{include 'parts/translation_btn_part.tpl' entity='page'}
 
 	<!-- Основная форма -->
 	<form method="post" enctype="multipart/form-data">
@@ -21,16 +21,16 @@
 			<div class="col-12">
 				<div class="over_name">
 					<div class="checkbox_line">
-                                                <div class="form-check form-switch">
-                                                        <input class="form-check-input" name="visible" value="1" type="checkbox" role="switch" id="visible"
-                                                                {if $page->visible}checked{/if} />
-                                                        <label class="form-check-label" for="visible">Активна</label>
-                                                </div>
-                                                <div class="form-check form-switch">
-                                                        <input class="form-check-input" name="menu" value="1" type="checkbox" role="switch" id="menu"
-                                                                {if $page->menu}checked{/if} />
-                                                        <label class="form-check-label" for="menu">Меню</label>
-                                                </div>
+						<div class="form-check form-switch">
+							<input class="form-check-input" name="visible" value="1" type="checkbox" role="switch"
+								id="visible" {if $page->visible}checked{/if} />
+							<label class="form-check-label" for="visible">Активна</label>
+						</div>
+						<div class="form-check form-switch">
+							<input class="form-check-input" name="menu" value="1" type="checkbox" role="switch" id="menu"
+								{if $page->menu}checked{/if} />
+							<label class="form-check-label" for="menu">Меню</label>
+						</div>
 					</div>
 
 					{if $page->url}
@@ -83,7 +83,7 @@
 
 			<div class="col-12 layer">
 				<h2>Текст страницы</h2>
-				<textarea name="body" class="html_editor editor_large form-control">{$page->body}</textarea>
+				<textarea id="body" name="body" class="html_editor editor_large form-control">{$page->body}</textarea>
 			</div>
 
 			<div class="col-12 btn_row">

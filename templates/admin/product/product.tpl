@@ -179,7 +179,7 @@
 			<!-- Полное описание -->
 			<div class="col-12 layer">
 				<h2>Полное описание</h2>
-				<textarea name="body" class="html_editor editor_large">{$product->body}</textarea>
+				<textarea id="body" name="body" class="html_editor editor_large">{$product->body}</textarea>
 			</div>
 
 			<div class="col-12 btn_row">

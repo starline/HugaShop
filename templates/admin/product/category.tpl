@@ -169,13 +169,15 @@
 
 			<div class="col-12 layer">
 				<h2>Краткое описание</h2>
-				<textarea name="annotation" class="html_editor editor_small">{$category->annotation}</textarea>
+				<textarea id="annotation" name="annotation"
+					class="html_editor editor_small">{$category->annotation}</textarea>
 			</div>
 
 
 			<div class="col-12 layer">
 				<h2>Описание</h2>
-				<textarea name="description" class="html_editor editor_large">{$category->description}</textarea>
+				<textarea id="description" name="description"
+					class="html_editor editor_large">{$category->description}</textarea>
 			</div>
 
 

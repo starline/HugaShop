@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.6
+ * @version 2.7
  *
  * Этот класс использует шаблоны posts.tpl и post.tpl
  *
@@ -12,9 +12,7 @@
 
 namespace App\Controller\Front;
 
-use HugaShop\Models\Image;
 use HugaShop\Services\Design;
-use App\Services\PaginationService;
 use App\Controller\BaseFrontController;
 use HugaShop\Models\Content\ContentPost;
 use HugaShop\Models\User\UserPermission;
@@ -24,28 +22,6 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class PostController extends BaseFrontController
 {
-
-    #[Route('/blog', name: 'PostList', priority: 1)]
-    public function postList(): Response
-    {
-
-
-        $filter = PaginationService::initFilter(20);
-        $filter['visible'] = 1; # Выбираем только видимые посты
-
-        $posts =        ContentPost::getPosts($filter); # Выбираем статьи из базы
-        $posts_count =  ContentPost::countPosts($filter); # Вычисляем количество страниц
-
-        // Передаем в шаблон
-        Design::assign('posts', $posts);
-        Design::assign('posts_count', $posts_count);
-        Design::assign('pagination', PaginationService::getPagination($posts_count, $filter));
-        Design::assign('canonical', $this->generateUrl('PostList'));
-
-        return $this->fetchResponse('posts.tpl');
-    }
-
-
     #[Route('/blog/{url}', name: 'Post')]
     public function post(string $url): Response
     {

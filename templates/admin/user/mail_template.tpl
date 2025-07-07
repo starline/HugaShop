@@ -49,7 +49,7 @@
 				{if $mail_template->type|in_array:[sms, telegram]}
 					<textarea name="content" class="form-control sms_editor" id="content">{$mail_template->content}</textarea>
 				{else}
-					<textarea name="content" class="html_editor editor_large">{$mail_template->content}</textarea>
+					<textarea id="content" name="content" class="html_editor editor_large">{$mail_template->content}</textarea>
 				{/if}
 			</div>
 
