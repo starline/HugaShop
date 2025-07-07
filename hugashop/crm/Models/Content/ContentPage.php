@@ -64,7 +64,7 @@ class ContentPage extends BaseModel
         $cache_item = Cache::cache(self::class)->getItem('menu');
 
         if (!$cache_item->isHit()) {
-            $menu = ContentPage::getList(['menu' => 1, 'visible' => 1], order: 'position');
+            $menu = ContentPage::getListTranslate(['menu' => 1, 'visible' => 1], order: 'position');
             Cache::cache(self::class)->save($cache_item->set($menu));
         } else {
             $menu = $cache_item->get();

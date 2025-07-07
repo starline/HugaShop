@@ -27,17 +27,7 @@
 
 	<div class="row">
 		<div class="col-lg-3" id="catalog_menu">
-			<ul>
-				<li class="category_main">
-					<a class="{if $route|in_array:[PostList, Post]}selected{/if}" href="{'PostList'|linkLang}">База знаний</a>
-				</li>
-				{foreach 'ContentPage'|api:getList:[[visible => 1], position] as $pm}
-					<li class="category_main">
-						<a class="{if (!$page|empty && $page->id == $pm->id)}selected{/if}"
-							href="{'Page'|linkLang:[url => $pm->url]}">{$pm->name}</a>
-					</li>
-				{/foreach}
-			</ul>
+			{include file='parts/menu_part.tpl'}
 		</div>
 
 		<div class="col-lg-9">
