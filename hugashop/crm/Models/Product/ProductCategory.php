@@ -87,6 +87,8 @@ class ProductCategory extends BaseModel
             $prefix            = $model->getConnection()->getTablePrefix();
             $base_table_prefix = $prefix . $baseTable;
 
+            
+            // Translation
             if ($language_code = Language::checkOrGetCode()) {
                 $transModel = AbstractTranslation::setTableTranslation(self::class);
                 $transTable = $transModel->getTable();
@@ -101,6 +103,7 @@ class ProductCategory extends BaseModel
                         ->where("{$transTable}.language_code", '=', $language_code);
                 })->selectRaw(implode(', ', $select));
             }
+
 
             $categories = $model->runWithInitTable(function () use ($query) {
                 return $query->get()->toArray();

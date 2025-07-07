@@ -30,7 +30,6 @@
 
 
 	<div class="row">
-
 		<div class="col-lg-3" id="catalog_menu">
 			<div class="offcanvas-lg offcanvas-start" tabindex="-1" id="bdSidebar"
 				aria-labelledby="bdSidebarOffcanvasLabel">
