@@ -39,10 +39,11 @@ class CartController extends BaseFrontController
     /**
      * Cart add items
      */
-    #[Route('/cart/add/{product_id}', name: 'CartAdd', priority: 2)]
-    public function cartAdd(int $product_id)
+    #[Route('/cart/add', name: 'CartAdd', priority: 2)]
+    public function cartAdd()
     {
-        $amount = Request::getVar('amount', 'int') ?: 1;
+        $product_id =   Request::getVar('product_id', 'int') ?: null;
+        $amount =       Request::getVar('amount', 'int') ?: 1;
 
         // Добавим товар в корзину
         if (CartPurchase::addCartPurchase($product_id, $amount)) {
@@ -61,8 +62,14 @@ class CartController extends BaseFrontController
     public function cart(): Response
     {
 
+        if (Request::has('informer')) {
+            return $this->cartInformer();
+        }
+
+        $amounts = Request::post('amounts', 'array');
+
         // Если нам запостили amounts, обновляем их
-        if ($amounts = Request::post('amounts', 'array')) {
+        if ($amounts) {
             foreach ($amounts as $product_id => $amount) {
                 CartPurchase::updatePurchase(null, $product_id, ['amount' => $amount]);
             }
@@ -88,5 +95,29 @@ class CartController extends BaseFrontController
 
         // Выводим корзину
         return $this->fetchResponse('cart.tpl');
+    }
+
+
+    /**
+     * Get cart Informer
+     */
+    public function cartInformer()
+    {
+
+        $amount     = Request::getVar('amount', 'int') ?: 1;
+        $product_id = Request::getVar('product_id', 'int') ?: null;
+
+        // Add product to cart
+        if (!empty($product_id)) {
+            if (CartPurchase::addCartPurchase($product_id, $amount)) {
+                $this->setEvent(new CartAddEvent(['product_id' => $product_id, 'amount' => $amount]));
+            }
+        }
+
+        // Get updated card
+        $cart = Cart::getCart(join: ['total']);
+        Design::assign('cart', $cart);
+
+        return $this->fetchResponse('parts/header.tpl', 'cart_informer');
     }
 }

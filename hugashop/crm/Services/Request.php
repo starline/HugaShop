@@ -41,6 +41,15 @@ class Request
 
 
     /**
+     * Define a parameter
+     */
+    public static function has($key)
+    {
+        return array_key_exists($key, $_GET) || array_key_exists($key, $_POST);
+    }
+
+
+    /**
      * Возвращает variable из методов GET и POST
      * @param string $var_name
      * @param string $type

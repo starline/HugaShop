@@ -18,6 +18,7 @@
     "smarty/smarty": "^5.4",
     "illuminate/database": "^12.18",
     "illuminate/events": "^12.18",
+    "illuminate/http": "^12.19",
     "symfony/yaml": "^7",
     "jenssegers/agent": "^2.6.4",
     "intervention/image": "^3.11.3",

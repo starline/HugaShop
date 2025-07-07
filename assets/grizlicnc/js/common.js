@@ -1,12 +1,18 @@
 /**
  * Custom javascript code
  * 
+ * @author Andri Huga
+ * @version 1.5
+ * 
  */
 
 export function getCartInformer(product_id = null, amount = null, callback = null) {
+
+    const cart_url = $("#cart_informer a").attr('href') + '?informer';
+
     $.ajax({
         type: "POST",
-        url: "/ajax/cart",
+        url: cart_url,
         data: {
             product_id: product_id,
             amount: amount,
@@ -32,28 +38,16 @@ export function getUiLanguage() {
 export function asignFancyAjax() {
 
     // Get Cart Popup
-    $("#cart_informer a").fancybox({
+    const cart = $("#cart_informer a");
+    const cart_link = cart.attr('href');
+    cart.fancybox({
         type: 'ajax',
-        src: '/cart',
+        src: cart_link,
         touch: false,
         closeExisting: true,
         afterShow: asignFancyAjax,
     });
 
-    // Ajax links
-    $('.fancybox-inner a.ajax').on('click', function (e) {
-        e.preventDefault();
-        $.post($(this).attr('href'), function (response) {
-            getCartInformer();
-            $.fancybox.open({
-                type: 'html',
-                src: response,
-                touch: false,
-                closeExisting: true,
-                afterShow: asignFancyAjax
-            });
-        });
-    })
 
     // Ajax форм
     $('.fancybox-inner form').on('submit', function (e) {

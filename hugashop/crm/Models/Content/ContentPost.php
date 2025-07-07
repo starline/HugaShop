@@ -85,7 +85,7 @@ class ContentPost extends BaseModel
         $query->orderByRaw(
             !empty($filter['random']) && $filter['random'] == 1
                 ? 'RAND()'
-                : 'date DESC, id DESC'
+                : 'date DESC'
         );
 
         if (!empty($filter['limit']) && $filter['limit'] !== 'all') {

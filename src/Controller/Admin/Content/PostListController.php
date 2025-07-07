@@ -60,9 +60,9 @@ class PostListController extends BaseAdminController
             Design::assign('keyword', $keyword);
         }
 
-        $posts_count =  ContentPost::countPosts($filter);
         $posts =        ContentPost::getPosts($filter);
-
+        $posts_count =  ContentPost::countPosts($filter);
+        
         Design::assign('pagination', PaginationService::getPagination($posts_count, $filter));
         Design::assign('posts_count', $posts_count);
         Design::assign('posts', $posts);

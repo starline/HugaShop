@@ -3,6 +3,7 @@
  * Custom javascript code
  * 
  * @author Andri Huga
+ * @version 1.5
  * 
  */
 
@@ -75,7 +76,7 @@ $(function () {
 
 
     // Select Product
-    $('.product_item').on('click', 'a', function () {
+    $('.product_item a').on('click', function () {
         const product_item = $(this).closest('.product_item');
         const attr_array = ['product_id', 'sku', 'product_name', 'variant_name', 'price'];
         let item = { amount: 1 }
@@ -132,7 +133,7 @@ $(function () {
     });
 
 
-    // Ajac Cart when click Buy
+    // Ajax Cart when click Buy
     $('form.variants').on('submit', function (e) {
         e.preventDefault(); // Cancel the submit
 
@@ -173,15 +174,11 @@ $(function () {
         getCartInformer(item.product_id, item.amount, function () {
 
             // Popup
-            const locale = document.documentElement.getAttribute('lang');
-            let cartUrl = '/cart';
-            if (locale) {
-                cartUrl = '/' + locale + cartUrl;
-            }
+            const cart_url = $("#cart_informer a").attr('href');
 
             $.fancybox.open({
                 type: 'ajax',
-                src: cartUrl,
+                src: cart_url,
                 touch: false,
                 closeExisting: true,
                 afterShow: asignFancyAjax
