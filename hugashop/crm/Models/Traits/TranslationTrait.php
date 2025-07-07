@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.6
+ * @version 1.7
  *
  */
 
@@ -60,6 +60,43 @@ trait TranslationTrait
             $entity->$field = $translation->$field ?? null;
         }
         return $entity;
+    }
+
+
+    /**
+     * Fill list of entities with translations using one DB query
+     */
+    public static function fillTranslations(iterable $entities, string $code): iterable
+    {
+        $ids = [];
+        foreach ($entities as $item) {
+            if (!empty($item->id)) {
+                $ids[] = $item->id;
+            }
+        }
+
+        if (empty($ids)) {
+            return $entities;
+        }
+
+        $model = AbstractTranslation::setTableTranslation(static::class);
+        $translations = $model->runWithInitTable(function () use ($model, $ids, $code) {
+            return $model->newQuery()
+                ->where('language_code', $code)
+                ->whereIn('entity_id', $ids)
+                ->get()
+                ->keyBy('entity_id');
+        });
+
+        $fields = static::getTranslatableFields();
+        foreach ($entities as $item) {
+            $translation = $translations[$item->id] ?? null;
+            foreach ($fields as $field) {
+                $item->$field = $translation->$field ?? null;
+            }
+        }
+
+        return $entities;
     }
 
 
