@@ -34,7 +34,7 @@
 					</div>
 
 					{if $page->url}
-						<a class="out_link" target="_self" href="/info/{$page->url}">
+						<a class="out_link" target="_self" href="{'Page'|linkLang:[url => $page->url]}">
 							Открыть страницу на сайте
 						</a>
 					{/if}

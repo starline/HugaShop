@@ -4,13 +4,12 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.9
+ * @version 3.0
  *
  */
 
 namespace HugaShop\Models\Content;
 
-use HugaShop\Services\Cache;
 use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
 
@@ -58,7 +57,7 @@ class ContentPage extends BaseModel
         if (!empty(self::$menu)) {
             return self::$menu;
         }
-        return self::$menu = ContentPage::getListTranslate(['menu' => 1, 'visible' => 1], order: 'position', cache: 0);
+        return self::$menu = ContentPage::getListTranslate(['menu' => 1, 'visible' => 1], order: 'position', cache: null);
     }
 
 
@@ -67,6 +66,7 @@ class ContentPage extends BaseModel
      */
     public static function addPage(object|array $page)
     {
+        self::cacheClear();
         $page = Helper::makeUniqSlug(self::class, $page);
         return self::createOne($page);
     }
@@ -74,8 +74,7 @@ class ContentPage extends BaseModel
 
     public static function updatePage(int|array $id, object|array $page)
     {
-        Cache::cache(self::class)->clear(); # Cache clean
-
+        self::cacheClear();
         $page = Helper::makeUniqSlug(self::class, $page); # If the URL exists, change it
         return self::updateOne($id, $page);
     }
@@ -83,7 +82,7 @@ class ContentPage extends BaseModel
 
     public static function deletePage(int|array $id)
     {
-        Cache::cache(self::class)->clear(); # Cache clean
+        self::cacheClear();
         return self::deleteOne($id);
     }
 }

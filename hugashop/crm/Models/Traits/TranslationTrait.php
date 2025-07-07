@@ -164,6 +164,7 @@ trait TranslationTrait
      */
     public static function getOneTranslate(int|array $id, array|string $join = [])
     {
+        // TODO caching
         $result = self::getOne($id, $join);
 
         if ($language_code = Language::checkOrGetCode() and static::isTranslatable()) {
@@ -178,6 +179,8 @@ trait TranslationTrait
      */
     public static function getListTranslate(array $filter = [], array|string $order = [], array|string $join = [], ?string $select = null, ?int $cache = null)
     {
+
+        // TODO caching
         $result = self::getList($filter, $order, $join, $select, $cache);
 
         if ($language_code = Language::checkOrGetCode() and static::isTranslatable()) {

@@ -4,13 +4,12 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.6
+ * @version 1.7
  *
  */
 
 namespace HugaShop\Extensions\RedirectUrl;
 
-use HugaShop\Services\Cache;
 use HugaShop\Services\Design;
 use HugaShop\Services\Request;
 use HugaShop\Extensions\BaseExtension;
@@ -44,7 +43,7 @@ final class RedirectUrl extends BaseExtension
                 }
             }
 
-            Cache::cache(self::class)->clear(); # Cache clean
+            RedirectUrlModel::clearCache(); # Cache clean
         }
 
         $links = RedirectUrlModel::getList();
@@ -69,7 +68,7 @@ final class RedirectUrl extends BaseExtension
                 Design::setFlashMessage('update', RedirectUrlModel::updateOne($link->id, $link));
             }
 
-            Cache::cache(self::class)->clear(); # Cache clean
+            RedirectUrlModel::clearCache(); # Cache clean
             Request::makeRedirect("/admin/extension/RedirectUrl/link/$link->id");
         }
 
@@ -105,13 +104,7 @@ final class RedirectUrl extends BaseExtension
             return;
         }
 
-        $cache = Cache::cache(self::class);
-        $cache_item = $cache->getItem('redirect_list');
-        if (!$cache_item->isHit()) {
-            $cache_item->set(RedirectUrlModel::getList(['enabled' => 1]));
-            $cache->save($cache_item);
-        }
-        $links = $cache_item->get();
+        $links = RedirectUrlModel::getList(['enabled' => 1], cache: null);
 
         foreach ($links as $link) {
             [$pattern, $names] = $this->preparePattern($link->url);

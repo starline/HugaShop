@@ -183,7 +183,7 @@ abstract class BaseModel extends Model
      * @param string $select
      * @param int $cache Cache lifetime in seconds
      */
-    public static function getList(array $filter = [], array|string $order = [], array|string $join = [], ?string $select = null, ?int $cache = null)
+    public static function getList(array $filter = [], array|string $order = [], array|string $join = [], ?string $select = null, ?int $cache = 0)
     {
         $model = static::getModel();
         $query = $model->newQuery();
@@ -243,7 +243,7 @@ abstract class BaseModel extends Model
         };
 
         // Caching
-        if (!is_null($cache)) {
+        if ($cache > 0 || is_null($cache)) {
             $cache_key = 'list_' . md5(json_encode([$filter, $order, $join, $select]));
             return Cache::cache(static::class)->get($cache_key, function (ItemInterface $item) use ($callback, $cache) {
                 $item->expiresAfter($cache);
@@ -350,5 +350,14 @@ abstract class BaseModel extends Model
         }
 
         return $valid_values;
+    }
+
+
+    /**
+     * Model Cache clean
+     */
+    public static function cacheClear()
+    {
+        Cache::cache(static::class)->clear();
     }
 }
