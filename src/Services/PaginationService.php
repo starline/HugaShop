@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.2
  *
  * Service for pagination helpers
  */
@@ -36,10 +36,10 @@ class PaginationService
     /**
      * Assign pagination data to template
      */
-    public static function getPagination(int $itemsCount, array $filter)
+    public static function getPagination(int $items_count, array $filter)
     {
         $pagination = new \stdClass();
-        $pagination->pages_count = ceil($itemsCount / max((int) Settings::getParam('products_num_admin'), 1));
+        $pagination->pages_count = ceil($items_count / max($filter['limit'], 1));
         $pagination->current_page = $filter['limit'] === 'all'
             ? 'all'
             : $filter['page'];

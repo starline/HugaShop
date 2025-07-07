@@ -192,13 +192,13 @@ abstract class BaseModel extends Model
 
         // Сортировка
         if (is_string($order)) {
-            $order = [$order, 'asc'];
+            $order = [$order, 'desc'];
         }
         if (!empty($order)) {
-            $query->orderBy($order[0], $order[1] ?? 'asc');
+            $query->orderBy($order[0], $order[1] ?? 'desc');
         }
 
-        // Пагинация
+        // Pagination
         $page = $filter['page'] ?? 1;
         $limit = $filter['limit'] ?? null;
 
@@ -228,15 +228,39 @@ abstract class BaseModel extends Model
         return $model->runWithInitTable(function () use ($query) {
             $result = $query->get();
 
+            // Get settings
             foreach ($result as $item) {
                 $item->settings = empty($item->settings) ? new \stdClass() : (object) unserialize($item->settings);
             }
 
-            if ($language_code = Language::checkOrGetCode() and static::isTranslatable()) {
-                static::fillTranslations($result, $language_code);
-            }
-
             return $result;
+        });
+    }
+
+
+    /**
+     * Get count
+     * @param array $filter
+     */
+    public static function getCount(array $filter = []): int
+    {
+        $model = static::getModel();
+        $query = $model->newQuery();
+
+        // Удаляем параметры пагинации
+        unset($filter['page'], $filter['limit']);
+
+        // Применяем where-фильтры
+        foreach ($filter as $field => $value) {
+            if (is_array($value)) {
+                $query->whereIn($field, $value);
+            } else {
+                $query->where($field, $value);
+            }
+        }
+
+        return $model->runWithInitTable(function () use ($query) {
+            return $query->count();
         });
     }
 
@@ -275,33 +299,6 @@ abstract class BaseModel extends Model
         }
 
         return $result;
-    }
-
-
-    /**
-     * Get count
-     * @param array $filter
-     */
-    public static function getCount(array $filter = []): int
-    {
-        $model = static::getModel();
-        $query = $model->newQuery();
-
-        // Удаляем параметры пагинации
-        unset($filter['page'], $filter['limit']);
-
-        // Применяем where-фильтры
-        foreach ($filter as $field => $value) {
-            if (is_array($value)) {
-                $query->whereIn($field, $value);
-            } else {
-                $query->where($field, $value);
-            }
-        }
-
-        return $model->runWithInitTable(function () use ($query) {
-            return $query->count();
-        });
     }
 
 

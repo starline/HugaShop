@@ -4,9 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
- *
- * Этот класс использует шаблоны posts.tpl и post.tpl
+ * @version 2.2
  *
  */
 
@@ -26,15 +24,14 @@ class PostsController extends BaseFrontController
     public function postList(): Response
     {
 
-        $filter = PaginationService::initFilter(20);
+        $filter = PaginationService::initFilter(per_page: 10);
         $filter['visible'] = 1; # Выбираем только видимые посты
 
-        $posts =        ContentPost::getPosts($filter); # Выбираем статьи из базы
-        $posts_count =  ContentPost::countPosts($filter); # Вычисляем количество страниц
+        $posts =       ContentPost::getListTranslate($filter, order: 'date');
+        $posts_count = ContentPost::getCount($filter);
 
         // Передаем в шаблон
         Design::assign('posts', $posts);
-        Design::assign('posts_count', $posts_count);
         Design::assign('pagination', PaginationService::getPagination($posts_count, $filter));
         Design::assign('canonical', $this->generateUrlWithLocale('PostList'));
 

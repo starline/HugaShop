@@ -73,12 +73,12 @@ trait TranslationTrait
     /**
      * Fill list of entities with translations using one DB query
      */
-    public static function fillTranslations(iterable $entities, string $code): iterable
+    public static function fillTranslations(iterable $entities, string $code, bool $merge_fields = false): iterable
     {
         $ids = [];
-        foreach ($entities as $item) {
-            if (!empty($item->id)) {
-                $ids[] = $item->id;
+        foreach ($entities as $entity) {
+            if (!empty($entity->id)) {
+                $ids[] = $entity->id;
             }
         }
 
@@ -96,10 +96,16 @@ trait TranslationTrait
         });
 
         $fields = static::getTranslatableFields();
-        foreach ($entities as $item) {
-            $translation = $translations[$item->id] ?? null;
+        foreach ($entities as $entity) {
+            $translation = $translations[$entity->id] ?? null;
             foreach ($fields as $field) {
-                $item->$field = $translation->$field ?? null;
+                if ($merge_fields === true) {
+                    if (!empty($translation->$field)) {
+                        $entity->$field = $translation->$field;
+                    }
+                } else {
+                    $entity->$field = $translation->$field ?? null;
+                }
             }
         }
 
@@ -162,6 +168,20 @@ trait TranslationTrait
 
         if ($language_code = Language::checkOrGetCode() and static::isTranslatable()) {
             $result = static::fillTranslation($result, $language_code, merge_fields: true);
+        }
+        return $result;
+    }
+
+
+    /**
+     * Get Entities with merge translated fields
+     */
+    public static function getListTranslate(array $filter = [], array|string $order = [], array|string $join = [], ?string $select = null)
+    {
+        $result = self::getList($filter, $order, $join, $select);
+
+        if ($language_code = Language::checkOrGetCode() and static::isTranslatable()) {
+            static::fillTranslations($result, $language_code, merge_fields: true);
         }
         return $result;
     }

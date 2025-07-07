@@ -21,6 +21,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class PageController extends BaseFrontController
 {
+
     #[Route('/info/{url}', name: 'Page')]
     public function page(string $url): Response
     {
