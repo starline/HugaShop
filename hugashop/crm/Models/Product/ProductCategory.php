@@ -62,7 +62,7 @@ class ProductCategory extends BaseModel
             return;
         }
 
-        $cache_item = Cache::cache(self::class, lang: true)->getItem('categories');
+        $cache_item = Cache::cacheLang(self::class)->getItem('categories');
 
         if (!$cache_item->isHit()) {
 
@@ -159,7 +159,7 @@ class ProductCategory extends BaseModel
             $result_cache['categories_tree'] = $tree->subcategories;
             $result_cache['all_categories'] = $pointers;
 
-            Cache::cache(self::class, lang: true)->save($cache_item->set($result_cache));
+            Cache::cacheLang(self::class)->save($cache_item->set($result_cache));
         }
 
         $categories_cache = $cache_item->get();
@@ -318,7 +318,7 @@ class ProductCategory extends BaseModel
         $category = self::createOne($category);
 
 
-        Cache::cache(self::class, lang: true)->clear(); # Cache clean
+        Cache::cacheLang(self::class)->clear(); # Cache clean
         self::initCategories();
         return $category;
     }
@@ -334,7 +334,7 @@ class ProductCategory extends BaseModel
         $category = Helper::makeUniqSlug(self::class, $category);
         $result = self::updateOne($id, $category);
 
-        Cache::cache(self::class, lang: true)->clear(); # Cache clean
+        Cache::cacheLang(self::class)->clear(); # Cache clean
         self::initCategories();
         return $result;
     }
@@ -380,7 +380,7 @@ class ProductCategory extends BaseModel
             }
         }
 
-        Cache::cache(self::class, lang: true)->clear(); # Cache clean
+        Cache::cacheLang(self::class)->clear(); # Cache clean
         self::initCategories();
         return true;
     }

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
@@ -41,7 +41,7 @@ class Cache
      */
     public static function cacheLang(?string $name = null, int $time = 0)
     {
-        self::cache($name, $time, true);
+        return self::cache($name, $time, lang: true);
     }
 
 
