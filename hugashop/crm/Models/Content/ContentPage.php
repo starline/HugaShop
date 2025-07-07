@@ -10,6 +10,7 @@
 
 namespace HugaShop\Models\Content;
 
+use HugaShop\Services\Cache;
 use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
 
@@ -60,11 +61,11 @@ class ContentPage extends BaseModel
         }
 
         // Cache
-        $cache_item = Helper::cache(self::class)->getItem('menu');
+        $cache_item = Cache::cache(self::class)->getItem('menu');
 
         if (!$cache_item->isHit()) {
             $menu = ContentPage::getList(['menu' => 1, 'visible' => 1], order: 'position');
-            Helper::cache(self::class)->save($cache_item->set($menu));
+            Cache::cache(self::class)->save($cache_item->set($menu));
         } else {
             $menu = $cache_item->get();
         }
@@ -79,20 +80,22 @@ class ContentPage extends BaseModel
     public static function addPage(object|array $page)
     {
         $page = Helper::makeUniqSlug(self::class, $page);
-        return static::createOne($page);
+        return self::createOne($page);
     }
 
 
-    public static function updatePage(int|array $id, object|array $entity)
+    public static function updatePage(int|array $id, object|array $page)
     {
-        Helper::cache(self::class)->clear(); # Cache clean
-        return ContentPage::updateOne($id, $entity);
+        Cache::cache(self::class)->clear(); # Cache clean
+
+        $page = Helper::makeUniqSlug(self::class, $page); # If the URL exists, change it
+        return self::updateOne($id, $page);
     }
 
 
     public static function deletePage(int|array $id)
     {
-        Helper::cache(self::class)->clear(); # Cache clean
-        return ContentPage::deleteOne($id);
+        Cache::cache(self::class)->clear(); # Cache clean
+        return self::deleteOne($id);
     }
 }

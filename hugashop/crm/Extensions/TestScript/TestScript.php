@@ -737,7 +737,7 @@ class TestScript extends BaseExtension
 
                             // Finder. Clear Compiled and Cache CRM file
                             $finder = new Finder();
-                            $finder->in([Config::get('compiled_dir'), Config::get('api_cache_dir')]);
+                            $finder->in([Config::get('compiled_dir'), Config::get('app_cache_dir')]);
 
                             // Clear files
                             $files_count = 0;
@@ -748,7 +748,7 @@ class TestScript extends BaseExtension
                             $this->result[] = 'Clear files: ' . $files_count;
 
                             $filesystem = new Filesystem();
-                            $filesystem->remove([Config::get('compiled_dir'), Config::get('api_cache_dir')]);
+                            $filesystem->remove([Config::get('compiled_dir'), Config::get('app_cache_dir')]);
 
                             $this->result[] = 'Clear /compiled and /cache/hugashop directories';
                             break;

@@ -118,7 +118,7 @@
 				<!-- Изображение категории -->
 				<div id="images" class="layer images">
 					<h2>Изображения категории</h2>
-					{include file='parts\image_upload_part.tpl' images=$images can_edit=true}
+					{include file='parts\image_upload_part.tpl' images=$category->images can_edit=true}
 				</div>
 
 
@@ -169,13 +169,15 @@
 
 			<div class="col-12 layer">
 				<h2>Краткое описание</h2>
-				<textarea name="annotation" class="html_editor editor_small">{$category->annotation}</textarea>
+				<textarea id="annotation" name="annotation"
+					class="html_editor editor_small">{$category->annotation}</textarea>
 			</div>
 
 
 			<div class="col-12 layer">
 				<h2>Описание</h2>
-				<textarea name="description" class="html_editor editor_large">{$category->description}</textarea>
+				<textarea id="description" name="description"
+					class="html_editor editor_large">{$category->description}</textarea>
 			</div>
 
 

@@ -11,8 +11,12 @@
 	<meta name="language" content="{$current_language->code}">
 
 	{foreach from=$languages item=lang}
-		<link rel="alternate" hreflang="{$lang->code}" href="{'current'|urll:['locale' => $lang->code]}" />
+		<link rel="alternate" hreflang="{$lang->code}" href="{'current'|linkLang:['locale' => $lang->code]}" />
 	{/foreach}
+
+	{if $main_language}
+		<link rel="alternate" hreflang="x-default" href="{'current'|linkLang:['locale' => $main_language->code]}" />
+	{/if}
 
 	{if !$canonical|empty}
 		<link rel="canonical" href="{$config->root_url}{$canonical}" />

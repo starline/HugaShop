@@ -12,14 +12,14 @@
 
 			<!-- Product photo -->
 			{if $product->image}
-				<a class="image" href="{'Product'|urll:[url => $product->url]}">
+				<a class="image" href="{'Product'|linkLang:[url => $product->url]}">
 					<img {if $lazy}loading="lazy" {/if} class="object-fit-contain" width="220" height="220"
 						src="{$product->image->filename|resize:220:220}" alt="{$product->name}" title="{$product->name}" />
 				</a>
 			{/if}
 
 			<div class="product_info">
-				<a class="name" href="{'Product'|urll:[url => $product->url]}"
+				<a class="name" href="{'Product'|linkLang:[url => $product->url]}"
 					title="{$product->name}">{$product->name}</a>
 				<div class="annotation">{$product->annotation}</div>
 			</div>

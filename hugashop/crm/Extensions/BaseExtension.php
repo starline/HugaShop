@@ -10,10 +10,11 @@
 
 namespace HugaShop\Extensions;
 
+use HugaShop\Services\Cache;
+use HugaShop\Models\Settings;
 use HugaShop\Services\Config;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
-use HugaShop\Models\Settings;
 
 class BaseExtension
 {
@@ -24,7 +25,7 @@ class BaseExtension
 
     public function __construct()
     {
-        $this->class_name =         Helper::class_basename(static::class);
+        $this->class_name =         class_basename(static::class);
         $this->settings =           (object) (Settings::getParam($this->class_name) ?? []); # was array
         $this->config =             Helper::getModule($this->class_name, Config::get('extension_dir'));
     }
@@ -136,11 +137,11 @@ class BaseExtension
     {
         // Main Model is always ClassName . Model
         $full_class         = static::class;
-        $class_name         =  Helper::class_basename($full_class);
+        $class_name         = class_basename($full_class);
         $base_namespace     = preg_replace('/\\\\' . preg_quote($class_name, '/') . '$/', '', $full_class);
         $class              = $base_namespace . '\\Models\\' . $class_name;
 
         $class::updateOne($id, $entity);
-        Helper::cache(static::class)->clear();
+        Cache::cache(static::class)->clear();
     }
 }

@@ -4,18 +4,21 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.0
+ * @version 3.2
  *
  */
 
 namespace HugaShop\Models\Product;
 
 use HugaShop\Models\Image;
-use HugaShop\Services\Helper;
 use HugaShop\Models\SeoFaqs;
+use HugaShop\Services\Cache;
+use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\SeoKeywords;
 use HugaShop\Models\Product\Product;
+use HugaShop\Models\Localization\Language;
+use HugaShop\Models\Localization\AbstractTranslation;
 
 class ProductCategory extends BaseModel
 {
@@ -23,21 +26,22 @@ class ProductCategory extends BaseModel
     protected static $table_fields = [
         'id' =>                 ['type' => 'int'],
         'parent_id' =>          ['type' => 'int'],
-        'name' =>               ['type' => 'varchar',           'req' => true],
         'url' =>                ['type' => 'varchar'],
-        'meta_title' =>         ['type' => 'varchar'],
-        'meta_description' =>   ['type' => 'varchar'],
-        'h1' =>                 ['type' => 'varchar'],
-        'annotation' =>         ['type' => 'text'],
-        'description' =>        ['type' => 'text'],
-        'main' =>               ['type' => 'tinyint',           'def' => 0],
-        'visible' =>            ['type' => 'tinyint',           'def' => 0],
-        'position' =>           ['type' => 'int',               'def' => 0]
+        'name' =>               ['type' => 'varchar',       'trans' => true,    'req' => true],
+        'meta_title' =>         ['type' => 'varchar',       'trans' => true],
+        'meta_description' =>   ['type' => 'varchar',       'trans' => true],
+        'h1' =>                 ['type' => 'varchar',       'trans' => true],
+        'annotation' =>         ['type' => 'text',          'trans' => true],
+        'description' =>        ['type' => 'text',          'trans' => true],
+        'main' =>               ['type' => 'tinyint',   'def' => 0],
+        'visible' =>            ['type' => 'tinyint',   'def' => 0],
+        'position' =>           ['type' => 'int',       'def' => 0]
     ];
 
 
     private static $all_categories;  # Список указателей на категории в дереве категорий (ключ = id категории)
     private static $categories_tree; # Дерево категорий
+    private static $categories_lang; # Текущий язык загруженных категорий
 
     public function images()
     {
@@ -46,12 +50,19 @@ class ProductCategory extends BaseModel
             ->orderBy('position');
     }
 
+
     /**
      * Инициализация категорий, после которой категории будем выбирать из локальной переменной
      */
     private static function initCategories()
     {
-        $cache_item = Helper::cache()->getItem(Helper::class_basename(self::class));
+        $lang_code  = Language::getCurrent()->code;
+
+        if (isset(self::$categories_lang, self::$categories_tree) && self::$categories_lang === $lang_code) {
+            return;
+        }
+
+        $cache_item = Cache::cacheLang(self::class)->getItem('categories');
 
         if (!$cache_item->isHit()) {
 
@@ -65,11 +76,38 @@ class ProductCategory extends BaseModel
             $pointers[0]->path = [];
             $pointers[0]->level = 0;
 
-            // Выбираем картинки категорий
-            $categories = ProductCategory::with(['images']) # Загружаем связанную картинку
+            // Выбираем категории с учётом локали
+            $model  = self::getModel();
+            $query  = $model->newQuery();
+            $query->with(['images'])
                 ->orderBy('parent_id')
-                ->orderBy('position')
-                ->get()->toArray();
+                ->orderBy('position');
+
+            $baseTable         = $model->getTable();
+            $prefix            = $model->getConnection()->getTablePrefix();
+            $base_table_prefix = $prefix . $baseTable;
+
+            
+            // Translation
+            if ($language_code = Language::checkOrGetCode()) {
+                $transModel = AbstractTranslation::setTableTranslation(self::class);
+                $transTable = $transModel->getTable();
+
+                $select = ["{$base_table_prefix}.*"];
+                foreach (self::getTranslatableFields() as $field) {
+                    $select[] = "COALESCE({$prefix}{$transTable}.{$field}, {$base_table_prefix}.{$field}) as {$field}";
+                }
+
+                $query->leftJoin($transTable, function ($join) use ($transTable, $baseTable, $language_code) {
+                    $join->on("{$transTable}.entity_id", '=', "{$baseTable}.id")
+                        ->where("{$transTable}.language_code", '=', $language_code);
+                })->selectRaw(implode(', ', $select));
+            }
+
+
+            $categories = $model->runWithInitTable(function () use ($query) {
+                return $query->get()->toArray();
+            });
 
             $finish = false;
 
@@ -124,13 +162,14 @@ class ProductCategory extends BaseModel
             $result_cache['categories_tree'] = $tree->subcategories;
             $result_cache['all_categories'] = $pointers;
 
-            Helper::cache()->save($cache_item->set($result_cache));
+            Cache::cacheLang(self::class)->save($cache_item->set($result_cache));
         }
 
         $categories_cache = $cache_item->get();
 
-        self::$categories_tree = $categories_cache['categories_tree'];
-        self::$all_categories = $categories_cache['all_categories'];
+        self::$categories_tree  = $categories_cache['categories_tree'];
+        self::$all_categories   = $categories_cache['all_categories'];
+        self::$categories_lang  = $lang_code;
     }
 
 
@@ -140,20 +179,8 @@ class ProductCategory extends BaseModel
      */
     public static function getCategories(array $filter = [])
     {
-        if (!isset(self::$categories_tree)) {
+        if (!isset(self::$categories_tree) || self::$categories_lang !== Language::getCurrent()->code) {
             self::initCategories();
-        }
-
-        if (!empty($filter['product_id'])) {
-            $categories_ids = Product::getList(filter: ['id' =>  (array)$filter['product_id']], order: 'position', select: 'id');
-
-            $result = [];
-            foreach ($categories_ids as $id) {
-                if (isset(self::$all_categories[$id])) {
-                    $result[$id] = self::$all_categories[$id];
-                }
-            }
-            return $result;
         }
 
         // Выбираем категории для показа на главной.
@@ -200,7 +227,7 @@ class ProductCategory extends BaseModel
     public static function getCategoriesTree(array $filter = [])
     {
 
-        if (!isset(self::$categories_tree)) {
+        if (!isset(self::$categories_tree) || self::$categories_lang !== Language::getCurrent()->code) {
             self::initCategories();
         }
 
@@ -242,7 +269,7 @@ class ProductCategory extends BaseModel
      */
     public static function getCategory(int|string $id)
     {
-        if (!isset(self::$categories_tree)) {
+        if (!isset(self::$categories_tree) || self::$categories_lang !== Language::getCurrent()->code) {
             self::initCategories();
         }
 
@@ -294,7 +321,7 @@ class ProductCategory extends BaseModel
         $category = self::createOne($category);
 
 
-        Helper::cache()->delete(Helper::class_basename(self::class)); # Cache clean
+        Cache::cacheLang(self::class)->clear(); # Cache clean
         self::initCategories();
         return $category;
     }
@@ -310,7 +337,7 @@ class ProductCategory extends BaseModel
         $category = Helper::makeUniqSlug(self::class, $category);
         $result = self::updateOne($id, $category);
 
-        Helper::cache()->delete(Helper::class_basename(self::class)); # Cache clean
+        Cache::cacheLang(self::class)->clear(); # Cache clean
         self::initCategories();
         return $result;
     }
@@ -356,7 +383,7 @@ class ProductCategory extends BaseModel
             }
         }
 
-        Helper::cache()->delete(Helper::class_basename(self::class)); # Cache clean
+        Cache::cacheLang(self::class)->clear(); # Cache clean
         self::initCategories();
         return true;
     }

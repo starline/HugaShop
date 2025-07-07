@@ -12,7 +12,6 @@ namespace HugaShop\Models;
 
 use HugaShop\Services\Config;
 use Illuminate\Support\Str;
-use HugaShop\Services\Helper;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Model;
@@ -38,7 +37,7 @@ abstract class BaseModel extends Model
         self::autoBootDB();
 
         // Auto DB table naming
-        $this->table ?? $this->table = Str::snake(Helper::class_basename(static::class));
+        $this->table ?? $this->table = Str::snake(class_basename(static::class));
 
         parent::__construct($attributes);
     }
@@ -273,10 +272,6 @@ abstract class BaseModel extends Model
         // Settings
         if ($result) {
             $result->settings = empty($result->settings) ? new \stdClass() : (object) unserialize($result->settings);
-
-            if ($language_code = Language::checkOrGetCode() and static::isTranslatable()) {
-                $result = static::fillTranslation($result, $language_code);
-            }
         }
 
         return $result;

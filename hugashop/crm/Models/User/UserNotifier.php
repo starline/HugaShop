@@ -177,7 +177,7 @@ class UserNotifier extends BaseModel
             $comment->product = Product::getProduct(intval($comment->entity_id));
         }
         if ($comment->type == 'blog') {
-            $comment->post = ContentPost::getPost(intval($comment->entity_id));
+            $comment->post = ContentPost::getOne($comment->entity_id);
         }
 
         Design::assign([

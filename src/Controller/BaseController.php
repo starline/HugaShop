@@ -41,7 +41,8 @@ class BaseController extends AbstractController
         // Inject Symfony session
         Request::startSession($this->requestStack->getSession());
 
-        Design::setModifierPlugin('urll', $this, 'generateUrlWithLocale');
+        Design::setModifierPlugin('linkLang', $this, 'generateUrlWithLocale');
+        Design::setModifierPlugin('urll', $UrlGenerator, 'generate');
         Design::assign('route', $this->requestStack->getCurrentRequest()->attributes->get('_route'));
     }
 
@@ -157,9 +158,9 @@ class BaseController extends AbstractController
     public function generateUrlWithLocale(string $routeName, array $params = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
     {
         if ($routeName === 'current') {
-            $request = $this->requestStack->getCurrentRequest();
-            $url = $request->getPathInfo();
-            $query = $request->getQueryString();
+            $request    = $this->requestStack->getCurrentRequest();
+            $url        = $request->getPathInfo();
+            $query      = $request->getQueryString();
             if ($query) {
                 $url .= '?' . $query;
             }

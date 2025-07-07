@@ -5,14 +5,14 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  */
 
 namespace HugaShop\Models\Localization;
 
+use HugaShop\Services\Cache;
 use HugaShop\Models\BaseModel;
-use HugaShop\Services\Helper;
 
 class Language extends BaseModel
 {
@@ -29,16 +29,17 @@ class Language extends BaseModel
     public static $main_language;
     public static $current_language;
 
+
     /**
      * Init languages from cache
      */
     private static function initLanguages()
     {
-        $cache_item = Helper::cache()->getItem(Helper::class_basename(self::class));
+        $cache_item = Cache::getCacheItem(self::class);
 
         if (!$cache_item->isHit()) {
             $languages = self::query()->orderBy('id')->get();
-            Helper::cache()->save($cache_item->set($languages));
+            Cache::saveCacheItem($cache_item->set($languages));
         }
 
         self::$languages = $cache_item->get();
@@ -119,7 +120,7 @@ class Language extends BaseModel
 
         $result = self::deleteOne($language_id);
 
-        Helper::cache()->delete(Helper::class_basename(self::class)); # Cache clean
+        Cache::deleteCacheItem(self::class); # Cache clean
         self::initLanguages();
 
         return $result;
@@ -141,7 +142,7 @@ class Language extends BaseModel
 
         $language = parent::createOne($values);
 
-        Helper::cache()->delete(Helper::class_basename(self::class)); # Cache clean
+        Cache::deleteCacheItem(self::class); # Cache clean
         self::initLanguages();
 
         return $language;
@@ -165,7 +166,7 @@ class Language extends BaseModel
 
         $result = parent::updateOne($ids, $values);
 
-        Helper::cache()->delete(Helper::class_basename(self::class)); # Cache clean
+        Cache::deleteCacheItem(self::class); # Cache clean
         self::initLanguages();
 
         return $result;

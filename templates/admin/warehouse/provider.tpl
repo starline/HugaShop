@@ -19,11 +19,11 @@
 			<div class="col-12">
 				<div class="over_name">
 					<div class="checkbox_line">
-                                                <div class="form-check form-switch">
-                                                        <input class="form-check-input" name="no_restore_price" value="1" type="checkbox" role="switch"
-                                                                id="no_restore_price_checkbox" {if $provider->no_restore_price}checked{/if} />
-                                                        <label class="form-check-label" for="no_restore_price_checkbox">Не обнулять склад</label>
-                                                </div>
+						<div class="form-check form-switch">
+							<input class="form-check-input" name="no_restore_price" value="1" type="checkbox" role="switch"
+								id="no_restore_price_checkbox" {if $provider->no_restore_price}checked{/if} />
+							<label class="form-check-label" for="no_restore_price_checkbox">Не обнулять склад</label>
+						</div>
 					</div>
 				</div>
 
@@ -34,9 +34,8 @@
 
 			<div class="col-12 layer">
 				<h2>Описание</h2>
-				<textarea name="description" class="html_editor editor_large">{$provider->description}</textarea>
-
-
+				<textarea id="description" name="description"
+					class="html_editor editor_large">{$provider->description}</textarea>
 			</div>
 
 			<div class="col-12 btn_row">

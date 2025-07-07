@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.7
+ * @version 3.8
  *
  * Product Content
  *
@@ -13,15 +13,17 @@
 namespace HugaShop\Models\Product;
 
 use HugaShop\Models\Image;
-use HugaShop\Services\Helper;
 use Illuminate\Support\Arr;
+use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\Order\OrderPurchase;
+use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Product\ProductOption;
 use HugaShop\Models\Content\ContentComment;
 use HugaShop\Models\Product\ProductRelated;
 use HugaShop\Models\Product\ProductVariant;
 use HugaShop\Models\Warehouse\WarehousePurchase;
+use HugaShop\Models\Localization\AbstractTranslation;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends BaseModel
@@ -186,28 +188,50 @@ class Product extends BaseModel
         $model = static::getModel();
         $query = $model->newQuery();
 
-        // Filters
-        if (isset($filter['id'])) {
-            $query->whereIn('id', (array)$filter['id']);
+        $baseTable          = $model->getTable();
+        $prefix             = $model->getConnection()->getTablePrefix();
+        $base_table_prefix  = $prefix . $baseTable;
+
+        // Join translation table for current locale if needed
+        $transTable = null;
+        if ($language_code = Language::checkOrGetCode()) {
+            $transModel  = AbstractTranslation::setTableTranslation(static::class);
+            $transTable  = $transModel->getTable();
+
+            $select = ["{$base_table_prefix}.*"];
+            foreach (static::getTranslatableFields() as $field) {
+                $select[] = "COALESCE({$prefix}{$transTable}.{$field}, {$base_table_prefix}.{$field}) as {$field}";
+            }
+
+            $query->leftJoin($transTable, function ($join) use ($transTable, $baseTable, $language_code) {
+                $join->on("{$transTable}.entity_id", '=', "{$baseTable}.id")
+                    ->where("{$transTable}.language_code", '=', $language_code);
+            })->selectRaw(implode(', ', $select));
         }
 
-        if (isset($filter['category_id'])) {
+
+        // Filters
+        if (Arr::has($filter, 'id')) {
+            $query->whereIn($baseTable . '.id', (array)$filter['id']);
+        }
+
+        if (!empty($filter['category_id'])) {
             $query->whereIn('category_id', (array)$filter['category_id']);
         }
 
-        if (isset($filter['brand_id'])) {
+        if (Arr::has($filter, 'brand_id')) {
             $query->whereIn('brand_id', (array)$filter['brand_id']);
         }
 
-        if (isset($filter['featured'])) {
+        if (Arr::has($filter, 'featured')) {
             $query->where('featured', $filter['featured']);
         }
 
-        if (isset($filter['sale'])) {
+        if (Arr::has($filter, 'sale')) {
             $query->where('sale', $filter['sale']);
         }
 
-        if (isset($filter['visible'])) {
+        if (Arr::has($filter, 'visible')) {
             $query->where('visible', $filter['visible']);
         }
 
@@ -215,24 +239,28 @@ class Product extends BaseModel
             $query->where('disable', $filter['disable']);
         }
 
-        if (isset($filter['discounted'])) {
+        if (Arr::has($filter, 'discounted')) {
             $query->whereColumn('old_price', '>', 'price');
         }
 
-        if (isset($filter['in_stock'])) {
+        if (Arr::has($filter, 'in_stock')) {
             $query->where(function ($q) {
                 $q->where('stock', '>', 0)->orWhereNull('stock');
             });
         }
 
-        // Keyword search
+        // Keyword search including translations
         if (!empty($filter['keyword'])) {
             $keywords = explode(' ', trim($filter['keyword']));
-            $query->where(function ($q) use ($keywords) {
+            $query->where(function ($q) use ($keywords, $language_code, $transTable) {
                 foreach ($keywords as $kw) {
                     $q->orWhere('name', 'like', "%$kw%")
                         ->orWhere('sku', 'like', "%$kw%")
                         ->orWhere('variant_name', 'like', "%$kw%");
+                    if ($language_code) {
+                        $q->orWhere("{$transTable}.name", 'like', "%$kw%")
+                            ->orWhere("{$transTable}.variant_name", 'like', "%$kw%");
+                    }
                 }
             });
         }
@@ -256,7 +284,22 @@ class Product extends BaseModel
             $query->with($join);
         }
 
+
         // Sorting
+        if (Arr::has($filter, 'sort_disable')) {
+            $query->orderByRaw(
+                "CASE WHEN {$base_table_prefix}.disable = 1 THEN 2 " .
+                    "WHEN {$base_table_prefix}.stock IS NULL OR {$base_table_prefix}.stock > 0 THEN 0 ELSE 1 END"
+            );
+        }
+
+        if (Arr::has($filter, 'sort_in_stock')) {
+            $query->orderByRaw(
+                "CASE WHEN {$base_table_prefix}.stock IS NULL OR " .
+                    "{$base_table_prefix}.stock > 0 THEN 0 ELSE 1 END"
+            );
+        }
+
         $sort = $filter['sort'] ?? 'position';
         switch ($sort) {
             case 'name':
@@ -268,10 +311,11 @@ class Product extends BaseModel
             case 'price':
                 $query->orderBy('price');
                 break;
-            default:
+            case 'position':
                 $query->orderByDesc('position');
                 break;
         }
+
 
         // Pagination
         if (!empty($filter['limit']) && $filter['limit'] !== 'all') {
@@ -300,7 +344,7 @@ class Product extends BaseModel
     /**
      * Функция возвращает товар
      * @param int|string $id - id или name
-     * @param array $join 'variant'|'related'|'relared.image'|'image'|'images'
+     * @param array $join [ 'variant', 'related', 'relared.image', 'image', 'images' ]
      * @return object
      */
     public static function getProduct(int|string $id, array $join = [])

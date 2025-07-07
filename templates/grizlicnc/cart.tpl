@@ -23,7 +23,7 @@
 							<div class="py-4 border-top">
 
 								<div class="delete mt-5">
-									<a href="{'CartRemove'|urll:[product_id => $purchase->product->id]}" class="ajax">
+									<a href="{'CartRemove'|linkLang:[product_id => $purchase->product->id]}" class="ajax">
 										<img loading="lazy" src="{'/images/delete.png'|asset}" data-bs-toggle="tooltip"
 											title="Удалить из корзины" alt="Удалить из корзины">
 									</a>
@@ -31,7 +31,7 @@
 
 								<div class="row">
 									<div class="col-auto">
-										<a href="{'Product'|urll:[url => $purchase->product->url]}">
+										<a href="{'Product'|linkLang:[url => $purchase->product->url]}">
 											<img class="object-fit-contain" width="120" height="120" loading="lazy"
 												src="{$purchase->product->image->filename|resize:220:220}"
 												alt="{$purchase->product->name}">
@@ -40,7 +40,7 @@
 									<div class="col">
 										<div>
 											<a
-												href="{'Product'|urll:[url => $purchase->product->url]}">{$purchase->product->name}</a>
+												href="{'Product'|linkLang:[url => $purchase->product->url]}">{$purchase->product->name}</a>
 											{if $purchase->product->variant_name} - {$purchase->product->variant_name}{/if}
 										</div>
 
@@ -74,7 +74,7 @@
 
 							<div class="row g-3">
 								<div class="col-12">
-									<a class="btn btn-primary" href="{'Checkout'|urll}">Оформить заказ</a>
+									<a class="btn btn-primary" href="{'Checkout'|linkLang}">Оформить заказ</a>
 								</div>
 							</div>
 						</div>

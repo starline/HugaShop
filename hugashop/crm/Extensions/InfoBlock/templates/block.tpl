@@ -18,13 +18,13 @@
 
 			<div class="col-12">
 				<div class="over_name">
-                                        <div class="checkbox_line">
-                                                <div class="form-check form-switch">
-                                                        <input class="form-check-input" name="enabled" value="1" type="checkbox" role="switch" id="enabled"
-                                                                {if $block->enabled}checked{/if} />
-                                                        <label class="form-check-label" for="enabled">Активна</label>
-                                                </div>
-                                        </div>
+					<div class="checkbox_line">
+						<div class="form-check form-switch">
+							<input class="form-check-input" name="enabled" value="1" type="checkbox" role="switch"
+								id="enabled" {if $block->enabled}checked{/if} />
+							<label class="form-check-label" for="enabled">Активна</label>
+						</div>
+					</div>
 				</div>
 
 				<div class="name_row">
@@ -35,7 +35,7 @@
 
 			<div class="col-12 layer">
 				<h2>Текст страницы</h2>
-				<textarea name="body" class="html_editor editor_large form-control">{$block->body}</textarea>
+				<textarea id="body" name="body" class="html_editor editor_large form-control">{$block->body}</textarea>
 			</div>
 
 			<div class="col-12 btn_row">

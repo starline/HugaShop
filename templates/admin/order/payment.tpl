@@ -20,16 +20,16 @@
 			<div class="col-12">
 				<div class="over_name">
 					<div class="checkbox_line">
-                                                <div class="form-check form-switch">
-                                                        <input class="form-check-input" name="enabled" value="1" type="checkbox" role="switch" id="enabled"
-                                                                {if $payment_method->enabled}checked{/if} />
-                                                        <label class="form-check-label" for="enabled">Показывать менеджеру</label>
-                                                </div>
-                                                <div class="form-check form-switch">
-                                                        <input class="form-check-input" name="enabled_public" value="1" type="checkbox" role="switch"
-                                                                id="enabled_public" {if $payment_method->enabled_public}checked{/if} />
-                                                        <label class="form-check-label" for="enabled_public">Показывать клиенту при заказе</label>
-                                                </div>
+						<div class="form-check form-switch">
+							<input class="form-check-input" name="enabled" value="1" type="checkbox" role="switch"
+								id="enabled" {if $payment_method->enabled}checked{/if} />
+							<label class="form-check-label" for="enabled">Показывать менеджеру</label>
+						</div>
+						<div class="form-check form-switch">
+							<input class="form-check-input" name="enabled_public" value="1" type="checkbox" role="switch"
+								id="enabled_public" {if $payment_method->enabled_public}checked{/if} />
+							<label class="form-check-label" for="enabled_public">Показывать клиенту при заказе</label>
+						</div>
 					</div>
 				</div>
 
@@ -114,7 +114,8 @@
 
 			<div class="col-12 layer">
 				<h2>Описание для клиента</h2>
-				<textarea name="description" class="html_editor editor_small">{$payment_method->description}</textarea>
+				<textarea id="description" name="description"
+					class="html_editor editor_small">{$payment_method->description}</textarea>
 			</div>
 
 			<div class="col-12 btn_row">

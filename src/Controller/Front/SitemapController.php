@@ -10,11 +10,11 @@
 
 namespace App\Controller\Front;
 
+use HugaShop\Services\Cache;
 use HugaShop\Services\Config;
-use HugaShop\Services\Helper;
 use HugaShop\Models\Product\Product;
-use HugaShop\Models\Content\ContentPost;
 use App\Controller\BaseFrontController;
+use HugaShop\Models\Content\ContentPost;
 use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -26,7 +26,7 @@ class SitemapController extends BaseFrontController
     {
 
         // Cache
-        $cache_item = Helper::cache(self::class, 60 * 60)->getItem('sitemap');
+        $cache_item = Cache::cache(self::class, 60 * 60)->getItem('sitemap');
 
         if (!$cache_item->isHit()) {
             $result = '<?xml version="1.0" encoding="UTF-8"?>';
@@ -92,7 +92,7 @@ class SitemapController extends BaseFrontController
 
             $result .=  '</urlset>';
 
-            Helper::cache(self::class)->save($cache_item->set($result));
+            Cache::cache(self::class)->save($cache_item->set($result));
         }
 
         $result = $cache_item->get();

@@ -51,18 +51,6 @@ class ContentPost extends BaseModel
 
 
     /**
-     * Get post by ID(string) ot URL(string)
-     * @param int|string $id id или url поста
-     */
-    public static function getPost(int|string $id, array $join = [])
-    {
-        return is_int($id)
-            ? ContentPost::getOne($id, $join)
-            : ContentPost::getOne(['url' => $id], $join);
-    }
-
-
-    /**
      * Функция возвращает массив постов, удовлетворяющих фильтру
      * @param $filter
      * @param $count
@@ -89,6 +77,7 @@ class ContentPost extends BaseModel
                 });
             }
         }
+
         if ($count) {
             return $query->count();
         }

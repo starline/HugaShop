@@ -4,57 +4,24 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.3
+ * @version 3.5
  *
  */
 
 namespace HugaShop\Services;
 
 use ReCaptcha\ReCaptcha;
-use HugaShop\Services\Config;
 use Illuminate\Support\Str;
 use Jenssegers\Agent\Agent;
 use HugaShop\Models\Settings;
-use HugaShop\Services\Request;
+use HugaShop\Services\Config;
 use HugaShop\Services\Design;
+use HugaShop\Services\Request;
 use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 
 class Helper
 {
-
-    private static $cache;
-
-    /**
-     * Cache
-     * @param ?string $name = null default HugaShop
-     * @param int $time Time in seconds. default 0
-     */
-    public static function cache(?string $name = null, int $time = 0)
-    {
-        if (is_null($name)) {
-            return self::$cache['HugaShop'] ?? self::$cache['HugaShop'] = new FilesystemAdapter('HugaShop', $time, Config::get('api_cache_dir'));
-        } else {
-            $name = str_replace('\\', '', $name);
-            return self::$cache[$name] ?? self::$cache[$name] = new FilesystemAdapter($name, $time, Config::get('api_cache_dir'));
-        }
-    }
-
-
-    /**
-     * Get the class "basename" of the given Object/Class.
-     * Example: Folder\\Folder\\Class to Class
-     *
-     * @param  string|object  $class
-     * @return string
-     */
-    public static function class_basename($class): string
-    {
-        $class = is_object($class) ? get_class($class) : $class;
-        return basename(str_replace('\\', '/', $class));
-    }
-
 
     /**
      * Camel to Snake Case

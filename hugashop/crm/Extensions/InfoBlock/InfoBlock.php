@@ -10,6 +10,7 @@
 
 namespace HugaShop\Extensions\InfoBlock;
 
+use HugaShop\Services\Cache;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
@@ -54,7 +55,7 @@ final class InfoBlock extends BaseExtension
                 InfoBlockModel::updateOne($id, ['position' => $position]);
             }
 
-            Helper::cache(self::class)->clear();
+            Cache::cache(InfoBlock::class)->clear();
         }
 
         $blocks = InfoBlockModel::getList([], 'position');
@@ -79,7 +80,7 @@ final class InfoBlock extends BaseExtension
                 $block = Design::setFlashMessage('add', InfoBlockModel::createOne($block));
             } else {
                 Design::setFlashMessage('update', InfoBlockModel::updateOne($block->id, $block));
-                Helper::cache(self::class)->clear();
+                Cache::cache(InfoBlock::class)->clear();
             }
 
             Request::makeRedirect("/admin/extension/InfoBlock/block/$block->id");
@@ -114,7 +115,7 @@ final class InfoBlock extends BaseExtension
 
         $enabled = $params['enabled'] ?? '1';
 
-        $cache_item = Helper::cache(self::class)->getItem('item_' . $params['id']);
+        $cache_item = Cache::cache(InfoBlock::class)->getItem('item_' . $params['id']);
         if (!$cache_item->isHit()) {
 
             $block = InfoBlockModel::getOne(['id' => intval($params['id']), 'enabled' => $enabled]);
@@ -125,7 +126,7 @@ final class InfoBlock extends BaseExtension
             Design::assign('InfoBlock', $block->body);
             $info_block = $this->fetchTemplate('templates/info_block.tpl');
 
-            Helper::cache(self::class)->save($cache_item->set($info_block));
+            Cache::cache(InfoBlock::class)->save($cache_item->set($info_block));
         } else {
             $info_block = $cache_item->get();
         }

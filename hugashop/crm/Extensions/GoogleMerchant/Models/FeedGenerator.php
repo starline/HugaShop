@@ -15,14 +15,14 @@
 namespace HugaShop\Extensions\GoogleMerchant\Models;
 
 use HugaShop\Models\Image;
-use HugaShop\Services\Config;
-use HugaShop\Services\Helper;
+use HugaShop\Services\Cache;
 use HugaShop\Models\Settings;
+use HugaShop\Services\Config;
 use HugaShop\Models\Product\Product;
 use HugaShop\Models\Product\ProductOption;
+use Symfony\Contracts\Cache\ItemInterface;
 use HugaShop\Models\Finance\FinanceCurrency;
 use HugaShop\Models\Product\ProductCategory;
-use Symfony\Contracts\Cache\ItemInterface;
 use HugaShop\Extensions\GoogleMerchant\Models\GoogleMerchantCategory;
 
 class FeedGenerator
@@ -35,7 +35,7 @@ class FeedGenerator
         self::$pricefeed = $pricefeed; # for use in cache function
 
         // The callable will only be executed on a cache miss.
-        $response = Helper::cache(self::class)->get('item_' . $pricefeed->id, function (ItemInterface $item): array {
+        $response = Cache::cache(self::class)->get('item_' . $pricefeed->id, function (ItemInterface $item): array {
             $item->expiresAfter(10); # seconds
 
             $feed_data = [];

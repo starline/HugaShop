@@ -49,9 +49,14 @@
                         success: function(data) {
                             for (const field in data) {
                                 const el = $('[name="' + field + '"]');
-                                if (field === 'body' && typeof tinymce !== 'undefined') {
-                                    tinymce.activeEditor.setContent(data[field]);
-                                } else if (el.length) {
+
+                                // Если это редактор TinyMCE
+                                if (typeof tinymce !== 'undefined' && tinymce.get(field)) {
+                                    tinymce.get(field).setContent(data[field]);
+                                }
+                                
+                                // Если обычный элемент формы
+                                else if (el.length) {
                                     el.val(data[field]);
                                 }
                             }

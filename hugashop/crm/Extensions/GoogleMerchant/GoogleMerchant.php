@@ -10,6 +10,7 @@
 
 namespace HugaShop\Extensions\GoogleMerchant;
 
+use HugaShop\Services\Cache;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
@@ -49,7 +50,7 @@ final class GoogleMerchant extends BaseExtension
                 GoogleMerchantModel::updateOne($id, ['position' => $position]);
             }
 
-            Helper::cache(FeedGenerator::class)->clear();
+            Cache::cache(FeedGenerator::class)->clear();
         }
 
         $pricefeeds = GoogleMerchantModel::getList([], 'position');
@@ -78,7 +79,7 @@ final class GoogleMerchant extends BaseExtension
                 Design::setFlashMessage('update', GoogleMerchantModel::updateOne($pricefeed->id, $pricefeed) >= 0);
 
                 // Cache clean
-                Helper::cache(FeedGenerator::class)->delete('item_' . $pricefeed->id);
+                Cache::cache(FeedGenerator::class)->delete('item_' . $pricefeed->id);
             }
 
             $pricefeed_categories = Request::post('pricefeed_categories', 'array');

@@ -34,7 +34,7 @@ class ProductListController extends BaseAdminController
 
         // Текущая категория
         $category_id = Request::getInt('category_id');
-        $filter['category_id'] = $category_id;
+        $filter['category_id'] = $category_id ?: null;
 
         // Если категория существует Выбираем всех деток категории
         if ($category_id && $category = ProductCategory::getCategoryById($category_id)) {
@@ -179,19 +179,6 @@ class ProductListController extends BaseAdminController
                             }
                             break;
                         }
-                    case 'move_to_brand': {
-                            $brand_id = Request::postInt('target_brand');
-                            $brand = ProductBrand::getBrand($brand_id);
-                            $filter['page'] = 1;
-                            $filter['brand_id'] = $brand_id;
-                            Product::updateProduct($ids, ["brand_id" => $brand_id]);
-
-                            // Заново выберем бренды категории
-                            $brands = ProductBrand::getBrands(['category_id' => $category_id]);
-                            Design::assign('brands', $brands);
-
-                            break;
-                        }
                 }
             }
         }
@@ -215,9 +202,6 @@ class ProductListController extends BaseAdminController
             }
         }
 
-        // Все Бренды
-        $all_brands = ProductBrand::getBrands();
-
         // Бренды категории
         $brands = ProductBrand::getBrands(['category_id' => $filter['category_id']]);
 
@@ -228,7 +212,6 @@ class ProductListController extends BaseAdminController
         Design::assign('products',          $products);
         Design::assign('products_count',    $products_count);
         Design::assign('categories',        $categories);
-        Design::assign('all_brands',        $all_brands);
         Design::assign('brands',            $brands);
 
         return $this->fetchResponse('product/product_list.tpl');

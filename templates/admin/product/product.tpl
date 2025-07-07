@@ -28,7 +28,7 @@
 								категории в админке</a>
 						{/if}
 						{if $product->id}
-							<a class="out_link" target="_self" href="{$settings->site_url}/product/{$product->id}">Открыть товар
+							<a class="out_link" target="_self" href="{'Product'|linkLang:[url => $product->url]}">Открыть товар
 								на сайте</a>
 						{/if}
 					</div>
@@ -179,7 +179,7 @@
 			<!-- Полное описание -->
 			<div class="col-12 layer">
 				<h2>Полное описание</h2>
-				<textarea name="body" class="html_editor editor_large">{$product->body}</textarea>
+				<textarea id="body" name="body" class="html_editor editor_large">{$product->body}</textarea>
 			</div>
 
 			<div class="col-12 btn_row">

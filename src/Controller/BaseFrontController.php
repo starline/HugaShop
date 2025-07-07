@@ -34,8 +34,8 @@ class BaseFrontController extends BaseController
         Design::initSettings(['theme' => Settings::getParam('theme'), 'packages' => $this->Packages]);
 
         // Locale
-        $locale = Language::getCurrent();
-        $this->setTranslator($locale->code, Settings::getParam('theme'));
+        $current_language = Language::getCurrent();
+        $this->setTranslator($current_language->code, Settings::getParam('theme'));
 
         Cart::catchCartSession();
 
@@ -52,7 +52,8 @@ class BaseFrontController extends BaseController
             'categories'        => ProductCategory::getCategoriesTree(['visible' => 1]),
             'cart'              => Cart::getCurrentCart(), # current cart
             'languages'         => Language::getLanguages(),
-            'current_language'  => $locale
+            'current_language'  => $current_language,
+            'main_language'     => Language::getMain()
         ]);
 
         // Smarty Plugins
@@ -108,28 +109,22 @@ class BaseFrontController extends BaseController
      */
     public function getBrowsedProducts($params, $smarty)
     {
+        $cookie_bp = Request::getCookie('BP');
 
-        if (!empty($cookie_bp = Request::getCookie('BP'))) {
-            $browsed_products_ids = explode('.', $cookie_bp);
-            $browsed_products_ids = array_reverse($browsed_products_ids);
+        if (!empty($cookie_bp)) {
+            $browsed_products_ids = array_reverse(array_filter(explode('.', $cookie_bp)));
 
             if (isset($params['limit'])) {
                 $browsed_products_ids = array_slice($browsed_products_ids, 0, $params['limit']);
             }
 
-            $browsed_products = Product::getProducts(['id' => $browsed_products_ids, 'visible' => 1], join: ['image']);
+            $browsed_products = Product::getProducts([
+                'id' => $browsed_products_ids,
+                'visible' => 1
+            ], join: ['image']);
 
-            if (!empty($browsed_products)) {
-
-                // Сортируем товары в порядке просмотра
-                $browsed_products_sort = [];
-                foreach ($browsed_products_ids as $bp_id) {
-                    if ($browsed_products[$bp_id]) {
-                        $browsed_products_sort[] = $browsed_products[$bp_id];
-                    }
-                }
-
-                $smarty->assign($params['var'], $browsed_products_sort);
+            if (!empty($browsed_products) && !empty($params['var'])) {
+                $smarty->assign($params['var'], array_values($browsed_products->all()));
             }
         }
     }
