@@ -29,7 +29,7 @@ class OrderLabel extends BaseModel
      */
     public static function getLabels()
     {
-        return self::getList([], 'position');
+        return self::getList(order: 'position');
     }
 
 

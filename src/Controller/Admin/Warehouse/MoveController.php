@@ -218,7 +218,7 @@ class MoveController extends BaseAdminController
 
         $can_change_place = $can_edit && !in_array($movement->status, [2, 3], true);
 
-        $warehouse_places = WarehousePlace::getList(['enabled' => 1], 'position');
+        $warehouse_places = WarehousePlace::getList(['enabled' => 1], order: 'position');
 
         Design::assign([
             'movement'          => $movement,

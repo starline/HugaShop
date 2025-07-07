@@ -51,7 +51,7 @@ class FeedGenerator
             // TODO: Select all child categories
             $filter['category_id'] = $categories;
             $filter['visible'] = 1;
-            $products_raw = Product::getList($filter, 'position', ['image', 'brand']);
+            $products_raw = Product::getList($filter, order: 'position', join: ['image', 'brand']);
 
             // В качестве id используется артикул
             foreach ($products_raw as $product_raw) {

@@ -34,7 +34,7 @@ class ProductMarkingController extends BaseAdminController
         }
 
         Design::assign('product', $product);
-        Design::assign('count', Request::getVar('count', 'int') ?: 1);
+        Design::assign('count', Request::input('count', 'int') ?: 1);
 
         // Выводим на экран
         return $this->fetchResponse('product/product_marking_print.tpl');

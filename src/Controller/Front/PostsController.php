@@ -27,7 +27,7 @@ class PostsController extends BaseFrontController
         $filter = PaginationService::initFilter(per_page: 10);
         $filter['visible'] = 1; # Выбираем только видимые посты
 
-        $posts =       ContentPost::getListTranslate($filter, order: 'date');
+        $posts =       ContentPost::getListTranslate($filter, order: ['date', 'desc']);
         $posts_count = ContentPost::getCount($filter);
 
         // Передаем в шаблон

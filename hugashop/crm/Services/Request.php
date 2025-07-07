@@ -54,7 +54,7 @@ class Request
      * @param string $var_name
      * @param string $type
      */
-    public static function getVar(?string $var_name = null, ?string $type = null)
+    public static function input(?string $var_name = null, ?string $type = null)
     {
         $val = null;
         $val = self::post($var_name, $type);

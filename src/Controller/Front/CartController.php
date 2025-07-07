@@ -42,8 +42,8 @@ class CartController extends BaseFrontController
     #[Route('/cart/add', name: 'CartAdd', priority: 2)]
     public function cartAdd()
     {
-        $product_id =   Request::getVar('product_id', 'int') ?: null;
-        $amount =       Request::getVar('amount', 'int') ?: 1;
+        $product_id =   Request::input('product_id', 'int') ?: null;
+        $amount =       Request::input('amount', 'int') ?: 1;
 
         // Добавим товар в корзину
         if (CartPurchase::addCartPurchase($product_id, $amount)) {
@@ -104,8 +104,8 @@ class CartController extends BaseFrontController
     public function cartInformer()
     {
 
-        $amount     = Request::getVar('amount', 'int') ?: 1;
-        $product_id = Request::getVar('product_id', 'int') ?: null;
+        $amount     = Request::input('amount', 'int') ?: 1;
+        $product_id = Request::input('product_id', 'int') ?: null;
 
         // Add product to cart
         if (!empty($product_id)) {

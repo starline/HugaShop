@@ -53,7 +53,7 @@ final class YandexMerchant extends BaseExtension
             Cache::cache(FeedGenerator::class)->clear();
         }
 
-        $pricefeeds = YandexMerchantModel::getList([], 'position');
+        $pricefeeds = YandexMerchantModel::getList(order: 'position');
         Design::assign('pricefeeds', $pricefeeds);
 
         return $this->getTemplatePath('templates/feed_list.tpl');

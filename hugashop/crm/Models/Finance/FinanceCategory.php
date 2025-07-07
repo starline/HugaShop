@@ -39,7 +39,7 @@ class FinanceCategory extends BaseModel
             }
         }
 
-        return self::getList($filter, order: ['position']);
+        return self::getList($filter, order: 'position');
     }
 
 

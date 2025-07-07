@@ -2,14 +2,12 @@
  * Custom javascript code
  * 
  * @author Andri Huga
- * @version 1.5
+ * @version 1.6
  * 
  */
 
 export function getCartInformer(product_id = null, amount = null, callback = null) {
-
     const cart_url = $("#cart_informer a").attr('href') + '?informer';
-
     $.ajax({
         type: "POST",
         url: cart_url,

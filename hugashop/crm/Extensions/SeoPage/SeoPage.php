@@ -59,7 +59,7 @@ final class SeoPage extends BaseExtension
             Cache::cache(self::class)->clear(); # Cache clean
         }
 
-        $pages = SeoPageModel::getList([], order: 'position');
+        $pages = SeoPageModel::getList(order: 'position');
         Design::assign('pages', $pages);
 
         return $this->getTemplatePath('templates/page_list.tpl');

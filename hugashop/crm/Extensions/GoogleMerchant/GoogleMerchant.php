@@ -53,7 +53,7 @@ final class GoogleMerchant extends BaseExtension
             Cache::cache(FeedGenerator::class)->clear();
         }
 
-        $pricefeeds = GoogleMerchantModel::getList([], 'position');
+        $pricefeeds = GoogleMerchantModel::getList(order: 'position');
         Design::assign('pricefeeds', $pricefeeds);
 
         return $this->getTemplatePath('templates/feed_list.tpl');

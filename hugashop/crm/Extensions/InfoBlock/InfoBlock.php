@@ -58,7 +58,7 @@ final class InfoBlock extends BaseExtension
             Cache::cache(InfoBlock::class)->clear();
         }
 
-        $blocks = InfoBlockModel::getList([], 'position');
+        $blocks = InfoBlockModel::getList(order: 'position');
         Design::assign('blocks', $blocks);
 
         return $this->getTemplatePath('templates/block_list.tpl');

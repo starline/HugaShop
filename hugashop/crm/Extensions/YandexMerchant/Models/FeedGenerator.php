@@ -81,7 +81,7 @@ class FeedGenerator
 
             $filter['category_id'] = $categories;
             $filter['visible'] = 1;
-            $raw_products = Product::getList($filter, 'position', ['image', 'brand']);
+            $raw_products = Product::getList($filter, order: 'position', join: ['image', 'brand']);
 
             $resp_xml .=  "<offers>";
             foreach ($raw_products as $raw_product) {

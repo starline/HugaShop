@@ -25,6 +25,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class CurrencyController extends BaseAdminController
 {
+
     #[Route('/admin/finance/currency', name: 'CurrencyAdmin')]
     public function index(): Response
     {
@@ -185,8 +186,8 @@ class CurrencyController extends BaseAdminController
             return $this->redirectToRoute('CurrencyAdmin');
         }
 
-        Design::assign('currency', FinanceCurrency::getCurrency());
-        Design::assign('currencies', FinanceCurrency::getCurrencies());
+        Design::assign('currency',      FinanceCurrency::getCurrency());
+        Design::assign('currencies',    FinanceCurrency::getCurrencies());
 
         return $this->fetchResponse('finance/currency.tpl');
     }

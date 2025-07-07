@@ -49,7 +49,7 @@ class FinanceCurrency extends BaseModel
         if (!$cache_item->isHit()) {
 
             // Выбираем из базы валюты
-            $results = self::getList(order: ['position']);
+            $results = self::getList(order: ['position', 'asc']);
 
             $currencies = [];
             foreach ($results as $c) {

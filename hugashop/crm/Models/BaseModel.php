@@ -192,10 +192,15 @@ abstract class BaseModel extends Model
 
         // Сортировка
         if (is_string($order)) {
-            $order = [$order, 'desc'];
+            if ($order == 'position') {
+                $order = [$order, 'asc'];
+            } else {
+                $order = [$order, 'asc'];
+            }
         }
+        
         if (!empty($order)) {
-            $query->orderBy($order[0], $order[1] ?? 'desc');
+            $query->orderBy($order[0], $order[1] ?? 'asc');
         }
 
         // Pagination

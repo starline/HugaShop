@@ -40,7 +40,7 @@ $(function () {
         location.href = "/s/" + keyword;
     });
 
-    $('form#search').submit(function (e) {
+    $('form#search').on('submit', function (e) {
         e.preventDefault();
         let keyword = $(".input_search").val();
         location.href = "/s/" + keyword;
@@ -63,7 +63,7 @@ $(function () {
     asignFancyAjax();
 
     // Аяксовая корзина при нажатии на Купить
-    $('form.variants').submit(function (e) {
+    $('form.variants').on('submit', function (e) {
         e.preventDefault();
 
         let button = $(this).find('button[type="submit"]');
@@ -106,8 +106,9 @@ $(function () {
 
 
     function getCartInformer(product_id = null, amount = null, callback = null) {
+        const cart_url = $("#cart_informer a").attr('href') + '?informer';
         $.ajax({
-            url: "/ajax/cart",
+            url: cart_url,
             data: {
                 product_id: product_id,
                 amount: amount
