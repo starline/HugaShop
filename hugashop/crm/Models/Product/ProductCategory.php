@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.1
+ * @version 3.2
  *
  */
 
@@ -17,6 +17,8 @@ use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\SeoKeywords;
 use HugaShop\Models\Product\Product;
+use HugaShop\Models\Localization\Language;
+use HugaShop\Models\Localization\AbstractTranslation;
 
 class ProductCategory extends BaseModel
 {
@@ -39,6 +41,7 @@ class ProductCategory extends BaseModel
 
     private static $all_categories;  # Список указателей на категории в дереве категорий (ключ = id категории)
     private static $categories_tree; # Дерево категорий
+    private static $categories_lang; # Текущий язык загруженных категорий
 
     public function images()
     {
@@ -53,7 +56,13 @@ class ProductCategory extends BaseModel
      */
     private static function initCategories()
     {
-        $cache_item = Cache::cache(self::class)->getItem('categories');
+        $lang_code  = Language::getCurrent()->code;
+
+        if (isset(self::$categories_lang, self::$categories_tree) && self::$categories_lang === $lang_code) {
+            return;
+        }
+
+        $cache_item = Cache::cache(self::class, lang: true)->getItem('categories');
 
         if (!$cache_item->isHit()) {
 
@@ -67,11 +76,35 @@ class ProductCategory extends BaseModel
             $pointers[0]->path = [];
             $pointers[0]->level = 0;
 
-            // Выбираем картинки категорий
-            $categories = ProductCategory::with(['images']) # Загружаем связанную картинку
+            // Выбираем категории с учётом локали
+            $model  = self::getModel();
+            $query  = $model->newQuery();
+            $query->with(['images'])
                 ->orderBy('parent_id')
-                ->orderBy('position')
-                ->get()->toArray();
+                ->orderBy('position');
+
+            $baseTable         = $model->getTable();
+            $prefix            = $model->getConnection()->getTablePrefix();
+            $base_table_prefix = $prefix . $baseTable;
+
+            if ($language_code = Language::checkOrGetCode()) {
+                $transModel = AbstractTranslation::setTableTranslation(self::class);
+                $transTable = $transModel->getTable();
+
+                $select = ["{$base_table_prefix}.*"];
+                foreach (self::getTranslatableFields() as $field) {
+                    $select[] = "COALESCE({$prefix}{$transTable}.{$field}, {$base_table_prefix}.{$field}) as {$field}";
+                }
+
+                $query->leftJoin($transTable, function ($join) use ($transTable, $baseTable, $language_code) {
+                    $join->on("{$transTable}.entity_id", '=', "{$baseTable}.id")
+                        ->where("{$transTable}.language_code", '=', $language_code);
+                })->selectRaw(implode(', ', $select));
+            }
+
+            $categories = $model->runWithInitTable(function () use ($query) {
+                return $query->get()->toArray();
+            });
 
             $finish = false;
 
@@ -126,13 +159,14 @@ class ProductCategory extends BaseModel
             $result_cache['categories_tree'] = $tree->subcategories;
             $result_cache['all_categories'] = $pointers;
 
-            Cache::cache(self::class)->save($cache_item->set($result_cache));
+            Cache::cache(self::class, lang: true)->save($cache_item->set($result_cache));
         }
 
         $categories_cache = $cache_item->get();
 
         self::$categories_tree  = $categories_cache['categories_tree'];
         self::$all_categories   = $categories_cache['all_categories'];
+        self::$categories_lang  = $lang_code;
     }
 
 
@@ -142,7 +176,7 @@ class ProductCategory extends BaseModel
      */
     public static function getCategories(array $filter = [])
     {
-        if (!isset(self::$categories_tree)) {
+        if (!isset(self::$categories_tree) || self::$categories_lang !== Language::getCurrent()->code) {
             self::initCategories();
         }
 
@@ -202,7 +236,7 @@ class ProductCategory extends BaseModel
     public static function getCategoriesTree(array $filter = [])
     {
 
-        if (!isset(self::$categories_tree)) {
+        if (!isset(self::$categories_tree) || self::$categories_lang !== Language::getCurrent()->code) {
             self::initCategories();
         }
 
@@ -244,7 +278,7 @@ class ProductCategory extends BaseModel
      */
     public static function getCategory(int|string $id)
     {
-        if (!isset(self::$categories_tree)) {
+        if (!isset(self::$categories_tree) || self::$categories_lang !== Language::getCurrent()->code) {
             self::initCategories();
         }
 
@@ -296,7 +330,7 @@ class ProductCategory extends BaseModel
         $category = self::createOne($category);
 
 
-        Cache::cache(self::class)->clear(); # Cache clean
+        Cache::cache(self::class, lang: true)->clear(); # Cache clean
         self::initCategories();
         return $category;
     }
@@ -312,7 +346,7 @@ class ProductCategory extends BaseModel
         $category = Helper::makeUniqSlug(self::class, $category);
         $result = self::updateOne($id, $category);
 
-        Cache::cache(self::class)->clear(); # Cache clean
+        Cache::cache(self::class, lang: true)->clear(); # Cache clean
         self::initCategories();
         return $result;
     }
@@ -358,7 +392,7 @@ class ProductCategory extends BaseModel
             }
         }
 
-        Cache::cache(self::class)->clear(); # Cache clean
+        Cache::cache(self::class, lang: true)->clear(); # Cache clean
         self::initCategories();
         return true;
     }
