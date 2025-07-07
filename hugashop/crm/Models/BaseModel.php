@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
@@ -19,6 +19,8 @@ use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Traits\CheckModelTrait;
 use HugaShop\Models\Traits\TranslationTrait;
 use Illuminate\Database\Capsule\Manager as DB;
+use HugaShop\Services\Cache;
+use Symfony\Contracts\Cache\ItemInterface;
 
 abstract class BaseModel extends Model
 {
@@ -179,8 +181,9 @@ abstract class BaseModel extends Model
      * @param array|string $order ['id', 'DESC]
      * @param array $join [Order:class, User::class]
      * @param string $select
+     * @param int $cache Cache lifetime in seconds
      */
-    public static function getList(array $filter = [], array|string $order = [], array|string $join = [], ?string $select = null)
+    public static function getList(array $filter = [], array|string $order = [], array|string $join = [], ?string $select = null, int $cache = 0)
     {
         $model = static::getModel();
         $query = $model->newQuery();
@@ -223,23 +226,31 @@ abstract class BaseModel extends Model
             }
         }
 
-        // Выбор полей
-        if ($select) {
+        $callback = function () use ($model, $query, $select) {
             return $model->runWithInitTable(function () use ($query, $select) {
-                return $query->pluck($select)->toArray();
+                if ($select) {
+                    return $query->pluck($select)->toArray();
+                }
+
+                $result = $query->get();
+
+                foreach ($result as $item) {
+                    $item->settings = empty($item->settings) ? new \stdClass() : (object) unserialize($item->settings);
+                }
+
+                return $result;
+            });
+        };
+
+        if ($cache > 0) {
+            $cache_key = 'list_' . md5(json_encode([$filter, $order, $join, $select]));
+            return Cache::cache(static::class)->get($cache_key, function (ItemInterface $item) use ($callback, $cache) {
+                $item->expiresAfter($cache);
+                return $callback();
             });
         }
 
-        return $model->runWithInitTable(function () use ($query) {
-            $result = $query->get();
-
-            // Get settings
-            foreach ($result as $item) {
-                $item->settings = empty($item->settings) ? new \stdClass() : (object) unserialize($item->settings);
-            }
-
-            return $result;
-        });
+        return $callback();
     }
 
 
