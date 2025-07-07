@@ -173,9 +173,15 @@ $(function () {
         getCartInformer(item.product_id, item.amount, function () {
 
             // Popup
+            const locale = document.documentElement.getAttribute('lang');
+            let cartUrl = '/cart';
+            if (locale) {
+                cartUrl = '/' + locale + cartUrl;
+            }
+
             $.fancybox.open({
                 type: 'ajax',
-                src: '/cart',
+                src: cartUrl,
                 touch: false,
                 closeExisting: true,
                 afterShow: asignFancyAjax
