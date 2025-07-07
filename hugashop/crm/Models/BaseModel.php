@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  */
 
@@ -226,7 +226,17 @@ abstract class BaseModel extends Model
         }
 
         return $model->runWithInitTable(function () use ($query) {
-            return $query->get();
+            $result = $query->get();
+
+            foreach ($result as $item) {
+                $item->settings = empty($item->settings) ? new \stdClass() : (object) unserialize($item->settings);
+            }
+
+            if ($language_code = Language::checkOrGetCode() and static::isTranslatable()) {
+                static::fillTranslations($result, $language_code);
+            }
+
+            return $result;
         });
     }
 
