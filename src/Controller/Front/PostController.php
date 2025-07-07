@@ -48,7 +48,7 @@ class PostController extends BaseFrontController
         Design::assign('post', $post);
         Design::assign('meta_title', $post->meta_title);
         Design::assign('meta_description', $post->meta_description);
-        Design::assign('canonical', $this->generateUrl('Post', ['url' => $post->url]));
+        Design::assign('canonical', $this->generateUrlWithLocale('Post', ['url' => $post->url]));
 
         return $this->fetchResponse('post.tpl');
     }
