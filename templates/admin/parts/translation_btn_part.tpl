@@ -13,7 +13,9 @@
         {if $current_language->code != $main_language->code}
             <div class="col-auto">
                 <button id="translate_button" type="button" class="btn btn-secondary d-flex align-items-center gap-1">
-                    <span class="material-icons">translate</span>AI Перевод
+                    <span class="material-icons">translate</span>
+                    <span class="spinner-border spinner-border-sm d-none" aria-hidden="true"></span>
+                    AI Перевод
                 </button>
             </div>
         {/if}
@@ -35,6 +37,7 @@
                     }
 
                     btn.prop('disabled', true);
+                    btn.find('.spinner-border').removeClass('d-none');
 
                     $.ajax({
                         url: '/admin/extension/OpenAI/ajax/translate',
@@ -63,6 +66,7 @@
                         },
                         complete: function() {
                             btn.prop('disabled', false);
+                            btn.find('.spinner-border').addClass('d-none');
                         }
                     });
                     return false;
