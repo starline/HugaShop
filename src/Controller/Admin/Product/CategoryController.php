@@ -83,10 +83,9 @@ class CategoryController extends BaseAdminController
             Design::assign('seo_keywords', $seo_keywords);
             Design::assign('seo_faqs', $seo_faqs);
             Design::assign('synonyms', $synonyms);
-            Design::assign('category', $category);
         }
 
-
+        Design::assign('category', $category);
         Design::assign('categories', ProductCategory::getCategoriesTree());
 
         return $this->fetchResponse('product/category.tpl');

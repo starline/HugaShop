@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.0
+ * @version 3.1
  *
  */
 
@@ -24,16 +24,16 @@ class ProductCategory extends BaseModel
     protected static $table_fields = [
         'id' =>                 ['type' => 'int'],
         'parent_id' =>          ['type' => 'int'],
-        'name' =>               ['type' => 'varchar',           'req' => true],
         'url' =>                ['type' => 'varchar'],
-        'meta_title' =>         ['type' => 'varchar'],
-        'meta_description' =>   ['type' => 'varchar'],
-        'h1' =>                 ['type' => 'varchar'],
-        'annotation' =>         ['type' => 'text'],
-        'description' =>        ['type' => 'text'],
-        'main' =>               ['type' => 'tinyint',           'def' => 0],
-        'visible' =>            ['type' => 'tinyint',           'def' => 0],
-        'position' =>           ['type' => 'int',               'def' => 0]
+        'name' =>               ['type' => 'varchar',       'trans' => true,    'req' => true],
+        'meta_title' =>         ['type' => 'varchar',       'trans' => true],
+        'meta_description' =>   ['type' => 'varchar',       'trans' => true],
+        'h1' =>                 ['type' => 'varchar',       'trans' => true],
+        'annotation' =>         ['type' => 'text',          'trans' => true],
+        'description' =>        ['type' => 'text',          'trans' => true],
+        'main' =>               ['type' => 'tinyint',   'def' => 0],
+        'visible' =>            ['type' => 'tinyint',   'def' => 0],
+        'position' =>           ['type' => 'int',       'def' => 0]
     ];
 
 

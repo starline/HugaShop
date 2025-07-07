@@ -311,9 +311,6 @@
 									{if $pagination->pages_count > 1}
 										<option value="move_to_page">Переместить на страницу</option>
 									{/if}
-									{if $brands|count > 0}
-										<option value="move_to_brand">Указать бренд</option>
-									{/if}
 									{if 'product_delete'|user_access}
 										<option value="delete">Удалить</option>
 									{/if}
@@ -329,14 +326,6 @@
 								</select>
 							</span>
 
-							<span id="move_to_brand">
-								<select class="form-select" name="target_brand">
-									<option value="0">Не указан</option>
-									{foreach $all_brands as $b}
-										<option value="{$b->id}">{$b->name}</option>
-									{/foreach}
-								</select>
-							</span>
 							<button class="btn btn-primary apply" id="apply_action" type="submit">Применить</button>
 						</div>
 					{/if}
@@ -390,15 +379,6 @@
 						return false;
 					}
 				});
-
-				// Перенос товара в другой бренд
-				$("#action select[name=action]").change(function() {
-					if ($(this).val() == 'move_to_brand')
-						$("span#move_to_brand").css('display', 'inline-block');
-					else
-						$("span#move_to_brand").hide();
-				});
-
 
 				// Дублировать товар
 				$("i.duplicate").click(function() {

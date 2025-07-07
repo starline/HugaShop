@@ -215,7 +215,7 @@ class Product extends BaseModel
             $query->whereIn($baseTable . '.id', (array)$filter['id']);
         }
 
-        if (Arr::has($filter, 'category_id')) {
+        if (!empty($filter['category_id'])) {
             $query->whereIn('category_id', (array)$filter['category_id']);
         }
 

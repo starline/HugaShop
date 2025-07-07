@@ -43,7 +43,7 @@ class UserPermission extends BaseModel
         'product_import'        => 'Товары - Импорт цен',
         'product_marking'       => 'Товары - Маркировка',
         'product_category'      => 'Товары - Категории',
-        'product_feature'       => 'Товары - Харакетеристики',
+        'product_feature'       => 'Товары - Характеристики',
 
         'product_brand'         => 'Товары - Бренды - Добавлние, просмотр, редактирование',
         'product_brand_delete'  => 'Товары - Бренды - Удаление',

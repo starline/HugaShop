@@ -20,6 +20,7 @@ use HugaShop\Models\Content\ContentPost;
 use HugaShop\Models\User\UserPermission;
 use HugaShop\Models\Product\ProductBrand;
 use HugaShop\Models\Localization\Language;
+use HugaShop\Models\Product\ProductCategory;
 
 final class OpenAI extends BaseExtension
 {
@@ -50,29 +51,33 @@ final class OpenAI extends BaseExtension
             return ['error' => 'is_main_language'];
         }
 
-        $product = null;
+        $model = null;
         switch ($entity) {
             case 'product':
                 UserPermission::checkAccess('product_content');
-                $product = Product::query()->find($id);
+                $model = Product::query()->find($id);
+                break;
+            case 'category':
+                UserPermission::checkAccess('category');
+                $model = ProductCategory::query()->find($id);
                 break;
             case 'blog':
                 UserPermission::checkAccess('blog');
-                $product = ContentPost::query()->find($id);
+                $model = ContentPost::query()->find($id);
                 break;
             case 'page':
                 UserPermission::checkAccess('page');
-                $product = ContentPage::query()->find($id);
+                $model = ContentPage::query()->find($id);
                 break;
             case 'brand':
                 UserPermission::checkAccess('product_brand');
-                $product = ProductBrand::query()->find($id);
+                $model = ProductBrand::query()->find($id);
                 break;
             default:
                 return ['error' => 'entity'];
         }
 
-        if (empty($product)) {
+        if (empty($model)) {
             return ['error' => 'not_found'];
         }
 
@@ -84,12 +89,12 @@ final class OpenAI extends BaseExtension
         $client = AI::client($key);
 
         $translated = [];
-        foreach ($product::getTranslatableFields() as $field) {
-            if (!empty($product->$field)) {
+        foreach ($model::getTranslatableFields() as $field) {
+            if (!empty($model->$field)) {
                 $result = $client->chat()->create([
                     'model' => 'gpt-4o',
                     'messages' => [
-                        ['role' => 'user', 'content' => 'Переведи на ' . $language->name . ': ' . $product->$field],
+                        ['role' => 'user', 'content' => 'Переведи на ' . $language->name . ': ' . $model->$field],
                     ],
                 ]);
                 $translated[$field] = trim($result->choices[0]->message->content);
@@ -97,12 +102,11 @@ final class OpenAI extends BaseExtension
         }
 
         if ($save && !empty($translated)) {
-            $product::updateTranslation($product->id, $language->code, $translated);
+            $model::updateTranslation($model->id, $language->code, $translated);
         }
 
         return $translated;
     }
-
 
 
     /**
