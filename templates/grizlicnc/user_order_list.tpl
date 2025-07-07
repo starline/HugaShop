@@ -1,16 +1,16 @@
 {extends 'wrapper/main.tpl'}
 
-{$meta_title = 'Заказы'}
+{$meta_title = 'Заказы'|trans}
 
 {block name=content}
 	<div class="profile row">
 		<div class="col-lg-3" id="catalog_menu">
 			<ul>
 				<li class="category_main">
-					<a class="{if $route|in_array:[UserOrderList]}selected{/if}" href="{'UserOrderList'|linkLang}">Заказы</a>
+					<a class="{if $route|in_array:[UserOrderList]}selected{/if}" href="{'UserOrderList'|linkLang}">{'Заказы'|trans}</a>
 				</li>
 				<li class="category_main">
-					<a class="{if $route|in_array:[User]}selected{/if}" href="{'User'|linkLang}">Личные данные</a>
+					<a class="{if $route|in_array:[User]}selected{/if}" href="{'User'|linkLang}">{'Личные данные'|trans}</a>
 				</li>
 			</ul>
 		</div>
@@ -22,7 +22,7 @@
 					<div class="row my-4 pb-4 border-bottom">
 						<div class="col-lg-8">
 							<div>
-								<a href="{'Order'|linkLang:[id => $order->id, order_url => $order->url]}">Заказ
+								<a href="{'Order'|linkLang:[id => $order->id, order_url => $order->url]}">{'Заказ'|trans} 
 									№{$order->id}</a> от {$order->date|date}
 
 								{if $order->paid == 1}

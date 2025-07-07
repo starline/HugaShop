@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.8
+ * @version 1.9
  *
  */
 
@@ -56,7 +56,7 @@ final class SeoPage extends BaseExtension
                 SeoPageModel::updateOne($id, ['position' => $position]);
             }
 
-            Cache::cache(self::class)->clear(); # Cache clean
+            SeoPageModel::clearCache();
         }
 
         $pages = SeoPageModel::getList(order: 'position');
@@ -85,7 +85,7 @@ final class SeoPage extends BaseExtension
                     $page = Design::setFlashMessage('add', SeoPageModel::createOne($page));
                 } else {
                     Design::setFlashMessage('update', SeoPageModel::updateOne($page->id, $page));
-                    Cache::cache(self::class)->clear(); # Cache clean
+                    SeoPageModel::clearCache();
                 }
             }
 

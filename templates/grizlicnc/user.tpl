@@ -1,23 +1,24 @@
 {extends 'wrapper/main.tpl'}
 
-{$meta_title = 'Личные данные'}
+{$meta_title = 'Личные данные'|trans}
 
 {block name=content}
 	<div class="profile row">
 		<div class="col-lg-3" id="catalog_menu">
 			<ul>
 				<li class="category_main">
-					<a class="{if $route|in_array:[UserOrderList]}selected{/if}" href="{'UserOrderList'|linkLang}">Заказы</a>
+					<a class="{if $route|in_array:[UserOrderList]}selected{/if}"
+						href="{'UserOrderList'|linkLang}">{'Заказы'|trans}</a>
 				</li>
 				<li class="category_main">
-					<a class="{if $route|in_array:[User]}selected{/if}" href="{'User'|linkLang}">Личные данные</a>
+					<a class="{if $route|in_array:[User]}selected{/if}" href="{'User'|linkLang}">{'Личные данные'|trans}</a>
 				</li>
 			</ul>
 		</div>
 
 		<div class="col-lg-9">
 			<div class="login_wrap">
-				<h1>Личные данные</h1>
+				<h1>{'Личные данные'|trans}</h1>
 
 				{if $error|in_array:['email_exists']}
 					<div class="alert alert-danger">

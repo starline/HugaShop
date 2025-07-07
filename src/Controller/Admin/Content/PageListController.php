@@ -10,7 +10,6 @@
 
 namespace App\Controller\Admin\Content;
 
-use HugaShop\Services\Cache;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
@@ -56,7 +55,7 @@ class PageListController extends BaseAdminController
                 ContentPage::updatePage($id, ['position' => $position]);
             }
 
-            Cache::cache(ContentPage::class)->clear(); # Cache clean
+            ContentPage::clearCache(); # Cache clean
         }
 
         // Отображение

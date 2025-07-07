@@ -4,13 +4,12 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.6
+ * @version 2.7
  *
  */
 
 namespace HugaShop\Extensions;
 
-use HugaShop\Services\Cache;
 use HugaShop\Models\Settings;
 use HugaShop\Services\Config;
 use HugaShop\Services\Design;
@@ -25,9 +24,9 @@ class BaseExtension
 
     public function __construct()
     {
-        $this->class_name =         class_basename(static::class);
-        $this->settings =           (object) (Settings::getParam($this->class_name) ?? []); # was array
-        $this->config =             Helper::getModule($this->class_name, Config::get('extension_dir'));
+        $this->class_name =  class_basename(static::class);
+        $this->settings =    (object) (Settings::getParam($this->class_name) ?? []); # was array
+        $this->config =      Helper::getModule($this->class_name, Config::get('extension_dir'));
     }
 
 
@@ -129,7 +128,7 @@ class BaseExtension
 
 
     /**
-     * Ajax
+     * Ajax. Update Model. Clear cache
      * Make: HugaShop\Extensions\InfoBlock\Models\InfoBlock
      * From: HugaShop\Extensions\InfoBlock\InfoBlock
      */
@@ -142,6 +141,6 @@ class BaseExtension
         $class              = $base_namespace . '\\Models\\' . $class_name;
 
         $class::updateOne($id, $entity);
-        Cache::cache(static::class)->clear();
+        $class::cacheClear();
     }
 }
