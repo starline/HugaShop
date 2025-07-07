@@ -55,22 +55,10 @@ class ContentPage extends BaseModel
      */
     public static function getMenu()
     {
-
         if (!empty(self::$menu)) {
             return self::$menu;
         }
-
-        // Cache
-        $cache_item = Cache::cache(self::class)->getItem('menu');
-
-        if (!$cache_item->isHit()) {
-            $menu = ContentPage::getListTranslate(['menu' => 1, 'visible' => 1], order: 'position');
-            Cache::cache(self::class)->save($cache_item->set($menu));
-        } else {
-            $menu = $cache_item->get();
-        }
-
-        return self::$menu = $menu;
+        return self::$menu = ContentPage::getListTranslate(['menu' => 1, 'visible' => 1], order: 'position', cache: 0);
     }
 
 
