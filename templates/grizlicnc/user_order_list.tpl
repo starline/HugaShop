@@ -7,10 +7,10 @@
 		<div class="col-lg-3" id="catalog_menu">
 			<ul>
 				<li class="category_main">
-					<a class="{if $route|in_array:[UserOrderList]}selected{/if}" href="{'UserOrderList'|urll}">Заказы</a>
+					<a class="{if $route|in_array:[UserOrderList]}selected{/if}" href="{'UserOrderList'|linkLang}">Заказы</a>
 				</li>
 				<li class="category_main">
-					<a class="{if $route|in_array:[User]}selected{/if}" href="{'User'|urll}">Личные данные</a>
+					<a class="{if $route|in_array:[User]}selected{/if}" href="{'User'|linkLang}">Личные данные</a>
 				</li>
 			</ul>
 		</div>
@@ -22,7 +22,7 @@
 					<div class="row my-4 pb-4 border-bottom">
 						<div class="col-lg-8">
 							<div>
-								<a href="{'Order'|urll:[id => $order->id, order_url => $order->url]}">Заказ
+								<a href="{'Order'|linkLang:[id => $order->id, order_url => $order->url]}">Заказ
 									№{$order->id}</a> от {$order->date|date}
 
 								{if $order->paid == 1}

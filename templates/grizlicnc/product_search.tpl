@@ -7,12 +7,11 @@
 		<ul itemscope itemtype="https://schema.org/BreadcrumbList">
 
 			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-				<a href="{'Main'|urll}" itemprop="item">
+				<a href="{'Main'|linkLang}" itemprop="item">
 					<span itemprop="name">{'Главная'|trans}</span>
 					<meta itemprop="position" content="1">
 				</a>
 			</li>
-
 			<li>→</li>
 			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
 				<span itemprop="name">{'Поиск'|trans}</span>

@@ -5,7 +5,7 @@
 {block name=content}
 	<div class="login_wrap my-5">
 
-		<h1>{'Вход'|trans} <a href="{'UserRegister'|urll}">{'Регистрация'|trans} →</a></h1>
+		<h1>{'Вход'|trans} <a href="{'UserRegister'|linkLang}">{'Регистрация'|trans} →</a></h1>
 
 		{if $error|in_array:['login_incorrect', 'user_disabled']}
 			<div class="alert alert-danger">
@@ -43,7 +43,7 @@
 					<button class="btn btn-primary">{'Войти'|trans}</button>
 				</div>
 				<div class="col-6 text-end">
-					<a href="{'UserPasswordRemind'|urll}">{'Забыл пароль?'|trans}</a>
+					<a href="{'UserPasswordRemind'|linkLang}">{'Забыл пароль?'|trans}</a>
 				</div>
 			</div>
 

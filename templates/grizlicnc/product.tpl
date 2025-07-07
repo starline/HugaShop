@@ -6,7 +6,7 @@
 	<div id="path">
 		<ul itemscope itemtype="https://schema.org/BreadcrumbList">
 			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-				<a href="{'Main'|urll}" itemprop="item"><span itemprop="name">{'Главная'|trans}</span>
+				<a href="{'Main'|linkLang}" itemprop="item"><span itemprop="name">{'Главная'|trans}</span>
 					<meta itemprop="position" content="1">
 				</a>
 				<span>→</span>
@@ -14,7 +14,7 @@
 			{$item_position = 2}
 			{foreach $category->path as $path}
 				<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-					<a href="{'Products'|urll:['url' => $path->url]}" itemprop="item">
+					<a href="{'Products'|linkLang:['url' => $path->url]}" itemprop="item">
 						<span itemprop="name">{$path->name}</span>
 						<meta itemprop="position" content="{$item_position++}">
 					</a>{if !$path@last} → {/if}

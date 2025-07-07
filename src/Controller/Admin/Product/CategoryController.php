@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
@@ -65,14 +65,11 @@ class CategoryController extends BaseAdminController
         #########
         if (!empty($id)) {
 
-            $category = ProductCategory::getCategoryById($id);
+            $category = ProductCategory::getOneEditTranslate($id, join: ['images']);
 
             if (empty($category->id)) {
                 return $this->redirectToRoute('CategoryListAdmin');
             }
-
-            // Изображения товара
-            $images = Image::getImages($category->id, 'category');
 
             $seo_keywords_arr = SeoKeywords::getKeywords($category->id, 'category');
             $seo_keywords = join("\n", $seo_keywords_arr);
@@ -83,7 +80,6 @@ class CategoryController extends BaseAdminController
             // Выбираем синонимы категории
             $synonyms = ProductCategorySynonym::getSynonyms(['category_id' => $category->id]);
 
-            Design::assign('images', $images);
             Design::assign('seo_keywords', $seo_keywords);
             Design::assign('seo_faqs', $seo_faqs);
             Design::assign('synonyms', $synonyms);

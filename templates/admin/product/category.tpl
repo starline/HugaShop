@@ -118,7 +118,7 @@
 				<!-- Изображение категории -->
 				<div id="images" class="layer images">
 					<h2>Изображения категории</h2>
-					{include file='parts\image_upload_part.tpl' images=$images can_edit=true}
+					{include file='parts\image_upload_part.tpl' images=$category->images can_edit=true}
 				</div>
 
 

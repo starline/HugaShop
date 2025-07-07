@@ -10,7 +10,7 @@
 			<div class="accessories_products">
 				<div class="title-main">
 					<h2>{$cat_products->category->name}</h2>
-					<span> → <a href="{'Products'|urll:[url=>$cat_products->category->url]}"
+					<span> → <a href="{'Products'|linkLang:[url => $cat_products->category->url]}"
 							title="{$cat_products->category->name}">{'все'|trans}
 							{$cat_products->category->name}</a>
 					</span>

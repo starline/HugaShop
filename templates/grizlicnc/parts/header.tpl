@@ -8,7 +8,7 @@
 						<div class="nav-item">
 							<a class="nav-link {if $route|in_array:[PostList, Post]}active{/if}"
 								{if $route|in_array:[PostList, Post]}aria-current="page" {/if}
-								href="{'PostList'|urll}">База
+								href="{'PostList'|linkLang}">База
 								знаний</a>
 						</div>
 
@@ -16,7 +16,7 @@
 							<div class="nav-item">
 								<a class="nav-link {if $page->id == $m->id}active{/if}"
 									{if $page->id == $m->id}aria-current="page" {/if}
-									href="{'Page'|urll:[url => $m->url]}">{$m->name}</a>
+									href="{'Page'|linkLang:[url => $m->url]}">{$m->name}</a>
 							</div>
 						{/foreach}
 					</div>
@@ -34,7 +34,7 @@
 						<div class="col-2">
 							<div class="lang">
 								{foreach $languages as $lang}
-									<a href="{'current'|urll:['locale' => $lang->code]}" title="{$lang->name}"
+									<a href="{'current'|linkLang:['locale' => $lang->code]}" title="{$lang->name}"
 										data-bs-toggle="tooltip">{$lang->code}</a>
 								{/foreach}
 							</div>
@@ -44,18 +44,18 @@
 						<div class="col-7 text-end" id="account">
 							{if !$user|empty}
 								<span>
-									<a href="{'UserOrderList'|urll}">{$user->name}</a>
+									<a href="{'UserOrderList'|linkLang}">{$user->name}</a>
 								</span>
-								<a class="logout ms-3" href="{'UserLogout'|urll}">{'выйти'|trans}</a>
+								<a class="logout ms-3" href="{'UserLogout'|linkLang}">{'выйти'|trans}</a>
 							{else}
-								<a class="login ms-3" href="{'UserLogin'|urll}" rel="nofollow">{'войти'|trans}</a>
+								<a class="login ms-3" href="{'UserLogin'|linkLang}" rel="nofollow">{'войти'|trans}</a>
 							{/if}
 						</div>
 
 						<div class="col-3" id="cart_informer">
 
 							{block name=cart_informer}
-								<a class="cart_info float-end" href="{'Cart'|urll}" rel="nofollow" data-bs-toggle="tooltip"
+								<a class="cart_info float-end" href="{'Cart'|linkLang}" rel="nofollow" data-bs-toggle="tooltip"
 									data-bs-html="true"
 									title="{$cart->purchases_count} {$cart->purchases_count|plural:'товар':'товаров':'товара'}. {if $cart->purchases_price > 0}</br> На сумму: {$cart->purchases_price|price_html:no_html}{/if}">
 
@@ -84,7 +84,7 @@
 
 				<div class="col-12 col-lg-3 d-flex d-lg-block justify-content-center">
 					<div class="logo">
-						<a href="{'Main'|urll}" data-bs-toggle="tooltip"
+						<a href="{'Main'|linkLang}" data-bs-toggle="tooltip"
 							title="{$settings->company_name} - {$settings->company_description}">
 							<img loading="lazy" alt="{$settings->company_name} - {$settings->company_description}"
 								src="{'images/logo.png'|asset}" />
@@ -130,7 +130,7 @@
 					{foreach $categories as $cat}
 						<div class="nav-item py-1 {if $cat@last}last{/if}{if $cat@first}first{/if}">
 							<a class="nav-link {if $category->id == $cat->id}active{/if}"
-								href="{'Products'|urll:[url=>$cat->url]}">
+								href="{'Products'|linkLang:[url=>$cat->url]}">
 								{$cat->name}
 							</a>
 						</div>

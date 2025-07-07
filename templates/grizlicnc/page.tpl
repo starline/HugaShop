@@ -6,7 +6,7 @@
 	<div id="path">
 		<ul itemscope itemtype="https://schema.org/BreadcrumbList">
 			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-				<a href="{'Main'|urll}" itemprop="item">
+				<a href="{'Main'|linkLang}" itemprop="item">
 					<span itemprop="name">{'Главная'|trans}</span>
 					<meta itemprop="position" content="1" />
 				</a> →
@@ -23,12 +23,12 @@
 		<div class="col-lg-3" id="catalog_menu">
 			<ul>
 				<li class="category_main">
-					<a class="{if $route|in_array:[PostList, Post]}selected{/if}" href="{'PostList'|urll}">База знаний</a>
+					<a class="{if $route|in_array:[PostList, Post]}selected{/if}" href="{'PostList'|linkLang}">База знаний</a>
 				</li>
 				{foreach 'ContentPage'|api:getList:[[visible => 1], position] as $pm}
 					<li class="category_main">
 						<a class="{if (!$page|empty && $page->id == $pm->id)}selected{/if}"
-							href="{'Page'|urll:[url => $pm->url]}">{$pm->name}</a>
+							href="{'Page'|linkLang:[url => $pm->url]}">{$pm->name}</a>
 					</li>
 				{/foreach}
 			</ul>
@@ -39,7 +39,7 @@
 
 			{if 'page'|user_access AND $page->id}
 				<div class="admin_edit">
-					<a href="{'PageAdmin'|urll:[id=>$page->id]}" data-bs-toggle="tooltip"
+					<a href="{'PageAdmin'|linkLang:[id => $page->id]}" data-bs-toggle="tooltip"
 						title="{'Редактировать страницу'|trans}">
 						{'Редактировать страницу'|trans}
 					</a>

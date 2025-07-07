@@ -28,7 +28,7 @@
 								категории в админке</a>
 						{/if}
 						{if $product->id}
-							<a class="out_link" target="_self" href="{$settings->site_url}/product/{$product->id}">Открыть товар
+							<a class="out_link" target="_self" href="{'Product'|linkLang:[url => $product->url]}">Открыть товар
 								на сайте</a>
 						{/if}
 					</div>

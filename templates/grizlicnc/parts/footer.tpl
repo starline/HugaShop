@@ -21,12 +21,12 @@
             <div class="my-5">
                 <div class="title-wrap">
                     <h3 class="h2">{'Полезная информация'|trans}</h3>
-                    <span> → <a href="{'PostList'|urll}">{'все статьи'|trans}</a></span>
+                    <span> → <a href="{'PostList'|linkLang}">{'все статьи'|trans}</a></span>
                 </div>
                 <div class="posts_content">
                     {foreach $last_posts as $post}
                         <div data-post="{$post->id}">
-                            <a href="{'Post'|urll:[url=>$post->url]}" class="title">{$post->name}</a>
+                            <a href="{'Post'|linkLang:[url => $post->url]}" class="title">{$post->name}</a>
                             <div>{$post->annotation}</div>
                         </div>
                     {/foreach}
@@ -56,7 +56,7 @@
 
                         {foreach 'ProductCategory'|api:getCategories:[[main => 1, visible => 1, level => 3]] as $cat}
                             <div class="my-2">
-                                <a href="{'Products'|urll:[url=>$cat->url]}" class="link-secondary">{$cat->name}</a>
+                                <a href="{'Products'|linkLang:[url=>$cat->url]}" class="link-secondary">{$cat->name}</a>
                             </div>
                         {/foreach}
                     </div>
@@ -64,15 +64,15 @@
                         <div class="h5">{'Клиентам'|trans}</div>
 
                         <div class="my-2">
-                            <a href="{'User'|urll}" rel="nofollow" class="link-secondary">{'Вход в кабинет'|trans}</a>
+                            <a href="{'User'|linkLang}" rel="nofollow" class="link-secondary">{'Вход в кабинет'|trans}</a>
                         </div>
                         <div class="my-2">
-                            <a href="{'PostList'|urll}" class="link-secondary">{'База знаний'|trans}</a>
+                            <a href="{'PostList'|linkLang}" class="link-secondary">{'База знаний'|trans}</a>
                         </div>
 
                         {foreach 'ContentPage'|api:getMenu as $m}
                             <div class="my-2">
-                                <a href="{'Page'|urll:[url => $m->url]}" class="link-secondary">{$m->name}</a>
+                                <a href="{'Page'|linkLang:[url => $m->url]}" class="link-secondary">{$m->name}</a>
                             </div>
                         {/foreach}
                     </div>

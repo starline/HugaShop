@@ -7,7 +7,7 @@
 		<ul itemscope itemtype="https://schema.org/BreadcrumbList">
 
 			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-				<a href="{'Main'|urll}" itemprop="item">
+				<a href="{'Main'|linkLang}" itemprop="item">
 					<span itemprop="name">{'Главная'|trans}</span>
 					<meta itemprop="position" content="1">
 				</a>
@@ -18,7 +18,7 @@
 				{foreach $category->path as $cat}
 					<li>→</li>
 					<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-						<a href="{'Products'|urll:[url=>$cat->url]}" itemprop="item">
+						<a href="{'Products'|linkLang:[url => $cat->url]}" itemprop="item">
 							<span itemprop="name">{$cat->name}</span>
 							<meta itemprop="position" content="{$item_position++}">
 						</a>
@@ -47,7 +47,7 @@
 						{if !$category|empty}
 							{foreach $category->path[0]->subcategories as $c}
 								<li class="category_main">
-									<a {if $category->id == $c->id}class="selected" {/if} href="{'Products'|urll:[url=>$c->url]}"
+									<a {if $category->id == $c->id}class="selected" {/if} href="{'Products'|linkLang:[url => $c->url]}"
 										data-category="{$c->id}">{$c->name}</a>
 									{if $c->subcategories}
 										<ul>
@@ -94,7 +94,7 @@
 
 			{if 'product_category'|user_access AND $category->id}
 				<div class="admin_edit">
-					<a href="{'CategoryAdmin'|urll:[id=>$category->id]}" data-bs-toggle="tooltip"
+					<a href="{'CategoryAdmin'|urll:[id => $category->id]}" data-bs-toggle="tooltip"
 						title="{'Редактировать категорию'|trans}">{'Редактировать категорию'|trans}</a>
 				</div>
 			{/if}

@@ -7,10 +7,10 @@
 		<div class="col-lg-3" id="catalog_menu">
 			<ul>
 				<li class="category_main">
-					<a class="{if $route|in_array:[UserOrderList]}selected{/if}" href="{'UserOrderList'|urll}">Заказы</a>
+					<a class="{if $route|in_array:[UserOrderList]}selected{/if}" href="{'UserOrderList'|linkLang}">Заказы</a>
 				</li>
 				<li class="category_main">
-					<a class="{if $route|in_array:[User]}selected{/if}" href="{'User'|urll}">Личные данные</a>
+					<a class="{if $route|in_array:[User]}selected{/if}" href="{'User'|linkLang}">Личные данные</a>
 				</li>
 			</ul>
 		</div>
