@@ -47,7 +47,7 @@ class ProductCategory extends BaseModel
             ->orderBy('position');
     }
 
-    
+
     /**
      * Инициализация категорий, после которой категории будем выбирать из локальной переменной
      */
@@ -144,18 +144,6 @@ class ProductCategory extends BaseModel
     {
         if (!isset(self::$categories_tree)) {
             self::initCategories();
-        }
-
-        if (!empty($filter['product_id'])) {
-            $categories_ids = Product::getList(filter: ['id' =>  (array)$filter['product_id']], order: 'position', select: 'id');
-
-            $result = [];
-            foreach ($categories_ids as $id) {
-                if (isset(self::$all_categories[$id])) {
-                    $result[$id] = self::$all_categories[$id];
-                }
-            }
-            return $result;
         }
 
         // Выбираем категории для показа на главной.

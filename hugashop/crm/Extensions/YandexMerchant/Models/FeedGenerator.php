@@ -3,7 +3,7 @@
 /**
  *
  * @author Andi Huga
- * @version 3.3
+ * @version 3.4
  *
  * Use Cache
  * Яндекс фид YXM
@@ -16,14 +16,14 @@
 namespace HugaShop\Extensions\YandexMerchant\Models;
 
 use HugaShop\Models\Image;
-use HugaShop\Services\Config;
-use HugaShop\Services\Helper;
+use HugaShop\Services\Cache;
 use HugaShop\Models\Settings;
+use HugaShop\Services\Config;
 use HugaShop\Models\Product\Product;
 use HugaShop\Models\Product\ProductOption;
+use Symfony\Contracts\Cache\ItemInterface;
 use HugaShop\Models\Finance\FinanceCurrency;
 use HugaShop\Models\Product\ProductCategory;
-use Symfony\Contracts\Cache\ItemInterface;
 use HugaShop\Extensions\YandexMerchant\Models\YandexMerchantCategory;
 
 class FeedGenerator
