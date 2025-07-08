@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.9
+ * @version 2.1
  *
  */
 
@@ -14,6 +14,8 @@ use HugaShop\Services\Cache;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
+use App\Services\LanguageService;
+use HugaShop\Models\Localization\Language;
 use HugaShop\Extensions\BaseExtension;
 use HugaShop\Extensions\InfoBlock\Models\InfoBlock as InfoBlockModel;
 
@@ -72,6 +74,9 @@ final class InfoBlock extends BaseExtension
     public function block(?int $id = null)
     {
 
+        // Init content language
+        LanguageService::languageCatch();
+
         #### Update
         ###########
         if (!empty($block = Request::getDataAcces(InfoBlockModel::getFields()))) {
@@ -83,14 +88,18 @@ final class InfoBlock extends BaseExtension
                 InfoBlockModel::clearCache();
             }
 
-            Request::makeRedirect("/admin/extension/InfoBlock/block/$block->id");
+            $lang = '';
+            if ($code = Language::checkOrGetCode()) {
+                $lang = '?lang=' . $code;
+            }
+            Request::makeRedirect("/admin/extension/InfoBlock/block/$block->id" . $lang);
         }
 
 
         #### View
         #########
         if (!empty($id)) {
-            $block = InfoBlockModel::getOne($id);
+            $block = InfoBlockModel::getOneEditTranslate($id);
             if (empty($block->id)) {
                 Request::makeRedirect("/admin/extension/InfoBlock");
             }
@@ -115,10 +124,10 @@ final class InfoBlock extends BaseExtension
 
         $enabled = $params['enabled'] ?? '1';
 
-        $cache_item = Cache::cache(InfoBlockModel::class)->getItem('item_' . $params['id']);
+        $cache_item = Cache::cacheLang(InfoBlockModel::class)->getItem('item_' . $params['id']);
         if (!$cache_item->isHit()) {
 
-            $block = InfoBlockModel::getOne(['id' => intval($params['id']), 'enabled' => $enabled]);
+            $block = InfoBlockModel::getOneTranslate(['id' => intval($params['id']), 'enabled' => $enabled]);
             if (empty($block->body)) {
                 return;
             }
@@ -126,7 +135,7 @@ final class InfoBlock extends BaseExtension
             Design::assign('InfoBlock', $block->body);
             $info_block = $this->fetchTemplate('templates/info_block.tpl');
 
-            Cache::cache(InfoBlockModel::class)->save($cache_item->set($info_block));
+            Cache::cacheLang(InfoBlockModel::class)->save($cache_item->set($info_block));
         } else {
             $info_block = $cache_item->get();
         }

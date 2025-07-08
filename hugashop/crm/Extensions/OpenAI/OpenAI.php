@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.2
  *
  * OpenAI integration
  */
@@ -21,6 +21,7 @@ use HugaShop\Models\User\UserPermission;
 use HugaShop\Models\Product\ProductBrand;
 use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Product\ProductCategory;
+use HugaShop\Extensions\InfoBlock\Models\InfoBlock as InfoBlockModel;
 
 final class OpenAI extends BaseExtension
 {
@@ -68,6 +69,9 @@ final class OpenAI extends BaseExtension
             case 'page':
                 UserPermission::checkAccess('page');
                 $model = ContentPage::query()->find($id);
+                break;
+            case 'info_block':
+                $model = InfoBlockModel::query()->find($id);
                 break;
             case 'brand':
                 UserPermission::checkAccess('product_brand');

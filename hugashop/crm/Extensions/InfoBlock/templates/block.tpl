@@ -8,6 +8,7 @@
 {/if}
 
 {block name=content}
+        {include 'parts/translation_btn_part.tpl' entity='info_block'}
 
 	<!-- Основная форма -->
 	<form method="post" enctype="multipart/form-data">
