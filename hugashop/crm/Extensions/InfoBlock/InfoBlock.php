@@ -124,7 +124,9 @@ final class InfoBlock extends BaseExtension
 
         $enabled = $params['enabled'] ?? '1';
 
-        $cache_item = Cache::cacheLang(InfoBlockModel::class)->getItem('item_' . $params['id']);
+        $lang = Language::getCurrent()->code;
+
+        $cache_item = Cache::cache(InfoBlockModel::class)->getItem('item_' . $params['id'] . '_' . $lang);
         if (!$cache_item->isHit()) {
 
             $block = InfoBlockModel::getOneTranslate(['id' => intval($params['id']), 'enabled' => $enabled]);
@@ -135,7 +137,7 @@ final class InfoBlock extends BaseExtension
             Design::assign('InfoBlock', $block->body);
             $info_block = $this->fetchTemplate('templates/info_block.tpl');
 
-            Cache::cacheLang(InfoBlockModel::class)->save($cache_item->set($info_block));
+            Cache::cache(InfoBlockModel::class)->save($cache_item->set($info_block));
         } else {
             $info_block = $cache_item->get();
         }

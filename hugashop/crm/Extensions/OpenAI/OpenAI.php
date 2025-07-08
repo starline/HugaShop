@@ -72,7 +72,7 @@ final class OpenAI extends BaseExtension
                 $model = ContentPage::query()->find($id);
                 break;
             case 'info_block':
-                $model = InfoBloc::query()->find($id);
+                $model = InfoBlock::query()->find($id);
                 break;
             case 'brand':
                 UserPermission::checkAccess('product_brand');
