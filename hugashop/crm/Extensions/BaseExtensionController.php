@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
  *
  */
 
@@ -16,5 +16,10 @@ use Symfony\Contracts\Service\Attribute\Required;
 class BaseExtensionController extends BaseAdminController
 {
 
+    #[Required]
+    public function initBaseExtension()
+    {
 
+        dump('ext');
+    }
 }

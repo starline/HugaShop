@@ -17,9 +17,8 @@ use App\Services\LanguageService;
 use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Extensions\SeoPage\Models\SeoPage;
 use HugaShop\Extensions\BaseExtensionController;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-final class SeoPageController extends AbstractController
+final class SeoPageController extends BaseExtensionController
 {
 
     /**

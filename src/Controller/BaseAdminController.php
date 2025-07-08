@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.2
+ * @version 3.3
  *
  */
 
@@ -26,7 +26,7 @@ class BaseAdminController extends BaseController
 {
 
     #[Required]
-    public function init()
+    public function initBaseAdmin()
     {
 
         // Check User Auth
