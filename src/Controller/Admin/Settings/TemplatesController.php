@@ -31,7 +31,7 @@ class TemplatesController extends BaseAdminController
         $templates = [];
 
         // Порядок файлов в меню
-        $sort = array(
+        $sort = [
             'index.tpl',
             'page.tpl',
             'products.tpl',
@@ -41,13 +41,13 @@ class TemplatesController extends BaseAdminController
             'post.tpl',
             'cart.tpl',
             'order.tpl',
-            'user_login.tpl',
-            'user_register.tpl',
-            'user_password_remind.tpl',
-            'user.tpl',
+            'user/user_login.tpl',
+            'user/user_register.tpl',
+            'user/user_password_remind.tpl',
+            'user/user.tpl',
             'feedback.tpl',
             'pagination.tpl'
-        );
+        ];
 
         // Читаем все tpl-файлы
         if ($handle = opendir($teme_templates_dir)) {

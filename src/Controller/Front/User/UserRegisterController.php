@@ -83,6 +83,6 @@ class UserRegisterController extends BaseFrontController
         Design::assign('noindex', true); # Закрываем от индексации
         Design::assign('canonical', $this->generateUrl('UserRegister'));
 
-        return $this->fetchResponse('user_register.tpl');
+        return $this->fetchResponse('user/user_register.tpl');
     }
 }

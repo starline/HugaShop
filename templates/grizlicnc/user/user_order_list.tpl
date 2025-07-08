@@ -7,7 +7,8 @@
 		<div class="col-lg-3" id="catalog_menu">
 			<ul>
 				<li class="category_main">
-					<a class="{if $route|in_array:[UserOrderList]}selected{/if}" href="{'UserOrderList'|linkLang}">{'Заказы'|trans}</a>
+					<a class="{if $route|in_array:[UserOrderList]}selected{/if}"
+						href="{'UserOrderList'|linkLang}">{'Заказы'|trans}</a>
 				</li>
 				<li class="category_main">
 					<a class="{if $route|in_array:[User]}selected{/if}" href="{'User'|linkLang}">{'Личные данные'|trans}</a>
@@ -22,7 +23,7 @@
 					<div class="row my-4 pb-4 border-bottom">
 						<div class="col-lg-8">
 							<div>
-								<a href="{'Order'|linkLang:[id => $order->id, order_url => $order->url]}">{'Заказ'|trans} 
+								<a href="{'Order'|linkLang:[id => $order->id, order_url => $order->url]}">{'Заказ'|trans}
 									№{$order->id}</a> от {$order->date|date}
 
 								{if $order->paid == 1}
@@ -55,7 +56,7 @@
 											<div class="amount">{$purchase->amount}</div>
 											<img data-bs-toggle="tooltip"
 												title="{$purchase->product_name} {if $purchase->variant_name} - {$purchase->variant_name}{/if}"
-												src="{if $purchase->image_filename}{$purchase->image_filename|resize:60}{else}{'images/cargo.png'|asset}{/if}" />
+												src="{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}" />
 										</div>
 									{/foreach}
 								</div>

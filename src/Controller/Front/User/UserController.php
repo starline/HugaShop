@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.9
+ * @version 3.0
  *
  */
 
@@ -38,10 +38,13 @@ class UserController extends BaseFrontController
         Design::assign('user', $user);
         Design::assign('noindex', true); # Запрет индексации страницы
 
-        return $this->fetchResponse('user.tpl');
+        return $this->fetchResponse('user/user.tpl');
     }
 
-
+    
+    /**
+     * User update
+     */
     public function handleUserUpdate()
     {
         if (!Request::checkCSRF()) {

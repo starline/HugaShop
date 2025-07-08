@@ -76,7 +76,7 @@ class UserLoginController extends BaseFrontController
         Design::assign('canonical', $this->generateUrl('UserLogin')); # Канонический URL
         Design::assign('noindex', true); # Закрываем от индексации
 
-        return $this->fetchResponse('user_login.tpl');
+        return $this->fetchResponse('user/user_login.tpl');
     }
 
 
@@ -126,7 +126,7 @@ class UserLoginController extends BaseFrontController
         Design::assign('canonical', $this->generateUrl('UserPasswordRemind'));
         Design::assign('session_lifetime', $session_lifetime);
 
-        return $this->fetchResponse('user_password_remind.tpl');
+        return $this->fetchResponse('user/user_password_remind.tpl');
     }
 
 
@@ -152,7 +152,7 @@ class UserLoginController extends BaseFrontController
         Design::assign('noindex', true); # Закрываем от индексации
         Design::assign('canonical', $this->generateUrl('UserPasswordRemindCode'));
 
-        return $this->fetchResponse('user_password_remind.tpl');
+        return $this->fetchResponse('user/user_password_remind.tpl');
     }
 
 

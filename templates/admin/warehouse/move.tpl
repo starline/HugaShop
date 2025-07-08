@@ -228,7 +228,7 @@
 						</div>
 
 						<div class="col_image  image">
-							<img src="{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60}{else}{'images/cargo.png'|asset}{/if}"
+							<img src="{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}"
 								data-bs-toggle="tooltip" title="{$purchase->product->variant_name}" />
 						</div>
 

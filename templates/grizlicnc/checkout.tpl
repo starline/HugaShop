@@ -123,7 +123,7 @@
 					{foreach $purchases as $purchase}
 						<div class="purchase_row">
 							<div class="image">
-								<img loading="lazy" src="{$purchase->product->image->filename|resize:60:60}"
+								<img loading="lazy" src="{$purchase->product->image->filename|resize:60:60:c}"
 									alt="{$purchase->product->name}">
 							</div>
 							<div class="name">

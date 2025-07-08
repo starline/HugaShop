@@ -202,7 +202,7 @@
 										</div>
 										<div class="image">
 											<img
-												src="{if $product_variant->product->image->filename}{$product_variant->product->image->filename|resize:60}{else}{'images/cargo.png'|asset}{/if}">
+												src="{if $product_variant->product->image->filename}{$product_variant->product->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}">
 										</div>
 										<div class="col">
 											<a class="product_name"
@@ -314,7 +314,7 @@
 
 							<div class="image">
 								<img
-									src="{if $rel_product->image->filename}{$rel_product->image->filename|resize:60}{else}{'images/cargo.png'|asset}{/if}">
+									src="{if $rel_product->image->filename}{$rel_product->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}">
 							</div>
 
 							<div class="col">

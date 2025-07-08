@@ -244,7 +244,7 @@
 									</div>
 									<div class="col_image image">
 										<img
-											src="{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60}{else}{'images/cargo.png'|asset}{/if}" />
+											src="{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}" />
 									</div>
 									<div class="col">
 										<a class="product_name"

@@ -72,7 +72,7 @@
 													<div class="image {if $purchase->disabled}disabled{/if}">
 														<div class="amount">{$purchase->amount}</div>
 														<img loading="lazy" data-bs-toggle="tooltip" title="{$purchase->product->name}"
-															src="{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60:60}{else}{'images/cargo.png'|asset}{/if}" />
+															src="{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}" />
 													</div>
 												{/foreach}
 											</div>

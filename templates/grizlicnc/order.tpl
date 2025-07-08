@@ -123,8 +123,8 @@
 				{foreach $purchases as $purchase}
 					<div class="purchase_row">
 						<div class="image">
-							<img loading="lazy" src="{$purchase->product->image->filename|resize:60:60}"
-								alt="{$purchase->product->name}">
+							<img loading="lazy"
+								src="{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}">
 						</div>
 						<div class="name">
 							<div>{$purchase->product->name}

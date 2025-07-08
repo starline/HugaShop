@@ -30,16 +30,15 @@ class UserOrderListController extends BaseFrontController
         }
 
         $user = User::authUser();
-        $orders = Order::getOrders(['user_id' => $user->id]);
-
-        // Товары и их фото
-        foreach (OrderPurchase::getPurchases(['order_id' => array_keys($orders)], ["image"]) as $op) {
-            $orders[$op->order_id]->purchases[] = $op;
-        }
+        $orders = Order::getOrders(['user_id' => $user->id], join: [
+            'purchases',
+            'purchases.product',
+            'purchases.product.image'
+        ]);
 
         Design::assign('orders', $orders);
         Design::assign('noindex', true); # Запрет индексации страницы
 
-        return $this->fetchResponse('user_order_list.tpl');
+        return $this->fetchResponse('user/user_order_list.tpl');
     }
 }

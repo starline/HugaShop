@@ -1314,6 +1314,10 @@ footer .posts_content a {
 	width: 60px;
 }
 
+.image img {
+	width: 100%;
+}
+
 .checkout_purchases .purchase_row .name {
 	flex: 1;
 	margin-right: 3px;
@@ -1509,6 +1513,7 @@ a.admin_bookmark svg {
 }
 
 .profile .purchases .image {
+	width: 60px;
 	padding: 0;
 	margin-right: 5px;
 	margin-bottom: 5px;
