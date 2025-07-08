@@ -8,7 +8,7 @@
 	<!-- Заголовок -->
 	<div class="header_top">
 		<h1>{$meta_title}</h1>
-		<a class="add" href="/admin/extension/{$extension->module}/page">Добавить страницу</a>
+		<a class="add" href="{'ExtSeoPageNew'|urll}">Добавить страницу</a>
 	</div>
 
 	<div id="main_list">
@@ -32,7 +32,7 @@
 
 							<div class="col row">
 								<div class="col-12 col-sm-8">
-									<a href="/admin/extension/{$extension->module}/page/{$page->id}">{$page->name}</a>
+									<a href="{'ExtSeoPage'|urll:[id => $page->id]}">{$page->name}</a>
 								</div>
 
 								<div class="col-12 col-sm-4 text-end">

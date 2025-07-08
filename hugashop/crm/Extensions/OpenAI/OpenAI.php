@@ -21,7 +21,8 @@ use HugaShop\Models\User\UserPermission;
 use HugaShop\Models\Product\ProductBrand;
 use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Product\ProductCategory;
-use HugaShop\Extensions\InfoBlock\Models\InfoBlock as InfoBlockModel;
+use HugaShop\Extensions\InfoBlock\Models\InfoBlock;
+use HugaShop\Extensions\SeoPage\Models\SeoPage;
 
 final class OpenAI extends BaseExtension
 {
@@ -71,11 +72,15 @@ final class OpenAI extends BaseExtension
                 $model = ContentPage::query()->find($id);
                 break;
             case 'info_block':
-                $model = InfoBlockModel::query()->find($id);
+                $model = InfoBloc::query()->find($id);
                 break;
             case 'brand':
                 UserPermission::checkAccess('product_brand');
                 $model = ProductBrand::query()->find($id);
+                break;
+            case 'seo_page':
+                UserPermission::checkAccess('extension');
+                $model = SeoPage::query()->find($id);
                 break;
             default:
                 return ['error' => 'entity'];
@@ -98,8 +103,9 @@ final class OpenAI extends BaseExtension
                 $result = $client->chat()->create([
                     'model' => 'gpt-4o',
                     'messages' => [
-                        ['role' => 'user', 'content' => 'Переведи на ' . $language->name . ': ' . $model->$field],
-                    ],
+                        ['role' => 'system', 'content' => 'Ты переводчик. Всегда возвращай только переведённый текст, без комментариев.'],
+                        ['role' => 'user', 'content' => 'Язык: ' . $language->name . '. Текст: ' . $model->$field . '.'],
+                    ]
                 ]);
                 $translated[$field] = trim($result->choices[0]->message->content);
             }

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.8
+ * @version 2.9
  *
  * Этот класс использует шаблон page.tpl
  *
@@ -35,6 +35,7 @@ class PageController extends BaseFrontController
         Design::assign('page', $page);
         Design::assign('meta_title', $page->meta_title);
         Design::assign('meta_description', $page->meta_description);
+        Design::assign('canonical', $this->generateUrlWithLocale('Page', ['url' => $page->url]));
 
         return $this->fetchResponse('page.tpl');
     }
