@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.5
+ * @version 1.6
  *
  */
 
@@ -49,21 +49,17 @@ class TemplatesController extends BaseAdminController
             'pagination.tpl'
         ];
 
-        // Читаем все tpl-файлы
-        if ($handle = opendir($teme_templates_dir)) {
-            $i = count($sort);
-            while (false !== ($file = readdir($handle))) {
-                if (is_file($teme_templates_dir . $file) && $file[0] != '.'  && pathinfo($file, PATHINFO_EXTENSION) == 'tpl') {
-                    if (($key = array_search($file, $sort)) !== false) {
-                        $templates[$key] = $file;
-                    } else {
-                        $templates[$i++] = $file;
-                    }
-                }
+        // Читаем все tpl-файлы вместе с подпапками
+        $files = $this->getTemplates($teme_templates_dir);
+        $i = count($sort);
+        foreach ($files as $file) {
+            if (($key = array_search($file, $sort)) !== false) {
+                $templates[$key] = $file;
+            } else {
+                $templates[$i++] = $file;
             }
-            closedir($handle);
-            ksort($templates);
         }
+        ksort($templates);
 
         // Текущий шаблон
         $template_file = Request::get('file');
@@ -107,5 +103,26 @@ class TemplatesController extends BaseAdminController
         Design::assign('templates', $templates);
 
         return $this->fetchResponse('settings/templates.tpl');
+    }
+
+    private function getTemplates(string $dir, string $sub = ''): array
+    {
+        $list = [];
+        if ($handle = opendir($dir)) {
+            while (false !== ($file = readdir($handle))) {
+                if ($file[0] === '.') {
+                    continue;
+                }
+                $path = $dir . $file;
+                if (is_dir($path)) {
+                    $list = array_merge($list, $this->getTemplates($path . '/', $sub . $file . '/'));
+                } elseif (is_file($path) && pathinfo($file, PATHINFO_EXTENSION) === 'tpl') {
+                    $list[] = $sub . $file;
+                }
+            }
+            closedir($handle);
+        }
+
+        return $list;
     }
 }
