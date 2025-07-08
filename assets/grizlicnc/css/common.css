@@ -147,10 +147,9 @@ h2,
 	margin: 10px 0;
 }
 
-h3,
-.h3 {
-	font-size: 1.2rem;
-	margin: 10px 0;
+h3 {
+        font-size: 1.2rem;
+        margin: 10px 0;
 }
 
 a,
@@ -364,9 +363,6 @@ header .header_buttom .menu-scroller .nav .nav-item {
 	background-image: linear-gradient(to top, #dfdddd, #ffffff);
 }
 
-header .header_buttom .menu-scroller .nav .nav-item.last {
-	margin-right: 0px;
-}
 
 footer {
 	margin-top: 25px;
@@ -449,11 +445,6 @@ footer .posts_content a {
 	padding: 12px 24px;
 }
 
-#content {
-	float: right;
-	width: 680px;
-	margin-bottom: 20px;
-}
 
 #left {
 	width: 260px;
@@ -994,31 +985,6 @@ footer .posts_content a {
 
 
 /* @group Просмотренные товары */
-#browsed_products {
-	margin-bottom: 20px;
-	overflow: hidden;
-}
-
-#browsed_products li {
-	display: block;
-	float: left;
-	overflow: hidden;
-	border: 1px solid #e0e0e0;
-	background-color: #ffffff;
-	margin: 0 7px 7px 0;
-	width: 50px;
-	height: 50px;
-}
-
-#browsed_products li a {
-	display: table-cell;
-	vertical-align: middle;
-	text-align: center;
-	width: 50px;
-	height: 50px;
-}
-
-/* @end — Просмотренные товары */
 
 .form_block {
 	margin-bottom: 35px;
@@ -1226,9 +1192,6 @@ footer .posts_content a {
 
 
 /* @group Корзина */
-#purchases {
-	width: 100%;
-}
 
 #purchases .purchase_row {
 	display: flex;
