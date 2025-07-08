@@ -32,7 +32,7 @@
 						</div>
 					</div>
 
-					<a class="out_link" target="_self" href="{$config->root_url}/{$category->url}">Открыть категорию на
+					<a class="out_link" target="_self" href="{'Products'|linkLang:[url => $category->url]}">Открыть категорию на
 						сайте</a>
 				</div>
 
