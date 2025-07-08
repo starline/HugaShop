@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.9
+ * @version 2.0
  *
  */
 
@@ -14,6 +14,7 @@ use HugaShop\Services\Cache;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
+use App\Services\LanguageService;
 use App\Event\DesignBeforeFetchEvent;
 use HugaShop\Extensions\BaseExtension;
 use HugaShop\Extensions\SeoPage\Models\SeoPage as SeoPageModel;
@@ -73,6 +74,9 @@ final class SeoPage extends BaseExtension
     public function page(?int $id = null)
     {
 
+        // Init content language
+        LanguageService::languageCatch();
+
         #### Update
         ###########
         if (!empty($page = Request::getDataAcces(SeoPageModel::getFields()))) {
@@ -96,7 +100,7 @@ final class SeoPage extends BaseExtension
         #### View
         #########
         if (!empty($id)) {
-            $page = SeoPageModel::getOne($id);
+            $page = SeoPageModel::getOneEditTranslate($id);
             if (empty($page->id)) {
                 Request::makeRedirect("/admin/extension/SeoPage");
             }
