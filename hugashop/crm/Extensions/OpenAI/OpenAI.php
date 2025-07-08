@@ -21,7 +21,8 @@ use HugaShop\Models\User\UserPermission;
 use HugaShop\Models\Product\ProductBrand;
 use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Product\ProductCategory;
-use HugaShop\Extensions\SeoPage\Models\SeoPage as SeoPageModel;
+use HugaShop\Extensions\InfoBlock\Models\InfoBlock;
+use HugaShop\Extensions\SeoPage\Models\SeoPage;
 
 final class OpenAI extends BaseExtension
 {
@@ -70,13 +71,16 @@ final class OpenAI extends BaseExtension
                 UserPermission::checkAccess('page');
                 $model = ContentPage::query()->find($id);
                 break;
+            case 'info_block':
+                $model = InfoBloc::query()->find($id);
+                break;
             case 'brand':
                 UserPermission::checkAccess('product_brand');
                 $model = ProductBrand::query()->find($id);
                 break;
             case 'seo_page':
                 UserPermission::checkAccess('extension');
-                $model = SeoPageModel::query()->find($id);
+                $model = SeoPage::query()->find($id);
                 break;
             default:
                 return ['error' => 'entity'];
