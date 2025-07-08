@@ -88,7 +88,7 @@ class ProductController extends BaseFrontController
         }
 
         // И передаем его в шаблон
-        Design::assign('canonical', $this->generateUrl('Product', ['url' => $product->url]));
+        Design::assign('canonical', $this->generateUrlWithLocale('Product', ['url' => $product->url]));
         Design::assign('product', $product);
         Design::assign('meta_title', $product->meta_title);
         Design::assign('meta_description', $product->meta_description);

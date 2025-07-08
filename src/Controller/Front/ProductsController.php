@@ -64,7 +64,7 @@ class ProductsController extends BaseFrontController
 
         // If selected only category.
         if (empty(Request::gets())) {
-            Design::assign('canonical', $this->generateUrl('Products', ['url' => $category->url])); # Set hard canonical url
+            Design::assign('canonical', $this->generateUrlWithLocale('Products', ['url' => $category->url])); # Set hard canonical url
             Design::assign('show_description', true);
             $noindex = false; # Open indexation
         }
