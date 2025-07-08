@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.2
  *
  * OpenAI integration
  */
@@ -21,6 +21,7 @@ use HugaShop\Models\User\UserPermission;
 use HugaShop\Models\Product\ProductBrand;
 use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Product\ProductCategory;
+use HugaShop\Extensions\SeoPage\Models\SeoPage as SeoPageModel;
 
 final class OpenAI extends BaseExtension
 {
@@ -72,6 +73,10 @@ final class OpenAI extends BaseExtension
             case 'brand':
                 UserPermission::checkAccess('product_brand');
                 $model = ProductBrand::query()->find($id);
+                break;
+            case 'seo_page':
+                UserPermission::checkAccess('extension');
+                $model = SeoPageModel::query()->find($id);
                 break;
             default:
                 return ['error' => 'entity'];
