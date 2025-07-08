@@ -10,6 +10,7 @@
 
 namespace HugaShop\Extensions\SeoPage\Controller;
 
+use HugaShop\Services\Config;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
@@ -27,6 +28,8 @@ final class SeoPageController extends BaseExtensionController
     #[Route('/SeoPage', name: 'ExtSeoPageList', priority: 20)]
     public function index()
     {
+
+        $this->checkAdminAccess('extension');
 
         // Обработка действий
         if (Request::checkCSRF()) {
@@ -62,7 +65,7 @@ final class SeoPageController extends BaseExtensionController
         $pages = SeoPage::getList(order: 'position');
         Design::assign('pages', $pages);
 
-        return $this->fetchResponse('templates/page_list.tpl');
+        return $this->fetchResponse(Config::get('extension_dir') . 'SeoPage/templates/page_list.tpl');
     }
 
 
@@ -70,9 +73,12 @@ final class SeoPageController extends BaseExtensionController
      * SEO Page
      * @param ?int $page_id
      */
-    #[Route('/SeoPage/page', name: 'ExtSeoPage')]
+    #[Route('/SeoPage/page', name: 'ExtSeoPageNew', priority: 20)]
+    #[Route('/SeoPage/page/{id}', requirements: ['id' => '\d+'], name: 'ExtSeoPage', priority: 20)]
     public function page(?int $id = null)
     {
+
+        $this->checkAdminAccess('extension');
 
         // Init content language
         LanguageService::languageCatch();
@@ -108,6 +114,6 @@ final class SeoPageController extends BaseExtensionController
 
         Design::assign('page', $page);
 
-        return $this->fetchResponse('templates/page.tpl');
+        return $this->fetchResponse(Config::get('extension_dir') . 'SeoPage/templates/page.tpl');
     }
 }

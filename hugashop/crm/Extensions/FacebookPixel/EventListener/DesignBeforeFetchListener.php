@@ -8,12 +8,11 @@
  *
  */
 
-namespace HugaShop\Extensions\SeoPage\EventListener;
+namespace HugaShop\Extensions\FacebookPixel\EventListener;
 
 use HugaShop\Services\Request;
 use App\Event\DesignBeforeFetchEvent;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
-
 
 class DesignBeforeFetchListener
 {

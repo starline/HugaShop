@@ -20,7 +20,7 @@
  *
  */
 
-namespace HugaShop\Extensions\SeoPage\EventListener;
+namespace HugaShop\Extensions\FacebookPixel\EventListener;
 
 use FacebookAds\Api;
 use App\Event\OrderAddEvent;

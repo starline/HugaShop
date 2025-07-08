@@ -8,8 +8,7 @@
  *
  */
 
-namespace HugaShop\Extensions\SeoPage\EventListener;
-
+namespace HugaShop\Extensions\FacebookPixel\EventListener;
 
 use FacebookAds\Api;
 use App\Event\CartAddEvent;
@@ -26,7 +25,7 @@ use FacebookAds\Object\ServerSide\CustomData;
 use FacebookAds\Object\ServerSide\EventRequest;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-class DesignBeforeFetchListener extends BaseExtension
+class CartAddListener extends BaseExtension
 {
 
     /**
