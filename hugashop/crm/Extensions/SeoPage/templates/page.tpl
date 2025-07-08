@@ -9,7 +9,7 @@
 
 {block name=content}
 
-        {include 'parts/translation_btn_part.tpl' entity='seo_page'}
+	{include 'parts/translation_btn_part.tpl' entity='seo_page'}
 
 	<!-- Основная форма -->
 	<form method="post" enctype="multipart/form-data">

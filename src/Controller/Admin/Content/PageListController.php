@@ -55,7 +55,7 @@ class PageListController extends BaseAdminController
                 ContentPage::updatePage($id, ['position' => $position]);
             }
 
-            ContentPage::clearCache(); # Cache clean
+            ContentPage::cacheClear(); # Cache clean
         }
 
         // Отображение

@@ -3,3 +3,8 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+extension_controllers:
+    resource: ../hugashop/crm/Extensions/*/Controller/
+    type: attribute
+    prefix: /test

@@ -55,7 +55,7 @@ final class InfoBlock extends BaseExtension
                 InfoBlockModel::updateOne($id, ['position' => $position]);
             }
 
-            InfoBlockModel::clearCache();
+            InfoBlockModel::cacheClear();
         }
 
         $blocks = InfoBlockModel::getList(order: 'position');
@@ -80,7 +80,7 @@ final class InfoBlock extends BaseExtension
                 $block = Design::setFlashMessage('add', InfoBlockModel::createOne($block));
             } else {
                 Design::setFlashMessage('update', InfoBlockModel::updateOne($block->id, $block));
-                InfoBlockModel::clearCache();
+                InfoBlockModel::cacheClear();
             }
 
             Request::makeRedirect("/admin/extension/InfoBlock/block/$block->id");

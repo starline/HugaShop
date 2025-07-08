@@ -43,7 +43,7 @@ final class RedirectUrl extends BaseExtension
                 }
             }
 
-            RedirectUrlModel::clearCache(); # Cache clean
+            RedirectUrlModel::cacheClear(); # Cache clean
         }
 
         $links = RedirectUrlModel::getList();
@@ -68,7 +68,7 @@ final class RedirectUrl extends BaseExtension
                 Design::setFlashMessage('update', RedirectUrlModel::updateOne($link->id, $link));
             }
 
-            RedirectUrlModel::clearCache(); # Cache clean
+            RedirectUrlModel::cacheClear(); # Cache clean
             Request::makeRedirect("/admin/extension/RedirectUrl/link/$link->id");
         }
 

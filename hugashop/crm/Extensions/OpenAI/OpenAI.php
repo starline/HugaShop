@@ -99,8 +99,9 @@ final class OpenAI extends BaseExtension
                 $result = $client->chat()->create([
                     'model' => 'gpt-4o',
                     'messages' => [
-                        ['role' => 'user', 'content' => 'Переведи на ' . $language->name . ': ' . $model->$field],
-                    ],
+                        ['role' => 'system', 'content' => 'Ты переводчик. Всегда возвращай только переведённый текст, без комментариев.'],
+                        ['role' => 'user', 'content' => 'Язык: ' . $language->name . '. Текст: ' . $model->$field . '.'],
+                    ]
                 ]);
                 $translated[$field] = trim($result->choices[0]->message->content);
             }
