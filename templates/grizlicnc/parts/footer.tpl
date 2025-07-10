@@ -2,15 +2,7 @@
     <div class="container">
 
         <!-- Browsed Product -->
-        <div id="browsed_products"
-             hx-get="{'BrowsedProductsBlock'|linkLang}"
-             hx-trigger="load"
-             hx-swap="outerHTML">
-            <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
-
+        {extension name='ProductBrowsed'}
 
         {* Выбираем в переменную $last_posts последние записи *}
         {if $last_posts = 'ContentPost'|api:getPosts:[[random => 1, visible => 1, limit => 5]]}
@@ -60,7 +52,8 @@
                         <div class="h5">{'Клиентам'|trans}</div>
 
                         <div class="my-2">
-                            <a href="{'User'|linkLang}" rel="nofollow" class="link-secondary">{'Вход в кабинет'|trans}</a>
+                            <a href="{'User'|linkLang}" rel="nofollow"
+                                class="link-secondary">{'Вход в кабинет'|trans}</a>
                         </div>
                         <div class="my-2">
                             <a href="{'PostList'|linkLang}" class="link-secondary">{'База знаний'|trans}</a>

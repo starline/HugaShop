@@ -1,0 +1,54 @@
+<?php
+
+/**
+ * HugaShop - Sell anything
+ *
+ * @author Andri Huga
+ * @version 2.2
+ *
+ */
+
+namespace HugaShop\Extensions\ProductBrowsed\Controller;
+
+use App\Controller\BaseFrontController;
+use HugaShop\Services\Config;
+use HugaShop\Services\Design;
+use HugaShop\Services\Request;
+use HugaShop\Models\Product\Product;
+use Symfony\Component\Routing\Attribute\Route;
+
+final class ProductBrowsedController extends BaseFrontController
+{
+
+    /**
+     * Список странниц
+     */
+    #[Route('/ProductBrowsed/ajax', name: 'ExtProductBrowsedAjax', priority: 20)]
+    public function browsed()
+    {
+
+        $cookie_bp = Request::getCookie('BP');
+        $limit = 8;
+
+        if (!empty($cookie_bp)) {
+            $browsed_products_ids = array_reverse(explode('.', $cookie_bp));
+            $browsed_products_ids = array_slice($browsed_products_ids, 0, $limit);
+
+            $browsed_products = Product::getProducts([
+                'id' => $browsed_products_ids,
+                'visible' => 1
+            ], join: ['image']);
+
+            // Сохраняем порядок из $browsed_products_ids
+            $browsed_products_sort = [];
+            foreach ($browsed_products_ids as $id) {
+                if (isset($browsed_products[$id])) {
+                    $browsed_products_sort[] = $browsed_products[$id];
+                }
+            }
+            Design::assign('browsed_products', $browsed_products);
+        }
+
+        return $this->fetchResponse(Config::get('extension_dir') . 'ProductBrowsed/templates/product_browsed.tpl', 'product_browsed');
+    }
+}

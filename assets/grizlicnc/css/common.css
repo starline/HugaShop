@@ -30,6 +30,10 @@ body {
 	padding: 0;
 }
 
+.spinner_box {
+	text-align: center;
+}
+
 /* owl-carousel */
 .owl-carousel .owl-stage-outer {
 	padding-bottom: 30px;
@@ -148,8 +152,8 @@ h2,
 }
 
 h3 {
-        font-size: 1.2rem;
-        margin: 10px 0;
+	font-size: 1.2rem;
+	margin: 10px 0;
 }
 
 a,

@@ -1,0 +1,10 @@
+name: "Просмотренные товары"
+description: "Выводит товары просмотренные пользоватеелем"
+settings_params:
+  - {
+      variable: enabled,
+      name: "Включено",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }
+  - { variable: limit, name: "Кол-во товаров в истории", default: 8 }
+version: 1.3

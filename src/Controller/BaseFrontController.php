@@ -57,7 +57,6 @@ class BaseFrontController extends BaseController
         ]);
 
         // Smarty Plugins
-        Design::setFunctionPlugin("get_browsed_products",   $this, 'getBrowsedProducts');
         Design::setModifierPlugin("instock",                $this, 'checkInstock');
         Design::setModifierPlugin("api",                    $this, 'getModelMethod');
     }
@@ -100,32 +99,5 @@ class BaseFrontController extends BaseController
             return $return_txt;
         }
         return;
-    }
-
-
-    /**
-     * Выбираем просмотренные продукты
-     * Smarty Plugin
-     */
-    public function getBrowsedProducts($params, $smarty)
-    {
-        $cookie_bp = Request::getCookie('BP');
-
-        if (!empty($cookie_bp)) {
-            $browsed_products_ids = array_reverse(array_filter(explode('.', $cookie_bp)));
-
-            if (isset($params['limit'])) {
-                $browsed_products_ids = array_slice($browsed_products_ids, 0, $params['limit']);
-            }
-
-            $browsed_products = Product::getProducts([
-                'id' => $browsed_products_ids,
-                'visible' => 1
-            ], join: ['image']);
-
-            if (!empty($browsed_products) && !empty($params['var'])) {
-                $smarty->assign($params['var'], array_values($browsed_products->all()));
-            }
-        }
     }
 }
