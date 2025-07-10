@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.2
+ * @version 3.3
  *
  * Класс-обертка для обращения к переменным $_GET, $_POST, $_FILES, $_COOKIE, $_SESSION
  *
@@ -581,7 +581,10 @@ class Request
      */
     public static function isAjax(): bool
     {
-        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+        if (
+            (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
+            || isset($_SERVER['HTTP_HX_REQUEST'])
+        ) {
             return true;
         }
         return false;

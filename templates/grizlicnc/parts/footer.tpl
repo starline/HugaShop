@@ -2,18 +2,14 @@
     <div class="container">
 
         <!-- Browsed Product -->
-        {get_browsed_products var=browsed_products limit=8}
-
-        {if $browsed_products}
-            <div class="my-5">
-                <div class="h2">{'Вы просматривали'|trans}</div>
-                <ul class="products owl-carousel">
-                    {foreach $browsed_products as $product}
-                        {include 'parts/product_item.tpl' type='short'}
-                    {/foreach}
-                </ul>
+        <div id="browsed_products"
+             hx-get="{'BrowsedProductsBlock'|linkLang}"
+             hx-trigger="load"
+             hx-swap="outerHTML">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
             </div>
-        {/if}
+        </div>
 
 
         {* Выбираем в переменную $last_posts последние записи *}
