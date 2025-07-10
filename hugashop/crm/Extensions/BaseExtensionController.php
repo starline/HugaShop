@@ -18,10 +18,7 @@ class BaseExtensionController extends BaseAdminController
 {
 
     #[Required]
-    public function initBaseExtension()
-    {
-        dump('ext');
-    }
+    public function initBaseExtension() {}
 
 
     /**
