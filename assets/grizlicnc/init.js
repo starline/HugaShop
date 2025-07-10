@@ -3,7 +3,7 @@
  * Custom javascript code
  * 
  * @author Andri Huga
- * @version 1.5
+ * @version 1.6
  * 
  */
 
@@ -18,6 +18,7 @@ import './js/fancybox/jquery.fancybox.min.js';
 import './js/autocomplete/jquery.autocomplete-min.js';
 import './js/jquery/jquery.form.js';
 import './js/owlcarousel/owl.carousel.min.js';
+import 'https://unpkg.com/htmx.org@1.9.10';
 import './js/bootstrap.bundle.min.js';
 import { getCartInformer, asignFancyAjax, loaderLayer } from './js/common.js';
 
