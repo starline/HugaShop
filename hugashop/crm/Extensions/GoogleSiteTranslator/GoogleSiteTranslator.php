@@ -37,7 +37,7 @@ final class GoogleSiteTranslator extends BaseExtension
      */
     public function getFrontBodyTemplate()
     {
-        if (!empty($this->settings->enabled)) {
+        if (!empty(self::getSettings()->enabled)) {
             return $this->fetchTemplate('templates/translator.tpl');
         }
         return;

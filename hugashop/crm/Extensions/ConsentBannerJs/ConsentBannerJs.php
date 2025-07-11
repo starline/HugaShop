@@ -23,7 +23,7 @@ final class ConsentBannerJs extends BaseExtension
      */
     public function getFrontBodyTemplate()
     {
-        if (!empty($this->getSetting()->enabled)) {
+        if (!empty(self::getSettings()->enabled)) {
 
             // If Trnaslation file exists
             $translate_file_path = $this->getExtensionDir() . 'translations/messages.' . Design::$locale . '.yaml';

@@ -20,7 +20,7 @@ final class GoogleTag extends BaseExtension
      */
     public function getFrontHeadTemplate()
     {
-        if (!empty($this->settings->enabled)) {
+        if (!empty(self::getSettings()->enabled)) {
             return $this->fetchTemplate('templates/head_tag.tpl');
         }
         return;
@@ -32,7 +32,7 @@ final class GoogleTag extends BaseExtension
      */
     public function getFrontBodyTemplate()
     {
-        if (!empty($this->settings->enabled)) {
+        if (!empty(self::getSettings()->enabled)) {
             return $this->fetchTemplate('templates/body_tag.tpl');
         }
         return;

@@ -21,12 +21,12 @@ final class GoogleDataLayer extends BaseExtension
      */
     public function getFrontBodyTemplate(): ?string
     {
-        if (empty($this->settings->enabled)) {
+        if (empty(self::getSettings()->enabled)) {
             return null;
         }
 
-        if (empty($this->settings->currency_code)) {
-            $this->settings->currency_code = FinanceCurrency::getMainCurrency()->code;
+        if (empty(self::getSettings()->currency_code)) {
+            self::getSettings()->currency_code = FinanceCurrency::getMainCurrency()->code;
         }
 
         return $this->fetchTemplate('templates/datalayer.tpl');

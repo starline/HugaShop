@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.6
+ * @version 1.7
  * 
  * SeoLinker extension
  * @link https://github.com/spatie/crawler
@@ -32,7 +32,7 @@ final class SeoLinker extends BaseExtension
     public function index()
     {
 
-        $base_url = $this->getSetting('base_url') ?? rtrim(Config::get('root_url'), '/') . '/';
+        $base_url = self::getSettings('base_url') ?? rtrim(Config::get('root_url'), '/') . '/';
 
         if (Request::post('scan')) {
 
@@ -44,7 +44,7 @@ final class SeoLinker extends BaseExtension
             [$scanned, $pending] = ScanBatch::scanBatch(
                 $base_url,
                 limit: 1,
-                delay: $this->getSetting('delay')
+                delay: self::getSettings('delay')
             );
 
             if (Request::isAjax()) {

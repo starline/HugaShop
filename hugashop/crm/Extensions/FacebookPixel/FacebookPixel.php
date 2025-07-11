@@ -33,11 +33,11 @@ final class FacebookPixel extends BaseExtension
      */
     public function getFrontHeadTemplate()
     {
-        if (!empty($this->settings->enabled)) {
+        if (!empty(self::getSettings()->enabled)) {
 
             // Set currency
-            if (empty($this->settings->currency_code)) {
-                $this->settings->currency_code = FinanceCurrency::getMainCurrency()->code;
+            if (empty(self::getSettings()->currency_code)) {
+                self::getSettings()->currency_code = FinanceCurrency::getMainCurrency()->code;
             }
             return $this->fetchTemplate('templates/pixel.tpl');
         }

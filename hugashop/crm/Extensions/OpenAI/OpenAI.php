@@ -26,6 +26,7 @@ use HugaShop\Extensions\SeoPage\Models\SeoPage;
 
 final class OpenAI extends BaseExtension
 {
+
     /**
      * Translate model fields using OpenAI
      */
@@ -90,7 +91,7 @@ final class OpenAI extends BaseExtension
             return ['error' => 'not_found'];
         }
 
-        $key = $this->getSetting('api_key');
+        $key = self::getSettings('api_key');
         if (empty($key)) {
             return ['error' => 'openai_key'];
         }
@@ -138,7 +139,7 @@ final class OpenAI extends BaseExtension
             return ['error' => 'not_found'];
         }
 
-        $key = $this->getSetting('api_key');
+        $key = self::getSettings('api_key');
         if (empty($key)) {
             return ['error' => 'openai_key'];
         }

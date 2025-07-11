@@ -87,7 +87,7 @@ final class FacebookCommerce extends BaseExtension
             FacebookCommerceCategory::setCategories($pricefeed->id, $pricefeed_categories);
 
             // Делаем редирект на страницу с ID
-            Request::makeRedirect("/admin/extension/$this->class_name/feed/$pricefeed->id");
+            Request::makeRedirect("/admin/extension/" . self::getName() . "/feed/$pricefeed->id");
         }
 
 
@@ -98,7 +98,7 @@ final class FacebookCommerce extends BaseExtension
             $pricefeed = FacebookCommerceModel::getOne($pricefeed_id);
 
             if (empty($pricefeed->id)) {
-                Request::makeRedirect("/admin/extension/$this->class_name");
+                Request::makeRedirect("/admin/extension/" . self::getName());
             }
 
             $pricefeed_categories = FacebookCommerceCategory::getCategoriesIds($pricefeed->id);

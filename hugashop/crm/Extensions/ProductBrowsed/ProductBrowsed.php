@@ -14,14 +14,14 @@ use HugaShop\Extensions\BaseExtension;
 
 final class ProductBrowsed extends BaseExtension
 {
-    
+
 
     /**
      * Get Head template
      */
     public function getTemplate()
     {
-        if (!empty($this->settings->enabled)) {
+        if (!empty(self::getSettings()->enabled)) {
             return $this->fetchTemplate('templates/product_browsed.tpl');
         }
         return;

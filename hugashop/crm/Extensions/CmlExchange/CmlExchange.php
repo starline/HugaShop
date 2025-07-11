@@ -36,8 +36,8 @@ class CmlExchange extends BaseExtension
      */
     public function checkAuth(): bool
     {
-        $login = $this->settings->login ?? '';
-        $password = $this->settings->password ?? '';
+        $login = self::getSettings()->login ?? '';
+        $password = self::getSettings()->password ?? '';
 
         $reqLogin = Request::get('login');
         $reqPass  = Request::get('password') ?: Request::get('pass');

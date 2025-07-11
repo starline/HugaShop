@@ -12,7 +12,6 @@ namespace HugaShop\Extensions\FacebookPixel\EventListener;
 
 use FacebookAds\Api;
 use App\Event\CartAddEvent;
-use HugaShop\Models\Settings;
 use HugaShop\Services\Config;
 use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
@@ -47,8 +46,8 @@ class CartAddListener
         $item = $event->getItem();
 
         // Should fill in value before running this script
-        $access_token = $this->settings->api_token;
-        $pixel_id = $this->settings->pixel_id;
+        $access_token = $this->getSettings()->api_token;
+        $pixel_id = $this->getSettings()->pixel_id;
 
         if (empty($access_token) || empty($pixel_id) || empty($item->product_id)) {
             return;

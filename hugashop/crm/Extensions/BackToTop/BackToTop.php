@@ -20,7 +20,7 @@ final class BackToTop extends BaseExtension
      */
     public function getFrontBodyTemplate()
     {
-        if (!empty($this->getSetting()->enabled)) {
+        if (!empty(self::getSettings()->enabled)) {
             return $this->fetchTemplate('templates/button.tpl');
         }
         return;

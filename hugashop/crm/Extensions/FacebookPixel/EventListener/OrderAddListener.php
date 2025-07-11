@@ -59,8 +59,8 @@ class OrderAddListener
         $purchases = OrderPurchase::getPurchases(['order_id' => $order->id], ['product']);
 
         // Should fill in value before running this script
-        $access_token = $this->settings->api_token;
-        $pixel_id = $this->settings->pixel_id;
+        $access_token = $this->getSettings()->api_token;
+        $pixel_id = $this->getSettings()->pixel_id;
 
 
         if (empty($access_token) || empty($pixel_id) || empty($purchases)) {
