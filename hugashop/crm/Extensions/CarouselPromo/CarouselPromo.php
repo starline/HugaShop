@@ -26,7 +26,7 @@ final class CarouselPromo extends BaseExtension
             //...
         }
 
-        return $this->getTemplatePath('index.tpl');
+        return $this->getTemplatePath('templates/index.tpl');
     }
 
     /**
@@ -34,6 +34,6 @@ final class CarouselPromo extends BaseExtension
      */
     public function getTemplate(array $params = [])
     {
-        return $this->fetchTemplate('carousel.tpl');
+        return $this->fetchTemplate('templates/carousel.tpl');
     }
 }

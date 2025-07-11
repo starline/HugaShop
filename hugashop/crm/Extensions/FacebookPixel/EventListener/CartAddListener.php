@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.5
+ * @version 2.6
  *
  */
 
@@ -20,6 +20,7 @@ use FacebookAds\Logger\CurlLogger;
 use HugaShop\Models\Product\Product;
 use FacebookAds\Object\ServerSide\Event;
 use FacebookAds\Object\ServerSide\UserData;
+use HugaShop\Extensions\BaseExtensionTrait;
 use HugaShop\Models\Finance\FinanceCurrency;
 use FacebookAds\Object\ServerSide\CustomData;
 use FacebookAds\Object\ServerSide\EventRequest;
@@ -27,6 +28,8 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 class CartAddListener
 {
+
+    use BaseExtensionTrait;
 
     /**
      * Cart Add
@@ -36,7 +39,7 @@ class CartAddListener
     public function onCartAddEvent(CartAddEvent $event): void
     {
 
-        $settings = (object) (Settings::getParam('FacebookPixel') ?? []);
+        $settings = $this->getSettings();
         if (empty($settings->enabled)) {
             return;
         }

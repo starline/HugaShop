@@ -57,4 +57,23 @@ trait BaseExtensionTrait
     {
         return Config::get('extension_dir') . $this->getName() . '/';
     }
+
+
+    /**
+     * Get extension template
+     * @param string $template
+     */
+    public function getTemplatePath(string $template)
+    {
+        return $this->getExtensionDir() . $template;
+    }
+
+
+    /**
+     * Has index function
+     */
+    public function hasIndex()
+    {
+        return method_exists($this, 'index') ? true : false;
+    }
 }

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.2
  *
  */
 
@@ -20,6 +20,6 @@ final class AdminTemplate extends BaseExtension
      */
     public function index()
     {
-        return $this->getTemplatePath('template.tpl');
+        return $this->getTemplatePath('templates/template.tpl');
     }
 }

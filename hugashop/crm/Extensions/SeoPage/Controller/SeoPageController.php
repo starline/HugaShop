@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
@@ -15,12 +15,16 @@ use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use App\Services\LanguageService;
+use App\Controller\BaseAdminController;
+use HugaShop\Extensions\BaseExtensionTrait;
 use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Extensions\SeoPage\Models\SeoPage;
-use HugaShop\Extensions\BaseExtensionController;
 
-final class SeoPageController extends BaseExtensionController
+
+final class SeoPageController extends BaseAdminController
 {
+
+    use BaseExtensionTrait;
 
     /**
      * Список странниц

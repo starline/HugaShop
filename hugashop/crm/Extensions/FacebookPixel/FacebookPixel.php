@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.8
+ * @version 2.9
  *
  * @link https://github.com/facebook/facebook-php-business-sdk
  * Composer require facebook/php-business-sdk
@@ -39,7 +39,7 @@ final class FacebookPixel extends BaseExtension
             if (empty($this->settings->currency_code)) {
                 $this->settings->currency_code = FinanceCurrency::getMainCurrency()->code;
             }
-            return $this->fetchTemplate('pixel.tpl');
+            return $this->fetchTemplate('templates/pixel.tpl');
         }
         return;
     }

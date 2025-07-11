@@ -12,13 +12,15 @@
 
 namespace HugaShop\Extensions\FacebookPixel\EventListener;
 
-use HugaShop\Models\Settings;
 use HugaShop\Services\Request;
 use App\Event\DesignBeforeFetchEvent;
+use HugaShop\Extensions\BaseExtensionTrait;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 class DesignBeforeFetchListener
 {
+
+    use BaseExtensionTrait;
 
     /**
      * Reques
@@ -28,7 +30,7 @@ class DesignBeforeFetchListener
     public function onDesignBeforeFetchEvent(DesignBeforeFetchEvent $event): void
     {
 
-        $settings = (object) (Settings::getParam('FacebookPixel') ?? []);
+        $settings = $this->getSettings();
         if (empty($settings->enabled)) {
             return;
         }

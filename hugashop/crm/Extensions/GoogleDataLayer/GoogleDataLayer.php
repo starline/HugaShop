@@ -29,6 +29,6 @@ final class GoogleDataLayer extends BaseExtension
             $this->settings->currency_code = FinanceCurrency::getMainCurrency()->code;
         }
 
-        return $this->fetchTemplate('datalayer.tpl');
+        return $this->fetchTemplate('templates/datalayer.tpl');
     }
 }

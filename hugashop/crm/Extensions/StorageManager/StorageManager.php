@@ -115,6 +115,6 @@ final class StorageManager extends BaseExtension
         Design::assign('storages', $storages);
         Design::assign('total', $total);
 
-        return $this->getTemplatePath('index.tpl');
+        return $this->getTemplatePath('templates/index.tpl');
     }
 }

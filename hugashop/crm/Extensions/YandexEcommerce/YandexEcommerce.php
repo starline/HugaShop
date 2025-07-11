@@ -17,6 +17,6 @@ final class YandexEcommerce extends BaseExtension
 
     public function getTemplate(array $params = [])
     {
-        return $this->fetchTemplate('template.tpl');
+        return $this->fetchTemplate('templates/template.tpl');
     }
 }

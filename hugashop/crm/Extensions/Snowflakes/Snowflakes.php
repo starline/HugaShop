@@ -22,7 +22,7 @@ final class Snowflakes extends BaseExtension
     public function getFrontBodyTemplate()
     {
         if (!empty($this->settings->enabled) and !empty($this->settings->countSnowflake)) {
-            return $this->fetchTemplate('snow.tpl');
+            return $this->fetchTemplate('templates/snow.tpl');
         }
         return null;
     }

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.5
+ * @version 1.6
  *
  */
 
@@ -20,8 +20,8 @@ final class BackToTop extends BaseExtension
      */
     public function getFrontBodyTemplate()
     {
-        if (!empty($this->settings->enabled)) {
-            return $this->fetchTemplate('button.tpl');
+        if (!empty($this->getSetting()->enabled)) {
+            return $this->fetchTemplate('templates/button.tpl');
         }
         return;
     }

@@ -769,6 +769,6 @@ class TestScript extends BaseExtension
         $this->result = print_r($this->result, true);
         Design::assign('result', $this->result);
 
-        return $this->getTemplatePath('index.tpl');
+        return $this->getTemplatePath('templates/index.tpl');
     }
 }

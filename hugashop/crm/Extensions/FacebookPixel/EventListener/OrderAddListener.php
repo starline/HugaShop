@@ -31,6 +31,7 @@ use FacebookAds\Object\ServerSide\Event;
 use HugaShop\Models\Order\OrderPurchase;
 use FacebookAds\Object\ServerSide\Content;
 use FacebookAds\Object\ServerSide\UserData;
+use HugaShop\Extensions\BaseExtensionTrait;
 use HugaShop\Models\Finance\FinanceCurrency;
 use FacebookAds\Object\ServerSide\CustomData;
 use FacebookAds\Object\ServerSide\EventRequest;
@@ -39,6 +40,7 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 class OrderAddListener
 {
 
+    use BaseExtensionTrait;
 
     /**
      * Order Add
@@ -48,7 +50,7 @@ class OrderAddListener
     public function onOrderAddEvent(OrderAddEvent $event): void
     {
 
-        $settings = (object) (Settings::getParam('FacebookPixel') ?? []);
+        $settings = $this->getSettings();
         if (empty($settings->enabled)) {
             return;
         }
