@@ -46,7 +46,8 @@ final class ProductBrowsedController extends BaseFrontController
                     $browsed_products_sort[] = $browsed_products[$id];
                 }
             }
-            Design::assign('browsed_products', $browsed_products);
+
+            Design::assign('browsed_products', $browsed_products_sort);
         }
 
         return $this->fetchResponse(Config::get('extension_dir') . 'ProductBrowsed/templates/product_browsed.tpl', 'product_browsed');

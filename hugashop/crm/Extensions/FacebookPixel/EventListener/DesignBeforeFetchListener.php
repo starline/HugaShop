@@ -12,9 +12,10 @@ namespace HugaShop\Extensions\FacebookPixel\EventListener;
 
 use HugaShop\Services\Request;
 use App\Event\DesignBeforeFetchEvent;
+use HugaShop\Extensions\BaseExtension;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-class DesignBeforeFetchListener
+class DesignBeforeFetchListener extends BaseExtension
 {
 
     /**

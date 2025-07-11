@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * 
+ * @author Andi Huga
+ * @version 1.0
+ * 
+ */
+
 namespace App\Event;
 
 use Symfony\Contracts\EventDispatcher\Event;

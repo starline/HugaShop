@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * HugaShop - Sell anything
  * 
  * @author Andi Huga
  * @version 1.0

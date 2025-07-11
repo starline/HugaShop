@@ -4,23 +4,20 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.5
- *
- * Этот класс использует шаблон product.tpl
+ * @version 3.6
  *
  */
 
 namespace App\Controller\Front;
 
-use HugaShop\Services\Design;
-use HugaShop\Services\Request;
 use HugaShop\Models\Settings;
+use HugaShop\Services\Design;
+use App\Event\ProductViewEvent;
 use HugaShop\Models\Product\Product;
 use App\Controller\BaseFrontController;
 use HugaShop\Models\Content\ContentComment;
 use HugaShop\Models\Product\ProductVariant;
 use HugaShop\Models\Product\ProductCategory;
-use HugaShop\Models\Localization\Language;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -75,9 +72,6 @@ class ProductController extends BaseFrontController
         // Comments
         ContentComment::handleComments($product->id, Product::class);
 
-        // Browsed products
-        $this->setBrowsedProducts($product->id);
-
         // SEO metateg
         if (empty($product->meta_title)) {
             $product->meta_title = $product->name;
@@ -93,29 +87,9 @@ class ProductController extends BaseFrontController
         Design::assign('meta_title', $product->meta_title);
         Design::assign('meta_description', $product->meta_description);
 
+        // Event product view
+        $this->setEvent(new ProductViewEvent($product));
+
         return $this->fetchResponse('product.tpl');
-    }
-
-
-    /**
-     * setBrowsedProducts
-     */
-    private function setBrowsedProducts($product_id)
-    {
-        // Добавление в историю просмотренных товаров
-        $max_visited_products = 50; # Максимальное число хранимых товаров в истории
-        if (!empty($cookie_bp = Request::getCookie('BP'))) {
-            $browsed_products = explode('.', $cookie_bp);
-
-            // Удалим текущий товар, если он был
-            if (($exists = array_search($product_id, $browsed_products)) !== false) {
-                unset($browsed_products[$exists]);
-            }
-        }
-
-        // Добавим текущий товар
-        $browsed_products[] = $product_id;
-        $cookie_data = join('.', array_slice($browsed_products, -$max_visited_products, $max_visited_products));
-        Request::setCookie("BP", $cookie_data, 30); # Время жизни - 30 дней
     }
 }

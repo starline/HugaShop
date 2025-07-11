@@ -1,11 +1,13 @@
 <?php
 
 /**
- * This event is dispatched each time an Item
- * is added in the Cart.
+ * HugaShop - Sell anything
  * 
  * @author Andi Huga
  * @version 2.0
+ * 
+ * This event is dispatched each time an Item
+ * is added in the Cart.
  * 
  */
 
