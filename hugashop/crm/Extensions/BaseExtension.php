@@ -44,11 +44,11 @@ class BaseExtension
     /**
      * Get extension params
      */
-    public function getExtension()
+    public static function getExtension()
     {
         $extension = self::getConfig();
         $extension->settings = self::getSettings();
-        $extension->hasIndex = $this->hasIndex();
+        $extension->hasIndex = self::hasIndex();
         return $extension;
     }
 
@@ -56,9 +56,9 @@ class BaseExtension
     /**
      * Has index function
      */
-    public function hasIndex()
+    public static function hasIndex()
     {
-        return method_exists($this, 'index') ? true : false;
+        return method_exists(static::class, 'index') ? true : false;
     }
 
 

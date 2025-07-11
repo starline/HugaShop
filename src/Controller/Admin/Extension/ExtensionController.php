@@ -31,18 +31,18 @@ class ExtensionController extends BaseAdminController
             return $this->redirectToRoute('ExtensionListAdmin');
         }
 
-        if (!$Extension->hasIndex()) {
-            return $this->redirectToRoute('ExtensionSettingsAdmin', ['name' => $Extension->getName()]);
+        if (!$Extension::hasIndex()) {
+            return $this->redirectToRoute('ExtensionSettingsAdmin', ['name' => $Extension::getName()]);
         }
 
-        Design::assign('extension', $Extension->getExtension());
+        Design::assign('extension', $Extension::getExtension());
 
         // Ajax
         if (Request::isAjax()) {
-            return $Extension->index();
+            return $Extension::index();
         }
 
-        return $this->fetchResponse($Extension->index());
+        return $this->fetchResponse($Extension::index());
     }
 
 
@@ -53,13 +53,13 @@ class ExtensionController extends BaseAdminController
 
         $this->checkAdminAccess('extension');
 
-        if (empty($name) || empty($Extension = Extension::makeExtension($name))) {
+        if (empty($name) || empty($Ext = Extension::getNameSpace($name))) {
             return $this->redirectToRoute('ExtensionListAdmin');
         }
 
-        Design::assign('extension', $Extension->getExtension());
+        Design::assign('extension', $Ext::getExtension());
 
-        return $this->fetchResponse($Extension->$path($item_id));
+        return $this->fetchResponse($Ext::$path($item_id));
     }
 
 
@@ -72,37 +72,37 @@ class ExtensionController extends BaseAdminController
 
         $this->checkAdminAccess('extension');
 
-        if (empty($name) || empty($Extension = Extension::makeExtension($name))) {
+        if (empty($name) || empty($Ext = Extension::getNameSpace($name))) {
             return $this->redirectToRoute('ExtensionListAdmin');
         }
 
-        Design::assign('extension', $Extension->getExtension());
+        Design::assign('extension', $Ext::getExtension());
 
-        return new JsonResponse($Extension->$path());
+        return new JsonResponse($Ext::$path());
     }
 
 
     /**
      * Get Settings page
      */
-    #[Route('/admin/extension/{name}/settings', name: 'ExtensionSettingsAdmin', priority: 2)]
+    #[Route('/admin/extension/{name}/settings', name: 'ExtensionSettingsAdmin', priority: 30)]
     public function settingsPage(string $name): Response
     {
 
         $this->checkAdminAccess('extension');
 
-        if (empty($Extension = Extension::makeExtension($name))) {
+        if (empty($Ext = Extension::getNameSpace($name))) {
             return $this->redirectToRoute('ExtensionListAdmin');
         }
 
         // Сохранить настройки
         if (!empty($extension_settings = Request::post('extension_settings', 'array'))) {
-            Design::setFlashMessage('update', Extension::updateExt($Extension::getName(), $extension_settings));
-            return $this->redirectToRoute('ExtensionSettingsAdmin', ['name' => $Extension::getName()]);
+            Design::setFlashMessage('update', Extension::updateExt($Ext::getName(), $extension_settings));
+            return $this->redirectToRoute('ExtensionSettingsAdmin', ['name' => $Ext::getName()]);
         }
 
-        Design::assign('extension', $Extension->getExtension());
-        Design::assign('extensions', [$Extension::getName() => $Extension::getConfig()]);
+        Design::assign('extension', $Ext::getExtension());
+        Design::assign('extensions', [$Ext::getName() => $Ext::getConfig()]);
 
         return $this->fetchResponse('extension/extension.tpl');
     }

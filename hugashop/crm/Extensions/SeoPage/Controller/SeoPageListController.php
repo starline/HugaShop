@@ -64,8 +64,8 @@ final class SeoPageListController extends BaseAdminController
             SeoPage::cacheClear();
         }
 
-        $pages = SeoPage::getList(order: 'position');
-        Design::assign('pages', $pages);
+        Design::assign('pages', SeoPage::getList(order: 'position'));
+        Design::assign('extension', $this->getExtension());
 
         return $this->fetchExtResponse('page_list.tpl');
     }

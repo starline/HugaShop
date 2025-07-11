@@ -68,6 +68,7 @@ final class SeoPageController extends BaseAdminController
         }
 
         Design::assign('page', $page);
+        Design::assign('extension', $this->getExtension());
 
         return $this->fetchExtResponse('page.tpl');
     }

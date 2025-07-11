@@ -90,7 +90,7 @@ trait BaseExtensionTrait
     public function hasIndex()
     {
         $ext_namespace = Extension::getNameSpace($this->getName());
-        return method_exists($ext_namespace, 'index') ? true : false;
+        return $ext_namespace ? (method_exists($ext_namespace, 'index') ? true : false) : false;
     }
 
 
