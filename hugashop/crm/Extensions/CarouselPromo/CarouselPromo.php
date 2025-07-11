@@ -15,19 +15,6 @@ use HugaShop\Extensions\BaseExtension;
 
 final class CarouselPromo extends BaseExtension
 {
-    /**
-     * For admin panel use default settings template
-     */
-    public function index()
-    {
-
-        // Обработка действий
-        if (Request::checkCSRF()) {
-            //...
-        }
-
-        return $this->getTemplatePath('templates/index.tpl');
-    }
 
     /**
      * Get block template
