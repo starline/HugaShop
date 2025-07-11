@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.7
+ * @version 2.8
  *
  */
 
@@ -17,6 +17,7 @@ use HugaShop\Models\BaseModel;
 use HugaShop\Models\Product\Product;
 use HugaShop\Models\User\User;
 use HugaShop\Models\User\UserNotifier;
+use HugaShop\Models\Image;
 use Illuminate\Database\Eloquent\Builder;
 
 class ContentComment extends BaseModel
@@ -58,6 +59,13 @@ class ContentComment extends BaseModel
     public function children()
     {
         return $this->hasMany(ContentComment::class, 'related_id');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(\HugaShop\Models\Image::class, 'entity_id')
+            ->where('entity_name', 'comment')
+            ->orderBy('position');
     }
 
 
@@ -261,6 +269,21 @@ class ContentComment extends BaseModel
 
                     // Добавляем комментарий в базу
                     $comment = ContentComment::createOne($comment);
+
+                    // Загружаем изображения только для корневых комментариев
+                    if (empty($comment->related_id) && ($files = Request::files('comment_images'))) {
+                        $tmp_names = $files['tmp_name'] ?? [];
+                        $names = $files['name'] ?? [];
+                        $limit = 6;
+                        foreach ($tmp_names as $i => $tmp) {
+                            if ($i >= $limit) {
+                                break;
+                            }
+                            if (!empty($tmp)) {
+                                Image::uploadAddImage($tmp, $names[$i] ?? 'image', $comment->id, 'comment');
+                            }
+                        }
+                    }
 
                     // Отправляем email
                     UserNotifier::sendNotifierToManager('commentToAdmin', message_params: ['comment_id' => $comment->id]);

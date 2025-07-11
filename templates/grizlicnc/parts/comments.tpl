@@ -12,9 +12,21 @@
 						{if !$comment->approved}<span class="await_approval">{'ожидает модерации'|trans}</span>{/if}
 					</div>
 
-					<div class="comment_body">
-						{$comment->text|strip_tags|nl2br|raw}
-					</div>
+                                        <div class="comment_body">
+                                                {$comment->text|strip_tags|nl2br|raw}
+                                        </div>
+
+                                        {if $comment->images}
+                                                <div class="comment_images row g-2 my-2">
+                                                        {foreach $comment->images as $image}
+                                                                <div class="col-auto">
+                                                                        <a href="{$image->filename|resize:1080:1080:w}" class="zoom" data-fancybox="comment{$comment->id}">
+                                                                                <img src="{$image->filename|resize:220:220:c}" class="img-thumbnail" width="220" height="220" />
+                                                                        </a>
+                                                                </div>
+                                                        {/foreach}
+                                                </div>
+                                        {/if}
 
 					<span class="link add_answer" data-id="{$comment->id}">Ответить</span>
 				</li>
@@ -41,7 +53,7 @@
 
 
 	<!-- Форма отправления комментария -->
-	<form id="comment_form" class="comment_form  needs-validation" method="post" action="#comments">
+        <form id="comment_form" class="comment_form  needs-validation" method="post" action="#comments" enctype="multipart/form-data">
 		<div class="row g-4">
 			<input type="hidden" id="comment_related_id" name="comment_related_id" value="" />
 			{getCSRFInput}
@@ -72,12 +84,17 @@
 				<div class="invalid-feedback">{'Укажите email'|trans}</div>
 			</div>
 
-			<div class="col-12">
-				<textarea class="form-control comment_textarea {if text|in_array:$form_invalid}is-invalid{/if}"
-					id="comment_text" name="comment_text"
-					placeholder="{'Ваш комментарий'|trans}">{$comment_text}</textarea>
-				<div class="invalid-feedback">{'Укажите сообщение'|trans}</div>
-			</div>
+                        <div class="col-12">
+                                <textarea class="form-control comment_textarea {if text|in_array:$form_invalid}is-invalid{/if}"
+                                        id="comment_text" name="comment_text"
+                                        placeholder="{'Ваш комментарий'|trans}">{$comment_text}</textarea>
+                                <div class="invalid-feedback">{'Укажите сообщение'|trans}</div>
+                        </div>
+
+                        <div class="col-12">
+                                <input class="form-control" type="file" name="comment_images[]" accept="image/*" multiple>
+                                <div id="comment_images_preview" class="comment_images row g-2 mt-2"></div>
+                        </div>
 
 			<div class="col-lg-6">
 				<div class="g-recaptcha" data-sitekey="{$config->recaptcha->public_key}"></div>
@@ -93,11 +110,44 @@
 
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script type="module">
-	{literal}
-		$('.add_answer').click(function() {
-			let id = $(this).data('id');
-			$('form.comment_form').find('#comment_related_id').val(id);
-			$('#comment_' + id).append($('form.comment_form'));
-		});
-	{/literal}
+        {literal}
+                $('.add_answer').click(function() {
+                        let id = $(this).data('id');
+                        $('form.comment_form').find('#comment_related_id').val(id);
+                        $('#comment_' + id).append($('form.comment_form'));
+                });
+
+                const previewContainer = $('#comment_images_preview');
+                const fileInput = $('input[name="comment_images[]"]');
+
+                fileInput.on('change', function (e) {
+                        previewContainer.empty();
+                        const files = e.target.files;
+                        const limit = 6;
+                        for (let i = 0; i < files.length && i < limit; i++) {
+                                const file = files[i];
+                                if (!file.type.match('image.*')) {
+                                        continue;
+                                }
+                                const reader = new FileReader();
+                                reader.onload = function (evt) {
+                                        const col = $('<div class="col-auto"></div>');
+                                        const link = $('<a class="zoom" data-fancybox="preview"></a>')
+                                                .attr('href', evt.target.result);
+                                        $('<img class="img-thumbnail" width="220" height="220" />')
+                                                .attr('src', evt.target.result)
+                                                .appendTo(link);
+                                        col.append(link);
+                                        previewContainer.append(col);
+                                        link.fancybox({
+                                                buttons: ['close'],
+                                                image: { preload: true },
+                                                closeExisting: true,
+                                                defaultType: 'image'
+                                        });
+                                };
+                                reader.readAsDataURL(file);
+                        }
+                });
+        {/literal}
 </script>
