@@ -24,7 +24,7 @@ final class FacebookCommerceListController extends BaseAdminController
     use BaseExtensionTrait;
 
     #[Route('/FacebookCommerce', name: 'ExtFacebookCommerceList', priority: 20)]
-    public function index()
+    public function facebook()
     {
         if (Request::checkCSRF()) {
             $ids = Request::post('check');
@@ -44,7 +44,9 @@ final class FacebookCommerceListController extends BaseAdminController
         }
 
         $pricefeeds = FacebookCommerce::getList(order: 'position');
+
         Design::assign('pricefeeds', $pricefeeds);
+        Design::assign('extension', $this->getExtension());
 
         return $this->fetchExtResponse('feed_list.tpl');
     }

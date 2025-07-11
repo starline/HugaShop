@@ -66,6 +66,7 @@ final class FacebookCommerceController extends BaseAdminController
         Design::assign('pricefeed', $pricefeed);
         Design::assign('categories', $categories);
         Design::assign('pricefeed_categories', $pricefeed_categories);
+        Design::assign('extension', $this->getExtension());
 
         return $this->fetchExtResponse('feed.tpl');
     }

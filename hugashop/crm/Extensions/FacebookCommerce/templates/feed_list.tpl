@@ -8,7 +8,7 @@
     <!-- Заголовок -->
     <div class="header_top">
         <h1>{$meta_title}</h1>
-        <a class="add" href="{'ExtensionItemNewAdmin'|urll:[name => $extension->module, path => feed]}">Добавить прайс</a>
+        <a class="add" href="{'ExtFacebookCommerceFeedNew'|urll}">Добавить прайс</a>
     </div>
 
     <div id="main_list">
@@ -36,11 +36,11 @@
                                             #{$pricefeed->id}
                                         </span>
 
-                                        <a href="/admin/extension/{$extension->module}/feed/{$pricefeed->id}">{$pricefeed->name}</a>
+                                        <a href="{'ExtFacebookCommerceFeed'|urll:[id => $pricefeed->id]}">{$pricefeed->name}</a>
                                     </div>
 
                                     <div class="badge text-bg-round copy_field my-2"
-                                        value="{$config->root_url}/ext/{$extension->module}/{$pricefeed->id}/{$pricefeed->token}.csv">
+                                        value="{$config->root_url}/ext/FacebookCommerce/{$pricefeed->id}/{$pricefeed->token}.csv">
                                         {$config->root_url}/ext/{$extension->module}/{$pricefeed->id}/{$pricefeed->token}.csv
                                         <div class="copy_hover" data-bs-toggle="tooltip" data-bs-original-title="Скопировать">
                                             <i class="material-icons">content_copy</i>

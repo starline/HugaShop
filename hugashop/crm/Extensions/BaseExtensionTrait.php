@@ -12,6 +12,8 @@ namespace HugaShop\Extensions;
 
 use HugaShop\Models\Settings;
 use HugaShop\Services\Config;
+use HugaShop\Services\Helper;
+use HugaShop\Services\Extension;
 
 trait BaseExtensionTrait
 {
@@ -50,6 +52,20 @@ trait BaseExtensionTrait
 
 
     /**
+     * Get Extension config
+     */
+    public function getConfig(?string $param = null)
+    {
+        $config = Helper::getModule($this->getName(), Config::get('extension_dir'));
+
+        if (is_null($param)) {
+            return $config;
+        }
+        return $config->$param ?? null;
+    }
+
+
+    /**
      * Get Extension directory
      */
     public function getExtensionDir()
@@ -73,7 +89,8 @@ trait BaseExtensionTrait
      */
     public function hasIndex()
     {
-        return method_exists($this, 'index') ? true : false;
+        $ext_namespace = Extension::getNameSpace($this->getName());
+        return method_exists($ext_namespace, 'index') ? true : false;
     }
 
 
@@ -83,5 +100,17 @@ trait BaseExtensionTrait
     public function fetchExtResponse(string $template, ?string $block = null)
     {
         return $this->fetchResponse($this->getExtensionDir() . 'templates/' . $template, $block);
+    }
+
+
+    /**
+     * Get Extension
+     */
+    public function getExtension()
+    {
+        $extension = $this->getConfig();
+        $extension->settings = $this->getSettings();
+        $extension->hasIndex = $this->hasIndex();
+        return $extension;
     }
 }

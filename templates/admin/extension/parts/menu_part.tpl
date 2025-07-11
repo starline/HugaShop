@@ -7,8 +7,8 @@
     {/if}
 
 
-    {if !$extension->hasIndex|empty and 'extension'|user_access}
-        <li class="mini {if $route|in_array:[ExtensionAdmin, ExtensionItemNewAdmin, ExtensionItemAdmin]}active{/if}">
+    {if 'extension'|user_access and $extension->module}
+        <li class="mini {if $route != 'ExtensionSettingsAdmin'}active{/if}">
             <a href="/admin/extension/{$extension->module}">{$extension->name}</a>
         </li>
     {/if}
