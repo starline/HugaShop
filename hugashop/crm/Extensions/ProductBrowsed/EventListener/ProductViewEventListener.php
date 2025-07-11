@@ -4,19 +4,21 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  */
 
 namespace HugaShop\Extensions\ProductBrowsed\EventListener;
 
-use HugaShop\Models\Settings;
 use HugaShop\Services\Request;
 use App\Event\ProductViewEvent;
+use HugaShop\Extensions\BaseExtensionTrait;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 class ProductViewEventListener
 {
+
+    use BaseExtensionTrait;
 
     /**
      * setBrowsedProducts
@@ -25,7 +27,7 @@ class ProductViewEventListener
     public function onProductViewEvent(ProductViewEvent $event): void
     {
         $product = $event->getProduct();
-        $settings = (object) (Settings::getParam('ProductBrowsed') ?? []);
+        $settings = $this->getSettings();
 
         if (!empty($settings->enabled) and empty($settings)) {
             return;

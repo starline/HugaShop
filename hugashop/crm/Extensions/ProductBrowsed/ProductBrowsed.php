@@ -14,6 +14,7 @@ use HugaShop\Extensions\BaseExtension;
 
 final class ProductBrowsed extends BaseExtension
 {
+    
 
     /**
      * Get Head template
