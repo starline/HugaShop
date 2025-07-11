@@ -3,7 +3,7 @@
  * Custom javascript code
  * 
  * @author Andri Huga
- * @version 1.6
+ * @version 1.7
  * 
  */
 
@@ -20,13 +20,19 @@ import './js/jquery/jquery.form.js';
 import './js/owlcarousel/owl.carousel.min.js';
 import './js/htmx.min.js';
 import './js/bootstrap.bundle.min.js';
-import { getCartInformer, asignFancyAjax, loaderLayer } from './js/common.js';
+import { getCartInformer, asignFancyAjax, loaderLayer, owlCarouselInit } from './js/common.js';
 
 $(function () {
 
     // Tooltips
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
     [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+
+    // Fancy
+    asignFancyAjax();
+
+    owlCarouselInit($('#related_products'));
 
     //  Автозаполнитель поиска
     $("#search input").autocomplete({
@@ -166,9 +172,6 @@ $(function () {
         $(document).trigger('addToCardEvent', item);
     });
 
-
-
-    asignFancyAjax();
 
     // Event
     $(document).on('addToCardEvent', function (e, item) {

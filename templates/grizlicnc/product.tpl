@@ -215,7 +215,7 @@
 
 
 	{if $product->related}
-		<div class="related_products_box">
+		<div id="related_products" class="related_products_box">
 			<h2>С этим товаром покупают</h2>
 			<ul class="products owl-carousel">
 				{foreach $product->related as $product}
