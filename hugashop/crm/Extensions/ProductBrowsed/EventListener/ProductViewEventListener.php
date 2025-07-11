@@ -4,12 +4,13 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.3
  *
  */
 
 namespace HugaShop\Extensions\ProductBrowsed\EventListener;
 
+use HugaShop\Models\Settings;
 use HugaShop\Services\Request;
 use App\Event\ProductViewEvent;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
@@ -23,11 +24,15 @@ class ProductViewEventListener
     #[AsEventListener]
     public function onProductViewEvent(ProductViewEvent $event): void
     {
-
         $product = $event->getProduct();
+        $settings = (object) (Settings::getParam('ProductBrowsed') ?? []);
+
+        if (!empty($settings->enabled) and empty($settings)) {
+            return;
+        }
 
         // Добавление в историю просмотренных товаров
-        $max_visited_products = 30; # Максимальное число хранимых товаров в истории
+        $max_visited_products = $settings->limit ?? 30; # Максимальное число хранимых товаров в истории
         if (!empty($cookie_bp = Request::getCookie('BP'))) {
             $browsed_products = explode('.', $cookie_bp);
 

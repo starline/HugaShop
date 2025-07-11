@@ -24,9 +24,9 @@ namespace HugaShop\Extensions\FacebookPixel\EventListener;
 
 use FacebookAds\Api;
 use App\Event\OrderAddEvent;
+use HugaShop\Models\Settings;
 use HugaShop\Services\Request;
 use FacebookAds\Logger\CurlLogger;
-use HugaShop\Extensions\BaseExtension;
 use FacebookAds\Object\ServerSide\Event;
 use HugaShop\Models\Order\OrderPurchase;
 use FacebookAds\Object\ServerSide\Content;
@@ -36,7 +36,7 @@ use FacebookAds\Object\ServerSide\CustomData;
 use FacebookAds\Object\ServerSide\EventRequest;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-class OrderAddListener extends BaseExtension
+class OrderAddListener
 {
 
 
@@ -47,7 +47,9 @@ class OrderAddListener extends BaseExtension
     #[AsEventListener]
     public function onOrderAddEvent(OrderAddEvent $event): void
     {
-        if (empty($this->settings->enabled)) {
+
+        $settings = (object) (Settings::getParam('FacebookPixel') ?? []);
+        if (empty($settings->enabled)) {
             return;
         }
 

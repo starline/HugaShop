@@ -6,27 +6,30 @@
  * @author Andri Huga
  * @version 2.6
  *
+ * @link https://developers.facebook.com/docs/marketing-api/conversions-api/parameters/fbp-and-fbc
+ * 
  */
 
 namespace HugaShop\Extensions\FacebookPixel\EventListener;
 
+use HugaShop\Models\Settings;
 use HugaShop\Services\Request;
 use App\Event\DesignBeforeFetchEvent;
-use HugaShop\Extensions\BaseExtension;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-class DesignBeforeFetchListener extends BaseExtension
+class DesignBeforeFetchListener
 {
 
     /**
      * Reques
-     * @link https://developers.facebook.com/docs/marketing-api/conversions-api/parameters/fbp-and-fbc
      * @param DesignBeforeFetchEvent $event
      */
     #[AsEventListener]
     public function onDesignBeforeFetchEvent(DesignBeforeFetchEvent $event): void
     {
-        if (empty($this->settings->enabled)) {
+
+        $settings = (object) (Settings::getParam('FacebookPixel') ?? []);
+        if (empty($settings->enabled)) {
             return;
         }
 
