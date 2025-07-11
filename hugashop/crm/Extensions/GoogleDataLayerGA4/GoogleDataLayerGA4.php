@@ -22,12 +22,12 @@ use HugaShop\Extensions\BaseExtension;
 final class GoogleDataLayerGA4 extends BaseExtension
 {
 
-    public $cookie_key = 'GDL';
+    private static $cookie_key = 'GDL';
 
     /**
      * Get block template
      */
-    public function getFrontBodyTemplate()
+    public static function getFrontBodyTemplate()
     {
         if (!empty(self::getSettings()->enabled)) {
 
@@ -36,7 +36,7 @@ final class GoogleDataLayerGA4 extends BaseExtension
                 self::getSettings()->currency_code = FinanceCurrency::getMainCurrency()->code;
             }
 
-            self::getSettings()->cookie_key = Config::get('cookie_prefix') . $this->cookie_key;
+            self::getSettings()->cookie_key = Config::get('cookie_prefix') . self::$cookie_key;
 
             return self::fetchTemplate('templates/datalayer.tpl');
         }

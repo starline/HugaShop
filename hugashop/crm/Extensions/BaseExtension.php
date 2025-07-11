@@ -110,7 +110,7 @@ class BaseExtension
      * Make: HugaShop\Extensions\InfoBlock\Models\InfoBlock
      * From: HugaShop\Extensions\InfoBlock\InfoBlock
      */
-    public function updateOne($id, $entity)
+    public static function updateOne($id, $entity)
     {
         // Main Model is always ClassName . Model
         $base_namespace     = preg_replace('/\\\\' . preg_quote(self::getName(), '/') . '$/', '', static::class);

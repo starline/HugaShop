@@ -8,7 +8,7 @@
 	<!-- Заголовок -->
 	<div class="header_top">
 		<h1>{$meta_title}</h1>
-		<a class="add" href="/admin/extension/{$extension->module}/block">Добавить страницу</a>
+		<a class="add" href="{'ExtInfoBlockNew'|urll}">Добавить страницу</a>
 	</div>
 
 	<div id="main_list">
@@ -32,7 +32,7 @@
 
 							<div class="row col">
 								<div class="col-12 col-sm-8">
-									<a href="/admin/extension/{$extension->module}/block/{$block->id}">{$block->name}</a>
+									<a href="{'ExtInfoBlock'|urll:[id => $block->id]}">{$block->name}</a>
 								</div>
 								<div class="col-12 col-sm-4 text-end">
 									<span class="badge text-bg-round">{$block->id}</span>

@@ -15,7 +15,7 @@ use HugaShop\Extensions\BaseExtension;
 final class YandexEcommerce extends BaseExtension
 {
 
-    public function getTemplate(array $params = [])
+    public static function getTemplate(array $params = [])
     {
         return self::fetchTemplate('templates/template.tpl');
     }

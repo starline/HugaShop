@@ -27,7 +27,7 @@ final class OpenGraph extends BaseExtension
     /**
      * Get block template
      */
-    public function getFrontHeadTemplate(array $params = [])
+    public static function getFrontHeadTemplate(array $params = [])
     {
         $timezone = new DateTimeZone(Settings::getParam('timezone'));
         $timezone_offset = $timezone->getOffset(new DateTime) / 60 / 60;

@@ -32,7 +32,7 @@ final class CarouselPromo extends BaseExtension
     /**
      * Get block template
      */
-    public function getTemplate(array $params = [])
+    public static function getTemplate(array $params = [])
     {
         return self::fetchTemplate('templates/carousel.tpl');
     }

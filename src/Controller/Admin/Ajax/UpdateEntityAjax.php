@@ -144,8 +144,8 @@ class UpdateEntityAjax extends BaseAdminController
                 $ext_list = Extension::getExtensionsList();
                 foreach ($ext_list as $ext) {
                     if ($ext->module == $entity) {
-                        if ($Ext = Extension::makeExtension($entity)) {
-                            $Ext->updateOne($id, $values);
+                        if ($Ext = Extension::getNameSpace($ext->module)) {
+                            $Ext::updateOne($id, $values);
                         }
                         break;
                     }

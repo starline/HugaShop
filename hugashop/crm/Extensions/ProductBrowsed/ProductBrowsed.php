@@ -19,7 +19,7 @@ final class ProductBrowsed extends BaseExtension
     /**
      * Get Head template
      */
-    public function getTemplate()
+    public static function getTemplate()
     {
         if (!empty(self::getSettings()->enabled)) {
             return self::fetchTemplate('templates/product_browsed.tpl');

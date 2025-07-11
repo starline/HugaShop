@@ -19,7 +19,7 @@ final class GoogleDataLayer extends BaseExtension
     /**
      * Get block template
      */
-    public function getFrontBodyTemplate(): ?string
+    public static function getFrontBodyTemplate(): ?string
     {
         if (empty(self::getSettings()->enabled)) {
             return null;

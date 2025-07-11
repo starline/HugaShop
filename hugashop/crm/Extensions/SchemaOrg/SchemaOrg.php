@@ -19,7 +19,7 @@ final class SchemaOrg extends BaseExtension
     /**
      * Get block template
      */
-    public function getFrontBodyTemplate()
+    public static function getFrontBodyTemplate()
     {
         dump(self::getSettings());
         if (!empty(self::getSettings()->enabled)) {

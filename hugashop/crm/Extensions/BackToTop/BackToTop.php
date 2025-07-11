@@ -18,7 +18,7 @@ final class BackToTop extends BaseExtension
     /**
      * Get Head template
      */
-    public function getFrontBodyTemplate()
+    public static function getFrontBodyTemplate()
     {
         if (!empty(self::getSettings()->enabled)) {
             return self::fetchTemplate('templates/button.tpl');

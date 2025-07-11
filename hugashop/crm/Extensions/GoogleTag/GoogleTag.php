@@ -18,7 +18,7 @@ final class GoogleTag extends BaseExtension
     /**
      * Get Head block template
      */
-    public function getFrontHeadTemplate()
+    public static function getFrontHeadTemplate()
     {
         if (!empty(self::getSettings()->enabled)) {
             return self::fetchTemplate('templates/head_tag.tpl');
@@ -30,7 +30,7 @@ final class GoogleTag extends BaseExtension
     /**
      * Get Body block template
      */
-    public function getFrontBodyTemplate()
+    public static function getFrontBodyTemplate()
     {
         if (!empty(self::getSettings()->enabled)) {
             return self::fetchTemplate('templates/body_tag.tpl');

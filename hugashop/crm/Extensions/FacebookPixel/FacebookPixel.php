@@ -31,7 +31,7 @@ final class FacebookPixel extends BaseExtension
     /**
      * Get block template
      */
-    public function getFrontHeadTemplate()
+    public static function getFrontHeadTemplate()
     {
         if (!empty(self::getSettings()->enabled)) {
 

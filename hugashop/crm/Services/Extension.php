@@ -76,8 +76,10 @@ class Extension
 
     public static function getNameSpace(string $name)
     {
-        return "HugaShop\\Extensions\\{$name}\\{$name}";
+        $name_space = "HugaShop\\Extensions\\{$name}\\{$name}";
+        return class_exists($name_space) ? $name_space : null;
     }
+
 
     /**
      * Get Extensions name list by place
@@ -96,9 +98,10 @@ class Extension
             $places = [];
             $ext_list = self::getExtensionsList();
             foreach ($ext_list as $ext) {
-                if (!empty($Ext = self::makeExtension($ext->module))) {
+                if (!empty($Ext = self::getNameSpace($ext->module))) {
                     foreach (self::$places as $place_name) {
-                        if (method_exists($Ext, 'get' . ucfirst(Helper::snakeToCamelCase($place_name)) . 'Template')) {
+                        $get_method = 'get' . ucfirst(Helper::snakeToCamelCase($place_name)) . 'Template';
+                        if (method_exists($Ext, $get_method)) {
                             if (!empty($Ext::getSettings()->enabled)) {
                                 $places[$place_name][] = $ext->module;
                             }

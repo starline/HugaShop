@@ -21,7 +21,7 @@ final class ConsentBannerJs extends BaseExtension
     /**
      * Get block template
      */
-    public function getFrontBodyTemplate()
+    public static function getFrontBodyTemplate()
     {
         if (!empty(self::getSettings()->enabled)) {
 
