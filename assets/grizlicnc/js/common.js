@@ -108,3 +108,25 @@ document.onvisibilitychange = () => {
         $(document).trigger('documentVisibleEvent');
     }
 };
+
+
+/**
+ * Init Owl Carusel
+ * @param {*} target 
+ */
+export function owlCarouselInit(target) {
+    const $carousel = $(target).find('.owl-carousel');
+    if ($carousel.length) {
+        $carousel.owlCarousel({
+            loop: true,
+            margin: 0,
+            nav: true,
+            dots: false,
+            responsive: {
+                0: { items: 2 },
+                760: { items: 3 },
+                1000: { items: 4 }
+            }
+        });
+    }
+}

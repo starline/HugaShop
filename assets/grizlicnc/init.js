@@ -18,7 +18,7 @@ import './js/fancybox/jquery.fancybox.min.js';
 import './js/autocomplete/jquery.autocomplete-min.js';
 import './js/jquery/jquery.form.js';
 import './js/owlcarousel/owl.carousel.min.js';
-import 'https://unpkg.com/htmx.org@1.9.10';
+import './js/htmx.min.js';
 import './js/bootstrap.bundle.min.js';
 import { getCartInformer, asignFancyAjax, loaderLayer } from './js/common.js';
 
@@ -191,23 +191,4 @@ $(function () {
     $(document).on('documentHiddenEvent', function (e) {
         // navigator.sendBeacon("/log", 'analyticsData');
     })
-
-
-    $(".owl-carousel").owlCarousel({
-        loop: true,
-        margin: 0,
-        nav: true,
-        dots: false,
-        responsive: {
-            0: {
-                items: 2
-            },
-            760: {
-                items: 3
-            },
-            1000: {
-                items: 4
-            }
-        }
-    });
 });

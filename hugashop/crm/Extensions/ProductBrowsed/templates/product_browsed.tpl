@@ -20,25 +20,13 @@
     {/block}
 </div>
 
-{block name=jss}
-    <script>
-        document.body.addEventListener('htmx:afterOnLoad', function(event) {
-            if (event.target && event.target.id === 'product_browsed') {
-                const $carousel = $(event.target).find('.owl-carousel');
-                if ($carousel.length) {
-                    $carousel.owlCarousel({
-                        loop: true,
-                        margin: 0,
-                        nav: true,
-                        dots: false,
-                        responsive: {
-                            0: { items: 2 },
-                            760: { items: 3 },
-                            1000: { items: 4 }
-                        }
-                    });
-                }
-            }
-        });
-    </script>
-{/block}
+<script type="module">
+    import '{"js/owlcarousel/owl.carousel.min.js"|asset}';
+    import { owlCarouselInit } from '{"js/common.js"|asset}';
+
+    document.body.addEventListener('htmx:afterOnLoad', function(event) {
+        if (event.target && event.target.id === 'product_browsed') {
+            owlCarouselInit(event.target);
+        }
+    });
+</script>
