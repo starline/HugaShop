@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.2
  *
  */
 
@@ -22,7 +22,7 @@ final class ProductBrowsed extends BaseExtension
     public function getTemplate()
     {
         if (!empty(self::getSettings()->enabled)) {
-            return $this->fetchTemplate('templates/product_browsed.tpl');
+            return self::fetchTemplate('templates/product_browsed.tpl');
         }
         return;
     }

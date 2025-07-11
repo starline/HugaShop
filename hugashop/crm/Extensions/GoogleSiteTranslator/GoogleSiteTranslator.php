@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.6
+ * @version 1.7
  * 
  * @link https://github.com/get-web/google-translate-custom-widget
  *
@@ -38,7 +38,7 @@ final class GoogleSiteTranslator extends BaseExtension
     public function getFrontBodyTemplate()
     {
         if (!empty(self::getSettings()->enabled)) {
-            return $this->fetchTemplate('templates/translator.tpl');
+            return self::fetchTemplate('templates/translator.tpl');
         }
         return;
     }

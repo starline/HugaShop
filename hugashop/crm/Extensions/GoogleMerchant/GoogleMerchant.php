@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.9
+ * @version 2.0
  *
  */
 
@@ -128,7 +128,7 @@ final class GoogleMerchant extends BaseExtension
 
             Design::assign('products', FeedGenerator::getPriceFeed($pricefeed));
 
-            $response = new Response($this->fetchTemplate('templates/feed_generator.tpl'));
+            $response = new Response(self::fetchTemplate('templates/feed_generator.tpl'));
             $response->headers->set('Content-type', 'text/xml');
             return $response;
         }

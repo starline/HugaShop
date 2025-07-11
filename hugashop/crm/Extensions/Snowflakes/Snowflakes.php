@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.9
+ * @version 2.0
  * 
  * @link https://github.com/Alaev-Co/snowflakes
  *
@@ -22,7 +22,8 @@ final class Snowflakes extends BaseExtension
     public function getFrontBodyTemplate()
     {
         if (!empty(self::getSettings()->enabled) and !empty(self::getSettings()->countSnowflake)) {
-            return $this->fetchTemplate('templates/snow.tpl');
+
+            return self::fetchTemplate('templates/snow.tpl');
         }
         return null;
     }

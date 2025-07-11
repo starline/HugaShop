@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.6
+ * @version 1.7
  * @link https://enhancedecommerce.appspot.com/
  *
  */
@@ -29,6 +29,6 @@ final class GoogleDataLayer extends BaseExtension
             self::getSettings()->currency_code = FinanceCurrency::getMainCurrency()->code;
         }
 
-        return $this->fetchTemplate('templates/datalayer.tpl');
+        return self::fetchTemplate('templates/datalayer.tpl');
     }
 }

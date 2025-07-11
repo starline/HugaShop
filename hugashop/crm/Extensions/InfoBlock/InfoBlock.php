@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  */
 
@@ -135,7 +135,7 @@ final class InfoBlock extends BaseExtension
             }
 
             Design::assign('InfoBlock', $block->body);
-            $info_block = $this->fetchTemplate('templates/info_block.tpl');
+            $info_block = self::fetchTemplate('templates/info_block.tpl');
 
             Cache::cache(InfoBlockModel::class)->save($cache_item->set($info_block));
         } else {

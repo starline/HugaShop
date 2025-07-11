@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.5
+ * @version 1.6
  *
  */
 
@@ -34,6 +34,6 @@ final class CarouselPromo extends BaseExtension
      */
     public function getTemplate(array $params = [])
     {
-        return $this->fetchTemplate('templates/carousel.tpl');
+        return self::fetchTemplate('templates/carousel.tpl');
     }
 }

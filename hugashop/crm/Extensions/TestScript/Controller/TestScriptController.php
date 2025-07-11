@@ -4,17 +4,17 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.0
+ * @version 3.1
  *
  */
 
-namespace HugaShop\Extensions\TestScript;
+namespace HugaShop\Extensions\TestScript\Controller;
 
 use OpenAI;
 use stdClass;
 use HugaShop\Models\Image;
-use HugaShop\Services\Config;
 use HugaShop\Models\Settings;
+use HugaShop\Services\Config;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Models\User\User;
@@ -24,41 +24,43 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Address;
 use HugaShop\Models\Product\Product;
 use Symfony\Component\Finder\Finder;
-use HugaShop\Extensions\BaseExtension;
 use HugaShop\Models\Cart\CartPurchase;
 use HugaShop\Models\User\UserNotifier;
 use Symfony\Component\Process\Process;
+use App\Controller\BaseAdminController;
 use Symfony\Component\Mailer\Transport;
 use HugaShop\Models\Content\ContentPost;
 use HugaShop\Models\Order\OrderPurchase;
+use HugaShop\Extensions\BaseExtensionTrait;
 use HugaShop\Models\Content\ContentComment;
 use HugaShop\Models\Product\ProductRelated;
 use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\Filesystem\Filesystem;
 use HugaShop\Models\Warehouse\WarehousePlace;
+use Illuminate\Database\Capsule\Manager as DB;
+use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Models\Warehouse\WarehouseProduct;
 use Symfony\Component\Console\Input\ArrayInput;
 use HugaShop\Models\Warehouse\WarehousePurchase;
 use Symfony\Component\Mailer\Transport\Transports;
 use Symfony\Component\Process\PhpExecutableFinder;
-use Illuminate\Database\Capsule\Manager as DB;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
-
-#[AsAlias(id: 'app.ext.test_script')]
-class TestScript extends BaseExtension
+final class TestScriptController extends BaseAdminController
 {
 
-    private $result = ['First row'];
+    use BaseExtensionTrait;
 
     /**
-     * For admin panel use default settings template
+     * Список странниц
      */
-    public function index()
+    #[Route('/TestScript', name: 'ExtTestScript', priority: 20)]
+    public function test()
     {
+
+        $result = ['First row'];
 
         // Обработка действий
         if (Request::checkCSRF()) {
@@ -84,10 +86,10 @@ class TestScript extends BaseExtension
                                 $process->setTimeout(0);
 
                                 $process->mustRun(function ($type, $line) {
-                                    //$this->result[] = $line;
+                                    //$result[] = $line;
                                 });
 
-                                $this->result[] = $process->getOutput();
+                                $result[] = $process->getOutput();
                             }
                         }
 
@@ -95,7 +97,7 @@ class TestScript extends BaseExtension
                         // Symfony Command 
                         if (0) {
 
-                            $application = new Application($this->ext_env->kernel);
+                            $application = new Application($this->container->get('kernel'));
                             $application->setAutoExit(false);
 
                             $input = new ArrayInput([
@@ -114,14 +116,14 @@ class TestScript extends BaseExtension
                             $application->run($input, $output);
 
                             // return the output, don't use if you used NullOutput()
-                            $this->result[] = $output->fetch();
+                            $result[] = $output->fetch();
                         }
 
 
                         // Session
                         if (0) {
                             Request::setSession('test', [2 => 'два']);
-                            $this->result[] = Request::getSession('test')[2];
+                            $result[] = Request::getSession('test')[2];
                         }
 
 
@@ -129,7 +131,7 @@ class TestScript extends BaseExtension
                         if (0) {
 
                             // Works well
-                            $this->result[] = UserNotifier::sendNotifierToManager('newOrderToAdmin', [
+                            $result[] = UserNotifier::sendNotifierToManager('newOrderToAdmin', [
                                 'order_id' => 5172
                             ]);
 
@@ -148,7 +150,7 @@ class TestScript extends BaseExtension
                                     ->text('Sending emails is fun again!')
                                     ->html('<p>See Twig integration for better HTML integration!</p>');
 
-                                //$this->result[] = $mailer;
+                                //$result[] = $mailer;
 
                                 try {
                                     $send = $mailer->send($email);
@@ -156,7 +158,7 @@ class TestScript extends BaseExtension
                                 } catch (TransportExceptionInterface $e) {
                                     // some error prevented the email sending; display an
                                     // error message or try to resend the message
-                                    $this->result[] = $e;
+                                    $result[] = $e;
                                 }
                             }
                         }
@@ -164,28 +166,28 @@ class TestScript extends BaseExtension
 
                         // Cookies
                         if (0) {
-                            $this->result[] = Request::getCookie('_fbp', false);
-                            $this->result[] = \Symfony\Component\HttpFoundation\Request::createFromGlobals()->cookies->get('_fbp');
+                            $result[] = Request::getCookie('_fbp', false);
+                            $result[] = \Symfony\Component\HttpFoundation\Request::createFromGlobals()->cookies->get('_fbp');
                         }
 
 
                         // Time zone
                         if (0) {
 
-                            //$this->result[] = UserCoupon::countCoupons(['valid' => 1]);
+                            //$result[] = UserCoupon::countCoupons(['valid' => 1]);
 
                             // date_default_timezone_set('UTC');
-                            $this->result[] = 'UTC Time: ' . date("Y-m-d H:i:s") . '. Timezone: ' .  date_default_timezone_get();
+                            $result[] = 'UTC Time: ' . date("Y-m-d H:i:s") . '. Timezone: ' .  date_default_timezone_get();
 
                             $from_date = '2020-12-10';
-                            $this->result[] = $date = new \DateTime($from_date . ' ' . Settings::getParam('timezone'));
+                            $result[] = $date = new \DateTime($from_date . ' ' . Settings::getParam('timezone'));
                             //$date->setTimeZone(new \DateTimeZone('UTC'));
 
-                            //$this->result[] = $date = new \DateTime($from_date);
+                            //$result[] = $date = new \DateTime($from_date);
                             //$timezone = new \DateTimeZone(Settings::getParam('timezone));
                             //$date->setTimeZone($timezone);
 
-                            $this->result[] = 'Server Time: ' . $date->format('Y-m-d H:i:s') . '. Timezone: ' .  Settings::getParam('timezone');
+                            $result[] = 'Server Time: ' . $date->format('Y-m-d H:i:s') . '. Timezone: ' .  Settings::getParam('timezone');
                         }
 
 
@@ -197,7 +199,7 @@ class TestScript extends BaseExtension
                                 User::updateUser($user->id, ['token' => $token]);
                             }
 
-                            $this->result[] = 'Set token';
+                            $result[] = 'Set token';
                         }
 
 
@@ -215,14 +217,14 @@ class TestScript extends BaseExtension
                                 ],
                             ]);
 
-                            $this->result[] = $result->choices[0]->message->content;;
+                            $result[] = $result->choices[0]->message->content;;
                         }
 
 
                         // Telegram BOT Send message
                         if (0) {
-                            $this->result[] = $_SERVER['SERVER_NAME'];
-                            $this->result[] = UserNotifier::sendNotifierToManager('newOrderToAdmin', [
+                            $result[] = $_SERVER['SERVER_NAME'];
+                            $result[] = UserNotifier::sendNotifierToManager('newOrderToAdmin', [
                                 'order_id' => 5172
                             ]);
                         }
@@ -230,7 +232,7 @@ class TestScript extends BaseExtension
 
                         // Выводим ошибки
                         if (0) {
-                            $this->result = trigger_error('my error', E_USER_WARNING);
+                            $result = trigger_error('my error', E_USER_WARNING);
                             function myErrorHandler($errno, $errstr, $errfile, $errline)
                             {
                                 print "[$errno] $errstr";
@@ -247,35 +249,35 @@ class TestScript extends BaseExtension
                             // PHP_EOL - перевод строки
                             $obj = new \stdClass();
                             if (empty($obj)) { # Result: Not empty
-                                $this->result[] = 'Object empty';
+                                $result[] = 'Object empty';
                             } else {
-                                $this->result[] = $obj;
+                                $result[] = $obj;
                             }
 
                             $message_params = array();
                             $message_params['var1'] = 'var1 - old value';
                             $message_params['var1'] = isset($message_params['not exist']) ? $message_params['not exist'] : 'var1 - new value';
-                            $this->result[] = $message_params['var1']; # var1 - new value
+                            $result[] = $message_params['var1']; # var1 - new value
 
                             //$message_params['var2'] = 'var2 - old value';
                             $message_params['var2'] = null;
                             $message_params['var2'] = $message_params['var2'] ?: 'var2 - new value'; # Change if empty|false|[]|0|null - should be isset
-                            $this->result[] = $message_params['var2'];
+                            $result[] = $message_params['var2'];
 
                             //$message_params['var3'] = 'var3 - old value';
                             //$message_params['var3'] = 0;
                             $message_params['var3'] = $message_params['var3'] ?? 'var3 - new value'; # Change if null|NO isset
-                            $this->result[] = $message_params['var3'];
+                            $result[] = $message_params['var3'];
 
                             $settings = null;
                             if (isset($settings) and is_null($settings)) {
-                                $this->result[] = 'get NULL';
+                                $result[] = 'get NULL';
                             }
 
                             $test_arr = ['var1' => 'value1', 'var2', 'var3', 'var4' => 'value4', 'var5'];
-                            $this->result[] = $test_arr;
+                            $result[] = $test_arr;
                             foreach ($test_arr as $key => $val) {
-                                $this->result[] = $key . ' ' . $val;
+                                $result[] = $key . ' ' . $val;
                             }
                         }
 
@@ -313,13 +315,13 @@ class TestScript extends BaseExtension
                             {
                                 return 'check param: ' . $param;
                             }
-                            $this->result[] = checkFunction();
+                            $result[] = checkFunction();
 
 
-                            $this->result[] = $arr['var1'];       # Linking var threw the function with '&'
-                            $this->result[] = $arr_copy['var1'];  # Array doesn't linking with =
-                            $this->result[] = $arr2['var1'];      # NO linking Array threw the function
-                            $this->result[] = $obj->var1;         # Linking Object threw the function
+                            $result[] = $arr['var1'];       # Linking var threw the function with '&'
+                            $result[] = $arr_copy['var1'];  # Array doesn't linking with =
+                            $result[] = $arr2['var1'];      # NO linking Array threw the function
+                            $result[] = $obj->var1;         # Linking Object threw the function
                         }
 
 
@@ -352,7 +354,7 @@ class TestScript extends BaseExtension
                                     }
                                 });
 
-                                $this->result[] = 'done';
+                                $result[] = 'done';
                             }
 
                             // 2. Перенсти варианты в товары
@@ -415,7 +417,7 @@ class TestScript extends BaseExtension
 
                                             Product::updateOne($new_product_id, $product_new);
 
-                                            $this->result[] = $product_new;
+                                            $result[] = $product_new;
                                         }
                                     }
                                 });
@@ -430,7 +432,7 @@ class TestScript extends BaseExtension
                                     $product = Product::where('variant_id', $w_purchase->variant_id)->first();
 
                                     if ($product and $w_purchase->product_id != $product->id) {
-                                        $this->result[] = $w_purchase->product_id . ' -> ' . $product->id;
+                                        $result[] = $w_purchase->product_id . ' -> ' . $product->id;
                                         $w_purchase->product_id = $product->id;
                                         $w_purchase->save();
                                     }
@@ -447,7 +449,7 @@ class TestScript extends BaseExtension
                                     $product = Product::where('variant_id', $purchase->variant_id)->first();
 
                                     if ($product and $purchase->product_id != $product->id) {
-                                        $this->result[] = $purchase->product_id . ' -> ' . $product->id;
+                                        $result[] = $purchase->product_id . ' -> ' . $product->id;
                                         $purchase->product_id = $product->id;
                                         $purchase->save();
                                     }
@@ -462,7 +464,7 @@ class TestScript extends BaseExtension
                                     $product = Product::where('variant_id', $purchase->variant_id)->first();
 
                                     if ($product and $purchase->product_id != $product->id) {
-                                        $this->result[] = $purchase->product_id . ' -> ' . $product->id;
+                                        $result[] = $purchase->product_id . ' -> ' . $product->id;
                                         $purchase->product_id = $product->id;
                                         $purchase->save();
                                     }
@@ -488,9 +490,9 @@ class TestScript extends BaseExtension
                                         }
                                     });
 
-                                    $this->result[] = 'All products moved to warehouse #' . $place->id;
+                                    $result[] = 'All products moved to warehouse #' . $place->id;
                                 } else {
-                                    $this->result[] = 'No warehouse places found';
+                                    $result[] = 'No warehouse places found';
                                 }
                             }
 
@@ -507,7 +509,7 @@ class TestScript extends BaseExtension
                                         }
                                     });
 
-                                $this->result[] = 'Images changed to type product';
+                                $result[] = 'Images changed to type product';
                             }
 
                             if (0) {
@@ -521,7 +523,7 @@ class TestScript extends BaseExtension
                                         }
                                     });
 
-                                $this->result[] = 'Images changed to type category';
+                                $result[] = 'Images changed to type category';
                             }
 
 
@@ -549,11 +551,11 @@ class TestScript extends BaseExtension
                                     }
                                 });
 
-                                $this->result[] = 'Images sorted for all products';
+                                $result[] = 'Images sorted for all products';
                             }
 
 
-                            $this->result[] = 'done';
+                            $result[] = 'done';
                         }
 
                         break;
@@ -722,17 +724,17 @@ class TestScript extends BaseExtension
                             //$process = new Process([$phpBin, 'composer.phar', 'update'], Config::get('root_dir')); # If there is composer.phar file
                             $process = new Process(['composer', 'update'], Config::get('root_dir')); # If installed composer globaly
                             $process->mustRun(function ($type, $line) {
-                                $this->result[] = $line;
+                                $result[] = $line;
                             });
-                            $this->result[] = 'End composer upadte.';
+                            $result[] = 'End composer upadte.';
 
 
                             // ImportMap Compile
                             $process = new Process(['bin/console', 'asset-map:compile'], Config::get('root_dir'));
                             $process->mustRun(function ($type, $line) {
-                                $this->result[] = $line;
+                                $result[] = $line;
                             });
-                            $this->result[] = 'End AssetMapper compile.';
+                            $result[] = 'End AssetMapper compile.';
 
 
                             // Finder. Clear Compiled and Cache CRM file
@@ -745,12 +747,12 @@ class TestScript extends BaseExtension
                                 @unlink($clean_file->getRealPath());
                                 $files_count++;
                             }
-                            $this->result[] = 'Clear files: ' . $files_count;
+                            $result[] = 'Clear files: ' . $files_count;
 
                             $filesystem = new Filesystem();
                             $filesystem->remove([Config::get('compiled_dir'), Config::get('app_cache_dir')]);
 
-                            $this->result[] = 'Clear /compiled and /cache/hugashop directories';
+                            $result[] = 'Clear /compiled and /cache/hugashop directories';
                             break;
                         }
                     }
@@ -761,14 +763,14 @@ class TestScript extends BaseExtension
                         $filesystem = new Filesystem();
                         $filesystem->remove([Config::get('root_dir') . 'public/assets/']);
 
-                        $this->result[] = 'Clear /public/assets';
+                        $result[] = 'Clear /public/assets';
                     }
             }
         }
 
-        $this->result = print_r($this->result, true);
-        Design::assign('result', $this->result);
+        $result = print_r($result, true);
+        Design::assign('result', $result);
 
-        return $this->getTemplatePath('templates/index.tpl');
+        return $this->fetchExtResponse('index.tpl');
     }
 }

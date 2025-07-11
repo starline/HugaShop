@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.9
+ * @version 2.0
  *
  * Example of Google Data Layer for GA4
  * @link https://enhancedecommerce.appspot.com/
@@ -38,7 +38,7 @@ final class GoogleDataLayerGA4 extends BaseExtension
 
             self::getSettings()->cookie_key = Config::get('cookie_prefix') . $this->cookie_key;
 
-            return $this->fetchTemplate('templates/datalayer.tpl');
+            return self::fetchTemplate('templates/datalayer.tpl');
         }
 
         return null;

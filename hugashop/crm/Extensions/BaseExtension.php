@@ -18,23 +18,12 @@ use HugaShop\Services\Helper;
 class BaseExtension
 {
 
-    public static $class_name;
-    public static $settings;       # extension settings
-    public $config;                # extension config
-    public $ext_env;
-
-    public function __construct()
-    {
-        $this->config =      Helper::getModule(self::getName(), Config::get('extension_dir'));
-    }
-
-
     /**
      * Get Extension name (Module)
      */
     public static function getName()
     {
-        return static::$class_name ?: static::$class_name = class_basename(static::class);
+        return class_basename(static::class);
     }
 
 
@@ -43,7 +32,7 @@ class BaseExtension
      */
     public static function getSettings(?string $param = null)
     {
-        $settings = static::$settings ?: (object) (Settings::getParam(self::getName()) ?? []); # was array
+        $settings = (object) (Settings::getParam(self::getName()) ?? []); # was array
 
         if (is_null($param)) {
             return $settings;
@@ -57,7 +46,7 @@ class BaseExtension
      */
     public function getExtension()
     {
-        $extension = $this->getConfig();
+        $extension = self::getConfig();
         $extension->settings = self::getSettings();
         $extension->hasIndex = $this->hasIndex();
         return $extension;
@@ -74,23 +63,9 @@ class BaseExtension
 
 
     /**
-     * Set environment
-     * @param string $env_name
-     */
-    public function setEnvironment(string $env_name, $env)
-    {
-        if (empty($this->ext_env)) {
-            $this->ext_env = new \stdClass();
-        }
-
-        $this->ext_env->$env_name = $env;
-    }
-
-
-    /**
      * Get Extension directory
      */
-    public function getExtensionDir()
+    public static function getExtensionDir()
     {
         return Config::get('extension_dir') . self::getName() . '/';
     }
@@ -99,12 +74,14 @@ class BaseExtension
     /**
      * Get Extension config
      */
-    public function getConfig(?string $param = null)
+    public static function getConfig(?string $param = null)
     {
+        $config = Helper::getModule(self::getName(), Config::get('extension_dir'));
+
         if (is_null($param)) {
-            return $this->config;
+            return $config;
         }
-        return $this->config->$param ?? null;
+        return $config->$param ?? null;
     }
 
 
@@ -112,9 +89,9 @@ class BaseExtension
      * Fetch extension template 
      * @param string $template
      */
-    public function fetchTemplate(string $template)
+    public static function fetchTemplate(string $template)
     {
-        return Design::fetch($this->getTemplatePath($template));
+        return Design::fetch(self::getTemplatePath($template));
     }
 
 
@@ -122,9 +99,9 @@ class BaseExtension
      * Get extension template
      * @param string $template
      */
-    public function getTemplatePath(string $template)
+    public static function getTemplatePath(string $template)
     {
-        return $this->getExtensionDir() . $template;
+        return self::getExtensionDir() . $template;
     }
 
 
@@ -136,9 +113,8 @@ class BaseExtension
     public function updateOne($id, $entity)
     {
         // Main Model is always ClassName . Model
-        $class_name         = self::getName();
-        $base_namespace     = preg_replace('/\\\\' . preg_quote($class_name, '/') . '$/', '', static::class);
-        $class              = $base_namespace . '\\Models\\' . $class_name;
+        $base_namespace     = preg_replace('/\\\\' . preg_quote(self::getName(), '/') . '$/', '', static::class);
+        $class              = $base_namespace . '\\Models\\' . self::getName();
 
         $class::updateOne($id, $entity);
         $class::cacheClear();

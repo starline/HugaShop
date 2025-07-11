@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.5
+ * @version 1.6
  * 
  * @link https://schema.org/
  *
@@ -21,8 +21,9 @@ final class SchemaOrg extends BaseExtension
      */
     public function getFrontBodyTemplate()
     {
+        dump(self::getSettings());
         if (!empty(self::getSettings()->enabled)) {
-            return $this->fetchTemplate('templates/schema.tpl');
+            return self::fetchTemplate('templates/schema.tpl');
         }
         return null;
     }

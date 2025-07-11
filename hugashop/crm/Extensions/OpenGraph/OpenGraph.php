@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.3
+ * @version 1.4
  * 
  * @link https://ogp.me/
  *
@@ -35,7 +35,7 @@ final class OpenGraph extends BaseExtension
         Design::assign('timezone_offset', $timezone_offset);
 
         if (!empty(self::getSettings()->enabled)) {
-            return $this->fetchTemplate('templates/graph.tpl');
+            return self::fetchTemplate('templates/graph.tpl');
         }
         return null;
     }

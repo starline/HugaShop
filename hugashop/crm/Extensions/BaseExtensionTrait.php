@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.3
+ * @version 1.4
  *
  */
 
@@ -15,7 +15,6 @@ use HugaShop\Services\Config;
 
 trait BaseExtensionTrait
 {
-
 
     /** 
      * Universal get extension name
@@ -75,5 +74,14 @@ trait BaseExtensionTrait
     public function hasIndex()
     {
         return method_exists($this, 'index') ? true : false;
+    }
+
+
+    /**
+     * Fetcj extension template
+     */
+    public function fetchExtResponse(string $template, ?string $block = null)
+    {
+        return $this->fetchResponse($this->getExtensionDir() . '/templates/' . $template, $block);
     }
 }

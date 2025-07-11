@@ -35,7 +35,6 @@ class ExtensionController extends BaseAdminController
             return $this->redirectToRoute('ExtensionSettingsAdmin', ['name' => $Extension->getName()]);
         }
 
-        $Extension->setEnvironment('kernel', $this->container->get('kernel'));
         Design::assign('extension', $Extension->getExtension());
 
         // Ajax
@@ -98,12 +97,12 @@ class ExtensionController extends BaseAdminController
 
         // Сохранить настройки
         if (!empty($extension_settings = Request::post('extension_settings', 'array'))) {
-            Design::setFlashMessage('update', Extension::updateExt($Extension->getName(), $extension_settings));
-            return $this->redirectToRoute('ExtensionSettingsAdmin', ['name' => $Extension->getName()]);
+            Design::setFlashMessage('update', Extension::updateExt($Extension::getName(), $extension_settings));
+            return $this->redirectToRoute('ExtensionSettingsAdmin', ['name' => $Extension::getName()]);
         }
 
         Design::assign('extension', $Extension->getExtension());
-        Design::assign('extensions', [$Extension->getName() => $Extension->getConfig()]);
+        Design::assign('extensions', [$Extension::getName() => $Extension::getConfig()]);
 
         return $this->fetchResponse('extension/extension.tpl');
     }

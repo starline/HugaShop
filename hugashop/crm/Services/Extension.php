@@ -74,10 +74,15 @@ class Extension
     }
 
 
+    public static function getNameSpace(string $name)
+    {
+        return "HugaShop\\Extensions\\{$name}\\{$name}";
+    }
+
     /**
      * Get Extensions name list by place
      * Use Cache
-     * @param string $places
+     * @param string $place front_head | front_body
      */
     public static function getExtensionsByPlace(string $place)
     {
@@ -94,7 +99,7 @@ class Extension
                 if (!empty($Ext = self::makeExtension($ext->module))) {
                     foreach (self::$places as $place_name) {
                         if (method_exists($Ext, 'get' . ucfirst(Helper::snakeToCamelCase($place_name)) . 'Template')) {
-                            if (!empty($Ext->settings->enabled)) {
+                            if (!empty($Ext::getSettings()->enabled)) {
                                 $places[$place_name][] = $ext->module;
                             }
                         }
@@ -104,10 +109,9 @@ class Extension
 
             $cache_value = $places[$place] ?? [];
             Cache::cache(self::class)->save($cache_item->set($cache_value));
-        } else {
-            $cache_value = $cache_item->get();
         }
 
-        return self::$place_cache[$place] = $cache_value;
+        // List of extensions in current place
+        return self::$place_cache[$place] = $cache_item->get();
     }
 }

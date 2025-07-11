@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.7
+ * @version 1.9
  *
  */
 
@@ -18,13 +18,15 @@ use HugaShop\Extensions\BaseExtension;
 
 final class StorageManager extends BaseExtension
 {
-    private $dirs;
 
-    public function __construct()
+
+    /**
+     * For admin panel use default settings template
+     */
+    public function index()
     {
-        parent::__construct();
 
-        $this->dirs = [
+        $dirs = [
             'resize' => [
                 'path' => Config::get('images_resized_dir'),
                 'clear' => true
@@ -42,20 +44,13 @@ final class StorageManager extends BaseExtension
                 'clear' => false
             ]
         ];
-    }
 
-
-    /**
-     * For admin panel use default settings template
-     */
-    public function index()
-    {
 
         // Обработка действий
         if (Request::checkCSRF()) {
 
             // Действия с выбранными
-            foreach ($this->dirs as $dir_name => $dir_params) {
+            foreach ($dirs as $dir_name => $dir_params) {
                 if ($dir_params['clear'] === true) {
                     if (!empty(Request::post($dir_name, 'string'))) {
 
@@ -90,7 +85,7 @@ final class StorageManager extends BaseExtension
         $total->files = 0;
 
         // Public folder
-        foreach ($this->dirs as $dir_name => $dir_params) {
+        foreach ($dirs as $dir_name => $dir_params) {
 
             $cur_dir = new \stdClass();
             $cur_dir->size = 0;

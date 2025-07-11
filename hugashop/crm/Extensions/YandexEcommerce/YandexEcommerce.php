@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.4
+ * @version 1.5
  *
  */
 
@@ -17,6 +17,6 @@ final class YandexEcommerce extends BaseExtension
 
     public function getTemplate(array $params = [])
     {
-        return $this->fetchTemplate('templates/template.tpl');
+        return self::fetchTemplate('templates/template.tpl');
     }
 }

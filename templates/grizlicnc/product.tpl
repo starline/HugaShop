@@ -184,7 +184,7 @@
 			</form>
 
 			<div class="info-box">
-				{extension name='InfoBlock' id=1}
+				{extension name='InfoBlock' id=1 enabled=1}
 			</div>
 
 			{if $product->features}
