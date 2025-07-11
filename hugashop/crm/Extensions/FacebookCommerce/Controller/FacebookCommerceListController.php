@@ -16,7 +16,7 @@ use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
 use HugaShop\Extensions\BaseExtensionTrait;
 use Symfony\Component\Routing\Attribute\Route;
-use HugaShop\Extensions\FacebookCommerce\Models\FacebookCommerce as FacebookCommerceModel;
+use HugaShop\Extensions\FacebookCommerce\Models\FacebookCommerce;
 use HugaShop\Extensions\FacebookCommerce\Models\FeedGenerator;
 
 final class FacebookCommerceListController extends BaseAdminController
@@ -31,19 +31,19 @@ final class FacebookCommerceListController extends BaseAdminController
             if (is_array($ids)) {
                 switch (Request::post('action')) {
                     case 'delete':
-                        FacebookCommerceModel::deleteOne($ids);
+                        FacebookCommerce::deleteOne($ids);
                         break;
                 }
             }
 
             foreach (Helper::getPositions() as $id => $position) {
-                FacebookCommerceModel::updateOne($id, ['position' => $position]);
+                FacebookCommerce::updateOne($id, ['position' => $position]);
             }
 
             Cache::cache(FeedGenerator::class)->clear();
         }
 
-        $pricefeeds = FacebookCommerceModel::getList(order: 'position');
+        $pricefeeds = FacebookCommerce::getList(order: 'position');
         Design::assign('pricefeeds', $pricefeeds);
 
         return $this->fetchExtResponse('feed_list.tpl');

@@ -3,7 +3,7 @@
 /**
  *
  * @author Andri Huga
- * @version 1.7
+ * @version 1.8
  *
  * Facebook feed generator
  * Uses Cache
@@ -44,18 +44,18 @@
  * 
  */
 
-namespace HugaShop\Extensions\FacebookCommerce\Models;
+namespace HugaShop\Extensions\FacebookCommerce\Services;
 
 use HugaShop\Models\Image;
 use HugaShop\Services\Cache;
 use HugaShop\Models\Settings;
 use HugaShop\Services\Config;
-use HugaShop\Services\Helper;
 use HugaShop\Models\Product\Product;
 use HugaShop\Models\Product\ProductOption;
 use Symfony\Contracts\Cache\ItemInterface;
 use HugaShop\Models\Finance\FinanceCurrency;
 use HugaShop\Models\Product\ProductCategory;
+use HugaShop\Extensions\FacebookCommerce\Models\FacebookCommerceCategory;
 
 class FeedGenerator
 {

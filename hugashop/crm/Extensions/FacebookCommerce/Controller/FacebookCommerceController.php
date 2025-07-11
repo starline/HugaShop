@@ -17,7 +17,7 @@ use App\Controller\BaseAdminController;
 use HugaShop\Extensions\BaseExtensionTrait;
 use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Models\Product\ProductCategory;
-use HugaShop\Extensions\FacebookCommerce\Models\FacebookCommerce as FacebookCommerceModel;
+use HugaShop\Extensions\FacebookCommerce\Models\FacebookCommerce;
 use HugaShop\Extensions\FacebookCommerce\Models\FacebookCommerceCategory;
 use HugaShop\Extensions\FacebookCommerce\Models\FeedGenerator;
 
@@ -33,12 +33,12 @@ final class FacebookCommerceController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($pricefeed = Request::getDataAcces(FacebookCommerceModel::getFields()))) {
+        if (!empty($pricefeed = Request::getDataAcces(FacebookCommerce::getFields()))) {
             if (empty($pricefeed->id)) {
                 $pricefeed->token = Helper::makeToken();
-                $pricefeed = Design::setFlashMessage('add', FacebookCommerceModel::createOne($pricefeed));
+                $pricefeed = Design::setFlashMessage('add', FacebookCommerce::createOne($pricefeed));
             } else {
-                Design::setFlashMessage('update', FacebookCommerceModel::updateOne($pricefeed->id, $pricefeed) >= 0);
+                Design::setFlashMessage('update', FacebookCommerce::updateOne($pricefeed->id, $pricefeed) >= 0);
 
                 Cache::cache(FeedGenerator::class)->delete('item_' . $pricefeed->id);
             }
@@ -52,7 +52,7 @@ final class FacebookCommerceController extends BaseAdminController
         #### View
         #########
         if (!empty($id)) {
-            $pricefeed = FacebookCommerceModel::getOne($id);
+            $pricefeed = FacebookCommerce::getOne($id);
 
             if (empty($pricefeed->id)) {
                 return $this->redirectToRoute('ExtFacebookCommerceList');

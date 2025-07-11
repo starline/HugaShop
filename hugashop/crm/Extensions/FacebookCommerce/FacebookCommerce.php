@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use HugaShop\Extensions\FacebookCommerce\Models\FeedGenerator;
+use HugaShop\Extensions\FacebookCommerce\Services\FeedGenerator;
 use HugaShop\Extensions\FacebookCommerce\Models\FacebookCommerce as FacebookCommerceModel;
 
 final class FacebookCommerce extends BaseExtension

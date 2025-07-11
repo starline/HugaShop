@@ -82,6 +82,6 @@ trait BaseExtensionTrait
      */
     public function fetchExtResponse(string $template, ?string $block = null)
     {
-        return $this->fetchResponse($this->getExtensionDir() . '/templates/' . $template, $block);
+        return $this->fetchResponse($this->getExtensionDir() . 'templates/' . $template, $block);
     }
 }

@@ -10,9 +10,7 @@
 
 namespace HugaShop\Extensions\SeoPage\Controller;
 
-use HugaShop\Services\Config;
 use HugaShop\Services\Design;
-use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use App\Services\LanguageService;
 use App\Controller\BaseAdminController;
@@ -25,53 +23,6 @@ final class SeoPageController extends BaseAdminController
 {
 
     use BaseExtensionTrait;
-
-    /**
-     * Список странниц
-     */
-    #[Route('/SeoPage', name: 'ExtSeoPageList', priority: 20)]
-    public function index()
-    {
-
-        $this->checkAdminAccess('extension');
-
-        // Обработка действий
-        if (Request::checkCSRF()) {
-
-            // Действия с выбранными
-            $ids = Request::post('check');
-            if (is_array($ids)) {
-                switch (Request::post('action')) {
-                    case 'disable': {
-                            SeoPage::updateOne($ids, ['enabled' => 0]);
-                            break;
-                        }
-                    case 'enable': {
-                            SeoPage::updateOne($ids, ['enabled' => 1]);
-                            break;
-                        }
-                    case 'delete': {
-                            foreach ($ids as $id) {
-                                SeoPage::deleteOne($id);
-                            }
-                            break;
-                        }
-                }
-            }
-
-            foreach (Helper::getPositions() as $id => $position) {
-                SeoPage::updateOne($id, ['position' => $position]);
-            }
-
-            SeoPage::cacheClear();
-        }
-
-        $pages = SeoPage::getList(order: 'position');
-        Design::assign('pages', $pages);
-
-        return $this->fetchResponse(Config::get('extension_dir') . 'SeoPage/templates/page_list.tpl');
-    }
-
 
     /**
      * SEO Page
@@ -118,6 +69,6 @@ final class SeoPageController extends BaseAdminController
 
         Design::assign('page', $page);
 
-        return $this->fetchResponse(Config::get('extension_dir') . 'SeoPage/templates/page.tpl');
+        return $this->fetchExtResponse('page.tpl');
     }
 }
