@@ -35,8 +35,8 @@ class KernelRequestListener
             return;
         }
 
-        $links = RedirectUrl::getList(['enabled' => 1], cache: null);
-
+        $links = RedirectUrl::getList(['enabled' => 1], cache: 0);
+        
         foreach ($links as $link) {
             [$pattern, $names] = $this->preparePattern($link->url);
             if (preg_match($pattern, $uri, $m)) {

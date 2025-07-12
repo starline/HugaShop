@@ -11,6 +11,9 @@
             {if url|in_array:$service_messages_empty}
                 <span class="badge text-bg-warning">Укажите URL</span>
             {/if}
+            {if redirect|in_array:$service_messages_empty}
+                <span class="badge text-bg-warning">Укажите URL для редиректа</span>
+            {/if}
             {if place_id|in_array:$service_messages_empty}
                 <span class="badge text-bg-warning">Выберите склад</span>
             {/if}
