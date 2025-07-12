@@ -12,7 +12,7 @@
  * 
  */
 
-namespace HugaShop\Extensions\GoogleMerchant\Models;
+namespace HugaShop\Extensions\GoogleMerchant\Services;
 
 use HugaShop\Models\Image;
 use HugaShop\Services\Cache;

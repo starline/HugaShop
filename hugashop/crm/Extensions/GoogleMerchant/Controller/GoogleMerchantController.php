@@ -4,7 +4,8 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 2.1
+ * 
  */
 
 namespace HugaShop\Extensions\GoogleMerchant\Controller;
@@ -17,9 +18,9 @@ use App\Controller\BaseAdminController;
 use HugaShop\Extensions\BaseExtensionTrait;
 use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Models\Product\ProductCategory;
-use HugaShop\Extensions\GoogleMerchant\Models\FeedGenerator;
+use HugaShop\Extensions\GoogleMerchant\Services\FeedGenerator;
 use HugaShop\Extensions\GoogleMerchant\Models\GoogleMerchantCategory;
-use HugaShop\Extensions\GoogleMerchant\Models\GoogleMerchant as GoogleMerchantModel;
+use HugaShop\Extensions\GoogleMerchant\Models\GoogleMerchant;
 
 final class GoogleMerchantController extends BaseAdminController
 {
@@ -31,12 +32,12 @@ final class GoogleMerchantController extends BaseAdminController
     {
         $pricefeed_categories = [];
 
-        if (!empty($pricefeed = Request::getDataAcces(GoogleMerchantModel::getFields()))) {
+        if (!empty($pricefeed = Request::getDataAcces(GoogleMerchant::getFields()))) {
             if (empty($pricefeed->id)) {
                 $pricefeed->token = Helper::makeToken();
-                $pricefeed = Design::setFlashMessage('add', GoogleMerchantModel::createOne($pricefeed));
+                $pricefeed = Design::setFlashMessage('add', GoogleMerchant::createOne($pricefeed));
             } else {
-                Design::setFlashMessage('update', GoogleMerchantModel::updateOne($pricefeed->id, $pricefeed) >= 0);
+                Design::setFlashMessage('update', GoogleMerchant::updateOne($pricefeed->id, $pricefeed) >= 0);
                 Cache::cache(FeedGenerator::class)->delete('item_' . $pricefeed->id);
             }
 
@@ -47,7 +48,7 @@ final class GoogleMerchantController extends BaseAdminController
         }
 
         if (!empty($id)) {
-            $pricefeed = GoogleMerchantModel::getOne($id);
+            $pricefeed = GoogleMerchant::getOne($id);
 
             if (empty($pricefeed->id)) {
                 return $this->redirectToRoute('ExtGoogleMerchantList');

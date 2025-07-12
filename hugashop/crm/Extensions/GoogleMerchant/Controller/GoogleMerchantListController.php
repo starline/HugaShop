@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 2.2
  */
 
 namespace HugaShop\Extensions\GoogleMerchant\Controller;
@@ -16,8 +16,8 @@ use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
 use HugaShop\Extensions\BaseExtensionTrait;
 use Symfony\Component\Routing\Attribute\Route;
-use HugaShop\Extensions\GoogleMerchant\Models\FeedGenerator;
-use HugaShop\Extensions\GoogleMerchant\Models\GoogleMerchant as GoogleMerchantModel;
+use HugaShop\Extensions\GoogleMerchant\Services\FeedGenerator;
+use HugaShop\Extensions\GoogleMerchant\Models\GoogleMerchant;
 
 final class GoogleMerchantListController extends BaseAdminController
 {
@@ -32,20 +32,20 @@ final class GoogleMerchantListController extends BaseAdminController
                 switch (Request::post('action')) {
                     case 'delete':
                         foreach ($ids as $id) {
-                            GoogleMerchantModel::deleteOne($id);
+                            GoogleMerchant::deleteOne($id);
                         }
                         break;
                 }
             }
 
             foreach (Helper::getPositions() as $id => $position) {
-                GoogleMerchantModel::updateOne($id, ['position' => $position]);
+                GoogleMerchant::updateOne($id, ['position' => $position]);
             }
 
             Cache::cache(FeedGenerator::class)->clear();
         }
 
-        $pricefeeds = GoogleMerchantModel::getList(order: 'position');
+        $pricefeeds = GoogleMerchant::getList(order: 'position');
 
         Design::assign('pricefeeds', $pricefeeds);
         Design::assign('extension', $this->getExtension());

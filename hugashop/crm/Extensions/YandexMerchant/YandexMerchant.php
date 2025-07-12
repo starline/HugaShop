@@ -12,7 +12,7 @@ namespace HugaShop\Extensions\YandexMerchant;
 
 use HugaShop\Extensions\BaseExtension;
 use Symfony\Component\HttpFoundation\Response;
-use HugaShop\Extensions\YandexMerchant\Models\FeedGenerator;
+use HugaShop\Extensions\YandexMerchant\Services\FeedGenerator;
 use HugaShop\Extensions\YandexMerchant\Models\YandexMerchant as YandexMerchantModel;
 
 final class YandexMerchant extends BaseExtension

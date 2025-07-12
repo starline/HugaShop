@@ -13,7 +13,8 @@ namespace HugaShop\Extensions\GoogleMerchant;
 use HugaShop\Services\Design;
 use HugaShop\Extensions\BaseExtension;
 use Symfony\Component\HttpFoundation\Response;
-use HugaShop\Extensions\GoogleMerchant\Models\FeedGenerator;
+
+use HugaShop\Extensions\GoogleMerchant\Services\FeedGenerator;
 use HugaShop\Extensions\GoogleMerchant\Models\GoogleMerchant as GoogleMerchantModel;
 
 final class GoogleMerchant extends BaseExtension
