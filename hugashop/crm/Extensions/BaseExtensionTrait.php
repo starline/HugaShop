@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.4
+ * @version 1.5
  *
  */
 
@@ -44,10 +44,16 @@ trait BaseExtensionTrait
     /**
      * Get Extension settings
      */
-    private function getSettings()
+    private function getSettings(?string $param = null)
     {
         $extension_name = $this->getName();
-        return  (object) (Settings::getParam($extension_name) ?? []);
+        $result = $settings = (object) (Settings::getParam($extension_name) ?? []);
+
+        if (!is_null($param)) {
+            $result = $settings->$param ?? null;
+        }
+
+        return $result;
     }
 
 

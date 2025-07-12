@@ -4,19 +4,18 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
  *
  */
 
 namespace HugaShop\Extensions\SeoLinker\Controller;
 
 use HugaShop\Services\Design;
-use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
 use HugaShop\Extensions\BaseExtensionTrait;
 use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Extensions\SeoLinker\Models\SeoLinkerLink;
-use HugaShop\Extensions\SeoLinker\Models\SeoLinker as SeoLinkerModel;
+use HugaShop\Extensions\SeoLinker\Models\SeoLinker;
 
 final class SeoLinkerController extends BaseAdminController
 {
@@ -27,7 +26,7 @@ final class SeoLinkerController extends BaseAdminController
     {
         $this->checkAdminAccess('extension');
 
-        $page = SeoLinkerModel::getOne($id);
+        $page = SeoLinker::getOne($id);
         if (empty($page)) {
             return $this->redirectToRoute('ExtSeoLinker');
         }
@@ -40,13 +39,13 @@ final class SeoLinkerController extends BaseAdminController
         ]);
 
         foreach ($links_in as $ln) {
-            $src = SeoLinkerModel::getOne(['url' => $ln->from_url]);
+            $src = SeoLinker::getOne(['url' => $ln->from_url]);
             $ln->from_id = $src->id ?? null;
         }
 
-        Design::assign('page', $page);
-        Design::assign('links', $links);
-        Design::assign('links_in', $links_in);
+        Design::assign('page',      $page);
+        Design::assign('links',     $links);
+        Design::assign('links_in',  $links_in);
         Design::assign('extension', $this->getExtension());
 
         return $this->fetchExtResponse('page.tpl');

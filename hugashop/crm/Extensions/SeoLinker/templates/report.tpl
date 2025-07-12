@@ -24,7 +24,7 @@
                     <div class="list_row">
                         <div class="row col">
                             <div class="col-12 col-lg-4 text-break">
-                                <a href="/admin/extension/{$extension->module}/page/{$p->id}">{$p->url}</a>
+                                <a href="{'ExtSeoLinkerPage'|urll:[id => $p->id]}">{$p->url}</a>
                             </div>
                             <div class="col-3 col-lg-2">
                                 <span class="badge text-bg-round" title="Глуба страницы">{$p->depth}</span>

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.2
  *
  */
 
@@ -18,10 +18,9 @@ use App\Controller\BaseAdminController;
 use HugaShop\Extensions\BaseExtensionTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
-use HugaShop\Extensions\SeoLinker\SeoLinker;
 use HugaShop\Extensions\SeoLinker\Services\ScanBatch;
 use HugaShop\Extensions\SeoLinker\Models\SeoLinkerLink;
-use HugaShop\Extensions\SeoLinker\Models\SeoLinker as SeoLinkerModel;
+use HugaShop\Extensions\SeoLinker\Models\SeoLinker;
 
 final class SeoLinkerListController extends BaseAdminController
 {
@@ -32,18 +31,18 @@ final class SeoLinkerListController extends BaseAdminController
     {
         $this->checkAdminAccess('extension');
 
-        $base_url = SeoLinker::getSettings('base_url') ?? rtrim(Config::get('root_url'), '/') . '/';
+        $base_url = $this->getSettings()->base_url ?? rtrim(Config::get('root_url'), '/') . '/';
 
         if (Request::post('scan')) {
             if (Request::post('start')) {
-                SeoLinkerModel::query()->delete();
+                SeoLinker::query()->delete();
                 SeoLinkerLink::query()->delete();
             }
 
             [$scanned, $pending] = ScanBatch::scanBatch(
                 $base_url,
                 limit: 1,
-                delay: SeoLinker::getSettings('delay')
+                delay: $this->getSettings()->delay
             );
 
             if (Request::isAjax()) {
@@ -54,14 +53,14 @@ final class SeoLinkerListController extends BaseAdminController
             }
         }
 
-        $filter = PaginationService::initFilter();
-        $pages = SeoLinkerModel::getList($filter, order: ['in_internal', 'desc']);
-        $pages_count = SeoLinkerModel::getCount();
+        $filter         = PaginationService::initFilter();
+        $pages          = SeoLinker::getList($filter, order: ['in_internal', 'desc']);
+        $pages_count    = SeoLinker::getCount();
 
-        Design::assign('pagination', PaginationService::getPagination($pages_count, $filter));
-        Design::assign('pages', $pages);
-        Design::assign('pages_total', $pages_count);
-        Design::assign('extension', $this->getExtension());
+        Design::assign('pagination',    PaginationService::getPagination($pages_count, $filter));
+        Design::assign('pages',         $pages);
+        Design::assign('pages_total',   $pages_count);
+        Design::assign('extension',     $this->getExtension());
 
         return $this->fetchExtResponse('report.tpl');
     }
