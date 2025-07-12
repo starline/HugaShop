@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
@@ -16,71 +16,9 @@ use HugaShop\Services\Extension;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ExtensionController extends BaseAdminController
 {
-
-    #[Route('/admin/extension/{name}', name: 'ExtensionAdmin', priority: 1)]
-    public function index(string $name): Response
-    {
-
-        $this->checkAdminAccess('extension');
-
-        if (empty($Extension = Extension::makeExtension($name))) {
-            return $this->redirectToRoute('ExtensionListAdmin');
-        }
-
-        if (!$Extension::hasIndex()) {
-            return $this->redirectToRoute('ExtensionSettingsAdmin', ['name' => $Extension::getName()]);
-        }
-
-        Design::assign('extension', $Extension::getExtension());
-
-        // Ajax
-        if (Request::isAjax()) {
-            return $Extension::index();
-        }
-
-        return $this->fetchResponse($Extension::index());
-    }
-
-
-    #[Route('/admin/extension/{name}/{path}', name: 'ExtensionItemNewAdmin')]
-    #[Route('/admin/extension/{name}/{path}/{item_id}', requirements: ['id' => '\d+', 'item_id' => '\d+'], name: 'ExtensionItemAdmin')]
-    public function path(string $name, string $path, ?int $item_id = null): Response
-    {
-
-        $this->checkAdminAccess('extension');
-
-        if (empty($name) || empty($Ext = Extension::getNameSpace($name))) {
-            return $this->redirectToRoute('ExtensionListAdmin');
-        }
-
-        Design::assign('extension', $Ext::getExtension());
-
-        return $this->fetchResponse($Ext::$path($item_id));
-    }
-
-
-    /**
-     * Ajax Request
-     */
-    #[Route('/admin/extension/{name}/ajax/{path}', name: 'ExtensionAjaxAdmin', priority: 2)]
-    public function ajax(string $name, string $path): Response
-    {
-
-        $this->checkAdminAccess('extension');
-
-        if (empty($name) || empty($Ext = Extension::getNameSpace($name))) {
-            return $this->redirectToRoute('ExtensionListAdmin');
-        }
-
-        Design::assign('extension', $Ext::getExtension());
-
-        return new JsonResponse($Ext::$path());
-    }
-
 
     /**
      * Get Settings page
