@@ -8,7 +8,7 @@
     <!-- Заголовок -->
     <div class="header_top">
         <h1>{$meta_title}</h1>
-        <a class="add" href="/admin/extension/{$extension->module}/feed">Добавить прайс</a>
+        <a class="add" href="{'ExtGoogleMerchantFeedNew'|urll}">Добавить прайс</a>
     </div>
 
     <div id="main_list">
@@ -30,7 +30,7 @@
                             </div>
 
                             <div class="col">
-                                <a href="/admin/extension/{$extension->module}/feed/{$pricefeed->id}">{$pricefeed->name}</a>
+                                <a href="{'ExtGoogleMerchantFeed'|urll:[id => $pricefeed->id]}">{$pricefeed->name}</a>
 
                                 <div class="badge text-bg-round copy_field"
                                     value="{$config->root_url}/ext/{$extension->module}/{$pricefeed->id}/{$pricefeed->token}">
