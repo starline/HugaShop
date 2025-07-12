@@ -101,7 +101,7 @@
                                             {/if}
                                         </div>
 
-                                        <div class="col-6 languages" >
+                                        <div class="col-6 languages">
                                             {foreach $product->fillings as $lang}
                                                 <div class="mb-2 text-end">
                                                     <span data-lang="{$lang->language_code}"
@@ -127,8 +127,7 @@
 
                                 {if $languages|count > 1}
                                     <i class="edit translate material-icons" data-bs-toggle="tooltip" aria-label="Перевести"
-                                        data-langs="{$translate_langs|regex_replace:'/,$/':''}"
-                                        data-bs-original-title="Перевести"></i>
+                                        data-langs="{$translate_langs|regex_replace:'/,$/':''}" data-bs-original-title="Перевести"></i>
                                 {/if}
                             </div>
                         </div>
@@ -146,8 +145,8 @@
         import '{"js/piecon/piecon.js"|asset}';
 
         let total = {$products_count};
-        let ajax_url = '/admin/extension/{$extension->module}/ajax/calculate';
-        let calculate_product_url = '/admin/extension/{$extension->module}/ajax/calculateProduct';
+        let ajax_url = "{'ExtProductFillingCalculate'|urll}";
+        let calculate_product_url = "{'ExtProductFillingCalculateProduct'|urll}";
         const main_lang = '{$main_language_code}';
 
         {literal}
@@ -233,7 +232,9 @@
                                             const badge = row.find(`[data-lang="${lang}"]`);
                                             const percent = parseInt(res[lang]);
                                             badge.text(percent + '% ' + lang);
-                                            badge.removeClass('text-bg-danger text-bg-warning text-bg-success');
+                                            badge.removeClass(
+                                                'text-bg-danger text-bg-warning text-bg-success'
+                                            );
                                             if (percent < 20) {
                                                 badge.addClass('text-bg-danger');
                                             } else if (percent < 80) {
