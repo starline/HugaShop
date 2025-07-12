@@ -51,7 +51,8 @@ final class RedirectUrlController extends BaseAdminController
             }
         }
 
-        Design::assign('link', $link);
+        Design::assign('link',      $link);
+        Design::assign('extension', $this->getExtension());
 
         return $this->fetchExtResponse('link.tpl');
     }

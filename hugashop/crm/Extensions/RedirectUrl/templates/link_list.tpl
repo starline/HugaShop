@@ -6,7 +6,7 @@
 {block name=content}
     <div class="header_top">
         <h1>{$meta_title}</h1>
-        <a class="add" href="/admin/extension/{$extension->module}/link">Добавить ссылку</a>
+        <a class="add" href="{'ExtRedirectUrlNew'|urll}">Добавить ссылку</a>
     </div>
 
     <div id="main_list">
@@ -21,7 +21,7 @@
                             </div>
                             <div class="row col">
                                 <div class="col-12 col-sm-8">
-                                    <a href="/admin/extension/{$extension->module}/link/{$l->id}">{$l->url}</a>
+                                    <a href="{'ExtRedirectUrl'|urll:[id => $l->id]}">{$l->url}</a>
                                     <div class="notice">{$l->comment|strip_tags|nl2br|raw}</div>
                                 </div>
                                 <div class="col-12 col-sm-4 text-end">

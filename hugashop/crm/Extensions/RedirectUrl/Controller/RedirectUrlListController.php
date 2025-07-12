@@ -48,8 +48,8 @@ final class RedirectUrlListController extends BaseAdminController
             RedirectUrl::cacheClear();
         }
 
-        $links = RedirectUrl::getList();
-        Design::assign('links', $links);
+        Design::assign('links',     RedirectUrl::getList());
+        Design::assign('extension', $this->getExtension());
 
         return $this->fetchExtResponse('link_list.tpl');
     }
