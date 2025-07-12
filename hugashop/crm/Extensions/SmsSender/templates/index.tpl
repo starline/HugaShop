@@ -8,7 +8,7 @@
     <!-- Заголовок -->
     <div class="header_top">
         <h1>{$meta_title}</h1>
-        <a class="add" href="/admin/extension/{$extension->module}/mailing">Добавить рассылку</a>
+        <a class="add" href="{'ExtSmsSenderMailingNew'|urll}">Добавить рассылку</a>
     </div>
 
     <div id="main_list">
@@ -23,7 +23,7 @@
                                 <input class="form-check-input" type="checkbox" name="check[]" value="{$mail->id}" />
                             </div>
                             <div class="col">
-                                <a href="/admin/extension/{$extension->module}/mailing/{$mail->id}">{$mail->name}</a>
+                                <a href="{'ExtSmsSenderMailing'|urll:[id => $mail->id]}">{$mail->name}</a>
                                 <div class="notice">{$mail->comment}</div>
                             </div>
                             <div class="icons">
