@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
  */
 
 namespace HugaShop\Extensions\ProductsImport\Controller;
@@ -37,6 +37,7 @@ final class ProductsImportController extends BaseAdminController
     private int $products_count = 20;
     private string $locale = 'ru_RU.UTF-8';
 
+
     #[Route('/ProductsImport', name: 'ExtProductsImport', priority: 20)]
     public function index()
     {
@@ -46,7 +47,7 @@ final class ProductsImportController extends BaseAdminController
 
         if (!is_writable(Config::get('import_files_dir'))) {
             Design::assign('message_error', 'no_permission');
-            return $this->getTemplatePath('templates/index.tpl');
+            return $this->getTemplatePath('index.tpl');
         }
 
         if (Request::checkCSRF() && Request::files('file')) {
@@ -75,8 +76,9 @@ final class ProductsImportController extends BaseAdminController
             }
         }
 
-        return $this->getTemplatePath('templates/index.tpl');
+        return $this->fetchExtResponse('index.tpl');
     }
+
 
     #[Route('/ProductsImport/import', name: 'ExtProductsImportImport', priority: 20)]
     public function import()
@@ -128,7 +130,7 @@ final class ProductsImportController extends BaseAdminController
         Design::assign('items', $imported_items);
         Design::assign('ajax_block', 'imported_products');
 
-        $content_tpl = $this->getTemplatePath('templates/import_part.tpl');
+        $content_tpl = $this->getTemplatePath('import_part.tpl');
         $result->items = Design::fetch($content_tpl);
 
         if (empty(Request::getInt('from'))) {
@@ -136,6 +138,6 @@ final class ProductsImportController extends BaseAdminController
             $result->file_rows = $csv->countRows();
         }
 
-        return $result;
+        return new JsonResponse($result);
     }
 }

@@ -80,7 +80,7 @@ trait BaseExtensionTrait
      */
     public function getTemplatePath(string $template)
     {
-        return $this->getExtensionDir() . $template;
+        return $this->getExtensionDir() . 'templates/' . $template;
     }
 
 
@@ -99,7 +99,7 @@ trait BaseExtensionTrait
      */
     public function fetchExtResponse(string $template, ?string $block = null)
     {
-        return $this->fetchResponse($this->getExtensionDir() . 'templates/' . $template, $block);
+        return $this->fetchResponse($this->getTemplatePath($template), $block);
     }
 
 
