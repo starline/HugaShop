@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 2.5
  *
  */
 
@@ -15,7 +15,7 @@ use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
 use HugaShop\Extensions\BaseExtensionTrait;
 use Symfony\Component\Routing\Attribute\Route;
-use HugaShop\Extensions\SmsSender\Models\SmsSender as ModelSmsSender;
+use HugaShop\Extensions\SmsSender\Models\SmsSender;
 
 final class SmsSenderListController extends BaseAdminController
 {
@@ -31,12 +31,13 @@ final class SmsSenderListController extends BaseAdminController
         if (Request::checkCSRF()) {
             $ids = Request::post('check');
             if (is_array($ids) && Request::post('action') === 'delete') {
-                ModelSmsSender::deleteOne($ids);
+                SmsSender::deleteOne($ids);
             }
         }
 
-        $mailings = ModelSmsSender::getList();
+        $mailings = SmsSender::getList();
         Design::assign('mailings', $mailings);
+        Design::assign('extension', $this->getExtension());
 
         return $this->fetchExtResponse('index.tpl');
     }

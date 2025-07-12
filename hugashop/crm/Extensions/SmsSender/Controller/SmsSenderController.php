@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 2.5
  *
  */
 
@@ -23,7 +23,7 @@ use App\Controller\BaseAdminController;
 use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Models\User\UserMailTemplate;
 use HugaShop\Extensions\SmsSender\Models\SmsSenderMail;
-use HugaShop\Extensions\SmsSender\Models\SmsSender as ModelSmsSender;
+use HugaShop\Extensions\SmsSender\Models\SmsSender;
 
 final class SmsSenderController extends BaseAdminController
 {
@@ -39,18 +39,17 @@ final class SmsSenderController extends BaseAdminController
         $mailing_list = [];
 
         // Update
-        if (!empty($mailing = Request::getDataAcces(ModelSmsSender::getFields()))) {
+        if (!empty($mailing = Request::getDataAcces(SmsSender::getFields()))) {
             $product_list = preg_split('/\r\n|\r|\n/', Request::post('product_list', 'string'));
             $mailing->product_list = serialize($product_list);
 
             $category_list = preg_split('/\r\n|\r|\n/', Request::post('category_list', 'string'));
             $mailing->category_list = serialize($category_list);
 
-            $category_product_list = Product::getProducts(['category_id' => $category_list]);
-            $category_product_list = array_keys($category_product_list);
+            $category_product_ids = Product::getProducts(['category_id' => $category_list])->pluck('id')->all();
 
             $user_prod_list = [];
-            $product_list = array_merge($product_list, $category_product_list);
+            $product_list = array_merge($product_list, $category_product_ids);
 
             if (!empty($product_list)) {
                 foreach ($product_list as $product_id) {
@@ -71,9 +70,9 @@ final class SmsSenderController extends BaseAdminController
 
             if (empty($mailing->id)) {
                 $mailing->token = Helper::makeToken(uniqid(), 5);
-                $mailing = Design::setFlashMessage('add', ModelSmsSender::createOne($mailing));
+                $mailing = Design::setFlashMessage('add', SmsSender::createOne($mailing));
             } else {
-                Design::setFlashMessage('update', ModelSmsSender::updateOne($mailing->id, $mailing));
+                Design::setFlashMessage('update', SmsSender::updateOne($mailing->id, $mailing));
             }
 
             return $this->redirectToRoute('ExtSmsSenderMailing', ['id' => $mailing->id]);
@@ -81,7 +80,7 @@ final class SmsSenderController extends BaseAdminController
 
         // View
         if (!empty($id)) {
-            $mailing = ModelSmsSender::getOne($id);
+            $mailing = SmsSender::getOne($id);
             if (empty($mailing->id)) {
                 return $this->redirectToRoute('ExtSmsSenderList');
             }
@@ -119,8 +118,8 @@ final class SmsSenderController extends BaseAdminController
             $filter['page'] = max(1, Request::getInt('page'));
             $filter['limit'] = Request::get('page', 'string') == 'all' ? 'all' : Settings::getParam('products_num_admin');
 
-            $mailing_list = SmsSenderMail::getMailingList($mailing->id, $filter);
-            $mailing_count = SmsSenderMail::getMailingCount($mailing->id, $filter);
+            $mailing_list   = SmsSenderMail::getMailingList($mailing->id, $filter);
+            $mailing_count  = SmsSenderMail::getMailingCount($mailing->id, $filter);
 
             Design::assign('mailing_list', $mailing_list);
             Design::assign('mailing_count', $mailing_count);
@@ -136,6 +135,7 @@ final class SmsSenderController extends BaseAdminController
 
         Design::assign('mailing', $mailing ?? null);
         Design::assign('notifiers', $notifiers);
+        Design::assign('extension', $this->getExtension());
 
         return $this->fetchExtResponse('mailing.tpl');
     }
