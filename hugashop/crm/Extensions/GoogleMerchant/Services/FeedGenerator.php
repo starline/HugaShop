@@ -3,7 +3,7 @@
 /**
  *
  * @author Andi Huga
- * @version 4.1
+ * @version 4.2
  *
  * Google feed generator
  * Uses Cache
@@ -46,10 +46,20 @@ class FeedGenerator
                 $main_currency->code = self::$pricefeed->currency_code;
             }
 
-            $categories = GoogleMerchantCategory::getCategoriesIds(self::$pricefeed->id);
+            $categories_raw = GoogleMerchantCategory::getCategoriesIds(self::$pricefeed->id);
 
-            // TODO: Select all child categories
-            $filter['category_id'] = $categories;
+            // Collect selected categories with all children
+            $categories = [];
+            foreach ($categories_raw as $cat_id) {
+                $cat = ProductCategory::getCategory($cat_id);
+                if (!empty($cat->children)) {
+                    $categories = array_merge($categories, $cat->children);
+                } else {
+                    $categories[] = $cat_id;
+                }
+            }
+
+            $filter['category_id'] = array_unique($categories);
             $filter['visible'] = 1;
             $products_raw = Product::getList($filter, order: 'position', join: ['image', 'brand']);
 

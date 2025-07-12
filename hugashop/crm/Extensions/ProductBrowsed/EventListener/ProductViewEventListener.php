@@ -26,10 +26,10 @@ class ProductViewEventListener
     #[AsEventListener]
     public function onProductViewEvent(ProductViewEvent $event): void
     {
-        $product = $event->getProduct();
+        $product  = $event->getProduct();
         $settings = $this->getSettings();
 
-        if (!empty($settings->enabled) and empty($settings)) {
+        if (empty($settings->enabled)) {
             return;
         }
 

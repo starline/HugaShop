@@ -21,7 +21,6 @@ final class SchemaOrg extends BaseExtension
      */
     public static function getFrontBodyTemplate()
     {
-        dump(self::getSettings());
         if (!empty(self::getSettings()->enabled)) {
             return self::fetchTemplate('templates/schema.tpl');
         }
