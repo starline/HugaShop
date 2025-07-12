@@ -13,12 +13,13 @@ use HugaShop\Services\Design;
 use HugaShop\Services\Request;
 use App\Services\PaginationService;
 use App\Controller\BaseAdminController;
+use HugaShop\Models\Localization\Language;
 use HugaShop\Extensions\BaseExtensionTrait;
-use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Models\Product\ProductCategory;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use HugaShop\Extensions\ProductFilling\Models\Product;
 use HugaShop\Extensions\ProductFilling\Services\Calculate;
-use HugaShop\Models\Localization\Language;
 
 final class ProductFillingController extends BaseAdminController
 {
@@ -61,6 +62,7 @@ final class ProductFillingController extends BaseAdminController
         return $this->fetchExtResponse('product_list.tpl');
     }
 
+
     #[Route('/ProductFilling/ajax/calculate', name: 'ExtProductFillingCalculate', priority: 20)]
     public function calculate()
     {
@@ -79,35 +81,36 @@ final class ProductFillingController extends BaseAdminController
         $total = Product::countProducts();
         $processed = $from + $products->count();
 
-        return (object) [
+        return new JsonResponse([
             'from'  => $processed,
             'total' => $total,
             'end'   => $processed >= $total,
-        ];
+        ]);
     }
+
 
     #[Route('/ProductFilling/ajax/calculateProduct', name: 'ExtProductFillingCalculateProduct', priority: 20)]
     public function calculateProduct()
     {
+
         if (!Request::checkCSRF()) {
-            return ['error' => 'csrf'];
+            return new JsonResponse(['error' => 'csrf']);
         }
 
         $id = Request::postInt('id');
         if (empty($id)) {
-            return ['error' => 'id'];
+            return new JsonResponse(['error' => 'id']);
         }
 
         Calculate::calculateProduct($id);
 
+        $result = [];
         if ($product = Product::getProduct($id, ['fillings'])) {
-            $result = [];
             foreach ($product->fillings as $fill) {
                 $result[$fill->language_code] = $fill->percent;
             }
-            return $result;
         }
 
-        return [];
+        return new JsonResponse($result);
     }
 }
