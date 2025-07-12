@@ -83,7 +83,7 @@
             let file_rows = 0;
             let file_size = 0;
             let num = 0;
-            let ajax_url = "/admin/extension/{$extension->module}/ajax/import";
+            let ajax_url = "{'ExtProductsImportImport'|urll}";
 
             {literal}
                 $(function() {
