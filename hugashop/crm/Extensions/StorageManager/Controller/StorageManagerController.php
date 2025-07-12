@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.0
+ * @version 2.1
  */
 
 namespace HugaShop\Extensions\StorageManager\Controller;
@@ -100,6 +100,7 @@ final class StorageManagerController extends BaseAdminController
 
         Design::assign('storages', $storages);
         Design::assign('total', $total);
+        Design::assign('extension', $this->getExtension());
 
         return $this->fetchExtResponse('index.tpl');
     }
