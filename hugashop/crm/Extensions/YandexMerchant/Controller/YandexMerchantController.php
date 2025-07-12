@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 2.1
  */
 
 namespace HugaShop\Extensions\YandexMerchant\Controller;
@@ -15,11 +15,11 @@ use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
 use HugaShop\Extensions\BaseExtensionTrait;
-use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Models\Product\ProductCategory;
-use HugaShop\Extensions\YandexMerchant\Models\FeedGenerator;
+use Symfony\Component\Routing\Attribute\Route;
+use HugaShop\Extensions\YandexMerchant\Models\YandexMerchant;
+use HugaShop\Extensions\YandexMerchant\Services\FeedGenerator;
 use HugaShop\Extensions\YandexMerchant\Models\YandexMerchantCategory;
-use HugaShop\Extensions\YandexMerchant\Models\YandexMerchant as YandexMerchantModel;
 
 final class YandexMerchantController extends BaseAdminController
 {
@@ -31,12 +31,12 @@ final class YandexMerchantController extends BaseAdminController
     {
         $pricefeed_categories = [];
 
-        if (!empty($pricefeed = Request::getDataAcces(YandexMerchantModel::getFields()))) {
+        if (!empty($pricefeed = Request::getDataAcces(YandexMerchant::getFields()))) {
             if (empty($pricefeed->id)) {
                 $pricefeed->token = Helper::makeToken();
-                $pricefeed = Design::setFlashMessage('add', YandexMerchantModel::createOne($pricefeed));
+                $pricefeed = Design::setFlashMessage('add', YandexMerchant::createOne($pricefeed));
             } else {
-                Design::setFlashMessage('update', YandexMerchantModel::updateOne($pricefeed->id, $pricefeed) >= 0);
+                Design::setFlashMessage('update', YandexMerchant::updateOne($pricefeed->id, $pricefeed) >= 0);
                 Cache::cache(FeedGenerator::class)->delete('item_' . $pricefeed->id);
             }
 
@@ -47,7 +47,7 @@ final class YandexMerchantController extends BaseAdminController
         }
 
         if (!empty($id)) {
-            $pricefeed = YandexMerchantModel::getOne($id);
+            $pricefeed = YandexMerchant::getOne($id);
 
             if (empty($pricefeed->id)) {
                 return $this->redirectToRoute('ExtYandexMerchantList');

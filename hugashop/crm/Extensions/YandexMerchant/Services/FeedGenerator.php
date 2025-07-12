@@ -13,7 +13,7 @@
  *
  */
 
-namespace HugaShop\Extensions\YandexMerchant\Models;
+namespace HugaShop\Extensions\YandexMerchant\Services;
 
 use HugaShop\Models\Image;
 use HugaShop\Services\Cache;

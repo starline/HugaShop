@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 2.1
  */
 
 namespace HugaShop\Extensions\YandexMerchant\Controller;
@@ -16,8 +16,8 @@ use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
 use HugaShop\Extensions\BaseExtensionTrait;
 use Symfony\Component\Routing\Attribute\Route;
-use HugaShop\Extensions\YandexMerchant\Models\FeedGenerator;
-use HugaShop\Extensions\YandexMerchant\Models\YandexMerchant as YandexMerchantModel;
+use HugaShop\Extensions\YandexMerchant\Models\YandexMerchant;
+use HugaShop\Extensions\YandexMerchant\Services\FeedGenerator;
 
 final class YandexMerchantListController extends BaseAdminController
 {
@@ -32,20 +32,20 @@ final class YandexMerchantListController extends BaseAdminController
                 switch (Request::post('action')) {
                     case 'delete':
                         foreach ($ids as $id) {
-                            YandexMerchantModel::deleteOne($id);
+                            YandexMerchant::deleteOne($id);
                         }
                         break;
                 }
             }
 
             foreach (Helper::getPositions() as $id => $position) {
-                YandexMerchantModel::updateOne($id, ['position' => $position]);
+                YandexMerchant::updateOne($id, ['position' => $position]);
             }
 
             Cache::cache(FeedGenerator::class)->clear();
         }
 
-        $pricefeeds = YandexMerchantModel::getList(order: 'position');
+        $pricefeeds = YandexMerchant::getList(order: 'position');
 
         Design::assign('pricefeeds', $pricefeeds);
         Design::assign('extension', $this->getExtension());
