@@ -1467,7 +1467,6 @@ div#sort_links b {
 
 .list .list_row>div {
 	flex-shrink: 0;
-	max-width: 100%;
 	padding-right: calc(var(--bs-gutter-x) * .5);
 	padding-left: calc(var(--bs-gutter-x) * .5);
 	width: auto;

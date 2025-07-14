@@ -193,27 +193,23 @@
 						<div
 							class="list_row {if !$product_variant->product->visible}visible_off{/if} {if $product_variant->product->disable}disable{/if}">
 							<input type="hidden" name="product_variants[]" value="{$product_variant->product_id}">
+							<div class="move">
+								<div class="move_zone"></div>
+							</div>
+							<div class="image">
+								<img
+									src="{if $product_variant->product->image->filename}{$product_variant->product->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}">
+							</div>
 
-							<div class="col row gy-5">
+							<div class="col row">
 								<div class="col-12 col-md-9">
-									<div class="row">
-										<div class="move">
-											<div class="move_zone"></div>
-										</div>
-										<div class="image">
-											<img
-												src="{if $product_variant->product->image->filename}{$product_variant->product->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}">
-										</div>
-										<div class="col">
-											<a class="product_name"
-												href="{'ProductAdmin'|urll:[id => $product_variant->product_id]}?return={$smarty.server.REQUEST_URI|urlencode}">{$product_variant->product->name}</a>
-											<div class="variant_name">{$product_variant->product->variant_name}</div>
-										</div>
-									</div>
+									<a class="product_name"
+										href="{'ProductAdmin'|urll:[id => $product_variant->product_id]}?return={$smarty.server.REQUEST_URI|urlencode}">{$product_variant->product->name}</a>
+									<div class="variant_name">{$product_variant->product->variant_name}</div>
 								</div>
 
 								<div class="col-12 col-md-3">
-									<div class="col sku text-end">
+									<div class="sku text-end">
 										<div class="badge text-bg-round copy_field" value="{$product_variant->product->sku}">
 											<span>{$product_variant->product->sku}</span>
 											<div class="copy_hover" data-bs-toggle="tooltip"

@@ -22,21 +22,21 @@
             <div class="list">
                 {foreach $pages as $p}
                     <div class="list_row">
-                        <div class="row col">
+                        <div class="col row gy-5">
                             <div class="col-12 col-lg-4 text-break">
                                 <a href="{'ExtSeoLinkerPage'|urll:[id => $p->id]}">{$p->url}</a>
                             </div>
                             <div class="col-3 col-lg-2">
-                                <span class="badge text-bg-round" title="Глуба страницы">{$p->depth}</span>
+                                <span class="badge text-bg-round" data-bs-toggle="tooltip" title="Глуба страницы">{$p->depth}</span>
                             </div>
                             <div class="col-3 col-lg-2">
-                                <span class="badge text-bg-round" title="Исходящие внутрение ссылки">{$p->out_internal}</span>
+                                <span class="badge text-bg-round" data-bs-toggle="tooltip" title="Исходящие внутрение ссылки">{$p->out_internal}</span>
                             </div>
                             <div class="col-3 col-lg-2">
-                                <span class="badge text-bg-round" title="Исходящие внешник ссылки">{$p->out_external}</span>
+                                <span class="badge text-bg-round" data-bs-toggle="tooltip" title="Исходящие внешник ссылки">{$p->out_external}</span>
                             </div>
                             <div class="col-3 col-lg-2 text-end">
-                                <span class="badge text-bg-round" title="Входящие внутрение ссылки">{$p->in_internal}</span>
+                                <span class="badge text-bg-round" data-bs-toggle="tooltip" title="Входящие внутрение ссылки">{$p->in_internal}</span>
                             </div>
                         </div>
                     </div>

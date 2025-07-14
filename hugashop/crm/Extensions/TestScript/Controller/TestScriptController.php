@@ -34,6 +34,7 @@ use HugaShop\Extensions\BaseExtensionTrait;
 use HugaShop\Models\Content\ContentComment;
 use HugaShop\Models\Product\ProductRelated;
 use HugaShop\Models\Product\ProductCategory;
+use HugaShop\Models\Warehouse\WarehouseMove;
 use Symfony\Component\Filesystem\Filesystem;
 use HugaShop\Models\Warehouse\WarehousePlace;
 use Illuminate\Database\Capsule\Manager as DB;
@@ -334,7 +335,7 @@ final class TestScriptController extends BaseAdminController
                                 $result[] = 'done';
                             }
 
-                            // 2. Перенсти варианты в товары
+                            // 2. Перенести варианты в товары
                             // 3. Создать колонку variant_id в таблице product
                             if (0) {
 
@@ -468,6 +469,26 @@ final class TestScriptController extends BaseAdminController
                                     });
 
                                     $result[] = 'All products moved to warehouse #' . $place->id;
+                                } else {
+                                    $result[] = 'No warehouse places found';
+                                }
+                            }
+
+
+                            // Установим для всех поставкок где не указан склад, первый склад
+                            if (0) {
+                                $place = WarehousePlace::getList(order: 'position')->first();
+                                if ($place) {
+                                    WarehouseMove::query()
+                                        ->whereNull('place_id')
+                                        ->chunk(50, function ($moves) use ($place) {
+                                            foreach ($moves as $move) {
+                                                $move->place_id = $place->id;
+                                                $move->save();
+                                            }
+                                        });
+
+                                    $result[] = 'All undefined movementt to warehouse #' . $place->id;
                                 } else {
                                     $result[] = 'No warehouse places found';
                                 }
