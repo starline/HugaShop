@@ -3,7 +3,7 @@
  * Handles image sorting, visibility and uploading
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.3
  */
 
 export function initImagesUpload() {
@@ -76,8 +76,7 @@ export function initImagesUpload() {
                         "<i class='delete material-icons' title='Удалить'>cancel</i></div>" +
                         "<a href='" + e.target.result +
                         "' class='zoom' data-fancybox='images_content'>" +
-                        "<img class='img-thumbnail img-fluid' onerror='$(this).closest(\"li\").remove();' src='" +
-                        e.target.result + "' />" +
+                        "<span class='img-thumbnail image_preview' style='background-image:url(" + e.target.result + ");'></span>" +
                         "<input name=" + name + "_urls[] type='hidden' value='" +
                         theFile.name + "'/><input name=" + name +
                         "_urls_visible[] type='hidden' value='1'/></a></li>").appendTo('#' +

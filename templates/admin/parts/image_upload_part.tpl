@@ -9,7 +9,7 @@
                     </div>
                 {/if}
                 <a href="{$image->filename|resize:1080:1080:w}" class="zoom" data-fancybox="images">
-                    <img class="img-thumbnail" src="{$image->filename|resize:140:140:c}" />
+                    <span class="img-thumbnail image_preview" style="background-image:url('{$image->filename|resize:140:140:c}');"></span>
                 </a>
                 <input type="hidden" name="images[]" value="{$image->id}" />
                 <input type="hidden" name="images_visible[{$image->id}]" value="{$image->visible}" />
