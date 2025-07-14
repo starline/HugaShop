@@ -27,21 +27,22 @@
             <button class="btn btn-primary" type="submit">Сохранить</button>
         </div>
     {/if}
-
-    <link rel="stylesheet" href="{'js/fancybox/jquery.fancybox.min.css'|asset}" />
-    <script type="module">
-        import '{"js/fancybox/jquery.fancybox.min.js"|asset}';
-        import { initImagesUpload } from '{"js/image.js"|asset}';
-        import { initFancybox } from '{"js/common.js"|asset}';
-        {literal}
-            $(function() {
-
-                // Image uploads
-                initImagesUpload();
-
-                // Image Zoom init
-                initFancybox();
-            });
-        {/literal}
-    </script>
 </div>
+
+
+<link rel="stylesheet" href="{'js/fancybox/jquery.fancybox.min.css'|asset}" />
+<script type="module">
+    import '{"js/fancybox/jquery.fancybox.min.js"|asset}';
+    import { initImagesUpload } from '{"js/image.js"|asset}';
+    import { initFancybox } from '{"js/common.js"|asset}';
+    {literal}
+        $(function() {
+
+            // Image uploads
+            initImagesUpload();
+
+            // Image Zoom init
+            initFancybox();
+        });
+    {/literal}
+</script>

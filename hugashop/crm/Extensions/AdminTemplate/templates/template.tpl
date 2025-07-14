@@ -32,7 +32,7 @@
 
 
 
-        
+
 
             <!-- Simple List -->
             <div class="col-lg-6 layer">
@@ -130,46 +130,56 @@
                         <i class="dash_link">Добавить вариант</i>
                     </div>
                 </div>
-            </div>
 
-            <script type="module">
-                {literal}
+                <script type="module">
+                    {literal}
 
-                    $(function() {
+                        $(function() {
 
-                        // Mini input list
-                        const s_variant = $('.mini_list #new').clone(true);
-                        $('.mini_list #new').remove().removeAttr('id');
+                            // Mini input list
+                            const s_variant = $('.mini_list #new').clone(true);
+                            $('.mini_list #new').remove().removeAttr('id');
 
-                        $('.add').click(function() {
-                            s_variant.clone().appendTo('.mini_list').show().find(
-                                'input[name="synonyms[]"]').focus();
-                            return false;
-                        });
-
-                        // delete input list
-                        $(".mini_list").on('click', '.delete', function() {
-                            $(this).closest(".list_row").fadeOut(200, function() {
-                                $(this).remove();
+                            $('.add').click(function() {
+                                s_variant.clone().appendTo('.mini_list').show().find(
+                                    'input[name="synonyms[]"]').focus();
+                                return false;
                             });
-                            return false;
+
+                            // delete input list
+                            $(".mini_list").on('click', '.delete', function() {
+                                $(this).closest(".list_row").fadeOut(200, function() {
+                                    $(this).remove();
+                                });
+                                return false;
+                            });
+
+                            // Dort inpot list
+                            $("#sort").sortable({
+                                items: ".list_row:not(.sort_disabled)",
+                                cancel: ".sort_disabled",
+                                handle: ".move_zone",
+                                axis: 'y',
+                                opacity: 0.90,
+                                tolerance: "pointer"
+                            });
+
                         });
 
-                        // Dort inpot list
-                        $("#sort").sortable({
-                            items: ".list_row:not(.sort_disabled)",
-                            cancel: ".sort_disabled",
-                            handle: ".move_zone",
-                            axis: 'y',
-                            opacity: 0.90,
-                            tolerance: "pointer"
-                        });
-
-                    });
-
-                {/literal}
-            </script>
+                    {/literal}
+                </script>
+            </div>
             <!-- End Mini input list -->
+
+
+
+
+            <!-- Images -->
+            <div id="images" class="col-lg-6 layer images">
+                <h2>Images</h2>
+                {include file='parts\image_upload_part.tpl' images=$images can_edit=true}
+            </div>
+            <!-- End Images -->
 
 
 

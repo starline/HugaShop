@@ -129,6 +129,11 @@
 							</div>
 						{/foreach}
 					</div>
+				{else}
+					<input type="hidden" name="product" value="{$product->id}" id="product_{$product_variant->product->id}"
+						product_id="{$product->id}" sku="{$product->sku}" name="{$product->name}"
+						variant_name="{$product->variant_name}" price="{$product->price|price_html:clean}"
+						max_stock="{$product->stock}" old_price="{$product->old_price|price_html:clean}" />
 				{/if}
 
 
