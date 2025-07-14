@@ -47,10 +47,10 @@
 				{if $product->images|count > 1}
 					<div class="row g-2 my-2">
 						{foreach $product->images as $i => $image}
-							<div class="col-3">
+							<div class="col-2">
 								<a href="{$image->filename|resize:1080:1080:w}" class="zoom" data-fancybox="images"
 									data-caption="{$product->name} - Фото: {$i+1}">
-									<img class="img-thumbnail img-fluid" src="{$image->filename|resize:220:220:c}"
+									<img class="img-thumbnail img-fluid" src="{$image->filename|resize:80:80:c}"
 										alt="{$product->name} - Фото: {$i+1}" title="{$product->name} - Фото: {$i+1}">
 								</a>
 							</div>
@@ -130,10 +130,10 @@
 						{/foreach}
 					</div>
 				{else}
-					<input type="hidden" name="product" value="{$product->id}" id="product_{$product_variant->product->id}"
-						product_id="{$product->id}" sku="{$product->sku}" name="{$product->name}"
-						variant_name="{$product->variant_name}" price="{$product->price|price_html:clean}"
-						max_stock="{$product->stock}" old_price="{$product->old_price|price_html:clean}" />
+					<input type="hidden" name="product" value="{$product->id}" product_id="{$product->id}"
+						product_sku="{$product->sku}" product_name="{$product->name}" variant_name="{$product->variant_name}"
+						product_price="{$product->price|price_html:clean}"
+						product_old_price="{$product->old_price|price_html:clean}" product_max_stock="{$product->stock}" />
 				{/if}
 
 

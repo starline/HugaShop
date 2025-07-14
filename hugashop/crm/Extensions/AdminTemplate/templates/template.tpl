@@ -36,7 +36,7 @@
 
             <!-- Simple List -->
             <div class="col-lg-6 layer">
-                <h2>Простой список</h2>
+                <h2>Simple list</h2>
                 <div id="list_name" class="list">
                     <div class="list_row">
                         <div class="col">

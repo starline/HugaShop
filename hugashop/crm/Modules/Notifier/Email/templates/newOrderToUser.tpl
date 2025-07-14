@@ -34,7 +34,7 @@
 				<td>
 					<a href="{$config->root_url}{'Product'|urll:[url => $purchase->product->url]}">
 						<img style="display: block; width: 150px;" border="0"
-							src="{$purchase->image->filename|resize:220:220}">
+							src="{$purchase->image->filename|resize:140:140::c}">
 					</a>
 				</td>
 				<td>

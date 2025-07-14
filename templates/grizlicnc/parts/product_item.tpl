@@ -58,10 +58,14 @@
 				<div class="product_price">
 
 					<!-- Product -->
-					<form class="variants" action="/cart" product_sku="{$product->sku}" product_id="{$product->id}"
-						product_name="{$product->name}" product_name="{$product->name}" price="{$product->price}">
+					<form class="variants" action="/cart">
 
-						<input name="product" value="{$product->id}" type="hidden" />
+						<input name="product" value="{$product->id}" type="hidden" product_id="{$product->id}"
+							product_sku="{$product->sku}" product_name="{$product->name}"
+							variant_name="{$product->variant_name}" product_price="{$product->price|price_html:clean}"
+							product_old_price="{$product->old_price|price_html:clean}"
+							product_max_stock="{$product->stock}" />
+
 						<input name="amount" value="1" type="hidden" />
 
 						<div class="variant">
