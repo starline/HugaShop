@@ -160,7 +160,7 @@ $(function () {
         // Для товаров в каталоге/одиночный вариант
         else if ($(this).find('input[name=product]').length > 0) {
             attr_array.forEach(attr => {
-                item[attr] = $(this).attr(attr) || null;
+                item[attr] = $(this).find('input[name=product]').attr(attr) || null;
             });
 
             // Get list data
