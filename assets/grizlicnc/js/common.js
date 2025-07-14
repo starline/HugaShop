@@ -46,6 +46,20 @@ export function asignFancyAjax() {
         afterShow: asignFancyAjax,
     });
 
+    // Ajax links
+    $('.fancybox-inner a.ajax').on('click', function (e) {
+        e.preventDefault();
+        $.post($(this).attr('href'), function (response) {
+            getCartInformer();
+            $.fancybox.open({
+                type: 'html',
+                src: response,
+                touch: false,
+                closeExisting: true,
+                afterShow: asignFancyAjax
+            });
+        });
+    });
 
     // Ajax форм
     $('.fancybox-inner form').on('submit', function (e) {
@@ -112,7 +126,6 @@ document.onvisibilitychange = () => {
 
 /**
  * Init Owl Carusel
- * @param {*} target 
  */
 export function owlCarouselInit(target) {
     const $carousel = $(target).find('.owl-carousel');

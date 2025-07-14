@@ -82,10 +82,10 @@ $(function () {
     });
 
 
-    // Select Product
+    // Select Product at List
     $('.product_item a').on('click', function () {
         const product_item = $(this).closest('.product_item');
-        const attr_array = ['product_id', 'sku', 'product_name', 'variant_name', 'price'];
+        const attr_array = ['product_id', 'product_sku', 'product_name', 'variant_name', 'product_price', 'product_old_price', 'product_max_stock'];
         let item = { amount: 1 }
 
         if (product_item.find('input[name=product]').length > 0) {
@@ -95,37 +95,16 @@ $(function () {
         }
 
         // Get list data
-        item.list_id = product_item.closest('.product_list').attr('list_id') || null;
-        item.list_name = product_item.closest('.product_list').attr('list_name') || null;
+        if ($(this).closest('.product_list').length > 0) {
+            item.list_id = product_item.closest('.product_list').attr('list_id') || null;
+            item.list_name = product_item.closest('.product_list').attr('list_name') || null;
+        }
 
         $(document).trigger('selectItemEvent', item);
     });
 
 
-    // Select amount
-    $('.product_amount .minus').on('click', function () {
-        let qty = $('.product_amount input').val();
-        qty = parseInt(qty);
-        qty = isNaN(qty) ? 1 : qty - 1;
-        qty = qty < 1 ? 1 : qty;
-        $('.product_amount input').val(qty);
-        return false;
-    });
-
-    $('.product_amount .plus').on('click', function () {
-        let qty = $('.product_amount input').val();
-        qty = parseInt(qty);
-        qty = isNaN(qty) ? 1 : qty + 1;
-
-        let max_stock = $('.variants input[name=product]:checked').attr('product_max_stock') || null;
-        qty = (max_stock != null && qty > max_stock) ? max_stock : qty;
-
-        $('.product_amount input').val(qty);
-        return false;
-    });
-
-
-    // Select product
+    // Select product vaariant
     $('.variants input[name=product]').on('change', function () {
 
         loaderLayer('.variants');
@@ -171,6 +150,29 @@ $(function () {
         }
 
         $(document).trigger('addToCardEvent', item);
+    });
+
+
+    // Select amount
+    $('.product_amount .minus').on('click', function () {
+        let qty = $('.product_amount input').val();
+        qty = parseInt(qty);
+        qty = isNaN(qty) ? 1 : qty - 1;
+        qty = qty < 1 ? 1 : qty;
+        $('.product_amount input').val(qty);
+        return false;
+    });
+
+    $('.product_amount .plus').on('click', function () {
+        let qty = $('.product_amount input').val();
+        qty = parseInt(qty);
+        qty = isNaN(qty) ? 1 : qty + 1;
+
+        let max_stock = $('.variants input[name=product]:checked').attr('product_max_stock') || null;
+        qty = (max_stock != null && qty > max_stock) ? max_stock : qty;
+
+        $('.product_amount input').val(qty);
+        return false;
     });
 
 
