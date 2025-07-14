@@ -21,7 +21,7 @@
                             {foreach $comment->images as $image}
                                 <div class="col-auto">
                                     <a href="{$image->filename|resize:1080:1080:w}" class="zoom" data-fancybox="comment{$comment->id}">
-                                        <img src="{$image->filename|resize:100:100:c}" class="img-thumbnail" width="140" height="140" />
+                                        <img src="{$image->filename|resize:80:80:c}" class="img-thumbnail" width="140" height="140" />
                                     </a>
                                 </div>
                             {/foreach}
