@@ -117,7 +117,7 @@ $(function () {
         qty = parseInt(qty);
         qty = isNaN(qty) ? 1 : qty + 1;
 
-        let max_stock = $('.variants input[name=product]:checked').attr('max_stock') || null;
+        let max_stock = $('.variants input[name=product]:checked').attr('product_max_stock') || null;
         qty = (max_stock != null && qty > max_stock) ? max_stock : qty;
 
         $('.product_amount input').val(qty);
@@ -144,29 +144,30 @@ $(function () {
     $('form.variants').on('submit', function (e) {
         e.preventDefault(); // Cancel the submit
 
-        const product_item = $(this).closest('.product_item');
-        const attr_array = ['product_id', 'sku', 'product_name', 'variant_name', 'price'];
+        const attr_array = ['product_id', 'product_sku', 'product_name', 'variant_name', 'product_price', 'product_old_price', 'product_max_stock'];
         let item = { amount: 1 }
 
         if ($(this).find('input[name=amount]').val())
             item.amount = $(this).find('input[name=amount]').val();
 
-        // Для страницы товара
+        // Для страницы товара. Варианты товара
         if ($(this).find('input[name=product][type="radio"]').length > 0) {
             attr_array.forEach(attr => {
                 item[attr] = $(this).find('input[name=product]:checked').attr(attr) || null;
             });
         }
 
-        // Для товаров в каталоге
-        else if (product_item.find('input[name=product]').length > 0) {
+        // Для товаров в каталоге/одиночный вариант
+        else if ($(this).find('input[name=product]').length > 0) {
             attr_array.forEach(attr => {
                 item[attr] = $(this).attr(attr) || null;
             });
 
             // Get list data
-            item.list_id = product_item.closest('.product_list').attr('list_id') || null;
-            item.list_name = product_item.closest('.product_list').attr('list_name') || null;
+            if ($(this).closest('.product_list').length > 0) {
+                item.list_id = $(this).closest('.product_list').attr('list_id') || null;
+                item.list_name = $(this).closest('.product_list').attr('list_name') || null;
+            }
         }
 
         $(document).trigger('addToCardEvent', item);
