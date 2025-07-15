@@ -77,7 +77,7 @@
 								disabled />
 						</div>
 						<div class="marking_print">
-							<a class="print_icon" href="{'ProductMarkingAdmin'|urll:[product_id => $product->id]}"
+							<a class="print_icon" href="{'ProductMarkingAdmin'|link:[product_id => $product->id]}"
 								target="_blank">
 								<img src="{'images/printer.png'|asset}" data-bs-toggle="tooltip" title="Печать маркировки">
 							</a>
@@ -204,7 +204,7 @@
 							<div class="col row">
 								<div class="col-12 col-md-9">
 									<a class="product_name"
-										href="{'ProductAdmin'|urll:[id => $product_variant->product_id]}?return={$smarty.server.REQUEST_URI|urlencode}">{$product_variant->product->name}</a>
+										href="{'ProductAdmin'|link:[id => $product_variant->product_id]}?return={$smarty.server.REQUEST_URI|urlencode}">{$product_variant->product->name}</a>
 									<div class="variant_name">{$product_variant->product->variant_name}</div>
 								</div>
 
@@ -315,7 +315,7 @@
 
 							<div class="col">
 								<a class="related_product_name"
-									href="{'ProductAdmin'|urll:[id => $rel_product->id]}?return={$smarty.server.REQUEST_URI|escape}">{$rel_product->name}</a>
+									href="{'ProductAdmin'|link:[id => $rel_product->id]}?return={$smarty.server.REQUEST_URI|escape}">{$rel_product->name}</a>
 							</div>
 
 							<div class="icons">

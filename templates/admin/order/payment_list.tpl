@@ -15,7 +15,7 @@
 
 	<div class="header_top">
 		<h1>{$meta_title}</h1>
-		<a class="add" href="{'OrderPaymentNewAdmin'|urll}">Добавить способ оплаты</a>
+		<a class="add" href="{'OrderPaymentNewAdmin'|link}">Добавить способ оплаты</a>
 	</div>
 
 	<div id="main_list">
@@ -39,7 +39,7 @@
 							</div>
 
 							<div class="col">
-								<a href="{'OrderPaymentAdmin'|urll:[id => $payment_method->id]}">{$payment_method->name}</a>
+								<a href="{'OrderPaymentAdmin'|link:[id => $payment_method->id]}">{$payment_method->name}</a>
 								<span class="badge text-bg-round">{$payment_method->public_name}</span>
 								<div class="notice">{$payment_method->comment|strip_tags|nl2br|raw}</div>
 							</div>

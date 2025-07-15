@@ -87,7 +87,7 @@
                                 {/if}
                                 <div class="order_date">
                                     <a class="order_id"
-                                        href="{'MoveAdmin'|urll:[id => $movement->id]}"><span>{$movement->id}</span></a>
+                                        href="{'MoveAdmin'|link:[id => $movement->id]}"><span>{$movement->id}</span></a>
                                     <div class="date">{$movement->date|date}</div>
                                 </div>
                                 <div class="col row">

@@ -31,13 +31,13 @@
 				{foreach $purchases as $purchase}
 					<div class="purchase_row">
 						<div class="image">
-							<a href="{'Product'|urll:[url => $purchase->product->url]}">
+							<a href="{'Product'|link:[url => $purchase->product->url]}">
 								<img loading="lazy" src="{$purchase->product->image->filename|resize:120:120:c}" alt="{$product->name}">
 							</a>
 						</div>
 
 						<div class="name">
-							<a href="{'Product'|urll:[url => $purchase->product->url]}">{$purchase->product->name}</a>
+							<a href="{'Product'|link:[url => $purchase->product->url]}">{$purchase->product->name}</a>
 							{$purchase->variant->name}
 						</div>
 

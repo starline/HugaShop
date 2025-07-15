@@ -42,7 +42,7 @@ class BaseController extends AbstractController
         Request::startSession($this->requestStack->getSession());
 
         Design::setModifierPlugin('linkLang', $this, 'generateUrlWithLocale');
-        Design::setModifierPlugin('urll', $UrlGenerator, 'generate');
+        Design::setModifierPlugin('link', $UrlGenerator, 'generate');
         Design::assign('route', $this->requestStack->getCurrentRequest()->attributes->get('_route'));
     }
 

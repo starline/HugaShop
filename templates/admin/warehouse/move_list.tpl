@@ -49,7 +49,7 @@
 				{/if}
 			</h1>
 			{if 'warehouse_edit'|user_access OR 'warehouse_add'|user_access}
-				<a class="add" href="{'MoveNewAdmin'|urll}">Добавить перемещение товара</a>
+				<a class="add" href="{'MoveNewAdmin'|link}">Добавить перемещение товара</a>
 			{/if}
 		</div>
 
@@ -111,7 +111,7 @@
 								{/if}
 
 								<div class="order_date">
-									<a class="order_id" href="{'MoveAdmin'|urll:[id => $movement->id]}">
+									<a class="order_id" href="{'MoveAdmin'|link:[id => $movement->id]}">
 										<span>{$movement->id}</span>
 									</a>
 									<div class="date">{$movement->date|date}</div>

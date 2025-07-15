@@ -7,7 +7,7 @@
     {/if}
 
     <div class="order_date">
-        <a class="order_id" href="{'OrderAdmin'|urll:[id => $order->id]}">#<span>{$order->id}</span></a>
+        <a class="order_id" href="{'OrderAdmin'|link:[id => $order->id]}">#<span>{$order->id}</span></a>
         <div class="date">{$order->date|date}</div>
         <div class="time">{$order->date|time}</div>
     </div>
@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col-12 col-md-5">
 
-                <a href="{'OrderAdmin'|urll:[id => $order->id]}"><b>{$order->name}</b></a>
+                <a href="{'OrderAdmin'|link:[id => $order->id]}"><b>{$order->name}</b></a>
 
                 {if $order->purchases}
                     <div class="purchases">

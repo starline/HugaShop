@@ -82,7 +82,7 @@
                             <div class="col row">
                                 <div class="col">
                                     <a
-                                        href="{'ProductAdmin'|urll:[id=>$product->id]}?return={$smarty.server.REQUEST_URI}">{$product->name}</a>
+                                        href="{'ProductAdmin'|link:[id=>$product->id]}?return={$smarty.server.REQUEST_URI}">{$product->name}</a>
                                     {if $product->variant_name}
                                         <span class="small"> - {$product->variant_name}</span>
                                     {/if}
@@ -145,8 +145,8 @@
         import '{"js/piecon/piecon.js"|asset}';
 
         let total = {$products_count};
-        let ajax_url = "{'ExtProductFillingCalculate'|urll}";
-        let calculate_product_url = "{'ExtProductFillingCalculateProduct'|urll}";
+        let ajax_url = "{'ExtProductFillingCalculate'|link}";
+        let calculate_product_url = "{'ExtProductFillingCalculateProduct'|link}";
         const main_lang = '{$main_language_code}';
 
         {literal}

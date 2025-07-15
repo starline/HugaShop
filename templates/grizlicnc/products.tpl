@@ -93,7 +93,7 @@
 
 			{if 'product_category'|user_access AND $category->id}
 				<div class="admin_edit">
-					<a href="{'CategoryAdmin'|urll:[id => $category->id]}" data-bs-toggle="tooltip"
+					<a href="{'CategoryAdmin'|link:[id => $category->id]}" data-bs-toggle="tooltip"
 						title="{'Редактировать категорию'|trans}">{'Редактировать категорию'|trans}</a>
 				</div>
 			{/if}

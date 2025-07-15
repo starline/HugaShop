@@ -65,7 +65,7 @@
 
 			{if 'product_content'|user_access AND $product->id}
 				<div class="admin_edit">
-					<a href="{'ProductAdmin'|urll:[id=>$product->id]}" data-bs-toggle="tooltip">Редактировать
+					<a href="{'ProductAdmin'|link:[id=>$product->id]}" data-bs-toggle="tooltip">Редактировать
 						товар</a>
 				</div>
 			{/if}

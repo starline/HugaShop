@@ -26,7 +26,7 @@
 	{include file='parts/footer.tpl'}
 
 	{if $user->manager}
-		<a class="admin_bookmark" href="{'MainAdmin'|urll}" data-bs-toggle="tooltip"
+		<a class="admin_bookmark" href="{'MainAdmin'|link}" data-bs-toggle="tooltip"
 			title="Перейти в админку">
 			<svg viewBox="0 0 24 24" focusable="false">
 				<path d="M0 0h24v24H0z" fill="none"></path>

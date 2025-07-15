@@ -195,7 +195,7 @@
 
 										{if 'product_content'|user_access}
 											<a
-												href="{'ProductAdmin'|urll:[id=>$product->id]}?return={$smarty.server.REQUEST_URI}">{$product->name}</a>
+												href="{'ProductAdmin'|link:[id=>$product->id]}?return={$smarty.server.REQUEST_URI}">{$product->name}</a>
 										{else}
 											{$product->name}
 										{/if}

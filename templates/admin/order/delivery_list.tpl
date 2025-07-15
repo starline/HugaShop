@@ -16,7 +16,7 @@
 	<!-- Заголовок -->
 	<div class="header_top">
 		<h1>{$meta_title}</h1>
-		<a class="add" href="{'OrderDeliveryNewAdmin'|urll}">Добавить способ доставки</a>
+		<a class="add" href="{'OrderDeliveryNewAdmin'|link}">Добавить способ доставки</a>
 	</div>
 
 	<div id="main_list">
@@ -40,7 +40,7 @@
 							</div>
 
 							<div class="col">
-								<a href="{'OrderDeliveryAdmin'|urll:[id => $delivery->id]}">{$delivery->name}</a>
+								<a href="{'OrderDeliveryAdmin'|link:[id => $delivery->id]}">{$delivery->name}</a>
 								<span class="badge text-bg-round">{$delivery->public_name}</span>
 								<div class="notice">{$delivery->comment|strip_tags|nl2br|raw}</div>
 							</div>

@@ -58,7 +58,7 @@
 									<ul>
 										<li
 											class="mini {if $route|in_array:[OrderListAdmin, OrderAdmin, OrderNewAdmin]}active{/if}">
-											<a href=" {'OrderListAdmin'|urll:[status => 0]}">Заказы</a>
+											<a href=" {'OrderListAdmin'|link:[status => 0]}">Заказы</a>
 										</li>
 
 										<li class="mini {if $route|in_array:['CartListAdmin']}active{/if}">
@@ -109,7 +109,7 @@
 										{if 'product_view'|user_access}
 											<li
 												class="mini {if $route|in_array:[ProductListAdmin, ProductAdmin, ProductPriceAdmin, ImportProductPAdmin]}active{/if}">
-												<a href="{'ProductListAdmin'|urll}">Товары</a>
+												<a href="{'ProductListAdmin'|link}">Товары</a>
 											</li>
 										{/if}
 
@@ -217,17 +217,17 @@
 										{if 'finance'|user_access}
 											<li
 												class="mini {if $route|in_array:[PaymentListAdmin, PaymentAdmin, PaymentNewAdmin]}active{/if}">
-												<a href="{'PaymentListAdmin'|urll}">Платежи</a>
+												<a href="{'PaymentListAdmin'|link}">Платежи</a>
 											</li>
 										{/if}
 										{if 'stats'|user_access}
 											<li class="mini {if $route|in_array:[StatsAdmin]}active{/if}">
-												<a href="{'StatsAdmin'|urll}">Статистика продаж</a>
+												<a href="{'StatsAdmin'|link}">Статистика продаж</a>
 											</li>
 										{/if}
 										{if 'finance'|user_access}
 											<li class="mini {if $route|in_array:[CurrencyAdmin]}active{/if}">
-												<a href="{'CurrencyAdmin'|urll}">Валюты</a>
+												<a href="{'CurrencyAdmin'|link}">Валюты</a>
 											</li>
 										{/if}
 									</ul>
@@ -237,7 +237,7 @@
 
 							{if 'extension'|user_access}
 								<li>
-									<a href="{'ExtensionListAdmin'|urll}">
+									<a href="{'ExtensionListAdmin'|link}">
 										<div class="menu_icon">
 											<img loading="lazy" src="{'images/menu/wizards.png'|asset}">
 										</div>
@@ -259,26 +259,26 @@
 									<ul>
 										{if 'settings'|user_access}
 											<li class="mini {if $route == 'SettingsAdmin'}active{/if}">
-												<a href="{'SettingsAdmin'|urll}">Основные настройки</a>
+												<a href="{'SettingsAdmin'|link}">Основные настройки</a>
 											</li>
 										{/if}
 
 										{if 'settings'|user_access}
 											<li class="mini {if $route == 'LanguageListAdmin'}active{/if}">
-												<a href="{'LanguageListAdmin'|urll}">Языки</a>
+												<a href="{'LanguageListAdmin'|link}">Языки</a>
 											</li>
 										{/if}
 
 										{if 'backup'|user_access}
 											<li class="{if $route == 'BackupAdmin'}active{/if}">
-												<a href="{'BackupAdmin'|urll}">Бекап</a>
+												<a href="{'BackupAdmin'|link}">Бекап</a>
 											</li>
 										{/if}
 
 										{if 'design'|user_access}
 											<li
 												class="{if $route|in_array:[ImagesAdmin, ThemeAdmin, StylesAdmin, TemplatesAdmin, ThemeAdmin]}active{/if}">
-												<a href="{'ThemeAdmin'|urll}">Тема</a>
+												<a href="{'ThemeAdmin'|link}">Тема</a>
 											</li>
 										{/if}
 									</ul>
@@ -289,8 +289,8 @@
 				</div>
 
 				<div class="current_user">
-					<a class="user_name" href="{'UserAdmin'|urll:['id' => $user->id]}">{$user->name}</a>
-					<a href="{'UserLogout'|urll}" id="logout">Выход</a>
+					<a class="user_name" href="{'UserAdmin'|link:['id' => $user->id]}">{$user->name}</a>
+					<a href="{'UserLogout'|link}" id="logout">Выход</a>
 				</div>
 			</div>
 		</div>
@@ -324,7 +324,7 @@
 
 
 	<!-- Admin Bookmark -->
-	<a class="admin_bookmark" href="{'Main'|urll}" data-bs-toggle="tooltip" title="Перейти на сайт">
+	<a class="admin_bookmark" href="{'Main'|link}" data-bs-toggle="tooltip" title="Перейти на сайт">
 		<svg viewBox="0 0 24 24" focusable="false" class="dyAbMb">
 			<path d="M0 0h24v24H0z" fill="none"></path>
 			<path d="M8.59,16.59L13.17,12L8.59,7.41L10,6l6,6l-6,6L8.59,16.59z"></path>

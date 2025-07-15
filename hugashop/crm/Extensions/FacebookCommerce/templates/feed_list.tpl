@@ -8,7 +8,7 @@
     <!-- Заголовок -->
     <div class="header_top">
         <h1>{$meta_title}</h1>
-        <a class="add" href="{'ExtFacebookCommerceFeedNew'|urll}">Добавить прайс</a>
+        <a class="add" href="{'ExtFacebookCommerceFeedNew'|link}">Добавить прайс</a>
     </div>
 
     <div id="main_list">
@@ -36,7 +36,7 @@
                                             #{$pricefeed->id}
                                         </span>
 
-                                        <a href="{'ExtFacebookCommerceFeed'|urll:[id => $pricefeed->id]}">{$pricefeed->name}</a>
+                                        <a href="{'ExtFacebookCommerceFeed'|link:[id => $pricefeed->id]}">{$pricefeed->name}</a>
                                     </div>
 
                                     <div class="badge text-bg-round copy_field my-2"

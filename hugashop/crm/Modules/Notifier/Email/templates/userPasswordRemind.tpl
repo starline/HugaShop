@@ -8,7 +8,7 @@
 	<p>{$user->name}, на сайте <a href='{$config->root_url}'>{$settings->domain}</a> был сделан запрос
 		на восстановление вашего пароля.</p>
 	<p>Вы можете изменить пароль, перейдя по следующей ссылке:</p>
-	<p><a href='{$config->root_url}{'UserPasswordRemind'|urll:[code => $code]}'>Изменить пароль</a></p>
+	<p><a href='{$config->root_url}{'UserPasswordRemind'|link:[code => $code]}'>Изменить пароль</a></p>
 	<p>Эта ссылка действует в течение нескольких минут.</p>
 	<p>Если это письмо пришло вам по ошибке, проигнорируйте его.</p>
 </body>

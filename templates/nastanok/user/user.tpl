@@ -59,7 +59,7 @@
 			<div id="orders_history">
 				{foreach name=orders item=order from=$orders}
 					<div>
-						{$order->date|date} <a href="{'Order'|urll:[id => $order->id, order_url => $order->url]}">Заказ
+						{$order->date|date} <a href="{'Order'|link:[id => $order->id, order_url => $order->url]}">Заказ
 							№{$order->id}</a>
 						{if $order->paid == 1}оплачен,{/if}
 						{if $order->status == 0}ждет обработки

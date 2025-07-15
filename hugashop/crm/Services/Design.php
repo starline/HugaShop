@@ -189,6 +189,16 @@ class Design
 
 
     /**
+     * Check if template exists
+     */
+    public static function templateExists(string $tempalte)
+    {
+        $template_path = self::getSmarty()->getTemplateDir(0) . $tempalte;
+        return file_exists($template_path) ? true : false;
+    }
+
+
+    /**
      * sett Flash messag
      * @param string $type
      */

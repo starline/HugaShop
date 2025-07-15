@@ -9,7 +9,7 @@
 	{* Заголовок *}
 	<div class="header_top">
 		<h1>{$meta_title}</h1>
-		<a class="add" href="{'LabelNewAdmin'|urll}">Новая метка</a>
+		<a class="add" href="{'LabelNewAdmin'|link}">Новая метка</a>
 	</div>
 
 	<div id="main_list">
@@ -34,7 +34,7 @@
 
 							<div class="col">
 								<span style="background-color:#{$label->color};" class="order_label"></span>
-								<a href="{'LabelAdmin'|urll:[id => $label->id]}">{$label->name}</a>
+								<a href="{'LabelAdmin'|link:[id => $label->id]}">{$label->name}</a>
 							</div>
 
 							<div class="icons">

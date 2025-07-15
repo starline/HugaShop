@@ -96,7 +96,7 @@
 					{foreach $categories as $cat}
 						{if $cat->visible}
 							<td class="{if $cat@last}last{/if}{if $cat@first}first{/if}">
-								<a href="{'Products'|urll:[url=>$cat->url]}" class="p-c-title">
+								<a href="{'Products'|link:[url=>$cat->url]}" class="p-c-title">
 									<span class="p-c-title-text">{$cat->name}</span>
 								</a>
 							</td>

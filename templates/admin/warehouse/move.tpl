@@ -174,7 +174,7 @@
 
 					<div class="btn_row">
 						<a class="btn btn-light"
-							href="{'PaymentNewAdmin'|urll}?cur_type=0&contractor_entity_name=wh_movement&contractor_entity_id={$movement->id}">Добавить
+							href="{'PaymentNewAdmin'|link}?cur_type=0&contractor_entity_name=wh_movement&contractor_entity_id={$movement->id}">Добавить
 							платеж</a>
 					</div>
 
@@ -184,7 +184,7 @@
 								<div class="list_row {if !$p->verified}verified_off{else}verified_on{/if}" item_id="{$p->id}">
 									<div class="payment_amount {if $p->related_payment_id}transfer{/if}">
 										<a
-											href="{'PaymentAdmin'|urll:[id => $p->id]}">{$p->amount|price_html:profit:$p->currency_code|raw}</a>
+											href="{'PaymentAdmin'|link:[id => $p->id]}">{$p->amount|price_html:profit:$p->currency_code|raw}</a>
 
 										{if $p->currency_rate != 1}
 											<div class="notice">{$p->currency_amount|price_html|raw}</div>
@@ -321,7 +321,7 @@
 
 						<div class="icons flex-column">
 							{if $purchase->product->id}
-								<a href="{'ProductMarkingAdmin'|urll:[product_id => $purchase->product->id]}" target="_blank"
+								<a href="{'ProductMarkingAdmin'|link:[product_id => $purchase->product->id]}" target="_blank"
 									class="material-icons" data-bs-toggle="tooltip" title="Распечать этикету">print</a>
 							{/if}
 							{if $can_edit}

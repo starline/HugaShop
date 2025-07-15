@@ -32,7 +32,7 @@
                             </div>
 
                             <div class="col">
-                                <a href="{'PlaceAdmin'|urll:[id=>$place->id]}">{$place->name}</a>
+                                <a href="{'PlaceAdmin'|link:[id=>$place->id]}">{$place->name}</a>
                                 <div class="notice">{$place->comment}</div>
                             </div>
 

@@ -2,32 +2,32 @@
 
 	{if 'order'|user_access and $route|in_array:[OrderListAdmin, OrderAdmin, OrderNewAdmin]}
 		<li class="mini status_new {if $status == '0'}active{/if}">
-			<a href="{'OrderListAdmin'|urll:[status => 0]}">Новые</a>
+			<a href="{'OrderListAdmin'|link:[status => 0]}">Новые</a>
 			{if $orders_info_count[0]}
 				<div class="counter"><span>{$orders_info_count[0]}</span></div>
 			{/if}
 		</li>
 
 		<li class="mini status_work {if $status == 1}active{/if}">
-			<a href="{'OrderListAdmin'|urll:[status => 1]}">Приняты</a>
+			<a href="{'OrderListAdmin'|link:[status => 1]}">Приняты</a>
 			{if $orders_info_count[1]}
 				<div class="counter"><span>{$orders_info_count[1]}</span></div>
 			{/if}
 		</li>
 
 		<li class="mini status_shipped {if $status == 4}active{/if}">
-			<a href="{'OrderListAdmin'|urll:[status => 4]}">Отгружены</a>
+			<a href="{'OrderListAdmin'|link:[status => 4]}">Отгружены</a>
 			{if $orders_info_count[4]}
 				<div class="counter gray"><span>{$orders_info_count[4]}</span></div>
 			{/if}
 		</li>
 
 		<li class="mini status_done {if $status == 2}active{/if}">
-			<a href="{'OrderListAdmin'|urll:[status => 2]}">Выполнены</a>
+			<a href="{'OrderListAdmin'|link:[status => 2]}">Выполнены</a>
 		</li>
 
 		<li class="mini status_delete {if $status == 3}active{/if}">
-			<a href="{'OrderListAdmin'|urll:[status => 3]}">Отмена</a>
+			<a href="{'OrderListAdmin'|link:[status => 3]}">Отмена</a>
 		</li>
 
 		{if isset($keyword)}

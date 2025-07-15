@@ -55,14 +55,14 @@
 
 										{if $cart->order_id}
 											<span>
-												→ <a class="order_id m-3" href="{'OrderAdmin'|urll:[id => $cart->order_id]}">Заказ
+												→ <a class="order_id m-3" href="{'OrderAdmin'|link:[id => $cart->order_id]}">Заказ
 													#<span>{$cart->order_id}</span></a>
 											</span>
 										{/if}
 
 										<div class="my-2">
 											{if !$cart->user->id|empty}
-												<a href="{'UserAdmin'|urll:[id => $cart->user->id]}"><b>{$cart->user->name}</b></a>
+												<a href="{'UserAdmin'|link:[id => $cart->user->id]}"><b>{$cart->user->name}</b></a>
 											{/if}
 										</div>
 

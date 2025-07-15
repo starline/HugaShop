@@ -32,14 +32,14 @@
 
 	<!-- Фото товара -->
 	{if $product->image}
-		<a class="image" href="{'Product'|urll:[url => $product->url]}">
+		<a class="image" href="{'Product'|link:[url => $product->url]}">
 			<img loading="lazy" src="{$product->image->filename|resize:200:200}" alt="{$product->name}"
 				data-bs-toggle="tooltip" title="{$product->name}">
 		</a>
 	{/if}
 
 	<div class="product_info">
-		<a class="name" href="{'Product'|urll:[url => $product->url]}" data-bs-toggle="tooltip"
+		<a class="name" href="{'Product'|link:[url => $product->url]}" data-bs-toggle="tooltip"
 			title="{$product->name}">{$product->name}</a>
 		{if $product->brand_image}
 			<img loading="lazy" class="brand-img" alt="{$product->brand_name}" data-bs-toggle="tooltip"

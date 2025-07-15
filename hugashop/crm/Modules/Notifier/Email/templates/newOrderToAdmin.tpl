@@ -8,7 +8,7 @@
 
 <div id="header">
 	<h1 style="display: inline;">
-		<a href="{$config->root_url}{'OrderAdmin'|urll:[id => $order->id]}">Заказ №{$order->id}</a>
+		<a href="{$config->root_url}{'OrderAdmin'|link:[id => $order->id]}">Заказ №{$order->id}</a>
 	</h1>
 	<span>от {$order->date|date}</span>
 	<p>{$settings->company_name} - {$settings->company_description}</p>
@@ -40,13 +40,13 @@
 		{foreach $purchases as $purchase}
 			<tr>
 				<td>
-					<a href="{$config->root_url}{'Product'|urll:[url => $purchase->product->url]}">
+					<a href="{$config->root_url}{'Product'|link:[url => $purchase->product->url]}">
 						<img border="0" src="{$purchase->product->image->filename|resize:60:60:c}">
 					</a>
 				</td>
 				<td>
 					<a
-						href="{$config->root_url}{'Product'|urll:[url => $purchase->product->url]}">{$purchase->product_name}</a>
+						href="{$config->root_url}{'Product'|link:[url => $purchase->product->url]}">{$purchase->product_name}</a>
 					{$purchase->variant_name} {if $purchase->sku} (арт {$purchase->sku}){/if}
 				</td>
 				<td>

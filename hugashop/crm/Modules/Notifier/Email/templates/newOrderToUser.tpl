@@ -32,14 +32,14 @@
 		{foreach $purchases as $purchase}
 			<tr>
 				<td>
-					<a href="{$config->root_url}{'Product'|urll:[url => $purchase->product->url]}">
+					<a href="{$config->root_url}{'Product'|link:[url => $purchase->product->url]}">
 						<img style="display: block; width: 100px;" border="0"
 							src="{$purchase->product->image->filename|resize:120:120:c}">
 					</a>
 				</td>
 				<td>
 					<a
-						href="{$config->root_url}{'Product'|urll:[url => $purchase->product->url]}">{$purchase->product_name}</a>
+						href="{$config->root_url}{'Product'|link:[url => $purchase->product->url]}">{$purchase->product_name}</a>
 					{$purchase->variant_name} {if $purchase->sku} (арт {$purchase->sku}){/if}
 				</td>
 				<td>
@@ -104,7 +104,7 @@
 
 <p>
 	Вы всегда можете проверить состояние заказа по ссылке:<br>
-	<a href="{$config->root_url}{'Order'|urll:[id => $order->id, order_url => $order->url]}">
-		{$config->root_url}{'Order'|urll:[id => $order->id, order_url => $order->url]}
+	<a href="{$config->root_url}{'Order'|link:[id => $order->id, order_url => $order->url]}">
+		{$config->root_url}{'Order'|link:[id => $order->id, order_url => $order->url]}
 	</a>
 </p>

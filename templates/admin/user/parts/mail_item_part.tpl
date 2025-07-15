@@ -10,9 +10,9 @@
 
     <div class="col row">
         <div class="col-12 col-sm-5">
-            <a href="{'MailingAdmin'|urll:[id => $mailing->id]}">{$mailing->contact}</a>
+            <a href="{'MailingAdmin'|link:[id => $mailing->id]}">{$mailing->contact}</a>
             {if !$mailing->user->id|empty}
-                <a href="{'UserAdmin'|urll:[id => $mailing->user->id]}">{$mailing->user->name}</a>
+                <a href="{'UserAdmin'|link:[id => $mailing->user->id]}">{$mailing->user->name}</a>
             {/if}
         </div>
 

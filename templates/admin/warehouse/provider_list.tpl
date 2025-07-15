@@ -26,7 +26,7 @@
 								<input class="form-check-input" type="checkbox" name="check[]" value="{$provider->id}" />
 							</div>
 							<div class="col">
-								<a href="{'ProviderAdmin'|urll:[id=>$provider->id]}">{$provider->name}</a>
+								<a href="{'ProviderAdmin'|link:[id=>$provider->id]}">{$provider->name}</a>
 							</div>
 							<div class="icons">
 								<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>

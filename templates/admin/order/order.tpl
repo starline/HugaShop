@@ -36,14 +36,14 @@
 				</select>
 
 				{if !$prev_order->id|empty}
-					<a class="out_link" href="{'OrderAdmin'|urll:[id => $prev_order->id]}" data-bs-toggle="tooltip"
+					<a class="out_link" href="{'OrderAdmin'|link:[id => $prev_order->id]}" data-bs-toggle="tooltip"
 						title="№{$prev_order->id}">Перейти к
 						следуюшему заказу</a>
 				{/if}
 			</h1>
 
 			{if !$order->id|empty}
-				<a class="print_icon" href="{'Order'|urll:[id => $order->id, order_url => $order->url, type => print]}"
+				<a class="print_icon" href="{'Order'|link:[id => $order->id, order_url => $order->url, type => print]}"
 					target="_blank">
 					<img src="{'images/printer.png'|asset}" data-bs-toggle="tooltip" title="Печать заказа">
 				</a>
@@ -659,7 +659,7 @@
 							<div class="list_row {if !$p->verified}verified_off{else}verified_on{/if}" item_id="{$p->id}">
 								<div class="payment_amount {if $p->related_payment_id}transfer{/if}">
 									<a
-										href="{'PaymentAdmin'|urll:[id => $p->id]}">{$p->amount|price_html:profit:$p->currency_code|raw}</a>
+										href="{'PaymentAdmin'|link:[id => $p->id]}">{$p->amount|price_html:profit:$p->currency_code|raw}</a>
 									{if $p->currency_rate != 1}
 										<div class="notice">{$p->currency_amount|price_html|raw}</div>
 									{/if}
@@ -696,7 +696,7 @@
 					</div>
 
 					<div class="col-12 btn_row">
-						<a href="{'PaymentNewAdmin'|urll}?cur_type=1&contractor_entity_name=order&contractor_entity_id={$order->id}"
+						<a href="{'PaymentNewAdmin'|link}?cur_type=1&contractor_entity_name=order&contractor_entity_id={$order->id}"
 							class="btn btn-light" type="submit">Добавить платеж</a>
 					</div>
 				</div>
