@@ -3,16 +3,17 @@
  * Handles image sorting, visibility and uploading
  *
  * @author Andri Huga
- * @version 1.3
+ * @version 1.4
  */
 
 export function initImagesUpload() {
+
     $(".images ul").sortable({
         tolerance: "pointer",
         opacity: 0.90
     });
 
-    $(".images i.delete").off('click.delete').on('click.delete', function () {
+    $(".images").on('click.delete', ' i.delete', function () {
         $(this).closest(".images").find("input[name='delete_image']").val('1');
         $(this).closest("li").fadeOut(200, function () {
             $(this).remove();
@@ -20,7 +21,7 @@ export function initImagesUpload() {
         return false;
     });
 
-    $(".images i.enable.visibility").off('click.image').on('click.image', function () {
+    $(".images").on('click.image', 'i.enable.visibility', function () {
         let li = $(this).closest('li');
         let input = li.find("input[name*='_visible']");
         let state = input.val() == '1' ? '0' : '1';
@@ -50,7 +51,7 @@ export function initImagesUpload() {
             );
         });
 
-        $('.images .dropInput').off("change.image").on("change.image", handleFileSelect);
+        $('.images .dropInput').on("change.image", handleFileSelect);
     }
 
 
@@ -75,8 +76,8 @@ export function initImagesUpload() {
                         "<i class='enable material-icons visibility' title='Показать'></i>" +
                         "<i class='delete material-icons' title='Удалить'>cancel</i></div>" +
                         "<a href='" + e.target.result +
-                        "' class='zoom' data-fancybox='images_content'>" +
-                        "<span class='img-thumbnail image_preview' style='background-image:url(" + e.target.result + ");'></span>" +
+                        "' class='zoom img-thumbnail' data-fancybox='images_content'>" +
+                        "<div class='image_preview' style='background-image:url(" + e.target.result + ");'></div>" +
                         "<input name=" + name + "_urls[] type='hidden' value='" +
                         theFile.name + "'/><input name=" + name +
                         "_urls_visible[] type='hidden' value='1'/></a></li>").appendTo('#' +
@@ -86,9 +87,6 @@ export function initImagesUpload() {
 
             reader.readAsDataURL(file);
         }
-
-        // Hide current input but keep it for submitting files
-        dropInput.hide();
 
         // Add new empty input for next selection
         const newInput = dropInput.clone().val('');

@@ -1,5 +1,5 @@
 <div id="images" class="images">
-    <ul class="sortable">
+    <ul class="image_list">
         {foreach $images as $image}
             <li class="{if !$image->visible}visible_off{/if}">
                 {if $can_edit}
@@ -8,8 +8,8 @@
                         <i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
                     </div>
                 {/if}
-                <a href="{$image->filename|resize:1080:1080:w}" class="zoom" data-fancybox="images">
-                    <span class="img-thumbnail image_preview" style="background-image:url('{$image->filename|resize:140:140:c}');"></span>
+                <a href="{$image->filename|resize:1080:1080:w}" class="zoom img-thumbnail" data-fancybox="images">
+                    <div class="image_preview" style="background-image:url('{$image->filename|resize:140:140:c}');"></div>
                 </a>
                 <input type="hidden" name="images[]" value="{$image->id}" />
                 <input type="hidden" name="images_visible[{$image->id}]" value="{$image->visible}" />
