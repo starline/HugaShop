@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  * 
  * @author Andi Huga
- * @version 1.3
+ * @version 1.4
  *
  */
 
@@ -21,9 +21,9 @@ class CmlExchange extends BaseExtension
     /**
      * Основной webhook обмена с 1С
      */
-    public function webhook(array $params = []): Response
+    public static function webhook(array $params = []): Response
     {
-        if (Request::get('mode') === 'checkauth' && !$this->checkAuth()) {
+        if (Request::get('mode') === 'checkauth' && !self::checkAuth()) {
             return new Response("failure\n");
         }
         $service = new CmlExchangeService();
@@ -34,7 +34,7 @@ class CmlExchange extends BaseExtension
     /**
      * Check authentication parameters
      */
-    public function checkAuth(): bool
+    public static function checkAuth(): bool
     {
         $login = self::getSettings()->login ?? '';
         $password = self::getSettings()->password ?? '';

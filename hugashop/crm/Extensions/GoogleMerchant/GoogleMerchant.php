@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  */
 
@@ -25,7 +25,7 @@ final class GoogleMerchant extends BaseExtension
      * Webhook module
      * @param array $params
      */
-    public function webhook(array $params = [])
+    public static function webhook(array $params = [])
     {
         if (empty($params['token']) || empty($params['id'])) {
             return false;

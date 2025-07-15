@@ -30,6 +30,9 @@ trait TranslationTrait
     }
 
 
+    /**
+     * Separate and save traslated params
+     */
     public static function separateValues(array|object $entity, string $language_code)
     {
         $translation_data = [];

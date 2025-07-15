@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.6
+ * @version 1.7
  *
  */
 
@@ -24,7 +24,7 @@ final class FacebookCommerce extends BaseExtension
      * Webhook module
      * @param array $params
      */
-    public function webhook(array $params = [])
+    public static function webhook(array $params = [])
     {
 
         if (empty($params['token']) || empty($params['id'])) {

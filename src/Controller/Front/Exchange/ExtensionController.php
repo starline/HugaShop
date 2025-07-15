@@ -3,7 +3,7 @@
 /**
  *
  * @author Andi Huga
- * @version 2.0
+ * @version 2.2
  *
  */
 
@@ -21,7 +21,7 @@ class ExtensionController extends BaseFrontController
     public function index(string $name, string $token, ?int $id = null): Response
     {
 
-        if (empty($name) || empty($token) || empty($extension = Extension::makeExtension($name))) {
+        if (empty($name) || empty($token) || empty($extension = Extension::getNameSpace($name))) {
             throw $this->createNotFoundException('Something is going wrong.'); # 404
         }
 
@@ -33,10 +33,10 @@ class ExtensionController extends BaseFrontController
         $params['token'] = $token;
 
         // Extension return HttpFoundation\Response
-        if (!empty($response = $extension->webhook($params))) {
-            return $response;
+        if (empty($response = $extension::webhook($params))) {
+            throw $this->createNotFoundException('Something is going wrong.'); # 404
         }
 
-        throw $this->createNotFoundException('Something is going wrong.'); # 404
+        return $response;
     }
 }

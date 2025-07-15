@@ -24,7 +24,6 @@ class Extension
         'admin_order_side'
     ];
 
-    private static $extension_pool = [];
     private static $place_cache = [];
 
     /**
@@ -49,28 +48,6 @@ class Extension
     public static function getExtensionsList()
     {
         return Helper::getModules(Config::get('extension_dir'));
-    }
-
-
-    /**
-     * Make Extension
-     * @param string $name
-     */
-    public static function makeExtension(string $name)
-    {
-
-        // Get from Pool
-        if (isset(self::$extension_pool[$name])) {
-            return self::$extension_pool[$name];
-        }
-
-        // Make new one
-        $ClassName = "HugaShop\\Extensions\\{$name}\\{$name}";
-        if (class_exists($ClassName)) {
-            return self::$extension_pool[$name] = new $ClassName();;
-        }
-
-        return null;
     }
 
 

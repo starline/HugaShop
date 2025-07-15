@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
@@ -17,7 +17,7 @@ class ProductFeatureVariant extends BaseModel
 
     protected static $table_fields = [
         'id' =>                 ['type' => 'int',       'lenght' => 11, 'extra' => 'AUTO_INCREMENT'],
-        'name' =>               ['type' => 'varchar',   'req' => true],
+        'name' =>               ['type' => 'varchar',   'req' => true, 'trans' => true],
         'feature_id' =>         ['type' => 'int'],
         'position' =>           ['type' => 'int',       'def' => 0]
 

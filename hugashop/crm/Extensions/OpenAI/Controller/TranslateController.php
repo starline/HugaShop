@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.6
+ * @version 1.7
  */
 
 namespace HugaShop\Extensions\OpenAI\Controller;
@@ -19,6 +19,7 @@ use HugaShop\Models\User\UserPermission;
 use HugaShop\Models\Product\ProductBrand;
 use HugaShop\Models\Localization\Language;
 use HugaShop\Extensions\BaseExtensionTrait;
+use HugaShop\Models\Product\ProductFeature;
 use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Extensions\SeoPage\Models\SeoPage;
@@ -82,6 +83,10 @@ final class TranslateController extends BaseAdminController
             case 'brand':
                 UserPermission::checkAccess('product_brand');
                 $model = ProductBrand::query()->find($id);
+                break;
+            case 'feature':
+                UserPermission::checkAccess('product_feature');
+                $model = ProductFeature::query()->find($id);
                 break;
             case 'seo_page':
                 UserPermission::checkAccess('extension');

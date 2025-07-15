@@ -12,6 +12,7 @@ namespace App\Controller\Admin\Product;
 
 use HugaShop\Services\Design;
 use HugaShop\Services\Request;
+use App\Services\LanguageService;
 use App\Controller\BaseAdminController;
 use HugaShop\Models\Product\ProductOption;
 use HugaShop\Models\Product\ProductFeature;
@@ -30,6 +31,9 @@ class FeatureController extends BaseAdminController
     {
 
         $this->checkAdminAccess('product_feature');
+
+        // Init content language
+        LanguageService::languageCatch();
 
         $feature_categories = [];
         $feature_variants = [];
@@ -53,7 +57,7 @@ class FeatureController extends BaseAdminController
             ProductFeatureVariant::updateFeatureVariants($feature->id, $feature_variants);
 
             // Делаем редирект на страницу с ID
-            return $this->redirectToRoute('FeatureAdmin', ['id' => $feature->id]);
+            return $this->redirectToRouteLang('FeatureAdmin', ['id' => $feature->id]);
         }
 
 
