@@ -11,6 +11,7 @@
 namespace HugaShop\Models\Product;
 
 use HugaShop\Models\BaseModel;
+use HugaShop\Models\Localization\Language;
 
 class ProductFeatureVariant extends BaseModel
 {
@@ -40,7 +41,25 @@ class ProductFeatureVariant extends BaseModel
             return false;
         }
 
-        // Удаляем старые варианты
+        $language_code = Language::checkOrGetCode();
+        $main_code = Language::getMain()->code;
+
+        // If editing translation only update translation records
+        if ($language_code && $language_code !== $main_code) {
+            $ids = self::where('feature_id', $feature_id)
+                ->orderBy('position')
+                ->pluck('id')
+                ->toArray();
+
+            foreach ($ids as $index => $id) {
+                $name = $variants[$index] ?? '';
+                self::updateTranslation($id, $language_code, ['name' => $name]);
+            }
+
+            return true;
+        }
+
+        // Удаляем старые варианты для основной версии
         self::where('feature_id', $feature_id)->delete();
 
         // Исключавем пустые значения варината
@@ -69,9 +88,15 @@ class ProductFeatureVariant extends BaseModel
      */
     public static function getFeatureVariants(int $feature_id)
     {
-        return self::where('feature_id', $feature_id)
-            ->orderBy('position')
-            ->pluck('name')
-            ->toArray();
+        $query = self::where('feature_id', $feature_id)
+            ->orderBy('position');
+
+        $variants = $query->get();
+
+        if ($code = Language::checkOrGetCode() and self::isTranslatable()) {
+            self::fillTranslations($variants, $code, merge_fields: false);
+        }
+
+        return $variants->pluck('name')->toArray();
     }
 }

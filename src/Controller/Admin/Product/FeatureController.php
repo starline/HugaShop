@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
@@ -64,14 +64,14 @@ class FeatureController extends BaseAdminController
         #### View
         #########
         if (!empty($id)) {
-            $feature = ProductFeature::getFeature($id);
+            $feature = ProductFeature::getOneEditTranslate($id);
 
             if (empty($feature->id)) {
                 return $this->redirectToRoute('FeatureListAdmin');
             }
 
             $feature_categories = ProductCategoryFeature::getFeatureCategories($feature->id);
-            $feature_variants = ProductFeatureVariant::getFeatureVariants($feature->id);
+            $feature_variants   = ProductFeatureVariant::getFeatureVariants($feature->id);
 
             // Используемые значения характеристики
             $filter['feature_id'] = $feature->id;
