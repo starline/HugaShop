@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
@@ -156,6 +156,32 @@ class ProductOption extends BaseModel
         }
 
         $query->orderByRaw('value = 0, -value DESC, value');
+
+        return $query->get();
+    }
+
+
+    /**
+     * Get All feature variants
+     */
+    public static function getAllVariants(array $filter)
+    {
+        $query = self::query()->select('value');
+
+        if (isset($filter['feature_id'])) {
+            $query->where('feature_id', $filter['feature_id']);
+        }
+
+        if (!empty($filter['keyword'])) {
+            $query->where('value', 'like', '%' . $filter['keyword'] . '%');
+        }
+
+        if (isset($filter['limit']) && $filter['limit'] !== 'all') {
+            $query->limit((int) $filter['limit']);
+        }
+
+        $query->groupBy('value')
+            ->orderByRaw('value = 0, -value DESC, value');
 
         return $query->get();
     }

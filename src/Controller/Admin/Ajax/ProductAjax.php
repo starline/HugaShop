@@ -54,6 +54,9 @@ class ProductAjax extends BaseAdminController
     }
 
 
+    /**
+     * get feature variants
+     */
     #[Route('/admin/ajax/product/get_option')]
     public function get_option()
     {
@@ -64,7 +67,7 @@ class ProductAjax extends BaseAdminController
         $keyword = Request::get('query', 'string');
         $feature_id = Request::getInt('feature_id');
 
-        $options = ProductOption::getOptions(array("feature_id" => $feature_id, "keyword" => $keyword, "limit" => $limit));
+        $options = ProductOption::getAllVariants(["feature_id" => $feature_id, "keyword" => $keyword, "limit" => $limit]);
 
         $options_value = [];
         foreach ($options as $op) {
