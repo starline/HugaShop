@@ -23,6 +23,7 @@ use HugaShop\Models\Product\ProductFeature;
 use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Extensions\SeoPage\Models\SeoPage;
+use HugaShop\Models\Product\ProductFeatureVariant;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use HugaShop\Extensions\InfoBlock\Models\InfoBlock;
 
@@ -120,6 +121,35 @@ final class TranslateController extends BaseAdminController
                 $translated[$field] = trim($result->choices[0]->message->content);
             }
         }
+
+        
+        // Translate feature variants
+        if ($entity === 'feature') {
+            $variants = ProductFeatureVariant::getFeatureVariants($model->id);
+            $translated_variants = [];
+
+            foreach ($variants as $variant) {
+                if (!empty($variant)) {
+                    $result = $client->chat()->create([
+                        'model' => 'gpt-4o',
+                        'messages' => [
+                            ['role' => 'system', 'content' => 'Ты переводчик. Переводишь на ' . $language->name . '. Всегда возвращай только переведённый текст, без комментариев.'],
+                            ['role' => 'user', 'content' => $variant],
+                        ]
+                    ]);
+                    $translated_variants[] = trim($result->choices[0]->message->content);
+                } else {
+                    $translated_variants[] = '';
+                }
+            }
+
+            if ($save && !empty($translated_variants)) {
+                ProductFeatureVariant::updateFeatureVariants($model->id, $translated_variants);
+            }
+
+            $translated['feature_variants'] = $translated_variants;
+        }
+
 
         if ($save && !empty($translated)) {
             $model::updateTranslation($model->id, $language->code, $translated);
