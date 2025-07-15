@@ -10,9 +10,9 @@
 
     <div class="col row">
         <div class="col-12 col-sm-5">
-            <a href="{'MailingAdmin'|urll:[id=>$mailing->id]}">{$mailing->contact}</a>
+            <a href="{'MailingAdmin'|urll:[id => $mailing->id]}">{$mailing->contact}</a>
             {if !$mailing->user->id|empty}
-                <a href="{'UserAdmin'|urll:[id=>$mailing->user->id]}">{$mailing->user->name}</a>
+                <a href="{'UserAdmin'|urll:[id => $mailing->user->id]}">{$mailing->user->name}</a>
             {/if}
         </div>
 
@@ -23,9 +23,8 @@
         </div>
 
         <div class="col-8 col-sm-4">
-            <div class="badge text-bg-round">
-                {$mailing->user->notifier_type} via {$mailing->user->notifier_name}
-            </div>
+            <span class="badge text-bg-round">{$mailing->notifier->type}</span>
+            <span class="badge text-bg-round">{$mailing->notifier->name}</span>
         </div>
 
         <div class="col-12 col-sm-2">

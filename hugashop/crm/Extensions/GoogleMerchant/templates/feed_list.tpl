@@ -33,8 +33,8 @@
                                 <a href="{'ExtGoogleMerchantFeed'|urll:[id => $pricefeed->id]}">{$pricefeed->name}</a>
 
                                 <div class="badge text-bg-round copy_field"
-                                    value="{$config->root_url}/ext/{$extension->module}/{$pricefeed->id}/{$pricefeed->token}">
-                                    {$config->root_url}/ext/{$extension->module}/{$pricefeed->id}/{$pricefeed->token}
+                                    value="{'ExtensionIdTokenExchange'|urll:[name => $extension->module, id => $pricefeed->id, token => $pricefeed->token]}">
+                                    {'ExtensionIdTokenExchange'|urll:[name => $extension->module, id => $pricefeed->id, token => $pricefeed->token]}
                                     <div class="copy_hover" data-bs-toggle="tooltip" data-bs-original-title="Скопировать">
                                         <i class="material-icons">content_copy</i>
                                     </div>
@@ -54,7 +54,8 @@
 
                             <div class="icons">
                                 <a class="material-icons launch" data-bs-toggle="tooltip" title="Открыть прайс"
-                                    href="/ext/{$extension->module}/{$pricefeed->id}/{$pricefeed->token}" target="_blank"></a>
+                                    href="{'ExtensionIdTokenExchange'|urll:[name => $extension->module, id => $pricefeed->id, token => $pricefeed->token]}"
+                                    target="_blank"></a>
                                 <i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
                             </div>
                         </div>

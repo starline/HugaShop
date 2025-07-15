@@ -8,7 +8,7 @@
 
 	<div class="header_top">
 		<h1>Страницы</h1>
-		<a class="add" href="/admin/page">Добавить страницу</a>
+		<a class="add" href="{'PageNewAdmin'|urll}">Добавить страницу</a>
 	</div>
 
 
@@ -30,7 +30,7 @@
 
 							<div class="col row">
 								<div class="col-12 col-sm-10">
-									<a href="/admin/page/{$page->id}">{$page->name}</a>
+									<a href="{'PageAdmin'|urll:[id => $page->id]}">{$page->name}</a>
 								</div>
 								<div class="col-12 col-sm-2 text-end">
 									{if $page->menu}
@@ -41,7 +41,7 @@
 
 							<div class="icons">
 								<a class="material-icons launch" data-bs-toggle="tooltip" title="Предпросмотр в новом окне"
-									href="{$config->root_url}/info/{$page->url}" target="_blank"></a>
+									href="{'Page'|urll:[url => $page->url]}" target="_blank"></a>
 								<i class="enable material-icons visibility" data-bs-toggle="tooltip" title="Активна"></i>
 								<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
 							</div>

@@ -52,8 +52,8 @@ class MailingListController extends BaseAdminController
             Design::assign('type', null);
         }
 
-        $mailing_list = UserMailing::getList($filter, order: ['id', 'DESC'], join: ['user', 'notifier']);
-        $mailing_count = UserMailing::getCount($filter);
+        $mailing_list   = UserMailing::getList($filter, order: ['id', 'DESC'], join: ['user', 'notifier']);
+        $mailing_count  = UserMailing::getCount($filter);
 
         Design::assign('pagination', PaginationService::getPagination($mailing_count, $filter));
 

@@ -4,7 +4,8 @@
             <li class="{if !$image->visible}visible_off{/if}">
                 {if $can_edit}
                     <div class="image_icons">
-                        <i class="link material-icons" data-bs-toggle="tooltip" title="Копировать ссылку">link</i>
+                        <i class="link material-icons copy_field" value="{$image->filename|resize:1080:1080:w}"
+                            data-bs-toggle="tooltip" title="Копировать ссылку">link</i>
                         <i class="enable material-icons visibility" data-bs-toggle="tooltip" title="Показать"></i>
                         <i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
                     </div>
