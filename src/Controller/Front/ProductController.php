@@ -27,7 +27,8 @@ class ProductController extends BaseFrontController
 
     #[Route('/p/{id}', requirements: ['id' => '\d+'], name: 'ProductShortId')]
     #[Route('/product/{id}', requirements: ['id' => '\d+'], name: 'ProductId')]
-    public function product_id(int $id): Response
+    #[Route('/{url}/pd{id}', requirements: ['id' => '\d+'], name: 'ProductUrl', priority: 1)]
+    public function product_id(int $id, ?string $url = null): Response
     {
         if (empty($product = Product::getProduct($id))) {
             throw $this->createNotFoundException('Product does not found'); # 404
@@ -37,7 +38,7 @@ class ProductController extends BaseFrontController
     }
 
 
-    #[Route('/{url}/pd{id}', requirements: ['id' => '\d+'], name: 'ProductUrl', priority: 1)]
+
     #[Route(Config::PRODUCT_PREFIX . '{url}', name: 'Product')]
     public function product_url(string $url, ?int $id = null): Response
     {
