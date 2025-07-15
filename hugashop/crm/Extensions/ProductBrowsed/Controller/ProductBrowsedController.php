@@ -10,7 +10,6 @@
 
 namespace HugaShop\Extensions\ProductBrowsed\Controller;
 
-use HugaShop\Services\Config;
 use HugaShop\Services\Design;
 use HugaShop\Services\Request;
 use HugaShop\Models\Product\Product;
@@ -23,9 +22,6 @@ final class ProductBrowsedController extends BaseFrontController
 
     use BaseExtensionTrait;
 
-    /**
-     * Список странниц
-     */
     #[Route('/ProductBrowsed/ajax', name: 'ExtProductBrowsedAjax', priority: 20)]
     public function browsed()
     {

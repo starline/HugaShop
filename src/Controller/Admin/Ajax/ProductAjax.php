@@ -4,13 +4,14 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  */
 
 namespace App\Controller\Admin\Ajax;
 
 use HugaShop\Services\Request;
+use App\Services\LanguageService;
 use App\Controller\BaseAdminController;
 use HugaShop\Models\Product\ProductOption;
 use HugaShop\Models\Product\ProductFeature;
@@ -25,8 +26,8 @@ class ProductAjax extends BaseAdminController
 
         $this->checkAdminAccess(['product_content', 'product_price']);
 
-        $category_id = Request::getInt('category_id');
-        $product_id = Request::getInt('product_id');
+        $category_id    = Request::getInt('category_id');
+        $product_id     = Request::getInt('product_id');
 
         if (!empty($category_id)) {
             $features = ProductFeature::getFeatures(['category_id' => $category_id]);
@@ -55,7 +56,7 @@ class ProductAjax extends BaseAdminController
 
 
     /**
-     * get feature variants
+     * Get feature variants
      */
     #[Route('/admin/ajax/product/get_option')]
     public function get_option()
@@ -63,16 +64,15 @@ class ProductAjax extends BaseAdminController
 
         $this->checkAdminAccess(['product_content', 'product_price']);
 
-        $limit = 100;
-        $keyword = Request::get('query', 'string');
+        // Init content language
+        LanguageService::languageCatch();
+
+        $limit      = 100;
+        $keyword    = Request::get('query', 'string');
         $feature_id = Request::getInt('feature_id');
 
         $options = ProductOption::getAllVariants(["feature_id" => $feature_id, "keyword" => $keyword, "limit" => $limit]);
-
-        $options_value = [];
-        foreach ($options as $op) {
-            $options_value[] = $op->value;
-        }
+        $options_value = $options?->pluck('value');
 
         $res = new \stdClass();
         $res->query = $keyword;
@@ -82,15 +82,18 @@ class ProductAjax extends BaseAdminController
     }
 
 
+    /**
+     * Get feature name
+     */
     #[Route('/admin/ajax/product/get_feature_name')]
     public function get_feature_name()
     {
 
         $this->checkAdminAccess(['product_content', 'product_price']);
 
-        $limit = 100;
-        $keyword = Request::get('query', 'string');
-        $features = ProductFeature::getFeatures(['keyword' => $keyword, 'limit' => $limit]);
+        $limit      = 100;
+        $keyword    = Request::get('query', 'string');
+        $features   = ProductFeature::getFeatures(['keyword' => $keyword, 'limit' => $limit]);
 
         $features_value = [];
         foreach ($features as $feature) {

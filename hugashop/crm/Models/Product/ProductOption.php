@@ -12,6 +12,7 @@ namespace HugaShop\Models\Product;
 
 use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
+use HugaShop\Models\Localization\Language;
 
 class ProductOption extends BaseModel
 {
@@ -183,6 +184,13 @@ class ProductOption extends BaseModel
         $query->groupBy('value')
             ->orderByRaw('value = 0, -value DESC, value');
 
-        return $query->get();
+        $feature_variants =  $query->get();
+
+        // Fill translations
+        if ($code = Language::checkOrGetCode() and self::isTranslatable()) {
+            self::fillTranslations($feature_variants, $code, merge_fields: true);
+        }
+
+        return $feature_variants;
     }
 }

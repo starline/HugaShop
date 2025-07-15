@@ -74,7 +74,7 @@ class FeatureController extends BaseAdminController
             $feature_variants   = ProductFeatureVariant::getFeatureVariants($feature->id);
 
             // Используемые значения характеристики
-            $options = ProductOption::getAllVariants($feature->id);
+            $options = ProductOption::getAllVariants(['feature_id' => $feature->id]);
         }
 
         $categories = ProductCategory::getCategoriesTree();

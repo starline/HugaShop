@@ -12,7 +12,6 @@
 
 namespace App\Controller\Admin\Product;
 
-use stdClass;
 use HugaShop\Services\Design;
 use App\Services\ImageService;
 use HugaShop\Services\Request;
@@ -130,34 +129,27 @@ class ProductController extends BaseAdminController
         #### View
         #########
         if (!empty($id)) {
-
             $product = Product::getOneEditTranslate($id, join: [
                 'images',
                 'options'
             ]);
-
+            dump($product);
             if (empty($product->id)) {
                 return $this->redirectToRoute('ProductListAdmin');
             }
 
-            // SEO keywords
-            $seo_keywords = SeoKeywords::getKeywords($product->id, 'product');
+            // Options
+            Design::assign('options', ProductOption::getListTranslate(['product_id' => $product->id])->keyBy('feature_id'));
 
-            // Все свойства товара
-            if (!empty($product->category_id)) {
-                $features = ProductFeature::getFeatures(['category_id' => $product->category_id]);
-                Design::assign('features', $features);
-            }
+            // Features
+            Design::assign('features', ProductFeature::getFeatures(['category_id' => $product->category_id]));
 
-            Design::assign('seo_keywords', $seo_keywords);
-            Design::assign('product', $product);
+            Design::assign('seo_keywords', SeoKeywords::getKeywords($product->id, 'product'));
         }
 
-        $brands         = ProductBrand::getBrands(); # All Products Brands
-        $categories     = ProductCategory::getCategoriesTree(); #Все категории
-
-        Design::assign('brands', $brands);
-        Design::assign('categories', $categories);
+        Design::assign('product', $product);
+        Design::assign('brands', ProductBrand::getBrands()); # All Products Brands
+        Design::assign('categories', ProductCategory::getCategoriesTree()); # Все категории
 
         return $this->fetchResponse('product/product.tpl');
     }

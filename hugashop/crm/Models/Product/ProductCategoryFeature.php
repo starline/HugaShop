@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.0
+ * @version 2.1
  *
  */
 
@@ -22,10 +22,10 @@ class ProductCategoryFeature extends BaseModel
 
 
     /**
-     * Выбиарем категории в которых есть характеристика
+     * Get products gategories where are features
      * @param $id
      */
-    public static function getFeatureCategories(int $feature_id)
+    public static function getFeatureCategories(int $feature_id): array
     {
         return self::where('feature_id', $feature_id)
             ->pluck('category_id')

@@ -89,7 +89,7 @@ class ProductFeature extends BaseModel
 
 
     /**
-     * Delete Feature 
+     * Delete Feature
      */
     public static function deleteFeature(int $id)
     {

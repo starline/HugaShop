@@ -135,25 +135,12 @@
 
 				<ul class="property_block features">
 					{foreach $features as $feature}
-						{$feature_id = $feature->id}
 						<li feature_id="{$feature_id}">
-							{if $feature->variants}
-								<label for="options[{$feature_id}]" class="col-form-label"><a
-										href="/admin/product/feature/{$feature->id}">{$feature->name}</a></label>
-								<select class="form-select" id="options[{$feature_id}]" name="options[{$feature_id}]">
-									<option value="">-</option>
-									{foreach $feature->variants as $variant}
-										<option value="{$variant}"
-											{if $variant == $product->features_value.$feature_id->value}selected{/if}>
-											{$variant}
-										</option>
-									{/foreach}
-								</select>
-							{else}
-								<label for="options[{$feature_id}]" class="col-form-label">{$feature->name}</label>
-								<input class="form-control" id="options[{$feature_id}]" type="text" name="options[{$feature_id}]"
-									value="{$product->features_value.$feature_id->value}" />
-							{/if}
+							<label for="options[{$feature->id}]" class="col-form-label">
+								<a href="{'FeatureAdmin'|link:[id => $feature->id]}">{$feature->name}</a>
+							</label>
+							<input class="form-control" id="options[{$feature->id}]" type="text" name="options[{$feature->id}]"
+								value="{$options.{$feature->id}->value}" />
 						</li>
 					{/foreach}
 				</ul>
@@ -202,8 +189,9 @@
 
 	<script type="module">
 		import '{"js/jquery/chosen/chosen.jquery.js"|asset}';
-
 		import { generate_url } from '{"js/common.js"|asset}';
+
+		let lang_code = "{$current_language->code}";
 
 		{literal}
 			$(function() {
@@ -266,10 +254,15 @@
 					$(this).autocomplete({
 						serviceUrl: '/admin/ajax/product/get_option',
 						minChars: 0,
-						params: {feature_id: feature_id, csrf: csrf},
+						params: {
+							feature_id: feature_id,
+							lang: lang_code,
+							csrf: csrf
+						},
 						noCache: false
 					});
 				});
+
 
 				// Автодополнение названия характеристик
 				$('.features').on('focus', 'input[name*=new_features_names]', function(index) {
@@ -290,20 +283,6 @@
 						"input[name*=new_features_names]").focus();
 					return false;
 				});
-
-				// Автозаполнение мета-тегов
-				let url_touched = true;
-
-				if ($('input[name="url"]').val() == '')
-					url_touched = false;
-
-				$('input[name="url"]').change(function() { url_touched = true; });
-				$('input[name="name"]').keyup(function() { set_meta(); });
-
-				function set_meta() {
-					if (!url_touched)
-						$('input[name="url"]').val(generate_url());
-				}
 			});
 		{/literal}
 	</script>
