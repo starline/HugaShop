@@ -28,7 +28,7 @@
 							<div class="purchase_row">
 								<div class="image">
 									<a href="/tovar-{$purchase->product->url}">
-										<img loading="lazy" src="{$purchase->image->filename|resize:200:200}"
+										<img loading="lazy" src="{$purchase->product->image->filename|resize:60:60:c}"
 											alt="{$purchase->product->name}">
 									</a>
 								</div>

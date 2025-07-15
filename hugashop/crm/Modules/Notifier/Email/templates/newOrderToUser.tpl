@@ -33,8 +33,8 @@
 			<tr>
 				<td>
 					<a href="{$config->root_url}{'Product'|urll:[url => $purchase->product->url]}">
-						<img style="display: block; width: 150px;" border="0"
-							src="{$purchase->image->filename|resize:140:140::c}">
+						<img style="display: block; width: 100px;" border="0"
+							src="{$purchase->product->image->filename|resize:120:120:c}">
 					</a>
 				</td>
 				<td>

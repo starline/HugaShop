@@ -1035,13 +1035,9 @@ select.multiple_categories option {
 /* images */
 .images ul {
 	display: grid;
-	grid-template-columns: repeat(4, 1fr);
+	grid-template-columns: repeat(5, 1fr);
 	grid-gap: 5px;
 	margin-bottom: 5px;
-}
-
-.col-12 .images ul {
-	grid-template-columns: repeat(4, 1fr);
 }
 
 .images ul li {
@@ -1061,7 +1057,7 @@ select.multiple_categories option {
 
 .images ul li .image_preview {
 	width: auto;
-	height: 140px;
+	height: 100px;
 	background-position: center;
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -1069,8 +1065,8 @@ select.multiple_categories option {
 }
 
 .images ul li .image_icons {
-	top: 5px;
-	right: 5px;
+	top: 8px;
+	right: 8px;
 	position: absolute;
 	display: flex;
 	visibility: hidden;

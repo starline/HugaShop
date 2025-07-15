@@ -21,7 +21,7 @@
                             {foreach $comment->images as $image}
                                 <div class="col-auto">
                                     <a href="{$image->filename|resize:1080:1080:w}" class="zoom" data-fancybox="comment{$comment->id}">
-                                        <img src="{$image->filename|resize:80:80:c}" class="img-thumbnail" width="140" height="140" />
+                                        <img src="{$image->filename|resize:60:60:c}" class="img-thumbnail" width="60" height="60" />
                                     </a>
                                 </div>
                             {/foreach}
@@ -92,8 +92,10 @@
                 <div class="invalid-feedback">{'Укажите сообщение'|trans}</div>
             </div>
 
-            <div class="col-lg-3">
-                <input class="form-control" type="file" name="comment_images[]" accept="image/*" multiple>
+            <div class="col-12">
+                <div class="col-lg-3">
+                    <input class="form-control" type="file" name="comment_images[]" accept="image/*" multiple>
+                </div>
                 <div id="comment_images_preview" class="comment_images row g-2 mt-2"></div>
             </div>
 

@@ -168,7 +168,7 @@ $(function () {
         qty = parseInt(qty);
         qty = isNaN(qty) ? 1 : qty + 1;
 
-        let max_stock = $('.variants input[name=product]:checked').attr('product_max_stock') || null;
+        let max_stock = $('.variants input[name=product]:checked').attr('product_max_stock') || $('.variants input[name=product]').attr('product_max_stock') || null;
         qty = (max_stock != null && qty > max_stock) ? max_stock : qty;
 
         $('.product_amount input').val(qty);
