@@ -16,8 +16,6 @@ use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Models\Cart\Cart;
 use HugaShop\Models\User\User;
-use HugaShop\Services\Request;
-use HugaShop\Models\Product\Product;
 use HugaShop\Models\Finance\FinanceCurrency;
 use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Product\ProductCategory;

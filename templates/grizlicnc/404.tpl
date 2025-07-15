@@ -1,4 +1,4 @@
-{extends 'wrapper/main.tpl'}
+
 
 {block name=content}
     <div class="my-5 text-center">
@@ -7,4 +7,3 @@
         <a href="{'Main'|linkLang}" class="btn btn-outline-primary mt-3">{'На главную'|trans}</a>
     </div>
 {/block}
-
