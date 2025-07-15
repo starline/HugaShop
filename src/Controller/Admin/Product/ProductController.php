@@ -136,6 +136,7 @@ class ProductController extends BaseAdminController
 
             $options = ProductOption::getListTranslate(['product_id' => $product->id])->keyBy('feature_id');
             $features_ids = $options->pluck('feature_id')->all();
+            $options_ids = $options->pluck('option_id')->all();
 
             Design::assign('options',       $options);
             Design::assign('features',      ProductFeature::getListTranslate(['id' => $features_ids]));

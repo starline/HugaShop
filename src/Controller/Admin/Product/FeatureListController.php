@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
@@ -67,21 +67,16 @@ class FeatureListController extends BaseAdminController
             }
         }
 
-        $categories = ProductCategory::getCategoriesTree();
-        $category = null;
-
         $filter = [];
-        $category_id = Request::getInt('category_id');
-        if ($category_id) {
+        if ($category_id = Request::getInt('category_id')) {
             $category = ProductCategory::getCategoryById($category_id);
+            Design::assign('category', $category);
+
             $filter['category_id'] = $category->id;
         }
 
-        $features = ProductFeature::getFeatures($filter);
-
-        Design::assign('categories', $categories);
-        Design::assign('category', $category);
-        Design::assign('features', $features);
+        Design::assign('categories',    ProductCategory::getCategoriesTree());
+        Design::assign('features',      ProductFeature::getFeatures($filter));
 
         return $this->fetchResponse('product/feature_list.tpl');
     }

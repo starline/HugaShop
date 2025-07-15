@@ -180,7 +180,7 @@ trait TranslationTrait
     /**
      * Get Entities with merge translated fields
      */
-    public static function getListTranslate(array $filter = [], array|string $order = [], array|string $join = [], ?string $select = null, ?int $cache = null)
+    public static function getListTranslate(array $filter = [], array|string $order = [], array|string $join = [], ?string $select = null, ?int $cache = 0)
     {
 
         // TODO caching

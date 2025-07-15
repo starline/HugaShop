@@ -20,8 +20,7 @@ class ProductOption extends BaseModel
     protected static $table_fields = [
         'product_id' =>        ['type' => 'int',           'req' => true],
         'feature_id' =>        ['type' => 'int',           'req' => true],
-        'option_id' =>         ['type' => 'int',           'req' => true],
-        'value' =>             ['type' => 'varchar']
+        'option_id' =>         ['type' => 'int',           'req' => true]
     ];
 
 
@@ -33,6 +32,11 @@ class ProductOption extends BaseModel
     public function feature()
     {
         return $this->belongsTo(ProductFeature::class, 'feature_id');
+    }
+
+    public function option()
+    {
+        return $this->belongsTo(ProductFeatureOption::class, 'option_id');
     }
 
 
@@ -188,7 +192,7 @@ class ProductOption extends BaseModel
         $query->groupBy('value')
             ->orderByRaw('value = 0, -value DESC, value');
 
-        $feature_variants =  $query->get();
+        $feature_variants = $query->get();
 
         // Fill translations
         if ($code = Language::checkOrGetCode() and self::isTranslatable()) {

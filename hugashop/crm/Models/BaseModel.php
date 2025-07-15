@@ -213,8 +213,8 @@ abstract class BaseModel extends Model
         }
 
         // Pagination
-        $page = $filter['page'] ?? 1;
-        $limit = $filter['limit'] ?? null;
+        $page   = $filter['page'] ?? 1;
+        $limit  = $filter['limit'] ?? null;
 
         unset($filter['page'], $filter['limit']);
 
