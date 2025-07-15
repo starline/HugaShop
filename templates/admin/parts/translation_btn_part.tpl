@@ -56,16 +56,28 @@
                         },
                         success: function(data) {
                             for (const field in data) {
-                                const el = $('[name="' + field + '"]');
+                                const value = data[field];
+                                let el = $('[name="' + field + '"]');
+
+                                // Если пришел массив значений (например, feature_variants)
+                                if (Array.isArray(value)) {
+                                    el = $('[name="' + field + '[]"]');
+                                    el.each(function(index) {
+                                        if (value[index] !== undefined) {
+                                            $(this).val(value[index]);
+                                        }
+                                    });
+                                    continue;
+                                }
 
                                 // Если это редактор TinyMCE
                                 if (typeof tinymce !== 'undefined' && tinymce.get(field)) {
-                                    tinymce.get(field).setContent(data[field]);
+                                    tinymce.get(field).setContent(value);
                                 }
 
                                 // Если обычный элемент формы
                                 else if (el.length) {
-                                    el.val(data[field]);
+                                    el.val(value);
                                 }
                             }
                         },
