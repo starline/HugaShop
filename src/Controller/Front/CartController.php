@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.4
+ * @version 3.5
  *
  * Корзина покупок
  * Этот класс использует шаблон cart.tpl
@@ -19,6 +19,7 @@ use HugaShop\Services\Request;
 use App\Event\CartAddEvent;
 use HugaShop\Models\Cart\CartPurchase;
 use App\Controller\BaseFrontController;
+use HugaShop\Models\Product\Product;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -42,8 +43,14 @@ class CartController extends BaseFrontController
     #[Route('/cart/add', name: 'CartAdd', priority: 2)]
     public function cartAdd()
     {
-        $product_id =   Request::input('product_id', 'int') ?: null;
-        $amount =       Request::input('amount', 'int') ?: 1;
+        $product_id     = Request::input('product_id', 'int') ?: null;
+        $sku            = Request::input('sku', 'string') ?: null;
+        $amount         = Request::input('amount', 'int') ?: 1;
+
+        // SKU
+        if ($sku and !$product_id) {
+            $product_id = Product::getOne(['sku' => $sku])?->id;
+        }
 
         // Добавим товар в корзину
         if (CartPurchase::addCartPurchase($product_id, $amount)) {
