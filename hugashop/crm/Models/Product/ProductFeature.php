@@ -10,7 +10,9 @@
 
 namespace HugaShop\Models\Product;
 
+use ReturnTypeWillChange;
 use HugaShop\Models\BaseModel;
+use HugaShop\Models\Localization\Language;
 
 class ProductFeature extends BaseModel
 {
@@ -70,7 +72,14 @@ class ProductFeature extends BaseModel
             $query->limit((int) $filter['limit']);
         }
 
-        return $query->get()->keyBy('id');;
+        $features = $query->get()->keyBy('id');
+
+        // Fill translations
+        if ($code = Language::checkOrGetCode() and self::isTranslatable()) {
+            self::fillTranslations($features, $code, merge_fields: true);
+        }
+
+        return $features;
     }
 
 

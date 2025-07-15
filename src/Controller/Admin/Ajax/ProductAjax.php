@@ -27,8 +27,8 @@ class ProductAjax extends BaseAdminController
 
         $this->checkAdminAccess(['product_content', 'product_price'], checkCSRF: true);
 
-        $category_id    = Request::getInt('category_id');
-        $product_id     = Request::getInt('product_id');
+        $category_id    = Request::input('category_id', 'int');
+        $product_id     = Request::input('product_id', 'int');
 
         if (!empty($category_id)) {
             $features = ProductFeature::getFeatures(['category_id' => $category_id]);
@@ -70,7 +70,7 @@ class ProductAjax extends BaseAdminController
 
         $limit          = 100;
         $keyword        = Request::input('query', 'string');
-        $feature_id     = Request::getInt('feature_id');
+        $feature_id     = Request::input('feature_id', 'int');
         $options        = ProductOption::getAllVariants(["feature_id" => $feature_id, "keyword" => $keyword, "limit" => $limit]);
         $options_value  = $options?->pluck('value');
 
@@ -95,7 +95,7 @@ class ProductAjax extends BaseAdminController
         LanguageService::languageCatch();
 
         $limit          = 100;
-        $keyword        = Request::get('query', 'string');
+        $keyword        = Request::input('query', 'string');
         $features       = ProductFeature::getFeatures(['keyword' => $keyword, 'limit' => $limit]);
         $features_name  = $features?->pluck('name');
 

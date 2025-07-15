@@ -135,7 +135,7 @@
 
 				<ul class="property_block features">
 					{foreach $features as $feature}
-						<li feature_id="{$feature_id}">
+						<li feature_id="{$feature->id}">
 							<label for="options[{$feature->id}]" class="col-form-label">
 								<a href="{'FeatureAdmin'|link:[id => $feature->id]}">{$feature->name}</a>
 							</label>
@@ -189,7 +189,6 @@
 
 	<script type="module">
 		import '{"js/jquery/chosen/chosen.jquery.js"|asset}';
-		import { generate_url } from '{"js/common.js"|asset}';
 
 		let lang_code = "{$current_language->code}";
 		let product_id = "{$product->id}";
@@ -219,6 +218,7 @@
 						data: {
 							category_id: category_id,
 							product_id: $("input[name=id]").val(),
+							lang: lang_code,
 							csrf: csrf
 						},
 						dataType: 'json',
@@ -238,8 +238,14 @@
 								new_line.appendTo('ul.features').find("input")
 									.autocomplete({
 										serviceUrl: '/admin/ajax/product/get_option',
+										type: 'POST',
+										paramName: false,
 										minChars: 0,
-										params: {feature_id: feature.id, csrf: csrf},
+										params: {
+											feature_id: feature.id,
+											lang: lang_code,
+											csrf: csrf
+										},
 										noCache: false
 									});
 							}

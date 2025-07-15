@@ -71,7 +71,6 @@ class ProductController extends BaseAdminController
             }
 
             SeoKeywords::catchKeywords($product->id, 'product');
-
             ImageService::catchImages($product->id, 'product', 'images');
 
             // Характеристики товара
@@ -87,7 +86,7 @@ class ProductController extends BaseAdminController
             }
 
             // Устанавливаем харакетристики товара
-            if (is_array($options = Request::post('options'))) {
+            if (is_array($options = Request::post('options', 'array'))) {
                 foreach ($options as $f_id => $val) {
 
                     $option = new \stdClass();
@@ -103,8 +102,8 @@ class ProductController extends BaseAdminController
             }
 
             // Новые характеристики
-            $new_features_names = Request::post('new_features_names');
-            $new_features_values = Request::post('new_features_values');
+            $new_features_names     = Request::post('new_features_names', 'array');
+            $new_features_values    = Request::post('new_features_values', 'array');
             if (is_array($new_features_names) && is_array($new_features_values)) {
                 foreach ($new_features_names as $i => $name) {
                     $value = trim($new_features_values[$i]);
