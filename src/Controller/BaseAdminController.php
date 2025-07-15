@@ -64,8 +64,12 @@ class BaseAdminController extends BaseController
      * @param string $access_type
      * Example: 'Order' | ['Order', 'User']
      */
-    public function checkAdminAccess(string|array $access_type)
+    public function checkAdminAccess(string|array $access_type, bool $checkCSRF = false)
     {
+        if ($checkCSRF and !Request::checkCSRF()) {
+            throw $this->createNotFoundException('Access denied'); # 404
+        }
+
         if (!UserPermission::checkAccess($access_type)) { # Check acces
             throw $this->createNotFoundException('Access denied'); # 404
         }

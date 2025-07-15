@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * HugaShop - Sell anything
+ *
+ * @author Andri Huga
+ * @version 1.3
+ *
+ */
+
 namespace App\Controller\Admin\Ajax;
 
 use HugaShop\Models\Image;
@@ -22,7 +30,7 @@ class SearchAjax extends BaseAdminController
     public function mivement()
     {
 
-        $this->checkAdminAccess(['finance', 'warehouse_edit', 'warehouse_add']);
+        $this->checkAdminAccess(['finance', 'warehouse_edit', 'warehouse_add'], checkCSRF: true);
 
         $filter['limit'] = $this->page_limit;
 
@@ -54,7 +62,7 @@ class SearchAjax extends BaseAdminController
     public function user()
     {
 
-        $this->checkAdminAccess(['finance', 'warehouse_edit', 'warehouse_add', 'user_edit', 'order_edit']);
+        $this->checkAdminAccess(['finance', 'warehouse_edit', 'warehouse_add', 'user_edit', 'order_edit'], checkCSRF: true);
 
         $filter['limit'] = $this->page_limit;
 
@@ -98,7 +106,7 @@ class SearchAjax extends BaseAdminController
     public function product()
     {
 
-        $this->checkAdminAccess(['order', 'product_price', 'warehouse_add', 'warehouse_edit']);
+        $this->checkAdminAccess(['order', 'product_price', 'warehouse_add', 'warehouse_edit'], checkCSRF: true);
 
         // Поиск (без 'string' - сжирает запятые)
         $keyword = Request::get('query');
@@ -138,7 +146,7 @@ class SearchAjax extends BaseAdminController
     public function order()
     {
 
-        $this->checkAdminAccess(['finance', 'warehouse_edit', 'warehouse_add', 'user_edit', 'order_edit']);
+        $this->checkAdminAccess(['finance', 'warehouse_edit', 'warehouse_add', 'user_edit', 'order_edit'], checkCSRF: true);
 
         $filter['limit'] = $this->page_limit;
 

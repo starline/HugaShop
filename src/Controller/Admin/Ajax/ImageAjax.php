@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * HugaShop - Sell anything
+ *
+ * @author Andri Huga
+ * @version 1.1
+ *
+ */
+
 namespace App\Controller\Admin\Ajax;
 
 use App\Controller\BaseAdminController;
@@ -12,7 +20,7 @@ class ImageAjax extends BaseAdminController
     public function index()
     {
 
-        $this->checkAdminAccess('order');
+        $this->checkAdminAccess('order', checkCSRF: true);
 
         $use_curl = true; # Использовать CURL
 

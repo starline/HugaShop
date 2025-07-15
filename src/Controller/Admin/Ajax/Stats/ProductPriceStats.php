@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * HugaShop - Selling anything
+ *
+ * @author Andri Huga
+ * @version 1.2
+ *
+ */
+
 namespace App\Controller\Admin\Ajax\Stats;
 
 use HugaShop\Services\Request;
@@ -13,9 +21,8 @@ class ProductPriceStats extends BaseAdminController
     #[Route('/admin/ajax/stats/product-price', name: 'ProductPriceStatsAdmin')]
     public function index()
     {
-        if (!$this->checkAdminAccess('product_price') || !Request::checkCSRF()) {
-            throw $this->createNotFoundException('Access denied CSRF');
-        }
+
+        $this->checkAdminAccess('product_price', checkCSRF: true);
 
         $product_id = Request::postInt('product_id');
         if (empty($product_id)) {

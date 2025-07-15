@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * HugaShop - Sell anything
+ *
+ * @author Andri Huga
+ * @version 1.1
+ *
+ */
+
 namespace App\Controller\Admin\Ajax\Export;
 
 use HugaShop\Models\User\User;
@@ -34,7 +42,7 @@ class UserExport extends BaseAdminController
     public function index()
     {
 
-        $this->checkAdminAccess('export');
+        $this->checkAdminAccess('export', checkCSRF: true);
 
         $export_file_path = Config::get('export_files_dir') . $this->filename;
 

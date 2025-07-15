@@ -10,14 +10,17 @@
 
 namespace App\Controller\Front;
 
+use App\Event\SearchEvent;
+use HugaShop\Models\Image;
+use HugaShop\Models\Settings;
 use HugaShop\Services\Design;
 use HugaShop\Services\Request;
-use HugaShop\Models\Settings;
 use App\Services\PaginationService;
 use HugaShop\Models\Product\Product;
 use App\Controller\BaseFrontController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ProductSearchController extends BaseFrontController
 {
@@ -79,5 +82,56 @@ class ProductSearchController extends BaseFrontController
     public function search_old(string $search_query)
     {
         return $this->redirectToRoute('ProductsSearch', ['search_query' => $search_query], 301);
+    }
+
+
+    /**
+     * Ajax product search
+     */
+    #[Route('/ajax/product/search', name: 'AjaxProductSearch', priority: 1)]
+    public function search_ajax(): JsonResponse
+    {
+
+        // Поиск (без 'string' - потому-что сжирает запятые)
+        $query = Request::get('query', 'string');
+        if (!empty($query)) {
+            $filter['keyword'] = $query;
+
+            $this->setEvent(new SearchEvent($query));
+        }
+
+        $filter['limit'] = Settings::getParam('products_num');
+        $filter['visible'] = 1;
+
+        $products = Product::getProducts($filter, join: ['image']);
+        $suggestions = [];
+
+        foreach ($products as $product) {
+
+            $product_sug = new \stdClass();
+            $product_sug->name = $product->name;
+            $product_sug->id = $product->id;
+            if (!empty($product->image_filename)) {
+                $product_sug->image = Image::getImageURL($product->image_filename, 60, 60, 'c');
+            }
+
+            $suggestion = new \stdClass();
+            $suggestion->value = $product->name;
+            $suggestion->data = $product_sug;
+
+            $suggestions[] = $suggestion;
+        }
+
+        if (count($suggestions) == 0) {
+            $suggestion = new \stdClass();
+            $suggestion->value = 'По вышему запрос не найдено товаров';
+            $suggestions[] = $suggestion;
+        }
+
+        $res = new \stdClass();
+        $res->query = $query;
+        $res->suggestions = $suggestions;
+
+        return new JsonResponse($res);
     }
 }

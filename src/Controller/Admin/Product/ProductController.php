@@ -129,27 +129,23 @@ class ProductController extends BaseAdminController
         #### View
         #########
         if (!empty($id)) {
-            $product = Product::getOneEditTranslate($id, join: [
-                'images',
-                'options'
-            ]);
-            dump($product);
+            $product = Product::getOneEditTranslate($id, join: ['images']);
+
             if (empty($product->id)) {
                 return $this->redirectToRoute('ProductListAdmin');
             }
 
-            // Options
-            Design::assign('options', ProductOption::getListTranslate(['product_id' => $product->id])->keyBy('feature_id'));
+            $options = ProductOption::getListTranslate(['product_id' => $product->id])->keyBy('feature_id');
+            $features_ids = $options->pluck('feature_id')->all();
 
-            // Features
-            Design::assign('features', ProductFeature::getFeatures(['category_id' => $product->category_id]));
-
-            Design::assign('seo_keywords', SeoKeywords::getKeywords($product->id, 'product'));
+            Design::assign('options',       $options);
+            Design::assign('features',      ProductFeature::getListTranslate(['id' => $features_ids]));
+            Design::assign('seo_keywords',  SeoKeywords::getKeywords($product->id, 'product'));
         }
 
-        Design::assign('product', $product);
-        Design::assign('brands', ProductBrand::getBrands()); # All Products Brands
-        Design::assign('categories', ProductCategory::getCategoriesTree()); # Все категории
+        Design::assign('product',       $product);
+        Design::assign('brands',        ProductBrand::getBrands()); # All Products Brands
+        Design::assign('categories',    ProductCategory::getCategoriesTree()); # Все категории
 
         return $this->fetchResponse('product/product.tpl');
     }

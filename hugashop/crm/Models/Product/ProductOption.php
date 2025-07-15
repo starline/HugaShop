@@ -34,6 +34,7 @@ class ProductOption extends BaseModel
         return $this->belongsTo(ProductFeature::class, 'feature_id');
     }
 
+
     /**
      * Select pruduct features with option value
      * @param int|array $product_id
@@ -88,11 +89,13 @@ class ProductOption extends BaseModel
     }
 
 
+    /**
+     * Delete option
+     */
     public static function deleteOption($product_id, $feature_id)
     {
         return self::where('product_id', $product_id)
             ->where('feature_id', $feature_id)
-            ->limit(1)
             ->delete() > 0;
     }
 

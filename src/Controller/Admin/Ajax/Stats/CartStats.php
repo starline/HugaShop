@@ -21,9 +21,8 @@ class CartStats extends BaseAdminController
     #[Route('/admin/ajax/stats/cart', name: 'CartStatsAdmin')]
     public function index()
     {
-        if (!$this->checkAdminAccess('order') || !Request::checkCSRF()) {
-            throw $this->createNotFoundException('Access denied CSRF');
-        }
+
+        $this->checkAdminAccess('order', checkCSRF: true);
 
         $from_date = Request::post('fromDate') ?: null;
         $to_date   = Request::post('toDate') ?: null;

@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * HugaShop - Sell anything
+ *
+ * @author Andri Huga
+ * @version 1.1
+ *
+ */
+
 namespace App\Controller\Admin\Ajax\Export;
 
 use HugaShop\Models\Order\Order;
@@ -34,7 +42,7 @@ class OrderExport extends BaseAdminController
     public function index()
     {
 
-        $this->checkAdminAccess('export');
+        $this->checkAdminAccess('export', checkCSRF: true);
 
         // кол-во обрабатываемыз заказов за раз
         $orders_count = Settings::getParam('products_num_admin');
@@ -117,7 +125,7 @@ class OrderExport extends BaseAdminController
 
             fputcsv($f, $str, $this->column_delimiter);
         }
-        
+
         fclose($f);
         $total_orders = Order::getOrdersCount($filter);
 

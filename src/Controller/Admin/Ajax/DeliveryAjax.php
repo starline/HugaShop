@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * HugaShop - Sell anything
+ *
+ * @author Andri Huga
+ * @version 1.1
+ *
+ */
+
 namespace App\Controller\Admin\Ajax;
 
 use HugaShop\Services\Request;
@@ -13,7 +21,7 @@ class DeliveryAjax extends BaseAdminController
     public function index()
     {
 
-        $this->checkAdminAccess('order');
+        $this->checkAdminAccess('order', checkCSRF: true);
 
         $result = "";
         $request_type = Request::post('request_type');

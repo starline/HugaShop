@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * HugaShop - Sell anything
+ *
+ * @author Andri Huga
+ * @version 1.1
+ *
+ */
+
 namespace App\Controller\Admin\Ajax;
 
 use HugaShop\Services\Config;
@@ -10,11 +18,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class TemplateAjax extends BaseAdminController
 {
+
     #[Route('/admin/ajax/template/save_style', name: 'TemplateAjaxAdmin')]
     public function save_style()
     {
 
-        $this->checkAdminAccess('design');
+        $this->checkAdminAccess('design', checkCSRF: true);
 
         $content = Request::post('content', 'string');
         $style = Request::post('style', 'string');
@@ -41,7 +50,7 @@ class TemplateAjax extends BaseAdminController
     public function save_templates()
     {
 
-        $this->checkAdminAccess('design');
+        $this->checkAdminAccess('design', checkCSRF: true);
 
         $content = Request::post('content', 'string');
         $template = Request::post('template', 'string');

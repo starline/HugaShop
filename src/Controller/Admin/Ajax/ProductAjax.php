@@ -20,11 +20,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ProductAjax extends BaseAdminController
 {
+
     #[Route('/admin/ajax/product/get_feature', name: 'ProductAjaxAdmin')]
     public function get_feature()
     {
 
-        $this->checkAdminAccess(['product_content', 'product_price']);
+        $this->checkAdminAccess(['product_content', 'product_price'], checkCSRF: true);
 
         $category_id    = Request::getInt('category_id');
         $product_id     = Request::getInt('product_id');
@@ -62,17 +63,16 @@ class ProductAjax extends BaseAdminController
     public function get_option()
     {
 
-        $this->checkAdminAccess(['product_content', 'product_price']);
+        $this->checkAdminAccess(['product_content', 'product_price'], checkCSRF: true);
 
         // Init content language
         LanguageService::languageCatch();
 
-        $limit      = 100;
-        $keyword    = Request::get('query', 'string');
-        $feature_id = Request::getInt('feature_id');
-
-        $options = ProductOption::getAllVariants(["feature_id" => $feature_id, "keyword" => $keyword, "limit" => $limit]);
-        $options_value = $options?->pluck('value');
+        $limit          = 100;
+        $keyword        = Request::input('query', 'string');
+        $feature_id     = Request::getInt('feature_id');
+        $options        = ProductOption::getAllVariants(["feature_id" => $feature_id, "keyword" => $keyword, "limit" => $limit]);
+        $options_value  = $options?->pluck('value');
 
         $res = new \stdClass();
         $res->query = $keyword;
@@ -89,20 +89,19 @@ class ProductAjax extends BaseAdminController
     public function get_feature_name()
     {
 
-        $this->checkAdminAccess(['product_content', 'product_price']);
+        $this->checkAdminAccess(['product_content', 'product_price'], checkCSRF: true);
 
-        $limit      = 100;
-        $keyword    = Request::get('query', 'string');
-        $features   = ProductFeature::getFeatures(['keyword' => $keyword, 'limit' => $limit]);
+        // Init content language
+        LanguageService::languageCatch();
 
-        $features_value = [];
-        foreach ($features as $feature) {
-            $features_value[] = $feature->name;
-        }
+        $limit          = 100;
+        $keyword        = Request::get('query', 'string');
+        $features       = ProductFeature::getFeatures(['keyword' => $keyword, 'limit' => $limit]);
+        $features_name  = $features?->pluck('name');
 
         $res = new \stdClass();
         $res->query = $keyword;
-        $res->suggestions = $features_value;
+        $res->suggestions = $features_name;
 
         return new JsonResponse($res);
     }

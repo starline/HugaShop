@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * HugaShop - Sell anything
+ *
+ * @author Andri Huga
+ * @version 1.1
+ *
+ */
+
 namespace App\Controller\Admin\Ajax\Export;
 
 use HugaShop\Services\Config;
@@ -41,7 +49,7 @@ class ProductOrderExport extends BaseAdminController
     public function index()
     {
 
-        $this->checkAdminAccess('export');
+        $this->checkAdminAccess('export', checkCSRF: true);
 
         // кол-во обрабатываемых заказов за раз
         $orders_count = Settings::getParam('products_num_admin');

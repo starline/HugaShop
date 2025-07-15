@@ -22,10 +22,7 @@ class FinanceStats extends BaseAdminController
     public function index()
     {
 
-        if (!$this->checkAdminAccess('stats') || !Request::checkCSRF()) { # Check acces
-            throw $this->createNotFoundException('Access denied CSRF'); # 404
-        }
-
+        $this->checkAdminAccess('stats', checkCSRF: true);
 
         $result = null;
 

@@ -192,6 +192,7 @@
 		import { generate_url } from '{"js/common.js"|asset}';
 
 		let lang_code = "{$current_language->code}";
+		let product_id = "{$product->id}";
 
 		{literal}
 			$(function() {
@@ -253,6 +254,8 @@
 					let feature_id = $(this).closest('li').attr('feature_id');
 					$(this).autocomplete({
 						serviceUrl: '/admin/ajax/product/get_option',
+						type: 'POST',
+						paramName: false,
 						minChars: 0,
 						params: {
 							feature_id: feature_id,
@@ -264,12 +267,18 @@
 				});
 
 
-				// Автодополнение названия характеристик
+				// Автозаполнение названия характеристик
 				$('.features').on('focus', 'input[name*=new_features_names]', function(index) {
 					$(this).autocomplete({
 						serviceUrl: '/admin/ajax/product/get_feature_name',
+						type: 'POST',
+						paramName: false,
 						minChars: 0,
-						params: {csrf: csrf},
+						params: {
+							product_id: product_id,
+							lang: lang_code,
+							csrf: csrf
+						},
 						noCache: false
 					});
 				});

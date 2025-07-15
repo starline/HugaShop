@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  */
 
@@ -19,11 +19,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SmsAjax extends BaseAdminController
 {
+    
     #[Route('/admin/ajax/sms', name: 'SmsAjaxAdmin')]
     public function index()
     {
 
-        $this->checkAdminAccess('order_edit');
+        $this->checkAdminAccess('order_edit', checkCSRF: true);
 
         // Выбрать данные заказа
         $order_id = Request::postInt('id');

@@ -23,9 +23,7 @@ class OrderStats extends BaseAdminController
     public function index()
     {
 
-        if (!$this->checkAdminAccess(['stats', 'user']) || !Request::checkCSRF()) { # Check acces
-            throw $this->createNotFoundException('Access denied CSRF'); # 404
-        }
+        $this->checkAdminAccess(['stats', 'user'], checkCSRF: true);
 
         $result = null;
         $request_type = Request::post('type', 'string');

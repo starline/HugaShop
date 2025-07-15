@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  * 
  * Import gooogle doc csv
  *
@@ -42,7 +42,7 @@ class ImportCsvAjax extends BaseAdminController
     public function import(string $type)
     {
 
-        $this->checkAdminAccess('product_import');
+        $this->checkAdminAccess('product_import', checkCSRF: true);
 
         // Для корректной работы установим локаль UTF-8
         setlocale(LC_ALL, 'ru_RU.UTF-8');
