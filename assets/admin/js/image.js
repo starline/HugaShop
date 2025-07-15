@@ -16,7 +16,14 @@ export function initImagesUpload() {
     $(".images").on('click.delete', ' i.delete', function () {
         $(this).closest(".images").find("input[name='delete_image']").val('1');
         $(this).closest("li").fadeOut(200, function () {
+            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+                const tooltip = bootstrap.Tooltip.getInstance(el);
+                if (tooltip) {
+                    tooltip.hide();
+                }
+            });
             $(this).remove();
+
         });
         return false;
     });
