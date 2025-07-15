@@ -18,6 +18,7 @@ use App\Controller\BaseFrontController;
 use HugaShop\Models\Content\ContentComment;
 use HugaShop\Models\Product\ProductVariant;
 use HugaShop\Models\Product\ProductCategory;
+use HugaShop\Services\Config;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -36,8 +37,8 @@ class ProductController extends BaseFrontController
     }
 
 
-    #[Route('/{url}/p{id}', requirements: ['id' => '\d+'], name: 'ProductUrl', priority: 1)]
-    #[Route('/tovar-{url}', name: 'Product')]
+    #[Route('/{url}/pd{id}', requirements: ['id' => '\d+'], name: 'ProductUrl', priority: 1)]
+    #[Route(Config::PRODUCT_PREFIX . '{url}', name: 'Product')]
     public function product_url(string $url, ?int $id = null): Response
     {
 
@@ -52,7 +53,7 @@ class ProductController extends BaseFrontController
         ]);
 
 
-        if (empty($product)) {
+        if (empty($product) || (!is_null($id) and $id !== $product->id)) {
             throw $this->createNotFoundException('Product does not found'); # 404
         }
 

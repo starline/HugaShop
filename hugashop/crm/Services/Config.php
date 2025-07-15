@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.9
+ * @version 3.0
  *
  * Класс-обертка для конфигурационного файла с настройками магазина
  * В отличие от класса Settings, Config оперирует низкоуровневыми настройками, например найстройками базы данных.
@@ -28,6 +28,9 @@ class Config
 
     // Config params container
     private static array $vars = [];
+
+    // Product URL prefix
+    public const PRODUCT_PREFIX = '/tovar-';
 
 
     /**
