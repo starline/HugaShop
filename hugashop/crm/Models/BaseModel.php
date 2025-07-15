@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  */
 
@@ -40,6 +40,12 @@ abstract class BaseModel extends Model
 
         // Auto DB table naming
         $this->table ?? $this->table = Str::snake(class_basename(static::class));
+
+        // Auto add created_at updated_at fileds
+        if ($this->timestamps) {
+            static::$table_fields['created_at'] = ['type' => 'datetime'];
+            static::$table_fields['updated_at'] = ['type' => 'datetime'];
+        }
 
         parent::__construct($attributes);
     }

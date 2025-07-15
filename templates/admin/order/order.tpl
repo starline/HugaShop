@@ -367,7 +367,7 @@
 
 
 				<!-- New purchase row -->
-				<div id="new_purchase" class="list_row sort_disabled" style="display:none;">
+				<div id="new_purchase" class="list_row sortable_off" style="display:none;">
 					<input type="hidden" name="purchases[INDEX][product_id]" value="">
 					<input type="hidden" name="purchases[INDEX][id]" value="">
 

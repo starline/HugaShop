@@ -19,6 +19,7 @@ use HugaShop\Models\Product\ProductFeature;
 use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use HugaShop\Models\Product\ProductFeatureOption;
 use HugaShop\Models\Product\ProductFeatureVariant;
 use HugaShop\Models\Product\ProductCategoryFeature;
 
@@ -35,11 +36,6 @@ class FeatureController extends BaseAdminController
         // Init content language
         LanguageService::languageCatch();
 
-        $feature_categories = [];
-        $feature_variants = [];
-        $options = [];
-
-
         #### Update
         ###########
         if (!empty($feature = Request::getDataAcces(ProductFeature::getFields()))) {
@@ -53,8 +49,8 @@ class FeatureController extends BaseAdminController
             $feature_categories = Request::post('feature_categories', 'array');
             ProductCategoryFeature::updateFeatureCategories($feature->id, $feature_categories);
 
-            $feature_variants = Request::post('feature_variants', 'array');
-            ProductFeatureVariant::updateFeatureVariants($feature->id, $feature_variants);
+            $options = Request::post('options', 'array');
+            ProductFeatureOption::updateFeatureOptions($feature->id, $options);
 
             // Делаем редирект на страницу с ID
             return $this->redirectToRouteLang('FeatureAdmin', ['id' => $feature->id]);
@@ -70,20 +66,14 @@ class FeatureController extends BaseAdminController
                 return $this->redirectToRoute('FeatureListAdmin');
             }
 
-            $feature_categories = ProductCategoryFeature::getFeatureCategories($feature->id);
-            $feature_variants   = ProductFeatureVariant::getFeatureVariants($feature->id);
+            Design::assign('feature_categories', ProductCategoryFeature::getFeatureCategories($feature->id));
 
-            // Используемые значения характеристики
-            $options = ProductOption::getAllVariants(['feature_id' => $feature->id]);
+            // Значения характеристики
+            Design::assign('options', ProductFeatureOption::getListTranslate(['feature_id' => $feature->id]));
         }
 
-        $categories = ProductCategory::getCategoriesTree();
-
         Design::assign('feature', $feature);
-        Design::assign('options', $options);
-        Design::assign('categories', $categories);
-        Design::assign('feature_categories', $feature_categories);
-        Design::assign('feature_variants', $feature_variants);
+        Design::assign('categories', ProductCategory::getCategoriesTree());
 
         return $this->fetchResponse('product/feature.tpl');
     }

@@ -49,15 +49,15 @@
 
 				<div class="layer">
 					<h2 class="mt-4">Варианты свойства</h2>
-					<ul class="list mini features_variants" id="sort">
+					<ul class="list mini sortable_on options">
 
-						{foreach name=variants from=$feature_variants item=variant}
+						{foreach $options as $option}
 							<li class="list_row">
 								<div class="move">
 									<div class="move_zone"></div>
 								</div>
 								<div class="col">
-									<input class="form-control" name="feature_variants[]" type="text" value="{$variant}" />
+									<input class="form-control" name="options[]" type="text" value="{$option->value}" />
 								</div>
 								<div class="icons">
 									<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
@@ -70,7 +70,7 @@
 								<div class="move_zone"></div>
 							</div>
 							<div class="col">
-								<input class="form-control" name="feature_variants[]" type="text" value="" />
+								<input class="form-control" name="options[]" type="text" value="" />
 							</div>
 							<div class="icons">
 								<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
@@ -82,17 +82,6 @@
 						<div class="add mt-3">
 							<i class="dash_link">Добавить вариант</i>
 						</div>
-					</div>
-
-					<h2 class="mt-4 layer">Используемые свойства</h2>
-
-					<div>
-						{foreach $options as $option}
-							<div>
-								{$ido = $option->id}
-								<a href="/admin/products?{$option->feature_id}={$option->value|urlencode}">{$option->value}</a>
-							</div>
-						{/foreach}
 					</div>
 				</div>
 			</div>
@@ -112,28 +101,19 @@
 			$(function() {
 
 				// Добавление варианта
-				const new_feature = $('.features_variants #new').clone(true);
-				$('.features_variants #new').remove().removeAttr('id');
+				const new_option = $('.options #new').clone(true);
+				$('.options #new').remove().removeAttr('id');
 
 				$('.add').click(function() {
-					new_feature.clone().appendTo('.features_variants').show().find(
-						'input[name="feature_variants[]"]').focus();
+					new_option.clone().appendTo('.options').show().find(
+						'input[name="options[]"]').focus();
 					return false;
 				});
 
 				// Удаление варианта
-				$(".features_variants").on('click', '.delete', function() {
+				$(".options").on('click', '.delete', function() {
 					$(this).closest(".list_row").fadeOut(200, function() {$(this).remove();});
 					return false;
-				});
-
-				$("#sort").sortable({
-					items: ".list_row:not(.sort_disabled)",
-					cancel: ".sort_disabled",
-					handle: ".move_zone",
-					axis: 'y',
-					tolerance: "pointer",
-					opacity: 0.90,
 				});
 			});
 		{/literal}

@@ -10,7 +10,6 @@
 
 namespace HugaShop\Models\Product;
 
-use ReturnTypeWillChange;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\Localization\Language;
 

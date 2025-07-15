@@ -18,9 +18,10 @@ class ProductOption extends BaseModel
 {
 
     protected static $table_fields = [
-        'product_id' =>         ['type' => 'int',           'req' => true],
-        'feature_id' =>         ['type' => 'int',           'req' => true],
-        'value ' =>             ['type' => 'varchar']
+        'product_id' =>        ['type' => 'int',           'req' => true],
+        'feature_id' =>        ['type' => 'int',           'req' => true],
+        'option_id' =>         ['type' => 'int',           'req' => true],
+        'value' =>             ['type' => 'varchar']
     ];
 
 

@@ -156,8 +156,8 @@
 
                             // Dort inpot list
                             $("#sort").sortable({
-                                items: ".list_row:not(.sort_disabled)",
-                                cancel: ".sort_disabled",
+                                items: ".list_row:not(.sortable_off)",
+                                cancel: ".sortable_off",
                                 handle: ".move_zone",
                                 axis: 'y',
                                 opacity: 0.90,

@@ -21,7 +21,7 @@ $(function () {
 
     // Сортировка списка
     $(".sortable_on").sortable({
-        items: ".list_row",
+        items: ".list_row:not(.sortable_off)",
         handle: ".move_zone",
         cancel: ".sortable_off",
         tolerance: "pointer",

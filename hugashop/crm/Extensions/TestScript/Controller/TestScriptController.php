@@ -48,6 +48,8 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use HugaShop\Extensions\TestScript\Services\Composer;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use HugaShop\Extensions\TestScript\Services\SystemCheck;
+use HugaShop\Models\Product\ProductFeatureOption;
+use HugaShop\Models\Product\ProductOption;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 final class TestScriptController extends BaseAdminController
@@ -492,6 +494,39 @@ final class TestScriptController extends BaseAdminController
                                 } else {
                                     $result[] = 'No warehouse places found';
                                 }
+                            }
+
+
+                            // Перенесем ProductOption в ProductFeatuerOption
+                            // Удалить PRIMARY KEY - ALTER TABLE `s_product_option` DROP PRIMARY KEY;
+                            // Добавить поле id autouncrement для s_product_option
+                            if (0) {
+
+                                // create DB
+                                ProductFeatureOption::getOne(1);
+
+                                // Добавить в s_product_option option_id (int)
+                                ProductOption::getOne(['option_id' => 1]);
+
+                                ProductOption::query()
+                                    ->chunk(50, function ($options) {
+                                        foreach ($options as $o) {
+
+                                            // Check if option exist Make option
+                                            $feature_option = ProductFeatureOption::firstOrCreate(
+                                                [
+                                                    'feature_id' => $o->feature_id,
+                                                    'value'      => $o->value,
+                                                ]
+                                            );
+
+                                            // save option_id
+                                            $o->option_id = $feature_option->id;
+                                            $o->save();
+                                        }
+                                    });
+
+                                $result[] = 'All done';
                             }
 
 
