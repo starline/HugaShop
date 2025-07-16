@@ -449,7 +449,7 @@
 
 				// Добавление связанного товара 
 				let new_related_product = $('#new_related_product').clone(true).removeAttr('id');
-				$('#new_related_product') removeAttr('id').remove();
+				$('#new_related_product').removeAttr('id').remove();
 
 				$("input#related_products").autocomplete({
 					serviceUrl: '/admin/ajax/search/product',
