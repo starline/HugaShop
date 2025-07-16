@@ -88,7 +88,7 @@ class ProductController extends BaseAdminController
 
             // Устанавливаем харакетристики товара
             if ($options = Request::post('options', 'array')) {
-                foreach ($options as $f_id => $val) {
+                foreach ($options as $id => $val) {
 
                     $option = new \stdClass();
                     $option->feature_id = $f_id;

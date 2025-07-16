@@ -139,7 +139,7 @@
 							<label for="options[{$feature->id}]" class="col-form-label">
 								<a href="{'FeatureAdmin'|link:[id => $feature->id]}">{$feature->name}</a>
 							</label>
-							<input class="form-control" id="options[{$feature->id}]" type="text" name="options[{$feature->id}]"
+							<input class="form-control" type="text" name="options[{$feature->id}]"
 								value="{$options.{$feature->id}->value}" />
 						</li>
 					{/foreach}
@@ -292,10 +292,11 @@
 
 				// Добавление нового свойства товара
 				const new_feature = $('#new_feature').clone(true);
-				$('#new_feature').remove().removeAttr('id');
+				$('#new_feature').removeAttr('id').remove();
+
 				$('#add_new_feature').click(function() {
-					$(new_feature).clone(true).appendTo('.features').show().find(
-						"input[name*=new_features_names]").focus();
+					$(new_feature).clone(true).appendTo('.features').removeAttr('id').show()
+						.find("input[name*=new_features_names]").focus();
 					return false;
 				});
 			});
