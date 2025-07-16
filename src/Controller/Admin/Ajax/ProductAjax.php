@@ -16,6 +16,7 @@ use App\Controller\BaseAdminController;
 use HugaShop\Models\Product\ProductOption;
 use HugaShop\Models\Product\ProductFeature;
 use Symfony\Component\Routing\Attribute\Route;
+use HugaShop\Models\Product\ProductFeatureOption;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ProductAjax extends BaseAdminController
@@ -68,10 +69,10 @@ class ProductAjax extends BaseAdminController
         // Init content language
         LanguageService::languageCatch();
 
-        $limit          = 100;
+        $limit          = 80;
         $keyword        = Request::input('query', 'string');
         $feature_id     = Request::input('feature_id', 'int');
-        $options        = ProductOption::getAllVariants(["feature_id" => $feature_id, "keyword" => $keyword, "limit" => $limit]);
+        $options        = ProductFeatureOption::getListTranslate(["feature_id" => $feature_id, "search" => $keyword, "limit" => $limit]);
         $options_value  = $options?->pluck('value');
 
         $res = new \stdClass();

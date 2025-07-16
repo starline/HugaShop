@@ -89,6 +89,15 @@ abstract class BaseModel extends Model
     }
 
 
+    /** 
+     * Get Model Instance
+     */
+    public static function getModel()
+    {
+        return new static;
+    }
+
+
     /**
      * Get table fields
      */
@@ -107,6 +116,22 @@ abstract class BaseModel extends Model
         $fields = [];
         foreach (static::getFields() as $name => $params) {
             if (!empty($params['trans'])) {
+                $fields[] = $name;
+            }
+        }
+
+        return $fields;
+    }
+
+
+    /**
+     * Get searchable fields
+     */
+    public static function getSearchFields(): array
+    {
+        $fields = [];
+        foreach (static::getFields() as $name => $params) {
+            if (!empty($params['search'])) {
                 $fields[] = $name;
             }
         }
@@ -149,7 +174,7 @@ abstract class BaseModel extends Model
     public static function updateOne(int|array $ids, array|object $values)
     {
         if ($language_code = Language::checkOrGetCode() and static::isTranslatable()) {
-            $values = static::separateValues($values, $language_code);
+            $values = static::separateTranslationData($values, $language_code);
         }
 
         $values = self::validateValues($values);
@@ -216,12 +241,22 @@ abstract class BaseModel extends Model
         $page   = $filter['page'] ?? 1;
         $limit  = $filter['limit'] ?? null;
 
-        unset($filter['page'], $filter['limit']);
-
         if ($limit !== null) {
             $offset = ($page - 1) * $limit;
             $query->offset($offset)->limit($limit);
         }
+
+        // Поиск по ключевому слову
+        if (!empty($filter['search'])) {
+            $search_fields = static::getSearchFields();
+            $query->where(function ($sub_query) use ($search_fields, $filter) {
+                foreach ($search_fields as $field) {
+                    $sub_query->orWhere($field, 'like', '%' . $filter['search'] . '%');
+                }
+            });
+        }
+
+        unset($filter['page'], $filter['limit'], $filter['search']);
 
         // Фильтрация
         foreach ($filter as $field => $value) {

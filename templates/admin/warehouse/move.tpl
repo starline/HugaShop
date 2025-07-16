@@ -235,7 +235,8 @@
 						<div class="col row">
 							<div class="col">
 								{if $purchase->product->id}
-									<a href="/admin/product/{$purchase->product->id}/price">{$purchase->product_name}</a>
+									<a
+										href="{'ProductPriceAdmin'|link:[id => $purchase->product->id]}">{$purchase->product_name}</a>
 								{else}
 									<span>{$purchase->product_name}</span>
 								{/if}

@@ -33,7 +33,7 @@ trait TranslationTrait
     /**
      * Separate and save traslated params
      */
-    public static function separateValues(array|object $entity, string $language_code)
+    public static function separateTranslationData(array|object $entity, string $language_code)
     {
         $translation_data = [];
         foreach (self::getTranslatableFields() as $field) {
@@ -47,7 +47,7 @@ trait TranslationTrait
         }
 
         if (!empty($translation_data)) {
-            self::updateTranslation($entity->id, $language_code, $translation_data);
+            self::updateOrCreateTranslation($entity->id, $language_code, $translation_data);
         }
 
         return $entity;
@@ -122,12 +122,12 @@ trait TranslationTrait
     public static function getTranslation(int $entity_id, string $code)
     {
         $model = AbstractTranslation::setTableTranslation(static::class);
-        $query = $model->newQuery();
-        $query->where('entity_id', $entity_id)
-            ->where('language_code', $code);
 
-        return $model->runWithInitTable(function () use ($query) {
-            return $query->first();
+        return $model->runWithInitTable(function () use ($model, $entity_id, $code) {
+            return $model->newQuery()
+                ->where('entity_id', $entity_id)
+                ->where('language_code', $code)
+                ->first();
         });
     }
 
@@ -135,12 +135,12 @@ trait TranslationTrait
     /**
      * Update or create translation
      */
-    public static function updateTranslation(int $entity_id, string $code, array $data)
+    public static function updateOrCreateTranslation(int $entity_id, string $code, array $data)
     {
         $model = AbstractTranslation::setTableTranslation(static::class);
-        $query = $model->newQuery();
-        return $model->runWithInitTable(function () use ($query, $entity_id, $code, $data) {
-            return $query->updateOrCreate(
+
+        return $model->runWithInitTable(function () use ($model, $entity_id, $code, $data) {
+            return $model->newQuery()->updateOrCreate(
                 ['entity_id' => $entity_id, 'language_code' => $code],
                 $data
             );

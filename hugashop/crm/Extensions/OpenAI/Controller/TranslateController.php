@@ -23,7 +23,7 @@ use HugaShop\Models\Product\ProductFeature;
 use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Extensions\SeoPage\Models\SeoPage;
-use HugaShop\Models\Product\ProductFeatureVariant;
+use HugaShop\Models\Product\ProductFeatureOption;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use HugaShop\Extensions\InfoBlock\Models\InfoBlock;
 
@@ -122,37 +122,34 @@ final class TranslateController extends BaseAdminController
             }
         }
 
-        
-        // Translate feature variants
+
+        // Translate feature options
         if ($entity === 'feature') {
-            $variants = ProductFeatureVariant::getFeatureVariants($model->id);
-            $translated_variants = [];
+            $options = ProductFeatureOption::getList(['feature_id' => $model->id]);
+            $translated_options = [];
 
-            foreach ($variants as $variant) {
-                if (!empty($variant)) {
-                    $result = $client->chat()->create([
-                        'model' => 'gpt-4o',
-                        'messages' => [
-                            ['role' => 'system', 'content' => 'Ты переводчик. Переводишь на ' . $language->name . '. Всегда возвращай только переведённый текст, без комментариев.'],
-                            ['role' => 'user', 'content' => $variant],
-                        ]
-                    ]);
-                    $translated_variants[] = trim($result->choices[0]->message->content);
-                } else {
-                    $translated_variants[] = '';
-                }
+            foreach ($options as $option) {
+                $result = $client->chat()->create([
+                    'model' => 'gpt-4o',
+                    'messages' => [
+                        ['role' => 'system', 'content' => 'Ты переводчик. Переводишь на ' . $language->name . '. Всегда возвращай только переведённый текст, без комментариев.'],
+                        ['role' => 'user', 'content' => $option->value],
+                    ]
+                ]);
+                
+                $translated_options[$option->id] = trim($result->choices[0]->message->content);
             }
 
-            if ($save && !empty($translated_variants)) {
-                ProductFeatureVariant::updateFeatureVariants($model->id, $translated_variants);
+            if ($save && !empty($translated_options)) {
+                ProductFeatureOption::updateFeatureOptions($model->id, $translated_options);
             }
 
-            $translated['feature_variants'] = $translated_variants;
+            $translated['options'] = $translated_options;
         }
 
 
         if ($save && !empty($translated)) {
-            $model::updateTranslation($model->id, $language->code, $translated);
+            $model::updateOrCreateTranslation($model->id, $language->code, $translated);
         }
 
         return new JsonResponse($translated);

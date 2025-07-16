@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.6
+ * @version 1.7
  *
  */
 
@@ -16,7 +16,7 @@ use HugaShop\Models\BaseModel;
 class AbstractTranslation extends BaseModel
 {
 
-    protected static $table_fields = [
+    protected static $base_table_fields = [
         'id' =>                 ['type' => 'int',      'extra' => 'AUTO_INCREMENT'],
         'entity_id' =>          ['type' => 'int'],
         'language_code' =>      ['type' => 'varchar']
@@ -39,7 +39,10 @@ class AbstractTranslation extends BaseModel
             $translatable_fields = $base_model::getTranslatableFields();
             $base_fields = $base_model::getFields();
 
-            // Добавляем их в таблицу полей
+            // reboot table field
+            static::$table_fields = self::$base_table_fields;
+
+            // Добавляем поля для перевода
             foreach ($translatable_fields as $field) {
                 static::$table_fields[$field] = $base_fields[$field];
             }

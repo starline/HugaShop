@@ -21,14 +21,6 @@ trait CheckModelTrait
     protected static array $checkedTables = [];
 
 
-    /** 
-     * Get Model Instance
-     */
-    public static function getModel()
-    {
-        return new static;
-    }
-
     /**
      * Execute query and try to create table/columns on missing table/column errors
      */

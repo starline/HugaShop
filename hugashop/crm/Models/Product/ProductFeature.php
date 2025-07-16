@@ -12,6 +12,7 @@ namespace HugaShop\Models\Product;
 
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\Localization\Language;
+use HugaShop\Models\Product\ProductFeatureOption;
 
 class ProductFeature extends BaseModel
 {
@@ -115,7 +116,7 @@ class ProductFeature extends BaseModel
         ProductCategoryFeature::where('feature_id', $id)->delete();
 
         // Удаляем варианты характеристик
-        ProductFeatureVariant::where('feature_id', $id)->delete();
+        ProductFeatureOption::where('feature_id', $id)->delete();
 
         return true;
     }

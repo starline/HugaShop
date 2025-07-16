@@ -59,7 +59,7 @@
                                 const value = data[field];
                                 let el = $('[name="' + field + '"]');
 
-                                // Если пришел массив значений (например, feature_variants)
+                                // Если пришел массив значений (например, options)
                                 if (Array.isArray(value)) {
                                     el = $('[name="' + field + '[]"]');
                                     el.each(function(index) {

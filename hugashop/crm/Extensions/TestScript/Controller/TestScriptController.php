@@ -500,6 +500,7 @@ final class TestScriptController extends BaseAdminController
                             // Перенесем ProductOption в ProductFeatuerOption
                             // Удалить PRIMARY KEY - ALTER TABLE `s_product_option` DROP PRIMARY KEY;
                             // Добавить поле id autouncrement для s_product_option
+                            // Удалит таблицу s_product_feature_variant
                             if (0) {
 
                                 // create DB
