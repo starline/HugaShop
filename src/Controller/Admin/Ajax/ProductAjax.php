@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.4
+ * @version 2.5
  *
  */
 
@@ -100,11 +100,15 @@ class ProductAjax extends BaseAdminController
         $keyword        = Request::input('query', 'string');
 
         $features       = ProductFeature::getListTranslate(['search' => $keyword, 'limit' => $limit]);
-        $features_name  = $features?->pluck('name');
+
+        $suggestions = [];
+        foreach ($features as $feature) {
+            $suggestions[] = ['value' => $feature->name, 'data' => $feature->id];
+        }
 
         $res = new \stdClass();
         $res->query = $keyword;
-        $res->suggestions = $features_name;
+        $res->suggestions = $suggestions;
 
         return new JsonResponse($res);
     }
