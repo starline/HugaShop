@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.5
+ * @version 2.6
  *
  */
 
@@ -113,8 +113,13 @@ class ProductOption extends BaseModel
             return array();
         }
 
+        $table        = (new self())->getTable();
+        $optionTable  = (new ProductFeatureOption())->getTable();
+
         $query = self::query()
-            ->with(['product', 'feature', 'option']); // eager load отношения
+            ->with(['product', 'feature', 'option']) // eager load отношения
+            ->leftJoin($optionTable, "$optionTable.id", '=', "$table.option_id")
+            ->select("{$table}.*");
 
         // Присоединение таблицы продуктов для фильтрации по видимости и категории
         if (isset($filter['visible'])) {
@@ -151,7 +156,7 @@ class ProductOption extends BaseModel
             $query->limit((int) $filter['limit']);
         }
 
-        $query->orderByRaw('value = 0, -value DESC, value');
+        $query->orderByRaw("{$optionTable}.value = 0, -{$optionTable}.value DESC, {$optionTable}.value");
 
         return $query->get();
     }
