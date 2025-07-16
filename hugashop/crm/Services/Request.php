@@ -420,6 +420,7 @@ class Request
                 }
             }
         }
+        
         if ($decline === true) {
             return null;
         }
