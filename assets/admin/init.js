@@ -2,7 +2,7 @@
  * Welcome to your app's main JavaScript file!
  * 
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  */
 
 import './css/style.css';
@@ -31,8 +31,8 @@ $(function () {
             $(this).find("input[name*='check']").prop('checked', false);
 
             // listt_form
-            if ($("form.list_form").length) {
-                $("form.list_form").ajaxSubmit();
+            if ($(this).closest("form.list_form").length) {
+                $(this).closest("form.list_form").ajaxSubmit();
             }
         }
     });
@@ -48,13 +48,17 @@ $(function () {
             '.list input[type="checkbox"][name*="check"]:not(:checked)').length > 0);
     });
 
+
     // Удалить 
     $("form.list_form").on('click', 'i.delete', function () {
-        $('.list input[type="checkbox"][name*="check"]').prop('checked', false);
-        $(this).closest(".list_row").find('input[type="checkbox"][name*="check"]').prop('checked', true);
-        $(this).closest("form.list_form").find('select[name="action"] option[value=delete]').prop('selected',
-            true);
-        $(this).closest("form.list_form").submit();
+        $('.list input[type="checkbox"][name*="check"]')
+            .prop('checked', false);
+        $(this).closest(".list_row").find('input[type="checkbox"][name*="check"]')
+            .prop('checked', true);
+        $(this).closest("form.list_form").find('select[name="action"] option[value=delete]')
+            .prop('selected', true);
+
+        $(this).closest("form.list_form").trigger('submit');
     });
 
     // Подтверждение удаления

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.8
+ * @version 1.9
  *
  */
 
@@ -118,7 +118,7 @@ trait CheckModelTrait
                     }
                     break;
                 case 'datetime':
-                    $column = $blueprint->dateTime($name);
+                    $column = $blueprint->dateTime($name)->default(DB::raw('CURRENT_TIMESTAMP'));
                     break;
                 case 'date':
                     $column = $blueprint->date($name);

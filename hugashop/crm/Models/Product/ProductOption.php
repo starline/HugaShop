@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  */
 
@@ -18,9 +18,10 @@ class ProductOption extends BaseModel
 {
 
     protected static $table_fields = [
-        'product_id' =>        ['type' => 'int',           'req' => true],
-        'feature_id' =>        ['type' => 'int',           'req' => true],
-        'option_id' =>         ['type' => 'int',           'req' => true]
+        'id' =>                ['type' => 'int',       'extra' => 'AUTO_INCREMENT'],
+        'product_id' =>        ['type' => 'int',       'req' => true],
+        'feature_id' =>        ['type' => 'int',       'req' => true],
+        'option_id' =>         ['type' => 'int',       'req' => true]
     ];
 
 
@@ -54,9 +55,10 @@ class ProductOption extends BaseModel
             ->whereIn('product_id', $ids)
             ->get()->map(function ($option) {
                 return (object)[
-                    'feature_id' => $option->feature->id ?? null,
-                    'name'       => $option->feature->name ?? null,
-                    'value'      => $option->value,
+                    'feature_id' => $option->feature->id,
+                    'name'       => $option->feature->name,
+                    'option_id'  => $option->option_id,
+                    'value'      => $option->option->value,
                     'product_id' => $option->product_id,
                 ];
             });
@@ -117,7 +119,7 @@ class ProductOption extends BaseModel
         }
 
         $query = self::query()
-            ->with(['product', 'feature']); // eager load отношения
+            ->with(['product', 'feature', 'option']); // eager load отношения
 
         // Присоединение таблицы продуктов для фильтрации по видимости и категории
         if (isset($filter['visible'])) {
@@ -136,16 +138,6 @@ class ProductOption extends BaseModel
 
         if (isset($filter['product_id'])) {
             $query->whereIn('product_id', (array)$filter['product_id']);
-        }
-
-        if (isset($filter['brand_id'])) {
-            $query->whereHas('product', function ($q) use ($filter) {
-                $q->whereIn('brand_id', (array)$filter['brand_id']);
-            });
-        }
-
-        if (!empty($filter['keyword'])) {
-            $query->where('value', 'like', '%' . $filter['keyword'] . '%');
         }
 
         if (!empty($filter['features'])) {
@@ -167,38 +159,5 @@ class ProductOption extends BaseModel
         $query->orderByRaw('value = 0, -value DESC, value');
 
         return $query->get();
-    }
-
-
-    /**
-     * Get All feature variants
-     */
-    public static function getAllVariants(array $filter)
-    {
-        $query = self::query()->select('value');
-
-        if (isset($filter['feature_id'])) {
-            $query->where('feature_id', $filter['feature_id']);
-        }
-
-        if (!empty($filter['keyword'])) {
-            $query->where('value', 'like', '%' . $filter['keyword'] . '%');
-        }
-
-        if (isset($filter['limit']) && $filter['limit'] !== 'all') {
-            $query->limit((int) $filter['limit']);
-        }
-
-        $query->groupBy('value')
-            ->orderByRaw('value = 0, -value DESC, value');
-
-        $feature_variants = $query->get();
-
-        // Fill translations
-        if ($code = Language::checkOrGetCode() and self::isTranslatable()) {
-            self::fillTranslations($feature_variants, $code, merge_fields: true);
-        }
-
-        return $feature_variants;
     }
 }

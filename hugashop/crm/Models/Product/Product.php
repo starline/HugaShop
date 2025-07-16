@@ -423,8 +423,8 @@ class Product extends BaseModel
         $product = self::createOne($product);
 
         // Make position same as id
-        self::updateOne($product->id, ['position' => $product->id]);
-        $product->position = $product->id;
+        $product = self::updateOne($product->id, ['position' => $product->id]);
+
         return $product;
     }
 
@@ -455,7 +455,7 @@ class Product extends BaseModel
         }
 
         // Удаляем свойства
-        $options = ProductOption::getOptions(array('product_id' => $id));
+        $options = ProductOption::getOptions(['product_id' => $id]);
         foreach ($options as $o) {
             ProductOption::deleteOption($id, $o->feature_id);
         }
@@ -514,7 +514,7 @@ class Product extends BaseModel
         }
 
         // Дублируем свойства
-        $options = ProductOption::getOptions(['product_id' => $id]);
+        $options = ProductOption::getProductOptions($id);
         foreach ($options as $o) {
             ProductOption::updateOption($new_id, $o->feature_id, $o->value);
         }
