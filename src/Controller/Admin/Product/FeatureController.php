@@ -67,7 +67,7 @@ class FeatureController extends BaseAdminController
             Design::assign('feature_categories', ProductCategoryFeature::getFeatureCategories($feature->id));
 
             // Значения характеристики
-            Design::assign('options', ProductFeatureOption::getListTranslate(['feature_id' => $feature->id]));
+            Design::assign('options', ProductFeatureOption::getListEditTranslate(['feature_id' => $feature->id]));
         }
 
         Design::assign('feature', $feature);

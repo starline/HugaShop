@@ -178,6 +178,22 @@ trait TranslationTrait
 
 
     /**
+     * Get Entities with all traslated fields 
+     */
+    public static function getListEditTranslate(array $filter = [], array|string $order = [], array|string $join = [], ?string $select = null, ?int $cache = 0)
+    {
+
+        // TODO caching
+        $result = self::getList($filter, $order, $join, $select, $cache);
+
+        if ($language_code = Language::checkOrGetCode() and static::isTranslatable() and $result) {
+            static::fillTranslations($result, $language_code, merge_fields: false);
+        }
+        return $result;
+    }
+
+
+    /**
      * Get Entities with merge translated fields
      */
     public static function getListTranslate(array $filter = [], array|string $order = [], array|string $join = [], ?string $select = null, ?int $cache = 0)
