@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.6
+ * @version 3.7
  *
  */
 
@@ -18,6 +18,10 @@ use App\Controller\BaseFrontController;
 use HugaShop\Models\Content\ContentComment;
 use HugaShop\Models\Product\ProductVariant;
 use HugaShop\Models\Product\ProductCategory;
+use HugaShop\Models\Product\ProductOption;
+use HugaShop\Models\Product\ProductFeature;
+use HugaShop\Models\Product\ProductFeatureOption;
+use HugaShop\Models\Localization\Language;
 use HugaShop\Services\Config;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -50,7 +54,8 @@ class ProductController extends BaseFrontController
             'brand',
             'related',
             'related.image',
-            'features'
+            'options.option',
+            'options.feature'
         ]);
 
 
@@ -62,6 +67,25 @@ class ProductController extends BaseFrontController
         if ($product->url !== $url) {
             return $this->redirectToRoute('Product', ['url' => $product->url], 301);
         }
+
+        // Product features according to language
+        $options = ProductOption::query()
+            ->where('product_id', $product->id)
+            ->with(['feature', 'option'])
+            ->get();
+
+        if ($code = Language::checkOrGetCode()) {
+            ProductFeature::fillTranslations($options->pluck('feature'), $code, merge_fields: true);
+            ProductFeatureOption::fillTranslations($options->pluck('option'), $code, merge_fields: true);
+        }
+
+        $product->features = $options->map(function ($opt) {
+            return (object) [
+                'id'    => $opt->feature->id,
+                'name'  => $opt->feature->name,
+                'value' => $opt->option->value,
+            ];
+        });
 
         // Variants
         $product_variants = ProductVariant::getVariants($product->id, ['product', 'product.image']);
