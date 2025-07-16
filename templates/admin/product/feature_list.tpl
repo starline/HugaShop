@@ -28,8 +28,19 @@
 				</div>
 
 				<div class="offcanvas-body">
+
 					<!-- Категории товаров -->
 					{include file='parts/categories_tree_part.tpl'}
+
+					<!-- Фильтры -->
+					<ul class="menu_list layer">
+						<li {if !$filter}class="selected" {/if}>
+							<a href="{url page=null filter=null}">Все характеристики</a>
+						</li>
+						<li {if $filter == 'in_filter'}class="selected" {/if}>
+							<a href="{url page=null filter='in_filter'}">Используется в фильтре</a>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>

@@ -32,59 +32,9 @@ class ProductListController extends BaseAdminController
 
         $filter = PaginationService::initFilter();
 
-        // Текущая категория
-        $category_id = Request::getInt('category_id');
-        $filter['category_id'] = $category_id ?: null;
 
-        // Если категория существует Выбираем всех деток категории
-        if ($category_id && $category = ProductCategory::getCategoryById($category_id)) {
-            $filter['category_id'] = $category->children;
-        }
-
-        // Текущий бренд
-        $brand_id = Request::getInt('brand_id');
-        if ($brand_id && $brand = ProductBrand::getBrand($brand_id)) {
-            $filter['brand_id'] = $brand->id;
-        }
-
-        // Текущий фильтр
-        if ($fltr = Request::get('filter', 'string')) {
-            if ($fltr == 'featured') {
-                $filter['featured'] = 1;
-            } elseif ($fltr == 'sale') {
-                $filter['sale'] = 1;
-            } elseif ($fltr == 'discounted') {
-                $filter['discounted'] = 1;
-            } elseif ($fltr == 'visible') {
-                $filter['visible'] = 1;
-            } elseif ($fltr == 'hidden') {
-                $filter['visible'] = 0;
-            } elseif ($fltr == 'outofstock') {
-                $filter['in_stock'] = 0;
-            } elseif ($fltr == 'instock') {
-                $filter['in_stock'] = 1;
-            } elseif ($fltr == 'stagnation') {
-                $filter['stagnation'] = 1;
-            } elseif ($fltr == 'purchase') {
-                $filter['purchase'] = 1;
-            } elseif ($fltr == 'top') {
-                $filter['top'] = 1;
-            }
-
-            Design::assign('filter', $fltr);
-        }
-
-        $filter['date_from'] = Request::get('date_from');
-        Design::assign('date_from', $filter['date_from']);
-
-        // Поиск (type 'string' - сжирает запятые)
-        $keyword = Request::get('keyword');
-        if (!empty($keyword)) {
-            $filter['keyword'] = $keyword;
-            Design::assign('keyword', $keyword);
-        }
-
-        // Обработка действий
+        ## Обработка действий
+        #####################
         if (Request::checkCSRF()) {
 
             foreach (Helper::getPositions('DESC') as $id => $position) {
@@ -182,6 +132,60 @@ class ProductListController extends BaseAdminController
                 }
             }
         }
+
+
+        // Текущая категория
+        $category_id = Request::getInt('category_id');
+        $filter['category_id'] = $category_id ?: null;
+
+        // Если категория существует Выбираем всех деток категории
+        if ($category_id && $category = ProductCategory::getCategoryById($category_id)) {
+            $filter['category_id'] = $category->children;
+        }
+
+        // Текущий бренд
+        $brand_id = Request::getInt('brand_id');
+        if ($brand_id && $brand = ProductBrand::getBrand($brand_id)) {
+            $filter['brand_id'] = $brand->id;
+        }
+
+        // Текущий фильтр
+        if ($query_filter = Request::get('filter', 'string')) {
+            if ($query_filter == 'featured') {
+                $filter['featured'] = 1;
+            } elseif ($query_filter == 'sale') {
+                $filter['sale'] = 1;
+            } elseif ($query_filter == 'discounted') {
+                $filter['discounted'] = 1;
+            } elseif ($query_filter == 'visible') {
+                $filter['visible'] = 1;
+            } elseif ($query_filter == 'hidden') {
+                $filter['visible'] = 0;
+            } elseif ($query_filter == 'outofstock') {
+                $filter['in_stock'] = 0;
+            } elseif ($query_filter == 'instock') {
+                $filter['in_stock'] = 1;
+            } elseif ($query_filter == 'stagnation') {
+                $filter['stagnation'] = 1;
+            } elseif ($query_filter == 'purchase') {
+                $filter['purchase'] = 1;
+            } elseif ($query_filter == 'top') {
+                $filter['top'] = 1;
+            }
+
+            Design::assign('filter', $query_filter);
+        }
+
+        $filter['date_from'] = Request::get('date_from');
+        Design::assign('date_from', $filter['date_from']);
+
+        // Поиск (type 'string' - сжирает запятые)
+        $keyword = Request::get('keyword');
+        if (!empty($keyword)) {
+            $filter['keyword'] = $keyword;
+            Design::assign('keyword', $keyword);
+        }
+
 
         // Отображение
         if (isset($brand)) {

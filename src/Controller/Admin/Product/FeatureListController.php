@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.4
+ * @version 2.5
  *
  */
 
@@ -29,7 +29,9 @@ class FeatureListController extends BaseAdminController
 
         $this->checkAdminAccess('product_feature');
 
-        // Обработка действий
+
+        ## Обработка действий
+        #####################
         if (Request::checkCSRF()) {
 
             // Действия с выбранными
@@ -47,7 +49,7 @@ class FeatureListController extends BaseAdminController
                     case 'delete': {
                             $current_cat = Request::getInt('category_id');
                             foreach ($ids as $id) {
-                                
+
                                 // текущие категории
                                 $cats = ProductCategoryFeature::getFeatureCategories($id);
 
@@ -69,7 +71,18 @@ class FeatureListController extends BaseAdminController
             }
         }
 
+
         $filter = PaginationService::initFilter();
+
+        // Текущий фильтр
+        if ($query_filter = Request::get('filter', 'string')) {
+            if ($query_filter == 'in_filter') {
+                $filter['in_filter'] = 1;
+            }
+
+            Design::assign('filter', $query_filter);
+        }
+
         if ($category_id = Request::getInt('category_id')) {
             $category = ProductCategory::getCategoryById($category_id);
             Design::assign('category', $category);
