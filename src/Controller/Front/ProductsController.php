@@ -92,7 +92,7 @@ class ProductsController extends BaseFrontController
             }
         }
 
-        // Свойства характеристик
+        // Характеристики
         $options_filter['visible'] = 1;
         $options_filter['category_id'] = $category->children;
         if (!empty($features)) {

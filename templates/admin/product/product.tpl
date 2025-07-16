@@ -147,7 +147,7 @@
 				</ul>
 
 				<!-- Новые свойства -->
-				<li id="new_feature" style="display:none;">
+				<li id="new_feature" feature_id="" style="display:none;">
 					<input class="form-control" type="text" name="new_features_names[]">
 					<input class="form-control" type="text" name="new_features_values[]" />
 				</li>

@@ -33,8 +33,8 @@
                                 <a href="{'ExtGoogleMerchantFeed'|link:[id => $pricefeed->id]}">{$pricefeed->name}</a>
 
                                 <div class="badge text-bg-round copy_field"
-                                    value="{'ExtensionIdTokenExchange'|link:[name => $extension->module, id => $pricefeed->id, token => $pricefeed->token]}">
-                                    {'ExtensionIdTokenExchange'|link:[name => $extension->module, id => $pricefeed->id, token => $pricefeed->token]}
+                                    value="{$config->root_url}{'ExtensionIdTokenExchange'|link:[name => $extension->module, id => $pricefeed->id, token => $pricefeed->token]}">
+                                    {$config->root_url}{'ExtensionIdTokenExchange'|link:[name => $extension->module, id => $pricefeed->id, token => $pricefeed->token]}
                                     <div class="copy_hover" data-bs-toggle="tooltip" data-bs-original-title="Скопировать">
                                         <i class="material-icons">content_copy</i>
                                     </div>

@@ -312,7 +312,7 @@
 				</main>
 
 				<footer class="mt-4 mb-4">
-					<span>HugaShop v2.1</span>
+					<span>HugaShop v2.5</span>
 				</footer>
 			</div>
 		</div>
