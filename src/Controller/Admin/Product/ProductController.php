@@ -27,6 +27,7 @@ use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Models\Product\ProductCategoryFeature;
+use HugaShop\Models\Product\ProductFeatureOption;
 
 class ProductController extends BaseAdminController
 {
@@ -134,11 +135,12 @@ class ProductController extends BaseAdminController
                 return $this->redirectToRoute('ProductListAdmin');
             }
 
-            $options = ProductOption::getListTranslate(['product_id' => $product->id])->keyBy('feature_id');
-            $features_ids = $options->pluck('feature_id')->all();
-            $options_ids = $options->pluck('option_id')->all();
-
-            Design::assign('options',       $options);
+            $features_options = ProductOption::getList(['product_id' => $product->id]);
+            $features_ids = $features_options->pluck('feature_id')->all();
+            $options_ids = $features_options->pluck('option_id')->all();
+            dump($options_ids);dump($features_ids);
+            dump(ProductFeatureOption::getListTranslate(['id' => $options_ids])->keyBy('feature_id'));
+            Design::assign('options',       ProductFeatureOption::getListTranslate(['id' => $options_ids])->keyBy('feature_id'));
             Design::assign('features',      ProductFeature::getListTranslate(['id' => $features_ids]));
             Design::assign('seo_keywords',  SeoKeywords::getKeywords($product->id, 'product'));
         }
