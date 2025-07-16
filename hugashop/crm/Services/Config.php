@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.0
+ * @version 3.1
  *
  * Класс-обертка для конфигурационного файла с настройками магазина
  * В отличие от класса Settings, Config оперирует низкоуровневыми настройками, например найстройками базы данных.
@@ -55,7 +55,6 @@ class Config
             self::$vars[$var] = $value;
         }
 
-        // Протокол
         $protocol = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http';
 
         self::$vars['protocol'] =                   $protocol;
@@ -65,10 +64,10 @@ class Config
         self::$vars['root_dir'] =                   self::$root_dir;                                  # Root directory
         self::$vars['templates_dir'] =              self::$root_dir . 'templates/';                   # Directory for Templates
 
-        self::$vars['payment_dir'] =                self::$crm_dir . 'Modules/Payment/';    # Directory for payment modules
-        self::$vars['delivery_dir'] =               self::$crm_dir . 'Modules/Delivery/';   # Directory for delivery modules
-        self::$vars['notifier_dir'] =               self::$crm_dir . 'Modules/Notifier/';   # Directory for notifier modules
-        self::$vars['extension_dir'] =              self::$crm_dir . 'Extensions/';         # Directory for Extensions
+        self::$vars['payment_dir'] =                self::$crm_dir . 'Modules/Payment/';              # Directory for payment modules
+        self::$vars['delivery_dir'] =               self::$crm_dir . 'Modules/Delivery/';             # Directory for delivery modules
+        self::$vars['notifier_dir'] =               self::$crm_dir . 'Modules/Notifier/';             # Directory for notifier modules
+        self::$vars['extension_dir'] =              self::$crm_dir . 'Extensions/';                   # Directory for Extensions
 
         self::$vars['import_files_dir'] =           self::$root_dir . 'public/files/imports/';        # Directory for import files
         self::$vars['export_files_dir'] =           self::$root_dir . 'public/files/exports/';        # Directory for export files
@@ -93,24 +92,28 @@ class Config
 
     /**
      * Magic method get current var
-     * Example: Config::get()->root_url;
      * Example: Config::get('database')->user;
-     * Example: Config::get()->database->user;
      * @param string $name
      */
-    public static function get(?string $param_name = null)
+    public static function get(string $param)
     {
         self::getInstance();
 
-        if (is_null($param_name)) {
-            return (object) self::$vars;
-        }
-
-        if (isset(self::$vars[$param_name])) {
-            return self::$vars[$param_name];
+        if (isset(self::$vars[$param])) {
+            return self::$vars[$param];
         } else {
             return null;
         }
+    }
+
+
+    /**
+     * Get all config
+     */
+    public static function getAll()
+    {
+        self::getInstance();
+        return (object) self::$vars;
     }
 
 
@@ -143,9 +146,9 @@ class Config
      */
     private static function getMaxUploadFilesize(): int
     {
-        $max_upload = (int)(ini_get('upload_max_filesize'));                # mb
-        $max_post = (int)(ini_get('post_max_size'));                        # mb
-        $memory_limit = (int)(ini_get('memory_limit'));                     # mb
+        $max_upload     = (int)(ini_get('upload_max_filesize'));            # mb
+        $max_post       = (int)(ini_get('post_max_size'));                  # mb
+        $memory_limit   = (int)(ini_get('memory_limit'));                   # mb
         return min($max_upload, $max_post, $memory_limit) * 1024 * 1024;    # bytes
     }
 }

@@ -290,7 +290,7 @@ class Request
 
         // Check empty value
         foreach ($query as $name => $value) {
-            if ($value === '' or $value === null) { // При не срогом сравнение '' = 0
+            if ($value === '' or $value === null) { # При не срогом сравнение '' = 0
                 unset($query[$name]);
             }
         }
@@ -420,7 +420,7 @@ class Request
                 }
             }
         }
-        
+
         if ($decline === true) {
             return null;
         }

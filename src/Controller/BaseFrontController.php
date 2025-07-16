@@ -42,7 +42,7 @@ class BaseFrontController extends BaseController
         }
 
         Design::assign([
-            'config'            => Config::get(), # Configuration
+            'config'            => Config::getAll(), # Configuration
             'settings'          => Settings::getAllParams(),
             'user'              => User::authUser(),
             'currency'          => FinanceCurrency::getMainCurrency(),
