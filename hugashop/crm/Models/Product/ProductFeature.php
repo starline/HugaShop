@@ -19,7 +19,7 @@ class ProductFeature extends BaseModel
 
     protected static $table_fields = [
         'id' =>                 ['type' => 'int',       'lenght' => 11, 'extra' => 'AUTO_INCREMENT'],
-        'name' =>               ['type' => 'varchar',   'req' => true, 'trans' => true],
+        'name' =>               ['type' => 'varchar',   'req' => true,  'trans' => true,    'search' => true],
         'in_filter' =>          ['type' => 'tinyint',   'def' => 0],
         'position' =>           ['type' => 'int',       'def' => 0]
     ];

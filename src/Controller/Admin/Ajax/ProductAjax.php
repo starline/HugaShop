@@ -72,7 +72,8 @@ class ProductAjax extends BaseAdminController
         $limit          = 80;
         $keyword        = Request::input('query', 'string');
         $feature_id     = Request::input('feature_id', 'int');
-        $options        = ProductFeatureOption::getListTranslate(["feature_id" => $feature_id, "search" => $keyword, "limit" => $limit]);
+
+        $options        = ProductFeatureOption::getListTranslate(['feature_id' => $feature_id, 'search' => $keyword, 'limit' => $limit]);
         $options_value  = $options?->pluck('value');
 
         $res = new \stdClass();
@@ -95,9 +96,10 @@ class ProductAjax extends BaseAdminController
         // Init content language
         LanguageService::languageCatch();
 
-        $limit          = 100;
+        $limit          = 80;
         $keyword        = Request::input('query', 'string');
-        $features       = ProductFeature::getFeatures(['keyword' => $keyword, 'limit' => $limit]);
+
+        $features       = ProductFeature::getListTranslate(['search' => $keyword, 'limit' => $limit]);
         $features_name  = $features?->pluck('name');
 
         $res = new \stdClass();
