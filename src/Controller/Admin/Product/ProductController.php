@@ -88,16 +88,12 @@ class ProductController extends BaseAdminController
 
             // Устанавливаем харакетристики товара
             if ($options = Request::post('options', 'array')) {
-                foreach ($options as $id => $val) {
+                foreach ($options as $feature_id => $val) {
 
-                    $option = new \stdClass();
-                    $option->feature_id = $f_id;
-                    $option->value = $val;
+                    ProductOption::updateOption($product->id, $feature_id, $val->value);
 
-                    ProductOption::updateOption(intval($product->id), $option->feature_id, $option->value);
-
-                    if (!in_array($option->feature_id, $category_features)) {
-                        ProductCategoryFeature::addFeatureCategory($option->feature_id, $product->category_id);
+                    if (!in_array($feature_id, $category_features)) {
+                        ProductCategoryFeature::addFeatureCategory($feature_id, $product->category_id);
                     }
                 }
             }
@@ -105,6 +101,7 @@ class ProductController extends BaseAdminController
             // Новые характеристики
             $new_features_names     = Request::post('new_features_names', 'array');
             $new_features_values    = Request::post('new_features_values', 'array');
+            
             if (is_array($new_features_names) && is_array($new_features_values)) {
                 foreach ($new_features_names as $i => $name) {
                     $value = trim($new_features_values[$i]);

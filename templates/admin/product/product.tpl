@@ -136,10 +136,10 @@
 				<ul class="property_block features">
 					{foreach $features as $feature}
 						<li feature_id="{$feature->id}">
-							<label for="options[{$feature->id}]" class="col-form-label">
+							<label for="feature_{$feature->id}" class="col-form-label">
 								<a href="{'FeatureAdmin'|link:[id => $feature->id]}">{$feature->name}</a>
 							</label>
-							<input class="form-control" type="text" name="options[{$feature->id}]"
+							<input class="form-control" id="feature_{$feature->id}" type="text" name="options[{$feature->id}][{$options.{$feature->id}->id}]"
 								value="{$options.{$feature->id}->value}" />
 						</li>
 					{/foreach}
