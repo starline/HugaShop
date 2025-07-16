@@ -126,7 +126,7 @@
 				<!-- Cинонимы категории -->
 				<div class="layer">
 					<h2>Синонимы категрии</h2>
-					<ul class="list mini features_variants" id="sort">
+					<ul class="list mini features_variants sortable_on">
 						{foreach $synonyms as $synonym}
 							<li class="list_row">
 								<div class="move">
@@ -227,17 +227,6 @@
 					});
 					return false;
 				});
-
-
-				$("#sort").sortable({
-					items: ".list_row:not(.sortable_off)",
-					cancel: ".sortable_off",
-					handle: ".move_zone",
-					axis: 'y',
-					opacity: 0.90,
-					tolerance: "pointer"
-				});
-
 
 				// Автозаполнение мета-тегов
 				let meta_title_touched = true;

@@ -28,8 +28,12 @@ $(function () {
         opacity: 0.90,
         axis: "y",
         update: function (event, ui) {
-            $("form.list_form input[name*='check']").prop('checked', false);
-            $("form.list_form").ajaxSubmit();
+            $(this).find("input[name*='check']").prop('checked', false);
+
+            // listt_form
+            if ($("form.list_form").length) {
+                $("form.list_form").ajaxSubmit();
+            }
         }
     });
 

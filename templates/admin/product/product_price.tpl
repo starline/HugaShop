@@ -188,7 +188,7 @@
 					<span class="sum_total">{$product_variants|count}
 						{$product_variants|count|plural:'товар':'товаров':'товара'}</span>
 				</h2>
-				<div class="list sortable product_variants">
+				<div class="list product_variants sortable_on">
 					{foreach $product_variants as $product_variant}
 						<div
 							class="list_row {if !$product_variant->product->visible}visible_off{/if} {if $product_variant->product->disable}disable{/if}">
@@ -299,7 +299,7 @@
 					<span class="sum_total">{$product->related|count}
 						{$product->related|count|plural:'товар':'товаров':'товара'}</span>
 				</h2>
-				<div class="list sortable related_products">
+				<div class="list related_products sortable_on">
 					{foreach $product->related as $rel_product}
 						<div
 							class="list_row {if !$rel_product->visible}visible_off{/if} {if $rel_product->disable}disable{/if}">
@@ -378,16 +378,6 @@
 				});
 
 
-				// Сортировка товаров
-				$('.sortable').sortable({
-					items: '.list_row',
-					handle: '.move_zone',
-					tolerance: "pointer",
-					opacity: 0.95,
-					axis: 'y'
-				});
-
-
 				// После завершения сортировки переиндексировать input-ы
 				function indexListRows(container_selector, name_prefix) {
 					const regex = new RegExp(name_prefix + '\\[(?:\\d+|INDEX)\\]');
@@ -459,7 +449,7 @@
 
 				// Добавление связанного товара 
 				let new_related_product = $('#new_related_product').clone(true).removeAttr('id');
-				$('#new_related_product')removeAttr('id').remove();
+				$('#new_related_product') removeAttr('id').remove();
 
 				$("input#related_products").autocomplete({
 					serviceUrl: '/admin/ajax/search/product',

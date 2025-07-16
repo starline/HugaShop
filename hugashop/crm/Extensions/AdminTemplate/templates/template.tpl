@@ -99,7 +99,7 @@
             <!-- Mini input list -->
             <div class="col-lg-6 layer">
                 <h2>Input List</h2>
-                <ul class="list mini mini_list" id="sort">
+                <ul class="list mini mini_list sortable_on">
                     <li class="list_row">
                         <div class="move">
                             <div class="move_zone"></div>
@@ -153,17 +153,6 @@
                                 });
                                 return false;
                             });
-
-                            // Dort inpot list
-                            $("#sort").sortable({
-                                items: ".list_row:not(.sortable_off)",
-                                cancel: ".sortable_off",
-                                handle: ".move_zone",
-                                axis: 'y',
-                                opacity: 0.90,
-                                tolerance: "pointer"
-                            });
-
                         });
 
                     {/literal}
