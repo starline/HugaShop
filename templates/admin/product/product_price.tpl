@@ -401,11 +401,15 @@
 
 				// Варианты товара
 				let new_product_variant = $('#new_product_variant').clone(true).removeAttr('id');
-				$('#new_product_variant').remove();
+				$('#new_product_variant').removeAttr('id').remove();
+
 				$("input#product_variants").autocomplete({
 					serviceUrl: '/admin/ajax/search/product',
 					minChars: 0,
 					noCache: false,
+					params: {
+						csrf: csrf
+					},
 					onSelect: function(suggestion) {
 						$(this).val('').focus().blur();
 						let new_item = new_product_variant.clone().appendTo('.product_variants');
@@ -455,11 +459,15 @@
 
 				// Добавление связанного товара 
 				let new_related_product = $('#new_related_product').clone(true).removeAttr('id');
-				$('#new_related_product').remove();
+				$('#new_related_product')removeAttr('id').remove();
+
 				$("input#related_products").autocomplete({
 					serviceUrl: '/admin/ajax/search/product',
 					minChars: 0,
 					noCache: false,
+					params: {
+						csrf: csrf
+					},
 					onSelect: function(suggestion) {
 						$(this).val('').focus().blur();
 						let new_item = new_related_product.clone().appendTo('.related_products');

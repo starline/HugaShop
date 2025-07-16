@@ -74,7 +74,6 @@ class ProductController extends BaseAdminController
             SeoKeywords::catchKeywords($product->id, 'product');
             ImageService::catchImages($product->id, 'product', 'images');
 
-            // Характеристики товара
             // Сначала очищаем связи, чтобы удалить неактуальные данные
             ProductOption::query()->where('product_id', $product->id)->delete();
 
@@ -144,6 +143,7 @@ class ProductController extends BaseAdminController
                             'feature_id' => $feature->id,
                             'value'      => $value,
                         ]);
+                        
                         ProductOption::updateOrCreate(
                             ['product_id' => $product->id, 'feature_id' => $feature->id],
                             ['option_id' => $feature_option->id]

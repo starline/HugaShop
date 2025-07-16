@@ -325,7 +325,9 @@
 				// Выбираем тип контрагента
 				$('select[name="entity_name"]').change(function() {
 					let entity_type = $(this).find('option:selected').data('type');
-					let params = {};
+					let params = {
+						csrf: csrf
+					};
 
 					let entity_sort = $(this).find('option:selected').data('sort');
 					if (entity_sort) {

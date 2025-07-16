@@ -109,7 +109,7 @@ class SearchAjax extends BaseAdminController
         $this->checkAdminAccess(['order', 'product_price', 'warehouse_add', 'warehouse_edit'], checkCSRF: true);
 
         // Поиск (без 'string' - сжирает запятые)
-        $keyword = Request::get('query');
+        $keyword = Request::input('query');
         if (!empty($keyword)) {
             $filter['keyword'] = $keyword;
         }

@@ -483,18 +483,20 @@
 				});
 
 				// Добавление товара. Клонируем срочку товара.
-				const new_purchase = $('.purchases #new_purchase').clone(true);
-				$('.purchases #new_purchase').remove().removeAttr('id');
+				const new_purchase = $('.purchases #new_purchase').clone(true).removeAttr('id');
+				$('.purchases #new_purchase').removeAttr('id').remove();
 
 				$("input#add_purchase").autocomplete({
 					serviceUrl: '/admin/ajax/search/product',
 					minChars: 0,
 					noCache: false,
+					params: {
+						csrf: csrf
+					},
 					onSelect: function(suggestion) {
 						let new_item = new_purchase.clone().appendTo('.purchases');
 						let product = suggestion.data;
 
-						new_item.removeAttr('id');
 						new_item.find('a.add_name').html(product.name);
 						new_item.find('a.add_name').attr('href', '/admin/product/' + product.id +
 							'/price');

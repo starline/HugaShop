@@ -142,12 +142,12 @@
 			$(function() {
 
 				// Добавление валюты
-				var curr = $('#new_currency').clone(true);
+				var curr = $('#new_currency').clone(true).removeAttr('id');
+				$('#new_currency').removeAttr('id').remove();
 
-				$('#new_currency').remove().removeAttr('id');
 				$('a#add_currency').on('click', function() {
-					$(curr).clone(true).appendTo('#currencies').fadeIn('slow').find(
-						"input[name*=currency][name*=name]").focus();
+					$(curr).clone(true).appendTo('#currencies').fadeIn('slow')
+						.find("input[name*=currency][name*=name]").focus();
 					return false;
 				});
 

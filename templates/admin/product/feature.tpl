@@ -96,11 +96,11 @@
 			$(function() {
 
 				// Добавление варианта
-				const new_option = $('.options #new').clone(true);
+				const new_option = $('.options #new').clone(true).removeAttr('id');
 				$('.options #new').removeAttr('id').remove();
 
 				$('.add').click(function() {
-					new_option.clone().appendTo('.options').removeAttr('id').show()
+					new_option.clone().appendTo('.options').show()
 						.find('input[name="options[]"]').focus();
 					return false;
 				});

@@ -10,16 +10,17 @@
 
 namespace App\Controller;
 
-use HugaShop\Models\User\User;
-use HugaShop\Models\Order\Order;
+use HugaShop\Models\Settings;
 use HugaShop\Services\Config;
 use HugaShop\Services\Design;
+use HugaShop\Services\Helper;
+use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
-use HugaShop\Models\Settings;
-use HugaShop\Models\Content\ContentComment;
+use HugaShop\Models\Order\Order;
 use HugaShop\Models\User\UserPermission;
-use HugaShop\Models\Finance\FinanceCurrency;
 use HugaShop\Models\Localization\Language;
+use HugaShop\Models\Content\ContentComment;
+use HugaShop\Models\Finance\FinanceCurrency;
 use Symfony\Contracts\Service\Attribute\Required;
 
 class BaseAdminController extends BaseController
@@ -67,7 +68,7 @@ class BaseAdminController extends BaseController
     public function checkAdminAccess(string|array $access_type, bool $checkCSRF = false)
     {
         if ($checkCSRF and !Request::checkCSRF()) {
-            throw $this->createNotFoundException('Access denied'); # 404
+            throw $this->createNotFoundException('Access denied...'); # 404
         }
 
         if (!UserPermission::checkAccess($access_type)) { # Check acces

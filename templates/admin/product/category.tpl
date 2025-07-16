@@ -32,7 +32,8 @@
 						</div>
 					</div>
 
-					<a class="out_link" target="_self" href="{'Products'|linkLang:[url => $category->url]}">Открыть категорию на
+					<a class="out_link" target="_self" href="{'Products'|linkLang:[url => $category->url]}">Открыть
+						категорию на
 						сайте</a>
 				</div>
 
@@ -210,12 +211,12 @@
 				$(".chosen_select").chosen();
 
 				// Добавление синонима
-				const s_variant = $('.features_variants #new').clone(true);
-				$('.features_variants #new').remove().removeAttr('id');
+				const s_variant = $('.features_variants #new').clone(true).removeAttr('id');
+				$('.features_variants #new').removeAttr('id').remove();
 
 				$('.add').click(function() {
-					s_variant.clone().appendTo('.features_variants').show().find(
-						'input[name="synonyms[]"]').focus();
+					s_variant.clone().appendTo('.features_variants').show()
+						.find('input[name="synonyms[]"]').focus();
 					return false;
 				});
 

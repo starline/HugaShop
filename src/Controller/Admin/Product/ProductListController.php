@@ -42,7 +42,7 @@ class ProductListController extends BaseAdminController
             }
 
             // Действия с выбранными
-            $ids = Request::post('check');
+            $ids = Request::post('check', 'array');
             if (!empty($ids)) {
                 switch (Request::post('action')) {
                     case 'disable': {

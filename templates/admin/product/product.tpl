@@ -139,7 +139,8 @@
 							<label for="feature_{$feature->id}" class="col-form-label">
 								<a href="{'FeatureAdmin'|link:[id => $feature->id]}">{$feature->name}</a>
 							</label>
-							<input class="form-control" id="feature_{$feature->id}" type="text" name="options[{$feature->id}][{$options.{$feature->id}->id}]"
+							<input class="form-control" id="feature_{$feature->id}" type="text"
+								name="options[{$feature->id}][{$options.{$feature->id}->id}]"
 								value="{$options.{$feature->id}->value}" />
 						</li>
 					{/foreach}
@@ -239,7 +240,6 @@
 									.autocomplete({
 										serviceUrl: '/admin/ajax/product/get_option',
 										type: 'POST',
-										paramName: false,
 										minChars: 0,
 										params: {
 											feature_id: feature.id,
@@ -261,7 +261,6 @@
 					$(this).autocomplete({
 						serviceUrl: '/admin/ajax/product/get_option',
 						type: 'POST',
-						paramName: false,
 						minChars: 0,
 						params: {
 							feature_id: feature_id,
@@ -278,7 +277,6 @@
 					$(this).autocomplete({
 						serviceUrl: '/admin/ajax/product/get_feature_name',
 						type: 'POST',
-						paramName: false,
 						minChars: 0,
 						params: {
 							product_id: product_id,
@@ -291,11 +289,11 @@
 
 
 				// Добавление нового свойства товара
-				const new_feature = $('#new_feature').clone(true);
+				const new_feature = $('#new_feature').clone(true).removeAttr('id');
 				$('#new_feature').removeAttr('id').remove();
 
 				$('#add_new_feature').click(function() {
-					$(new_feature).clone(true).appendTo('.features').removeAttr('id').show()
+					$(new_feature).clone(true).appendTo('.features').show()
 						.find("input[name*=new_features_names]").focus();
 					return false;
 				});

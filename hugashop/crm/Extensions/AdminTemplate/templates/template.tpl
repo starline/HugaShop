@@ -137,8 +137,8 @@
                         $(function() {
 
                             // Mini input list
-                            const s_variant = $('.mini_list #new').clone(true);
-                            $('.mini_list #new').remove().removeAttr('id');
+                            const s_variant = $('.mini_list #new').clone(true).removeAttr('id');
+                            $('.mini_list #new').removeAttr('id').remove();
 
                             $('.add').click(function() {
                                 s_variant.clone().appendTo('.mini_list').show().find(

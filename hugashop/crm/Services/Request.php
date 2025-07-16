@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.3
+ * @version 3.4
  *
  * Класс-обертка для обращения к переменным $_GET, $_POST, $_FILES, $_COOKIE, $_SESSION
  *
@@ -31,7 +31,7 @@ class Request
      *		print 'Request method is POST';
      *
      */
-    public static function method($method = null)
+    public static function method(?string $method = null)
     {
         if (!empty($method)) {
             return strtolower($_SERVER['REQUEST_METHOD']) == strtolower($method);
@@ -336,15 +336,15 @@ class Request
      */
     public static function checkCSRF(): bool
     {
-        if (empty(self::method('post'))) {
+        if (!self::method('post') and !self::method('get')) {
+            return false;
+        }
+        
+        if (empty(self::getSession('csrf')) || empty(self::input('csrf'))) {
             return false;
         }
 
-        if (empty(self::getSession('csrf')) || empty(self::post('csrf'))) {
-            return false;
-        }
-
-        if (self::getSession('csrf') != self::post('csrf')) {
+        if (self::getSession('csrf') != self::input('csrf')) {
             return false;
         }
 
