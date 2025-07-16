@@ -38,6 +38,9 @@
 		<div id="main_list">
 
 			{if $features}
+
+				{include file='parts/pagination.tpl'}
+
 				<form method="post" class="list_form">
 					{getCSRFInput}
 
@@ -79,6 +82,9 @@
 						<button class="btn btn-primary apply" id="apply_action" type="submit">Применить</button>
 					</div>
 				</form>
+
+				{include file='parts/pagination.tpl'}
+
 			{else}
 				Нет свойств
 			{/if}

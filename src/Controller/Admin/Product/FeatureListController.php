@@ -47,6 +47,7 @@ class FeatureListController extends BaseAdminController
                     case 'delete': {
                             $current_cat = Request::getInt('category_id');
                             foreach ($ids as $id) {
+                                
                                 // текущие категории
                                 $cats = ProductCategoryFeature::getFeatureCategories($id);
 
