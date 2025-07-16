@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.4
+ * @version 2.5
  *
  */
 
@@ -42,26 +42,24 @@ class ProductOption extends BaseModel
 
     /**
      * Select pruduct features with option value
-     * @param int|array $product_id
+     * @param int $product_id
      */
-    public static function getProductOptions(int|array $product_id)
+    public static function getProductOptions(int $product_id)
     {
-        $ids = (array) $product_id;
+        $product_options = ProductOption::getList(['product_id' => $product_id]);
 
-        return self::with(['feature' => function ($query) {
-            $query->orderBy('position');
-        }])
-            ->with('option')
-            ->whereIn('product_id', $ids)
-            ->get()->map(function ($option) {
-                return (object)[
-                    'feature_id' => $option->feature->id,
-                    'name'       => $option->feature->name,
-                    'option_id'  => $option->option->id,
-                    'value'      => $option->option->value,
-                    'product_id' => $option->product_id,
-                ];
-            });
+        $features_ids   = $product_options->pluck('feature_id')->toArray();
+        $options_ids    = $product_options->pluck('option_id')->toArray();
+
+        $features   = ProductFeature::getListTranslate(['id' => $features_ids], 'position');
+        $options    = ProductFeatureOption::getListTranslate(['id' => $options_ids])->keyBy('feature_id');
+
+        foreach ($features as $feature) {
+            $feature->value     = $options[$feature->id]->value;
+            $feature->option_id = $options[$feature->id]->id;
+        }
+
+        return $features;
     }
 
 
