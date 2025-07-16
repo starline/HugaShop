@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  * 
  * ProductAdmin
  *
@@ -75,10 +75,8 @@ class ProductController extends BaseAdminController
             ImageService::catchImages($product->id, 'product', 'images');
 
             // Характеристики товара
-            // Удалим все из товара
-            foreach (ProductOption::getProductOptions($product->id) as $po) {
-                ProductOption::deleteOption($product->id, $po->feature_id);
-            }
+            // Сначала очищаем связи, чтобы удалить неактуальные данные
+            ProductOption::query()->where('product_id', $product->id)->delete();
 
             // Характеристики текущей категории
             $category_features = array();
@@ -86,11 +84,39 @@ class ProductController extends BaseAdminController
                 $category_features[] = $f->id;
             }
 
-            // Устанавливаем харакетристики товара
+            // Устанавливаем характеристики товара
             if ($options = Request::post('options', 'array')) {
-                foreach ($options as $feature_id => $val) {
+                foreach ($options as $feature_id => $option_data) {
 
-                    ProductOption::updateOption($product->id, $feature_id, $val->value);
+                    $option_id  = array_key_first($option_data);
+                    $value      = trim((string) $option_data[$option_id]);
+
+                    if ($value === '') {
+                        continue;
+                    }
+
+                    if (!empty($option_id)) {
+                        $feature_option = ProductFeatureOption::find($option_id);
+                        if ($feature_option) {
+                            $feature_option->value = $value;
+                            $feature_option->save();
+                        } else {
+                            $feature_option = ProductFeatureOption::createOne([
+                                'feature_id' => $feature_id,
+                                'value'      => $value,
+                            ]);
+                        }
+                    } else {
+                        $feature_option = ProductFeatureOption::firstOrCreate([
+                            'feature_id' => $feature_id,
+                            'value'      => $value,
+                        ]);
+                    }
+
+                    ProductOption::updateOrCreate(
+                        ['product_id' => $product->id, 'feature_id' => $feature_id],
+                        ['option_id' => $feature_option->id]
+                    );
 
                     if (!in_array($feature_id, $category_features)) {
                         ProductCategoryFeature::addFeatureCategory($feature_id, $product->category_id);
@@ -114,7 +140,14 @@ class ProductController extends BaseAdminController
                         }
 
                         ProductCategoryFeature::addFeatureCategory($feature->id, $product->category_id);
-                        ProductOption::updateOption($product->id, $feature->id, $value);
+                        $feature_option = ProductFeatureOption::firstOrCreate([
+                            'feature_id' => $feature->id,
+                            'value'      => $value,
+                        ]);
+                        ProductOption::updateOrCreate(
+                            ['product_id' => $product->id, 'feature_id' => $feature->id],
+                            ['option_id' => $feature_option->id]
+                        );
                     }
                 }
             }
@@ -135,8 +168,6 @@ class ProductController extends BaseAdminController
             $features_options = ProductOption::getList(['product_id' => $product->id]);
             $features_ids = $features_options->pluck('feature_id')->all();
             $options_ids = $features_options->pluck('option_id')->all();
-            dump($options_ids);dump($features_ids);
-            dump(ProductFeatureOption::getListTranslate(['id' => $options_ids])->keyBy('feature_id'));
             Design::assign('options',       ProductFeatureOption::getListTranslate(['id' => $options_ids])->keyBy('feature_id'));
             Design::assign('features',      ProductFeature::getListTranslate(['id' => $features_ids]));
             Design::assign('seo_keywords',  SeoKeywords::getKeywords($product->id, 'product'));
