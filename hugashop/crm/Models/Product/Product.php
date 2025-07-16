@@ -516,7 +516,11 @@ class Product extends BaseModel
         // Дублируем свойства
         $options = ProductOption::getProductOptions($id);
         foreach ($options as $o) {
-            ProductOption::updateOption($new_id, $o->feature_id, $o->value);
+            ProductOption::createOne([
+                'product_id' => $new_id,
+                'feature_id' => $o->feature_id,
+                'option_id' => $o->option_id
+            ]);
         }
 
         // Дублируем связанные товары

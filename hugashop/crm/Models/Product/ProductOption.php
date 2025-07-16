@@ -12,7 +12,6 @@ namespace HugaShop\Models\Product;
 
 use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
-use HugaShop\Models\Localization\Language;
 
 class ProductOption extends BaseModel
 {
@@ -52,12 +51,13 @@ class ProductOption extends BaseModel
         return self::with(['feature' => function ($query) {
             $query->orderBy('position');
         }])
+            ->with('option')
             ->whereIn('product_id', $ids)
             ->get()->map(function ($option) {
                 return (object)[
                     'feature_id' => $option->feature->id,
                     'name'       => $option->feature->name,
-                    'option_id'  => $option->option_id,
+                    'option_id'  => $option->option->id,
                     'value'      => $option->option->value,
                     'product_id' => $option->product_id,
                 ];
@@ -70,29 +70,26 @@ class ProductOption extends BaseModel
      * @param int $product_id
      * @param int $feature_id
      */
-    public static function updateOption(int $product_id, int $feature_id, $value)
+    public static function updateOption(int $product_id, int $feature_id, string $value)
     {
-        if (!empty($value)) {
+        $value = trim((string) $value);
 
-            // Используем updateOrCreate как аналог REPLACE INTO
-            self::updateOrCreate(
-                [
-                    'product_id' => $product_id,
-                    'feature_id' => $feature_id
-                ],
-                [
-                    'value' => $value
-                ]
-            );
-        } else {
+        // Получаем вариант характеристики или создаём новый
+        $featureOption = ProductFeatureOption::firstOrCreate([
+            'feature_id' => $feature_id,
+            'value'      => $value,
+        ]);
 
-            // Удаляем запись, если значение пустое
-            self::where('product_id', $product_id)
-                ->where('feature_id', $feature_id)
-                ->delete();
-        }
-
-        return true;
+        // Сохраняем связь товара и характеристики
+        return self::updateOrCreate(
+            [
+                'product_id' => $product_id,
+                'feature_id' => $feature_id,
+            ],
+            [
+                'option_id' => $featureOption->id,
+            ]
+        );
     }
 
 
@@ -114,7 +111,7 @@ class ProductOption extends BaseModel
     public static function getOptions(array $filter = [])
     {
 
-        if (!Helper::checkFilterParams($filter, ['feature_id', 'product_id', 'category_id', 'brand_id'])) {
+        if (!Helper::checkFilterParams($filter, ['feature_id', 'product_id', 'category_id'])) {
             return array();
         }
 
