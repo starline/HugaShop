@@ -59,7 +59,7 @@
                                 const value = data[field];
                                 let el = $('[name="' + field + '"]');
 
-                                // Если пришел массив значений (например, options)
+                                // Если пришел массив значений (например, options[])
                                 if (Array.isArray(value)) {
                                     el = $('[name="' + field + '[]"]');
                                     el.each(function(index) {
@@ -67,6 +67,17 @@
                                             $(this).val(value[index]);
                                         }
                                     });
+                                    continue;
+                                }
+
+                                // Если пришел объект значений (например, options[id])
+                                if (value && typeof value === 'object') {
+                                    for (const key in value) {
+                                        const optEl = $('[name="' + field + '[' + key + ']"]');
+                                        if (optEl.length) {
+                                            optEl.val(value[key]);
+                                        }
+                                    }
                                     continue;
                                 }
 
