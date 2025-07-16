@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  */
 
@@ -13,6 +13,7 @@ namespace App\Controller\Admin\Product;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
+use App\Services\PaginationService;
 use App\Controller\BaseAdminController;
 use HugaShop\Models\Product\ProductFeature;
 use HugaShop\Models\Product\ProductCategory;
@@ -67,7 +68,7 @@ class FeatureListController extends BaseAdminController
             }
         }
 
-        $filter = [];
+        $filter = PaginationService::initFilter();
         if ($category_id = Request::getInt('category_id')) {
             $category = ProductCategory::getCategoryById($category_id);
             Design::assign('category', $category);
@@ -75,8 +76,13 @@ class FeatureListController extends BaseAdminController
             $filter['category_id'] = $category->id;
         }
 
+        $features       = ProductFeature::getFeatures($filter);
+        $features_count = ProductFeature::countFeatures($filter);
+
+        Design::assign('pagination',    PaginationService::getPagination($features_count, $filter));
         Design::assign('categories',    ProductCategory::getCategoriesTree());
-        Design::assign('features',      ProductFeature::getFeatures($filter));
+        Design::assign('features',      $features);
+        Design::assign('features_count', $features_count);
 
         return $this->fetchResponse('product/feature_list.tpl');
     }
