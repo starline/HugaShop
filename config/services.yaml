@@ -26,3 +26,7 @@ services:
     HugaShop\Extensions\:
         resource: "../hugashop/crm/Extensions/"
         tags: ["extensions_tag"]
+
+when@dev:
+    services:
+        Symfony\Component\HttpKernel\Profiler\Profiler: "@profiler"

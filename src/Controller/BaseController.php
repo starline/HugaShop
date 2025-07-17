@@ -11,18 +11,20 @@
 namespace App\Controller;
 
 use HugaShop\Services\Config;
-use HugaShop\Services\Helper;
 use HugaShop\Services\Design;
+use HugaShop\Services\Helper;
+use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
 use App\Event\DesignBeforeFetchEvent;
-use HugaShop\Models\Localization\Language;
 use Symfony\Component\Asset\Packages;
+use HugaShop\Models\Localization\Language;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Translation\LocaleSwitcher;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Bridge\Twig\Extension\ImportMapRuntime;
+use Symfony\Component\HttpKernel\Profiler\Profiler;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -35,7 +37,8 @@ class BaseController extends AbstractController
         public LocaleSwitcher $LocaleSwitcher,
         public Packages $Packages,
         public RequestStack $requestStack,
-        public UrlGeneratorInterface $UrlGenerator
+        public UrlGeneratorInterface $UrlGenerator,
+        public ?Profiler $profiler
     ) {
 
         // Inject Symfony session
@@ -44,6 +47,10 @@ class BaseController extends AbstractController
         Design::setModifierPlugin('linkLang', $this, 'generateUrlWithLocale');
         Design::setModifierPlugin('link', $UrlGenerator, 'generate');
         Design::assign('route', $this->requestStack->getCurrentRequest()->attributes->get('_route'));
+
+        if (!is_null($profiler) and !User::authUser('manager')) {
+            $profiler->disable();
+        }
     }
 
 

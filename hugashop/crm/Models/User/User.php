@@ -434,7 +434,7 @@ class User extends BaseModel
 
     /**
      * Get Auth user
-     * @param string $param
+     * @param string $option
      */
     public static function authUser(?string $option = null)
     {
