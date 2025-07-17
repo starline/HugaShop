@@ -384,6 +384,7 @@ class User extends BaseModel
         return md5(Config::get('salt_psw') . $password . md5($password));
     }
 
+
     /**
      * Verify password and migrate old hashes when needed
      *
@@ -396,7 +397,8 @@ class User extends BaseModel
     {
         if (password_verify($password, $hash)) {
             if (password_needs_rehash($hash, PASSWORD_BCRYPT) && $user_id !== null) {
-                self::updateUser($user_id, ['password' => $password]);
+                $new_hash = password_hash($password, PASSWORD_BCRYPT);
+                self::updateUser($user_id, ['password' => $new_hash]);
             }
             return true;
         }
@@ -404,7 +406,8 @@ class User extends BaseModel
         // Fallback to legacy MD5
         if ($hash === self::makeLegacyPasswordHash($password)) {
             if ($user_id !== null) {
-                self::updateUser($user_id, ['password' => $password]);
+                $new_hash = password_hash($password, PASSWORD_BCRYPT);
+                self::updateUser($user_id, ['password' => $new_hash]);
             }
             return true;
         }
