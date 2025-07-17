@@ -14,6 +14,7 @@ import './css/common.css';
 
 import './js/jquery/jquery.js';
 import './js/jquery/jquery-ui.js';
+import './js/jquery/jquery.typesearch.js';
 import './js/fancybox/jquery.fancybox.min.js';
 import './js/autocomplete/jquery.autocomplete-min.js';
 import './js/jquery/jquery.form.js';

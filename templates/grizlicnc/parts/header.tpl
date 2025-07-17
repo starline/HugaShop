@@ -55,8 +55,8 @@
 						<div class="col-3" id="cart_informer">
 
 							{block name=cart_informer}
-								<a class="cart_info float-end" href="{'Cart'|linkLang}" rel="nofollow" data-bs-toggle="tooltip"
-									data-bs-html="true"
+								<a class="cart_info float-end" href="{'Cart'|linkLang}" rel="nofollow"
+									data-bs-toggle="tooltip" data-bs-html="true"
 									title="{$cart->purchases_count} {$cart->purchases_count|plural:'товар':'товаров':'товара'}. {if $cart->purchases_price > 0}</br> На сумму: {$cart->purchases_price|price_html:no_html}{/if}">
 
 									<svg class="cart-icon" viewBox="0 0 1024 1024">
@@ -94,9 +94,8 @@
 
 				<div class="col-12 col-lg-5 mt-2">
 					<form id="search" action="/s">
-
 						<div class="input-group">
-							<input class="form-control" type="text" name="keyword" value="{$keyword}"
+							<input id="search_input" class="form-control" type="text" name="keyword" value="{$keyword}"
 								placeholder="Поиск, например: шпиндель" />
 
 							<button class="btn btn-primary" type="submit">
@@ -107,8 +106,13 @@
 								</svg>
 							</button>
 						</div>
-
 					</form>
+
+					<script type="module">
+						$('#search_input').typePlaceholder({
+							words: ["шпиндель", "редуктор", "подшипник sbr", "вал на опоре", "блок питания"]
+						});
+					</script>
 				</div>
 
 				<div class="col-12 col-lg-4 mt-4 mt-lg-0">
