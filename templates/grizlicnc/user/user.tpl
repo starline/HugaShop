@@ -83,10 +83,46 @@
 		</div>
 	</div>
 
-	<script type="module">
-		$(function() {
-			// TODO: Проверять новый пароль на сложность 
-			// TODO: проверить confirm_password
-		});
-	</script>
+        <script type="module">
+                $(function() {
+                        const $form = $('form');
+                        const $password = $('#password');
+                        const $confirm = $('#confirm_password');
+
+                        function checkPasswordComplexity() {
+                                const val = $password.val();
+                                const complex = val.length >= 8 && /[A-Z]/.test(val)
+                                        && /[a-z]/.test(val) && /\d/.test(val);
+
+                                if (val && !complex) {
+                                        $password.addClass('is-invalid');
+                                } else {
+                                        $password.removeClass('is-invalid');
+                                }
+                                return complex;
+                        }
+
+                        function checkPasswordMatch() {
+                                if ($confirm.val() && $confirm.val() !== $password.val()) {
+                                        $confirm.addClass('is-invalid');
+                                        return false;
+                                }
+                                $confirm.removeClass('is-invalid');
+                                return true;
+                        }
+
+                        $password.on('input', function() {
+                                checkPasswordComplexity();
+                                checkPasswordMatch();
+                        });
+
+                        $confirm.on('input', checkPasswordMatch);
+
+                        $form.on('submit', function(e) {
+                                if (!checkPasswordComplexity() || !checkPasswordMatch()) {
+                                        e.preventDefault();
+                                }
+                        });
+                });
+        </script>
 {/block}
