@@ -3,8 +3,8 @@
 /**
  * HugaShop - Sell anything
  * 
- * @author Andi Huga
- * @version 1.6
+ * @author Andri Huga
+ * @version 1.7
  *
  */
 

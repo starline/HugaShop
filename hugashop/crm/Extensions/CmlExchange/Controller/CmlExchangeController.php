@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.2
+ * @version 1.3
  *
  */
 
@@ -23,7 +23,7 @@ final class CmlExchangeController extends BaseFrontController
     use BaseExtensionTrait;
 
     /**
-     * Список странниц
+     * Список страниц
      */
     #[Route('/CmlExchange/exchange', name: 'ExtCmlExchange', priority: 20)]
     public function exchange(): Response

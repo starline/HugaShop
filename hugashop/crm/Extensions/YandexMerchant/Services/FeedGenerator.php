@@ -2,8 +2,8 @@
 
 /**
  *
- * @author Andi Huga
- * @version 3.4
+ * @author Andri Huga
+ * @version 3.5
  *
  * Use Cache
  * Яндекс фид YXM

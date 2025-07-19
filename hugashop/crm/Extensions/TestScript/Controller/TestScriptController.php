@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.1
+ * @version 3.2
  *
  */
 
@@ -58,7 +58,7 @@ final class TestScriptController extends BaseAdminController
     use BaseExtensionTrait;
 
     /**
-     * Список странниц
+     * Список страниц
      */
     #[Route('/TestScript', name: 'ExtTestScript', priority: 20)]
     public function test()

@@ -82,7 +82,7 @@
                         <div class="col-form-label">125 мб</div>
                     </li>
                     <li>
-                        <div class="col-form-label">Колличество файлов</div>
+                        <div class="col-form-label">Количество файлов</div>
                         <div class="col-form-label">10000 шт</div>
                     </li>
                 </ul>
