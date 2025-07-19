@@ -1,0 +1,5 @@
+name: "Поисковые запросы"
+description: "Сохраняет поисковые запросы пользователей"
+settings_params:
+  - { variable: enabled, name: "Включено", options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }], default: 1 }
+version: 1.0

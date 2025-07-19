@@ -1,32 +1,31 @@
 <?php
-
 /**
  * HugaShop - Sell anything
  *
  * @author Andri Huga
  * @version 1.0
- *
  */
 
-namespace HugaShop\Models;
+namespace HugaShop\Extensions\ProductSearchKeyword\Models;
 
-use HugaShop\Models\BaseModel;
+use HugaShop\Extensions\BaseExtensionModel;
 
-class ProductSearchKeyword extends BaseModel
+final class ProductSearchKeyword extends BaseExtensionModel
 {
     protected static $table_fields = [
-        'id' =>         ['type' => 'int',      'extra' => 'AUTO_INCREMENT'],
-        'name' =>       ['type' => 'varchar'],
+        'id'         => ['type' => 'int',      'extra' => 'AUTO_INCREMENT'],
+        'name'       => ['type' => 'varchar'],
         'created_at' => ['type' => 'datetime', 'def' => 'CURRENT_TIMESTAMP'],
     ];
 
     public static function logKeyword(string $keyword): void
     {
-        if (trim($keyword) === '') {
+        $keyword = trim($keyword);
+        if ($keyword === '') {
             return;
         }
         self::createOne([
-            'name' => trim($keyword),
+            'name'       => $keyword,
             'created_at' => date('Y-m-d H:i:s'),
         ]);
     }

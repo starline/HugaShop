@@ -4,20 +4,20 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.4
+ * @version 2.5
  *
  */
 
 namespace App\Controller\Front;
 
 use App\Event\SearchEvent;
+use App\Event\ProductSearchEvent;
 use HugaShop\Models\Image;
 use HugaShop\Models\Settings;
 use HugaShop\Services\Design;
 use HugaShop\Services\Request;
 use App\Services\PaginationService;
 use HugaShop\Models\Product\Product;
-use HugaShop\Models\ProductSearchKeyword;
 use App\Controller\BaseFrontController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -32,7 +32,7 @@ class ProductSearchController extends BaseFrontController
 
         //$search_query = trim(str_replace('+', ' ',  $search_query)); # use + for whitespace
         $search_query = trim(substr(urldecode($_SERVER['REQUEST_URI']), 3));
-        ProductSearchKeyword::logKeyword($search_query);
+        $this->setEvent(new ProductSearchEvent($search_query));
 
         $noindex = false; # Open indexation
 
@@ -98,7 +98,7 @@ class ProductSearchController extends BaseFrontController
         $query = Request::get('query', 'string');
         if (!empty($query)) {
             $filter['keyword'] = $query;
-            ProductSearchKeyword::logKeyword($query);
+            $this->setEvent(new ProductSearchEvent($query));
             $this->setEvent(new SearchEvent($query));
         }
 
