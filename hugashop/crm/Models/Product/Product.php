@@ -449,17 +449,8 @@ class Product extends BaseModel
             Image::deleteImage($i->id);
         }
 
-        // Удаляем изображения контента
-        $images = Image::getImages($id, 'product_content');
-        foreach ($images as $i) {
-            Image::deleteImage($i->id);
-        }
-
         // Удаляем свойства
-        $options = ProductOption::getOptions(['product_id' => $id]);
-        foreach ($options as $o) {
-            ProductOption::deleteOption($id, $o->feature_id);
-        }
+        ProductOption::deleteProductOption($id);
 
         // Удаляем связанные товары
         ProductRelated::deleteAllRelatedProducts($id);

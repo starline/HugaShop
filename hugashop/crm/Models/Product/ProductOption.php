@@ -94,11 +94,9 @@ class ProductOption extends BaseModel
     /**
      * Delete option
      */
-    public static function deleteOption($product_id, $feature_id)
+    public static function deleteProductOption($product_id)
     {
-        return self::where('product_id', $product_id)
-            ->where('feature_id', $feature_id)
-            ->delete() > 0;
+        return self::where('product_id', $product_id)->delete();
     }
 
 

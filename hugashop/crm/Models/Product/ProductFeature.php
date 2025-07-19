@@ -25,7 +25,7 @@ class ProductFeature extends BaseModel
         'in_filter' =>          ['type' => 'tinyint',   'def' => 0],
         'position' =>           ['type' => 'int',       'def' => 0]
     ];
-    
+
 
     /**
      * Выбираем названия характеристик
@@ -112,24 +112,19 @@ class ProductFeature extends BaseModel
     /**
      * Delete Feature
      */
-    public static function deleteFeature(int $id)
+    public static function deleteFeature(int $feature_id)
     {
-        if (empty($id)) {
-            return false;
-        }
 
         // Удаляем основную характеристику
-        ProductFeature::where('id', $id)->delete();
+        self::where('id', $feature_id)->delete();
 
         // Удаляем опции товара с этой характеристикой
-        ProductOption::where('feature_id', $id)->delete();
+        ProductOption::where('feature_id', $feature_id)->delete();
 
         // Удаляем связь с категориями
-        ProductCategoryFeature::where('feature_id', $id)->delete();
+        ProductCategoryFeature::where('feature_id', $feature_id)->delete();
 
         // Удаляем варианты характеристик
-        ProductFeatureOption::where('feature_id', $id)->delete();
-
-        return true;
+        ProductFeatureOption::where('feature_id', $feature_id)->delete();
     }
 }
