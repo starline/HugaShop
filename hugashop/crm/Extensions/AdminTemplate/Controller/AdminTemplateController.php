@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.6
+ * @version 2.7
  *
  */
 
@@ -22,7 +22,7 @@ final class AdminTemplateController extends BaseAdminController
     use BaseExtensionTrait;
 
     /**
-     * Список странниц
+     * Список страниц
      */
     #[Route('/AdminTemplate', name: 'ExtAdminTemplate', priority: 20)]
     public function template()

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  */
 
@@ -24,7 +24,7 @@ final class InfoBlockListController extends BaseAdminController
     use BaseExtensionTrait;
 
     /**
-     * Список странниц
+     * Список страниц
      */
     #[Route('/InfoBlock', name: 'ExtInfoBlockList', priority: 20)]
     public function block()

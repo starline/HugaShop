@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.5
+ * @version 1.6
  *
  */
 
@@ -91,7 +91,7 @@ trait BaseExtensionTrait
 
 
     /**
-     * Fetcj extension template
+     * Fetch extension template
      */
     public function fetchExtResponse(string $template, ?string $block = null)
     {

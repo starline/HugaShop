@@ -2,8 +2,8 @@
 
 /**
  *
- * @author Andi Huga
- * @version 4.2
+ * @author Andri Huga
+ * @version 4.3
  *
  * Google feed generator
  * Uses Cache

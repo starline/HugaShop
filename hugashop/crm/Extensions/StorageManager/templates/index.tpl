@@ -37,7 +37,7 @@
                             <div class="col-form-label">{$folder_params->size|byte_convert}</div>
                         </li>
                         <li>
-                            <div class="col-form-label">Колличество файлов</div>
+                            <div class="col-form-label">Количество файлов</div>
                             <div class="col-form-label">{$folder_params->files}</div>
                         </li>
                     </ul>

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.7
+ * @version 1.8
  *
  */
 
@@ -22,7 +22,7 @@ final class CarouselPromoController extends BaseAdminController
     use BaseExtensionTrait;
 
     /**
-     * Список странниц
+     * Список страниц
      */
     #[Route('/CarouselPromo', name: 'ExtCarouselPromo', priority: 20)]
     public function template()

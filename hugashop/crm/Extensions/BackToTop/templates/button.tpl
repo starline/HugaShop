@@ -3,13 +3,13 @@
 <div class="back-to-top"></div>
 <script>
     let mobile_show = parseInt('{$BackToTop->mobile_show}');
-    minClientWidt = 540; // px
+    let minClientWidth = 540; // px
 
     function trackScroll() {
         let scrollY = window.scrollY;
         let clientHeight = document.documentElement.clientHeight;
         let clientWidth = document.documentElement.clientWidth;
-        let show = (mobile_show || clientWidth >= minClientWidt) ? true : false
+        let show = (mobile_show || clientWidth >= minClientWidth) ? true : false
 
         if (scrollY > clientHeight && show) {
             goTopBtn.classList.add('back-to-top-show');
