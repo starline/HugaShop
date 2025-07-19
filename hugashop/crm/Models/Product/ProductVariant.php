@@ -116,6 +116,9 @@ class ProductVariant extends BaseModel
 
     public static function deleteVariant(int $product_id)
     {
+
+        // TODO если он был родительским вариантов, переназначить родителя группы на следующий товар по списку, если он есть.
+        
         self::where('product_id', $product_id)
             ->orWhere('parent_id', $product_id)
             ->delete();

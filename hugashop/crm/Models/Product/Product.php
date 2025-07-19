@@ -467,6 +467,9 @@ class Product extends BaseModel
         // Зачищаем из поставок
         WarehousePurchase::where('product_id', $id)->update(['product_id' => NULL]);
 
+        // TODO удалить историю цен
+        // TODO установить в складах null
+
         // Удаляем товар
         return self::deleteOne($id);
     }

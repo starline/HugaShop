@@ -195,6 +195,9 @@ class ContentComment extends BaseModel
      */
     public static function deleteEntityComments($entity_id, $entity_class)
     {
+
+        // TODO удалить фотографии комментария
+        
         return self::where('entity_id', $entity_id)
             ->where('entity_type', $entity_class)
             ->delete();
