@@ -21,22 +21,21 @@ use Intervention\Image\Drivers\Imagick\Driver;
 class Image extends BaseModel
 {
 
+    private static $allowed_extentions = ['png', 'gif', 'jpg', 'jpeg', 'ico', 'webp', 'bmp'];
+    public static $token_length = 10;
+    
     protected $table = 'content_image';
 
     protected static $table_fields = [
         'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'name' =>               ['type' => 'varchar'],
         'entity_id' =>          ['type' => 'int'],
-        'entity_name' =>        ['type' => 'varchar',       'lenght' => 25],
+        'entity_name' =>        ['type' => 'varchar',       'length' => 25],
         'filename' =>           ['type' => 'varchar'],
         'visible' =>            ['type' => 'tinyint',       'def' => 1],
         'position' =>           ['type' => 'created',       'def' => 0],
         'created' =>            ['type' => 'varchar',       'def' => 'CURRENT_TIMESTAMP']
     ];
-
-
-    private static $allowed_extentions = ['png', 'gif', 'jpg', 'jpeg', 'ico', 'webp', 'bmp'];
-    public static $token_lenght = 10;
 
     public function entity()
     {
@@ -145,7 +144,7 @@ class Image extends BaseModel
         }
 
         $resized_filename_encoded = rawurlencode($resized_filename_encoded);
-        return Config::get('root_url') . '/' . Config::get('images_resized_url') . $resized_filename_encoded . '?' . Helper::makeToken($resized_filename, self::$token_lenght);
+        return Config::get('root_url') . '/' . Config::get('images_resized_url') . $resized_filename_encoded . '?' . Helper::makeToken($resized_filename, self::$token_length);
     }
 
 

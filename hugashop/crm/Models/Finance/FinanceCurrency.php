@@ -23,11 +23,11 @@ class FinanceCurrency extends BaseModel
     protected static $table_fields = [
         'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'name' =>               ['type' => 'varchar',       'req' => true],
-        'sign' =>               ['type' => 'varchar',       'lenght' => 20],
-        'code' =>               ['type' => 'char',          'lenght' => 4],
-        'rate_from' =>          ['type' => 'decimal',       'lenght' => 10.2,   'def' => 1.00],
-        'rate_to' =>            ['type' => 'decimal',       'lenght' => 10.2,   'def' => 1.00],
-        'cents' =>              ['type' => 'tinyint',       'lenght' => 1,      'def' => 2],
+        'sign' =>               ['type' => 'varchar',       'length' => 20],
+        'code' =>               ['type' => 'char',          'length' => 4],
+        'rate_from' =>          ['type' => 'decimal',       'length' => 10.2,   'def' => 1.00],
+        'rate_to' =>            ['type' => 'decimal',       'length' => 10.2,   'def' => 1.00],
+        'cents' =>              ['type' => 'tinyint',       'length' => 1,      'def' => 2],
         'position' =>           ['type' => 'int',                               'def' => 0],
         'enabled' =>            ['type' => 'tinyint',       'def' => 0]
     ];

@@ -26,7 +26,7 @@ final class ProductSearchKeywordListController extends BaseAdminController
 
         $filter         = PaginationService::initFilter();
         $keywords       = ProductSearchKeyword::getList($filter, order: ['created_at', 'desc']);
-        $keywords_count = ProductSearchKeyword::getCount();
+        $keywords_count = ProductSearchKeyword::getCount($filter);
 
         Design::assign('keywords',    $keywords);
         Design::assign('pagination',  PaginationService::getPagination($keywords_count, $filter));

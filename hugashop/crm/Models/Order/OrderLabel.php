@@ -17,7 +17,7 @@ class OrderLabel extends BaseModel
     protected static $table_fields = [
         'id' =>                 ['type' => 'int',       'extra' => 'AUTO_INCREMENT'],
         'name' =>               ['type' => 'varchar',   'req' => true],
-        'color' =>              ['type' => 'varchar',   'lenght' => 10],
+        'color' =>              ['type' => 'varchar',   'length' => 10],
         'enabled' =>            ['type' => 'tinyint',   'def' => 0],
         'in_filter' =>          ['type' => 'tinyint',   'def' => 0],
         'position' =>           ['type' => 'int',       'def' => 0]

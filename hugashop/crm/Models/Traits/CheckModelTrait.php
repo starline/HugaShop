@@ -84,7 +84,7 @@ trait CheckModelTrait
 
         foreach ($fields as $name => $params) {
             $type    = $params['type'] ?? 'varchar';
-            $length  = $params['length'] ?? ($params['lenght'] ?? null);
+            $length  = $params['length'] ?? ($params['length'] ?? null);
             $default = $params['def'] ?? null;
             $extra   = $params['extra'] ?? null;
 
@@ -134,7 +134,11 @@ trait CheckModelTrait
             $type_supports = !in_array($type, ['text', 'mediumtext']);
             $is_auto_increment = ($type === 'int' && $extra === 'AUTO_INCREMENT');
             if ($default !== null && $type_supports && !$is_auto_increment) {
-                $column->default($default);
+                if ($default === 'CURRENT_TIMESTAMP') {
+                    $column->useCurrent();
+                } else {
+                    $column->default($default);
+                }
             }
         }
     }

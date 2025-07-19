@@ -21,18 +21,18 @@ use HugaShop\Models\Localization\Language;
 class OrderPayment extends BaseModel
 {
     protected static $table_fields = [
-        'id' =>                     ['type' => 'int',           'lenght' => 11,       'extra' => 'AUTO_INCREMENT'],
-        'name' =>                   ['type' => 'varchar',       'lenght' => 255,      'required' => true],
-        'public_name' =>            ['type' => 'varchar',       'lenght' => 255,      'required' => true],
+        'id' =>                     ['type' => 'int',           'length' => 11,       'extra' => 'AUTO_INCREMENT'],
+        'name' =>                   ['type' => 'varchar',       'length' => 255,      'required' => true],
+        'public_name' =>            ['type' => 'varchar',       'length' => 255,      'required' => true],
         'enabled' =>                ['type' => 'tinyint'],
         'enabled_public' =>         ['type' => 'tinyint'],
-        'comment' =>                ['type' => 'varchar',       'lenght' => 255],
-        'module' =>                 ['type' => 'varchar',       'lenght' => 255],
+        'comment' =>                ['type' => 'varchar',       'length' => 255],
+        'module' =>                 ['type' => 'varchar',       'length' => 255],
         'description' =>            ['type' => 'text'],
-        'finance_purse_id' =>       ['type' => 'int',           'lenght' => 11],
-        'currency_id' =>            ['type' => 'int',           'lenght' => 11],
+        'finance_purse_id' =>       ['type' => 'int',           'length' => 11],
+        'currency_id' =>            ['type' => 'int',           'length' => 11],
         'settings' =>               ['type' => 'text'],
-        'position' =>               ['type' => 'int',           'lenght' => 11, 'def' => 0]
+        'position' =>               ['type' => 'int',           'length' => 11, 'def' => 0]
     ];
 
     public function finance_purse()

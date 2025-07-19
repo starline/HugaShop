@@ -18,7 +18,7 @@ class FinancePurse extends BaseModel
         'id' =>                     ['type' => 'int',       'extra' => 'AUTO_INCREMENT'],
         'name' =>                   ['type' => 'varchar',   'req' => true],
         'comment' =>                ['type' => 'varchar'],
-        'amount' =>                 ['type' => 'decimal',   'lenght' => 10.2, 'def' => 0.00],
+        'amount' =>                 ['type' => 'decimal',   'length' => 10.2, 'def' => 0.00],
         'currency_id' =>            ['type' => 'int',       'req' => true],
         'position' =>               ['type' => 'int',       'def' => 0],
         'enabled' =>                ['type' => 'tinyint',   'def' => 0]

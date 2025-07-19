@@ -20,9 +20,9 @@ class UserCoupon extends BaseModel
         'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'code' =>               ['type' => 'varchar',       'req' => true],
         'expire' =>             ['type' => 'datetime'],
-        'type' =>               ['type' => 'varchar',       'lenght' => 20,     'def' => 'absolute'],
-        'value' =>              ['type' => 'decimal',       'lenght' => 10.2,   'def' => 0.00],
-        'min_order_price' =>    ['type' => 'decimal',       'lenght' => 10.2,   'def' => 0.00],
+        'type' =>               ['type' => 'varchar',       'length' => 20,     'def' => 'absolute'],
+        'value' =>              ['type' => 'decimal',       'length' => 10.2,   'def' => 0.00],
+        'min_order_price' =>    ['type' => 'decimal',       'length' => 10.2,   'def' => 0.00],
         'single' =>             ['type' => 'tinyint',       'def' => 0],
         'usages' =>             ['type' => 'int',           'def' => 0]
     ];

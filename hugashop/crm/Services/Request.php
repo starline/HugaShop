@@ -366,7 +366,7 @@ class Request
      * Собираем + Проверяем данные и разрешения на редактирование POST переменных
      * Пример $fillable_params:
      *  type         - varchar|int|tinyint|text|decimal|datetime|date
-     *  lenght       - 11|255|1|10.2
+     *  length       - 11|255|1|10.2
      *  required     - true
      *  access       - false|user
      *
@@ -413,8 +413,8 @@ class Request
                     $res->$param_name = trim($res->$param_name);
 
                     // Cut string by MySQL length if specified
-                    if (!empty($param_data['lenght']) && is_string($res->$param_name)) {
-                        $maxLen = (int) $param_data['lenght'];
+                    if (!empty($param_data['length']) && is_string($res->$param_name)) {
+                        $maxLen = (int) $param_data['length'];
                         $res->$param_name = mb_substr($res->$param_name, 0, $maxLen);
                     }
                 }

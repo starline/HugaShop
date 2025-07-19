@@ -22,7 +22,7 @@ class UserGroup extends BaseModel
     protected static $table_fields = [
         'id' =>             ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'name' =>           ['type' => 'varchar',       'req' => true],
-        'discount' =>       ['type' => 'decimal',       'lenght' => 10.2, 'def' => 0.00],
+        'discount' =>       ['type' => 'decimal',       'length' => 10.2, 'def' => 0.00],
         'position' =>       ['type' => 'int',           'def' => 0]
 
     ];

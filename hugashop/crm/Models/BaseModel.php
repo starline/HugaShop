@@ -44,8 +44,8 @@ abstract class BaseModel extends Model
 
         // Auto add created_at updated_at fileds
         if ($this->timestamps) {
-            static::$table_fields['created_at'] = ['type' => 'datetime'];
-            static::$table_fields['updated_at'] = ['type' => 'datetime'];
+            static::$table_fields['created_at'] = ['type' => 'datetime', 'def' => 'CURRENT_TIMESTAMP'];
+            static::$table_fields['updated_at'] = ['type' => 'datetime', 'def' => 'CURRENT_TIMESTAMP'];
         }
 
         parent::__construct($attributes);

@@ -17,7 +17,7 @@ class ContentFeedback extends BaseModel
 {
 
     protected static $table_fields = [
-        'id' =>                 ['type' => 'int',           'lenght' => 11,     'extra' => 'AUTO_INCREMENT'],
+        'id' =>                 ['type' => 'int',           'length' => 11,     'extra' => 'AUTO_INCREMENT'],
         'name' =>               ['type' => 'varchar',       'req' => true],
         'date' =>               ['type' => 'tinyint',       'def' => 'CURRENT_TIMESTAMP'],
         'ip' =>                 ['type' => 'varchar',       'length' => 20],

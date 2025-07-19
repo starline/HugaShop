@@ -37,7 +37,7 @@ class ImageResizeController extends BaseController
 
         $filename = urldecode($file);
 
-        if (!Helper::checkToken($filename, $token, Image::$token_lenght)) {
+        if (!Helper::checkToken($filename, $token, Image::$token_length)) {
             return new Response('File not found. Bad token', Response::HTTP_NOT_FOUND);
         }
 
