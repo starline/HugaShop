@@ -51,12 +51,10 @@ class UserController extends BaseFrontController
             return false;
         }
 
-        $user_id         = User::authUser('id');
-        $name            = Request::post('name', 'string');
-        $email           = Request::post('email', 'string');
-        $password        = Request::post('password', 'string');
-        $old_password    = Request::post('old_password', 'string');
-        $confirm_password = Request::post('confirm_password', 'string');
+        $user_id            = User::authUser('id');
+        $name               = Request::post('name', 'string');
+        $email              = Request::post('email', 'string');
+
 
         if (empty($name)) {
             Design::append('form_invalid', 'name');
@@ -73,12 +71,20 @@ class UserController extends BaseFrontController
             }
         }
 
+        
+        $password           = Request::post('password', 'string');
+        $old_password       = Request::post('old_password', 'string');
+        $confirm_password   = Request::post('confirm_password', 'string');
+
+        // Update passwoed
         if (!empty($password)) {
 
             // Проверяем старый пароль
-            if (empty($old_password)
+            if (
+                empty($old_password)
                 || !User::verifyPassword($old_password, User::authUser('password'), $user_id)
-                || $password !== $confirm_password) {
+                || $password !== $confirm_password
+            ) {
                 Design::append('form_invalid', 'password');
             } else {
                 User::updateUser($user_id, ['password' => $password]);

@@ -71,7 +71,7 @@
 							<input class="form-control" id="confirm_password" value="" name="confirm_password"
 								type="password" />
 							<label for="confirm_password">{'Повторите новый пароль'|trans}</label>
-							<div class="invalid-feedback">{'Введите Пароль'|trans}</div>
+							<div class="invalid-feedback">{'Пароль не совпадает'|trans}</div>
 						</div>
 					</div>
 
