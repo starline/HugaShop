@@ -236,35 +236,37 @@ class User extends BaseModel
 
     /**
      * Generate remember me key.
-     * 
-     * TODO: save token in DB
-     * 
-     * @param int $id
+     * @param int $user_id
      * @return string
      */
     public static function generateRememberMeKey(int $user_id): string
     {
-        $key = 'rememberme_uid_' . $user_id;
-        return md5($key);
+        $token = Helper::makeToken();
+        self::updateUser($user_id, ['remember_token' => password_hash($token, PASSWORD_DEFAULT)]);
+        return $token;
     }
 
 
     /**
      * Check remember me key.
-     * @param string $key
-     * @param int $id
+     * @param string $token
+     * @param int $user_id
      * @return bool
      */
-    public static function checkRememberMeKey(string $key, int $user_id): bool
+    public static function checkRememberMeKey(string $token, int $user_id): bool
     {
-        return $key == User::generateRememberMeKey($user_id);
+        if (empty($user = self::getOne($user_id)) || empty($user->remember_token)) {
+            return false;
+        }
+
+        return password_verify($token, $user->remember_token);
     }
 
 
     /**
      * Set remember me cookie.
      * Example: 12.token
-     * @param int $id
+     * @param int $user_id
      * @return void
      */
     public static function setRememberMeCookie(int $user_id): void
@@ -288,13 +290,11 @@ class User extends BaseModel
         $cookie_uid_arr = explode('.', $cookie_uid);
 
         $uid = $cookie_uid_arr[0] ?? null;
-        $key = $cookie_uid_arr[1] ?? null;
+        $token = $cookie_uid_arr[1] ?? null;
 
-        if (isset($uid) && isset($key)) {
-            if (User::checkRememberMeKey($key, $uid) === true) {
-                Request::setSession('user_id', $uid);
-                return $uid;
-            }
+        if ($uid && $token && self::checkRememberMeKey($token, $uid)) {
+            Request::setSession('user_id', $uid);
+            return $uid;
         }
 
         return false;

@@ -69,7 +69,7 @@ class SearchAjax extends BaseAdminController
         // Поиск ('string' - сжирает запятые? не исполььзуем)
         $keyword = Request::get('query');
         if (!empty($keyword)) {
-            $filter['keyword'] = $keyword;
+            $filter['search'] = $keyword;
         }
 
         // Сортировка
