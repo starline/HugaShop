@@ -13,8 +13,10 @@
             <div class="list">
                 {foreach $keywords as $k}
                     <div class="list_row">
-                        <div class="col-8 text-break">{$k->name}</div>
-                        <div class="col-4 text-end">{$k->created_at|date} {$k->created_at|time}</div>
+                        <div class="col text-break">{$k->name}</div>
+                        <div class="col-4 text-end">
+                            <span class="badge text-bg-round">{$k->created_at|date} {$k->created_at|time}</span>
+                        </div>
                     </div>
                 {/foreach}
             </div>

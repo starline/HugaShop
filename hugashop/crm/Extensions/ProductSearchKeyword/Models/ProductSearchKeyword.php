@@ -18,12 +18,14 @@ final class ProductSearchKeyword extends BaseExtensionModel
         'created_at' => ['type' => 'datetime', 'def' => 'CURRENT_TIMESTAMP'],
     ];
 
-    public static function logKeyword(string $keyword): void
+    public static function addKeyword(string $keyword): void
     {
         $keyword = trim($keyword);
+        
         if ($keyword === '') {
             return;
         }
+
         self::createOne([
             'name'       => $keyword,
             'created_at' => date('Y-m-d H:i:s'),

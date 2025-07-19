@@ -24,6 +24,6 @@ class ProductSearchEventListener
             return;
         }
 
-        ProductSearchKeyword::logKeyword($event->getQuery());
+        ProductSearchKeyword::addKeyword($event->getQuery());
     }
 }

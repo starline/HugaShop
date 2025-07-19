@@ -10,7 +10,6 @@
 
 namespace App\Controller\Front;
 
-use App\Event\SearchEvent;
 use App\Event\ProductSearchEvent;
 use HugaShop\Models\Image;
 use HugaShop\Models\Settings;
@@ -32,6 +31,7 @@ class ProductSearchController extends BaseFrontController
 
         //$search_query = trim(str_replace('+', ' ',  $search_query)); # use + for whitespace
         $search_query = trim(substr(urldecode($_SERVER['REQUEST_URI']), 3));
+
         $this->setEvent(new ProductSearchEvent($search_query));
 
         $noindex = false; # Open indexation
@@ -99,7 +99,6 @@ class ProductSearchController extends BaseFrontController
         if (!empty($query)) {
             $filter['keyword'] = $query;
             $this->setEvent(new ProductSearchEvent($query));
-            $this->setEvent(new SearchEvent($query));
         }
 
         $filter['limit'] = Settings::getParam('products_num');
@@ -110,16 +109,16 @@ class ProductSearchController extends BaseFrontController
 
         foreach ($products as $product) {
 
-            $product_sug = new \stdClass();
-            $product_sug->name = $product->name;
-            $product_sug->id = $product->id;
-            if (!empty($product->image_filename)) {
-                $product_sug->image = Image::getImageURL($product->image_filename, 60, 60, 'c');
+            $product_data = new \stdClass();
+            $product_data->name = $product->name;
+            $product_data->id = $product->id;
+            if (!empty($product->image->filename)) {
+                $product_data->image = Image::getImageURL($product->image->filename, 60, 60, 'c');
             }
 
             $suggestion = new \stdClass();
             $suggestion->value = $product->name;
-            $suggestion->data = $product_sug;
+            $suggestion->data = $product_data;
 
             $suggestions[] = $suggestion;
         }
