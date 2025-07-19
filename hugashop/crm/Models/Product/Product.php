@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.8
+ * @version 3.9
  *
  * Product Content
  *
@@ -29,6 +29,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Product extends BaseModel
 {
 
+    public $timestamps = true;
+
     protected static $table_fields = [
         'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'url' =>                ['type' => 'varchar'],
@@ -40,7 +42,6 @@ class Product extends BaseModel
         'variant_name' =>       ['type' => 'varchar',       'trans' => true],
         'brand_id' =>           ['type' => 'int'],
         'category_id' =>        ['type' => 'int'],
-        'created' =>            ['type' => 'datetime',      'def' => 'CURRENT_TIMESTAMP'],
         'disable' =>            ['type' => 'tinyint',       'def' => 0],
         'featured' =>           ['type' => 'tinyint',       'def' => 0],
         'sale' =>               ['type' => 'tinyint',       'def' => 0],
@@ -54,7 +55,7 @@ class Product extends BaseModel
         'awaiting_date' =>      ['type' => 'date'],
         'awaiting' =>           ['type' => 'tinyint',       'def' => 0],
         'custom' =>             ['type' => 'tinyint',       'def' => 0],
-        'position' =>           ['type' => 'int',           'def' => 0]
+        'position' =>           ['type' => 'int',           'def' => 0],
     ];
 
     public static $table_keys = [

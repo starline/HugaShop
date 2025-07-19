@@ -305,6 +305,8 @@ final class TestScriptController extends BaseAdminController
                         }
 
 
+
+
                         /**
                          * Переход на версию V2
                          * 1. Исправляем типы комментарий 
@@ -316,6 +318,7 @@ final class TestScriptController extends BaseAdminController
                          * Удалить wh_move_purchase.variant_id
                          * 
                          * переименовываем s_user.created в created_at
+                         * переименовываем s_product.created в created_at
                          * 
                          */
                         if (1) {
@@ -599,6 +602,8 @@ final class TestScriptController extends BaseAdminController
                     }
 
 
+
+                    
                     // Подбираем сопутсвующие товары
                 case 'related_products': {
 
