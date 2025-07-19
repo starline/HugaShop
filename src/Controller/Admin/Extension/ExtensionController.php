@@ -21,6 +21,16 @@ class ExtensionController extends BaseAdminController
 {
 
     /**
+     * Redirect to settings
+     */
+    #[Route('/admin/extension/{name}', name: 'ExtensionAdmin')]
+    public function index(string $name): Response
+    {
+        return $this->redirectToRoute('ExtensionSettingsAdmin', ['name' => $name]);
+    }
+
+
+    /**
      * Get Settings page
      */
     #[Route('/admin/extension/{name}/settings', name: 'ExtensionSettingsAdmin', priority: 30)]
