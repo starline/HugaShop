@@ -131,10 +131,8 @@ final class SmsSenderController extends BaseAdminController
             $mailing->template = UserMailTemplate::getOne($mailing->template_id);
         }
 
-        $notifiers = UserNotifier::getList(filter: ['enabled' => 1, 'type' => 'sms'], order: 'position');
-
         Design::assign('mailing', $mailing ?? null);
-        Design::assign('notifiers', $notifiers);
+        Design::assign('notifiers', UserNotifier::getList(filter: ['enabled' => 1, 'type' => 'sms'], order: 'position'));
         Design::assign('extension', $this->getExtension());
 
         return $this->fetchExtResponse('mailing.tpl');

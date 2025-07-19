@@ -55,7 +55,7 @@ final class SeoLinkerListController extends BaseAdminController
 
         $filter         = PaginationService::initFilter();
         $pages          = SeoLinker::getList($filter, order: ['in_internal', 'desc']);
-        $pages_count    = SeoLinker::getCount();
+        $pages_count    = SeoLinker::getCount($filter);
 
         Design::assign('pagination',    PaginationService::getPagination($pages_count, $filter));
         Design::assign('pages',         $pages);

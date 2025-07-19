@@ -31,7 +31,7 @@ class UserController extends BaseFrontController
 
         $this->handleUserUpdate();
 
-        $user = User::authUser();
+        $user   = User::authUser();
         $orders = Order::getOrders(['user_id' => $user->id]);
 
         Design::assign('orders', $orders);
@@ -41,7 +41,7 @@ class UserController extends BaseFrontController
         return $this->fetchResponse('user/user.tpl');
     }
 
-    
+
     /**
      * User update
      */
@@ -71,9 +71,10 @@ class UserController extends BaseFrontController
             }
         }
 
-        // TODO: Проверять старый пароль и пароль на сложность
-
         if (!empty($password)) {
+
+            // TODO: Проверять старый пароль
+
             User::updateUser($user_id, ['password' => $password]);
         }
     }

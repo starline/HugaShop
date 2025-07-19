@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.7
+ * @version 3.9
  *
  * Use BCRYPT
  *
@@ -17,31 +17,32 @@ use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\Order\Order;
-use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Builder;
 
 class User extends BaseModel
 {
 
-    protected static $table_fields = [
-        'id' =>             ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
-        'name' =>           ['type' => 'varchar',       'req' => true],
-        'email' =>          ['type' => 'varchar'],
-        'phone' =>          ['type' => 'varchar'],
-        'comment' =>        ['type' => 'varchar'],
-        'manager' =>        ['type' => 'tinyint',       'access' => 'user_manager'],
-        'token' =>          ['type' => 'varchar',       'access' => false],
-        'te_chat_id' =>     ['type' => 'int',           'access' => false],
-        'te_name' =>        ['type' => 'varchar',       'access' => false],
-        'password' =>       ['type' => 'varchar'],
-        'last_ip' =>        ['type' => 'varchar',       'access' => false],
-        'enabled' =>        ['type' => 'tinyint',       'access' => 'user_edit'],
-        'group_id' =>       ['type' => 'int',           'access' => 'user_group'],
-        'created' =>        ['type' => 'datetime',      'def' => 'CURRENT_TIMESTAMP',   'access' => false]
-    ];
-
     public static $auth_user;
     public static $cookie_uid = 'UID';
+
+    public $timestamps = true;
+
+    protected static $table_fields = [
+        'id' =>             ['type' => 'int',                               'extra' => 'AUTO_INCREMENT'],
+        'name' =>           ['type' => 'varchar',       'search' => true,   'req' => true,],
+        'email' =>          ['type' => 'varchar',       'search' => true],
+        'phone' =>          ['type' => 'varchar',       'search' => true],
+        'comment' =>        ['type' => 'varchar',       'search' => true],
+        'manager' =>        ['type' => 'tinyint',                           'access' => 'user_manager'],
+        'token' =>          ['type' => 'varchar',                           'access' => false],
+        'te_chat_id' =>     ['type' => 'int',                               'access' => false],
+        'te_name' =>        ['type' => 'varchar',                           'access' => false],
+        'password' =>       ['type' => 'varchar'],
+        'remember_token' => ['type' => 'varchar',                           'access' => false],
+        'last_ip' =>        ['type' => 'varchar',                           'access' => false],
+        'enabled' =>        ['type' => 'tinyint',                           'access' => 'user_edit'],
+        'group_id' =>       ['type' => 'int',                               'access' => 'user_group']
+    ];
+
 
     public function group()
     {
@@ -51,71 +52,34 @@ class User extends BaseModel
 
     /**
      * Get Users List
-     * @param array $filter
-     * @param bool $count
      */
-    public static function getUsers(array $filter = [], bool $count = false): Collection|int
+    public static function getUsers(array $filter = [], array|string $order = [], array|string $join = [], ?string $select = null, ?int $cache = 0)
     {
-        $query = User::query()->with(['group:id,discount,name']);
 
-        // Фильтр по group_id
-        if (!empty($filter['group_id'])) {
-            $query->whereIn('group_id', (array) $filter['group_id']);
-        }
-
-        // Фильтр по manager
-        if (isset($filter['manager'])) {
-            $query->where('manager', (int) $filter['manager']);
-        }
-
-        // Поиск по ключевому слову
-        if (!empty($filter['keyword'])) {
-            $keywords = explode(' ', $filter['keyword']);
-            $query->where(function (Builder $q) use ($keywords) {
-                foreach ($keywords as $word) {
-                    $q->where(function ($sub) use ($word) {
-                        $sub->where('name', 'like', "%$word%")
-                            ->orWhere('email', 'like', "%$word%")
-                            ->orWhere('last_ip', 'like', "%$word%")
-                            ->orWhere('phone', 'like', "%$word%");
-                    });
-                }
-            });
-        }
-
-        // Сортировка
         $sort = $filter['sort'] ?? null;
-        match ($sort) {
-            'date'    => $query->orderBy('created_at', 'desc'),
-            'manager' => $query->orderBy('manager', 'desc'),
-            'name'    => $query->orderBy('name'),
-            default   => $query->orderBy('name'),
+        unset($filter['sort']);
+
+        $sort = match ($sort) {
+            'date'    => ['created_at', 'desc'],
+            'manager' => ['manager', 'desc'],
+            'name'    => 'name',
+            default   => 'name',
         };
 
-        // Подсчёт
-        if ($count) {
-            return $query->count();
-        }
-
-        // Лимит и пагинация
-        if (!empty($filter['limit']) && $filter['limit'] !== 'all') {
-            $limit = max(1, (int)$filter['limit']);
-            $page = max(1, (int)($filter['page'] ?? 1));
-            $query->skip(($page - 1) * $limit)->take($limit);
-        }
-
-        return $query->get();
+        $order = $order ?: $sort;
+        return parent::getList($filter, $order, $join, $select, cache: $cache);
     }
 
 
     /**
-     * Выбираем общее кол-во user
-     * @param array $filter
+     * Get Users count
      */
-    public static function countUsers(array $filter = []): int
+    public static function getCount(array $filter = [], ?int $cache = 0): int
     {
-        return User::getUsers($filter, count: true);
+        unset($filter['sort']);
+        return parent::getCount($filter, $cache);
     }
+
 
 
     /**
@@ -194,15 +158,13 @@ class User extends BaseModel
         }
 
         // Если такой email есть, не добавляем
-        if (!empty($user->email)) {
-            if (User::checkEmailExists($user->email) > 0) {
-                return false;
-            }
+        if (!empty($user->email) && User::checkEmailExists($user->email)) {
+            return false;
         }
 
         // Определяем IP
         $user->last_ip = $_SERVER['REMOTE_ADDR'];
-        $user->token = Helper::makeToken(uniqid(), 16);
+        $user->token = Helper::makeToken(length: 16);
 
         return User::createOne($user)->id;
     }
@@ -219,14 +181,15 @@ class User extends BaseModel
             return false;
         }
 
+        $user = (array)$user;
+
         // Убираем пробелы в номере телефона и добавляем +38
-        if (!empty($user->phone)) {
-            $user->phone = Helper::clearPhoneNummber($user->phone);
+        if (!empty($user['phone'])) {
+            $user['phone'] = Helper::clearPhoneNummber($user['phone']);
         }
 
-        // TODO: проверять старый пароль
-        if (!empty($user->password)) {
-            $user->password = self::makePasswordHash($user->password);
+        if (!empty($user['password'])) {
+            $user['password'] = self::makePasswordHash($user['password']);
         }
 
         return User::updateOne($id, $user);

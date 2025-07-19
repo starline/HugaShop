@@ -184,7 +184,7 @@ trait TranslationTrait
     {
 
         // TODO caching
-        $result = self::getList($filter, $order, $join, $select, $cache);
+        $result = self::getList($filter, $order, $join, select: $select, cache: $cache);
 
         if ($language_code = Language::checkOrGetCode() and static::isTranslatable() and $result) {
             static::fillTranslations($result, $language_code, merge_fields: false);
@@ -200,7 +200,7 @@ trait TranslationTrait
     {
 
         // TODO caching
-        $result = self::getList($filter, $order, $join, $select, $cache);
+        $result = self::getList($filter, $order, $join, select: $select, cache: $cache);
 
         if ($language_code = Language::checkOrGetCode() and static::isTranslatable() and $result) {
             static::fillTranslations($result, $language_code, merge_fields: true);

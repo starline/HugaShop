@@ -35,8 +35,7 @@ final class SmsSenderListController extends BaseAdminController
             }
         }
 
-        $mailings = SmsSender::getList();
-        Design::assign('mailings', $mailings);
+        Design::assign('mailings', SmsSender::getList());
         Design::assign('extension', $this->getExtension());
 
         return $this->fetchExtResponse('index.tpl');

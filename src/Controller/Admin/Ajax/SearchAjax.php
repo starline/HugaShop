@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.3
+ * @version 1.4
  *
  */
 
@@ -73,8 +73,7 @@ class SearchAjax extends BaseAdminController
         }
 
         // Сортировка
-        $sort = Request::get('sort', 'string');
-        if (!empty($sort)) {
+        if (!empty($sort = Request::get('sort', 'string'))) {
             $filter['sort'] = $sort;
         }
 

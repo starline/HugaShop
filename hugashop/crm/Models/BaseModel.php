@@ -10,17 +10,18 @@
 
 namespace HugaShop\Models;
 
-use HugaShop\Services\Config;
 use Illuminate\Support\Str;
+use HugaShop\Services\Cache;
+use HugaShop\Services\Config;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use HugaShop\Models\Localization\Language;
+use Symfony\Contracts\Cache\ItemInterface;
 use HugaShop\Models\Traits\CheckModelTrait;
 use HugaShop\Models\Traits\TranslationTrait;
 use Illuminate\Database\Capsule\Manager as DB;
-use HugaShop\Services\Cache;
-use Symfony\Contracts\Cache\ItemInterface;
 
 abstract class BaseModel extends Model
 {
@@ -141,6 +142,15 @@ abstract class BaseModel extends Model
 
 
     /**
+     * Check if Model has settings
+     */
+    public static function hasSettings(): bool
+    {
+        return array_key_exists('settings', static::getFields());
+    }
+
+
+    /**
      * WhereId
      * @param int|array $ids
      */
@@ -209,56 +219,62 @@ abstract class BaseModel extends Model
     /**
      * Get list
      * @param array $filter
-     * @param array|string $order ['id', 'DESC]
-     * @param array $join [Order:class, User::class]
+     * @param array|string $order ['id', 'asc]
+     * @param array $join ['user', 'user.permissions'] | 'user.permissions'
      * @param string $select
      * @param int $cache Cache lifetime in seconds
      */
-    public static function getList(array $filter = [], array|string $order = [], array|string $join = [], ?string $select = null, ?int $cache = 0)
+    public static function getList(array $filter = [], array|string $order = [], array|string $join = [], ?string $select = null, bool $count = false, ?int $cache = 0)
     {
         $model = static::getModel();
         $query = $model->newQuery();
+        $has_settings = static::hasSettings();
 
-        // JOINs
-        if (!empty($join)) {
-            $query->with(is_string($join) ? [$join] : $join);
-        }
+        if (!$count) {
 
-        // Сортировка
-        if (is_string($order)) {
-            if ($order == 'position') {
-                $order = [$order, 'asc'];
-            } else {
-                $order = [$order, 'asc'];
+            // JOINs
+            if (!empty($join)) {
+                $query->with(is_string($join) ? [$join] : $join);
             }
-        }
 
-        if (!empty($order)) {
-            $query->orderBy($order[0], $order[1] ?? 'asc');
-        }
+            // Сортировка
+            if (is_string($order)) {
+                if ($order == 'position') {
+                    $order = [$order, 'asc'];
+                } else {
+                    $order = [$order, 'asc'];
+                }
+            }
 
-        // Pagination
-        $page   = $filter['page'] ?? 1;
-        $limit  = $filter['limit'] ?? null;
+            if (!empty($order)) {
+                $query->orderBy($order[0], $order[1] ?? 'asc');
+            }
 
-        if ($limit !== null) {
-            $offset = ($page - 1) * $limit;
-            $query->offset($offset)->limit($limit);
+            // Pagination
+            $page   = $filter['page'] ?? 1;
+            $limit  = $filter['limit'] ?? null;
+
+            if ($limit !== null and $limit !== 'all') {
+                $page  = max(1, (int) $page);
+                $limit = max(1, (int) $limit);
+                $query->offset(($page - 1) * $limit)->limit($limit);
+            }
         }
 
         // Поиск по ключевому слову
         if (!empty($filter['search'])) {
             $search_fields = static::getSearchFields();
-            $query->where(function ($sub_query) use ($search_fields, $filter) {
+            $query->where(function (Builder $sub_query) use ($search_fields, $filter) {
                 foreach ($search_fields as $field) {
                     $sub_query->orWhere($field, 'like', '%' . $filter['search'] . '%');
                 }
             });
         }
 
+        // Reset extra filters
         unset($filter['page'], $filter['limit'], $filter['search']);
 
-        // Фильтрация
+        // Filtering
         foreach ($filter as $field => $value) {
             if (is_array($value)) {
                 $query->whereIn($field, $value);
@@ -267,25 +283,34 @@ abstract class BaseModel extends Model
             }
         }
 
-        $callback = function () use ($model, $query, $select) {
-            return $model->runWithInitTable(function () use ($query, $select) {
+        // Results
+        $callback = function () use ($model, $query, $select, $has_settings, $count) {
+            return $model->runWithInitTable(function () use ($query, $select, $has_settings, $count) {
+
+                // Get Count
+                if ($count) {
+                    return $query->count();
+                }
+
+                // Get select field array
                 if ($select) {
                     return $query->pluck($select)->toArray();
                 }
 
+                // Get List
                 $result = $query->get();
-
-                foreach ($result as $item) {
-                    $item->settings = empty($item->settings) ? new \stdClass() : (object) unserialize($item->settings);
+                if ($has_settings) {
+                    foreach ($result as $item) {
+                        $item->settings = empty($item->settings) ? new \stdClass() : (object) unserialize($item->settings);
+                    }
                 }
-
                 return $result;
             });
         };
 
         // Caching
         if ($cache > 0 || is_null($cache)) {
-            $cache_key = 'list_' . md5(json_encode([$filter, $order, $join, $select]));
+            $cache_key = ($count ? 'count_' : 'list_') . md5(json_encode([$filter, $order, $join, $select]));
             return Cache::cache(static::class)->get($cache_key, function (ItemInterface $item) use ($callback, $cache) {
                 $item->expiresAfter($cache);
                 return $callback();
@@ -299,27 +324,11 @@ abstract class BaseModel extends Model
     /**
      * Get count
      * @param array $filter
+     * @param ?int $cache 
      */
-    public static function getCount(array $filter = []): int
+    public static function getCount(array $filter = [], ?int $cache = 0): int
     {
-        $model = static::getModel();
-        $query = $model->newQuery();
-
-        // Удаляем параметры пагинации
-        unset($filter['page'], $filter['limit']);
-
-        // Применяем where-фильтры
-        foreach ($filter as $field => $value) {
-            if (is_array($value)) {
-                $query->whereIn($field, $value);
-            } else {
-                $query->where($field, $value);
-            }
-        }
-
-        return $model->runWithInitTable(function () use ($query) {
-            return $query->count();
-        });
+        return static::getList($filter, count: true, cache: $cache);
     }
 
 
@@ -352,7 +361,7 @@ abstract class BaseModel extends Model
         });
 
         // Settings
-        if ($result) {
+        if ($result and static::hasSettings()) {
             $result->settings = empty($result->settings) ? new \stdClass() : (object) unserialize($result->settings);
         }
 

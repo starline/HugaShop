@@ -68,7 +68,7 @@ class UserExport extends BaseAdminController
             fputcsv($f, $this->columns_names, $this->column_delimiter);
         }
 
-        $filter = array();
+        $filter = [];
         $filter['page'] = $page;
         $filter['limit'] = $this->users_count;
 
@@ -76,8 +76,8 @@ class UserExport extends BaseAdminController
             $filter['group_id'] = intval(Request::get('group_id'));
         }
 
-        $filter['sort'] = Request::get('sort');
-        $filter['keyword'] = Request::get('keyword', "string");
+        $filter['sort']     = Request::get('sort');
+        $filter['keyword']  = Request::get('keyword', "string");
 
         // Выбираем пользователей
         foreach (User::getUsers($filter) as $u) {

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.9
+ * @version 2.0
  *
  */
 
@@ -92,11 +92,11 @@ class UserController extends BaseAdminController
         Design::assign('pagination', PaginationService::getPagination($orders_count, $filter));
 
         Design::assign([
-            'current_user' => $current_user,
-            'groups' => $groups,
-            'orders' => $orders,
-            'orders_count' => $orders_count,
-            'orders_price' => $orders_price
+            'current_user'  => $current_user,
+            'groups'        => $groups,
+            'orders'        => $orders,
+            'orders_count'  => $orders_count,
+            'orders_price'  => $orders_price
         ]);
 
         return $this->fetchResponse('user/user.tpl');

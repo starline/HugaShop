@@ -49,14 +49,30 @@
 						<div class="invalid-feedback">{'Введите Email'|trans}</div>
 					</div>
 
+					<!-- Change password -->
 					<a class="my-3" href='#'
 						onclick="$('#password_form').show(); $(this).hide(); return false;">{'Изменить пароль'|trans}</a>
 
-					<div class="form-floating my-3" style="display:none;" id="password_form">
-						<input class="form-control {if password|in_array:$form_invalid}is-invalid{/if}" id="password"
-							value="" name="password" type="password" placeholder="Пароль" />
-						<label for="password">{'Пароль'|trans}</label>
-						<div class="invalid-feedback">{'Введите Пароль'|trans}</div>
+					<div class="mt-5" id="password_form" style="display:none;">
+						<div class="form-floating my-3">
+							<input class="form-control {if password|in_array:$form_invalid}is-invalid{/if}"
+								id="old_password" value="" name="old_password" type="password" />
+							<label for="old_password">{'Старый пароль'|trans}</label>
+							<div class="invalid-feedback">{'Введите старый пароль'|trans}</div>
+						</div>
+
+						<div class="form-floating my-3">
+							<input class="form-control" id="password" value="" name="password" type="password" />
+							<label for="password">{'Пароль'|trans}</label>
+							<div class="invalid-feedback">{'Введите Пароль'|trans}</div>
+						</div>
+
+						<div class="form-floating my-3">
+							<input class="form-control" id="confirm_password" value="" name="confirm_password"
+								type="password" />
+							<label for="confirm_password">{'Повторите новый пароль'|trans}</label>
+							<div class="invalid-feedback">{'Введите Пароль'|trans}</div>
+						</div>
 					</div>
 
 					<div class="w-10 my-3">
@@ -66,4 +82,11 @@
 			</div>
 		</div>
 	</div>
+
+	<script type="module">
+		$(function() {
+			// TODO: Проверять новый пароль на сложность 
+			// TODO: проверить confirm_password
+		});
+	</script>
 {/block}

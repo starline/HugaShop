@@ -58,9 +58,7 @@ class PageListController extends BaseAdminController
             ContentPage::cacheClear(); # Cache clean
         }
 
-        // Отображение
-        $pages = ContentPage::getList(order: 'position');
-        Design::assign('pages', $pages);
+        Design::assign('pages', ContentPage::getList(order: 'position'));
 
         return $this->fetchResponse('content/page_list.tpl');
     }

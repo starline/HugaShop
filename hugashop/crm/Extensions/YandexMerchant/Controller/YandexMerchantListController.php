@@ -45,9 +45,7 @@ final class YandexMerchantListController extends BaseAdminController
             Cache::cache(FeedGenerator::class)->clear();
         }
 
-        $pricefeeds = YandexMerchant::getList(order: 'position');
-
-        Design::assign('pricefeeds', $pricefeeds);
+        Design::assign('pricefeeds', YandexMerchant::getList(order: 'position'));
         Design::assign('extension', $this->getExtension());
 
         return $this->fetchExtResponse('feed_list.tpl');

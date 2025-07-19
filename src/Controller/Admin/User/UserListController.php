@@ -80,7 +80,7 @@ class UserListController extends BaseAdminController
         // Поиск
         $keyword = Request::get('keyword');
         if (!empty($keyword)) {
-            $filter['keyword'] = $keyword;
+            $filter['search'] = $keyword;
             Design::assign('keyword', $keyword);
         }
 
@@ -95,13 +95,11 @@ class UserListController extends BaseAdminController
             $filter['sort'] = 'name';
         }
 
-
-        $users_count =  User::countUsers($filter);
         $users =        User::getUsers($filter);
+        $users_count =  User::getCount($filter);
         $groups =       UserGroup::orderBy('position')->get();
 
         Design::assign('pagination', PaginationService::getPagination($users_count, $filter));
-
         Design::assign('groups', $groups);
         Design::assign('users', $users);
         Design::assign('users_count', $users_count);

@@ -315,6 +315,8 @@ final class TestScriptController extends BaseAdminController
                          * Удалить order_purchase.variant_id
                          * Удалить wh_move_purchase.variant_id
                          * 
+                         * переименовываем s_user.created в created_at
+                         * 
                          */
                         if (1) {
 
@@ -531,7 +533,7 @@ final class TestScriptController extends BaseAdminController
                             // Удалит таблицу s_product_feature_variant
                             // Удалить value в таблице s_product_option
 
-                            
+
                             // переносим изображения
                             if (0) {
                                 Image::query()

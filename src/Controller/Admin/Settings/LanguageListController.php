@@ -43,8 +43,7 @@ class LanguageListController extends BaseAdminController
             }
         }
 
-        $languages = Language::getList();
-        Design::assign('languages', $languages);
+        Design::assign('languages', Language::getList());
 
         return $this->fetchResponse('settings/language_list.tpl');
     }

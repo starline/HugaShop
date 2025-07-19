@@ -16,8 +16,8 @@ use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
 use HugaShop\Extensions\BaseExtensionTrait;
 use Symfony\Component\Routing\Attribute\Route;
+use HugaShop\Extensions\FacebookCommerce\Services\FeedGenerator;
 use HugaShop\Extensions\FacebookCommerce\Models\FacebookCommerce;
-use HugaShop\Extensions\FacebookCommerce\Models\FeedGenerator;
 
 final class FacebookCommerceListController extends BaseAdminController
 {
