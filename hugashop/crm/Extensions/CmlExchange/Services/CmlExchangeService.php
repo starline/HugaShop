@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  * 
  * @author Andi Huga
- * @version 1.4
+ * @version 1.6
  *
  */
 
@@ -23,19 +23,17 @@ use HugaShop\Models\Product\ProductOption;
 use HugaShop\Models\Product\ProductFeature;
 use HugaShop\Models\Product\ProductCategory;
 use HugaShop\Models\Product\ProductCategoryFeature;
-use Symfony\Component\HttpFoundation\Response;
 
-class CmlExchangeService
+final class CmlExchangeService
 {
-    public function handle(array $params = []): Response
+
+    private static $dir;
+    private static $brand_option_name = 'Производитель';  // Название параметра товара, используемого как бренд
+    private static $full_update = true; // Обновлять все данные при каждой синхронизации
+
+    public static function handle()
     {
         ob_start();
-
-        // Обновлять все данные при каждой синхронизации
-        $full_update = true;
-
-        // Название параметра товара, используемого как бренд
-        $brand_option_name = 'Производитель';
 
         $start_time    = microtime(true);
         $max_exec_time = min(30, @ini_get('max_execution_time'));
@@ -44,11 +42,7 @@ class CmlExchangeService
         }
 
         // Папка для хранения временных файлов синхронизации
-        $dir = Config::get('root_dir') . '/var/temp/cml/';
-
-        $GLOBALS['dir']              = $dir;
-        $GLOBALS['brand_option_name'] = $brand_option_name;
-        $GLOBALS['full_update']       = $full_update;
+        self::$dir = Config::get('root_dir') . '/var/temp/cml/';
 
         // Sale.checkauth
         if (Request::get('type') == 'sale' && Request::get('mode') == 'checkauth') {
@@ -59,7 +53,7 @@ class CmlExchangeService
 
         // Sale.init
         if (Request::get('type') == 'sale' && Request::get('mode') == 'init') {
-            $tmp_files = glob($dir . '*.*');
+            $tmp_files = self::$dir . '*.*';
             if (is_array($tmp_files)) {
                 foreach ($tmp_files as $v) {
                     //unlink($v);
@@ -73,11 +67,11 @@ class CmlExchangeService
         if (Request::get('type') == 'sale' && Request::get('mode') == 'file') {
             $filename = Request::get('filename');
 
-            $f = fopen($dir . $filename, 'ab');
+            $f = fopen(self::$dir . $filename, 'ab');
             fwrite($f, file_get_contents('php://input'));
             fclose($f);
 
-            $xml = simplexml_load_file($dir . $filename);
+            $xml = simplexml_load_file(self::$dir . $filename);
 
             foreach ($xml->Документ as $xml_order) {
                 $order = new \stdClass();
@@ -318,7 +312,7 @@ class CmlExchangeService
 
         // Catalog.init
         if (Request::get('type') == 'catalog' && Request::get('mode') == 'init') {
-            $tmp_files = glob($dir . '*.*');
+            $tmp_files = self::$dir . '*.*';
             if (is_array($tmp_files)) {
                 foreach ($tmp_files as $v) {
                     unlink($v);
@@ -336,7 +330,7 @@ class CmlExchangeService
         // Catalog.file
         if (Request::get('type') == 'catalog' && Request::get('mode') == 'file') {
             $filename = Request::get('filename');
-            $f = fopen($dir . $filename, 'ab');
+            $f = fopen(self::$dir . $filename, 'ab');
             fwrite($f, file_get_contents('php://input'));
             fclose($f);
 
@@ -348,17 +342,18 @@ class CmlExchangeService
                 // Категории и свойства (только в первом запросе пакетной передачи)
                 if (empty(Request::getSession('last_1c_imported_product_num'))) {
                     $z = new \XMLReader();
-                    $z->open($dir . $filename);
+                    $z->open(self::$dir . $filename);
                     while ($z->read() && $z->name !== 'Классификатор');
                     $xml = new \SimpleXMLElement($z->readOuterXML());
                     $z->close();
-                    $this->import_categories($xml);
-                    $this->import_features($xml);
+
+                    self::import_categories($xml);
+                    self::import_features($xml);
                 }
 
                 // Товары
                 $z = new \XMLReader();
-                $z->open($dir . $filename);
+                $z->open(self::$dir . $filename);
 
                 while ($z->read() && $z->name !== 'Товар');
 
@@ -373,7 +368,7 @@ class CmlExchangeService
                         $xml = new \SimpleXMLElement($z->readOuterXML());
 
                         // Товары
-                        $this->import_product($xml);
+                        self::import_product($xml);
 
                         $exec_time = microtime(true) - $start_time;
                         if ($exec_time + 1 >= $max_exec_time) {
@@ -382,8 +377,7 @@ class CmlExchangeService
                             print "progress\r\n";
                             print "Выгружено товаров: $current_product_num\r\n";
                             Request::setSession('last_1c_imported_product_num', $current_product_num);
-                            $content = ob_get_clean();
-                            return new Response($content);
+                            return ob_get_clean();
                         }
                     }
                     $z->next('Товар');
@@ -391,12 +385,12 @@ class CmlExchangeService
                 }
                 $z->close();
                 print "success";
-                //unlink($dir.$filename);
+                //unlink(self::$dir . $filename);
                 Request::deleteSession('last_1c_imported_product_num');
             } elseif ($filename === 'offers.xml') {
                 // Варианты
                 $z = new \XMLReader();
-                $z->open($dir . $filename);
+                $z->open(self::$dir . $filename);
 
                 while ($z->read() && $z->name !== 'Предложение');
 
@@ -420,8 +414,7 @@ class CmlExchangeService
                             print "progress\r\n";
                             print "Выгружено ценовых предложений: $current_product_num\r\n";
                             Request::setSession('last_1c_imported_product_num', $current_product_num);
-                            $content = ob_get_clean();
-                            return new Response($content);
+                            return ob_get_clean();
                         }
                     }
                     $z->next('Предложение');
@@ -430,22 +423,25 @@ class CmlExchangeService
                 $z->close();
                 print "success";
 
-                //unlink($dir.$filename);
+                //unlink(self::$dir . $filename);
                 Request::deleteSession('last_1c_imported_product_num');
             }
         }
 
-        $content = ob_get_clean();
-        return new Response($content);
+        return ob_get_clean();
     }
 
-    public function import_categories($xml, $parent_id = 0)
+
+    /**
+     * Import Categories
+     */
+    private static function import_categories($xml, $parent_id = 0)
     {
-        global $dir;
 
         if (isset($xml->Группы->Группа)) {
             foreach ($xml->Группы->Группа as $xml_group) {
                 $category_id = ProductCategory::where('external_id', $xml_group->Ид)->value('id');
+
                 if (empty($category_id)) {
                     $category_id = ProductCategory::addCategory([
                         'parent_id' => $parent_id,
@@ -455,17 +451,21 @@ class CmlExchangeService
                         'meta_description' => $xml_group->Наименование
                     ]);
                 }
+
                 $categories = Request::getSession('categories_mapping') ?? [];
                 $categories[strval($xml_group->Ид)] = $category_id;
                 Request::setSession('categories_mapping', $categories);
-                $this->import_categories($xml_group, $category_id);
+                self::import_categories($xml_group, $category_id);
             }
         }
     }
 
-    public function import_features($xml)
+
+    /**
+     * Import Features
+     */
+    private static function import_features($xml)
     {
-        global $brand_option_name;
 
         $property = array();
         if (isset($xml->Свойства->СвойствоНоменклатуры)) {
@@ -479,7 +479,7 @@ class CmlExchangeService
         foreach ($property as $xml_feature) {
 
             // Если свойство содержит производителя товаров
-            if ($xml_feature->Наименование == $brand_option_name) {
+            if ($xml_feature->Наименование == self::$brand_option_name) {
 
                 // Запомним в сессии Ид свойства с производителем
                 Request::setSession('brand_option_id', strval($xml_feature->Ид));
@@ -502,10 +502,12 @@ class CmlExchangeService
         }
     }
 
-    public function import_product($xml_product)
+
+    /**
+     * Import Products
+     */
+    private static function import_product($xml_product)
     {
-        global $dir;
-        global $full_update;
 
         // Товары
         // Id товара и варианта (если есть) по 1С
@@ -572,8 +574,8 @@ class CmlExchangeService
             if (isset($xml_product->Картинка)) {
                 foreach ($xml_product->Картинка as $img) {
                     $image = basename($img);
-                    if (!empty($image) && is_file($dir . $image) && is_writable(Config::get('images_originals_dir'))) {
-                        rename($dir . $image, Config::get('images_originals_dir') . $image);
+                    if (!empty($image) && is_file(self::$dir . $image) && is_writable(Config::get('images_originals_dir'))) {
+                        rename(self::$dir . $image, Config::get('images_originals_dir') . $image);
                         Image::addImage($product->id, 'product', $image);
                     }
                 }
@@ -588,7 +590,7 @@ class CmlExchangeService
             }
 
             // Обновляем товар
-            if ($full_update) {
+            if (self::$full_update) {
                 $p = new \stdClass();
                 if (!empty($xml_product->Описание)) {
                     $description = strval($xml_product->Описание);
@@ -614,7 +616,7 @@ class CmlExchangeService
             if (isset($xml_product->Картинка)) {
                 foreach ($xml_product->Картинка as $img) {
                     $image = basename($img);
-                    if (!empty($image) && is_file($dir . $image) && is_writable(Config::get('images_originals_dir'))) {
+                    if (!empty($image) && is_file(self::$dir . $image) && is_writable(Config::get('images_originals_dir'))) {
                         $img_id = Image::query()
                             ->where('entity_id', $product->id)
                             ->where('entity_name', 'product')
@@ -623,7 +625,7 @@ class CmlExchangeService
                         if (!empty($img_id)) {
                             Image::deleteImage($img_id);
                         }
-                        rename($dir . $image, Config::get('images_originals_dir') . $image);
+                        rename(self::$dir . $image, Config::get('images_originals_dir') . $image);
                         Image::addImage($product->id, 'product', $image);
                     }
                 }

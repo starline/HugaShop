@@ -10,6 +10,7 @@
 
 namespace HugaShop\Extensions\CarouselPromo\Controller;
 
+use HugaShop\Services\Design;
 use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
 use HugaShop\Extensions\BaseExtensionTrait;
@@ -31,6 +32,8 @@ final class CarouselPromoController extends BaseAdminController
         if (Request::checkCSRF()) {
             //...
         }
+
+        Design::assign('extension', $this->getExtension());
 
         return $this->fetchExtResponse('index.tpl');
     }

@@ -16,6 +16,7 @@ use HugaShop\Extensions\BaseExtension;
 
 final class GoogleDataLayer extends BaseExtension
 {
+
     /**
      * Get block template
      */

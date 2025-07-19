@@ -23,7 +23,7 @@ class ExtensionController extends BaseAdminController
     /**
      * Redirect to settings
      */
-    #[Route('/admin/extension/{name}', name: 'ExtensionAdmin')]
+    #[Route('/extension/{name}', name: 'ExtensionAdmin')]
     public function index(string $name): Response
     {
         return $this->redirectToRoute('ExtensionSettingsAdmin', ['name' => $name]);
@@ -33,7 +33,7 @@ class ExtensionController extends BaseAdminController
     /**
      * Get Settings page
      */
-    #[Route('/admin/extension/{name}/settings', name: 'ExtensionSettingsAdmin', priority: 30)]
+    #[Route('/extension/{name}/settings', name: 'ExtensionSettingsAdmin', priority: 30)]
     public function settingsPage(string $name): Response
     {
 

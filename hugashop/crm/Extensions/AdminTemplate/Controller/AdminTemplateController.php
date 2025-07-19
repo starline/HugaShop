@@ -28,9 +28,9 @@ final class AdminTemplateController extends BaseAdminController
     public function template()
     {
 
-        // Выбрать изображения
-        Design::assign('images', Image::getList(['limit' => 3]));;
-
+        Design::assign('images', Image::getList(['limit' => 3])); # Выбрать изображения для примера
+        Design::assign('extension', $this->getExtension());
+        
         return $this->fetchExtResponse('template.tpl');
     }
 }

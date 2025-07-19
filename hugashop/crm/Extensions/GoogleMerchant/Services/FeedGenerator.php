@@ -25,8 +25,9 @@ use HugaShop\Models\Finance\FinanceCurrency;
 use HugaShop\Models\Product\ProductCategory;
 use HugaShop\Extensions\GoogleMerchant\Models\GoogleMerchantCategory;
 
-class FeedGenerator
+final class FeedGenerator
 {
+    
     private static $pricefeed;
 
     public static function getPriceFeed(object $pricefeed)

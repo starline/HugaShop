@@ -19,7 +19,7 @@
                     {foreach $extension_modules as $ext_module}
                         <div class="list_row">
                             <div class="col">
-                                <a href="/admin/extension/{$ext_module->module}">{$ext_module->name}</a>
+                                <a href="{'ExtensionAdmin'|link:[name => $ext_module->module]}">{$ext_module->name}</a>
                                 <div class="notice">{$ext_module->description}</div>
                             </div>
                             <div class="col-2">

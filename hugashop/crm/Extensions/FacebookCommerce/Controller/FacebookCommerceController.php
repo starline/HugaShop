@@ -15,18 +15,19 @@ use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
 use HugaShop\Extensions\BaseExtensionTrait;
-use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Models\Product\ProductCategory;
+use Symfony\Component\Routing\Attribute\Route;
+use HugaShop\Extensions\FacebookCommerce\Services\FeedGenerator;
 use HugaShop\Extensions\FacebookCommerce\Models\FacebookCommerce;
 use HugaShop\Extensions\FacebookCommerce\Models\FacebookCommerceCategory;
-use HugaShop\Extensions\FacebookCommerce\Models\FeedGenerator;
 
 final class FacebookCommerceController extends BaseAdminController
 {
+    
     use BaseExtensionTrait;
 
-    #[Route('/FacebookCommerce/feed', name: 'ExtFacebookCommerceFeedNew', priority: 20)]
-    #[Route('/FacebookCommerce/feed/{id}', name: 'ExtFacebookCommerceFeed', priority: 20)]
+    #[Route('/FacebookCommerce/feed', name: 'ExtFacebookCommerceNew', priority: 20)]
+    #[Route('/FacebookCommerce/feed/{id}', name: 'ExtFacebookCommerce', priority: 20)]
     public function feed(?int $id = null)
     {
         $pricefeed_categories = [];
@@ -46,7 +47,7 @@ final class FacebookCommerceController extends BaseAdminController
             $pricefeed_categories = Request::post('pricefeed_categories', 'array');
             FacebookCommerceCategory::setCategories($pricefeed->id, $pricefeed_categories);
 
-            return $this->redirectToRoute('ExtFacebookCommerceFeed', ['id' => $pricefeed->id]);
+            return $this->redirectToRoute('ExtFacebookCommerce', ['id' => $pricefeed->id]);
         }
 
         #### View

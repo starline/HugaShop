@@ -5,6 +5,9 @@
  *
  * @author Andri Huga
  * @version 1.7
+ * 
+ * SeoLinker extension
+ * @link https://github.com/spatie/crawler
  *
  */
 

@@ -26,8 +26,8 @@ final class GoogleMerchantController extends BaseAdminController
 {
     use BaseExtensionTrait;
 
-    #[Route('/GoogleMerchant/feed', name: 'ExtGoogleMerchantFeedNew', priority: 20)]
-    #[Route('/GoogleMerchant/feed/{id}', name: 'ExtGoogleMerchantFeed', priority: 20)]
+    #[Route('/GoogleMerchant/feed', name: 'ExtGoogleMerchantNew', priority: 20)]
+    #[Route('/GoogleMerchant/feed/{id}', name: 'ExtGoogleMerchant', priority: 20)]
     public function feed(?int $id = null)
     {
         $pricefeed_categories = [];
@@ -44,7 +44,7 @@ final class GoogleMerchantController extends BaseAdminController
             $pricefeed_categories = Request::post('pricefeed_categories', 'array');
             GoogleMerchantCategory::setCategories($pricefeed->id, $pricefeed_categories);
 
-            return $this->redirectToRoute('ExtGoogleMerchantFeed', ['id' => $pricefeed->id]);
+            return $this->redirectToRoute('ExtGoogleMerchant', ['id' => $pricefeed->id]);
         }
 
         if (!empty($id)) {

@@ -7,4 +7,4 @@ controllers:
 extensions_controllers:
     resource: "../hugashop/crm/Extensions/"
     type: attribute
-    prefix: "/admin/extension"
+    prefix: "/extension"

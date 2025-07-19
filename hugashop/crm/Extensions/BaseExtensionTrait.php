@@ -91,16 +91,6 @@ trait BaseExtensionTrait
 
 
     /**
-     * Has index function
-     */
-    public function hasIndex()
-    {
-        $ext_namespace = Extension::getNameSpace($this->getName());
-        return $ext_namespace ? (method_exists($ext_namespace, 'index') ? true : false) : false;
-    }
-
-
-    /**
      * Fetcj extension template
      */
     public function fetchExtResponse(string $template, ?string $block = null)
@@ -118,5 +108,15 @@ trait BaseExtensionTrait
         $extension->settings = $this->getSettings();
         $extension->hasIndex = $this->hasIndex();
         return $extension;
+    }
+
+
+    /**
+     * Has index function
+     */
+    public function hasIndex()
+    {
+        $ext_namespace = Extension::getNameSpace($this->getName());
+        return $ext_namespace ? (method_exists($ext_namespace, 'index') ? true : false) : false;
     }
 }

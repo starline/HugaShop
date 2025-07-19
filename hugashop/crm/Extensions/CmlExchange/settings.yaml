@@ -9,4 +9,4 @@ settings_params:
   - { variable: login, name: "Логин" }
   - { variable: password, name: "Пароль" }
   - { variable: token, name: "Токен" }
-version: 1.2
+version: 1.3

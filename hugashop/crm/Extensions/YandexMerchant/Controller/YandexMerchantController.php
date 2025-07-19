@@ -25,8 +25,8 @@ final class YandexMerchantController extends BaseAdminController
 {
     use BaseExtensionTrait;
 
-    #[Route('/YandexMerchant/feed', name: 'ExtYandexMerchantFeedNew', priority: 20)]
-    #[Route('/YandexMerchant/feed/{id}', name: 'ExtYandexMerchantFeed', priority: 20)]
+    #[Route('/YandexMerchant/feed', name: 'ExtYandexMerchantNew', priority: 20)]
+    #[Route('/YandexMerchant/feed/{id}', name: 'ExtYandexMerchant', priority: 20)]
     public function feed(?int $id = null)
     {
         $pricefeed_categories = [];
@@ -43,7 +43,7 @@ final class YandexMerchantController extends BaseAdminController
             $pricefeed_categories = Request::post('pricefeed_categories', 'array');
             YandexMerchantCategory::setCategories($pricefeed->id, $pricefeed_categories);
 
-            return $this->redirectToRoute('ExtYandexMerchantFeed', ['id' => $pricefeed->id]);
+            return $this->redirectToRoute('ExtYandexMerchant', ['id' => $pricefeed->id]);
         }
 
         if (!empty($id)) {
