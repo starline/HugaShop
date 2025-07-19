@@ -83,46 +83,32 @@
 		</div>
 	</div>
 
-        <script type="module">
-                $(function() {
-                        const $form = $('form');
-                        const $password = $('#password');
-                        const $confirm = $('#confirm_password');
+	<script type="module">
+		$(function() {
+			const $form = $('form');
+			const $password = $('#password');
+			const $confirm = $('#confirm_password');
 
-                        function checkPasswordComplexity() {
-                                const val = $password.val();
-                                const complex = val.length >= 8 && /[A-Z]/.test(val)
-                                        && /[a-z]/.test(val) && /\d/.test(val);
+			function checkPasswordMatch() {
+				if ($confirm.val() && $confirm.val() !== $password.val()) {
+					$confirm.addClass('is-invalid');
+					return false;
+				}
+				$confirm.removeClass('is-invalid');
+				return true;
+			}
 
-                                if (val && !complex) {
-                                        $password.addClass('is-invalid');
-                                } else {
-                                        $password.removeClass('is-invalid');
-                                }
-                                return complex;
-                        }
+			$password.on('input', function() {
+				checkPasswordMatch();
+			});
 
-                        function checkPasswordMatch() {
-                                if ($confirm.val() && $confirm.val() !== $password.val()) {
-                                        $confirm.addClass('is-invalid');
-                                        return false;
-                                }
-                                $confirm.removeClass('is-invalid');
-                                return true;
-                        }
+			$confirm.on('input', checkPasswordMatch);
 
-                        $password.on('input', function() {
-                                checkPasswordComplexity();
-                                checkPasswordMatch();
-                        });
-
-                        $confirm.on('input', checkPasswordMatch);
-
-                        $form.on('submit', function(e) {
-                                if (!checkPasswordComplexity() || !checkPasswordMatch()) {
-                                        e.preventDefault();
-                                }
-                        });
-                });
-        </script>
+			$form.on('submit', function(e) {
+				if (!checkPasswordMatch()) {
+					e.preventDefault();
+				}
+			});
+		});
+	</script>
 {/block}
