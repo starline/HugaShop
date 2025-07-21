@@ -141,7 +141,7 @@
 
 			<div class="col-12 btn_row">
 				<button class="btn btn-light" type="submit" name="action_send">Отправить</button>
-				<button class="btn btn-primary" type="submit" name="action_save">Сохранить</button>
+				{include file="parts/button.tpl"}
 			</div>
 
 		</div>

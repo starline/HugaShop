@@ -30,11 +30,10 @@ class PageController extends BaseAdminController
         // Init content language
         LanguageService::languageCatch();
 
+        
         #### Update
         ###########
         if (!empty($page = Request::getDataAcces(ContentPage::getFields()))) {
-
-
             if (empty($page->id)) {
                 $page = Design::setFlashMessage('add', ContentPage::addPage($page));
             } else {

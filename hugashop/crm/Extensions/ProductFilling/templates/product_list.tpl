@@ -144,10 +144,12 @@
     <script type="module">
         import '{"js/piecon/piecon.js"|asset}';
 
-        let total = {$products_count};
-        let ajax_url = "{'ExtProductFillingCalculate'|link}";
-        let calculate_product_url = "{'ExtProductFillingCalculateProduct'|link}";
-        const main_lang = '{$main_language_code}';
+        const total                 = {$products_count};
+        const ajax_url              = "{'ExtProductFillingCalculate'|link}";
+        const calculate_product_url = "{'ExtProductFillingCalculateProduct'|link}";
+        const translate_url         = "{'ExtOpenAITranslate'|link}";
+        const filling_url           = "{'ExtOpenAIFilling'|link}";
+        const main_lang             = '{$main_language_code}';
 
         {literal}
             $(function() {
@@ -211,7 +213,7 @@
                         }
                         const lang = langs[index];
                         $.ajax({
-                            url: '/admin/extension/OpenAI/ajax/translate',
+                            url: translate_url,
                             type: 'POST',
                             dataType: 'json',
                             data: {
@@ -264,7 +266,7 @@
                     const id = $(this).closest('.list_row').attr('item_id');
                     $.ajax({
                         type: 'POST',
-                        url: '/admin/extension/OpenAI/ajax/filling',
+                        url: filling_url,
                         data: {id: id, csrf: csrf},
                         dataType: 'json',
                         success: function(res) {

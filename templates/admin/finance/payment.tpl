@@ -113,7 +113,7 @@
 				</ul>
 
 				<div class="btn_row">
-					<button class="btn btn-primary" type="submit">Сохранить</button>
+					{include file="parts/button.tpl"}
 				</div>
 			</div>
 

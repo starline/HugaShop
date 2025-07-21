@@ -58,7 +58,7 @@
 					</li>
 				</ul>
 				<div class="btn_row">
-					<button class="btn btn-primary" type="submit">Сохранить</button>
+					{include file="parts/button.tpl"}
 				</div>
 			</div>
 
@@ -87,7 +87,7 @@
 					class="html_editor editor_large">{$brand->description}</textarea>
 
 				<div class="btn_row">
-					<button class="btn btn-primary" type="submit">Сохранить</button>
+					{include file="parts/button.tpl"}
 				</div>
 			</div>
 

@@ -87,7 +87,7 @@
                     </li>
                 </ul>
                 <div class="col-12 btn_row">
-                    <button class="btn btn-primary" name="" value="1" type="submit">Кнопка</button>
+                    {include file="parts/button.tpl" label="Кнопка" class="btn-success" type="submit" extra_attrs='id="save_btn" data-action="save" value="1"'}
                 </div>
             </div>
             <!-- End Param Value -->

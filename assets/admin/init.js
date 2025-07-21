@@ -2,7 +2,7 @@
  * Welcome to your app's main JavaScript file!
  * 
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  */
 
 import './css/style.css';
@@ -41,6 +41,21 @@ $(function () {
     // Tooltips
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
     [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+
+    // Action btn
+    $('button.btn').on('click', function () {
+        const $btn = $(this);
+
+        $btn.prop('disabled', true);
+        $btn.find('.spinner-border').show();
+        $btn.find('.btn-content').addClass('invisible');
+
+        if ($btn.attr('type') === 'submit') {
+            $btn.closest('form').trigger('submit');
+        }
+    });
+
 
     // Выделить все
     $("#check_all").on('click', function () {

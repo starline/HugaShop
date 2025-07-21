@@ -152,7 +152,21 @@ textarea {
 }
 
 .btn {
+	position: relative;
 	--bs-btn-padding-x: 1.2rem;
+}
+
+.btn .spinner-border {
+	display: none;
+	position: absolute;
+	left: 46%;
+	top: 26%;
+}
+
+.btn .btn-content {
+	gap: .25rem;
+	align-items: center;
+	display: flex;
 }
 
 .btn-primary {

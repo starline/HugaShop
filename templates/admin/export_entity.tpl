@@ -31,7 +31,7 @@
 			</div>
 
 			<div class="col-12 btn_row">
-				<button class="btn btn-primary" id="start" type="submit">Экспортировать</button>
+				{include file="parts/button.tpl" label="Экспортировать" extra_attrs="id=start"}
 			</div>
 		{/if}
 	</div>

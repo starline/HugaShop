@@ -44,7 +44,7 @@
 
                     {if $folder_params->clear}
                         <div class="col-12 btn_row">
-                            <button class="btn btn-primary" name="{$folder_name}" value="1" type="submit">Очистить</button>
+                            {include file="parts/button.tpl" label="Очистить" extra_attrs="name={$folder_name} value=1"}
                         </div>
                     {/if}
                 </div>

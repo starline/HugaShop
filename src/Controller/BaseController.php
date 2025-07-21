@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  */
 
@@ -33,6 +33,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class BaseController extends AbstractController
 {
 
+    public $route;
+
     public function __construct(
         public LocaleSwitcher $LocaleSwitcher,
         public Packages $Packages,
@@ -46,8 +48,10 @@ class BaseController extends AbstractController
 
         Design::setModifierPlugin('linkLang', $this, 'generateUrlWithLocale');
         Design::setModifierPlugin('link', $UrlGenerator, 'generate');
-        Design::assign('route', $this->requestStack->getCurrentRequest()->attributes->get('_route'));
+        
+        Design::assign('route', $this->route = $this->requestStack->getCurrentRequest()->attributes->get('_route'));
 
+        // Show Profiler
         if (!is_null($profiler) and !User::authUser('manager')) {
             $profiler->disable();
         }

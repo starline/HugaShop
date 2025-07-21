@@ -12,14 +12,12 @@
 
         {if $current_language->code != $main_language->code}
             <div class="col-auto">
-                <button id="translate_button" type="button" class="btn btn-secondary position-relative">
-                    <span class="spinner-border spinner-border-sm position-absolute d-none" aria-hidden="true"
-                        style="left: 46%; top: 25%;"></span>
-                    <span class="btn-content d-flex align-items-center gap-1">
+                <button id="translate_button" type="button" class="btn btn-secondary">
+                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                    <span class="btn-content">
                         <span class="material-icons">translate</span>
                         AI Перевод
                     </span>
-
                 </button>
             </div>
         {/if}
@@ -28,6 +26,7 @@
     {block name=body_script append}
         <script type="module">
             const entity = '{$entity}';
+            const translate_url = "{'ExtOpenAITranslate'|link}";
 
             {literal}
 
@@ -40,12 +39,8 @@
                         return false;
                     }
 
-                    btn.prop('disabled', true);
-                    btn.find('.spinner-border').removeClass('d-none');
-                    btn.find('.btn-content').addClass('invisible');
-
                     $.ajax({
-                        url: '/admin/extension/OpenAI/ajax/translate',
+                        url: translate_url,
                         type: 'POST',
                         dataType: 'json',
                         data: {
@@ -94,7 +89,7 @@
                         },
                         complete: function() {
                             btn.prop('disabled', false);
-                            btn.find('.spinner-border').addClass('d-none');
+                            btn.find('.spinner-border').hide();
                             btn.find('.btn-content').removeClass('invisible');
                         }
                     });

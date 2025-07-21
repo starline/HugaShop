@@ -160,7 +160,7 @@
 			</div>
 
 			<div class="col-12 btn_row">
-				<button class="btn btn-primary" type="submit">Сохранить</button>
+				{include file="parts/button.tpl"}
 			</div>
 
 
@@ -171,7 +171,7 @@
 			</div>
 
 			<div class="col-12 btn_row">
-				<button class="btn btn-primary" type="submit">Сохранить</button>
+				{include file="parts/button.tpl"}
 			</div>
 
 		</div>
