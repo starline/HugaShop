@@ -29,6 +29,11 @@
             {if not_updated|in_array:$service_messages_empty}
                 <span class="badge text-bg-warning">Изменений не найдено</span>
             {/if}
+            {if entity_locked|in_array:$service_messages_empty}
+                <span class="badge text-bg-warning">Обьект редактируется <a
+                        href="{'UserAdmin'|link:[id => $user_locked->id]}">{$user_locked->name}</a>
+                </span>
+            {/if}
 
             <span class="badge text-bg-secondary mx-2">{$now|date} в {$now|time}</span>
         </div>
@@ -72,9 +77,6 @@
             {/if}
             {if error_paid|in_array:$service_messages_error}
                 <span class="badge text-bg-danger">Выберите способ оплаты</span>
-            {/if}
-            {if entity_locked|in_array:$service_messages_error}
-                <span class="badge text-bg-danger">Обьект редактируется другим пользователем</span>
             {/if}
 
 

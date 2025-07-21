@@ -12,8 +12,9 @@
 
 namespace HugaShop\Services;
 
-use HugaShop\Services\Config;
 use HugaShop\Models\Settings;
+use HugaShop\Services\Config;
+use App\Services\LockEditService;
 use HugaShop\Models\User\UserPermission;
 
 class Request
@@ -339,7 +340,7 @@ class Request
         if (!self::method('post') and !self::method('get')) {
             return false;
         }
-        
+
         if (empty(self::getSession('csrf')) || empty(self::input('csrf'))) {
             return false;
         }
@@ -426,6 +427,19 @@ class Request
         }
 
         return $res;
+    }
+
+
+    /**
+     * Get post data and check edit locked
+     */
+    public static function getInputCheckEditAccess(string $model_name, ?int $item_id = null)
+    {
+        if (!is_null($item_id) and LockEditService::isEditLocked($model_name, $item_id)) {
+            return null;
+        }
+        
+        return self::getDataAcces($model_name::getFields());
     }
 
 

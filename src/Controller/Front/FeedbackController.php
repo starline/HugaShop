@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.4
+ * @version 2.5
  *
  * Отображение статей на сайте
  * Этот класс использует шаблоны articles.tpl и article.tpl
@@ -27,10 +27,10 @@ class FeedbackController extends BaseFrontController
     #[Route('/feedback', name: 'Feedback', priority: 1)]
     public function feedback(): Response
     {
-        $feedback = new \stdClass();
 
-        if (Request::checkCSRF() && Request::post('feedback')) {
+        if (Request::checkCSRF()) {
 
+            $feedback = new \stdClass();
             $feedback->name         = Request::post('name');
             $feedback->email        = Request::post('email');
             $feedback->message      = Request::post('message');

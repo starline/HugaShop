@@ -2061,11 +2061,6 @@ div.comment_text {
 	padding-left: 20px;
 }
 
-#action select {
-	width: auto;
-	font-size: 0.95rem;
-}
-
 #action span#move_to_page,
 #action span#move_to_category,
 #action span#move_to_brand {

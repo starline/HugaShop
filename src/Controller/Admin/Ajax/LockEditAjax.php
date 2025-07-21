@@ -9,7 +9,7 @@
 
 namespace App\Controller\Admin\Ajax;
 
-use HugaShop\Models\User\User;
+use HugaShop\Services\Request;
 use App\Services\LockEditService;
 use App\Controller\BaseAdminController;
 use Symfony\Component\Routing\Attribute\Route;
@@ -19,20 +19,27 @@ class LockEditAjax extends BaseAdminController
 {
 
     // Locking
-    #[Route('/admin/ajax/lock/{id}', name: 'LockEditAjax')]
-    public function lock(int $id): JsonResponse
+    #[Route('/admin/ajax/lock/{locked_key}', name: 'LockEditAjax')]
+    public function lock(string $locked_key): JsonResponse
     {
-        $this->checkAdminAccess('order', checkCSRF: true);
-        $status = LockEditService::lock('order', $id, User::authUser('id')) ? 'locked' : 'busy';
+        if (!Request::checkCSRF()) {
+            return new JsonResponse(['error' => 'csrf']);
+        }
+
+        $status = LockEditService::lock($locked_key) ? 'locked' : 'busy';
         return new JsonResponse(['status' => $status]);
     }
 
+    
     // Unlocking
-    #[Route('/admin/ajax/unlock/{id}', name: 'UnlockEditAjax')]
-    public function unlock(int $id): JsonResponse
+    #[Route('/admin/ajax/unlock/{locked_key}', name: 'UnlockEditAjax')]
+    public function unlock(string $locked_key): JsonResponse
     {
-        $this->checkAdminAccess('order', checkCSRF: true);
-        LockEditService::unlock('order', $id, User::authUser('id'));
+        if (!Request::checkCSRF()) {
+            return new JsonResponse(['error' => 'csrf']);
+        }
+
+        LockEditService::unlock($locked_key);
         return new JsonResponse(['status' => 'unlocked']);
     }
 }

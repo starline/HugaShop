@@ -22,7 +22,7 @@ class PageController extends BaseAdminController
 {
     #[Route('/admin/page', name: 'PageNewAdmin')]
     #[Route('/admin/page/{id}', requirements: ['id' => '\d+'], name: 'PageAdmin')]
-    public function index(?int $id): Response
+    public function index(?int $id = null): Response
     {
 
         $this->checkAdminAccess('page');
@@ -30,10 +30,10 @@ class PageController extends BaseAdminController
         // Init content language
         LanguageService::languageCatch();
 
-        
+
         #### Update
         ###########
-        if (!empty($page = Request::getDataAcces(ContentPage::getFields()))) {
+        if (!empty($page = Request::getInputCheckEditAccess(ContentPage::class, $id))) {
             if (empty($page->id)) {
                 $page = Design::setFlashMessage('add', ContentPage::addPage($page));
             } else {

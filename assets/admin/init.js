@@ -15,8 +15,6 @@ import './js/jquery/jquery.form.js';
 import './js/autocomplete/jquery.autocomplete.min.js';
 import './js/ctrlnavigate.js';
 
-import 'https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js';
-
 $(function () {
 
     // Сортировка списка
@@ -76,12 +74,14 @@ $(function () {
         $(this).closest("form.list_form").trigger('submit');
     });
 
+
     // Подтверждение удаления
     $("form.list_form").on('submit', function () {
         if ($('.list input[type="checkbox"][name*="check"]:checked').length > 0)
             if ($('select[name="action"]').val() == 'delete' && !confirm('Подтвердите удаление'))
                 return false;
     });
+
 
     // Clipboard field
     $("span, div").on('click', '.copy_field', function () {
@@ -100,6 +100,7 @@ $(function () {
     });
 
 
+    // Langyage change
     $('#language_select').on('change', function () {
         const url = new URL(window.location.href);
         url.searchParams.set('lang', this.value);

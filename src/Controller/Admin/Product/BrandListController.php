@@ -44,8 +44,7 @@ class BrandListController extends BaseAdminController
             }
         }
 
-        $brands = ProductBrand::getBrands();
-        Design::assign('brands', $brands);
+        Design::assign('brands', ProductBrand::getBrands());
 
         return $this->fetchResponse('product/brand_list.tpl');
     }
