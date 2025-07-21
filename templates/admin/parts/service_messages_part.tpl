@@ -73,7 +73,9 @@
             {if error_paid|in_array:$service_messages_error}
                 <span class="badge text-bg-danger">Выберите способ оплаты</span>
             {/if}
-
+            {if entity_locked|in_array:$service_messages_error}
+                <span class="badge text-bg-danger">Обьект редактируется другим пользователем</span>
+            {/if}
 
 
 
