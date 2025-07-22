@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  */
 
@@ -35,7 +35,7 @@ class BrandController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($brand = Request::getDataAcces(ProductBrand::getFields()))) {
+        if (!empty($brand = Request::getInputCheckEditAccess(ProductBrand::class, $id))) {
 
             if (empty($brand->id)) {
                 $brand = Design::setFlashMessage('add', ProductBrand::addBrand($brand));

@@ -430,7 +430,6 @@
 									filter: {
 										product_id: id,
 										filter: 'byMonth',
-										csrf: csrf,
 										type: 'totalPrice'
 									},
 									options: {
@@ -443,7 +442,6 @@
 									filter: {
 										product_id: id,
 										filter: 'byMonth',
-										csrf: csrf,
 										type: 'profitPrice'
 									},
 									options: {
@@ -456,7 +454,6 @@
 									filter: {
 										product_id: id,
 										filter: 'byMonth',
-										csrf: csrf,
 										type: 'amount'
 									},
 									options: {
@@ -486,7 +483,6 @@
 							filter: {
 								category_id: php_category_id,
 								filter: 'byMonth',
-								csrf: csrf,
 								type: 'totalPrice'
 							},
 							options: {
@@ -499,7 +495,6 @@
 							filter: {
 								category_id: php_category_id,
 								filter: 'byMonth',
-								csrf: csrf,
 								type: 'profitPrice'
 							},
 							options: {
@@ -512,7 +507,6 @@
 							filter: {
 								category_id: php_category_id,
 								filter: 'byMonth',
-								csrf: csrf,
 								type: 'amount'
 							},
 							options: {

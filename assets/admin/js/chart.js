@@ -3,7 +3,7 @@
  * Functions related to rendering ApexCharts graphs
  *
  * @author Andri Huga
- * @version 1.3
+ * @version 1.4
  */
 
 export function makeChart(element, chartOptions = {}, datasets = []) {
@@ -135,6 +135,8 @@ export function getChartData(apex, filter, options) {
             apex.chart.updateOptions({ tooltip: { x: { format: 'MMMM yyyy' } } });
         }
     }
+
+    filter.csrf = filter.csrf ?? window.csrf;
 
     $.post(options.url, filter, function (data) {
         if (data && data[0] != null) {

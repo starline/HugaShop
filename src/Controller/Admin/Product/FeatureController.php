@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.4
+ * @version 2.5
  *
  */
 
@@ -36,7 +36,7 @@ class FeatureController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($feature = Request::getDataAcces(ProductFeature::getFields()))) {
+        if (!empty($feature = Request::getInputCheckEditAccess(ProductFeature::class, $id))) {
 
             if (empty($feature->id)) {
                 $feature = Design::setFlashMessage('add', ProductFeature::createOne($feature));

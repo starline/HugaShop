@@ -90,7 +90,7 @@
                   chart: { type: 'bar', height: 350 },
                },
                [{
-                     filter: { filter: 'byDay', csrf: csrf },
+                     filter: { filter: 'byDay' },
                      options: {
                         label: 'Сумма заказов, ' + php_currency_sign,
                         color: '#76c100',
@@ -100,7 +100,7 @@
                      }
                   },
                   {
-                     filter: { filter: 'byDay', csrf: csrf },
+                     filter: { filter: 'byDay' },
                      options: {
                         label: 'Сумма прибыли, ' + php_currency_sign,
                         color: '#f8a13f',
@@ -110,7 +110,7 @@
                      }
                   },
                   {
-                     filter: { filter: 'byDay', csrf: csrf },
+                     filter: { filter: 'byDay' },
                      options: {
                         label: 'Колл-во заказов, шт',
                         color: '#000000',
@@ -128,7 +128,7 @@
                   chart: { type: 'bar', height: 350 }
                },
                [{
-                     filter: { filter: 'byMonth', csrf: csrf },
+                     filter: { filter: 'byMonth' },
                      options: {
                         label: 'Сумма заказов, ' + php_currency_sign,
                         color: '#76c100',
@@ -138,7 +138,7 @@
                      }
                   },
                   {
-                     filter: { filter: 'byMonth', csrf: csrf },
+                     filter: { filter: 'byMonth' },
                      options: {
                         label: 'Сумма прибыли, ' + php_currency_sign,
                         color: '#f8a13f',
@@ -148,7 +148,7 @@
                      }
                   },
                   {
-                     filter: { filter: 'byMonth', csrf: csrf },
+                     filter: { filter: 'byMonth' },
                      options: {
                         label: 'Колл-во заказов, шт',
                         color: '#000000',

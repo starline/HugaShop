@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.5
+ * @version 2.6
  *
  */
 
@@ -29,7 +29,7 @@ class CommentController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($comment = Request::getDataAcces(ContentComment::getFields()))) {
+        if (!empty($comment = Request::getInputCheckEditAccess(ContentComment::class, $id))) {
 
             $comment->date = Helper::dateConvert($comment->date . ' ' . Request::post('time', 'string'), 'Y-m-d H:i:s');
             Design::setFlashMessage('update', ContentComment::updateOne($comment->id, $comment));
@@ -44,7 +44,7 @@ class CommentController extends BaseAdminController
         #########
         if (!empty($id)) {
             $comment = ContentComment::getOne($id, ['user', 'entity', 'images']);
-            
+
             if (empty($comment->id)) {
                 return $this->redirectToRoute('CommentsAdmin');
             }

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  */
 
@@ -26,7 +26,6 @@ final class SeoPageController extends BaseAdminController
 
     /**
      * SEO Page
-     * @param ?int $page_id
      */
     #[Route('/SeoPage/page', name: 'ExtSeoPageNew', priority: 20)]
     #[Route('/SeoPage/page/{id}', requirements: ['id' => '\d+'], name: 'ExtSeoPage', priority: 20)]
@@ -40,7 +39,7 @@ final class SeoPageController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($page = Request::getDataAcces(SeoPage::getFields()))) {
+        if (!empty($page = Request::getInputCheckEditAccess(SeoPage::class, $id))) {
 
             // Не допустить одинаковые URL разделов.
             if (($p = SeoPage::getOne(['url' => $page->url])) && $p->id != $page->id) {
@@ -50,10 +49,10 @@ final class SeoPageController extends BaseAdminController
                     $page = Design::setFlashMessage('add', SeoPage::createOne($page));
                 } else {
                     Design::setFlashMessage('update', SeoPage::updateOne($page->id, $page));
-                    SeoPage::cacheClear();
                 }
             }
 
+            SeoPage::cacheClear();
             return $this->redirectToRouteLang('ExtSeoPage', ['id' => $page->id]);
         }
 

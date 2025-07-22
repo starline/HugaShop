@@ -220,7 +220,7 @@
 							category_id: category_id,
 							product_id: $("input[name=id]").val(),
 							lang: lang_code,
-							csrf: csrf
+							csrf: window.csrf
 						},
 						dataType: 'json',
 						success: function(data) {
@@ -230,12 +230,12 @@
 
 							for (let i = 0; i < data.length; i++) {
 								let feature = data[i];
-                                                                let new_line = line.clone(true);
+								let new_line = line.clone(true);
 
-                                                                new_line.attr('feature_id', feature.id);
-                                                                new_line.find("label.col-form-label").text(feature.name);
-                                                                new_line.find("input").attr('name', "options[" + feature.id + "]").
-                                                                val(feature.value);
+								new_line.attr('feature_id', feature.id);
+								new_line.find("label.col-form-label").text(feature.name);
+								new_line.find("input").attr('name', "options[" + feature.id + "]").
+								val(feature.value);
 
 								new_line.appendTo('ul.features').find("input")
 									.autocomplete({
@@ -245,7 +245,7 @@
 										params: {
 											feature_id: feature.id,
 											lang: lang_code,
-											csrf: csrf
+											csrf: window.csrf
 										},
 										noCache: false
 									});
@@ -266,7 +266,7 @@
 						params: {
 							feature_id: feature_id,
 							lang: lang_code,
-							csrf: csrf
+							csrf: window.csrf
 						},
 						noCache: false
 					});
@@ -274,35 +274,35 @@
 
 
 				// Автозаполнение названия характеристик
-                                $('.features').on('focus', 'input[name*=new_features_names]', function(index) {
-                                        let $nameInput = $(this);
-                                        $nameInput.autocomplete({
-                                                serviceUrl: '/admin/ajax/product/get_feature_name',
-                                                type: 'POST',
-                                                minChars: 0,
-                                                params: {
-                                                        product_id: product_id,
-                                                        lang: lang_code,
-                                                        csrf: csrf
-                                                },
-                                                noCache: false,
-                                                onSelect: function(suggestion) {
-                                                        let $line = $nameInput.closest('li');
-                                                        $line.attr('feature_id', suggestion.data);
-                                                        $line.find('input[name*=new_features_values]').autocomplete({
-                                                                serviceUrl: '/admin/ajax/product/get_option',
-                                                                type: 'POST',
-                                                                minChars: 0,
-                                                                params: {
-                                                                        feature_id: suggestion.data,
-                                                                        lang: lang_code,
-                                                                        csrf: csrf
-                                                                },
-                                                                noCache: false
-                                                        });
-                                                }
-                                        });
-                                });
+				$('.features').on('focus', 'input[name*=new_features_names]', function(index) {
+					let $nameInput = $(this);
+					$nameInput.autocomplete({
+						serviceUrl: '/admin/ajax/product/get_feature_name',
+						type: 'POST',
+						minChars: 0,
+						params: {
+							product_id: product_id,
+							lang: lang_code,
+							csrf: window.csrf
+						},
+						noCache: false,
+						onSelect: function(suggestion) {
+							let $line = $nameInput.closest('li');
+							$line.attr('feature_id', suggestion.data);
+							$line.find('input[name*=new_features_values]').autocomplete({
+								serviceUrl: '/admin/ajax/product/get_option',
+								type: 'POST',
+								minChars: 0,
+								params: {
+									feature_id: suggestion.data,
+									lang: lang_code,
+									csrf: window.csrf
+								},
+								noCache: false
+							});
+						}
+					});
+				});
 
 
 				// Добавление нового свойства товара

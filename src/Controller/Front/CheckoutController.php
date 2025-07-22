@@ -33,7 +33,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class CheckoutController extends BaseFrontController
 {
 
-    private $fillout = [
+    private $fields = [
         'payment_method_id' =>      ['type' => 'int'],
         'delivery_id' =>            ['type' => 'int'],
         'name' =>                   ['type' => 'string', 'trim' => true],
@@ -88,7 +88,7 @@ class CheckoutController extends BaseFrontController
 
         #### Update
         ###########
-        if (Request::checkCSRF() and !empty($pre_order = Request::getDataAcces($this->fillout))) {
+        if (!empty($pre_order = Request::getInputAcces($this->fields))) {
 
             // Купон
             if (!empty($coupon_code = trim(Request::post('coupon_code', 'string')))) {

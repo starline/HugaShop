@@ -19,6 +19,7 @@ class LockEditService
 
     private static $ttl = 600; # seconds
 
+
     /**
      * Check entity edit lock for controller
      */
@@ -33,7 +34,7 @@ class LockEditService
 
         $user_locked_id = self::isLocked($locked_key);
         if (!empty($user_locked_id) && $user_locked_id !== User::authUser('id')) {
-            Design::assign('user_locked', User::getOne($user_locked_id));
+            Design::assign('locked_user', User::getOne($user_locked_id));
             Design::append('service_messages_empty', 'entity_locked');
             return true;
         }

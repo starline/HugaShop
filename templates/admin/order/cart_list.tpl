@@ -153,7 +153,7 @@
 				title: { text: 'Корзины по дням' }
 			},
 			[{
-				filter: { csrf: csrf, filter: 'byDay' },
+				filter: { filter: 'byDay' },
 				options: {
 					range: 'month',
 					label: 'Корзин',
@@ -162,7 +162,7 @@
 					url: '/admin/ajax/stats/cart'
 				}
 			}, {
-				filter: { csrf: csrf, filter: 'byDay' },
+				filter: { filter: 'byDay' },
 				options: {
 					range: 'month',
 					label: 'Оформлено в заказ',
@@ -171,7 +171,7 @@
 					url: '/admin/ajax/stats/cart'
 				}
 			}, {
-				filter: { csrf: csrf, filter: 'byDay' },
+				filter: { filter: 'byDay' },
 				options: {
 					range: 'month',
 					label: 'Оплачено',

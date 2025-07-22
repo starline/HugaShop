@@ -326,7 +326,7 @@
 				$('select[name="entity_name"]').change(function() {
 					let entity_type = $(this).find('option:selected').data('type');
 					let params = {
-						csrf: csrf
+						csrf: window.csrf
 					};
 
 					let entity_sort = $(this).find('option:selected').data('sort');

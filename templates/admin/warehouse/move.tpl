@@ -491,7 +491,7 @@
 					minChars: 0,
 					noCache: false,
 					params: {
-						csrf: csrf
+						csrf: window.csrf
 					},
 					onSelect: function(suggestion) {
 						let new_item = new_purchase.clone().appendTo('.purchases');

@@ -63,7 +63,7 @@
                         $.ajax({
                             type: 'POST',
                             url: window.location.href,
-                            data: {scan: 1, start: start ? 1 : 0, csrf: csrf},
+                            data: {scan: 1, start: start ? 1 : 0, csrf: window.csrf},
                             dataType: 'json',
                             success: function(data) {
                                 $('#scan_count').text(data.scanned + '/' + data.pending);

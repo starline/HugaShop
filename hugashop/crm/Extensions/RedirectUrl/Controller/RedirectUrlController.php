@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.8
+ * @version 1.9
  *
  */
 
@@ -30,7 +30,7 @@ final class RedirectUrlController extends BaseAdminController
     {
         #### Update
         ###########
-        if (!empty($link = Request::getDataAcces(RedirectUrl::getFields()))) {
+        if (!empty($link = Request::getInputCheckEditAccess(RedirectUrl::class, $id))) {
             if (empty($link->id)) {
                 $link = Design::setFlashMessage('add', RedirectUrl::createOne($link));
             } else {
@@ -38,7 +38,6 @@ final class RedirectUrlController extends BaseAdminController
             }
 
             RedirectUrl::cacheClear();
-
             return $this->redirectToRoute('ExtRedirectUrl', ['id' => $link->id]);
         }
 

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  */
 
@@ -28,12 +28,12 @@ class MailTemplateController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($mail_template = Request::getDataAcces(UserMailTemplate::getFields()))) {
+        if (!empty($mail_template = Request::getInputCheckEditAccess(UserMailTemplate::class, $id))) {
 
             if (empty($mail_template->id)) {
                 $mail_template = Design::setFlashMessage('add', UserMailTemplate::createOne($mail_template));
             } else {
-                UserMailTemplate::updateOne($mail_template->id, $mail_template);
+                Design::setFlashMessage('update', UserMailTemplate::updateOne($mail_template->id, $mail_template));
             }
 
             // Делаем редирект на страницу с ID
@@ -44,18 +44,14 @@ class MailTemplateController extends BaseAdminController
         #### View
         #########
         if (!empty($id)) {
-
             $mail_template = UserMailTemplate::getOne($id);
-
             if (empty($mail_template->id)) {
                 return $this->redirectToRoute('MailTemplateListAdmin');
             }
         }
 
-        $notifier_types = UserMailTemplate::$mail_types;
-
         Design::assign('mail_template', $mail_template);
-        Design::assign('notifier_types', $notifier_types);
+        Design::assign('notifier_types', UserMailTemplate::$mail_types);
 
         return $this->fetchResponse('user/mail_template.tpl');
     }

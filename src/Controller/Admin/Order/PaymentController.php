@@ -37,7 +37,7 @@ class PaymentController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($payment_method = Request::getDataAcces(OrderPayment::getFields()))) {
+        if (!empty($payment_method = Request::getInputCheckEditAccess(OrderPayment::class, $id))) {
 
             $payment_method_settings        = Request::post('payment_method_settings', 'array');
             $payment_method_deliveries      = Request::post('payment_method_deliveries', 'array');

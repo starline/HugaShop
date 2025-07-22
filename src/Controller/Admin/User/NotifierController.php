@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.4
+ * @version 1.5
  *
  * User Notyfi
  *
@@ -33,7 +33,7 @@ class NotifierController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($notifier = Request::getDataAcces(UserNotifier::getFields()))) {
+        if (!empty($notifier = Request::getInputCheckEditAccess(UserNotifier::class, $id))) {
 
             $notifier->settings = Request::post('notifier_settings');
 
@@ -56,9 +56,7 @@ class NotifierController extends BaseAdminController
         #### View
         #########
         if (!empty($id)) {
-
             $notifier = UserNotifier::getOne($id);
-
             if (empty($notifier->id)) {
                 return $this->redirectToRoute('NotifierListAdmin');
             }

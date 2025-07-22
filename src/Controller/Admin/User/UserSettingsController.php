@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.4
  *
  */
 
@@ -22,11 +22,6 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class UserSettingsController extends BaseAdminController
 {
-    private $entity_params = [
-        'id' =>         ['type' => 'int'],
-        'group_id' =>   ['type' => 'int', 'access' => 'order_edit']
-    ];
-
 
     #[Route('/admin/user/{id}/settings', requirements: ['id' => '\d+'], name: 'UserSettingsAdmin')]
     public function index(int $id): Response
@@ -37,7 +32,7 @@ class UserSettingsController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($current_user = Request::getDataAcces($this->entity_params))) {
+        if (!empty($current_user = Request::getInputCheckEditAccess(User::class, $id))) {
 
             Design::setFlashMessage('update', User::updateUser($current_user->id, $current_user));
 
@@ -57,21 +52,19 @@ class UserSettingsController extends BaseAdminController
             return $this->redirectToRoute('UserListAdmin');
         }
 
-        $permissions = UserPermission::getUserPermissionsName($current_user->id);
-        $groups = UserGroup::orderBy('position')->get(); # Выбираем все группы пользователей
-
-        $notifier_methods =     UserNotifier::getList(['enabled' => 1], order: 'position');
-        $notifier_types =       UserNotifier::getNotifierTypes('admin');
-        $user_notifier_types =  UserNotifier::getUserNotifierTypes($current_user->id);
+        $permissions            = UserPermission::getUserPermissionsName($current_user->id);
+        $notifier_methods       = UserNotifier::getList(['enabled' => 1], order: 'position');
+        $notifier_types         = UserNotifier::getNotifierTypes('admin');
+        $user_notifier_types    = UserNotifier::getUserNotifierTypes($current_user->id);
 
         Design::assign([
-            'current_user' => $current_user,
-            'permissions' => $permissions,
-            'permissions_list' => UserPermission::$permissions_list,
-            'groups' => $groups,
-            'notifier_types' => $notifier_types,
-            'notifier_methods' => $notifier_methods,
-            'user_notifier_types' => $user_notifier_types
+            'current_user'          => $current_user,
+            'permissions'           => $permissions,
+            'permissions_list'      => UserPermission::$permissions_list,
+            'groups'                => UserGroup::getList(order: 'position'),  # Выбираем все группы пользователей
+            'notifier_types'        => $notifier_types,
+            'notifier_methods'      => $notifier_methods,
+            'user_notifier_types'   => $user_notifier_types
         ]);
 
         return $this->fetchResponse('user/user_settings.tpl');

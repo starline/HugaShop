@@ -47,7 +47,7 @@
                             entity: entity,
                             id: $('input[name=id]').val(),
                             lang: $('#language_select').val(),
-                            csrf: csrf
+                            csrf: window.csrf
                         },
                         success: function(data) {
                             for (const field in data) {

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  */
 
@@ -28,8 +28,7 @@ class PlaceController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($place = Request::getDataAcces(WarehousePlace::getFields()))) {
-
+        if (!empty($place = Request::getInputCheckEditAccess(WarehousePlace::class, $id))) {
             if (empty($place->id)) {
                 $place = Design::setFlashMessage('add', WarehousePlace::createOne($place));
             } else {
@@ -43,9 +42,7 @@ class PlaceController extends BaseAdminController
         #### View
         #########
         if (!empty($id)) {
-
             $place = WarehousePlace::find($id);
-
             if (empty($place->id)) {
                 return $this->redirectToRoute('PlaceListAdmin');
             }

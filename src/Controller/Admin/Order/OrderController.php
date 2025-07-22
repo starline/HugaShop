@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.6
+ * @version 2.7
  *
  */
 
@@ -43,7 +43,7 @@ class OrderController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($order = Request::getDataAcces(Order::getFields()))) {
+        if (!empty($order = Request::getInputCheckEditAccess(Order::class, $id))) {
 
             // Если выбрали "заказ оплачен", но не выбрали способ оплаты - отменим оплату
             if (!empty($order->paid) and !$order->payment_method_id) {

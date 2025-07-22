@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.6
+ * @version 1.7
  */
 
 namespace HugaShop\Extensions\FacebookCommerce\Controller;
@@ -23,7 +23,7 @@ use HugaShop\Extensions\FacebookCommerce\Models\FacebookCommerceCategory;
 
 final class FacebookCommerceController extends BaseAdminController
 {
-    
+
     use BaseExtensionTrait;
 
     #[Route('/FacebookCommerce/feed', name: 'ExtFacebookCommerceNew', priority: 20)]
@@ -34,7 +34,7 @@ final class FacebookCommerceController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($pricefeed = Request::getDataAcces(FacebookCommerce::getFields()))) {
+        if (!empty($pricefeed = Request::getInputCheckEditAccess(FacebookCommerce::class, $id))) {
             if (empty($pricefeed->id)) {
                 $pricefeed->token = Helper::makeToken();
                 $pricefeed = Design::setFlashMessage('add', FacebookCommerce::createOne($pricefeed));

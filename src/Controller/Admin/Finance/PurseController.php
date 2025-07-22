@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  * 
  */
 
@@ -22,14 +22,14 @@ class PurseController extends BaseAdminController
 {
     #[Route('/admin/finance/purse', name: 'PurseNewAdmin')]
     #[Route('/admin/finance/purse/{id}', requirements: ['id' => '\d+'], name: 'PurseAdmin')]
-    public function index(?int $id): Response
+    public function index(?int $id = null): Response
     {
 
         $this->checkAdminAccess('finance');
 
         #### Update
         ###########
-        if (!empty($purse = Request::getDataAcces(FinancePurse::getFields()))) {
+        if (!empty($purse = Request::getInputCheckEditAccess(FinancePurse::class, $id))) {
 
             if (empty($purse->id)) {
                 $purse = Design::setFlashMessage('add', FinancePurse::createOne($purse));

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
@@ -23,13 +23,13 @@ class DeliveryController extends BaseAdminController
 {
     #[Route('/admin/order/delivery', name: 'OrderDeliveryNewAdmin')]
     #[Route('/admin/order/delivery/{id}', requirements: ['id' => '\d+'], name: 'OrderDeliveryAdmin')]
-    public function index(?int $id): Response
+    public function index(?int $id = null): Response
     {
 
 
         #### Update
         ###########
-        if (!empty($delivery = Request::getDataAcces(OrderDelivery::getFields()))) {
+        if (!empty($delivery = Request::getInputCheckEditAccess(OrderDelivery::class, $id))) {
 
             $delivery->settings = Request::post('delivery_settings', 'array');
             $delivery_payments = Request::post('delivery_payments');

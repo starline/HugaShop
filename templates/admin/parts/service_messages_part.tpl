@@ -31,7 +31,7 @@
             {/if}
             {if entity_locked|in_array:$service_messages_empty}
                 <span class="badge text-bg-warning">Обьект редактируется <a
-                        href="{'UserAdmin'|link:[id => $user_locked->id]}">{$user_locked->name}</a>
+                        href="{'UserAdmin'|link:[id => $locked_user->id]}">{$locked_user->name}</a>
                 </span>
             {/if}
 

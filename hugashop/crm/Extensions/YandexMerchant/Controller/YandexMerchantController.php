@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  */
 
 namespace HugaShop\Extensions\YandexMerchant\Controller;
@@ -31,7 +31,7 @@ final class YandexMerchantController extends BaseAdminController
     {
         $pricefeed_categories = [];
 
-        if (!empty($pricefeed = Request::getDataAcces(YandexMerchant::getFields()))) {
+        if (!empty($pricefeed = Request::getInputCheckEditAccess(YandexMerchant::class, $id))) {
             if (empty($pricefeed->id)) {
                 $pricefeed->token = Helper::makeToken();
                 $pricefeed = Design::setFlashMessage('add', YandexMerchant::createOne($pricefeed));
@@ -48,7 +48,6 @@ final class YandexMerchantController extends BaseAdminController
 
         if (!empty($id)) {
             $pricefeed = YandexMerchant::getOne($id);
-
             if (empty($pricefeed->id)) {
                 return $this->redirectToRoute('ExtYandexMerchantList');
             }
@@ -56,10 +55,8 @@ final class YandexMerchantController extends BaseAdminController
             $pricefeed_categories = YandexMerchantCategory::getCategoriesIds($pricefeed->id);
         }
 
-        $categories = ProductCategory::getCategoriesTree();
-
         Design::assign('pricefeed', $pricefeed);
-        Design::assign('categories', $categories);
+        Design::assign('categories', ProductCategory::getCategoriesTree());
         Design::assign('pricefeed_categories', $pricefeed_categories);
         Design::assign('extension', $this->getExtension());
 

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
@@ -28,13 +28,10 @@ class MailingController extends BaseAdminController
 
         $this->checkAdminAccess('user_notifier');
 
-        $notifiers = UserNotifier::getList(['enabled' => 1], order: 'position');
-
 
         #### Update
         ###########
-        if (!empty($mailing = Request::getDataAcces(UserMailing::getFields()))) {
-
+        if (!empty($mailing = Request::getInputCheckEditAccess(UserMailing::class, $id))) {
             if (empty($mailing->id)) {
                 $mailing->id = Design::setFlashMessage('add', UserMailing::addMailing($mailing));
             } else {
@@ -53,9 +50,7 @@ class MailingController extends BaseAdminController
         #### View
         #########
         if (!empty($id)) {
-
             $mailing = UserMailing::getOne(intval($id), ['user', 'template']);
-
             if (empty($mailing->id)) {
                 return $this->redirectToRoute('MailingListAdmin');
             }
@@ -67,7 +62,7 @@ class MailingController extends BaseAdminController
         }
 
         Design::assign('mailing', $mailing);
-        Design::assign('notifiers', $notifiers);
+        Design::assign('notifiers', UserNotifier::getList(['enabled' => 1], order: 'position'));
 
         return $this->fetchResponse('user/mailing.tpl');
     }

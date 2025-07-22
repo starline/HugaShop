@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  * 
  */
 
@@ -32,7 +32,7 @@ final class GoogleMerchantController extends BaseAdminController
     {
         $pricefeed_categories = [];
 
-        if (!empty($pricefeed = Request::getDataAcces(GoogleMerchant::getFields()))) {
+        if (!empty($pricefeed = Request::getInputCheckEditAccess(GoogleMerchant::class, $id))) {
             if (empty($pricefeed->id)) {
                 $pricefeed->token = Helper::makeToken();
                 $pricefeed = Design::setFlashMessage('add', GoogleMerchant::createOne($pricefeed));

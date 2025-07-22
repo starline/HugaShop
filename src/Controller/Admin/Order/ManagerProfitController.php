@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.2
+ * @version 1.3
  *
  */
 
@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class ManagerProfitController extends BaseAdminController
 {
 
-    private $entity_params = [
+    private $fields = [
         'create_order_rate' =>             ['type' => 'int'],
         'take_order_rate' =>               ['type' => 'int'],
         'referral_order_rate' =>           ['type' => 'int'],
@@ -33,7 +33,7 @@ class ManagerProfitController extends BaseAdminController
 
         $this->checkAdminAccess('user_manager');
 
-        if (!empty($settings = Request::getDataAcces($this->entity_params))) {
+        if (!empty($settings = Request::getInputAcces($this->fields))) {
 
             // Выбираем найстройки из POST
             foreach ($settings as $name => $val) {

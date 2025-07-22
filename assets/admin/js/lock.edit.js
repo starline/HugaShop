@@ -3,11 +3,13 @@
  * Automatically locks entity based on controller name
  *
  * @author Andri Huga
- * @version 1.2
+ * @version 1.3
  */
 
 export function initEditLock(data) {
 
+    data.csrf = data.csrf ?? window.csrf;
+    
     function lock() {
         $.post(data.lock_url, { csrf: data.csrf });
     }

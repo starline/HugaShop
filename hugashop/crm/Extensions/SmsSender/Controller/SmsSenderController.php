@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.5
+ * @version 2.6
  *
  */
 
@@ -27,6 +27,7 @@ use HugaShop\Extensions\SmsSender\Models\SmsSender;
 
 final class SmsSenderController extends BaseAdminController
 {
+
     use BaseExtensionTrait;
 
     /**
@@ -39,7 +40,7 @@ final class SmsSenderController extends BaseAdminController
         $mailing_list = [];
 
         // Update
-        if (!empty($mailing = Request::getDataAcces(SmsSender::getFields()))) {
+        if (!empty($mailing = Request::getInputCheckEditAccess(SmsSender::class, $id))) {
             $product_list = preg_split('/\r\n|\r|\n/', Request::post('product_list', 'string'));
             $mailing->product_list = serialize($product_list);
 

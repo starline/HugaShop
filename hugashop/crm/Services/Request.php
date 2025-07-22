@@ -373,7 +373,7 @@ class Request
      *
      * @param array $fillable_params
      */
-    public static function getDataAcces(array $fillable_params)
+    public static function getInputAcces(array $fillable_params)
     {
         if (!self::method('post')) {
             return null;
@@ -435,11 +435,11 @@ class Request
      */
     public static function getInputCheckEditAccess(string $model_name, ?int $item_id = null)
     {
-        if (!is_null($item_id) and LockEditService::isEditLocked($model_name, $item_id)) {
+        if (LockEditService::isEditLocked($model_name, $item_id)) {
             return null;
         }
-        
-        return self::getDataAcces($model_name::getFields());
+
+        return self::getInputAcces($model_name::getFields());
     }
 
 

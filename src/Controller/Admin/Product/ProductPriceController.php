@@ -4,7 +4,7 @@
  * HugaShop - Selling anything
  *
  * @author Andri Huga
- * @version 3.0
+ * @version 3.2
  * 
  * ProductPriceAdmin
  *
@@ -15,39 +15,17 @@ namespace App\Controller\Admin\Product;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
-use App\Services\PaginationService;
-use HugaShop\Models\Order\Order;
 use HugaShop\Models\Product\Product;
-use HugaShop\Models\User\UserPermission;
 use App\Controller\BaseAdminController;
+use HugaShop\Models\User\UserPermission;
 use HugaShop\Models\Product\ProductRelated;
 use HugaShop\Models\Product\ProductVariant;
-use HugaShop\Models\Warehouse\WarehouseProduct;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use HugaShop\Models\Warehouse\WarehouseProduct;
 
 class ProductPriceController extends BaseAdminController
 {
-
-    private $fillable = [
-        'id' =>                 ['type' => 'int'],
-        'visible' =>            ['type' => 'tinyint'],
-        'disable' =>            ['type' => 'tinyint'],
-        'featured' =>           ['type' => 'tinyint'],
-        'sale' =>               ['type' => 'tinyint'],
-        'custom' =>             ['type' => 'tinyint'],
-        'awaiting' =>           ['type' => 'tinyint'],
-        'variant_name' =>       ['type' => 'varchar'],
-        'sku' =>                ['type' => 'varchar'],
-        'price' =>              ['type' => 'decimal'],
-        'cost_price' =>         ['type' => 'decimal'],
-        'old_price' =>          ['type' => 'decimal'],
-        'stock' =>              ['type' => 'int'],
-        'weight' =>             ['type' => 'decimal'],
-        'awaiting_date' =>      ['type' => 'date'],
-        'product_id' =>         ['type' => 'int']
-    ];
-
 
     #[Route('/admin/product/{id}/price', requirements: ['id' => '\d+'], name: 'ProductPriceAdmin')]
     public function index(int $id): Response
@@ -60,7 +38,7 @@ class ProductPriceController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($product = Request::getDataAcces($this->fillable))) {
+        if (!empty($product = Request::getInputCheckEditAccess(Product::class, $id))) {
 
             // Преобразовываем дату datapiker для mysql
             if (!empty($product->awaiting_date)) {
@@ -106,14 +84,10 @@ class ProductPriceController extends BaseAdminController
             $product_variants = ProductVariant::getVariants($product->id, ['product', 'product.image']);
             Design::assign('product_variants', $product_variants);
 
-            $warehouse_products = WarehouseProduct::getList([
-                'product_id' => $product->id
-            ], join: 'place');
+            $warehouse_products = WarehouseProduct::getList(['product_id' => $product->id], join: 'place');
             Design::assign('warehouse_products', $warehouse_products);
         }
 
         return $this->fetchResponse('product/product_price.tpl');
     }
-
-
 }

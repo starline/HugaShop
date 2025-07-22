@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.6
+ * @version 2.7
  *
  */
 
@@ -35,7 +35,7 @@ class PostController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($post = Request::getDataAcces(ContentPost::getFields()))) {
+        if (!empty($post = Request::getInputCheckEditAccess(ContentPost::class, $id))) {
 
             $post->date = Helper::dateConvert($post->date . ' 12:00', 'Y-m-d');
 

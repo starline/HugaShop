@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.6
+ * @version 2.7
  *
  * Users Group
  *
@@ -30,8 +30,7 @@ class GroupController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($group = Request::getDataAcces(UserGroup::getFields()))) {
-
+        if (!empty($group = Request::getInputCheckEditAccess(UserGroup::class, $id))) {
             if (empty($group->id)) {
                 $group = Design::setFlashMessage('add', UserGroup::createOne($group));
             } else {

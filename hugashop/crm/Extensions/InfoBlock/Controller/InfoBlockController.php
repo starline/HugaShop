@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.5
+ * @version 2.6
  *
  */
 
@@ -36,15 +36,14 @@ final class InfoBlockController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($block = Request::getDataAcces(InfoBlock::getFields()))) {
-
+        if (!empty($block = Request::getInputCheckEditAccess(InfoBlock::class, $id))) {
             if (empty($block->id)) {
                 $block = Design::setFlashMessage('add', InfoBlock::createOne($block));
             } else {
                 Design::setFlashMessage('update', InfoBlock::updateOne($block->id, $block));
-                InfoBlock::cacheClear();
             }
 
+            InfoBlock::cacheClear();
             return $this->redirectToRouteLang('ExtInfoBlock', ['id' => $block->id]);
         }
 

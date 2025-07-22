@@ -31,16 +31,18 @@
 			<div class="col-12">
 				<div class="over_name">
 					<div class="checkbox_line">
-                                                <div class="form-check form-switch">
-                                                        <input class="form-check-input" name="enabled" value='1' type="checkbox" role="switch" id="active_checkbox"
-                                                                {if !'user_edit'|user_access}disabled{/if} {if $current_user->enabled}checked{/if} />
-                                                        <label class="form-check-label" for="active_checkbox">Активен</label>
-                                                </div>
-                                                <div class="form-check form-switch">
-                                                        <input class="form-check-input" name="manager" value='1' type="checkbox" role="switch" id="manager_checkbox"
-                                                                {if !'user_manager'|user_access}disabled{/if} {if $current_user->manager}checked{/if} />
-                                                        <label class="form-check-label" for="manager_checkbox">Сотрудник</label>
-                                                </div>
+						<div class="form-check form-switch">
+							<input class="form-check-input" name="enabled" value='1' type="checkbox" role="switch"
+								id="active_checkbox" {if !'user_edit'|user_access}disabled{/if}
+								{if $current_user->enabled}checked{/if} />
+							<label class="form-check-label" for="active_checkbox">Активен</label>
+						</div>
+						<div class="form-check form-switch">
+							<input class="form-check-input" name="manager" value='1' type="checkbox" role="switch"
+								id="manager_checkbox" {if !'user_manager'|user_access}disabled{/if}
+								{if $current_user->manager}checked{/if} />
+							<label class="form-check-label" for="manager_checkbox">Сотрудник</label>
+						</div>
 					</div>
 				</div>
 
@@ -180,8 +182,7 @@
 				[{
 						filter: {
 							manager_id: php_manager_id,
-							filter: 'byMonth',
-							csrf: csrf,
+							filter: 'byMonth'
 							type: 'totalPrice'
 						},
 						options: {
@@ -193,8 +194,7 @@
 					{
 						filter: {
 							manager_id: php_manager_id,
-							filter: 'byMonth',
-							csrf: csrf,
+							filter: 'byMonth'
 							type: 'amount'
 						},
 						options: {
@@ -206,8 +206,7 @@
 					{
 						filter: {
 							manager_id: php_manager_id,
-							filter: 'byMonth',
-							csrf: csrf,
+							filter: 'byMonth'
 							type: 'totalPayments'
 						},
 						options: {

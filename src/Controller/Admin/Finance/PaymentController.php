@@ -5,7 +5,7 @@
  *
  * @author Andri Huga
  * @author Artem Sabelnikov
- * @version 2.4
+ * @version 2.5
  *
  * При переводе выбираем два связаных платежа
  * 
@@ -13,7 +13,6 @@
 
 namespace App\Controller\Admin\Finance;
 
-use HugaShop\Models\Image;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use App\Services\ImageService;
@@ -32,15 +31,15 @@ class PaymentController extends BaseAdminController
 {
     // Типы контрагента
     private $contractor_types = array(
-        ['name' => 'Заказ',                 'entity_name' => 'order',             'search' => 'search/order'],
-        ['name' => 'Пользователь',             'entity_name' => 'user',             'search' => 'search/user'],
+        ['name' => 'Заказ',                 'entity_name' => 'order',           'search' => 'search/order'],
+        ['name' => 'Пользователь',          'entity_name' => 'user',            'search' => 'search/user'],
         ['name' => 'Складское перемещение', 'entity_name' => 'wh_movement',     'search' => 'search/movement']
     );
 
 
     #[Route('/admin/finance/payment', name: 'PaymentNewAdmin')]
     #[Route('/admin/finance/payment/{id}', requirements: ['id' => '\d+'], name: 'PaymentAdmin')]
-    public function index(?int $id): Response
+    public function index(?int $id = null): Response
     {
 
         $this->checkAdminAccess('finance');
@@ -53,7 +52,7 @@ class PaymentController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($payment = Request::getDataAcces(FinancePayment::getFields()))) {
+        if (!empty($payment = Request::getInputCheckEditAccess(FinancePayment::class, $id))) {
 
             // Если платеж верефицирован, определяем пользователя
             if (!empty($payment->verified)) {
@@ -191,13 +190,13 @@ class PaymentController extends BaseAdminController
         $to_currency = FinanceCurrency::getMainCurrency();
         if (isset($payment->id)) {
             if (isset($cur_type) and $cur_type == 2 and isset($rel_payment)) {
-                $current_purse = FinancePurse::getOne($payment->purse_id);
-                $current_currency = FinanceCurrency::getCurrency((int)$current_purse->currency_id);
-                $to_purse = FinancePurse::getOne($rel_payment->purse_id);
-                $to_currency = FinanceCurrency::getCurrency((int)$to_purse->currency_id);
+                $current_purse      = FinancePurse::getOne($payment->purse_id);
+                $current_currency   = FinanceCurrency::getCurrency((int)$current_purse->currency_id);
+                $to_purse           = FinancePurse::getOne($rel_payment->purse_id);
+                $to_currency        = FinanceCurrency::getCurrency((int)$to_purse->currency_id);
             } else {
-                $current_purse = FinancePurse::getOne($payment->purse_id);
-                $current_currency = FinanceCurrency::getCurrency((int)$current_purse->currency_id);
+                $current_purse      = FinancePurse::getOne($payment->purse_id);
+                $current_currency   = FinanceCurrency::getCurrency((int)$current_purse->currency_id);
             }
         } else {
             $current_currency = FinanceCurrency::getCurrency((int)$purses[0]->currency_id);

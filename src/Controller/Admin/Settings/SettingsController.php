@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.4
+ * @version 2.5
  *
  */
 
@@ -12,10 +12,11 @@ namespace App\Controller\Admin\Settings;
 
 use DateTimeZone;
 use HugaShop\Models\Image;
+use HugaShop\Models\Settings;
 use HugaShop\Services\Config;
 use HugaShop\Services\Design;
 use HugaShop\Services\Request;
-use HugaShop\Models\Settings;
+use App\Services\LockEditService;
 use App\Controller\BaseAdminController;
 use HugaShop\Models\Finance\FinanceCategory;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +25,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class SettingsController extends BaseAdminController
 {
     private $allowed_image_extentions = array('png', 'gif', 'jpg', 'jpeg', 'ico');
-    
+
     private $fields = [
         'domain' =>                             ['type' => 'string', 'trim' => true],
         'company_name' =>                       ['type' => 'string', 'trim' => true, 'empty' => false],
@@ -55,7 +56,7 @@ class SettingsController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($settings = Request::getDataAcces($this->fields))) {
+        if (!LockEditService::isEditLocked(Settings::class, item_id: 1) and !empty($settings = Request::getInputAcces($this->fields))) {
 
             // Выбираем найстройки из POST
             foreach ($settings as $name => $val) {
@@ -114,8 +115,8 @@ class SettingsController extends BaseAdminController
         Design::assign('time_zones', $time_zones);
 
         // Выбираем финансовые категории
-        Design::assign('income_finance_categories', FinanceCategory::getCategories(1));
-        Design::assign('expense_finance_categories', FinanceCategory::getCategories(0));
+        Design::assign('income_finance_categories',     FinanceCategory::getCategories(1));
+        Design::assign('expense_finance_categories',    FinanceCategory::getCategories(0));
 
         return $this->fetchResponse('settings/settings.tpl');
     }

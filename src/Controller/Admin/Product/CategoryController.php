@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  */
 
@@ -38,7 +38,7 @@ class CategoryController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($category = Request::getDataAcces(ProductCategory::getFields()))) {
+        if (!empty($category = Request::getInputCheckEditAccess(ProductCategory::class, $id))) {
 
             if (empty($category->id)) {
                 $category = Design::setFlashMessage('add', ProductCategory::addCategory($category));

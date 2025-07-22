@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  */
 
@@ -30,8 +30,7 @@ class ProviderController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($provider = Request::getDataAcces(ProductProvider::getFields()))) {
-
+        if (!empty($provider = Request::getInputCheckEditAccess(ProductProvider::class, $id))) {
             if (empty($provider->id)) {
                 $provider = Design::setFlashMessage('add', ProductProvider::createOne($provider));
             } else {
@@ -46,7 +45,6 @@ class ProviderController extends BaseAdminController
         #########
         if (!empty($id)) {
             $provider = ProductProvider::getOne($id);
-
             if (empty($provider->id)) {
                 return $this->redirectToRoute('ProviderListAdmin');
             }

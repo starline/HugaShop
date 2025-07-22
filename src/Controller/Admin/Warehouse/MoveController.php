@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 4.5
+ * @version 4.6
  *
  */
 
@@ -35,7 +35,7 @@ class MoveController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($movement = Request::getDataAcces(WarehouseMove::getFields()))) {
+        if (!empty($movement = Request::getInputCheckEditAccess(WarehouseMove::class, $id))) {
 
             // Создаем новую поставку/списание
             if (empty($movement->id)) {

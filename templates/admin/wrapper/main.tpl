@@ -12,14 +12,13 @@
 	{importmap point='admin'}
 
 	<script type="module">
-		const csrf = "{setCSRF}";
+		window.csrf = "{setCSRF}";
 
 		{if $locked_key}
 			import { initEditLock } from '{"js/lock.edit.js"|asset}';
 			initEditLock({
 				lock_url: "{'LockEditAjax'|link:[locked_key => $locked_key]}",
-				unlock_url: "{'UnlockEditAjax'|link:[locked_key => $locked_key]}",
-				csrf: csrf
+				unlock_url: "{'UnlockEditAjax'|link:[locked_key => $locked_key]}"
 			});
 		{/if}
 	</script>

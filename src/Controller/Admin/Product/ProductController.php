@@ -26,24 +26,11 @@ use HugaShop\Models\Product\ProductFeature;
 use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use HugaShop\Models\Product\ProductCategoryFeature;
 use HugaShop\Models\Product\ProductFeatureOption;
+use HugaShop\Models\Product\ProductCategoryFeature;
 
 class ProductController extends BaseAdminController
 {
-
-    private $entity_params = [
-        'id' =>                 ['type' => 'int'],
-        'url' =>                ['type' => 'varchar'],
-        'name' =>               ['type' => 'varchar',       'req' => true],
-        'meta_title' =>         ['type' => 'varchar'],
-        'meta_description' =>   ['type' => 'varchar'],
-        'annotation' =>         ['type' => 'varchar'],
-        'body' =>               ['type' => 'text'],
-        'brand_id' =>           ['type' => 'int'],
-        'category_id' =>        ['type' => 'int']
-    ];
-
 
     #[Route('/admin/product', name: 'ProductNewAdmin')]
     #[Route('/admin/product/{id}', requirements: ['id' => '\d+'], name: 'ProductAdmin')]
@@ -63,8 +50,7 @@ class ProductController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($product = Request::getDataAcces(($this->entity_params)))) {
-
+        if (!empty($product = Request::getInputCheckEditAccess(Product::class, $id))) {
             if (empty($product->id)) {
                 $product = Design::setFlashMessage('add', Product::addProduct($product));
             } else {
@@ -72,9 +58,10 @@ class ProductController extends BaseAdminController
             }
 
             SeoKeywords::catchKeywords($product->id, 'product');
-            ImageService::catchImages($product->id, 'product', 'images');
+            ImageService::catchImages($product->id, 'product');
 
             // Сначала очищаем связи, чтобы удалить неактуальные данные
+            // TODO удалить все не переданные. после обновления и добавления
             ProductOption::query()->where('product_id', $product->id)->delete();
 
             // Характеристики текущей категории
@@ -126,7 +113,7 @@ class ProductController extends BaseAdminController
             // Новые характеристики
             $new_features_names     = Request::post('new_features_names', 'array');
             $new_features_values    = Request::post('new_features_values', 'array');
-            
+
             if (is_array($new_features_names) && is_array($new_features_values)) {
                 foreach ($new_features_names as $i => $name) {
                     $value = trim($new_features_values[$i]);
@@ -143,7 +130,7 @@ class ProductController extends BaseAdminController
                             'feature_id' => $feature->id,
                             'value'      => $value,
                         ]);
-                        
+
                         ProductOption::updateOrCreate(
                             ['product_id' => $product->id, 'feature_id' => $feature->id],
                             ['option_id' => $feature_option->id]
@@ -160,14 +147,13 @@ class ProductController extends BaseAdminController
         #########
         if (!empty($id)) {
             $product = Product::getOneEditTranslate($id, join: ['images']);
-
             if (empty($product->id)) {
                 return $this->redirectToRoute('ProductListAdmin');
             }
 
-            $features_options = ProductOption::getList(['product_id' => $product->id]);
-            $features_ids = $features_options->pluck('feature_id')->all();
-            $options_ids = $features_options->pluck('option_id')->all();
+            $features_options               = ProductOption::getList(['product_id' => $product->id]);
+            $features_ids                   = $features_options->pluck('feature_id')->all();
+            $options_ids                    = $features_options->pluck('option_id')->all();
             Design::assign('options',       ProductFeatureOption::getListTranslate(['id' => $options_ids])->keyBy('feature_id'));
             Design::assign('features',      ProductFeature::getListTranslate(['id' => $features_ids]));
             Design::assign('seo_keywords',  SeoKeywords::getKeywords($product->id, 'product'));

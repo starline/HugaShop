@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.4
+ * @version 2.5
  *
  */
 
@@ -29,7 +29,7 @@ class CouponController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($coupon = Request::getDataAcces(UserCoupon::getFields()))) {
+        if (!empty($coupon = Request::getInputCheckEditAccess(UserCoupon::class, $id))) {
 
             $expires = Request::post('expires', 'bool');
             if (!empty($expires) and !empty($coupon->expire)) {

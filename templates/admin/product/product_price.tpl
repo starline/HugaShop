@@ -398,7 +398,7 @@
 					minChars: 0,
 					noCache: false,
 					params: {
-						csrf: csrf
+						csrf: window.csrf
 					},
 					onSelect: function(suggestion) {
 						$(this).val('').focus().blur();
@@ -456,7 +456,7 @@
 					minChars: 0,
 					noCache: false,
 					params: {
-						csrf: csrf
+						csrf: window.csrf
 					},
 					onSelect: function(suggestion) {
 						$(this).val('').focus().blur();
@@ -534,8 +534,7 @@
 					[{
 							filter: {
 								product_id: php_product_id,
-								filter: 'byMonth',
-								csrf: csrf
+								filter: 'byMonth'
 							},
 							options: {
 								label: 'Сумма заказов, ' + php_currency_sign,
@@ -548,8 +547,7 @@
 						{
 							filter: {
 								product_id: php_product_id,
-								filter: 'byMonth',
-								csrf: csrf
+								filter: 'byMonth'
 							},
 							options: {
 								label: 'Сумма прибыли, ' + php_currency_sign,
@@ -562,8 +560,7 @@
 						{
 							filter: {
 								product_id: php_product_id,
-								filter: 'byMonth',
-								csrf: csrf
+								filter: 'byMonth'
 							},
 							options: {
 								label: 'Продано, шт',
@@ -576,8 +573,7 @@
 						{
 							filter: {
 								product_id: php_product_id,
-								filter: 'byMonth',
-								csrf: csrf
+								filter: 'byMonth'
 							},
 							options: {
 								label: 'Поставка, шт',
@@ -591,8 +587,7 @@
 						{
 							filter: {
 								product_id: php_product_id,
-								filter: 'byMonth',
-								csrf: csrf
+								filter: 'byMonth'
 							},
 							options: {
 								label: 'Списано, шт',
@@ -614,8 +609,7 @@
 					[{
 							filter: {
 								filter: 'byDay',
-								product_id: php_product_id,
-								csrf: csrf
+								product_id: php_product_id
 							},
 							options: {
 								label: 'Цена, ' + php_currency_sign,
@@ -627,8 +621,7 @@
 						{
 							filter: {
 								filter: 'byDay',
-								product_id: php_product_id,
-								csrf: csrf
+								product_id: php_product_id
 							},
 							options: {
 								label: 'Оптовая цена, ' + php_currency_sign,

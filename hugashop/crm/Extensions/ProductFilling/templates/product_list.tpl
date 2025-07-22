@@ -221,14 +221,14 @@
                                 id: productId,
                                 lang: lang,
                                 save: 1,
-                                csrf: csrf
+                                csrf: window.csrf
                             },
                             success: function() {
                                 $.ajax({
                                     url: calculate_product_url,
                                     type: 'POST',
                                     dataType: 'json',
-                                    data: { id: productId, csrf: csrf },
+                                    data: { id: productId, csrf: window.csrf },
                                     success: function(res) {
                                         if (res && res[lang] !== undefined) {
                                             const badge = row.find(`[data-lang="${lang}"]`);
@@ -267,7 +267,7 @@
                     $.ajax({
                         type: 'POST',
                         url: filling_url,
-                        data: {id: id, csrf: csrf},
+                        data: {id: id, csrf: window.csrf},
                         dataType: 'json',
                         success: function(res) {
                             if (res.description) {

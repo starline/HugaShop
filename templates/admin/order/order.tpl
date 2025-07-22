@@ -710,10 +710,10 @@
 
 	<!-- Script -->
 	<script type="module">
-		const order_status = '{$order->status}';
-		const currency = '{$currency->sign}';
-		const max_order_amount = '{$settings->max_order_amount}';
-		const units = '{$settings->units}';
+		const order_status 		= '{$order->status}';
+		const currency 			= '{$currency->sign}';
+		const max_order_amount 	= '{$settings->max_order_amount}';
+		const units 			= '{$settings->units}';
 
 		{literal}
 			$(function() {
@@ -766,7 +766,7 @@
 					minChars: 0,
 					noCache: false,
 					params: {
-						csrf: csrf
+						csrf: window.csrf
 					},
 					onSelect: function(suggestion) {
 						let new_item = new_purchase.clone().appendTo('.purchases');
@@ -870,7 +870,7 @@
 					minChars: 0,
 					noCache: false,
 					params: {
-						csrf: csrf
+						csrf: window.csrf
 					},
 					onSelect: function(suggestion) {
 						$('input[name="user_id"]').val(suggestion.data.id);

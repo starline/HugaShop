@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.0
+ * @version 2.1
  *
  */
 
@@ -33,7 +33,7 @@ class UserController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($current_user = Request::getDataAcces(User::getFields()))) {
+        if (!empty($current_user = Request::getInputCheckEditAccess(User::class, $id))) {
 
             // Не допустить одинаковые email пользователей
             // Разрешить пустые email
@@ -87,13 +87,11 @@ class UserController extends BaseAdminController
         $filter["paid"] = 1; # оплаченые
         $orders_price = Order::getOrdersPrice($filter);
 
-        $groups = UserGroup::orderBy('position')->get(); # Выбираем все группы пользователей
 
         Design::assign('pagination', PaginationService::getPagination($orders_count, $filter));
-
         Design::assign([
             'current_user'  => $current_user,
-            'groups'        => $groups,
+            'groups'        => UserGroup::getList(order: 'position'),   # Выбираем все группы пользователей
             'orders'        => $orders,
             'orders_count'  => $orders_count,
             'orders_price'  => $orders_price

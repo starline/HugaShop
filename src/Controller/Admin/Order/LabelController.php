@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.0
+ * @version 3.1
  *
  */
 
@@ -28,7 +28,7 @@ class LabelController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($label = Request::getDataAcces(OrderLabel::getFields()))) {
+        if (!empty($label = Request::getInputCheckEditAccess(OrderLabel::class, $id))) {
 
             if (!empty($label->color)) {
                 $label->color = str_replace('#', '', $label->color);

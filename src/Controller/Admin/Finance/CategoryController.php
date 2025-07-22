@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.5
+ * @version 2.6
  * 
  */
 
@@ -21,14 +21,14 @@ class CategoryController extends BaseAdminController
 {
     #[Route('/admin/finance/category', name: 'FinanceCategoryNewAdmin')]
     #[Route('/admin/finance/category/{id}', requirements: ['id' => '\d+'], name: 'FinanceCategoryAdmin')]
-    public function index(?int $id): Response
+    public function index(?int $id = null): Response
     {
 
         $this->checkAdminAccess('finance');
 
         #### Update
         ###########
-        if (!empty($category = Request::getDataAcces(FinanceCategory::getFields()))) {
+        if (!empty($category = Request::getInputCheckEditAccess(FinanceCategory::class, $id))) {
 
             if (empty($category->id)) {
                 $category = Design::setFlashMessage('add', FinanceCategory::createOne($category));
