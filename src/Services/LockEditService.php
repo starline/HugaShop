@@ -114,6 +114,6 @@ class LockEditService
     private static function getKey(string $model_name, int|string $id): string
     {
         $key = Helper::makeToken($model_name);
-        return $key . '_' . $id;
+        return $key . '.' . $id;
     }
 }
