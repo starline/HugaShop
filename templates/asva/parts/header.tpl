@@ -11,27 +11,20 @@
 			<div class="header-upper-links">
 				<span class="ico ico-close" onclick="closeTip('upper_menu'); return false;">x</span>
 				<div class="header-upper-menu-links">
-					<a class="link-contact" href="/information/delivery/">доставка
-					</a>
-					<a class="link-contact" href="/information/payment/">оплата
-					</a>
-					<a class="link-contact" href="/information/garanty/">гарантия
-					</a>
-					<a class="link-contact" href="/detail/contacts.php">контакты
-					</a>
-					<a class="link-contact" href="/detail/">О нас
-					</a>
+					{foreach 'ContentPage'|api:getMenu as $m}
+						<a class="{if $page->id == $m->id}link-contact{/if}" {if $page->id == $m->id}aria-current="page"
+						{/if} href="{'Page'|linkLang:[url => $m->url]}">{$m->name}</a>
+					{/foreach}
 				</div>
 			</div>
 		</div>
 
 		<div class="header-logo">
-			<a href="/"><img src="<?= SITE_TEMPLATE_PATH?>/images/logo-m.png" rel="nofollow"></a>
+			<a href="/"><img src="{'images/logo-m.png'|asset}" rel="nofollow"></a>
 		</div>
 
 
 		<div class="header-upper-menu" id="active_header_search">
-
 
 			<!-- Окно поиска -->
 			<div class="header-under-search">
@@ -50,18 +43,45 @@
 			</a>
 
 
-
 			<a href="#" class="phone" onclick="openTip('mob_phones'); return false;">
 				<i class="ico ico-phone"></i>
 			</a>
 
 
 			<!-- Корзина -->
+			{block name=cart_informer}
+				<a href="{'Cart'|linkLang}" rel="nofollow" class="basket"
+					title="{$cart->purchases_count} {$cart->purchases_count|plural:'товар':'товаров':'товара'}. {if $cart->purchases_price > 0}</br> На сумму: {$cart->purchases_price|price_html:no_html}{/if}">
+					<i class="ico ico-basket"></i>
 
+					{if $cart->purchases_count > 0}
+						<span>
+							{$cart->purchases_count}
+						</span>
+					{/if}
+				</a>
+			{/block}
 
 
 			<!-- Вход -->
-
+			{if $user}
+				<span class="user-area" id="userlogin">
+					<i class="ico ico-user"></i>
+					<span class="user-name">
+						<a href="{'UserOrderList'|linkLang}">
+							{$user->name}
+						</a>
+					</span>
+					<span>
+						<a id="user_logout" href="{'UserLogout'|linkLang}">{'выйти'|trans}</a>
+					</span>
+				</span>
+			{else}
+				<a href="{'UserLogin'|linkLang}" class="user-area user-name" rel="nofollow">
+					<i class="ico ico-user"></i>
+					<span class="user-name">{'Вход в магазин'|trans}</span>
+				</a>
+			{/if}
 
 		</div>
 	</div>
@@ -71,25 +91,24 @@
 <div class="header-wrapper">
 	<div class="header asva-container">
 		<div class="header-logo hidden-phone">
-			<a href="/" title="Интернет магазин шин и дисков АСВА"><img src="<?= SITE_TEMPLATE_PATH?>/images/logo.png"
-					alt="Интернет магазин шин и дисков АСВА"></a>
+			<a href="/" title="Интернет магазин шин и дисков АСВА">
+				<img src="{'images/logo.png'|asset}" alt="Интернет магазин шин и дисков АСВА">
+			</a>
 		</div>
 		<div class="header-links">
-			<a href="/catalog/by_size/" title="Шины на авто">
+			<a href="/shini" title="Шины на авто">
 				<i class="ico ico-tire-car"></i>
 				<span>Шины</span>
 			</a>
-
-			<a href="/disks/by_size/" title="Диски на авто">
+			<a href="/diski" title="Диски на авто">
 				<i class="ico ico-tire-disk"></i>
 				<span>диски</span>
 			</a>
-			<a href="/uslugi-shinomontaga/" title="Шиномонтаж">
+			<a href="/info/uslugi-shinomontaga" title="Шиномонтаж">
 				<i class="ico ico-tire-fitting"></i>
 				<span>шиномонтаж</span>
 			</a>
-
-			<a href="/services/tire_storage/" title="Хранение">
+			<a href="/info/tire-storage" title="Хранение">
 				<i class="ico ico-tire-storage"></i>
 				<span>Хранение</span>
 			</a>
@@ -118,7 +137,6 @@
 						<span>ГРАФИК РАБОТЫ КОЛЛ-ЦЕНТРА</span>
 						<span>Пн-Пт 9:00-20:00<br />Сб 9:00-16:00</span>
 					</div>
-
 					<div>
 						<i class="ico ico-mobile kyivstar"></i>
 						<a class="phone-number" href="tel:+380964044879">(096) 404-48-79</a>
@@ -142,7 +160,6 @@
 					</div>
 				</div>
 			</div>
-
 		</div>
 	</div>
 </div>

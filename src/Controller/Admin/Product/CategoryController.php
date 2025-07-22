@@ -10,7 +10,6 @@
 
 namespace App\Controller\Admin\Product;
 
-use HugaShop\Models\Image;
 use HugaShop\Models\SeoFaqs;
 use HugaShop\Services\Design;
 use App\Services\ImageService;

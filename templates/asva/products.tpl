@@ -3,9 +3,8 @@
 {block name=content}
 
 	<!-- Breadcrumbs -->
-	<div id="path">
-		<ul itemscope itemtype="https://schema.org/BreadcrumbList">
-
+	<div class="breadcrumbs-wrapper">
+		<ul class="breadcrumbs" itemscope itemtype="https://schema.org/BreadcrumbList">
 			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
 				<a href="{'Main'|linkLang}" itemprop="item">
 					<span itemprop="name">{'Главная'|trans}</span>

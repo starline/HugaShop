@@ -9,16 +9,16 @@
 
 import "https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900,900i&amp;subset=cyrillic";
 
-import "./css/asva.css";
+import "./css/common.css";
 import "./css/jquery.fancybox.min.css";
 
-import "./js/jquery.js";
-import "./js/jquery.fancybox.min.js";
-import "./js/jquery.autocomplete.js";
-
+import "./js/jquery/jquery.js";
+import "./js/jquery/jquery.fancybox.min.js";
+import "./js/jquery/jquery.autocomplete.js";
 import './js/jquery/jquery-ui.js';
 import './js/jquery/jquery.typesearch.js';
 import './js/jquery/jquery.form.js';
+
 import './js/owlcarousel/owl.carousel.min.js';
 import './js/htmx.min.js';
 import './js/bootstrap.bundle.min.js';
