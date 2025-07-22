@@ -26,7 +26,7 @@
 		<meta name="robots" content="noindex">
 	{/if}
 
-        {importmap point='grizlicnc'}
+	{importmap point='grizlicnc'}
 
 	{block name=head_css}{/block}
 	{block name=head_script}{/block}

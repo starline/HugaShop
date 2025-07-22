@@ -20,6 +20,10 @@ return [
         'path' => './assets/grizlicnc/init.js',
         'entrypoint' => true,
     ],
+    'asva' => [
+        'path' => './assets/asva/init.js',
+        'entrypoint' => true,
+    ],
     'jquery' => [
         'version' => '3.7.1',
     ],

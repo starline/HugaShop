@@ -6,7 +6,7 @@
 	<meta name="description" content="{$meta_description}">
 	<title>{$meta_title}</title>
 
-	<link rel="shortcut icon" type="image/x-icon" href="{'images/favicon.ico'|asset}">
+	<link rel="shortcut icon" type="image/x-icon" href="{'images/favicon.png'|asset}">
 
 	<meta name="language" content="{$current_language->code}">
 
@@ -26,7 +26,7 @@
 		<meta name="robots" content="noindex">
 	{/if}
 
-        {importmap point='grizlicnc'}
+	{importmap point='asva'}
 
 	{block name=head_css}{/block}
 	{block name=head_script}{/block}
