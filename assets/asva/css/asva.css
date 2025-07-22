@@ -1,0 +1,6048 @@
+* {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+* img {
+	border: 0;
+	height: auto;
+	max-width: 100%;
+}
+
+body {
+	color: #4b4b4b;
+	font-family: 'Roboto', sans-serif;
+	font-size: 14px;
+	margin: 0;
+	padding: 0;
+	min-width: 360px;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+input,
+button,
+.button,
+select,
+textarea {
+	font-family: 'Roboto', sans-serif;
+}
+
+button,
+.button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+	cursor: pointer;
+}
+
+::placeholder {
+	color: #e0e0e0;
+}
+
+dd {
+	margin: 0
+}
+
+.asva-container {
+	margin: 0 auto;
+	max-width: 1400px;
+}
+
+.asva-container::after {
+	content: "";
+	clear: both;
+	display: block;
+}
+
+.tyre-parameter a.active {
+	color: #fe7077;
+}
+
+
+.main-wrapper a {
+	color: #2f95ff;
+}
+
+/*Style*/
+.red {
+	color: #E5390B;
+}
+
+.blue {
+	color: #00a0ff;
+}
+
+.alert {
+	padding: 25px;
+	background-color: #fff9d6;
+	text-align: center;
+}
+
+.sub-alert {
+	display: block;
+	text-align: center;
+	padding: 10px;
+	background-color: #fff9d6;
+	margin-bottom: 15px;
+}
+
+/*header-upper*/
+.header-upper-wrapper {
+	min-width: 360px;
+	background: #157fec;
+}
+
+.header-upper-links-wrapper button {
+	background: none;
+	border: 0;
+	display: none;
+	padding: 8px 24px;
+}
+
+.header-upper-links-wrapper button i {
+	background: #fff;
+	display: block;
+	height: 4px;
+	margin: 4px 0;
+	width: 24px;
+}
+
+.header-upper-links {
+	float: left;
+	padding-top: 13px;
+}
+
+.header-upper-links a {
+	color: #afdaff;
+	font-size: 12px;
+	letter-spacing: .05em;
+	margin-left: 28px;
+	text-transform: uppercase;
+	text-decoration: none;
+}
+
+.header-upper-links a:hover {
+	color: #fff;
+}
+
+
+.header-upper-links .link-contact {
+	color: #beff7f;
+	font-weight: 900;
+}
+
+.header-upper-links .link-contact:hover {
+	color: #d6ffaf;
+}
+
+.header-upper-menu {
+	float: right;
+}
+
+.header-upper-menu .search {
+	background: #76bb35;
+	padding: 11px 20px;
+}
+
+.header-upper-menu a,
+.header-upper-menu span,
+.header-upper-menu div {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.header-upper-menu .phone {
+	display: none;
+	padding: 6px 0px 6px 20px;
+}
+
+.header-upper-menu a:hover {
+	text-decoration: none;
+}
+
+.header-upper-menu .basket {
+	padding: 6px 28px;
+}
+
+.header-upper-menu .ico-basket {
+	background: url(../images/ico-basket.png);
+	height: 26px;
+	width: 24px;
+}
+
+.header-upper-menu .basket span {
+	display: inline-block;
+	vertical-align: middle;
+	background-color: #bfdefd;
+	border-radius: 50%;
+	color: #0e75df;
+	font-size: 15px;
+	font-weight: 700;
+	line-height: 2.13em;
+	margin-left: 10px;
+	text-align: center;
+	width: 2.13em;
+}
+
+.header-upper-menu .basket:hover .ico-basket {
+	background: url(../images/ico-basket-a.png);
+}
+
+.header-upper-menu .basket:hover span {
+	background-color: #fff;
+}
+
+.header-upper-menu .user-area {
+	background: #0e75df;
+	min-width: 210px;
+	padding: 9px 28px;
+}
+
+.header-upper-menu .user-area form {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.header-upper-menu .ico-user {
+	background: url(../images/ico-user.png);
+	height: 26px;
+	width: 25px;
+}
+
+.header-upper-menu .user-area:hover .ico-user {
+	background: url(../images/ico-user-a.png);
+}
+
+.header-upper-menu .user-area span {
+	color: #afdaff;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: .05em;
+	margin-left: 12px;
+	text-transform: uppercase;
+}
+
+.header-upper-menu .user-area a {
+	color: #afdaff;
+}
+
+.header-upper-menu .user-area a:hover,
+.header-upper-menu .user-area:hover .user-name a,
+.header-upper-menu .user-area:hover .user-name {
+	color: #fff;
+}
+
+
+.header-upper .header-logo {
+	display: none;
+}
+
+
+
+/*header*/
+.header-wrapper {
+	background: #2f95ff;
+}
+
+.header-logo {
+	float: left;
+	padding: 30px 0 30px 48px;
+}
+
+.header-links {
+	float: right;
+	padding: 30px 0 26px;
+}
+
+.header-links a {
+	color: #ffffff;
+	display: inline-block;
+	font-size: 16px;
+	font-weight: 700;
+	letter-spacing: .075em;
+	margin-right: 70px;
+	text-align: center;
+	text-transform: uppercase;
+	text-decoration: none;
+	vertical-align: middle;
+}
+
+.header-links a:hover {
+	opacity: .75;
+}
+
+.header-links a .ico {
+	display: block;
+	height: 79px;
+	margin: 0 auto 8px;
+	width: 79px;
+}
+
+.header-links a .ico-tire-car {
+	background-size: cover;
+	background-image: url(../images/ico-tire-car.png);
+}
+
+.header-links a .ico-tire-truck {
+	background-size: cover;
+	background-image: url(../images/ico-tire-truck.png);
+}
+
+.header-links a .ico-tire-disk {
+	background-size: cover;
+	background-image: url(../images/ico-tire-disk.png);
+}
+
+.header-links a .ico-tire-fitting {
+	background-size: cover;
+	background-image: url(../images/ico-tire-fitting.png);
+}
+
+.header-links a .ico-tire-storage {
+	background-size: cover;
+	background-image: url(../images/ico-tire-storage.png);
+}
+
+.header-contacts {
+	padding: 20px 0 0;
+	text-align: center;
+}
+
+.header-contacts .phone .phone-number {
+	color: white;
+}
+
+.header-contacts .all-phones .phone-number {
+	color: #157fec;
+}
+
+.header-contacts * {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.header-contacts .phone {
+	color: #fff;
+	display: block;
+	font-size: 36px;
+	font-weight: 300;
+}
+
+.ico-phone {
+	background: url(../images/ico-phone.png);
+	height: 24px;
+	width: 24px;
+}
+
+.header-contacts .ico-phone {
+	margin-top: 6px;
+}
+
+.header-contacts .all-phones {
+	position: relative;
+}
+
+.header-contacts a.hidden-phone {
+	border-radius: 2px;
+	margin-top: 9px;
+	padding: 10px 34px;
+	background: #61b2fe;
+}
+
+.header-contacts a.hidden-phone:hover {
+	background: #48a6fd;
+}
+
+.header-contacts a.hidden-phone span {
+	float: left;
+	color: #fff;
+	font-size: 15px;
+	font-weight: 900;
+	text-transform: uppercase;
+	letter-spacing: .2em;
+	margin-left: 12px;
+}
+
+.header-contacts .ico-arrow-right {
+	appearance: none;
+	background: url(../images/ico-arrow-1.png);
+	height: 17px;
+	width: 8px;
+	margin-left: 42px;
+}
+
+.header-contacts .mobiles {
+	background: #fff;
+	border-radius: 3px;
+	box-shadow: 3px 3px 3px rgba(3, 3, 3, 0.25);
+	display: none;
+	min-width: 294px;
+	padding: 10px 26px;
+	position: absolute;
+	text-align: left;
+	transform: translate(0, -30%);
+	z-index: 2;
+}
+
+.header-contacts .active {
+	display: block;
+}
+
+.header-contacts .mobiles .close {
+	background: url(../images/ico-x-blue.png);
+	cursor: pointer;
+	height: 10px;
+	overflow: hidden;
+	position: absolute;
+	right: 15px;
+	top: 12px;
+	text-indent: -200%;
+	width: 10px;
+}
+
+.header-contacts .mobiles .open-time {
+	color: #000;
+	font-size: 16px;
+	line-height: 24px;
+	margin: 10px 0 25px;
+}
+
+.header-contacts .mobiles div {
+	color: #157fec;
+	display: block;
+	font-size: 24px;
+	font-weight: 300;
+	margin: 10px 0;
+}
+
+.header-contacts .mobiles .ico-mobile {
+	margin-right: 10px;
+}
+
+.header-contacts .mobiles .ico-mobile.kyivstar {
+	background-color: #00a0ff;
+}
+
+.header-contacts .mobiles .ico-mobile.vodafone {
+	background-color: #ed1c24;
+}
+
+.header-contacts .mobiles .ico-mobile.lifecell {
+	background-color: #0c4ea2;
+	background-image: url(../images/ico-life-a.png);
+}
+
+.header-contacts .mobiles .ico-mobile.telegram {
+	background-color: #039be5;
+	/*light blue color*/
+}
+
+.header-contacts .mobiles .ico-mobile.viber {
+	background-color: #724188;
+	/*purple is set! gray color is #00a0ff*/
+}
+
+.header-contacts .mobiles .ico-mobile.facebook {
+	background-color: #ffffff;
+	/**/
+}
+
+.header-contacts .mobiles .ico-mobile.instagram {
+	background-color: #ffffff;
+	/**/
+}
+
+/*header-under*/
+.header-under-wrapper {
+	background: #85cb42;
+}
+
+.header-under {
+	overflow: hidden;
+	position: relative;
+}
+
+.header-under-links {
+	text-align: center;
+	overflow: hidden;
+	position: relative;
+	padding: 6px 0;
+}
+
+.header-under-links span,
+.header-under-links div,
+.header-under-links i {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.header-under-links a {
+	color: #ffffff;
+	font-size: 16px;
+	font-weight: 700;
+	letter-spacing: .15em;
+	line-height: 1.25;
+	padding: 10px 0;
+	position: relative;
+	text-transform: uppercase;
+	top: 0;
+	transition: all 0.4s ease 0s;
+	text-decoration: underline;
+	margin: 0px 10px;
+}
+
+.header-under-links a:hover {
+	text-decoration: none;
+}
+
+.active .header-under-links a {
+	top: -100%;
+}
+
+.header-under-links .ico-arrow-right-long {
+	appearance: none;
+	background: url(../images/ico-arrow-2.png);
+	height: 14px;
+	margin-right: 28px;
+	margin-left: 28px;
+	width: 38px;
+}
+
+.header-under-search {
+	float: right;
+}
+
+.header-under-search * {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.ico-search {
+	background: url(../images/ico-search.png);
+	height: 22px;
+	width: 22px;
+}
+
+.header-under-search {
+	background: #fff;
+	left: -100%;
+	display: block;
+	font-size: 0;
+	position: absolute;
+	transition: all 0.7s ease-out 0s;
+	width: 10%;
+}
+
+.active .header-under-search {
+	width: 100%;
+	bottom: unset;
+	left: 0;
+}
+
+.header-under-search form {
+	width: 100%;
+}
+
+.header-under-search form input {
+	background: #fff;
+	border: 0;
+	font-size: 16px;
+	padding: 10px 28px;
+	width: calc(100% - 42px);
+}
+
+.header-under-search form button {
+	display: none;
+}
+
+.header-under-search .close {
+	background: url(../images/ico-x-search.png) no-repeat 50% 50%;
+	cursor: pointer;
+	height: 44px;
+	overflow: hidden;
+	text-indent: -100%;
+	width: 37px;
+}
+
+
+.sitemap .iteam {
+	margin: 25px 0;
+}
+
+
+
+.simple-search {
+	margin: 25px 0;
+}
+
+.simple-search input {
+	width: 70%;
+	background: #fff;
+	font-size: 16px;
+	padding: 10px 12px;
+}
+
+.simple-search button {
+	color: #fff;
+	background: #76bb35;
+	border: 0;
+	font-size: 16px;
+	padding: 12px 28px;
+}
+
+/*header-selection-wrapper*/
+.header-selection-wrapper {
+	background-image: url(../images/bgr-podbor.jpg);
+	background-position: 50% 0;
+	background-size: cover;
+}
+
+.header-selection {
+	bottom: -34px;
+	padding-top: 88px;
+	position: relative;
+}
+
+.header-selection-tabs {
+	font-size: 0;
+}
+
+.header-selection-tab {
+	background: #fff;
+	color: #157fec;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 20px;
+	font-weight: 500;
+	padding: 20px 0;
+	text-transform: uppercase;
+	text-align: center;
+	vertical-align: middle;
+	width: 310px;
+}
+
+.header-selection-tab.active {
+	background: #157fec;
+	color: #fff;
+}
+
+.header-selection-by {
+	background: #157fec;
+	font-size: 0;
+	padding: 68px 52px;
+}
+
+.bycar form {
+	display: inline-block;
+	width: calc(100% - 164px);
+}
+
+.header-selection-by.hidden {
+	display: none;
+}
+
+.header-selection-by-tabs {
+	cursor: pointer;
+	display: inline-block;
+	position: relative;
+	vertical-align: middle;
+	width: 120px;
+	margin-right: 4px;
+}
+
+.header-selection-by-tab {
+	background-color: #157fec;
+	background-position: 100% 50%;
+	background-repeat: no-repeat;
+	border: 1px solid #fff;
+	border-width: 0 1px 1px;
+	color: #fff;
+	display: none;
+	font-size: 17px;
+	font-weight: 500;
+	padding: 16px 20px 15px;
+	text-transform: uppercase;
+}
+
+.header-selection-by-tabs:hover .header-selection-by-tab {
+	display: block;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 100%;
+}
+
+.header-selection-by-tabs:hover .header-selection-by-tab:hover {
+	background-color: #2f8ff2;
+}
+
+.header-selection-by-tab.active {
+	appearance: none;
+	background-image: url(../images/ico-arrow-3.png);
+	border-top-width: 1px;
+	display: block;
+}
+
+.header-selection-by-tabs:hover .header-selection-by-tab.active {
+	left: auto;
+	position: relative;
+	right: auto;
+	top: auto;
+}
+
+.header-selection-option {
+	display: inline-block;
+	font-size: 0;
+	vertical-align: middle;
+	width: calc(100% - 125px);
+}
+
+.header-selection-option.hidden {
+	display: none;
+}
+
+.header-selection-option select {
+	appearance: none;
+	background: #fff url(../images/ico-arrow-5.png) no-repeat 100% 50%;
+	border: 1px solid #fff;
+	font-size: 16px;
+	font-weight: 500;
+	margin-right: 4px;
+	padding: 16px 38px 16px 12px;
+	text-transform: uppercase;
+	width: calc(14% - 4px);
+}
+
+.header-selection-option select:hover {
+	background-color: #d1e7fe;
+}
+
+.header-selection-option select:nth-child(1) {
+	width: calc(13% - 7px);
+}
+
+.header-selection-option select:nth-child(5) {
+	width: calc(14% - 7px);
+}
+
+.header-selection-option select:nth-child(7) {
+	width: calc(17% - 7px);
+}
+
+.header-selection-option select:nth-child(8) {
+	width: calc(20% - 9px);
+}
+
+.header-selection-option button {
+	background: #85cb42;
+	border: none;
+	color: #fff;
+	font-size: 16px;
+	font-weight: 900;
+	margin-left: 4px;
+	padding: 17px 8px;
+	text-transform: uppercase;
+	width: calc(17% - 4px);
+}
+
+.header-selection-option button:hover {
+	background: #74bb30;
+}
+
+.header-selection-option.size-disk select {
+	width: calc(13.83% - 4px);
+}
+
+.header-selection-option.size-tire span,
+.header-selection-option.size-disk span {
+	color: #fff;
+	display: inline-block;
+	font-size: 16px;
+	margin-right: 4px;
+	text-align: center;
+	width: 16px;
+}
+
+.header-selection-option.size-disk span+select {
+	width: calc(13.83% - 24px);
+}
+
+.header-selection-option.car-disk select,
+.header-selection-option.car-tire select {
+	width: calc(20.75% - 4px);
+}
+
+/*footer*/
+.footer-wrapper {
+	background: #35373a;
+	margin-top: 25px;
+}
+
+.footer-info-links {
+	align-items: flex-start;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.footer-info-links>div {
+	padding: 30px 22px 0;
+	width: 24%;
+}
+
+.footer-info-links .f-title {
+	color: #a4d0fe;
+	text-transform: uppercase;
+	margin-bottom: 10px;
+}
+
+.footer-info-links .f-title * {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.footer-info-links .f-title i {
+	display: none;
+	margin-left: 8px;
+}
+
+.ico-arrow-f-up {
+	background: url(../images/ico-arrow-f-up.png) no-repeat 50% 50%;
+	height: 7px;
+	width: 16px;
+}
+
+.ico-arrow-f-down {
+	background: url(../images/ico-arrow-f-down.png) no-repeat 50% 50%;
+	height: 7px;
+	width: 16px;
+}
+
+.footer-info-links a {
+	color: #e2e2e2;
+	display: block;
+	font-size: 14px;
+	font-weight: 300;
+	line-height: 1.4;
+}
+
+.footer-contact-field:after {
+	content: "";
+	clear: both;
+	display: block;
+}
+
+.footer-contact-field {
+	margin-bottom: 40px;
+	text-align: center;
+}
+
+/*https://use.fontawesome.com/releases/v5.6.3/css/all.css*/
+.fab {
+	font-size: 2.6em !important;
+	line-height: 1.5 !important;
+	-webkit-font-smoothing: antialiased;
+	display: inline-block;
+	font-style: normal;
+	font-variant: normal;
+	text-rendering: auto;
+	font-weight: 500;
+}
+
+.fa-facebook-f:before {
+	content: "f";
+}
+
+
+.order-add-info {
+	text-align: center;
+	margin: 25px 0;
+}
+
+.order-add-info .continue_link {
+	margin: 25px;
+	display: inline-block;
+}
+
+
+.contacts-field {
+	color: #e2e2e2;
+	float: left;
+	font-weight: 300;
+
+}
+
+.contacts-field .phones>* {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.contacts-field .mobiles>* {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.contacts-field .phones {
+	display: block;
+	font-size: 36px;
+	font-weight: 300;
+	margin-top: 58px;
+}
+
+.contacts-field .phones .ico-phone {
+	background: url(../images/ico-phone-2.png);
+	height: 32px;
+	width: 32px;
+}
+
+.contacts-field .phones div {
+	font-size: 14px;
+	font-weight: 300;
+}
+
+.contacts-field .phones h3,
+.contacts-field .phones p {
+	margin: 0 18px;
+}
+
+.contacts-field .mobiles {
+	margin-top: 16px;
+}
+
+.contacts-field .mobiles div+div {
+	margin-left: 24px;
+}
+
+.contacts-field .mobiles div * {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.contacts-field .mobiles .ico-mobile {
+	margin-right: 8px;
+}
+
+.ico-mobile {
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	border-radius: 50%;
+	height: 40px;
+	width: 40px;
+}
+
+.ico-mobile.kyivstar {
+	background-color: #787a7d;
+	background-image: url(../images/ico-kyivstar.png);
+}
+
+.contacts-field .mobiles div:hover .ico-mobile.kyivstar {
+	background-color: #00a0ff;
+}
+
+.ico-mobile.vodafone {
+	background-color: #5a5c5f;
+	background-image: url(../images/ico-vodafone.png);
+}
+
+.contacts-field .mobiles div:hover .ico-mobile.vodafone {
+	background-color: #ed1c24;
+}
+
+.ico-mobile.lifecell {
+	background-color: #414346;
+	background-image: url(../images/ico-life.png);
+}
+
+.contacts-field .mobiles div:hover .ico-mobile.lifecell {
+	background-color: #0c4ea2;
+	background-image: url(../images/ico-life-a.png);
+}
+
+.contacts-field .mobiles span {
+	font-size: 24px;
+}
+
+.ico-mobile.telegram {
+	background-color: #414342;
+	/*grey color*/
+	background-image: url(../images/ico-telegram.png);
+}
+
+.contacts-field .mobiles div:hover .ico-mobile.telegram {
+	background-color: #039be5;
+	/*light blue color*/
+}
+
+.ico-mobile.viber {
+	background-color: #414345;
+	/*purple color #8e24aa*/
+	background-image: url(../images/ico-viber.png);
+}
+
+.contacts-field .mobiles div:hover .ico-mobile.viber {
+	background-color: #724188;
+	/*purple color 8e24aa*/
+}
+
+.ico-mobile.facebook {
+	background-color: #ffffff;
+	background-image: url(../images/ico-facebook.png);
+}
+
+.contacts-field .mobiles div:hover .ico-mobile.facebook {
+	background-color: #ffffff;
+}
+
+.ico-mobile.instagram {
+	background-color: #ffffff;
+	background-image: url(../images/ico-instagram.png);
+}
+
+.contacts-field .mobiles div:hover .ico-mobile.instagram {
+	background-color: #ffffff;
+}
+
+
+.information-page h3 {
+	color: rgb(22, 159, 200);
+}
+
+.relevant_links {
+	text-align: center;
+}
+
+.relevant_links .top_top {
+	column-count: 4;
+	column-gap: 50px;
+}
+
+.relevant_links .top_more_title {
+	margin-top: 25px;
+	margin-bottom: 10px;
+	font-size: 1.6em;
+	font-weight: 600;
+}
+
+.relevant_links .top_more {
+
+	column-count: 3;
+	column-gap: 50px;
+}
+
+.relevant_links a {
+	display: block;
+	margin: 5px;
+}
+
+
+.information-page .cities a {
+	display: inline-block;
+}
+
+/* Подписка на новости */
+.subscription-field {
+	background-color: #4a4c50;
+	margin-top: 58px;
+	padding: 19px;
+	display: inline-block;
+	float: none;
+}
+
+.subscription-field p {
+	color: rgba(255, 255, 255, .75);
+	font-size: 14px;
+	margin: 0 0 10px 0;
+	text-transform: uppercase;
+}
+
+.subscription-field input {
+	background: #939498;
+	border: none;
+	border-radius: 2px;
+	font-size: 13px;
+	margin-right: 11px;
+	padding: 10px 13px;
+	width: 182px;
+}
+
+.subscription-field input:hover {
+	background: #fff;
+}
+
+.subscription-field .button {
+	background: #85cb42;
+	border: none;
+	border-radius: 2px;
+	color: #fff;
+	font-size: 13px;
+	font-weight: 700;
+	padding: 10px 13px;
+	text-transform: uppercase;
+
+}
+
+.subscription-field .button:hover {
+	background: #74bb30;
+}
+
+#subscribe_error {
+	margin-top: 15px;
+}
+
+
+
+.footer-bottom {
+	border-top: 2px solid #5d5f61;
+	display: flex;
+	justify-content: space-between;
+}
+
+.footer-social-networks {
+	margin: 20px 0;
+	float: left;
+}
+
+.footer-social-networks a {
+	display: inline-block;
+	margin-left: 8px;
+	vertical-align: middle;
+}
+
+.footer-social-networks i {
+	background-color: #4a4c50;
+	border-radius: 50%;
+	color: #9a9b9d;
+	font-size: 24px;
+	height: 52px;
+	line-height: 2.2;
+	text-align: center;
+	width: 52px;
+}
+
+.footer-social-networks i:hover {
+	color: #fff;
+}
+
+.footer-social-networks .fa-facebook-f:hover {
+	background-color: #3e568f;
+}
+
+.footer-social-networks .fa-twitter:hover {
+	background-color: #1c9ceb;
+}
+
+.footer-social-networks .fa-google:hover {
+	background-color: #d64937;
+}
+
+.footer-social-networks .fa-pinterest:hover {
+	background-color: #c51f26;
+}
+
+.footer-about {
+	color: #a4d0fe;
+	display: inline-block;
+	font-weight: 300;
+	font-size: 16px;
+	margin-top: 24px;
+	vertical-align: middle;
+	width: 549px;
+}
+
+.footer-copyright {
+	color: #9a9b9d;
+	float: right;
+	font-size: 12px;
+	font-weight: 300;
+	margin: 15px 8px 0;
+}
+
+.footer-copyright p {
+	display: inline-block;
+	margin-right: 32px;
+}
+
+.footer-copyright a {
+	border-bottom: 1px solid #9a9b9d;
+	text-decoration: none;
+	color: #9a9b9d;
+}
+
+.footer-copyright a:hover {
+	color: #e4e4e4;
+}
+
+/* icons */
+.ico {
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.ico-car,
+.ico-suv,
+.ico-truck,
+.ico-truck-drv,
+.ico-truck-str,
+.ico-truck-trl,
+.ico-truck-uni,
+.ico-van {
+	width: 70px;
+	height: 22px;
+}
+
+.ico-car {
+	background-image: url(../images/ico-car.png);
+}
+
+.ico-suv {
+	background-image: url(../images/ico-suv.png);
+}
+
+.ico-truck {
+	background-image: url(../images/ico-truck.png);
+	background-size: contain;
+}
+
+.ico-truck-uni {
+	background-image: url(../images/ico-truck-uni.png);
+	background-size: contain;
+}
+
+.ico-truck-drv {
+	background-image: url(../images/ico-truck-drv.png);
+	background-size: contain;
+}
+
+.ico-truck-str {
+	background-image: url(../images/ico-truck-str.png);
+	background-size: contain;
+}
+
+.ico-truck-trl {
+	background-image: url(../images/ico-truck-trl.png);
+	background-size: contain;
+}
+
+.ico-van {
+	background-image: url(../images/ico-van.png);
+}
+
+.ico-summer,
+.ico-winter,
+.ico-allseason {
+	width: 23px;
+	height: 23px;
+}
+
+.ico-summer {
+	background-image: url(../images/ico-summer.png);
+}
+
+.ico-winter {
+	background-image: url(../images/ico-winter.png);
+}
+
+.ico-allseason {
+	background-image: url(../images/ico-allseason.png);
+}
+
+.ico-pr-asymmetric,
+.ico-pr-directed,
+.ico-pr-symmetric {
+	height: 22px;
+	width: 16px;
+}
+
+.ico-pr-asymmetric {
+	background-image: url(../images/ico-pr-asymmetric.png);
+}
+
+.ico-pr-directed {
+	background-image: url(../images/ico-pr-directed.png);
+}
+
+.ico-pr-symmetric {
+	background-image: url(../images/ico-pr-symmetric.png);
+}
+
+.ico-x-filter {
+	background-image: url(../images/ico-x-filter.png);
+	height: 10px;
+	width: 10px;
+}
+
+.ico-plus,
+.ico-minus {
+	height: 14px;
+	width: 14px;
+}
+
+.ico-plus {
+	background-image: url(../images/ico-plus.png);
+}
+
+.ico-minus {
+	background-image: url(../images/ico-minus.png);
+}
+
+.ico-close {
+	background: #f1f1f1 url(../images/ico-x-search.png) no-repeat 50% 50%;
+	cursor: pointer;
+	height: 46px;
+	overflow: hidden;
+	position: absolute;
+	display: none;
+	right: 0;
+	text-indent: -100%;
+	top: 0;
+	width: 46px;
+	z-index: 1;
+}
+
+.active .ico-close,
+.visible .ico-close {
+	display: block;
+}
+
+.ico-arrow-3 {
+	background-image: url(../images/ico-arrow-3.png);
+	height: 7px;
+	width: 16px;
+}
+
+/*main*/
+.header-selection-wrapper+.main-wrapper .main {
+	padding-top: 50px;
+}
+
+.main-brand-images {
+	margin-left: -1.5%;
+}
+
+.main-brand-images::after {
+	content: "";
+	clear: both;
+	display: block;
+}
+
+.main-brand-images a {
+	margin-left: 1.5%;
+	float: left;
+	width: 31.83%;
+}
+
+.main-tabs {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	padding-top: 8%;
+	text-align: center;
+}
+
+.main-tabs div {
+	margin: 0 2%;
+	width: 28%;
+}
+
+.main-tabs a {
+	border-bottom: 2px solid #fff;
+	color: #d5d5d5;
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 1.6;
+	text-transform: uppercase;
+	text-decoration: none;
+}
+
+.main-tabs a:hover {
+	border-bottom: 2px solid #85cb42;
+	color: #85cb42;
+}
+
+.main-tabs .active a {
+	border-bottom: 2px solid #85cb42;
+	color: #85cb42;
+}
+
+.main-tabs .active a:hover {
+	border-bottom: 2px solid #fff;
+}
+
+.main-tab {
+	text-align: center;
+	margin: 4% 2%;
+}
+
+.main-tab.hidden {
+	display: none;
+}
+
+.main-tab:after {
+	content: "";
+	clear: both;
+	display: block;
+}
+
+.main-tab .main-tab-title {
+	color: #d5d5d5;
+	display: none;
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 1.6;
+	margin: 4% 0;
+	text-transform: uppercase;
+}
+
+.main-tab-content {
+	display: flex;
+}
+
+.main-tab-content>div {
+	display: contents;
+}
+
+.main-tab-content .product {
+	width: 14.28%;
+}
+
+.main-tab-content .product a {
+	display: block;
+	position: relative;
+	text-decoration: none;
+}
+
+.main-tab-content .product a>span {
+	background: #fff;
+	border: 1px solid #fff;
+	display: block;
+	padding: 0 10px 10px;
+	position: relative;
+}
+
+.main-tab-content .product a:hover>span {
+	border: 1px solid #d9dde2;
+	border-top: 0;
+	border-radius: 1px 1px 4px 4px/40px 40px 4px 4px;
+	left: 0;
+	right: 0;
+	z-index: 1;
+	padding-top: 1px;
+}
+
+.main-tab-content .product a>span>.tire-title {
+	color: #4b4b4b;
+	display: block;
+	font-size: 16px;
+	font-weight: 700;
+	height: 62px;
+	margin-top: 15px;
+}
+
+.main-tab-content .product a>span>.tire-short {
+	line-height: 1.5;
+}
+
+.main-tab-content .product a>span>.tire-icons {
+	margin: 6px 0;
+}
+
+.main-tab-content .product a>span>.tire-price {
+	display: block;
+	color: #2f95ff;
+	font-size: 28px;
+	font-weight: 100;
+	margin: 8px 0;
+}
+
+.main-tab-content .product a>span>.tire-price span {
+	font-size: 22px;
+}
+
+.main-tab-content .product a>span>.tire-buy .button {
+	background: #85cb42;
+	border-radius: 2px;
+	color: #fff;
+	display: block;
+	font-size: 16px;
+	font-weight: 700;
+	padding: 16px;
+	text-transform: uppercase;
+}
+
+.main-tab-content .product a>span>.tire-buy .button:hover {
+	background: #74bb30;
+}
+
+.main-tab-content.models {
+	display: block;
+	overflow: hidden;
+}
+
+.main-tab-content.models .product {
+	float: left;
+	margin: 10px;
+	display: block;
+	height: 400px;
+	width: 22.5%;
+	min-width: 200px;
+}
+
+.main-tab-content.models .product a {
+	text-align: center;
+}
+
+
+.main-popular-types-tires {
+	margin: 8% 0 0;
+	text-align: center;
+}
+
+.main-popular-types-tires-title h1 {
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 1.6;
+	margin-bottom: 40px;
+	margin-top: 0;
+	text-transform: uppercase;
+}
+
+.main-popular-types-tires-title h1 span {
+	color: #2f95ff;
+}
+
+.main-popular-types-tires-links-wrapper:after {
+	content: "";
+	clear: both;
+	display: block;
+}
+
+.main-popular-types-tires-links-wrapper {
+	color: #4b4b4b;
+	margin-left: -2%;
+	text-align: center;
+}
+
+.main-popular-types-tires-links {
+	border: 1px solid #ebebeb;
+	border-radius: 2px;
+	float: left;
+	margin-left: 2%;
+	min-height: 231px;
+	position: relative;
+	width: 10.5%;
+}
+
+.main-popular-types-tires-links .name {
+	background-color: #ebebeb;
+	font-size: 18px;
+	margin: 0 0 26px;
+	padding: 16px 0;
+}
+
+.main-popular-types-tires-links a {
+	display: block;
+	line-height: 1.4;
+	margin: 8px 0;
+	text-decoration: none;
+	color: inherit;
+}
+
+.main-popular-types-tires-links a:hover {
+	font-weight: 700;
+}
+
+.main-popular-types-tires-links .button {
+	border-bottom: 1px solid #fff;
+	border-top: 1px solid #c9c9c9;
+	display: block !important;
+	margin: 26px 20px 0;
+	padding: 23px 0;
+	position: relative;
+}
+
+.main-popular-types-tires-links .button::after {
+	appearance: none;
+	background: url("../images/ico-arrow-4.png") no-repeat 50% 50%;
+	bottom: 0;
+	content: "";
+	display: block;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+	transform: rotate(0);
+}
+
+.main-popular-types-tires-links .button:hover::after {
+	background: url("../images/ico-arrow-4-a.png") no-repeat 50% 50%;
+}
+
+.main-popular-types-tires-links.active div {
+	background: #fff;
+	border: 1px solid #ebebeb;
+	border-width: 0 1px 1px;
+	border-radius: 0 0 2px 2px;
+	left: -1px;
+	margin-top: -8px;
+	position: absolute;
+	right: -1px;
+	z-index: 1;
+}
+
+.main-popular-types-tires-links.active a:nth-child(n+4) {
+	display: block;
+}
+
+.main-popular-types-tires-links.active .button::after {
+	transform: rotate(180deg);
+}
+
+.main-popular-types-tires-half {
+	margin-left: -2%;
+}
+
+.main-popular-types-tires-half:after {
+	content: "";
+	clear: both;
+	display: block;
+}
+
+.main-popular-types-tires-half .main-popular-types-tires {
+	float: left;
+	margin-left: 2%;
+	width: 48%;
+}
+
+.main-popular-types-tires-half .main-popular-types-tires-links-wrapper {
+	margin-left: -4%;
+}
+
+.main-popular-types-tires-half .main-popular-types-tires-links {
+	margin-left: 4%;
+	width: 21%;
+}
+
+
+
+.main-tire-size-by-car {
+	color: #4b4b4b;
+	margin: 8% 0 0;
+}
+
+.main-tire-size-by-car:after {
+	content: "";
+	clear: both;
+	display: block;
+}
+
+.main-tire-size-by-car-links {
+	column-count: 6;
+	column-gap: 64px;
+	font-size: 18px;
+	margin-top: 32px;
+	padding: 0 72px;
+}
+
+.main-tire-size-by-car-links a {
+	display: block;
+	color: inherit;
+}
+
+.main-manufacturers-tire {
+	margin: 8% 0 0;
+}
+
+.main-manufacturers-tire:after {
+	content: "";
+	clear: both;
+	display: block;
+}
+
+.main-manufacturers-tire .desc {
+	margin: 25px 0;
+}
+
+
+.spec-wrap {
+	text-align: center;
+	margin: 20px 30px 10px;
+}
+
+.spec {
+	font-size: medium;
+	color: #E5390B;
+	font-weight: 600;
+}
+
+.block-left-title {
+	font-weight: 600;
+}
+
+.block-left-text {
+	margin-top: 5px;
+	margin-bottom: 25px;
+}
+
+.block-left-text>span {
+	color: #E5390B;
+}
+
+.sep {
+	margin: 25px 0;
+	border-top: 1px solid #d3d3d3;
+}
+
+.info-title {
+	color: #4b4b4b;
+	font-size: 24px;
+	font-weight: 700;
+	margin-bottom: 32px;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+.info-title h2,
+.info-title>div {
+	display: inline-block;
+	font-size: 1.0em;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.info-title a {
+	color: #2f95ff;
+	font-size: 0.7em;
+}
+
+.info-title span {
+	color: #85cb42;
+}
+
+.info-block {
+	text-align: center;
+	padding: 15px;
+	font-size: 1.5em;
+	background-color: #f3ff1742;
+}
+
+.main-manufacturers-tire-logos {
+	margin-left: 20px;
+}
+
+.main-manufacturers-tire-logos a {
+	text-align: center;
+	display: inline-block;
+	vertical-align: middle;
+	margin: 18px;
+}
+
+.main-manufacturers-tire-logos a img {
+	width: 100px;
+}
+
+.main-info {
+	color: #4b4b4b;
+	margin: 6% 0 6% -2%;
+	text-align: center;
+}
+
+.main-info:after {
+	content: "";
+	clear: both;
+	display: block;
+}
+
+.articles-wrap {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.articles-item {
+	background: #f2f2f2;
+	margin: 0 0 2% 2%;
+	position: relative;
+	width: 47%;
+}
+
+.articles-item a {
+	display: inline-block;
+	margin: 25px 10px;
+	color: #2f95ff;
+	font-size: 17px;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.articles-item div {
+	margin: 15px;
+	font-size: 15px;
+	font-weight: 300;
+}
+
+.articles-item p span {
+	color: #2f95ff;
+}
+
+/*main-wrapper*/
+.left-side {
+	float: left;
+	width: 21.7%;
+	min-width: 300px;
+}
+
+.right_product_page {
+	float: right;
+}
+
+.left-side .main-selection-wrapper {
+	margin-top: 25px;
+}
+
+.right-side {
+	float: right;
+	width: 74.6%;
+}
+
+.left_product_page {
+	float: left;
+}
+
+/* main-selection */
+.main-selection-title-m {
+	display: none;
+}
+
+.main-selection {
+	margin-bottom: 40px;
+}
+
+.selection-tire-wrapper {
+	text-align: center;
+	text-transform: uppercase;
+	background: #d8dbdf;
+}
+
+.selection-tire-title {
+	font-size: 22px;
+	padding: 14px 0 14px;
+}
+
+.by-auto .selection-tire-title {
+	font-size: 1.3em;
+}
+
+.selection-tire {
+	text-align: center;
+	margin-top: 20px;
+}
+
+.selection-tire a {
+	padding: 12px;
+}
+
+.selection-tire a.active {
+	background: none;
+	color: #4b4b4b;
+	font-size: 20px;
+	font-weight: 900;
+	padding: 0;
+}
+
+.selection-tire-filtres {
+	background: #e7eaed;
+	padding: 18px;
+}
+
+.selection-tire-filter {
+	font-size: 0;
+	padding: 4px 0;
+}
+
+.selection-tire-filter>* {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.selection-tire-filter label {
+	font-size: 18px;
+	padding-left: 10px;
+	width: 43%;
+}
+
+.by-auto .selection-tire-filter label {
+	font-size: 14px;
+}
+
+.selection-tire-filter select {
+	appearance: none;
+	background: #fff url(../images/ico-arrow-4.png) no-repeat 100% 50%;
+	border: none;
+	font-size: 18px;
+	font-weight: 300;
+	padding: 10px 40px 10px 20px;
+	width: 57%;
+}
+
+.selection-tire-filtres button {
+	background: #85cb42;
+	border: none;
+	border-radius: 2px;
+	color: #fff;
+	font-size: 16px;
+	font-weight: 900;
+	margin-top: 18px;
+	padding: 16px;
+	text-transform: uppercase;
+	width: 100%;
+}
+
+.selection-tire-filtres button:hover {
+	background: #74bb30;
+}
+
+/* main-filters */
+.main-filters-wrapper {
+	margin-bottom: 40px;
+}
+
+.main-filters-title-m {
+	display: none;
+}
+
+.main-filters-title {
+	font-size: 22px;
+	font-weight: 400;
+	margin: 44px 0 22px;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.main-filters {
+	border: 1px solid #dbdfe3;
+	padding: 20px;
+}
+
+.main-filter {
+	padding: 0 0 30px;
+}
+
+.main-filter-title {
+	border-bottom: 1px solid #dbdfe3;
+	font-size: 16px;
+	padding: 10px;
+	text-transform: uppercase;
+}
+
+.main-filter-item-wrapper {
+	padding: 10px;
+}
+
+.main-filter-item {
+	margin: 2px 0;
+}
+
+.main-filter-item a {
+	font-size: 15px;
+	line-height: 1.2;
+	text-decoration: none;
+}
+
+.main-filter-item a * {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.main-filter-item a .ico {
+	margin-right: 6px;
+}
+
+.main-filter-item a .ico-li {
+	background: #d5d8da;
+	border-radius: 50%;
+	height: 14px;
+	width: 14px;
+}
+
+.main-filter-item a .link {
+	color: #4b4b4b;
+	border-bottom: 1px solid #4b4b4b;
+}
+
+.main-filter-item a .count {
+	color: #9c9c9d;
+}
+
+.main-filter-item a .count::before {
+	content: "(";
+}
+
+.main-filter-item a .count::after {
+	content: ")";
+}
+
+.main-filter-item a:hover .ico-li {
+	background: #939393;
+}
+
+.main-filter-item a:hover .link {
+	border-bottom: 1px solid #fff;
+}
+
+.main-filter-item a.selected .ico-li,
+.main-filter-item a.selected:hover .ico-li {
+	background: #fe7077;
+}
+
+.main-filter-item a.selected .link,
+.main-filter-item a.selected:hover .link {
+	border-bottom: 1px solid #fff;
+	color: #fe4049;
+}
+
+.filter-more {
+	text-align: right;
+}
+
+.filter-more a {
+	color: #2f95ff;
+	text-decoration: none;
+}
+
+.filter-more a .ico {
+	background-color: #edeff2;
+	border-radius: 50%;
+	margin-right: 6px;
+	height: 28px;
+	width: 28px;
+}
+
+.filter-more a:hover .ico {
+	background-color: #e9eced;
+}
+
+.filter-more a span {
+	text-decoration: underline;
+}
+
+.filter-more a:hover span {
+	text-decoration: none;
+}
+
+.active+.filter-more .more,
+.filter-more .less {
+	display: none;
+}
+
+.active+.filter-more .less,
+.filter-more .more {
+	display: inline-block;
+}
+
+.selected .main-filter-title {
+	border: 0;
+	font-size: 15px;
+	padding-left: 42px;
+}
+
+.selected .main-filter-item-wrapper {
+	padding-bottom: 0;
+	padding-top: 0;
+}
+
+.selected .main-filter-item a {
+	color: #fe4049;
+	font-size: 16px;
+	font-weight: 500;
+	text-transform: uppercase;
+}
+
+.selected .main-filter-item a .ico-x-filter {
+	background-color: #fe7077;
+	border-radius: 50%;
+	height: 22px;
+	width: 22px;
+}
+
+.selected .main-filter-item a .link {
+	border-bottom: 1px solid #fff;
+}
+
+.price-filter .ui-slider-horizontal {
+	border: 1px solid #d5d8da;
+	margin: 20px 0;
+	position: relative;
+}
+
+.price-filter .ui-slider-range {
+	border: 1px solid #000;
+	display: block;
+	height: 0;
+	position: absolute;
+	top: -1px;
+	z-index: 1;
+}
+
+.price-filter .ui-slider-handle {
+	background-color: #85cb42;
+	border-radius: 50%;
+	height: 18px;
+	left: 50%;
+	position: absolute;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 18px;
+	z-index: 2;
+}
+
+.price-filter .ui-slider-handle:hover {
+	background-color: #74bb30;
+}
+
+.price-input-range {
+	margin: 30px 0 0;
+}
+
+.price-input-range span {
+	color: #8d8d8d;
+	font-size: 14px;
+}
+
+.price-input-range input {
+	border: 1px solid #c6c6c8;
+	border-radius: 2px;
+	font-size: 14px;
+	padding: 4px 6px;
+	width: 56px;
+}
+
+.price-input-range button {
+	background-color: #c6c6c8;
+	border: 1px solid #c6c6c8;
+	border-radius: 2px;
+	color: #fff;
+	float: right;
+	font-size: 14px;
+	font-weight: 700;
+	padding: 4px 12px;
+}
+
+.price-input-range button:hover {
+	background-color: #85cb42;
+	border: 1px solid #85cb42;
+}
+
+.manufacturer-filter {
+	column-count: 2;
+	column-gap: 0;
+}
+
+.manufacturer-filter .main-filter-item a {
+	font-size: 14px;
+	line-height: 1.2;
+}
+
+.manufacturer-filter .main-filter-item:nth-child(n+7) {
+	display: none;
+}
+
+.manufacturer-filter.active .main-filter-item:nth-child(n+7) {
+	display: block;
+}
+
+.option-filter .main-filter-item:nth-child(n+7) {
+	display: none;
+}
+
+.option-filter.active .main-filter-item:nth-child(n+7) {
+	display: block;
+}
+
+/* main-filters */
+
+/* main-selection-buyer */
+.main-selection-buyer {
+	margin-top: -13px;
+	padding-bottom: 20px;
+}
+
+.main-selection-buyer h1,
+.main-selection-buyer h2 {
+	font-size: 22px;
+	text-transform: uppercase;
+	display: block;
+	text-align: center;
+	margin-bottom: 16px;
+}
+
+.selection-buyer {
+	border: 1px solid #dbdfe3;
+	margin-bottom: 20px;
+}
+
+.selection-buyer-title {
+	padding: 28px 10px 8px;
+	border-bottom: 1px solid #dbdfe3;
+	margin: 0 20px;
+
+}
+
+.selection-buyer-title span {
+	font-size: 16px;
+	text-align: left;
+	margin-bottom: 6px;
+	text-transform: uppercase;
+}
+
+.selection-buyer-info {
+	padding: 0 30px;
+}
+
+.selection-buyer .unique p {
+	font-size: 12px;
+}
+
+.delivery-srvice h3 {
+	font-size: 18px;
+	margin: 28px 0 12px;
+}
+
+.delivery-srvice p {
+	font-size: 15px;
+	font-weight: 500;
+	margin: 0;
+}
+
+.delivery-srvice p span {
+	font-weight: 300;
+
+}
+
+.delivery-srvice.transport {
+	padding: 15px 0 36px 6px;
+}
+
+.delivery-srvice.transport img {
+	display: inline-block;
+	margin-right: 24px;
+	margin-bottom: 12px;
+	vertical-align: middle;
+}
+
+.warranty-info {
+	padding-bottom: 42px;
+}
+
+.warranty-info p,
+.warranty-info a {
+	display: block;
+	font-weight: 700;
+	margin-top: 30px;
+}
+
+/* main-selection-buyer */
+
+/* breadcrumbs */
+.breadcrumbs-wrapper {
+	margin: 20px 0;
+}
+
+.breadcrumbs-wrapper:after {
+	content: "";
+	clear: both;
+	display: block;
+}
+
+
+
+.breadcrumbs {
+	margin: 0;
+	padding: 0 0 6px;
+	float: left;
+	font-size: 14px;
+}
+
+.breadcrumbs * {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.breadcrumbs *,
+.breadcrumbs *:hover {
+	text-decoration: none;
+}
+
+.breadcrumbs a {
+	color: #a4a4a4;
+	border-bottom: 1px solid #fff;
+}
+
+.breadcrumbs a:hover {
+	border-bottom: 1px solid #a4a4a4;
+}
+
+.breadcrumbs .back {
+	color: #2f95ff;
+	text-transform: uppercase;
+	font-weight: 700;
+}
+
+.breadcrumbs .back:hover {
+	border-bottom: 1px solid #fff;
+}
+
+.breadcrumbs .back .ico-left {
+	background-image: url(../images/ico-arrow-left.png);
+	height: 7px;
+	width: 6px;
+	margin-right: 4px;
+}
+
+.breadcrumbs .back span {
+	border-bottom: 1px solid #fff;
+}
+
+.breadcrumbs .back:hover span {
+	border-bottom: 1px solid #2f95ff;
+}
+
+.breadcrumbs .delimiter {
+	color: #a4a4a4;
+	font-size: 20px;
+	font-weight: 400;
+	margin: 0 16px;
+}
+
+.breadcrumbs .delimiter {
+	background-image: url(../images/ico-arrow-right.png);
+	margin: 7px 10px;
+	height: 7px;
+	width: 6px;
+}
+
+.breadcrumbs .last {
+	color: #a4a4a4;
+	font-weight: 700;
+}
+
+
+.tire-calc {
+	float: right;
+}
+
+.tire-calc a {
+	color: #68ad27;
+	font-size: 1.2em;
+	font-weight: 600;
+	line-height: 24px;
+	margin: 0;
+	text-decoration: underline;
+	text-transform: uppercase;
+}
+
+.tire-calc a:hover {
+	color: #467b14;
+}
+
+
+.block-title-wrapper {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	border-bottom: 1px solid #dadee2;
+}
+
+.block-title h1 {
+	color: #2f95ff;
+	float: left;
+	font-size: 32px;
+	font-weight: 300;
+	margin: 0 0 10px 0;
+}
+
+.block-title-wrapper .right-part {
+	text-align: right;
+}
+
+.block-title-wrapper:after {
+	content: "";
+	clear: both;
+	display: block;
+}
+
+.block-title-sorting {
+	float: right;
+	padding: 22px 0 12px;
+}
+
+.block-title-sorting span {
+	color: #a4a4a4;
+	font-size: 14px;
+	margin-right: 8px;
+}
+
+.block-title-sorting select {
+	appearance: none;
+	background: url(../images/ico-arrow-4.png) no-repeat 100% 50%;
+	border: 1px solid #dadee2;
+	color: #4b4b4b;
+	padding: 6px 44px 6px 18px;
+	font-size: 14px;
+	vertical-align: middle;
+}
+
+.block-filters-selection-wrapper {
+	padding: 20px 0 38px;
+}
+
+.block-filters-selection-wrapper:after {
+	content: "";
+	clear: both;
+	display: block;
+}
+
+.block-filters-selection {
+	float: left;
+}
+
+.block-filters-selection * {
+	vertical-align: middle;
+	display: inline-block;
+}
+
+.block-filters-selection a {
+	background: #e7eaed;
+	border-radius: 15px;
+	font-size: 14px;
+	margin-right: 8px;
+	padding: 4px;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+
+.block-filters-selection a:hover {
+	background: #dcdfe2;
+}
+
+.block-filters-selection span {
+	margin: 0 6px 0 10px;
+}
+
+.block-filters-selection .ico {
+	background: #fff url(../images/ico-x.png) no-repeat 50% 50%;
+	border-radius: 50%;
+	height: 20px;
+	width: 20px;
+}
+
+.block-filters-selection .clear-all {
+	background: #fff;
+	border: 1px solid #f05555;
+	border-radius: 15px;
+	color: #f05555;
+}
+
+.block-filters-selection .clear-all:hover {
+	background: #fff1f1;
+}
+
+.block-filters-selection .clear-all span {
+	margin: 0 10px;
+}
+
+.block-filters-selection-count {
+	color: #868686;
+	float: right;
+	font-size: 14px;
+	padding: 8px 0 0;
+}
+
+/*block-item-list*/
+.block-item {
+	border: 1px solid #dadee2;
+	display: flex;
+	margin-bottom: 18px;
+	padding: 20px 26px 30px 26px;
+}
+
+.block-item:hover {
+	border: 1px solid #b6bbbf;
+}
+
+.block-item-image {
+	width: 100px;
+	position: relative;
+}
+
+.block-item-content {
+	margin-left: 24px;
+	position: relative;
+	width: calc(100% - 344px);
+}
+
+.block-item-content .ico-provide {
+	float: none;
+}
+
+.hit_prodaj {
+	text-transform: uppercase;
+	text-align: center;
+	color: #fff;
+	background-color: #ff7100;
+	font-size: 0.7em;
+	padding: 2px;
+	letter-spacing: .125em;
+}
+
+.tyre-info-block {
+	float: left;
+}
+
+.tyre-brand,
+.tyre-name,
+.forecast {
+	margin-bottom: 8px;
+}
+
+.tyre-name {
+	font-size: 22px;
+}
+
+.tyre-name a {
+	color: #4b4b4b;
+	text-decoration: none;
+}
+
+.tyre-name span {
+	font-weight: 600;
+}
+
+
+.text-title {
+	font-size: 1.2em;
+	font-weight: 600;
+}
+
+.forecast {
+	display: inline-block;
+}
+
+.forecast .ico {
+	margin-right: 10px;
+}
+
+.stars-wrapper {
+	display: inline-block;
+	margin-left: 34px;
+}
+
+.stars-wrapper a {
+	color: #02aae9;
+	text-decoration: none;
+}
+
+.stars-wrapper .count {
+	/* border-bottom: 1px solid #02aae9; */
+	margin-right: 5px;
+	text-decoration: underline;
+}
+
+.stars-wrapper .count:hover {
+	/* border-bottom: 1px solid #fff; */
+	text-decoration: none;
+}
+
+.stars-wrapper span[class*="star"] {
+	color: #939393;
+}
+
+.stars-wrapper .star1 i:nth-child(-n+1),
+.stars-wrapper .star2 i:nth-child(-n+2),
+.stars-wrapper .star3 i:nth-child(-n+3),
+.stars-wrapper .star4 i:nth-child(-n+4),
+.stars-wrapper .star5 i:nth-child(-n+5) {
+	color: #02aae9;
+}
+
+.tyre-info {
+	color: #4b4b4b;
+	font-size: 12px;
+}
+
+.tyre-info .tire-rating {
+	margin: 12px 0 0;
+}
+
+.tyre-info .stocks {
+	display: inline-block;
+	font-weight: 600;
+	padding: 0 5px;
+	background-color: #ff5b5b;
+	color: #ffffff;
+	margin: 0 10px;
+}
+
+.block-item-price {
+	margin-left: 48px;
+}
+
+.block-item-price .item-price {
+	color: #2f95ff;
+	font-weight: 100;
+	font-size: 28px;
+	text-align: center;
+}
+
+.block-item-price .item-price .text {
+	font-size: 0.6em;
+	color: #4b4b4b;
+}
+
+.block-item-price .item-price .price {
+	font-size: 1em;
+}
+
+.block-item-price .item-buy {
+	margin-top: 20px;
+}
+
+.block-item-price .item-buy a {
+	background: #85cb42;
+	border: none;
+	border-radius: 2px;
+	color: #fff;
+	display: block;
+	font-size: 18px;
+	font-weight: 700;
+	text-decoration: none;
+	text-transform: uppercase;
+	padding: 16px 50px;
+}
+
+.block-item-price .item-buy a:hover {
+	background: #74bb30;
+}
+
+.country-img {
+	margin-left: 10px;
+	margin-bottom: -4px;
+}
+
+/*pager*/
+.pager {
+	margin: 4% 0 8%;
+	text-align: center;
+}
+
+.pager * {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.pager a {
+	text-decoration: none;
+	background-color: #f3f4f6;
+	border-radius: 50%;
+	color: #adaeaf;
+	font-size: 18px;
+	height: 38px;
+	line-height: 38px;
+	margin: 0 2px;
+	text-align: center;
+	width: 38px;
+}
+
+.pager a:hover {
+	background-color: #e2e5e7;
+}
+
+.pager .active {
+	border-radius: 50%;
+	color: #adaeaf;
+	font-size: 18px;
+	height: 38px;
+	line-height: 38px;
+	margin: 0 2px;
+	text-align: center;
+	width: 38px;
+	background-color: #2f95ff;
+	color: #fff;
+}
+
+.pager .active:hover {
+	background-color: #007dfe;
+}
+
+.pager .prev,
+.pager .next {
+	margin-right: 12px;
+	margin-left: 12px;
+	width: auto;
+	height: auto;
+	color: #4b4b4b;
+	font-size: 20px;
+	font-weight: 300;
+	border-bottom: 1px solid #fff;
+	background-color: white;
+}
+
+.pager .prev:hover,
+.pager .next:hover {
+	border-radius: unset;
+	background-color: white;
+	border-bottom: 1px solid #565656;
+}
+
+/*product*/
+.block-product-title-wrapper:after {
+	content: "";
+	clear: both;
+	display: block;
+}
+
+.block-product-title h1 {
+	font-size: 30px;
+	color: #2f95ff;
+	float: left;
+	font-weight: 300;
+	text-transform: uppercase;
+	padding-top: 12px;
+	margin: 0 0 10px;
+}
+
+.tire-calc-product {
+	color: #79c135;
+	font-size: 16px;
+	font-weight: 700;
+	text-decoration: none;
+	text-transform: uppercase;
+	margin: 0;
+	float: right;
+	padding: 22px 0 12px;
+
+}
+
+.tire-calc-product:hover {
+	color: #68b322;
+}
+
+.tire-description-wrapper:after {
+	content: "";
+	clear: both;
+	display: block;
+}
+
+.tire-description-wrapper {
+	padding-top: 35px;
+}
+
+.tire-description-wrapper .hit_prodaj {
+	font-size: 1em;
+	padding: 5px;
+}
+
+.tire-image {
+	float: left;
+	width: 33.3%;
+	position: relative;
+}
+
+.tire-image-tiny {
+	margin-top: 36px;
+}
+
+.tire-image-tiny a {
+	border: 1px solid #dadee2;
+	display: inline-block;
+	height: 110px;
+	overflow: hidden;
+	width: 110px;
+}
+
+.tire-image .ico-recomend {
+	background: url(../images/ico-recomend.png);
+	width: 60px;
+	height: 60px;
+	display: inline-block;
+	position: absolute;
+	left: 0;
+
+}
+
+.block-item-image .ico-recomend {
+	background-size: contain;
+	background-image: url(../images/ico-recomend.png);
+	width: 50px;
+	height: 50px;
+	display: inline-block;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+.ico-provide {
+	margin-left: 30px;
+	width: 199px;
+	height: 91px;
+	display: inline-block;
+}
+
+.provide-continental {
+	background: url(../images/provide_conti.png);
+}
+
+.provide-michelin {
+	background: url(../images/provide_michelin.png);
+}
+
+.tire-description {
+	float: right;
+	padding-left: 34px;
+	width: 66.6%;
+}
+
+.tire-description h2,
+.tire-description h3 {
+	font-weight: 400;
+}
+
+.tire-brand {
+	margin-right: 15px;
+	display: inline-block;
+}
+
+.tire-all {
+	display: inline-block;
+	margin-left: 32px;
+	vertical-align: middle;
+}
+
+.tire-all:after {
+	content: "";
+	clear: both;
+	display: block;
+}
+
+.tire-all a {
+	color: #868686;
+	font-size: 15px;
+	text-decoration: none;
+	border-bottom: 1px solid #868686;
+
+}
+
+.tire-star-wrapper:after {
+	content: "";
+	clear: both;
+	display: block;
+}
+
+.tire-star-wrapper {
+	padding-top: 14px;
+}
+
+.star-wrapper {
+	float: left;
+
+}
+
+a.phone-number:hover {
+	text-decoration: none;
+}
+
+.service_list {
+	column-count: 3;
+	column-gap: 54px;
+	font-size: 1.3em;
+}
+
+.service_list a {
+	font-weight: 300;
+
+	padding: 0 10px 10px;
+	display: block;
+}
+
+.m_shinomontag {
+	font-weight: 400;
+	font-size: 1.5em;
+}
+
+
+.star-wrapper a {
+	color: #02aae9;
+	text-decoration: none;
+
+}
+
+.star-wrapper .count {
+	border-bottom: 1px solid #02aae9;
+	margin-left: 5px;
+}
+
+.star-wrapper .count:hover {
+	border-bottom: none;
+}
+
+.tire-code {
+	color: #4b4b4b;
+	display: inline-block;
+	font-size: 15px;
+}
+
+.tire-code div {
+	text-align: right;
+}
+
+.detail-item-description {
+	margin: 22px 0 44px;
+}
+
+.sale-block {
+	font-size: 1.3em;
+}
+
+.sale-block .sale {
+	margin-left: 10px;
+}
+
+.price-sale {
+	font-size: 100%;
+	color: #888888;
+	text-decoration: line-through
+}
+
+.price-tire .price {
+	position: relative;
+	color: #ff4c4c;
+	font-size: 54px;
+	font-weight: 300;
+}
+
+.price-tire .price .price-pdv {
+	position: absolute;
+	top: -20px;
+	right: 17px;
+	text-align: right;
+	color: #85cb42;
+	font-size: 0.35em;
+	font-weight: 400;
+}
+
+.price-tire a {
+	display: inline-block;
+	color: #868686;
+	font-size: 15px;
+	text-decoration: none;
+	border-bottom: 1px solid #868686;
+	margin-left: 22px;
+}
+
+.product-item-purchase {
+	padding-top: 40px;
+}
+
+
+.stocks-info {
+	margin: 15px 0;
+	text-align: left;
+	text-align: right;
+	padding-right: 25px;
+}
+
+.stocks-info span {
+	display: inline-block;
+	font-weight: 600;
+	font-size: 1.5em;
+	padding: 5px 15px;
+	background-color: #ff5b5b;
+	color: #ffffff;
+	margin: 0 0 10px;
+}
+
+.productQty-item,
+.productQty-item * {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.productQty-item div {
+	cursor: pointer;
+	text-align: center;
+	background-color: #e2e2e3;
+	border: none;
+	border-radius: 50%;
+	outline: 0;
+	padding: 0;
+	user-select: none;
+	color: #fff;
+	line-height: 2.2;
+	width: 2.2em;
+}
+
+.productQty-item div:hover {
+	background-color: #ff5151;
+}
+
+.productQty-item div i {
+	color: #fff;
+	line-height: 2.2;
+	width: 2.2em;
+}
+
+.productQty-item input {
+	border: 1px solid #e2e2e3;
+	color: #4b4b4b;
+	font-size: 18px;
+	font-weight: 500;
+	margin: 0 6px;
+	text-align: center;
+	height: 35px;
+	width: 50px;
+
+}
+
+.productQty-item span {
+	color: #4b4b4b;
+	font-size: 18px;
+	margin: 0 18px;
+}
+
+.fa-plus:before {
+	content: "+";
+}
+
+.fa-minus:before {
+	content: "-";
+}
+
+.buy-item {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.buy-item a {
+	text-decoration: none;
+}
+
+.buy-item .button {
+	border: none;
+	border-radius: 2px;
+	color: #fff;
+	display: inline-block;
+	font-size: 18px;
+	font-weight: 700;
+	margin-right: 10px;
+	text-transform: uppercase;
+}
+
+.buy-item .buy {
+	background: #85cb42;
+	padding: 16px 50px;
+}
+
+.buy-item .buy:hover {
+	background: #74bb30;
+}
+
+.buy-item .credit {
+	background: #2f95ff;
+	padding: 16px 30px;
+	font-weight: 200;
+}
+
+.buy-item .credit:hover {
+	background: #007dfe;
+}
+
+.tire-description .tire-icons {
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 65px;
+}
+
+.detal-item {
+	border-top: 1px solid #dadee2;
+	color: #4b4b4b;
+	display: block;
+}
+
+.detal-item .info {
+	padding: 15px;
+	font-size: 11px;
+	font-style: italic;
+	background-color: #f3ff1742;
+}
+
+.specifications-title {
+	padding: 38px 0 28px 26px;
+
+}
+
+.specifications-title>div {
+	display: inline-block;
+	margin: 0;
+	font-size: 18px;
+	font-weight: 700;
+	text-transform: uppercase;
+	vertical-align: middle;
+}
+
+.specifications-title .tire-icons {
+	margin-left: 30px;
+}
+
+.specifications-items {
+	color: #4b4b4b;
+	font-size: 16px;
+	padding-bottom: 16px;
+}
+
+.specifications-items div {
+	padding: 8px 28px;
+}
+
+.specifications-items>div>span {
+	font-size: 16px;
+	font-weight: 300;
+	margin: 0;
+	display: inline-block;
+	min-width: 14em;
+}
+
+.specifications-items p {
+	display: inline-block;
+	margin: 0;
+	font-weight: 500;
+}
+
+.specifications-items .item-grey {
+	background: #f3f4f6;
+}
+
+.item_quantity_info span {
+	color: #929292;
+	font-weight: 100;
+}
+
+.tire-icons .ico {
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 10px;
+}
+
+.tire-icons .ico-car {
+	background: url(../images/ico-car.png);
+	width: 40px;
+	height: 14px;
+}
+
+.tire-icons .ico-summer {
+	background: url(../images/ico-summer.png);
+	width: 23px;
+	height: 23px;
+}
+
+.tire-icons .ico-pr-asymmetric {
+	background: url(../images/ico-pr-asymmetric.png);
+	height: 22px;
+	width: 16px;
+}
+
+.tire-description-title {
+	padding: 32px 0 16px;
+	font-size: 18px;
+	text-transform: uppercase;
+}
+
+.tire-description-content {
+	font-size: 15px;
+	font-weight: 300;
+	line-height: 1.4;
+	overflow: hidden;
+}
+
+.tire-description-content p {
+	margin-top: 0;
+}
+
+.tire-more {
+	color: #868686;
+	display: block;
+	font-size: 13px;
+	font-weight: 700;
+	padding: 32px 0;
+	text-transform: uppercase;
+	text-align: center;
+	text-decoration: none;
+}
+
+.tires-description-details .tire-description-title {
+	text-align: center;
+}
+
+/* tires-recomended */
+.tire-recomended-title {
+	color: #85cb42;
+	font-size: 24px;
+	font-weight: 700;
+	margin: 8% 0 2%;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.tire-recomended-items {
+	display: flex;
+}
+
+.tire-recomended-item {
+	text-align: center;
+	width: 20%;
+}
+
+.tire-recomended-item a {
+	display: block;
+	text-decoration: none;
+}
+
+.tire-recomended-item a>span {
+	background: #fff;
+	display: block;
+	padding: 0 10px 10px;
+}
+
+.tire-recomended-item a>span>* {
+	display: block;
+}
+
+.tire-recomended-item a>span>.tire-title {
+	font-size: 16px;
+	font-weight: 700;
+}
+
+.tire-recomended-item a>span>.tire-short {
+	line-height: 1.5;
+}
+
+.tire-recomended-item a>span>.tire-icons {
+	margin: 6px 0;
+}
+
+.tire-recomended-item a>span>.tire-price {
+	color: #2f95ff;
+	font-size: 28px;
+	font-weight: 700;
+	margin: 8px 0;
+}
+
+.tire-recomended-item a>span>.tire-price span {
+	font-size: 22px;
+}
+
+.tire-recomended-item a>span>.tire-buy .button {
+	background: #85cb42;
+	border-radius: 2px;
+	color: #fff;
+	display: block;
+	font-size: 16px;
+	font-weight: 700;
+	padding: 16px;
+	text-transform: uppercase;
+}
+
+.tire-recomended-item a>span>.tire-buy .button:hover {
+	background: #74bb30;
+}
+
+/* tires-recomended */
+
+/* analogs-by-type-wrapper */
+.analogs-by-type-wrapper {
+	margin: 8% 0;
+}
+
+.analogs-by-type-title {
+	font-size: 18px;
+	font-weight: 700;
+	padding: 0 0 16px;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.analogs-by-type-item-title,
+.analogs-by-type-item {
+	align-items: center;
+	display: flex;
+}
+
+div[class*="analogs-by-type-item"] .art {
+	width: 15%;
+}
+
+div[class*="analogs-by-type-item"] .name {
+	width: 40%;
+}
+
+div[class*="analogs-by-type-item"] .spec {
+	width: 19%;
+}
+
+div[class*="analogs-by-type-item"] .price {
+	width: 12%;
+}
+
+div[class*="analogs-by-type-item"] .count {
+	width: 12%;
+}
+
+div[class*="analogs-by-type-item"] .buy {
+	min-width: 100px;
+	width: 12%;
+}
+
+.analogs-by-type-item-title div,
+.analogs-by-type-item>div {
+	padding: 10px;
+	text-align: center;
+}
+
+.analogs-by-type-item-title div {
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.analogs-by-type-item div {
+	font-size: 16px;
+}
+
+.analogs-by-type-item .art {
+	font-size: 0.8em;
+}
+
+.analogs-by-type-item .name {
+	text-align: left;
+}
+
+.analogs-by-type-item .name>* {
+	display: block;
+}
+
+.analogs-by-type-item .spec i {
+	margin: 0 4px;
+}
+
+.analogs-by-type-item .price {
+	color: #e5390b;
+	font-weight: 500;
+}
+
+.analogs-by-type-item .buy .button {
+	background-color: #85cb42;
+	border-radius: 2px;
+	color: #fff;
+	display: block;
+	font-size: 14px;
+	font-weight: 700;
+	padding: 10px 14px;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+
+.analogs-by-type-item .buy .button:hover {
+	background-color: #74bb30;
+}
+
+.analogs-by-type-item .buy span {
+	font-size: 0.7em;
+	color: #929292;
+	text-transform: uppercase;
+}
+
+.analogs-by-type-item-title {
+	background: #e7eaed;
+}
+
+.analogs-by-type-item:nth-child(2n+1) {
+	background: #f3f4f6;
+}
+
+.analogs-by-type-more {
+	margin: 4% 0;
+	text-align: center;
+}
+
+.analogs-by-type-more a {
+	color: #fff;
+	border-radius: 2px;
+	background: #2f95ff;
+	display: inline-block;
+	font-size: 18px;
+	font-weight: 700;
+	text-transform: uppercase;
+	text-decoration: none;
+	padding: 10px 40px;
+}
+
+.analogs-by-type-more a:hover {
+	background: #007dfe;
+}
+
+/* analogs-by-type-wrapper */
+
+/* tire-reviews-wrapper */
+.tire-reviews-wrapper {
+	margin: 8% 0;
+}
+
+.tire-reviews-wrapper .form {
+	border: dotted 2px;
+	border-color: #d2d2d2;
+	margin-top: 20px;
+	background-color: #F1F1F1;
+	padding: 20px;
+}
+
+.tire-reviews-wrapper .comment-item {
+	overflow: hidden;
+	margin-bottom: 35px;
+}
+
+.tire-reviews-wrapper .img {
+	float: left;
+}
+
+.tire-reviews-wrapper .comment-content {
+	margin-left: 65px;
+}
+
+.tire-reviews-wrapper button {
+	background-color: #85cb42;
+	border: 1px solid #85cb42;
+	border-radius: 2px;
+	color: #fff;
+	display: block;
+	font-size: 14px;
+	font-weight: 700;
+	padding: 10px 14px;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+
+.tire-reviews-wrapper button:hover {
+	background-color: #74bb30;
+	border: 1px solid #74bb30;
+}
+
+.comment-content .name {
+	line-height: 14px;
+	font-weight: 700;
+}
+
+.comment-content .date {
+	margin-left: 10px;
+	color: #9B9B9B;
+	font-size: 11px;
+}
+
+.tire-reviews-wrapper input,
+.tire-reviews-wrapper textarea {
+	border: 1px solid #e2e2e3;
+	border-radius: 2px;
+	font-size: 13px;
+	margin-right: 11px;
+	padding: 10px 13px;
+	width: 182px;
+}
+
+.tire-reviews-wrapper textarea {
+	width: 100%;
+}
+
+.tire-reviews-title {
+	font-size: 18px;
+	font-weight: 700;
+	padding: 0 0 16px;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.tire-reviews {
+	overflow: hidden;
+}
+
+.tire-reviews-all {
+	border-right: 1px solid #bfbfbf;
+	float: left;
+	padding: 14px 14px 14px 0;
+	width: 32%;
+}
+
+.tire-reviews-all .stars-count {
+	display: inline-block;
+	font-size: 66px;
+	font-weight: 300;
+	line-height: 1;
+	vertical-align: middle;
+}
+
+.tire-reviews-all .stars-wrapper {
+	display: inline-block;
+	font-size: 15px;
+	margin-left: 16px;
+	vertical-align: middle;
+	width: calc(100% - 114px);
+}
+
+.tire-reviews-all .stars-wrapper .star4 {
+	display: block;
+}
+
+.tire-reviews-all .stars-wrapper .count {
+	display: block;
+	margin-top: 6px;
+}
+
+.tire-review-last {
+	border-left: 1px solid #bfbfbf;
+	float: left;
+	margin-left: -1px;
+	padding: 24px 0 24px 44px;
+	width: 68%;
+}
+
+.tire-review-last .stars-wrapper {
+	font-size: 15px;
+	margin-left: 0;
+}
+
+.tire-review-last .tire-review-content {
+	border-bottom: 1px solid #bfbfbf;
+	font-size: 16px;
+	font-weight: 300;
+	margin-bottom: 12px;
+	padding: 12px 44px 12px 0;
+}
+
+.tire-review-last .tire-review-author {
+	margin-right: 14px;
+}
+
+.tire-review-last .tire-review-date {
+	color: #bfbfbf;
+}
+
+.tire-review-last .tire-rewiews-all {
+	color: #0fbeff;
+	font-size: 16px;
+	text-align: right;
+}
+
+.tire-review-last .tire-rewiews-all a {
+	text-decoration: underline;
+}
+
+.tire-review-last .tire-rewiews-all a:hover {
+	text-decoration: none;
+}
+
+/* tire-reviews-wrapper */
+
+
+/* Рейтинг звездочка */
+.c-rating {
+	margin: 15px 0 15px -13px;
+	display: inline-block;
+}
+
+.rating-label {
+	margin: 4px 0;
+	float: left;
+}
+
+.star-rating-wrapper {
+	margin: 15px 0px;
+	overflow: hidden;
+}
+
+.rating-area {
+	overflow: hidden;
+	float: left;
+}
+
+.rating-area:not(:checked)>input {
+	display: none;
+}
+
+.rating-area:not(:checked)>label {
+	height: 32px;
+	float: right;
+	width: 32px;
+	padding: 0;
+	cursor: pointer;
+}
+
+.rating-area:not(:checked)>label {
+	background: url(../images/star-empty.svg) no-repeat;
+}
+
+.rating-area>input:checked~label {
+	background: url(../images/star-full.svg) no-repeat;
+}
+
+.rating-area:not(:checked)>label:hover,
+.rating-area:not(:checked)>label:hover~label {
+	background: url(../images/star-full.svg) no-repeat;
+}
+
+.rating-area>input:checked+label:hover,
+.rating-area>input:checked+label:hover~label,
+.rating-area>input:checked~label:hover,
+.rating-area>input:checked~label:hover~label,
+.rating-area>label:hover~input:checked~label {
+	background: url(../images/star-full.svg) no-repeat;
+}
+
+.rate-area>label:active {
+	position: relative;
+}
+
+
+.star-rating {
+	position: relative;
+	height: 24px;
+	overflow: hidden;
+	list-style: none;
+	margin: 0 7px 0 0;
+	padding: 0;
+	background-position: left top;
+	width: 175px;
+}
+
+.star-rating,
+.star-rating span:hover,
+.star-rating .current-rating {
+	background: url(../images/star-empty.svg) repeat-x;
+}
+
+.star-rating span:hover,
+.star-rating .current-rating {
+	z-index: 1;
+	background: url(../images/star-full.svg) repeat-x;
+}
+
+.star-rating li {
+	display: inline;
+}
+
+.star-rating span {
+	cursor: pointer;
+}
+
+.star-rating span,
+.star-rating .current-rating {
+	position: absolute;
+	top: 0;
+	left: 0;
+	text-indent: -1000em;
+	height: 24px;
+	line-height: 24px;
+	outline: 0;
+	overflow: hidden;
+	border: 0;
+}
+
+.tire-rating {
+	margin: 8px 0 0;
+}
+
+.review-count {
+	margin: 8px 12px;
+}
+
+
+/*tire-size-wrapper*/
+.tire-size-wrapper {
+	padding-top: 64px;
+}
+
+.tire-size-title {
+	color: #85cb42;
+	font-size: 24px;
+	font-weight: 700;
+	margin-bottom: 38px;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.tire-size-filters {
+	color: #4b4b4b;
+	display: flex;
+	margin-bottom: 38px;
+	background: #e7eaed;
+	text-align: center;
+	font-size: 18px;
+}
+
+div[class*="tire-size-filter-"] {
+	width: 33.33%;
+	padding: 28px 0;
+}
+
+.tire-size-filter-diametr {
+	background: #d0d2d5;
+	font-weight: 700;
+}
+
+.tire-size-filters select {
+	border: none;
+	appearance: none;
+	padding: 10px 40px 10px 20px;
+	background: #fff url(../images/ico-arrow-4.png) no-repeat 100% 50%;
+	color: #a4a4a4;
+	font-size: 18px;
+	font-weight: 300;
+	width: 152px;
+}
+
+.tire-size-filters label {
+	margin-right: 22px;
+}
+
+.item-list-more {
+	padding: 56px 0 146px;
+	text-align: center;
+}
+
+.item-list-more a {
+	color: #fff;
+	border-radius: 2px;
+	background: #2f95ff;
+	display: inline-block;
+	font-size: 18px;
+	font-weight: 700;
+	text-transform: uppercase;
+	text-decoration: none;
+	padding: 14px 44px;
+}
+
+.item-list-more a:hover {
+	background: #007dfe;
+}
+
+
+
+.news-header {
+	margin: 25px 0;
+}
+
+.news-date-time {
+	color: #6B6B6B !important;
+	font-size: 0.9em;
+}
+
+.news-detail img.detail_picture {
+	float: right;
+	margin: 25px 0 25px;
+}
+
+
+.social-button {
+	overflow: hidden;
+}
+
+.social-button .fb {
+	float: right;
+	width: 130px;
+}
+
+
+dl.news-item {
+	margin: 45px 0;
+}
+
+dl.news-item dt {
+	width: 160px;
+	float: left;
+}
+
+dl.news-item dt img {
+	float: left;
+}
+
+dl.news-item dd {
+	margin-left: 180px;
+}
+
+dl.news-item dd .desc {
+	margin: 10px 0;
+}
+
+.seo-announce {
+	margin: 25px 0;
+	font-size: 0.9em;
+	color: #868686;
+}
+
+.like-widget {
+	float: right;
+}
+
+
+/* information -> tire calculator */
+/* BEGIN TIRE CALCULATOR */
+#tire-calculator-container h2 {
+	text-align: left;
+	font-style: italic;
+	padding: 5px 0;
+}
+
+#tire-calculator-container .about-programm {
+	margin: 0 0 20px 0;
+}
+
+.dimension-type-count-box .dimension-type-count-inputs-old,
+.dimension-type-count-box .dimension-type-count-inputs-new {
+	margin: 25px;
+	float: left;
+	display: inline;
+	padding: 0;
+}
+
+.dimension-type-count-inputs-old .count-inputs-title {
+	color: black;
+	font-style: italic;
+	margin: 0 0 10px 0;
+	font-weight: 600;
+	font-size: 1.5em;
+}
+
+.dimension-type-count-inputs-new .count-inputs-title {
+	color: #E5390B;
+	font-style: italic;
+	margin: 0 0 10px 0;
+	font-weight: 600;
+	font-size: 1.5em;
+}
+
+.dimension-type-count-inputs-old select,
+.dimension-type-count-inputs-new select {
+	font-size: 1.7em;
+	padding: 5px 1px;
+}
+
+.dimension-type-count-box .dimension-type-header,
+.dimension-type-count-box .dimension-type-header2 {
+	height: 32px;
+	background: url('../images/tire_calculator/table_head_bg.png') left top repeat-x;
+	font-style: italic;
+	color: #343333;
+	text-align: center;
+	border-bottom: 1px solid #B1B1B1;
+}
+
+.dimension-type-count-box .dimension-type-header2 {
+	border-left: 1px solid #B1B1B1;
+}
+
+.dimension-type-count-box .dimension-type-boby,
+.dimension-type-count-box .dimension-type-boby2,
+.dimension-type-count-box .dimension-type-boby3,
+.dimension-type-count-box .dimension-type-boby4 {
+	font-style: normal;
+	border-bottom: 1px solid #B1B1B1;
+	color: #343333;
+}
+
+.dimension-type-count-box .dimension-type-boby2 {
+	border-left: 1px solid #B1B1B1;
+	text-align: center;
+}
+
+.dimension-type-count-box .dimension-type-boby3 {
+	border-left: 1px solid #B1B1B1;
+	text-align: center;
+	color: #E5390B;
+	font-weight: 800;
+}
+
+.dimension-type-count-box .dimension-type-boby4 {
+	border-left: 1px solid #B1B1B1;
+	text-align: center;
+}
+
+#tire-calculator-container .cross-section-tire {
+	display: inline-block;
+	width: 350px;
+	height: 280px;
+	padding: 0;
+	margin: 20px 0 0 0;
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-image: url(../images/tire_calculator/cross-tire.png);
+	position: relative;
+}
+
+.cross-section-tire .a-size,
+.cross-section-tire .b-size,
+.cross-section-tire .c-size,
+.cross-section-tire .d-size {
+	position: absolute;
+	color: #CC2929;
+	margin-left: 5px;
+	padding: 0 7px;
+	background-color: #ffffffa1;
+}
+
+.cross-section-tire .a-size {
+	top: 3%;
+	left: 39%;
+	font-size: 1.2em;
+	font-weight: 900;
+}
+
+.cross-section-tire .b-size {
+	top: 25%;
+	left: 53%;
+	font-size: 1.2em;
+	font-weight: 900;
+}
+
+.cross-section-tire .c-size {
+	top: 49%;
+	left: 69%;
+	font-size: 1.2em;
+	font-weight: 900;
+}
+
+.cross-section-tire .d-size {
+	top: 61%;
+	left: 53%;
+	font-size: 1.2em;
+	font-weight: 900;
+}
+
+#tire-calculator-container .speedometer-block {
+	width: 320px;
+	display: inline-block;
+	height: 380px;
+	padding: 0;
+	margin: 10px 0 0 20px;
+	background: url(../images/tire_calculator/tire_speed.png) left top no-repeat;
+	position: relative;
+}
+
+.speedometer-block #speed_change {
+	font-size: 0.95em;
+	position: absolute;
+	top: 310px;
+	left: 95px;
+	height: 22px;
+	text-align: left;
+	color: #343333;
+}
+
+.speedometer-block #speed_change span {
+	font: bold 18px/22px Arial;
+}
+
+#tire-calculator-container .clirens-block {
+	height: 180px;
+	padding: 0;
+	margin: 30px 0 0 20px;
+	background: url(../images/tire_calculator/tire_clirenc.png) left top no-repeat;
+	position: relative;
+	display: inline-block;
+	width: 270px;
+}
+
+.clirens-block #clirens_change {
+	position: absolute;
+	top: 103px;
+	left: 10px;
+	width: 100px;
+	height: 60px;
+	text-align: left;
+	color: #343333;
+}
+
+#tire-calculator-container .table-analitic {
+	width: 100%;
+	margin: 10px 0 10px 0;
+}
+
+.table-analitic .analitic-title {
+	font-style: italic;
+	color: #343333;
+}
+
+.table-analitic .analitic-title-result {
+	margin: 10px 0;
+	font-style: italic;
+	color: #343333;
+	font-weight: 500;
+}
+
+.table-analitic .analitic-positive {
+	color: #36B646;
+	padding: 0 0 0 6px;
+}
+
+.table-analitic .analitic-negative {
+	color: #BB3F3F;
+	padding: 0 0 0 7px;
+
+}
+
+#tire-calculator-container .dimension-type-count-box2 {
+	margin: 0 0 25px;
+	padding: 0;
+	float: left;
+	display: inline;
+}
+
+#tire-calculator-container .about-programm2 {
+	width: 40%;
+	padding: 0;
+	margin: 0 0 0 70px;
+	float: left;
+	display: inline;
+}
+
+.dimension-type-count-box2 .dimension-type-header {
+	height: 32px;
+	background: url('../images/tire_calculator/table_head_bg.png') left top repeat-x;
+	font-style: italic;
+	color: #343333;
+	text-align: left;
+	border-bottom: 1px solid #B1B1B1;
+}
+
+.dimension-type-count-box2 .dimension-type-header span {
+	padding: 0 0 0 7px;
+}
+
+.dimension-type-count-box2 .dimension-type-boby {
+	font-style: normal;
+	border-bottom: 1px solid #B1B1B1;
+	color: #343333;
+	text-align: center;
+}
+
+.dimension-type-count-box2 .dimension-type-boby-left {
+	border-left: 1px solid #B1B1B1;
+}
+
+.size-type-count-inputs {
+	width: 100%;
+	float: left;
+	display: inline;
+	margin: 0px 0px 25px 0;
+	padding: 0;
+}
+
+.size-type-count-inputs font {
+	display: block;
+}
+
+.size-type-count-inputs select {
+	font-size: 1.7em;
+	padding: 5px 15px;
+}
+
+.american-container select {
+	font-size: 1.7em;
+	padding: 5px 15px;
+}
+
+.american-container .converter-tire-box1 {
+	padding: 0;
+	margin: 30px 0 0;
+	float: left;
+	display: inline;
+}
+
+.american-container .converter-tire-box2 {
+	padding: 0;
+	margin: 30px 0 0 40px;
+	float: left;
+	display: inline;
+}
+
+.american-container .converter-tire-amer-arrow {
+	width: 200px;
+	height: 45px;
+	padding: 0;
+	margin: 20px 0 0 40px;
+	float: left;
+	display: inline;
+	background: url('../images/tire_calculator/tire_calc.png') left top no-repeat;
+	cursor: pointer;
+	cursor: hand;
+}
+
+.converter-tire-box1 .converter-count-inputs span {
+	font-style: italic;
+}
+
+.converter-count-output .e_data {
+	float: left;
+	display: inline;
+	color: black;
+	margin: 0 0 0 5px;
+	border: 1px solid #bebebe;
+	background: white;
+	font-size: 1.5em;
+	padding: 10PX 15px;
+	font-weight: 500;
+}
+
+.converter-count-output .e_separator {
+	float: left;
+	display: inline;
+	margin: 15px 20px;
+}
+
+
+.win-order {
+	position: fixed;
+	margin-top: -105px;
+	margin-left: -100px;
+	top: 50%;
+	left: 50%;
+	padding: 20px;
+	z-index: 10000;
+	text-shadow: black 1px 1px 2px;
+	box-shadow: -5px 5px 5px #888;
+	text-align: center;
+	font-size: 18px;
+	color: #ccc;
+	background-color: #454647;
+	border: 2px solid;
+	display: none;
+}
+
+/* END TIRE CALCULATOR */
+
+
+.wc_content_left {
+	float: left;
+	max-width: 300px;
+	margin-right: 30px;
+}
+
+.wc_content_right div {
+	margin: 20px 0px;
+}
+
+.wc_content_right .wc_name {
+	color: #2f95ff;
+	font-size: 32px;
+	font-weight: 300;
+}
+
+.wc_content_right .wc_price b {
+	color: #ff4c4c;
+	font-size: 34px;
+	font-weight: 300;
+}
+
+.wc_content_right .wc_price span {
+	text-decoration: line-through;
+}
+
+.wc_content_right .wc_include {
+	font-style: italic;
+}
+
+.wc_content_right .alert,
+.wc_content_right .wc_request_result {
+	color: #f00;
+	margin-left: 5px;
+	font-size: 12px;
+	background-color: unset;
+}
+
+
+
+.blue_button {
+	color: #fff;
+	border-radius: 2px;
+	border: none;
+	background: #2f95ff;
+	display: inline-block;
+	font-size: 18px;
+	font-weight: 200;
+	text-transform: uppercase;
+	text-decoration: none;
+	padding: 10px 40px;
+}
+
+.blue_button:hover {
+	background: #007dfe;
+}
+
+
+
+.parameters>div {
+	display: inline-table;
+	;
+	width: 49%;
+}
+
+.parameters h3 {
+	font-weight: 400;
+	text-transform: uppercase;
+}
+
+.parameters .p-tyre {
+	width: 70%;
+}
+
+.parameters .p-disc {
+	width: 29%;
+}
+
+.parameters .p-tyre>div {
+	display: inline-table;
+	;
+	width: 33%;
+}
+
+.parameters .parameter-type a {
+	display: block;
+	margin: 3px 0;
+}
+
+.parameters .parameter-type a.active {
+	color: #fe4049;
+}
+
+.promo_left img,
+.wrap_banner img {
+	width: 100%
+}
+
+
+
+/* SUBSCRIBE PAGE */
+.subscribe-user-container {
+	margin: 20px 0 0 0;
+	padding: 0;
+}
+
+.subscribe-manager-box {
+	float: left;
+	display: inline;
+	cursor: pointer;
+	cursor: hand;
+	height: 90px;
+	text-align: center;
+	width: 86px;
+	margin: 0 30px 0 0;
+}
+
+.subscribe-manager-box a {
+	text-decoration: none;
+}
+
+.subscribe-user-container .subscribe-manager-download {
+	height: 55px;
+	background: url('../images/subscribe/circle.png') center top no-repeat;
+}
+
+.subscribe-user-container .subscribe-manager-send {
+	height: 52px;
+	background: url('../images/subscribe/envelope.png') center top no-repeat;
+}
+
+.subscribe-manager-box span {
+	margin: 0;
+	font: normal 12px/15px Arial;
+}
+
+table.subscribe-price-table {
+	margin: 0;
+	padding: 0;
+	border-collapse: collapse;
+}
+
+table.subscribe-price-table td {
+	border: 1px solid #999;
+	padding: 6px;
+}
+
+.subscribe-okmessage {
+	color: #3EB320;
+}
+
+.subscribe-errormessage {
+	color: #000;
+}
+
+.subscribe-uploader {
+	display: inline;
+	float: left;
+	width: 450px;
+}
+
+.subscribe-upload-button {
+	display: block;
+	width: 86px;
+	height: 90px;
+	padding: 0;
+	text-align: center;
+}
+
+.subscribe-upload-img {
+	width: 86px;
+	height: 55px;
+	background: url('../images/subscribe/upload.png') center top no-repeat;
+}
+
+.subscribe-upload-button span {
+	margin: 0;
+	font: normal 12px/15px Arial;
+}
+
+.qq-upload-drop-area {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	min-height: 70px;
+	z-index: 2;
+	background: #FF9797;
+	text-align: center;
+}
+
+.qq-upload-drop-area span {
+	display: block;
+	position: absolute;
+	top: 50%;
+	width: 100%;
+	margin-top: -8px;
+	font-size: 16px;
+}
+
+.qq-upload-drop-area-active {
+	background: #FF7171;
+}
+
+.qq-upload-list {
+	margin: 15px 35px;
+	padding: 0;
+	list-style: disc;
+}
+
+.qq-upload-list li {
+	margin: 0;
+	padding: 0;
+	line-height: 15px;
+	font-size: 12px;
+}
+
+.qq-upload-file,
+.qq-upload-spinner,
+.qq-upload-size,
+.qq-upload-cancel,
+.qq-upload-failed-text {
+	margin-right: 7px;
+}
+
+.qq-upload-spinner {
+	display: inline-block;
+	background: url("loading.gif");
+	width: 15px;
+	height: 15px;
+	vertical-align: text-bottom;
+}
+
+.qq-upload-size,
+.qq-upload-cancel {
+	font-size: 11px;
+}
+
+.qq-upload-failed-text {
+	display: none;
+}
+
+.qq-upload-fail .qq-upload-failed-text {
+	display: inline;
+}
+
+
+
+
+/*Table head personal_order_list*/
+table.sale_personal_order_list th {
+	text-align: left;
+	color: #25639A;
+}
+
+table.sale_personal_order_list th,
+table.sale_personal_order_list td {
+	padding: 3px 5px;
+	vertical-align: top;
+}
+
+table.sale_personal_order_list_table {
+	width: 100%;
+	font-size: 12px;
+}
+
+.about_disc b {
+	font-size: 12px !important;
+}
+
+a#buy {
+	background-color: #169FC8;
+	text-decoration: none;
+	bottom: 2px;
+	padding: 2px;
+	position: relative;
+	color: #FFFFFF;
+}
+
+
+
+
+/*Autocomplete-suggestions */
+
+.autocomplete-suggestions {
+	position: relative;
+	display: inline-table;
+	border-radius: 3px;
+	box-shadow: 3px 3px 3px rgba(3, 3, 3, 0.25);
+}
+
+.autocomplete-suggestions div:last-child {
+	font-weight: bold;
+}
+
+.autocomplete-suggestion {
+	z-index: 99;
+	top: 100%;
+	left: 0;
+	right: 0;
+	padding: 10px;
+	cursor: pointer;
+	background-color: #fff;
+	border-bottom: 1px solid #d4d4d4;
+}
+
+.autocomplete-suggestion strong {
+	color: red;
+}
+
+.autocomplete-suggestion:hover {
+	background-color: #e9e9e9;
+}
+
+.autocomplete-selected {
+	background-color: DodgerBlue !important;
+	color: #ffffff;
+}
+
+
+/* FAQ */
+#spoc-accordion {
+	padding-bottom: 50px;
+}
+
+#spoc-accordion .content-wrapper {
+	border: 1px solid rgb(204, 204, 204);
+	border-radius: 6px;
+	margin-bottom: 15px;
+	padding-left: 50px;
+	padding-right: 20px;
+	box-sizing: border-box;
+}
+
+#spoc-accordion .toggle {
+	letter-spacing: 0.03rem;
+	font-weight: 700;
+	min-height: 48px;
+	padding-top: 10px;
+	position: relative;
+	cursor: pointer;
+	margin-bottom: 0px;
+	font-size: 1.1em !important;
+}
+
+#spoc-accordion .toggle::before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 16px;
+	left: -25px;
+	width: 10px;
+	height: 10px;
+	border-bottom: 1px solid rgb(0, 0, 0);
+	border-right: 1px solid rgb(0, 0, 0);
+	transform: rotate(45deg);
+	transition: all 0.3s ease 0s;
+}
+
+#spoc-accordion .toggle.active:before {
+	transform: rotate(-135deg);
+	top: 22px;
+}
+
+#spoc-accordion .toggle+div {
+	display: none;
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+#spoc-accordion .toggle>span {
+	font-size: 16px;
+}
+
+#spoc-accordion .text {
+	font-size: 1rem;
+	font-family: circle, Arial, Helvetica, "Helvetica CY", "Nimbus Sans L", sans-serif;
+	font-weight: 300;
+	line-height: 1.5;
+	color: rgb(0, 0, 0);
+	margin-bottom: 0px;
+}
+
+#spoc-accordion .faq-link {
+	display: grid;
+	margin-left: 25px;
+}
+
+
+
+/* Фиксируем позицию body, которую меняет панель гугла*/
+.page_fix {
+	top: 0 !important;
+	position: static !important;
+}
+
+/* Прячем панель гугла */
+.skiptranslate {
+	display: none !important;
+}
+
+/* language */
+.language {
+	position: fixed;
+	left: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+	display: flex;
+	flex-direction: column;
+	z-index: 10000;
+}
+
+.language__img {
+	border: 3px solid #ccc;
+	width: 39px;
+	margin: 5px;
+	cursor: pointer;
+	filter: grayscale(0.8);
+	background-color: #ffffff;
+	border-radius: 20px;
+	padding: 4px;
+}
+
+.language__img:hover,
+.language__img_active {
+	opacity: 1;
+	filter: unset;
+}
+
+
+
+
+
+
+
+
+/*----------------------------*/
+/*          ADAPTIVE CSS      */
+/*----------------------------*/
+
+
+
+@media (max-width: 1440px) {
+	.main-wrapper {
+		margin: 0 2%;
+	}
+
+	.asva-container {
+		max-width: 1200px;
+	}
+
+	.header-upper-links {
+		padding-left: 15px;
+	}
+
+	.header-upper-links a {
+		margin-left: 0;
+	}
+
+	.header-upper-links a+a {
+		margin-left: 28px;
+	}
+
+	.header-logo {
+		padding: 20px 0 20px 20px;
+	}
+
+	.header-under-links a .ico-arrow-right-long {
+		margin-left: 15px;
+	}
+
+	.header-links {
+		padding: 20px 22px 22px 0;
+	}
+
+	.header-links a {
+		font-size: 14px;
+		margin-right: 42px;
+	}
+
+	.header-contacts .phone {
+		font-size: 32px;
+	}
+
+	.header-selection-by {
+		padding: 60px 35px;
+	}
+
+
+	.main-tab .main-tab-content .product {
+		width: 16.66%;
+	}
+
+	.main-tab .main-tab-content .product:nth-child(n+7) {
+		display: none;
+	}
+
+
+	.main-popular-types-tires-title h1 {
+		font-size: 22px;
+	}
+
+	.main-popular-types-tires-half .main-popular-types-tires-title h1 {
+		font-size: 20px;
+	}
+
+	.main-tire-size-by-car-title {
+		font-size: 22px;
+	}
+
+	.main-tire-size-by-car-links {
+		padding: 0 32px;
+	}
+
+	.main-manufacturers-tire-title {
+		font-size: 22px;
+	}
+
+	.main-manufacturers-tire-logos a img {
+		transform: scale(1.2);
+	}
+
+	.main-info-block h2 {
+		font-size: 16px;
+	}
+
+	.main-info-block p {
+		font-size: 14px;
+	}
+
+	.breadcrumbs .model::before {
+		content: "...";
+	}
+
+	.breadcrumbs .model span {
+		display: none;
+	}
+
+	.left-side {
+		width: 28%;
+	}
+
+	.right-side {
+		width: 68%;
+	}
+
+	.block-item {
+		padding: 20px 26px 20px 20px;
+	}
+
+	.block-item-content {
+		width: calc(100% - 296px);
+	}
+
+	.block-item-price {
+		margin-left: 30px;
+	}
+
+	.block-item-price .item-buy a {
+		padding: 16px 35px;
+	}
+
+	.tire-product-page .tire-calc-product {
+		padding-top: 10px;
+		text-align: right;
+		width: 120px;
+	}
+
+	.product-item-purchase {
+		padding: 0;
+	}
+
+	.stocks-info {
+		text-align: left;
+	}
+
+	.productQty-item,
+	.buy-item {
+		display: block;
+		margin: 24px 0 0;
+	}
+
+	.tire-recomended-title {
+		margin-bottom: 4%;
+	}
+
+	.tire-recomended-item {
+		width: 25%;
+	}
+
+	.tire-recomended-item:nth-child(n+5) {
+		display: none;
+	}
+
+	.tire-reviews-all {
+		width: 38%;
+	}
+
+	.tire-review-last {
+		width: 62%;
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 1024px) {
+	.header-upper-links-wrapper {
+		float: left;
+	}
+
+	.header-upper-links-wrapper button {
+		display: inline-block;
+	}
+
+	.header-upper-links {
+		display: none;
+	}
+
+	.active .header-upper-links {
+		bottom: 0;
+		background: #fff;
+		box-shadow: 3px 3px 3px rgba(3, 3, 3, 0.25);
+		display: block;
+		left: 0;
+		padding: 65px 40px 30px;
+		position: fixed;
+		top: 0;
+		z-index: 2;
+		width: 360px;
+	}
+
+
+	.header-upper-links a,
+	.header-upper-links a+a {
+		color: #4b4b4b;
+		display: block;
+		font-size: 28px;
+		margin: 0;
+		padding: 10px;
+	}
+
+	.header-upper-links a:hover {
+		text-decoration: underline;
+		color: #4b4b4b;
+	}
+
+	.header-upper-links .link-contact,
+	.header-upper-links .link-contact:hover {
+		color: #76bb35;
+		font-weight: 700;
+	}
+
+	.header-upper-menu .user-area {
+		min-width: 0;
+	}
+
+	.header-upper-menu .user-area span {
+		display: none;
+	}
+
+	.header-logo {
+		padding-left: 14px;
+		width: 92px;
+	}
+
+	.header-contacts .phone {
+		font-size: 28px;
+		font-weight: 300;
+	}
+
+	.header-contacts .ico-phone {
+		display: none;
+	}
+
+	.header-contacts {
+		padding: 12px 0 0;
+	}
+
+	.header-contacts a {
+		margin-top: 4px;
+		padding: 10px 10px 10px 4px;
+	}
+
+	.header-contacts a span {
+		margin-left: 8px;
+	}
+
+	.header-contacts a .ico-arrow-right {
+		margin-left: 16px;
+	}
+
+	.header-links {
+		padding-right: 14px;
+	}
+
+	.header-links a {
+		font-size: 11px;
+		margin-right: 0;
+		width: 100px;
+	}
+
+	.header-links a .ico {
+		background-size: cover;
+		height: 50px;
+		width: 50px;
+	}
+
+	.header-under-links a {
+		font-size: 15px;
+		letter-spacing: .05em;
+		padding: 11px 0 11px 15px;
+	}
+
+	.header-under-links a .ico-arrow-right-long {
+		display: none;
+	}
+
+	.header-selection-by-tabs {
+		width: 40%;
+	}
+
+	.header-selection-option {
+		display: block;
+		width: auto;
+	}
+
+	.header-selection-option select {
+		width: calc(29% - 11px) !important;
+		margin: 15px 20px 15px 0px;
+	}
+
+	.header-selection-option span {
+		margin-right: 20px !important;
+	}
+
+	.header-selection-option.car-disk select,
+	.header-selection-option.car-tire select {
+		width: calc(37.5% - 10px);
+	}
+
+	.header-selection-option.car-disk button,
+	.header-selection-option.car-tire button {
+		margin-left: 10px;
+		margin-top: 14px;
+		width: calc(33.33% - 10px);
+	}
+
+	.footer-info-links>div {
+		width: 49%;
+	}
+
+	.contacts-field {
+		float: none;
+	}
+
+	.contacts-field .phones div {
+		text-align: left;
+	}
+
+	.footer-bottom {
+		text-align: center;
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+
+	.footer-bottom .footer-social-networks {
+		margin: 20px 0;
+		float: none;
+	}
+
+	.footer-bottom .footer-about {
+		font-size: 15px;
+		margin-left: 30px;
+		text-align: left;
+		width: 418px;
+	}
+
+	.footer-bottom .footer-copyright {
+		margin: 0 4%;
+		padding: 10px 0 20px;
+		width: 100%;
+	}
+
+	.main-tabs a {
+		font-size: 21px;
+		line-height: 1.4;
+	}
+
+	.main-tab {
+		margin-left: 0;
+		margin-right: 0;
+	}
+
+	.main-tab .main-tab-content .product {
+		width: 25%;
+	}
+
+	.main-tab .main-tab-content .product:nth-child(n+5) {
+		display: none;
+	}
+
+	.main-popular-types-tires-links-wrapper {
+		margin: 0 3%;
+	}
+
+	.main-popular-types-tires-links {
+		margin: 0 1% 4%;
+		width: 23%;
+	}
+
+	.main-popular-types-tires-half {
+		margin: 0;
+	}
+
+	.main-popular-types-tires-half .main-popular-types-tires {
+		float: none;
+		margin: 0;
+		width: auto;
+	}
+
+	.main-popular-types-tires-half .main-popular-types-tires-links-wrapper {
+		margin: 0 3%;
+	}
+
+	.main-popular-types-tires-half .main-popular-types-tires-links {
+		margin: 0 1% 4%;
+		width: 23%;
+	}
+
+	.main-tire-size-by-car-links {
+		column-count: 4;
+		column-gap: 44px;
+		padding: 0 4%;
+	}
+
+	.main-manufacturers-tire-logos {
+		font-size: 0;
+		margin: 0 2%;
+	}
+
+	.main-info {
+		margin: 6% 0;
+	}
+
+	.main-info-block {
+		height: auto;
+		float: none;
+		margin: 0 0 1%;
+		width: 100%;
+	}
+
+	.main-info-block.first,
+	.main-info-block.second,
+	.main-info-block.third {
+		padding: 4%;
+	}
+
+	.main-info-block.forth {
+		padding: 4% 0 0;
+	}
+
+	.main-info-block.forth>* {
+		padding-left: 4%;
+		padding-right: 4%;
+	}
+
+	.main-info-block .welcom {
+		margin-top: 4%;
+		position: relative;
+	}
+
+	.breadcrumbs .list,
+	.breadcrumbs .list+.ico {
+		display: none;
+	}
+
+	.left-side,
+	.right-side {
+		float: none;
+		width: 100%;
+	}
+
+	.left-side::after,
+	.right-side::after {
+		content: "";
+		clear: both;
+		display: block;
+	}
+
+	.main-selection-wrapper,
+	.main-filters-wrapper {
+		float: left;
+		margin: 0;
+		position: relative;
+		width: 100%;
+	}
+
+	.tire-model-page .main-selection-wrapper,
+	.tire-product-page .main-selection-wrapper {
+		width: 100%;
+	}
+
+	.main-selection,
+	.main-filters {
+		display: none;
+	}
+
+	.active .main-selection,
+	.active .main-filters {
+		display: block;
+	}
+
+	.main-selection-title-m,
+	.main-filters-title-m {
+		color: #fff;
+		display: block;
+		font-size: 18px;
+		font-weight: 500;
+		letter-spacing: .05em;
+		padding: 14px 0;
+		text-align: center;
+		text-transform: uppercase;
+	}
+
+	.main-selection-title-m span,
+	.main-filters-title-m span {
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	.main-selection-title-m i,
+	.main-filters-title-m i {
+		margin-left: 14px;
+	}
+
+	.main-selection-wrapper {
+		background: #9bdf59;
+	}
+
+	.main-filters-wrapper {
+		background: #a9adb2;
+	}
+
+	.main-mobile-menu-bg,
+	.main-mobile-menu {
+		display: none;
+	}
+
+	.active .main-mobile-menu-bg {
+		background: rgba(0, 0, 0, .65);
+		bottom: 0;
+		display: block;
+		left: 0;
+		position: fixed;
+		right: 0;
+		top: 0;
+		z-index: 2;
+	}
+
+	.active .main-mobile-menu {
+		background: #fff;
+		bottom: 0;
+		box-shadow: none;
+		display: block;
+		left: 0;
+		position: fixed;
+		top: 0;
+		width: 100%;
+		max-width: 360px;
+		min-width: 340px;
+		z-index: 2;
+	}
+
+	.active .main-mobile-menu .ico-close {
+		display: block;
+	}
+
+	.active .main-mobile-menu-overflow {
+		bottom: 0;
+		left: 0;
+		overflow: auto;
+		padding: 30px 20px;
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+
+	.main-selection {
+		margin: 0;
+	}
+
+	.selection-tire-wrapper {
+		background: #fff;
+	}
+
+	.selection-tire-title {
+		margin: 40px 0;
+		padding: 0;
+	}
+
+	.selection-tire a {
+		font-size: 16px;
+		letter-spacing: .1em;
+	}
+
+	.selection-tire a.active {
+		background: #157fec;
+		color: #fff;
+		font-size: 16px;
+		font-weight: 400;
+		padding: 12px;
+	}
+
+	.selection-tire-filtres {
+		background: #fff;
+		margin: 0 auto;
+		max-width: 380px;
+	}
+
+	.selection-tire-filter select {
+		border: 1px solid #ced1d4;
+		border-radius: 2px;
+	}
+
+	.main-filters-title-m .count {
+		background: #fff;
+		border-radius: 50%;
+		color: #a9adb2;
+		font-size: 15px;
+		line-height: 2em;
+		margin: -.5em 0;
+		text-align: center;
+		width: 2em;
+	}
+
+	.main-filters {
+		border: 0;
+		padding: 0;
+	}
+
+	.main-filters-title {
+		font-size: 25px;
+		margin: 10px 0;
+	}
+
+	.block-title h1 {
+		font-size: 2.5em;
+		padding: 0;
+	}
+
+	.block-title-sorting {
+		padding: 0;
+	}
+
+	.block-product-title h1 {
+		padding: 0;
+	}
+
+	.tire-calc-product {
+		padding: 12px 0 0;
+	}
+
+	.tire-product-page .tire-calc-product {
+		padding: 0;
+	}
+
+	.tire-description-wrapper {
+		padding-left: 2%;
+		padding-right: 2%;
+	}
+
+	.item-list-more {
+		margin: 46px 0;
+		padding: 0;
+	}
+
+	div[class*="tire-size-filter-"] {
+		padding: 18px 0;
+	}
+
+	.tire-size-filters label {
+		margin-right: 12px;
+	}
+
+	.tire-size-filters select {
+		width: 110px;
+	}
+
+	.main-selection-buyer {
+		padding-top: 26px;
+	}
+
+	.main-selection-buyer h1 {
+		font-size: 20px;
+	}
+
+	.selection-buyer {
+		border: 0;
+		margin-bottom: 0;
+	}
+
+	.selection-buyer-title {
+		margin: 0 2%;
+		text-align: center;
+	}
+
+	.selection-buyer-info {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		padding: 0;
+		margin: 0 2%;
+	}
+
+	.delivery-srvice {
+		padding: 0 20px;
+		text-align: center;
+		width: 33.33%;
+	}
+
+	.delivery-srvice.transport {
+		padding: 28px 0 0;
+		width: 100%;
+	}
+
+	.warranty-srvice {
+		padding: 0 20px;
+		text-align: center;
+		width: 50%;
+	}
+
+	.tire-product-page .tire-description.icons {
+		align-items: center;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+	}
+
+	.tire-all a span {
+		display: none;
+	}
+
+	.tire-star-wrapper {
+		width: 100%;
+	}
+
+	.tires-description-details,
+	.analogs-by-type-wrapper,
+	.tire-reviews-wrapper {
+		padding-left: 2%;
+		padding-right: 2%;
+	}
+
+	.analogs-by-type-item-title div,
+	.analogs-by-type-item div {
+		padding: 8px;
+	}
+
+	.analogs-by-type-item-title div {
+		font-size: 12px;
+	}
+
+	.analogs-by-type-item div {
+		font-size: 14px;
+	}
+
+	.analogs-by-type-item .buy .button {
+		font-size: 13px;
+		letter-spacing: .05em;
+		padding: 6px;
+	}
+
+
+	.promo_left {
+		display: none;
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+/* Планшет */
+@media (min-width: 768px) and (max-width: 1023px) {
+	.selection-tire {
+		padding: 0 4px 18px;
+		display: inline-block;
+		width: 100%;
+	}
+
+	.selected .main-filter-title {
+		margin: 8px 0;
+		padding: 0;
+		text-align: center;
+	}
+
+	.selected .main-filter-item-wrapper {
+		margin: 8px 0;
+	}
+
+	.selected .main-filter-item {
+		text-align: center;
+		width: 100%;
+	}
+
+	.price-filter .main-filter-item {
+		width: 100%;
+	}
+
+	.manufacturer-filter .main-filter-item:nth-child(n+7) {
+		display: block;
+	}
+
+	.manufacturer-filter .main-filter-item:nth-child(n+9) {
+		display: none;
+	}
+
+	.main-filter-item a {
+		font-size: 14px;
+	}
+
+	.price-filter .ui-slider-horizontal {
+		margin: 30px 0;
+		float: left;
+		width: 45%;
+	}
+
+	.price-input-range {
+		margin: 16px 0 0;
+		float: right;
+		width: 45%;
+	}
+
+	.filter-more {
+		margin: 16px 0 0;
+		text-align: center;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Мобильный 
+ */
+@media (max-width: 767px) {
+
+	.breadcrumbs {
+		float: none;
+	}
+
+	.info-title a {
+		display: block;
+	}
+
+	.tire-calc {
+		float: none;
+	}
+
+	.promo_left {
+		display: none;
+	}
+
+	.shinomontj {
+		font-size: 0.8em;
+	}
+
+	.subscription-field .button {
+		margin-top: 10px;
+	}
+
+	.header-wrapper {
+		padding-top: 40px;
+	}
+
+	.header-wrapper .header-links {
+		width: 100%;
+	}
+
+	.header-wrapper .header-links a {
+		width: 24%;
+	}
+
+	.header-upper-wrapper {
+		left: 0;
+		position: fixed;
+		right: 0;
+		top: 0;
+		z-index: 2;
+	}
+
+	.service_list {
+		column-count: unset;
+		column-gap: 54px;
+		font-size: 1.5em;
+	}
+
+	.header-upper .header-logo {
+		padding: 10px 0 0;
+		width: auto;
+		display: inline-block;
+	}
+
+	.active .header-upper-links-bg {
+		background: rgba(0, 0, 0, .65);
+		bottom: 0;
+		display: block;
+		left: 0;
+		position: fixed;
+		right: 0;
+		top: 0;
+		z-index: 2;
+	}
+
+	.active .header-upper-links {
+		background: #fff;
+		bottom: 0;
+		display: block;
+		left: 0;
+		max-width: 360px;
+		position: fixed;
+		top: 0;
+		width: 80%;
+		z-index: 2;
+	}
+
+	.active .header-upper-links-overflow {
+		bottom: 0;
+		left: 0;
+		overflow: auto;
+		padding: 65px 40px 30px;
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+
+	.header-upper-tire-links {
+		margin-bottom: 40px;
+	}
+
+	.header-upper-tire-links a * {
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	.header-upper-tire-links a,
+	.header-upper-tire-links a+a {
+		color: #157fec;
+		font-weight: 700;
+	}
+
+
+	.header-contacts .mobiles {
+		width: 100%;
+		max-width: 360px;
+		min-width: 340px;
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		transform: none;
+	}
+
+	.header-upper-menu {
+		font-size: 0;
+	}
+
+	.header-upper-menu .user-area {
+		background: #0e75df;
+		min-width: 0;
+		padding: 9px 20px;
+	}
+
+	.header-upper-menu .phone {
+		display: inline-block;
+	}
+
+	.bycar form {
+		width: 100%;
+	}
+
+	.header-selection {
+		bottom: 0;
+	}
+
+	.header-selection-tab {
+		width: 50%;
+	}
+
+	.header-selection-by {
+		padding: 6%;
+	}
+
+	.header-selection-by-tabs {
+		margin-bottom: 15px;
+		margin-top: 15px;
+		width: 100%;
+	}
+
+	.header-selection-option select {
+		width: 100% !important;
+		margin: 15px 0;
+	}
+
+	.header-selection-option button {
+		margin-left: 0;
+		margin-top: 14px;
+		width: 100%;
+	}
+
+	.header-selection-option.size-disk span+select {
+		width: calc(50% - 36px);
+	}
+
+	.header-selection-by-tab,
+	.header-selection-option.car-disk select,
+	.header-selection-option.car-tire select {
+		margin-left: 0px !important;
+		width: calc(100% - 10px) !important;
+	}
+
+	.header-selection-option.car-disk button,
+	.header-selection-option.car-tire button {
+		width: 100%;
+		margin: 15px 0;
+	}
+
+	.footer-info-links>div {
+		width: 50%;
+	}
+
+	.footer-info-links .f-title i {
+		display: inline-block;
+	}
+
+	.contacts-field {
+		margin-left: 4%;
+		margin-right: 4%;
+	}
+
+	.contacts-field .phones div {
+		display: block;
+		text-align: center;
+	}
+
+	.contacts-field .phones h3,
+	.contacts-field .phones p {
+		display: inline-block;
+		font-size: 14px;
+		font-weight: 400;
+		margin: 0;
+	}
+
+	.footer-bottom .footer-social-networks,
+	.footer-bottom .footer-about,
+	.footer-bottom .footer-copyright {
+		margin-left: 4%;
+		margin-right: 4%;
+		text-align: center;
+		width: 92%;
+	}
+
+	.footer-bottom .footer-social-networks {
+		order: 2;
+	}
+
+	.footer-bottom .footer-about {
+		order: 1;
+	}
+
+	.footer-bottom .footer-copyright {
+		order: 3;
+	}
+
+	.header-selection-wrapper+.main-wrapper .main {
+		padding-top: 10px;
+	}
+
+	.main-brand-images a {
+		display: block;
+		float: none;
+		margin: 0;
+		padding: 0;
+		width: 100%;
+	}
+
+	.main-brand-images a img {
+		height: auto;
+		width: 100%;
+	}
+
+	.main-tabs {
+		display: none;
+	}
+
+	.main-tab.hidden {
+		display: block;
+	}
+
+	.main-tab .main-tab-title {
+		display: inline-block;
+	}
+
+	.main-tab.recomended-tires .main-tab-title {
+		border-bottom: 2px solid #85cb42;
+		color: #85cb42;
+	}
+
+	.breadcrumbs {
+		font-size: 12px;
+		max-width: 100%;
+		overflow: hidden;
+		padding-right: 30px;
+		position: relative;
+		white-space: nowrap;
+	}
+
+	.breadcrumbs::after {
+		background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+		bottom: 0;
+		content: "";
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: 30px;
+	}
+
+	.breadcrumbs .back span {
+		display: none;
+	}
+
+	.breadcrumbs .delimiter {
+		margin: 0 8px;
+	}
+
+	.block-title-sorting span {
+		display: none;
+	}
+
+	.block-filters-selection,
+	.block-filters-selection-count {
+		float: none;
+		text-align: center;
+	}
+
+	.block-filters-selection a {
+		margin-bottom: 4px;
+	}
+
+	.block-item {
+		display: flow-root;
+		padding: 14px 16px;
+	}
+
+	.block-item-image {
+		float: left;
+	}
+
+	.block-item-content {
+		margin-left: 116px;
+		width: auto;
+	}
+
+	.block-item-content .ico-provide {
+		margin-left: 0;
+	}
+
+	.tyre-name {
+		font-size: 16px;
+	}
+
+	.tyre-name a b {
+		display: block;
+	}
+
+	.block-item-content .stars-wrapper {
+		display: none;
+	}
+
+	.block-item-content .tyre-info {
+		margin: 5px 0;
+	}
+
+	.block-item-price {
+		margin-left: 0;
+		text-align: right;
+		width: 100%;
+	}
+
+	.block-item-price .item-price {
+		font-size: 24px;
+		display: inline-block;
+	}
+
+	.block-item-price .item-buy {
+		margin-top: 2px;
+		display: inline-block;
+		margin-left: 12px;
+	}
+
+	.block-item-price .item-buy a {
+		padding: 8px 26px;
+		font-size: 16px;
+		letter-spacing: .1em;
+	}
+
+	/*pager*/
+	.pager .prev,
+	.pager .next {
+		display: none;
+	}
+
+	.pager .prev::before,
+	.pager .next::after {
+		margin-bottom: 6px;
+	}
+
+	.block-product-title h1 {
+		float: none;
+		text-align: center;
+	}
+
+	.tire-calc-product {
+		float: none;
+		text-align: center;
+	}
+
+	.tire-product-page .tire-calc-product {
+		padding-top: 12px;
+		text-align: center;
+		width: auto;
+	}
+
+	.tire-image,
+	.tire-description {
+		float: none;
+		padding: 0;
+		width: 100%;
+	}
+
+	.tire-image {
+		margin: 4% auto;
+		max-width: 340px;
+		text-align: center;
+	}
+
+	.tire-description.icons {
+		align-items: center;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.tire-description-title {
+		text-align: center;
+	}
+
+	.tire-size-filters label {
+		display: block;
+		margin: 0 0 8px;
+	}
+
+	.tire-size-filters select {
+		width: 80%;
+	}
+
+	.delivery-srvice {
+		width: 50%;
+	}
+
+	.tire-product-page .tire-description-wrapper {
+		border-top: 0;
+		padding-top: 4%;
+	}
+
+	.price-tire,
+	.product-item-purchase {
+		border-top: 0;
+		text-align: center;
+	}
+
+	.ico-provide {
+		float: none;
+	}
+
+	.stocks-info {
+		text-align: center;
+	}
+
+	.tire-recomended-items {
+		justify-content: center;
+	}
+
+	.tire-recomended-item {
+		width: 180px;
+	}
+
+	.tire-recomended-item:nth-child(n+3) {
+		display: none;
+	}
+
+	.analogs-by-type-wrapper {
+		padding: 0;
+	}
+
+	div[class*="analogs-by-type-item"] .art,
+	div[class*="analogs-by-type-item"] .spec,
+	div[class*="analogs-by-type-item"] .count {
+		display: none;
+	}
+
+	div[class*="analogs-by-type-item"] .name {
+		width: 50%;
+	}
+
+	div[class*="analogs-by-type-item"] .price {
+		width: 25%;
+	}
+
+	div[class*="analogs-by-type-item"] .buy {
+		width: 25%;
+	}
+
+	.tire-reviews {
+		text-align: center;
+	}
+
+	.tire-reviews-all {
+		border: 0;
+		float: none;
+		padding: 14px 0;
+		width: 100%;
+	}
+
+	.tire-reviews-all .stars-wrapper {
+		text-align: left;
+		width: auto;
+	}
+
+	.tire-review-last {
+		border: 0;
+		float: none;
+		margin: 0;
+		padding: 24px 0;
+		width: 100%;
+	}
+
+	.tire-review-last .tire-review-content {
+		border-bottom: 1px solid #ececec;
+		padding: 12px 0;
+	}
+
+	.tire-review-last .tire-rewiews-all {
+		margin: 4% 0 0;
+		text-align: center;
+	}
+
+
+	.header-upper-menu .search,
+	.header-upper-menu .basket,
+	.header-upper-menu .user-area,
+	.header-upper-menu .phone,
+	.header-upper-links-wrapper button {
+		padding-left: 14px;
+		padding-right: 14px;
+	}
+
+	.header-upper-menu .phone {
+		padding-right: 7px;
+	}
+
+	.footer-copyright p {
+		display: block;
+		margin-right: 0;
+	}
+
+	.footer-info-links {
+		margin: 0 4%;
+	}
+
+	.footer-info-links>div {
+		width: 100%;
+	}
+
+	.contacts-field .mobiles div {
+		display: block;
+	}
+
+	.contacts-field .mobiles div+div {
+		margin: 12px 0 0;
+	}
+
+	.main-tab .main-tab-content .product {
+		width: 50%;
+	}
+
+	.main-tab .main-tab-content .product:nth-child(n+3) {
+		display: none;
+	}
+
+	.main-popular-types-tires-links,
+	.main-popular-types-tires-half .main-popular-types-tires-links {
+		width: 48%;
+	}
+
+	.main-popular-types-tires-title h1 span {
+		display: block;
+	}
+
+	.main-tire-size-by-car-links {
+		column-count: 2;
+	}
+
+	#tire-calculator-container .about-programm2 {
+		margin: 0;
+		width: 100%;
+	}
+
+
+}
+
+
+
+
+
+
+/* adaptive classes*/
+.hidden-all {
+	display: none !important;
+}
+
+.visible-all {
+	display: inherit !important;
+}
+
+.visible-phone {
+	display: none !important;
+}
+
+.visible-tablet {
+	display: none !important;
+}
+
+.hidden-desktop {
+	display: none !important;
+}
+
+.visible-desktop {
+	display: inherit !important;
+}
+
+@media (max-width: 1024px) {
+	.hidden-desktop {
+		display: inherit !important;
+	}
+
+	.visible-desktop {
+		display: none !important;
+	}
+
+	.visible-tablet {
+		display: inherit !important;
+	}
+
+	.hidden-tablet {
+		display: none !important;
+	}
+}
+
+@media (max-width: 767px) {
+	.hidden-tablet {
+		display: inherit !important;
+	}
+
+	.visible-tablet {
+		display: none !important;
+	}
+
+	.visible-phone {
+		display: inherit !important;
+	}
+
+	.hidden-phone {
+		display: none !important;
+	}
+}

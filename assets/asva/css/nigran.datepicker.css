@@ -1,0 +1,115 @@
+.ui-widget {
+	font-family: "Helvetica Neue","Trebuchet MS",Tahoma,Verdana,Arial,sans-serif;
+	background: #29a2d9;
+	border: none;
+	border-radius: 0;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	box-shadow: 0 1px 3px #252525;
+}
+
+.ui-datepicker {
+	width: 350px;
+	padding: 0;
+	padding: 0 15px 15px;
+	z-index: 200 !important;
+}
+
+.ui-datepicker-header {
+	border: none;
+	border-bottom: 1px solid #2d97cb;
+	background: transparent;
+	font-weight: normal;
+	font-size: 1.5em;
+	text-transform: uppercase;
+}
+
+.ui-datepicker-header .ui-state-hover {
+	background: transparent;
+	border-color: transparent;
+	cursor: pointer;
+	border-radius: 0;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+}
+
+.ui-datepicker .ui-datepicker-title {
+	color: #fff;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.ui-datepicker .ui-datepicker-prev-hover,
+.ui-datepicker .ui-datepicker-next-hover,
+.ui-datepicker .ui-datepicker-next,
+.ui-datepicker .ui-datepicker-prev {
+	top: 1.7em;
+	border:none;
+}
+
+.ui-datepicker .ui-datepicker-prev-hover {
+	left: 2px;
+}
+
+.ui-datepicker .ui-datepicker-next-hover {
+	right: 2px;
+}
+
+.ui-datepicker .ui-datepicker-next span,
+.ui-datepicker .ui-datepicker-prev span {
+	background-image: url(../images/ui-icons_ffffff_256x240.png);
+	background-position: -32px -32px;
+	top: 0;
+	font-weight: normal;
+}
+
+.ui-datepicker .ui-datepicker-prev span {
+	background-position: -96px -32px;
+}
+
+.ui-datepicker .ui-datepicker-prev-hover span {
+	background-position: -96px -48px;
+}
+
+.ui-datepicker .ui-datepicker-next-hover span {
+	background-position: -32px -48px;
+}
+
+.ui-datepicker table {
+	margin: 0;
+}
+
+.ui-datepicker th {
+	padding: 1em 0;
+	color: #9fd9f1;
+	font-size: 8px;
+	font-weight: normal;
+	text-shadow: 0 0 2px #45c4f8;
+	text-transform: uppercase;
+	border: none;
+	border-top: 1px solid #3fabdc;
+}
+
+.ui-datepicker td {
+	border: none;
+	padding: 0;
+}
+
+.ui-datepicker td .ui-state-default {
+	background: transparent;
+	border: none;
+	text-align: center;
+	padding: 0.5em 0;
+	margin: 2px;
+	font-weight: bold;
+	color: #efefef;
+}
+
+.ui-datepicker td .ui-state-active,
+.ui-datepicker td .ui-state-hover {
+	background: #1b7fb0;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+}
+

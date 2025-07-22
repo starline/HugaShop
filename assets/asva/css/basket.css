@@ -1,0 +1,814 @@
+html {
+    background: url(../images/bgr/html.png) left top
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font: 12px/1.3 "Trebuchet MS", arial, sans-serif;
+    color: #6c6c6c;
+}
+
+a {
+    text-decoration: none;
+    color: #0C8FC6;
+    cursor: pointer;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+:focus,
+a:active {
+    outline: none;
+}
+
+form :focus,
+form a:active {
+    outline: 1px dotted;
+}
+
+a img {
+    border: 0;
+}
+
+
+#header {
+    width: 1170px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+#inside_page #header {
+    height: 110px;
+}
+
+/* Основной блок шапки */
+.header-bottom {
+    width: 1170px;
+    margin: 0 auto;
+    margin-top: 110px;
+}
+
+/* Левая часть шапки */
+.header-bottom-left {
+    width: 223px;
+    float: left;
+}
+
+#body {
+    padding: 0 0 0px;
+    width: 1170px;
+    margin: 0 auto;
+}
+
+#body:after {
+    content: '.';
+    display: block;
+    clear: both;
+    visibility: hidden;
+    height: 0;
+    font-size: 0;
+}
+
+
+
+/**/
+.plus_click {
+    float: left;
+    width: 14px;
+    height: 14px;
+    background: url(../images/bgr/plus2.png) no-repeat right top;
+    font-size: 0;
+    position: relative;
+    top: 3px
+}
+
+.minus_click {
+    float: left;
+    width: 14px;
+    height: 14px;
+    background: url(../images/bgr/plus2.png) no-repeat left top;
+    font-size: 0;
+    margin: 0 0 0 6px;
+    position: relative;
+    top: 3px
+}
+
+.plus_click:hover {
+    background: url(../images/bgr/plus2.png) no-repeat right bottom;
+    font-size: 0
+}
+
+.minus_click:hover {
+    background: url(../images/bgr/plus2.png) no-repeat left bottom;
+    font-size: 0
+}
+
+
+
+div.order_detail input {
+    width: auto;
+}
+
+div.order_detail b {
+    font-size: 12px;
+}
+
+div.order_detail th {
+    font-size: 14px;
+}
+
+table.order_detail_basket {
+    font-size: 12px;
+}
+
+table.order_detail_basket th {
+    font-size: 12px;
+}
+
+div.order_detail a {
+    color: #E5390B;
+}
+
+#inside_page.order_page #header {
+    height: 78px;
+    overflow: hidden
+}
+
+.path_action .logo {
+    position: absolute;
+    left: 30px;
+    top: 0px
+}
+
+.edit_link {
+    float: left;
+    left: 289px;
+    top: 39px;
+    margin: 10px 0 0 289px;
+    background: url(../images/bgr/a6.png) no-repeat left top;
+    height: 68px;
+    color: #343333;
+    font: 30px "Trebuchet MS";
+    padding: 11px 0 0 37px
+}
+
+.edit_link a {
+    font-size: 24px;
+    font-style: italic;
+    margin: 0 35px 0 20px
+}
+
+.edit_order {
+    margin: 10px 0 0 40px
+}
+
+.order_table {
+    width: 100%;
+    color: #343333;
+    font-size: 11px;
+    text-align: center;
+}
+
+.order_table th {
+    color: #343333;
+    font-style: italic;
+    font-size: 11px;
+    background: url(../images/bgr/th.png) left top;
+    padding: 11px 0;
+    border-bottom: 1px solid #b1b1b1;
+    border-left: 1px solid #b1b1b1
+}
+
+.order_table th:first-child,
+.order_table td:first-child {
+    border-left: none
+}
+
+.order_table td {
+    vertical-align: middle;
+    text-align: center;
+    padding: 8px 0 8px 0px;
+    border-bottom: 1px solid #b1b1b1;
+    border-left: 1px solid #b1b1b1
+}
+
+.order_table td.depart {
+    text-align: left;
+    font-size: 18px;
+    font-style: italic;
+    vertical-align: middle;
+    padding-left: 14px;
+    font-weight: bold
+}
+
+.order_table td.depart img {
+    vertical-align: middle
+}
+
+.order_table .summa_td input {
+    border: 1px solid #B1B1B1;
+    float: left;
+    margin: 0 5px;
+    width: 25px;
+    text-align: center;
+    color: #5c5c5c;
+    font: 12px "Trebuchet MS"
+}
+
+.order_table .summa_td a {
+    float: left;
+    color: #e6461b;
+    font-size: 11px
+}
+
+.order_table td.summa_td {
+    padding-left: 44px;
+}
+
+.order_table .summa_td a.plus_click {
+    margin-right: 5px
+}
+
+.order_table span {
+    color: #0c8fc6;
+    font-size: 11px
+}
+
+.order_table input {
+    margin: 0 5px
+}
+
+.order_table b {
+    font-size: 14px
+}
+
+.order_table tr.itogo {
+    color: #000000;
+    font-size: 18px;
+    background: url(../images/bgr/th.png) left top;
+    font-style: italic
+}
+
+.order_table tr.itogo .itogo_number {
+    background: url(../images/bgr/border.png) no-repeat right center;
+}
+
+.order_table tr.itogo td {
+    border: none
+}
+
+.order_table tr.itogo a {
+    font-style: normal
+}
+
+.order_table tr.itogo td:first-child {
+    text-align: left;
+    padding-left: 20px
+}
+
+.order_table tr.itogo a {
+    color: #0c8fc6;
+    font-size: 12px
+}
+
+.order_table tr.itogo button {
+    color: #212121;
+    font-size: 12px
+}
+
+.order_table tr.itogo input {
+    width: 155px;
+    padding: 2px 0 2px 5px;
+    border: 1px solid #a8a8a8;
+    background: #e7e7e7;
+    font-size: 12px;
+    color: #5c5c5c;
+    margin-left: 0
+}
+
+.continue_link {
+    background: url(../images/bgr/line.png) no-repeat left top;
+    float: left;
+    height: 29px;
+    line-height: 25px;
+    padding: 3px 16px 0 16px;
+    text-decoration: none;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 14px;
+    margin: 15px 0 0 50px
+}
+
+.brand_logo {
+    margin-top: 57px;
+    position: relative;
+}
+
+.contact_info_form {
+    background: url(../images/bgr/th.png) left top;
+    padding: 0 0 20px
+}
+
+.contact_info_form p {
+    float: left;
+    margin: 0 0 0 61px;
+}
+
+.contact_info_form:after {
+    content: '.';
+    display: block;
+    clear: both;
+    visibility: hidden;
+    height: 0;
+    font-size: 0;
+}
+
+.contact_info_form h3 {
+    padding: 22px 0 15px 61px;
+    font-style: italic;
+    font-size: 21px
+}
+
+.contact_info_form div {
+    float: left;
+    margin: 0 0 0 25px
+}
+
+.contact_form label {
+    color: #343333;
+    font-size: 12px;
+    margin: 0 3px 0 0
+}
+
+.contact_info_form input {
+    width: 225px;
+    padding: 2px 0 2px 5px;
+    border: 1px solid #a8a8a8;
+    background: #e7e7e7;
+    font-size: 12px;
+    color: #5c5c5c
+}
+
+.contact_info_form label {
+    background-color: #E6461B;
+    color: #FFFFFF;
+    font-size: 12px;
+    padding: 1px 5px 2px;
+}
+
+
+/*  В вёрстке у Сергея "deliviry". Тут изменено на "delivery"*/
+
+.delivery_pay {
+    padding: 11px 0 0 61px;
+    background: url(../images/bgr/line2.png) repeat-y left top;
+    overflow: hidden;
+    zoom: 1;
+    margin: 5px 0 31px
+}
+
+.delivery_block {
+    float: left;
+    width: 320px;
+    margin: 0 248px 0 0
+}
+
+.delivery_block a {
+    text-decoration: none;
+    border-bottom: 1px dashed;
+}
+
+.delivery_pay h4 {
+    color: #169fc8;
+    font-size: 21px;
+    font-style: italic;
+    margin: 0 0 10px
+}
+
+.delivery_pay h5 {
+    color: #e5390b;
+    font-size: 16px;
+    font-style: italic;
+    margin: 0 0 10px
+}
+
+.delivery_pay label {
+    color: #343333;
+    position: relative;
+    top: 2px
+}
+
+.delivery_pay p label {
+    left: 5px
+}
+
+.type_delivery {
+    margin: 0 0 35px;
+}
+
+.type_delivery dt {
+    margin: 0 0 10px
+}
+
+.type_delivery select {
+    /*width:440px;*/
+    color: #5c5c5c;
+    font-size: 12px;
+    padding: 0 0 2px;
+}
+
+.time_date {
+    border-top: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+    padding: 14px 0 20px 2px;
+    overflow: hidden;
+    zoom: 1;
+    margin: 0 0 20px;
+    width: 400px;
+}
+
+.time_date dt {
+    margin: 0 0 8px
+}
+
+.time_date dl {
+    float: left;
+}
+
+.time_date dl:first-child {
+    /*width:167px*/
+    padding-right: 30px;
+}
+
+.time_date input {
+    width: 107px;
+    padding: 2px 0 2px 5px;
+    border: 1px solid #a8a8a8;
+    background: #f8f8f8;
+    font-size: 12px;
+    color: #5c5c5c
+}
+
+.time_date span {
+    color: gray;
+}
+
+.pay_block {
+    float: left;
+    width: 330px;
+    color: #343333
+}
+
+.your_order {
+    width: 100%;
+    color: #343333;
+    text-align: center
+}
+
+.your_order th {
+    background: url(../images/bgr/th.png) left top;
+    font-style: italic;
+    padding: 7px 0;
+    border-left: 1px solid #b1b1b1;
+    border-bottom: 1px solid #b1b1b1;
+    border-left: 1px solid #b1b1b1
+}
+
+.your_order th:first-child,
+.your_order td:first-child {
+    border-left: none
+}
+
+.your_order td {
+    padding: 11px 0;
+    border-left: 1px solid #b1b1b1;
+    border-bottom: 1px solid #b1b1b1;
+    border-left: 1px solid #b1b1b1;
+    text-align: center
+}
+
+.your_order .last_tr td {
+    background: url(../images/bgr/th1.png) left top;
+    border: none;
+    vertical-align: middle;
+    padding-bottom: 12px
+}
+
+.your_order span {
+    color: #0c8fc6
+}
+
+.your_order .continue_link {
+    margin-left: 32px;
+}
+
+.your_order a.order_a,
+a.order_a {
+    color: #0c8fc6;
+    font-size: 12px;
+    margin: 0 10px 0 0;
+    position: relative;
+}
+
+.your_order button {
+    color: #212121;
+    font-size: 12px
+}
+
+.load_table {
+    position: relative;
+    padding: 0 5px;
+    margin: 0 0 10px
+}
+
+.load_table table {
+    width: 100%;
+    background: url(../images/bgr/th1.png) left top;
+}
+
+.load_table table th {
+    color: #ffffff;
+    font: 16px "Trebuchet MS";
+    font-style: italic;
+    background: url(../images/bgr/th3.png) left top;
+    padding: 10px 0
+}
+
+.load_table td {
+    padding: 10px 0
+}
+
+.load_table td.first_td {
+    width: 306px
+}
+
+.load_table td.second_td {
+    width: 245px
+}
+
+.load_table td.third_td {
+    padding-left: 15px;
+    width: 300px
+}
+
+.load_table label {
+    background: #e6461b;
+    color: #fff;
+    font-size: 12px;
+    padding: 1px 5px 2px;
+    position: relative;
+    top: 1px;
+    float: left;
+    margin-right: 10px;
+    width: 35px;
+}
+
+.load_table input {
+    width: 146px;
+    padding: 2px 0 2px 5px;
+    border: 1px solid #a8a8a8;
+    background: #e4e4e4;
+    font-size: 12px;
+    color: #5c5c5c
+}
+
+.load_table .first_td input {
+    width: 208px;
+}
+
+.load_table .third_td input {
+    width: 220px;
+}
+
+.load_table textarea {
+    width: 300px;
+    padding: 2px 0 2px 5px;
+    border: 1px solid #a8a8a8;
+    background: #e4e4e4;
+    font-size: 12px;
+    color: #5c5c5c;
+    height: 50px
+}
+
+.load_table .last_td {
+    padding-left: 15px;
+    vertical-align: middle
+}
+
+.load_table .last_td label {
+    background: none;
+    color: #343333;
+    position: relative;
+    top: -20px
+}
+
+.prev_table {
+    position: absolute;
+    left: 8px;
+    top: 68px;
+}
+
+.next_table {
+    position: absolute;
+    right: 8px;
+    top: 68px;
+}
+
+body {
+    min-width: 1260px
+}
+
+.broadcast {
+    width: 450px
+}
+
+.order_border_error {
+    border: 2px solid red !important;
+}
+
+.order_border_bottom_error {
+    border-bottom: 2px solid red !important;
+}
+
+.order_color_error {
+    color: red !important;
+}
+
+.abhra-cadabhra {
+    cursor: pointer;
+    background: url(../images/bgr/line.png) repeat-x left top;
+    height: 29px;
+    line-height: 25px;
+    padding: 3px 16px 0 16px;
+    text-decoration: none;
+    color: #fff !important;
+    text-transform: uppercase;
+    font-size: 14px !important;
+    border: none;
+}
+
+.abhra-cadabhra ins {
+    position: relative;
+    top: -4px;
+    text-decoration: none;
+}
+
+.disabled {
+    color: grey !important;
+}
+
+.important {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#userlogin {
+    width: 300px;
+}
+
+#user_logout {
+    color: #bfbfbf;
+    font: 10px arial;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-bottom: 1px dashed #fff;
+    background: url(../images/bgr/li1.png) no-repeat left 5px;
+    padding-left: 7px;
+}
+
+.auth_block {
+    width: 250px;
+}
+
+.basket_nav {
+    width: 350px;
+}
+
+.acba_online {
+    width: 125px;
+}
+
+.brand_list {
+    width: 850px;
+}
+
+.catalog {
+    width: 600px;
+}
+
+#show_list_phones img,
+#icq_skype img {
+    padding: 15px 0 0 0px;
+    width: 48px;
+    height: 48px;
+}
+
+#list_phones,
+.skype {
+    position: fixed;
+    z-index: 100;
+    background: none repeat scroll 0 0 rgb(69, 70, 71);
+    border: 2px solid white;
+    box-shadow: -5px 5px 5px #888888;
+    font-size: 12px;
+    padding: 10px;
+    top: 200px;
+    right: 50px;
+    width: 300px;
+    color: white;
+    display: none;
+}
+
+#list_phones dt,
+.skype dt {
+    float: left;
+    width: 90px;
+    text-align: left;
+    margin: 0 5px 0 0;
+    color: #169fc8;
+    font: bold 14px "Trebuchet MS";
+    font-style: italic
+}
+
+#list_phones a,
+.skype a {
+    font-size: 12px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    ;
+    font-style: italic
+}
+
+#list_phones dd,
+.skype dd {
+    float: left;
+    width: 150px;
+    line-height: 1.5;
+    position: relative;
+    top: 1px;
+    font-size: 12px;
+    color: #555555;
+    font-weight: bold;
+}
+
+#list_phones dd span,
+.skype dd span {
+    color: #a8a8a8;
+    font-style: italic
+}
+
+#list_phones a:hover,
+.skype a:hover {
+    color: #f33a27
+}
+
+#list_phones dl,
+.skype dl {
+    overflow: hidden;
+    zoom: 1;
+    margin: 0 0 20px;
+}
+
+#list_phones a.close_contacts,
+.skype a.close_contacts {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    text-decoration: underline;
+    font-style: normal;
+}
+
+
+.paysystem-cards .visa {
+    float: left;
+    width: 250px;
+    height: 160px;
+    background: url("../images/VisaMastercardLOGO.jpg") 0 160px;
+}
+
+.paysystem-cards .master-card {
+    float: left;
+    width: 250px;
+    height: 160px;
+    margin-left: 10px;
+    background: url("../images/VisaMastercardLOGO.jpg") 0 320px;
+}
+
+.path_action {
+    position: relative;
+    height: 106px;
+    margin-top: 15px;
+}
+
+.active_order {
+    color: #0ea2d4;
+    text-decoration: none;
+    cursor: default;
+    padding-right: 35px;
+    margin-left: 420px;
+}
