@@ -1,39 +1,33 @@
 {if !$service_messages_empty|empty}
-    <!-- Системное сообщение -->
+    <!-- Системное Empty сообщение -->
     <div class="message message_empty">
         <div class="text">
-            {if name|in_array:$service_messages_empty}
-                <span class="badge text-bg-warning">Укажите название</span>
-            {/if}
-            {if public_name|in_array:$service_messages_empty}
-                <span class="badge text-bg-warning">Укажите публичное название</span>
-            {/if}
-            {if url|in_array:$service_messages_empty}
-                <span class="badge text-bg-warning">Укажите URL</span>
-            {/if}
-            {if redirect|in_array:$service_messages_empty}
-                <span class="badge text-bg-warning">Укажите URL для редиректа</span>
-            {/if}
-            {if place_id|in_array:$service_messages_empty}
-                <span class="badge text-bg-warning">Выберите склад</span>
-            {/if}
-            {if contact|in_array:$service_messages_empty}
-                <span class="badge text-bg-warning">Укажите контакт</span>
-            {/if}
-            {if notifier_id|in_array:$service_messages_empty}
-                <span class="badge text-bg-warning">Укажите способ отправки</span>
-            {/if}
-            {if code|in_array:$service_messages_empty}
-                <span class="badge text-bg-warning">Укажите код</span>
-            {/if}
-            {if not_updated|in_array:$service_messages_empty}
-                <span class="badge text-bg-warning">Изменений не найдено</span>
-            {/if}
-            {if entity_locked|in_array:$service_messages_empty}
-                <span class="badge text-bg-warning">Обьект редактируется <a
-                        href="{'UserAdmin'|link:[id => $locked_user->id]}">{$locked_user->name}</a>
-                </span>
-            {/if}
+            {foreach from=$service_messages_empty item=key}
+                {assign var=message_text value=""}
+                {if $key == 'name'}
+                    {assign var=message_text value='Укажите название'}
+                {elseif $key == 'public_name'}
+                    {assign var=message_text value='Укажите публичное название'}
+                {elseif $key == 'url'}
+                    {assign var=message_text value='Укажите URL'}
+                {elseif $key == 'redirect'}
+                    {assign var=message_text value='Укажите URL для редиректа'}
+                {elseif $key == 'place_id'}
+                    {assign var=message_text value='Выберите склад'}
+                {elseif $key == 'contact'}
+                    {assign var=message_text value='Укажите контакт'}
+                {elseif $key == 'notifier_id'}
+                    {assign var=message_text value='Укажите способ отправки'}
+                {elseif $key == 'code'}
+                    {assign var=message_text value='Укажите код'}
+                {elseif $key == 'not_updated'}
+                    {assign var=message_text value='Изменений не найдено'}
+                {else}
+                    {assign var=message_text value="Укажите {$key}"}
+                {/if}
+
+                <span class="badge text-bg-warning">{$message_text|raw}</span>
+            {/foreach}
 
             <span class="badge text-bg-secondary mx-2">{$now|date} в {$now|time}</span>
         </div>
@@ -41,8 +35,21 @@
 {/if}
 
 
+{if !$service_messages_info|empty}
+    <!-- Системное Info сообщение -->
+    <div class="message message_empty">
+        <div class="text">
+            {if item_locked|in_array:$service_messages_info}
+                <span class="badge text-bg-danger">Объект редактируется <a
+                        href=`{'UserAdmin'|link:[id => $locked_user->id]}`>{$locked_user->name}</a></span>
+            {/if}
+        </div>
+    </div>
+{/if}
+
+
 {if !$service_messages_error|empty}
-    <!-- Системное сообщение -->
+    <!-- Системное Error сообщение -->
     <div class="message message_error">
         <div class="text">
             {if wh_place_has_products|in_array:$service_messages_error}
@@ -78,8 +85,6 @@
             {if error_paid|in_array:$service_messages_error}
                 <span class="badge text-bg-danger">Выберите способ оплаты</span>
             {/if}
-
-
 
             <span class="badge text-bg-secondary mx-2">{$now|date} в {$now|time}</span>
         </div>

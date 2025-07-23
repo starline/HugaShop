@@ -131,8 +131,8 @@ class FinanceCurrency extends BaseModel
      */
     public static function addCurrency($currency)
     {
-        Cache::deleteCacheItem(self::class); # Cache clean
         $currency = self::createOne($currency);
+        Cache::deleteCacheItem(self::class); # Cache clean
         self::getInstance();
         return $currency->id;
     }

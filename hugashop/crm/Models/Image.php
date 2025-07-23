@@ -23,7 +23,7 @@ class Image extends BaseModel
 
     private static $allowed_extentions = ['png', 'gif', 'jpg', 'jpeg', 'ico', 'webp', 'bmp'];
     public static $token_length = 10;
-    
+
     protected $table = 'content_image';
 
     protected static $table_fields = [
@@ -80,10 +80,6 @@ class Image extends BaseModel
             'entity_name' => $entity_name,
             'filename'    => $unique_name,
         ]);
-
-        // Обновляем позицию = id
-        $image->position = $image->id;
-        $image->save();
 
         return $image->id;
     }

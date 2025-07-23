@@ -35,7 +35,7 @@ class LockEditService
         $user_locked_id = self::isLocked($locked_key);
         if (!empty($user_locked_id) && $user_locked_id !== User::authUser('id')) {
             Design::assign('locked_user', User::getOne($user_locked_id));
-            Design::append('service_messages_empty', 'entity_locked');
+            Design::append('service_messages_info', 'item_locked');
             return true;
         }
 

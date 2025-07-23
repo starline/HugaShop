@@ -46,7 +46,7 @@ class Product extends BaseModel
         'featured' =>           ['type' => 'tinyint',       'def' => 0],
         'sale' =>               ['type' => 'tinyint',       'def' => 0],
         'visible' =>            ['type' => 'tinyint',       'def' => 0],
-        'sku' =>                ['type' => 'varchar',       'req' => true,                          'access' => 'product_price'],
+        'sku' =>                ['type' => 'varchar',                                               'access' => 'product_price'],
         'price' =>              ['type' => 'decimal',       'length' => 14.2,   'def' =>    0.00,   'access' => 'product_price'],
         'cost_price' =>         ['type' => 'decimal',       'length' => 14.2,   'def' =>    0.00,   'access' => 'product_price'],
         'old_price' =>          ['type' => 'decimal',       'length' => 14.2,   'def' =>    0.00,   'access' => 'product_price'],
@@ -369,7 +369,7 @@ class Product extends BaseModel
     {
         $product = Helper::makeUniqSlug(self::class, $product); # If the URL exists, change it
 
-        // Save price and cost price history
+        // Save price and cost_price history
         $ids = is_array($id) ? $id : [$id];
         $new_price = null;
         $new_cost_price = null;
@@ -421,12 +421,7 @@ class Product extends BaseModel
     public static function addProduct(object|array $product)
     {
         $product = Helper::makeUniqSlug(self::class, $product); # If the URL exists, change it
-        $product = self::createOne($product);
-
-        // Make position same as id
-        $product = self::updateOne($product->id, ['position' => $product->id]);
-
-        return $product;
+        return self::createOne($product);
     }
 
 

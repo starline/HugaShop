@@ -66,16 +66,16 @@ class ContentPage extends BaseModel
      */
     public static function addPage(object|array $page)
     {
-        self::cacheClear();
         $page = Helper::makeUniqSlug(self::class, $page);
+        self::cacheClear();
         return self::createOne($page);
     }
 
 
     public static function updatePage(int|array $id, object|array $page)
     {
-        self::cacheClear();
         $page = Helper::makeUniqSlug(self::class, $page); # If the URL exists, change it
+        self::cacheClear();
         return self::updateOne($id, $page);
     }
 

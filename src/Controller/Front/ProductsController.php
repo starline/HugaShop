@@ -100,7 +100,7 @@ class ProductsController extends BaseFrontController
         }
 
         if (!empty($selected_features)) {
-            Design::assign('canonical', Request::url($selected_features, true)); // Set canonical, clear other params
+            Design::assign('canonical', Request::url($selected_features, true)); # Set canonical, clear other params
             $options_filter['features'] = $selected_features;
             $filter['features'] = $selected_features;
         }

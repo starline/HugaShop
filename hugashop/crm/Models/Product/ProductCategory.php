@@ -87,7 +87,7 @@ class ProductCategory extends BaseModel
             $prefix            = $model->getConnection()->getTablePrefix();
             $base_table_prefix = $prefix . $baseTable;
 
-            
+
             // Translation
             if ($language_code = Language::checkOrGetCode()) {
                 $transModel = AbstractTranslation::setTableTranslation(self::class);
@@ -319,7 +319,6 @@ class ProductCategory extends BaseModel
     {
         $category = Helper::makeUniqSlug(self::class, $category);
         $category = self::createOne($category);
-
 
         Cache::cacheLang(self::class)->clear(); # Cache clean
         self::initCategories();

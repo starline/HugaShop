@@ -391,7 +391,7 @@ class Request
 
             // Empty required param
             if (!empty($param_data['required']) || !empty($param_data['req'])) {
-                if (empty(Request::post($param_name, $param_data['type']))) {
+                if (Request::has($param_name) and empty(Request::post($param_name, $param_data['type']))) {
                     Design::append('service_messages_empty', $param_name);
                     Design::append('form_invalid', $param_name);
                     $decline = true;

@@ -151,6 +151,15 @@ abstract class BaseModel extends Model
 
 
     /**
+     * Check if Model has position
+     */
+    public static function hasPosition(): bool
+    {
+        return array_key_exists('position', static::getFields());
+    }
+
+
+    /**
      * WhereId
      * @param int|array $ids
      */
@@ -170,11 +179,18 @@ abstract class BaseModel extends Model
     public static function createOne(array|object $values): object
     {
         $values = self::validateValues($values);
-
         $model = static::getModel();
-        return $model->runWithInitTable(function () use ($model, $values) {
+        $entity = $model->runWithInitTable(function () use ($model, $values) {
             return $model->newQuery()->create($values);
         });
+
+        // Make position same as id for default
+        if (!isset($values['position']) and $model::hasPosition()) {
+            $entity->position = $entity->id;
+            $entity->save();
+        }
+
+        return $entity;
     }
 
 

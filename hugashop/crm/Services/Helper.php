@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.5
+ * @version 3.6
  *
  */
 
@@ -491,12 +491,12 @@ class Helper
      * @param string $model
      * @param object|array $entity
      */
-    public static function makeUniqSlug(string $model, object|array $entity)
+    public static function makeUniqSlug(string $model, object|array $entity): object
     {
         $entity = is_array($entity) ? (object) $entity : $entity;
         if (!empty($entity->name) || !empty($entity->url)) {
 
-            $uniqueUrl = $base_url = $entity->url ? Helper::slugEn($entity->url) : Helper::slugEn($entity->name);
+            $uniqueUrl = $base_url = !empty($entity->url) ? Helper::slugEn($entity->url) : Helper::slugEn($entity->name);
             $id = $entity->id ?? null;
             $i = 1;
 
