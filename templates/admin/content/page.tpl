@@ -22,11 +22,13 @@
 				<div class="over_name">
 					<div class="checkbox_line">
 						<div class="form-check form-switch">
+							<input type="hidden" name="visible" value="0">
 							<input class="form-check-input" name="visible" value="1" type="checkbox" role="switch"
 								id="visible" {if $page->visible}checked{/if} />
 							<label class="form-check-label" for="visible">Активна</label>
 						</div>
 						<div class="form-check form-switch">
+							<input type="hidden" name="menu" value="0">
 							<input class="form-check-input" name="menu" value="1" type="checkbox" role="switch" id="menu"
 								{if $page->menu}checked{/if} />
 							<label class="form-check-label" for="menu">Меню</label>

@@ -55,7 +55,8 @@
 					</li>
 				</ul>
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" name="single" id="single" value="1"
+					<input type="hidden" name="single" value="0">
+					<input class="form-check-input" type="checkbox" value="1" name="single" id="single"
 						{if $coupon->single==1}checked{/if}>
 					<label class="form-check-label" for="single">одноразовый</label>
 				</div>

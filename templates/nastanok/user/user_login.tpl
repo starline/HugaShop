@@ -33,7 +33,7 @@
 			</div>
 
 			<div class="form-check text-start my-3">
-				<input class="form-check-input" type="checkbox" name="remember" value="1" id="remember" checked>
+				<input class="form-check-input" type="checkbox" name="remember" value="1" id="remember" checked />
 				<label class="form-check-label" for="remember">
 					Запомнить меня на этом компьютере
 				</label>

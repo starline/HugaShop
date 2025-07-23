@@ -19,18 +19,21 @@
 				<div class="over_name">
 					<div class="checkbox_line">
 						<div class="form-check form-switch">
+							<input type="hidden" name="visible" value="0">
 							<input class="form-check-input" name="visible" value="1" type="checkbox" role="switch"
 								id="active_checkbox" {if $product->visible}checked{/if} />
 							<label class="form-check-label" for="active_checkbox">Показывать в каталоге</label>
 						</div>
 
 						<div class="form-check form-switch">
+							<input type="hidden" name="disable" value="0">
 							<input class="form-check-input" name="disable" value="1" type="checkbox" role="switch"
 								id="disable_checkbox" {if $product->disable}checked{/if} />
 							<label class="form-check-label" for="disable_checkbox">Не поставляется</label>
 						</div>
 
 						<div class="form-check form-switch">
+							<input type="hidden" name="featured" value="0">
 							<input class="form-check-input" name="featured" value="1" type="checkbox" role="switch"
 								id="featured_checkbox" {if $product->featured}checked{/if} />
 							<label class="form-check-label" for="featured_checkbox" data-bs-toggle="tooltip"
@@ -38,6 +41,7 @@
 						</div>
 
 						<div class="form-check form-switch">
+							<input type="hidden" name="sale" value="0">
 							<input class="form-check-input" name="sale" value="1" type="checkbox" role="switch"
 								id="sale_checkbox" {if $product->sale}checked{/if} />
 							<label class="form-check-label" for="sale_checkbox">Распродажа</label>
@@ -144,12 +148,14 @@
 
 						<div class="variant_custom form-check">
 							<label class="form-check-label" for="awaiting">Выводить ожидаем</label>
+							<input type="hidden" name="awaiting" value="0">
 							<input class="form-check-input" id="awaiting" type="checkbox" name="awaiting" value="1"
 								{if $product->awaiting}checked{/if} data-bs-toggle="tooltip" title="Выводить ожидаем" />
 						</div>
 
 						<div class="variant_custom form-check">
 							<label class="form-check-label" for="custom">Выводить под заказ</label>
+							<input type="hidden" name="custom" value="0">
 							<input class="form-check-input" id="custom" type="checkbox" name="custom" value="1"
 								{if $product->custom}checked{/if} data-bs-toggle="tooltip" title="Выводить под заказ" />
 						</div>

@@ -539,6 +539,7 @@
 
 					<div class="col-xl-4 col-6 my-5 my-xl-0">
 						<div class="separate_delivery form-check form-switch float-end">
+							<input type="hidden" name="separate_delivery" value="0">
 							<input class="form-check-input" type="checkbox" role="switch" name="separate_delivery" value="1"
 								id="separate_delivery" {if $order->separate_delivery}checked{/if}
 								{if !$can_edit}disabled{/if}>
@@ -579,6 +580,7 @@
 
 					<div class="col-lg-6 my-5 my-lg-0">
 						<div class="form-check form-switch float-end">
+							<input type="hidden" name="paid" value="0">
 							<input class="form-check-input" type="checkbox" role="switch" name="paid" value="1" id="paid"
 								{if $order->paid}checked{/if} {if !$can_edit}disabled{/if}>
 							<label class="form-check-label" for="paid">Заказ оплачен</label>

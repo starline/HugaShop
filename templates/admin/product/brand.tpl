@@ -22,6 +22,7 @@
 				<div class="over_name">
 					<div class="checkbox_line">
 						<div class="form-check form-switch">
+							<input type="hidden" name="featured" value="0">
 							<input class="form-check-input" name="featured" value="1" type="checkbox" role="switch"
 								id="featured_checkbox" {if $brand->featured}checked{/if} />
 							<label class="form-check-label" for="featured_checkbox">Избранный</label>

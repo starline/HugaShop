@@ -141,6 +141,7 @@
 
 				{if !$payment->id|empty}
 					<div class="form-check mt-2">
+						<input type="hidden" name="verified" value="0">
 						<input class="form-check-input" type="checkbox" name="verified" id="verified" value="1"
 							{if $payment->verified}checked{/if}>
 						<label class="form-check-label" for="verified">Сверено</label>

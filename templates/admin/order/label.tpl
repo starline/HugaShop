@@ -20,11 +20,13 @@
 				<div class="over_name">
 					<div class="checkbox_line">
 						<div class="form-check form-switch">
+							<input type="hidden" name="enabled" value="0">
 							<input class="form-check-input" name="enabled" value="1" type="checkbox" role="switch"
 								id="active_checkbox" {if $label->enabled}checked{/if} />
 							<label class="form-check-label" for="active_checkbox">Активен</label>
 						</div>
 						<div class="form-check form-switch">
+							<input type="hidden" name="in_filter" value="0">
 							<input class="form-check-input" name="in_filter" value="1" type="checkbox" role="switch"
 								id="in_filter_checkbox" {if $label->in_filter}checked{/if} />
 							<label class="form-check-label" for="in_filter_checkbox">Использовать в фильтре заказов</label>

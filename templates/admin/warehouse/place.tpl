@@ -20,8 +20,9 @@
                 <div class="over_name">
                     <div class="checkbox_line">
                         <div class="form-check form-switch">
-                            <input class="form-check-input" name="enabled" value="1" type="checkbox" role="switch" id="enabled_checkbox"
-                                {if $place->enabled}checked{/if} />
+                            <input type="hidden" name="enabled" value="0">
+                            <input class="form-check-input" name="enabled" value="1" type="checkbox" role="switch"
+                                id="enabled_checkbox" {if $place->enabled}checked{/if} />
                             <label class="form-check-label" for="enabled_checkbox">Активный</label>
                         </div>
                     </div>

@@ -21,17 +21,19 @@
 				<div class="over_name">
 					<div class="checkbox_line">
 						<div class="form-check form-switch">
+							<input type="hidden" name="visible" value="0">
 							<input class="form-check-input" name="visible" value="1" type="checkbox" role="switch"
 								id="visible_checkbox" {if $category->visible}checked{/if} />
 							<label class="form-check-label" for="visible_checkbox">Активна</label>
 						</div>
 						<div class="form-check form-switch">
+							<input type="hidden" name="main" value="0">
 							<input class="form-check-input" name="main" value="1" type="checkbox" role="switch"
 								id="main_checkbox" {if $category->main}checked{/if} />
 							<label class="form-check-label" for="main_checkbox">Показыват на главной</label>
 						</div>
 					</div>
-					
+
 					{if $category->url}
 						<a class="out_link" target="_self" href="{'Products'|linkLang:[url => $category->url]}">Открыть
 							категорию на сайте</a>

@@ -405,8 +405,8 @@ class Request
                 }
             }
 
-            // Если переменная передана POST или checkbox(boolean|tinyint), добавляем в Object
-            if (isset($_POST[$param_name]) || (isset($param_data['type']) and in_array($param_data['type'], ['boolean', 'bool', 'tinyint']))) {
+            // Если переменная передана POST
+            if (isset($_POST[$param_name])) {
                 $res->$param_name = Request::post($param_name, $param_data['type']);
 
                 // Triming varchar

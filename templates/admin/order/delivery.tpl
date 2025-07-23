@@ -22,11 +22,13 @@
 				<div class="over_name">
 					<div class="checkbox_line">
 						<div class="form-check form-switch">
+							<input type="hidden" name="enabled" value="0">
 							<input class="form-check-input" name="enabled" value="1" type="checkbox" role="switch"
 								id="active_checkbox" {if $delivery->enabled}checked{/if} />
 							<label class="form-check-label" for="active_checkbox">Показывать меннеджеру</label>
 						</div>
 						<div class="form-check form-switch">
+							<input type="hidden" name="enabled_public" value="0">
 							<input class="form-check-input" name="enabled_public" value="1" type="checkbox" role="switch"
 								id="enabled_public" {if $delivery->enabled_public}checked{/if} />
 							<label class="form-check-label" for="enabled_public">Показывать клиенту при заказе</label>
@@ -66,7 +68,8 @@
 					<li>
 						<div></div>
 						<div class="form-check">
-							<input class="form-check-input" id="separate_payment" name="separate_payment" type="checkbox"
+							<input type="hidden" name="separate_payment" value="0">
+							<input class="form-check-input" name="separate_payment" type="checkbox" id="separate_payment"
 								value="1" {if $delivery->separate_payment}checked{/if} />
 							<label class="form-check-label" for="separate_payment">Оплачивается отдельно</label>
 						</div>

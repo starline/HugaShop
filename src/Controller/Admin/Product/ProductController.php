@@ -103,7 +103,7 @@ class ProductController extends BaseAdminController
         ProductOption::query()->where('product_id', $product->id)->delete();
 
         // Характеристики текущей категории
-        $category_features = array();
+        $category_features = [];
         foreach (ProductFeature::getFeatures(['category_id' => $product->category_id]) as $f) {
             $category_features[] = $f->id;
         }

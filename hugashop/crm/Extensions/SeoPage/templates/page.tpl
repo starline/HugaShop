@@ -22,6 +22,7 @@
 				<div class="over_name">
 					<div class="checkbox_line">
 						<div class="form-check form-switch">
+							<input type="hidden" name="enabled" value="0">
 							<input class="form-check-input" name="enabled" value="1" type="checkbox" role="switch"
 								id="enabled" {if $page->enabled}checked{/if} />
 							<label class="form-check-label" for="enabled">Активна</label>

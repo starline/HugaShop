@@ -22,6 +22,7 @@
 				<div class="over_name">
 					<div class="checkbox_line">
 						<div class="form-check form-switch">
+							<input type="hidden" name="visible" value="0">
 							<input class="form-check-input" name="visible" value="1" type="checkbox" role="switch"
 								id="active_checkbox" {if $post->visible}checked{/if} />
 							<label class="form-check-label" for="active_checkbox">Активна</label>

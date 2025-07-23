@@ -20,6 +20,7 @@
 				<div class="over_name">
 					<div class="checkbox_line">
 						<div class="form-check form-switch">
+							<input type="hidden" name="no_restore_price" value="0">
 							<input class="form-check-input" name="no_restore_price" value="1" type="checkbox" role="switch"
 								id="no_restore_price_checkbox" {if $provider->no_restore_price}checked{/if} />
 							<label class="form-check-label" for="no_restore_price_checkbox">Не обнулять склад</label>

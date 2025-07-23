@@ -464,8 +464,8 @@ abstract class BaseModel extends Model
 
         // Convert Settings. Array to json
         if (isset($valid_values['settings'])) {
-            $valid_values['settings'] = empty($valid_values['settings']) ? [] : (array) $valid_values['settings'];
-            $valid_values['settings'] = serialize($valid_values['settings']);
+            $settings = empty($valid_values['settings']) ? [] : (array) $valid_values['settings'];
+            $valid_values['settings'] = serialize($settings);
         }
 
         return $valid_values;

@@ -43,6 +43,7 @@
                     </li>
                     <li class="row_sm">
                         <div class="form-check">
+                            <input type="hidden" name="main" value="0">
                             <input class="form-check-input" type="checkbox" id="main" name="main" value="1"
                                 {if $language->main}checked{/if} />
                             <label class="form-check-label" for="main">Основной язык</label>

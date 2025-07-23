@@ -42,8 +42,9 @@
 			<div class="col-lg-6 layer">
 				<h2>Настройки свойства</h2>
 				<div class="form-check form-switch">
-					<input class="form-check-input" type="checkbox" name="in_filter" id="in_filter" role="switch"
-						{if $feature->in_filter}checked{/if} value="1" />
+					<input type="hidden" name="in_filter" value="0">
+					<input class="form-check-input" type="checkbox" name="in_filter" value="1" id="in_filter" role="switch"
+						{if $feature->in_filter}checked{/if} />
 					<label class="form-check-label" for="in_filter">Использовать в фильтре</label>
 				</div>
 
