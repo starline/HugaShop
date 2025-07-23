@@ -144,8 +144,8 @@ class FinanceCurrency extends BaseModel
      */
     public static function updateCurrency(int|array $id, $currency)
     {
-        Cache::deleteCacheItem(self::class); # Cache clean
         $result = self::updateOne($id, $currency);
+        Cache::deleteCacheItem(self::class); # Cache clean
         self::getInstance();
         return $result;
     }

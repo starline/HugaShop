@@ -194,11 +194,9 @@ class Cart extends BaseModel
      */
     public static function updateCart(int $id, object|array $cart): bool
     {
-
         if (empty((array)$cart)) {
             return false;
         }
-
         return self::updateOne($id, $cart);
     }
 

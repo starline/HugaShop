@@ -29,7 +29,6 @@ class MailTemplateController extends BaseAdminController
         #### Update
         ###########
         if (!empty($mail_template = Request::getInputCheckEditAccess(UserMailTemplate::class, $id))) {
-
             if (empty($mail_template->id)) {
                 $mail_template = Design::setFlashMessage('add', UserMailTemplate::createOne($mail_template));
             } else {

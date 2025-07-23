@@ -33,7 +33,7 @@ class MailingController extends BaseFrontController
         $update_mail->count++;
         $update_mail->ip = $_SERVER['REMOTE_ADDR']; # IP
 
-        UserMailing::updateOne(ids: $id, values: $update_mail);
+        UserMailing::updateOne($id, values: $update_mail);
 
         // landing link
         if (empty($mail->settings->landing_url)) {

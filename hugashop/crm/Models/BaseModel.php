@@ -13,6 +13,7 @@ namespace HugaShop\Models;
 use Illuminate\Support\Str;
 use HugaShop\Services\Cache;
 use HugaShop\Services\Config;
+use HugaShop\Services\Helper;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Model;
@@ -158,6 +159,14 @@ abstract class BaseModel extends Model
         return array_key_exists('position', static::getFields());
     }
 
+    /**
+     * Check if Model has url
+     */
+    public static function hasUrl(): bool
+    {
+        return array_key_exists('url', static::getFields());
+    }
+
 
     /**
      * WhereId
@@ -178,13 +187,20 @@ abstract class BaseModel extends Model
      */
     public static function createOne(array|object $values): object
     {
-        $values = self::validateValues($values);
         $model = static::getModel();
+
+        // If Table has url. Make it uniq
+        if ($model::hasUrl()) {
+            $values = Helper::makeUniqSlug(static::class, $values);
+        }
+
+        $values = self::validateValues($values);
+
         $entity = $model->runWithInitTable(function () use ($model, $values) {
             return $model->newQuery()->create($values);
         });
 
-        // Make position same as id for default
+        // Make position same as id by default
         if (!isset($values['position']) and $model::hasPosition()) {
             $entity->position = $entity->id;
             $entity->save();
@@ -197,15 +213,34 @@ abstract class BaseModel extends Model
     /**
      * Update one by ID
      */
-    public static function updateOne(int|array $ids, array|object $values)
+    public static function updateOne(int $id, array|object $values)
     {
+        $model = static::getModel();
+
         if ($language_code = Language::checkOrGetCode() and static::isTranslatable()) {
             $values = static::separateTranslationData($values, $language_code);
         }
 
+        // If Table has url. Make it uniq
+        if ($model::hasUrl()) {
+            $values = Helper::makeUniqSlug(static::class, $values);
+        }
+
         $values = self::validateValues($values);
 
+        return $model->runWithInitTable(function () use ($model, $id, $values) {
+            return $model->newQuery()->whereId($id)->update($values);
+        });
+    }
+
+
+    /**
+     * Update list by IDs
+     */
+    public static function updateList(array $ids, array|object $values)
+    {
         $model = static::getModel();
+        $values = self::validateValues($values);
         return $model->runWithInitTable(function () use ($model, $ids, $values) {
             return $model->newQuery()->whereId($ids)->update($values);
         });

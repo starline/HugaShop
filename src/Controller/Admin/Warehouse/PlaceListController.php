@@ -34,11 +34,11 @@ class PlaceListController extends BaseAdminController
             if (is_array($ids)) {
                 switch (Request::post('action')) {
                     case 'disable': {
-                            WarehousePlace::updateOne($ids, ['enabled' => 0]);
+                            WarehousePlace::updateList($ids, ['enabled' => 0]);
                             break;
                         }
                     case 'enable': {
-                            WarehousePlace::updateOne($ids, ['enabled' => 1]);
+                            WarehousePlace::updateList($ids, ['enabled' => 1]);
                             break;
                         }
                     case 'delete': {

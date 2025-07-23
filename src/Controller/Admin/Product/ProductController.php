@@ -90,7 +90,7 @@ class ProductController extends BaseAdminController
         }
 
         if (empty($product->id)) {
-            $product = Design::setFlashMessage('add', Product::addProduct($product));
+            $product = Design::setFlashMessage('add', Product::createOne($product));
         } else {
             Design::setFlashMessage('update', Product::updateProduct($product->id, $product));
         }

@@ -41,11 +41,11 @@ final class SeoPageListController extends BaseAdminController
             if (is_array($ids)) {
                 switch (Request::post('action')) {
                     case 'disable': {
-                            SeoPage::updateOne($ids, ['enabled' => 0]);
+                            SeoPage::updateList($ids, ['enabled' => 0]);
                             break;
                         }
                     case 'enable': {
-                            SeoPage::updateOne($ids, ['enabled' => 1]);
+                            SeoPage::updateList($ids, ['enabled' => 1]);
                             break;
                         }
                     case 'delete': {

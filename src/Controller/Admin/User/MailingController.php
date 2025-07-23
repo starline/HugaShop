@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  */
 
@@ -35,7 +35,7 @@ class MailingController extends BaseAdminController
             if (empty($mailing->id)) {
                 $mailing->id = Design::setFlashMessage('add', UserMailing::addMailing($mailing));
             } else {
-                UserMailing::updateOne($mailing->id, $mailing);
+                Design::setFlashMessage('update', UserMailing::updateOne($mailing->id, $mailing));
             }
 
             if (!empty(Request::post('action_send'))) {

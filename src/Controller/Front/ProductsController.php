@@ -105,12 +105,12 @@ class ProductsController extends BaseFrontController
             $filter['features'] = $selected_features;
         }
 
-        $options = ProductOption::getOptions($options_filter);
+        /*$options = ProductOption::getOptions($options_filter);
         foreach ($options as $option) {
             if (isset($features[$option->feature_id])) {
                 $features[$option->feature_id]->options[] = $option;
             }
-        }
+        }*/
 
         // Delete fetures withot options
         foreach ($features as $i => &$feature) {

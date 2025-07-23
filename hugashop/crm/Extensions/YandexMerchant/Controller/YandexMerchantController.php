@@ -36,7 +36,7 @@ final class YandexMerchantController extends BaseAdminController
                 $pricefeed->token = Helper::makeToken();
                 $pricefeed = Design::setFlashMessage('add', YandexMerchant::createOne($pricefeed));
             } else {
-                Design::setFlashMessage('update', YandexMerchant::updateOne($pricefeed->id, $pricefeed) >= 0);
+                Design::setFlashMessage('update', YandexMerchant::updateOne($pricefeed->id, $pricefeed));
                 Cache::cache(FeedGenerator::class)->delete('item_' . $pricefeed->id);
             }
 

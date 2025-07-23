@@ -38,9 +38,9 @@ class BrandController extends BaseAdminController
         if (!empty($brand = Request::getInputCheckEditAccess(ProductBrand::class, $id))) {
 
             if (empty($brand->id)) {
-                $brand = Design::setFlashMessage('add', ProductBrand::addBrand($brand));
+                $brand = Design::setFlashMessage('add', ProductBrand::createOne($brand));
             } else {
-                Design::setFlashMessage('update', ProductBrand::updateBrand($brand->id, $brand));
+                Design::setFlashMessage('update', ProductBrand::updateOne($brand->id, $brand));
             }
 
             // Удаление изображения
@@ -53,7 +53,7 @@ class BrandController extends BaseAdminController
             if (!empty($image['name']) && in_array(strtolower(pathinfo($image['name'], PATHINFO_EXTENSION)), $this->allowed_image_extentions)) {
                 ProductBrand::deleteImage($brand->id);
                 move_uploaded_file($image['tmp_name'], Config::get('images_brands_dir') . $image['name']);
-                ProductBrand::updateBrand($brand->id, ['image' => $image['name']]);
+                ProductBrand::updateOne($brand->id, ['image' => $image['name']]);
             }
 
             // Делаем редирект на страницу с ID

@@ -496,19 +496,19 @@ class Helper
         $entity = is_array($entity) ? (object) $entity : $entity;
         if (!empty($entity->name) || !empty($entity->url)) {
 
-            $uniqueUrl = $base_url = !empty($entity->url) ? Helper::slugEn($entity->url) : Helper::slugEn($entity->name);
+            $unique_url = $base_url = !empty($entity->url) ? Helper::slugEn($entity->url) : Helper::slugEn($entity->name);
             $id = $entity->id ?? null;
             $i = 1;
 
             while (
-                $model::where('url', $uniqueUrl)
+                $model::where('url', $unique_url)
                 ->where('id', '!=', $id) # исключаем текущий id
                 ->exists()
             ) {
-                $uniqueUrl = $base_url . '-' . $i++;
+                $unique_url = $base_url . '-' . $i++;
             }
 
-            $entity->url = $uniqueUrl;
+            $entity->url = $unique_url;
         }
         return $entity;
     }

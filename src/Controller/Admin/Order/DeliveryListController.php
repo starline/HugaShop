@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
@@ -35,11 +35,11 @@ class DeliveryListController extends BaseAdminController
             if (is_array($ids)) {
                 switch (Request::post('action')) {
                     case 'disable': {
-                            OrderDelivery::updateOne($ids, ['enabled' => 0]);
+                            OrderDelivery::updateList($ids, ['enabled' => 0]);
                             break;
                         }
                     case 'enable': {
-                            OrderDelivery::updateOne($ids, ['enabled' => 1]);
+                            OrderDelivery::updateList($ids, ['enabled' => 1]);
                             break;
                         }
                     case 'delete': {

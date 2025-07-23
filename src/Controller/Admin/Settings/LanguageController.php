@@ -30,7 +30,6 @@ class LanguageController extends BaseAdminController
         #### Update
         ###########
         if (!empty($language = Request::getInputCheckEditAccess(Language::class, $id))) {
-
             if (empty($language->id)) {
                 $language = Design::setFlashMessage('add', Language::createOne($language));
             } else {

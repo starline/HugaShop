@@ -4,14 +4,13 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.9
+ * @version 3.0
  *
  */
 
 namespace HugaShop\Models\Product;
 
 use HugaShop\Services\Config;
-use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -86,29 +85,6 @@ class ProductBrand extends BaseModel
         }
 
         return static::getOne($filter);
-    }
-
-
-    /**
-     * Добавление бренда
-     * @param $brand
-     */
-    public static function addBrand($brand)
-    {
-        $brand = Helper::makeUniqSlug(self::class, $brand);
-        return self::createOne($brand);
-    }
-
-
-    /**
-     * Обновление бренда(ов)
-     * @param int $id
-     * @param $brand
-     */
-    public static function updateBrand(int $id, $brand)
-    {
-        $brand = Helper::makeUniqSlug(self::class, $brand);
-        return self::updateOne($id, $brand);
     }
 
 

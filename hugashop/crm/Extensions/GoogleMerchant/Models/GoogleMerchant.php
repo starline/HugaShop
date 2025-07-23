@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
  *
  */
 
@@ -33,10 +33,5 @@ final class GoogleMerchant extends BaseExtensionModel
     {
         GoogleMerchantCategory::where('pricefeed_id', $id)->delete();
         return parent::deleteOne($id);
-    }
-
-    public static function updateOne($id, $entity)
-    {
-        return parent::updateOne($id, $entity);
     }
 }

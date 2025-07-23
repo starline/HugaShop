@@ -39,8 +39,7 @@ final class FacebookCommerceController extends BaseAdminController
                 $pricefeed->token = Helper::makeToken();
                 $pricefeed = Design::setFlashMessage('add', FacebookCommerce::createOne($pricefeed));
             } else {
-                Design::setFlashMessage('update', FacebookCommerce::updateOne($pricefeed->id, $pricefeed) >= 0);
-
+                Design::setFlashMessage('update', FacebookCommerce::updateOne($pricefeed->id, $pricefeed));
                 Cache::cache(FeedGenerator::class)->delete('item_' . $pricefeed->id);
             }
 

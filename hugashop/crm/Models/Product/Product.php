@@ -367,7 +367,6 @@ class Product extends BaseModel
      */
     public static function updateProduct(int|array $id, array|object $product)
     {
-        $product = Helper::makeUniqSlug(self::class, $product); # If the URL exists, change it
 
         // Save price and cost_price history
         $ids = is_array($id) ? $id : [$id];
@@ -411,17 +410,6 @@ class Product extends BaseModel
         }
 
         return self::updateOne($id, $product);
-    }
-
-
-    /**
-     * Create new products
-     * @param object|array $product
-     */
-    public static function addProduct(object|array $product)
-    {
-        $product = Helper::makeUniqSlug(self::class, $product); # If the URL exists, change it
-        return self::createOne($product);
     }
 
 

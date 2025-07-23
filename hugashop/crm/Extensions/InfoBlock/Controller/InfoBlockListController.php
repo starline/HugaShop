@@ -38,11 +38,11 @@ final class InfoBlockListController extends BaseAdminController
             if (is_array($ids)) {
                 switch (Request::post('action')) {
                     case 'disable': {
-                            InfoBlock::updateOne($ids, ['enabled' => 0]);
+                            InfoBlock::updateList($ids, ['enabled' => 0]);
                             break;
                         }
                     case 'enable': {
-                            InfoBlock::updateOne($ids, ['enabled' => 1]);
+                            InfoBlock::updateList($ids, ['enabled' => 1]);
                             break;
                         }
                     case 'delete': {

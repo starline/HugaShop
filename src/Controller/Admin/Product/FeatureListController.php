@@ -39,11 +39,11 @@ class FeatureListController extends BaseAdminController
             if (is_array($ids)) {
                 switch (Request::post('action')) {
                     case 'set_in_filter': {
-                            ProductFeature::updateOne($ids, ['in_filter' => 1]);
+                            ProductFeature::updateList($ids, ['in_filter' => 1]);
                             break;
                         }
                     case 'unset_in_filter': {
-                            ProductFeature::updateOne($ids, ['in_filter' => 0]);
+                            ProductFeature::updateList($ids, ['in_filter' => 0]);
                             break;
                         }
                     case 'delete': {

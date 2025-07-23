@@ -63,7 +63,7 @@ class UpdateEntityAjax extends BaseAdminController
                 break;
             case 'brands':
                 if (UserPermission::checkAccess('product_brand')) {
-                    $result = ProductBrand::updateBrand($id, $values);
+                    $result = ProductBrand::updateOne($id, $values);
                 }
                 break;
             case 'feature':

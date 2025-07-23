@@ -555,7 +555,7 @@ final class CmlExchangeService
                 $description = $xml_product->Описание;
             }
 
-            $product = Product::addProduct([
+            $product = Product::createOne([
                 'external_id' => $product_1c_id,
                 'url' => Helper::slugEn($xml_product->Наименование),
                 'name' => $xml_product->Наименование,
@@ -657,7 +657,7 @@ final class CmlExchangeService
                     // Найдем его по имени
                     if (!$brand_id = ProductBrand::where('name', $brand_name)->value('id')) {
                         // Создадим, если не найден
-                        $brand_id = ProductBrand::addBrand(['name' => $brand_name, 'meta_title' => $brand_name, 'meta_description' => $brand_name]);
+                        $brand_id = ProductBrand::createOne(['name' => $brand_name, 'meta_title' => $brand_name, 'meta_description' => $brand_name]);
                     }
                     if (!empty($brand_id)) {
                         Product::updateProduct($product->id, ['brand_id' => $brand_id]);

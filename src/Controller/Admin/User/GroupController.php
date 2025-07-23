@@ -34,7 +34,7 @@ class GroupController extends BaseAdminController
             if (empty($group->id)) {
                 $group = Design::setFlashMessage('add', UserGroup::createOne($group));
             } else {
-                Design::setFlashMessage('update', UserGroup::whereId($group->id)->updateOne($group));
+                Design::setFlashMessage('update', UserGroup::updateOne($group->id, $group));
             }
 
             return $this->redirectToRoute('GroupAdmin', ['id' => $group->id]);

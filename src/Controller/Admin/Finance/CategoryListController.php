@@ -34,11 +34,11 @@ class CategoryListController extends BaseAdminController
             if (is_array($ids)) {
                 switch (Request::post('action')) {
                     case 'disable': {
-                            FinanceCategory::updateOne($ids, ['enabled' => 0]);
+                            FinanceCategory::updateList($ids, ['enabled' => 0]);
                             break;
                         }
                     case 'enable': {
-                            FinanceCategory::updateOne($ids, ['enabled' => 1]);
+                            FinanceCategory::updateList($ids, ['enabled' => 1]);
                             break;
                         }
                     case 'delete': {

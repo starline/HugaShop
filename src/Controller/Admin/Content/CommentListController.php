@@ -36,7 +36,7 @@ class CommentListController extends BaseAdminController
             if (!empty($ids) && is_array($ids)) {
                 switch (Request::post('action')) {
                     case 'approve': {
-                            ContentComment::updateOne($ids, ['approved' => 1]);
+                            ContentComment::updateList($ids, ['approved' => 1]);
                             break;
                         }
                     case 'delete': {

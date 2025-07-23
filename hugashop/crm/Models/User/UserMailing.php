@@ -125,7 +125,7 @@ class UserMailing extends BaseModel
             return UserMailing::updateOne($mailing->id, $update_mailing);
         }
 
-        UserMailing::updateOne(ids: $mailing->id, values: ['frozen' => 1]);
+        UserMailing::updateList(ids: $mailing->id, values: ['frozen' => 1]);
         return false;
     }
 

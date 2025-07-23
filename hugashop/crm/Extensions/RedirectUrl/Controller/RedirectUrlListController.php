@@ -33,10 +33,10 @@ final class RedirectUrlListController extends BaseAdminController
             if (is_array($ids)) {
                 switch (Request::post('action')) {
                     case 'disable':
-                        RedirectUrl::updateOne($ids, ['enabled' => 0]);
+                        RedirectUrl::updateList($ids, ['enabled' => 0]);
                         break;
                     case 'enable':
-                        RedirectUrl::updateOne($ids, ['enabled' => 1]);
+                        RedirectUrl::updateList($ids, ['enabled' => 1]);
                         break;
                     case 'delete':
                         foreach ($ids as $id) {

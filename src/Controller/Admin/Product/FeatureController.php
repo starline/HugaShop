@@ -37,7 +37,6 @@ class FeatureController extends BaseAdminController
         #### Update
         ###########
         if (!empty($feature = Request::getInputCheckEditAccess(ProductFeature::class, $id))) {
-
             if (empty($feature->id)) {
                 $feature = Design::setFlashMessage('add', ProductFeature::createOne($feature));
             } else {

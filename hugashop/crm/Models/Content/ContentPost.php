@@ -114,7 +114,6 @@ class ContentPost extends BaseModel
      */
     public static function addPost(object|array $post)
     {
-        $post = Helper::makeUniqSlug(ContentPost::class, $post);
         if (empty($post->date)) {
             $post->date = Carbon::now();
         }
@@ -129,7 +128,6 @@ class ContentPost extends BaseModel
      */
     public static function updatePost(int|array $id, $post)
     {
-        $post = Helper::makeUniqSlug(ContentPost::class, $post);
         return ContentPost::updateOne($id, $post);
     }
 

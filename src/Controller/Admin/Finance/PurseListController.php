@@ -35,11 +35,11 @@ class PurseListController extends BaseAdminController
             if (is_array($ids)) {
                 switch (Request::post('action')) {
                     case 'disable': {
-                            FinancePurse::updateOne($ids, ['enabled' => 0]);
+                            FinancePurse::updateList($ids, ['enabled' => 0]);
                             break;
                         }
                     case 'enable': {
-                            FinancePurse::updateOne($ids, ['enabled' => 1]);
+                            FinancePurse::updateList($ids, ['enabled' => 1]);
                             break;
                         }
                     case 'delete': {

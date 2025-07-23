@@ -35,11 +35,11 @@ class PaymentListController extends BaseAdminController
             if (is_array($ids)) {
                 switch (Request::post('action')) {
                     case 'disable': {
-                            OrderPayment::updateOne($ids, ['enabled' => 0]);
+                            OrderPayment::updateList($ids, ['enabled' => 0]);
                             break;
                         }
                     case 'enable': {
-                            OrderPayment::updateOne($ids, ['enabled' => 1]);
+                            OrderPayment::updateList($ids, ['enabled' => 1]);
                             break;
                         }
                     case 'delete': {

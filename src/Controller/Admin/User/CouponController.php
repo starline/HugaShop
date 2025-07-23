@@ -42,7 +42,6 @@ class CouponController extends BaseAdminController
             if (($temp_c = UserCoupon::getCoupon((string)$coupon->code)) && $temp_c->id != $coupon->id) {
                 Design::setFlashMessage('message_error', 'code_exists');
             } else {
-
                 if (empty($coupon->id)) {
                     $coupon = Design::setFlashMessage('add', UserCoupon::createOne($coupon));
                 } else {
