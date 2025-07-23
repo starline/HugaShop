@@ -18,7 +18,6 @@
 		{if $feedbacks || $keyword}
 			<form method="get" id="search">
 				{getCSRFInput}
-				<input type="hidden" name="module" value='Feedback'>
 				<div class="input-group">
 					<input class="search form-control" type="text" name="keyword" value="{$keyword}" />
 					<input class="input-group-text search_button" type="submit" value="" />

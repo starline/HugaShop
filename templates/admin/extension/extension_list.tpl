@@ -8,6 +8,14 @@
     <!-- Заголовок -->
     <div class="header_top">
         <h1>{$meta_title}</h1>
+        
+        <form method="get" id="search">
+            {getCSRFInput}
+            <div class="input-group">
+                <input class="search form-control" type="text" name="keyword" value="{$keyword}" />
+                <input class="input-group-text search_button" type="submit" value="" />
+            </div>
+        </form>
     </div>
 
     <div id="main_list">

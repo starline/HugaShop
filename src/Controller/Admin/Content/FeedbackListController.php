@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  */
 
@@ -25,13 +25,6 @@ class FeedbackListController extends BaseAdminController
     {
 
         $this->checkAdminAccess('feedback');
-
-        // Поиск
-        $keyword = Request::get('keyword', 'string');
-        if (!empty($keyword)) {
-            $filter['keyword'] = $keyword;
-            Design::assign('keyword', $keyword);
-        }
 
         // Обработка действий
         if (Request::checkCSRF()) {
@@ -54,12 +47,12 @@ class FeedbackListController extends BaseAdminController
         // Поиск
         $keyword = Request::get('keyword', 'string');
         if (!empty($keyword)) {
-            $filter['keyword'] = $keyword;
+            $filter['search'] = $keyword;
             Design::assign('keyword', $keyword);
         }
 
-        $feedbacks_count = ContentFeedback::countFeedbacks($filter);
-        $feedbacks = ContentFeedback::getFeedbacks($filter, true);
+        $feedbacks          = ContentFeedback::getList($filter, order: 'id');
+        $feedbacks_count    = ContentFeedback::getCount($filter);
 
         Design::assign('pagination', PaginationService::getPagination($feedbacks_count, $filter));
         Design::assign('feedbacks', $feedbacks);
