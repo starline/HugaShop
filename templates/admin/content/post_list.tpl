@@ -21,9 +21,8 @@
 
 
 		{if $posts || $keyword}
-			<!-- Поиск -->
+			<!-- Search -->
 			<form method="get" id="search">
-				{getCSRFInput}
 				<div class="input-group">
 					<input class="form-control search" type="text" name="keyword" value="{$keyword}" />
 					<input class="input-group-text search_button" type="submit" value="" />

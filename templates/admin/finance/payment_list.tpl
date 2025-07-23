@@ -35,9 +35,8 @@
       <div id="right_menu" class="finance_menu">
 
          {if $payments || $keyword}
+            <!-- Search -->
             <form method="get" id="search">
-               {getCSRFInput}
-               <input type="hidden" name="view" value='FinancePaymentsAdmin' />
                <div class="input-group">
                   <input class="search form-control" type="text" name="keyword" value="{$keyword}"
                      placeholder="В комментариях" />

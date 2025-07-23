@@ -8,11 +8,11 @@
     <!-- Заголовок -->
     <div class="header_top">
         <h1>{$meta_title}</h1>
-        
-        <form method="get" id="search">
-            {getCSRFInput}
+
+        <form method="post" id="search">
             <div class="input-group">
-                <input class="search form-control" type="text" name="keyword" value="{$keyword}" />
+                <input class="search form-control" type="text" name="keyword" placeholder="Название модуля"
+                    value="{$keyword}" />
                 <input class="input-group-text search_button" type="submit" value="" />
             </div>
         </form>
@@ -32,7 +32,7 @@
                             </div>
                             <div class="col-2">
                                 {if $ext_module->version}
-                                    <span class="badge text-bg-round">v {$ext_module->version}</span>
+                                    <span class="badge text-bg-round">Версия {$ext_module->version}</span>
                                 {/if}
                             </div>
                         </div>

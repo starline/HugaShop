@@ -14,10 +14,9 @@
 			<h1>Нет сообщений</h1>
 		{/if}
 
-		{* Поиск *}
 		{if $feedbacks || $keyword}
+			<!-- Search -->
 			<form method="get" id="search">
-				{getCSRFInput}
 				<div class="input-group">
 					<input class="search form-control" type="text" name="keyword" value="{$keyword}" />
 					<input class="input-group-text search_button" type="submit" value="" />

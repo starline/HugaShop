@@ -30,8 +30,8 @@
                 <span id="calculate_result" class="badge text-bg-round ms-1"></span>
             </button>
 
+            <!-- Search -->
             <form method="get" id="search">
-                {getCSRFInput}
                 <div class="input-group">
                     <input class="search form-control" type="text" name="keyword" value="{$keyword}"
                         placeholder="Название, артикул" />
