@@ -1,4 +1,5 @@
 <?php
+
 /**
  * HugaShop - Sell anything
  *
@@ -35,7 +36,6 @@ final class CargoSortController extends BaseAdminController
     public function index()
     {
         Design::assign('extension', $this->getExtension());
-        Design::assign('import_files_dir', Config::get('import_files_dir'));
 
         if (!is_writable(Config::get('import_files_dir'))) {
             Design::assign('message_error', 'no_permission');
@@ -48,12 +48,13 @@ final class CargoSortController extends BaseAdminController
             Design::assign('message_error', 'locale_error');
             Design::assign('locale', $this->locale);
         }
+
         setlocale(LC_ALL, $old_locale);
 
         if (Request::checkCSRF() && Request::files('file')) {
-            $this->box_size = Request::postFloat('box_size');
-            $this->box_cost = Request::postFloat('box_cost');
-            $this->box_delivery_cost = Request::postFloat('box_delivery_cost');
+            $this->box_size = Request::post('box_size');
+            $this->box_cost = Request::post('box_cost');
+            $this->box_delivery_cost = Request::post('box_delivery_cost');
 
             if ($this->box_size > 0 && $this->box_cost > 0) {
                 $uploaded_name = Request::files('file', 'tmp_name');
@@ -202,7 +203,7 @@ final class CargoSortController extends BaseAdminController
 
     private function convertFile(string $source, string $dest): bool
     {
-        $teststring = file_get_contents($source, null, null, null, 1000000);
+        $teststring = file_get_contents($source);
         if (preg_match('//u', $teststring)) {
             return copy($source, $dest);
         }

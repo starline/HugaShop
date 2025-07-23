@@ -1,156 +1,152 @@
+{extends file='wrapper/main.tpl'}
+{include file='extension/parts/menu_part.tpl'}
 
-{include file='parts/menu_import_part.tpl'}
+{$meta_title='Заполнение контейнеров'}
 
-{$meta_title='Заполнение контейнеров' scope=parent}
-
-
-<script src="{$config->root_url}/goodgin/design/js/piecon/piecon.js"></script>
-
-<script>
-{if $filename}
-	
-{literal}
-
-	// On document load
-	$(function(){
-		//do_sort();
-	});
-  
-	function do_sort() {
-
-		$.ajax({
- 			url: "ajax/cargosort.php",
-			data: {from:from},
-			dataType: 'json',
-			success: function(data) {
-				
-				for (var key in data.items) {
-					html1 = '<li><span class=count>'+count+'</span> <span title='+data.items[key].status+' class="status '+data.items[key].status+'"></span>';
-
-					if (!data.items[key].error){
-						html2 = '<a target=_blank href="index.php?module=ProductAdmin&id='+data.items[key].product.id+'">'+data.items[key].product.name+'</a> '+data.items[key].variant.name;
-					} else {
-						html2 = data.items[key].error;
-					}
-
-					if (data.items[key].synonym){
-						html2 += ' ' + data.items[key].synonym;
-					}
-
-					html3 = '</li>';
-
-					$('ul#import_result').prepend(html1+html2+html3);
-					count++;
-				}
-				
-			},
-			error: function(xhr, status, errorThrown) {
-				alert(errorThrown+'\n'+xhr.responseText);
-			}
-		});
-	}
-{/literal}
-{/if}
-</script>
-
-
-{if $message_error}
-<div class="message message_error">
-	<span class="text">
-	{if $message_error == 'no_permission'}Установите права на запись в папку {$import_files_dir}
-	{elseif $message_error == 'convert_error'}Не получилось сконвертировать файл в кодировку UTF8
-	{elseif $message_error == 'locale_error'}На сервере не установлена локаль {$locale}, импорт может работать некорректно
-	{else}{$message_error}{/if}
-	</span>
-</div>
-{/if}
-
-	
-{if $filename}
-	<h1 class="mb-15 fn">Импорт {$filename|escape}</h1>
-	<div class="price-type">
-		Размер контейнера: {$box_size} </br>
-		Стоимость груза в контейнере: {$box_cost} </br>
-		Цена доставки контейнера: {$box_delivery_cost}
-	</div>
-
-	<div>
-		Общий вес: {$total_size} </br>
-		Общая стоимость: {$total_cost} </br>
-		Идеальное кол-во контейнеров по весу: {$ideal_box_count_of_size} </br>
-		Идеальное кол-во контейнеров по стоимости груза: {$ideal_box_count_of_cost} </br>
-		Фактическое кол-во контейнеров: {$box_count} </br>
-	</div>
-
-	<p class="price-type">
-		<a class="button_green" href="/files/exports/cargosort.csv">Скачать в формате CSV</a>	
-	</p>
-
-	<div class="cargosort-result">
-		<div>
-			<span style="width: 5%; display: inline-block;">#</span>
-			<span style="width: 25%; display: inline-block;">Размер</span>
-			<span style="width: 20%; display: inline-block;">Название</span>
-			<span style="width: 5%; display: inline-block;">Вес</span>
-			<span style="width: 10%; display: inline-block;"> Цена</span>
-			<span style="width: 10%; display: inline-block;"> Цена доставки</span>
-			<span style="width: 10%; display: inline-block;"> Ср. Ц. д.</span>
-			<span style="width: 5%; display: inline-block;">Очередь</span>
+{block name=content}
+	{if $message_error}
+		<div class="message message_error">
+			<span class="text">
+				{if $message_error == 'no_permission'}Установите права на запись в папку {$config->import_files_dir}
+				{elseif $message_error == 'convert_error'}Не получилось сконвертировать файл в кодировку UTF8
+				{elseif $message_error == 'locale_error'}На сервере не установлена локаль {$locale}, импорт может работать
+					некорректно
+				{else}{$message_error}
+				{/if}
+			</span>
 		</div>
-		{foreach $products as $prod}
-		<div>
-			<span style="width: 5%; display: inline-block;">#{$prod['number_of_box']}</span>
-			<span style="width: 25%; display: inline-block;">{$prod['tyre_size']}</span>
-			<span style="width: 20%; display: inline-block;"> {$prod['name']}</span>
-			<span style="width: 5%; display: inline-block;"> {$prod['size']}</span>
-			<span style="width: 10%; display: inline-block;"> {$prod['cost']}</span>
-			<span style="width: 10%; display: inline-block;"> {$prod['delivery_product_in_box_cost']}</span>
-			<span style="width: 10%; display: inline-block;"> {$prod['middle_delivery_cost']}</span>
-			<span style="width: 5%; display: inline-block;">{$prod['firstly']}</span>
-		</div>
-		{/foreach}
-	</div>
-{else}
-	<h1 class="mb-15">Заполнение контейнеров</h1>
-	<form method="post" id="product" enctype="multipart/form-data">
-		<div class="block">				
-			<input type="hidden" name="session_id" value="{$smarty.session.id}" />
-			<input name="file" class="import_file" type="file" value="" />
-			<input class="button_green" type="submit" name="" value="Загрузить" />
-			<p>
-				(максимальный размер файла &mdash; {if $config->max_upload_filesize>1024*1024}{$config->max_upload_filesize/1024/1024|round:'2'} МБ{else}{$config->max_upload_filesize/1024|round:'2'} КБ{/if})
-			</p>
-		</div>		
-		
-		<div class="block price-type">Хавает CSV, стоимость контейнера не должна быть ниже минимальной цены</div>
+	{/if}
 
-		<div class="block price-type">
-			<label for="box_size">Размер контейнера:</label>
-			<input name="box_size" id="box_size" type="text" value="" />
-		</div>
 
-		<div class="block price-type">
-			<label for="box_cost">Стоимость груза в контейнере:</label>
-			<input name="box_cost" id="box_cost" type="text" value="" />
-		</div>
+	{if $filename}
+		<h1 class="mb-2">Импорт {$filename|escape}</h1>
 
-		<div class="block price-type">
-			<label for="box_delivery_cost">Стоимость доставки контейнера:</label>
-			<input name="box_delivery_cost" id="box_delivery_cost" type="text" value="" />
+		<div class="row gx-5">
+			<div class="col-lg-6">
+				<ul class="property_block">
+					<li>
+						<div class="col-form-label">Размер контейнера:</div>
+						<div class="col-form-label">{$box_size}</div>
+					</li>
+					<li>
+						<div class="col-form-label">Стоимость груза в контейнере:</div>
+						<div class="col-form-label">{$box_cost}</div>
+					</li>
+					<li>
+						<div class="col-form-label">Цена доставки контейнера:</div>
+						<div class="col-form-label">{$box_delivery_cost}</div>
+					</li>
+				</ul>
+			</div>
+			<div class="col-lg-6">
+				<ul class="property_block">
+					<li>
+						<div class="col-form-label">Общий вес:</div>
+						<div class="col-form-label">{$total_size}</div>
+					</li>
+					<li>
+						<div class="col-form-label">Общая стоимость:</div>
+						<div class="col-form-label">{$total_cost}</div>
+					</li>
+					<li>
+						<div class="col-form-label">Идеальное кол-во контейнеров по весу:</div>
+						<div class="col-form-label">{$ideal_box_count_of_size}</div>
+					</li>
+					<li>
+						<div class="col-form-label">Идеальное кол-во контейнеров по стоимости груза:</div>
+						<div class="col-form-label">{$ideal_box_count_of_cost}</div>
+					</li>
+					<li>
+						<div class="col-form-label">Фактическое кол-во контейнеров:</div>
+						<div class="col-form-label">{$box_count}</div>
+					</li>
+				</ul>
+			</div>
 		</div>
-	</form>
-	
-	<div class="block block_help">
-		<p>
-			В первой строке таблицы должны быть указаны названия колонок в таком формате:
-			<ul>
-				<li><label>Размер</label> размерность </li>
-				<li><label>Модель</label> название модели</li>
-				<li><label>Вес</label> вес товара</li>
-				<li><label>Цена</label> цена товара</li>
-				<li><label>Колличество</label> колличество товара</li>
-				<li><label>Колличество в первую очередь</label> колличество товара</li>
-			</ul>
+		<p class="mb-2">
+			<a class="btn btn-primary" href="/files/exports/cargosort.csv">Скачать в формате CSV</a>
 		</p>
-	</div>
-{/if}
+
+		<div class="table-responsive">
+			<table class="table table-bordered cargosort-result">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Размер</th>
+						<th>Название</th>
+						<th>Вес</th>
+						<th>Цена</th>
+						<th>Цена доставки</th>
+						<th>Ср. Ц. д.</th>
+						<th>Очередь</th>
+					</tr>
+				</thead>
+				<tbody>
+					{foreach $products as $prod}
+						<tr>
+							<td>#{$prod.number_of_box}</td>
+							<td>{$prod.tyre_size}</td>
+							<td>{$prod.name}</td>
+							<td>{$prod.size}</td>
+							<td>{$prod.cost}</td>
+							<td>{$prod.delivery_product_in_box_cost}</td>
+							<td>{$prod.middle_delivery_cost}</td>
+							<td>{$prod.firstly}</td>
+						</tr>
+					{/foreach}
+				</tbody>
+			</table>
+		</div>
+	{else}
+		<h1 class="mb-2">Заполнение контейнеров</h1>
+		<form method="post" id="product" enctype="multipart/form-data">
+			{getCSRFInput}
+
+			<div class="row gx-5">
+				<div class="col-lg-6 layer">
+					<input class="form-control import_file" name="file" type="file" value="">
+					<p class="mt-2">максимальный размер файла &mdash; {$config->max_upload_filesize|byte_convert}</p>
+					<div class="alert alert-info">Хавает CSV, стоимость контейнера не должна быть ниже минимальной цены</div>
+				</div>
+
+				<div class="col-lg-6 layer">
+					<ul class="property_block">
+						<li>
+							<label class="col-form-label" for="box_size">Размер контейнера:</label>
+							<input class="form-control" id="box_size" name="box_size" type="text" value="">
+						</li>
+						<li>
+							<label class="col-form-label" for="box_cost">Стоимость груза в контейнере:</label>
+							<input class="form-control" id="box_cost" name="box_cost" type="text" value="">
+						</li>
+						<li>
+							<label class="col-form-label" for="box_delivery_cost">Стоимость доставки контейнера:</label>
+							<input class="form-control" id="box_delivery_cost" name="box_delivery_cost" type="text" value="">
+						</li>
+					</ul>
+					<div class="col-12 btn_row">
+						{include file="parts/button.tpl" label="Загрузить"}
+					</div>
+				</div>
+			</div>
+		</form>
+
+		<div class="block_help">
+			<p>В первой строке таблицы должны быть указаны названия колонок в таком формате:</p>
+			<ul>
+				<li><span>Размер</span> размерность </li>
+				<li><span>Модель</span> название модели</li>
+				<li><span>Вес</span> вес товара</li>
+				<li><span>Цена</span> цена товара</li>
+				<li><span>Колличество</span> колличество товара</li>
+				<li><span>Колличество в первую очередь</span> колличество товара</li>
+			</ul>
+		</div>
+	{/if}
+{/block}
+
+{block name=body_script append}
+	<script type="module">
+		import '{"js/piecon/piecon.js"|asset}';
+	</script>
+{/block}
