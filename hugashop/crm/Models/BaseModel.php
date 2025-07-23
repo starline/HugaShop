@@ -421,6 +421,24 @@ abstract class BaseModel extends Model
 
 
     /**
+     * Check if url already exists
+     */
+    public static function urlExists(string $url, ?string $entity_id = null)
+    {
+        $model = static::getModel();
+        if (!$model::hasUrl()) {
+            return false;
+        }
+
+        return $model->runWithInitTable(function () use ($model, $url, $entity_id) {
+            return $model->newQuery()->where('url', $url)
+                ->where('id', '!=', $entity_id) # исключаем текущий id
+                ->exists();
+        });
+    }
+
+
+    /**
      * Prepare values
      * @param object|array $entity
      */

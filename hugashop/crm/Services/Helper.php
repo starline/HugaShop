@@ -500,11 +500,7 @@ class Helper
             $id = $entity->id ?? null;
             $i = 1;
 
-            while (
-                $model::where('url', $unique_url)
-                ->where('id', '!=', $id) # исключаем текущий id
-                ->exists()
-            ) {
+            while ($model::urlExists($unique_url, $id)) {
                 $unique_url = $base_url . '-' . $i++;
             }
 
