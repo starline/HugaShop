@@ -50,6 +50,7 @@ final class FeedbackController extends BaseFrontController
                 $feedback->ip = $_SERVER['REMOTE_ADDR'];
                 $feedback = Feedback::createOne($feedback);
 
+                // TODO отправка увидомления
                 //NotifierFactory::sendNotifierToManager(null, ['feedback' => $feedback], 'feedback_admin_notify');
             }
         }
