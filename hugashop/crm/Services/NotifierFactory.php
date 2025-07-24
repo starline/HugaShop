@@ -26,13 +26,13 @@ class NotifierFactory
 
     public static $message_types = [
         'user' => [
-            'newOrderToUser' => 'О новом заказе',
-            'deliveryTrackNumber' => 'Трэк номер доставка',
-            'paymentInfo' => 'Реквизиты об оплате'
+            'newOrderToUser'        => 'О новом заказе',
+            'deliveryTrackNumber'   => 'Трэк номер доставка',
+            'paymentInfo'           => 'Реквизиты об оплате'
         ],
         'admin' => [
-            'commentToAdmin' => 'Новый Комментарий',
-            'newOrderToAdmin' => 'Новый Заказ',
+            'commentToAdmin'        => 'Новый Комментарий',
+            'newOrderToAdmin'       => 'Новый Заказ',
         ],
         'requared' => [
             'userPasswordRemind'

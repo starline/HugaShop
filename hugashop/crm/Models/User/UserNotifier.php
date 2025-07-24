@@ -47,7 +47,7 @@ class UserNotifier extends BaseModel
     public static function deleteNotifier($id)
     {
         UserNotifierType::where('notifier_id', $id)->delete();
-        return parent::deleteOne($id);
+        return self::deleteOne($id);
     }
 
 
@@ -56,12 +56,8 @@ class UserNotifier extends BaseModel
      * @param int|string $method_id
      * @return object
      */
-    public static function getNotifierSettings(int|string|null $id = null): object|bool
+    public static function getNotifierSettings(int|string $id): object|bool
     {
-        if (empty($id)) {
-            return false;
-        }
-
         $query = UserNotifier::query();
 
         if (is_int($id)) {
