@@ -56,15 +56,15 @@ class UserRegisterController extends BaseFrontController
                         Design::assign('error', 'user_exists');
                     } else {
 
-                        $user_id = User::addUser([
+                        $user = User::addUser([
                             'name' =>       $name,
                             'email' =>      $email,
                             'password' =>   $password,
                             'enabled' =>    1 # Активен ли пользователь сразу после регистрации (0 или 1)
                         ]);
 
-                        Request::setSession('user_id', $user_id);
-                        User::setRememberMeCookie($user_id); # Запоминаем пользователя
+                        Request::setSession('user_id', $user->id);
+                        User::setRememberMeCookie($user->id); # Запоминаем пользователя
 
                         // TODO: отправить email о регистрации и подтверждении email
 

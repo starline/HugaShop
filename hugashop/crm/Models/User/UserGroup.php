@@ -40,7 +40,7 @@ class UserGroup extends BaseModel
      */
     protected function deleteGroup(int $id)
     {
-        User::updateOne(['group_id' => $id], ['group_id' => null]);
+        User::where('group_id', $id)->update(['group_id' => null]);
         return UserGroup::deleteOne($id);
     }
 }

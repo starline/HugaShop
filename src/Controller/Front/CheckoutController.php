@@ -153,7 +153,7 @@ class CheckoutController extends BaseFrontController
                             $user->phone = $pre_order->phone;
                             $user->enabled = 1;
 
-                            $pre_order->user_id = User::addUser($user);
+                            $pre_order->user_id = User::addUser($user)->id;
                         }
                     }
 

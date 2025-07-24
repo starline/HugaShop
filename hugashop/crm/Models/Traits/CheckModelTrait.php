@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.9
+ * @version 2.0
  *
  */
 
@@ -84,8 +84,8 @@ trait CheckModelTrait
 
         foreach ($fields as $name => $params) {
             $type    = $params['type'] ?? 'varchar';
-            $length  = $params['length'] ?? ($params['length'] ?? null);
-            $default = $params['def'] ?? null;
+            $length  = $params['length'] ?? null;
+            $default = $params['def'] ?? $params['default'] ?? null;
             $extra   = $params['extra'] ?? null;
 
             switch ($type) {
@@ -118,7 +118,7 @@ trait CheckModelTrait
                     }
                     break;
                 case 'datetime':
-                    $column = $blueprint->dateTime($name)->default(DB::raw('CURRENT_TIMESTAMP'));
+                    $column = $blueprint->dateTime($name);
                     break;
                 case 'date':
                     $column = $blueprint->date($name);
@@ -133,11 +133,15 @@ trait CheckModelTrait
             // - the type supports default values (text/mediumtext do not support it)
             $type_supports = !in_array($type, ['text', 'mediumtext']);
             $is_auto_increment = ($type === 'int' && $extra === 'AUTO_INCREMENT');
-            if ($default !== null && $type_supports && !$is_auto_increment) {
-                if ($default === 'CURRENT_TIMESTAMP') {
-                    $column->useCurrent();
+            if ($type_supports && !$is_auto_increment) {
+                if (is_null($default)) {
+                    $column->nullable();
                 } else {
-                    $column->default($default);
+                    if ($default === 'CURRENT_TIMESTAMP') {
+                        $column->useCurrent();
+                    } else {
+                        $column->default($default);
+                    }
                 }
             }
         }

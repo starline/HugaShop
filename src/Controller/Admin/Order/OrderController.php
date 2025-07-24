@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.7
+ * @version 2.8
  *
  */
 
@@ -69,12 +69,13 @@ class OrderController extends BaseAdminController
 
                 // если не найден, создаем нового
                 elseif (!empty($order->name)) {
-                    $user = new \stdClass();
-                    $user->name = $order->name;
-                    $user->email = $order->email;
-                    $user->phone = $order->phone;
-                    $user->enabled = 1;
-                    $order->user_id = User::addUser($user);
+                    $user = User::addUser([
+                        'name'      => $order->name,
+                        'email'     => $order->email,
+                        'phone'     => $order->phone,
+                        'enabled'   => 1,
+                    ]);
+                    $order->user_id = $user->id;
                 }
             }
 
@@ -83,7 +84,7 @@ class OrderController extends BaseAdminController
             if (empty($order->id)) {
 
                 // Новый, созданый заказ закрепляем за менеджером
-                $order->manager_id = User::authUser()->id;
+                $order->manager_id = User::authUser('id');
 
                 // Определяем оплату доставки
                 if (!empty($order->delivery_id)) {
@@ -102,7 +103,7 @@ class OrderController extends BaseAdminController
             // Обновляем заказ
             else {
                 if (empty($order->manager_id)) {
-                    $order->manager_id = User::authUser()->id; # Пользователь текущей сессии
+                    $order->manager_id = User::authUser('id'); # Пользователь текущей сессии
                 }
 
                 Design::setFlashMessage('update', Order::updateOrder($order->id, $order));

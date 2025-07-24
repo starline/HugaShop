@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.9
+ * @version 4.0
  *
  * Use BCRYPT
  *
@@ -36,7 +36,7 @@ class User extends BaseModel
         'token' =>          ['type' => 'varchar',                           'access' => false],
         'te_chat_id' =>     ['type' => 'int',                               'access' => false],
         'te_name' =>        ['type' => 'varchar',                           'access' => false],
-        'password' =>       ['type' => 'varchar'],
+        'password' =>       ['type' => 'varchar',                           'access' => false],
         'remember_token' => ['type' => 'varchar',                           'access' => false],
         'last_ip' =>        ['type' => 'varchar',                           'access' => false],
         'enabled' =>        ['type' => 'tinyint',                           'access' => 'user_edit'],
@@ -144,8 +144,10 @@ class User extends BaseModel
      * Добавляем нового пользователя
      * @param $user
      */
-    public static function addUser($user)
+    public static function addUser(object|array $user)
     {
+
+        $user = is_array($user) ? (object) $user : $user;
 
         // Шифруем пароль
         if (isset($user->password)) {
@@ -166,7 +168,7 @@ class User extends BaseModel
         $user->last_ip = $_SERVER['REMOTE_ADDR'];
         $user->token = Helper::makeToken(length: 16);
 
-        return User::createOne($user)->id;
+        return User::createOne($user);
     }
 
 
@@ -202,9 +204,8 @@ class User extends BaseModel
      */
     public static function deleteUser(int $id)
     {
-        Order::updateOne(['user_id' => $id], ['user_id' => null]);
-        Order::updateOne(['manager_id' => $id], ['manager_id' => null]);
-
+        Order::where('user_id', $id)->update(['manager_id' => null]);
+        Order::where('manager_id', $id)->update(['manager_id' => null]);
         return User::deleteOne($id);
     }
 
