@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 4.0
+ * @version 4.1
  *
  */
 
@@ -22,7 +22,7 @@ use HugaShop\Models\Order\OrderDelivery;
 use HugaShop\Models\Order\OrderPurchase;
 use HugaShop\Models\Content\ContentComment;
 use HugaShop\Models\Finance\FinanceCurrency;
-use Illuminate\Database\Capsule\Manager as DB;
+use HugaShop\Models\User\UserNotifierType;
 
 
 
@@ -39,6 +39,17 @@ class UserNotifier extends BaseModel
         'position' =>       ['type' => 'int',           'def' => 0],
         'enabled' =>        ['type' => 'int',           'def' => 0],
     ];
+
+    public function types()
+    {
+        return $this->hasMany(UserNotifierType::class, 'notifier_id');
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_notifier_type', 'notifier_id', 'user_id')
+            ->withPivot('type');
+    }
 
     public static $message_types = [
         'user' => [
@@ -422,9 +433,7 @@ class UserNotifier extends BaseModel
     public static function updateUserNotifierTypes(int $user_id, ?array $notifier_types = null): bool
     {
         // Удаляем все старые записи
-        DB::table('user_notifier_type')
-            ->where('user_id', $user_id)
-            ->delete();
+        UserNotifierType::query()->where('user_id', $user_id)->delete();
 
         // Вставляем новые, если есть
         if (!empty($notifier_types) && is_array($notifier_types)) {
@@ -443,7 +452,7 @@ class UserNotifier extends BaseModel
             }
 
             if (!empty($insertData)) {
-                DB::table('user_notifier_type')->insert($insertData);
+                UserNotifierType::insert($insertData);
             }
         }
 
@@ -459,7 +468,7 @@ class UserNotifier extends BaseModel
 
     public static function getUserNotifierTypes(int $user_id, ?string $type = null): array
     {
-        $query = DB::table('user_notifier_type')
+        $query = UserNotifierType::query()
             ->select('user_id', 'notifier_id', 'type')
             ->where('user_id', $user_id);
 
