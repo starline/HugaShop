@@ -51,12 +51,13 @@ final class FeedbackController extends BaseFrontController
                 $feedback = Feedback::createOne($feedback);
 
                 // TODO отправка увидомления
-                //NotifierFactory::sendNotifierToManager(null, ['feedback' => $feedback], 'feedback_admin_notify');
+                //NotifierFactory::sendNotifierToManager(feedbackToAdmin, ['feedback' => $feedback]);
             }
         }
 
         return $this->fetchExtResponse('feedback.tpl');
     }
+
 
     /**
      * Send Feedback to Admin
@@ -66,6 +67,7 @@ final class FeedbackController extends BaseFrontController
      */
     private function feedbackToAdmin(string $template_path, array &$message_params)
     {
+        
         if (empty($message_params['feedback_id']) || empty($feedback = Feedback::getOne(intval($message_params['feedback_id'])))) {
             return false;
         }
