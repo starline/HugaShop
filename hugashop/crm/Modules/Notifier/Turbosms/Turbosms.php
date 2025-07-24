@@ -4,15 +4,16 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  */
 
 namespace HugaShop\Modules\Notifier\Turbosms;
 
+use HugaShop\Modules\Notifier\NotifierInterface;
 use Turbosms\TurboSmsSender;
 
-class Turbosms
+class Turbosms implements NotifierInterface
 {
     /**
      * Send Message via Turbosms

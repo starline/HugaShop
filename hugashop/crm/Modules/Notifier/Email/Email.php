@@ -4,11 +4,13 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.6
+ * @version 1.7
  *
  */
 
 namespace HugaShop\Modules\Notifier\Email;
+
+use HugaShop\Modules\Notifier\NotifierInterface;
 
 use HugaShop\Models\Settings;
 use Symfony\Component\Mime\Address;
@@ -17,7 +19,7 @@ use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mime\Email as SEmail;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
-class Email
+class Email implements NotifierInterface
 {
     /**
      * Send Email
