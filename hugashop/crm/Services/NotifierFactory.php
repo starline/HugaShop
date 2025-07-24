@@ -71,8 +71,7 @@ class NotifierFactory
         $message_content = self::$message_type($current_module_tpl_path, $message_params);
 
         // Run
-        $Module = new $ClassName();
-        return $Module->send($message_content, $message_params);
+        return $ClassName::send($message_content, $message_params);
     }
 
 
@@ -108,8 +107,7 @@ class NotifierFactory
         }
 
         // Run
-        $Module = new $ClassName();
-        return $Module->send($message_content, $message_params);
+        return $ClassName::send($message_content, $message_params);
     }
 
 

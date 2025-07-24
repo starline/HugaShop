@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.0
+ * @version 2.1
  *
  */
 
@@ -20,7 +20,7 @@ class Turbosms
      * @param array $params
      *
      */
-    public function send(String $message, array $params)
+    public static function send(String $message, array $params)
     {
 
         // Phone number fromm User

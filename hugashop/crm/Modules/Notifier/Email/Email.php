@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.5
+ * @version 1.6
  *
  */
 
@@ -33,7 +33,7 @@ class Email
      * reply_to
      *
      */
-    public function send(string $message, array $params)
+    public static function send(string $message, array $params)
     {
 
         // Defaul params

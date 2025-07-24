@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.2
  *
  */
 
@@ -21,7 +21,7 @@ class Telegram
      * @param array $message_params
      *
      */
-    public function send(String $message, array $params)
+    public static function send(String $message, array $params)
     {
 
         if (!empty($params['user']->te_chat_id) and empty($params['chat_id'])) {
