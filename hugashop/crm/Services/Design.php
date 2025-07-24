@@ -107,7 +107,7 @@ class Design
         self::setModifierPlugin('cut',               self::class,               'cut_modifier');
         self::setModifierPlugin('byte_convert',      Helper::class,             'convertBytes');
 
-        // DATE Pligins
+        // DATE Plugins
         self::setModifierPlugin('date',              Helper::class,             'dateFormat');
         self::setModifierPlugin('time',              Helper::class,             'timeFormat');
 
