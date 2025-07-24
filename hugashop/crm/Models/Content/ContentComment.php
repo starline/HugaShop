@@ -10,14 +10,15 @@
 
 namespace HugaShop\Models\Content;
 
+use HugaShop\Models\Image;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
-use HugaShop\Services\Request;
 use HugaShop\Models\BaseModel;
-use HugaShop\Models\Product\Product;
 use HugaShop\Models\User\User;
+use HugaShop\Services\Request;
+use HugaShop\Models\Product\Product;
 use HugaShop\Models\User\UserNotifier;
-use HugaShop\Models\Image;
+use HugaShop\Services\NotifierFactory;
 use Illuminate\Database\Eloquent\Builder;
 
 class ContentComment extends BaseModel
@@ -289,7 +290,7 @@ class ContentComment extends BaseModel
                     }
 
                     // Отправляем email
-                    UserNotifier::sendNotifierToManager('commentToAdmin', message_params: ['comment_id' => $comment->id]);
+                    NotifierFactory::sendNotifierToManager('commentToAdmin', message_params: ['comment_id' => $comment->id]);
                     Request::makeRedirect($_SERVER['REQUEST_URI'] . '#comment_' . $comment->id);
                 }
             }

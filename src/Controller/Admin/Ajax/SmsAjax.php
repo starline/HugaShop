@@ -10,9 +10,9 @@
 
 namespace App\Controller\Admin\Ajax;
 
-use HugaShop\Models\Order\Order;
 use HugaShop\Services\Request;
-use HugaShop\Models\User\UserNotifier;
+use HugaShop\Models\Order\Order;
+use HugaShop\Services\NotifierFactory;
 use App\Controller\BaseAdminController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -38,7 +38,7 @@ class SmsAjax extends BaseAdminController
             if (Request::post('type') == 'delivery') {
                 if (!empty($order->delivery_note)) {
 
-                    $sms_result = UserNotifier::sendNotifier('Turbosms', 'deliveryTrackNumber', [
+                    $sms_result = NotifierFactory::sendNotifier('Turbosms', 'deliveryTrackNumber', [
                         'order_id' => $order->id
                     ]);
 
@@ -65,7 +65,7 @@ class SmsAjax extends BaseAdminController
                 if (!empty($order->payment_method_id)) {
 
                     // Отправляем СМС
-                    $sms_result = UserNotifier::sendNotifier('Turbosms', 'paymentDetails', [
+                    $sms_result = NotifierFactory::sendNotifier('Turbosms', 'paymentDetails', [
                         'order_id' => $order->id
                     ]);
 

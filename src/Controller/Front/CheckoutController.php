@@ -13,20 +13,21 @@
 
 namespace App\Controller\Front;
 
-use HugaShop\Models\Cart\Cart;
-use HugaShop\Models\User\User;
+use App\Event\OrderAddEvent;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
+use HugaShop\Models\Cart\Cart;
+use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
-use App\Event\OrderAddEvent;
-use HugaShop\Models\User\UserCoupon;
 use HugaShop\Models\Order\Order;
+use HugaShop\Models\User\UserCoupon;
 use HugaShop\Models\Cart\CartPurchase;
 use HugaShop\Models\User\UserNotifier;
-use HugaShop\Models\Order\OrderPayment;
-use HugaShop\Models\Order\OrderPurchase;
-use HugaShop\Models\Order\OrderDelivery;
+use HugaShop\Services\NotifierFactory;
 use App\Controller\BaseFrontController;
+use HugaShop\Models\Order\OrderPayment;
+use HugaShop\Models\Order\OrderDelivery;
+use HugaShop\Models\Order\OrderPurchase;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -192,14 +193,14 @@ class CheckoutController extends BaseFrontController
 
 
                         // Send email to User
-                        UserNotifier::sendNotifier('Email', 'newOrderToUser', [
+                        NotifierFactory::sendNotifier('Email', 'newOrderToUser', [
                             'order_id' => $order->id,
                             'to_email' => $order->email
                         ]);
 
 
                         // Send Notification to Admin. Telegram|Email|SMS|...
-                        UserNotifier::sendNotifierToManager('newOrderToAdmin', [
+                        NotifierFactory::sendNotifierToManager('newOrderToAdmin', [
                             'order_id' => $order->id
                         ]);
 

@@ -25,11 +25,13 @@ use Symfony\Component\Mime\Address;
 use HugaShop\Models\Product\Product;
 use HugaShop\Models\Cart\CartPurchase;
 use HugaShop\Models\User\UserNotifier;
+use HugaShop\Services\NotifierFactory;
 use Symfony\Component\Process\Process;
 use App\Controller\BaseAdminController;
 use Symfony\Component\Mailer\Transport;
 use HugaShop\Models\Content\ContentPost;
 use HugaShop\Models\Order\OrderPurchase;
+use HugaShop\Models\Product\ProductOption;
 use HugaShop\Extensions\BaseExtensionTrait;
 use HugaShop\Models\Content\ContentComment;
 use HugaShop\Models\Product\ProductRelated;
@@ -42,14 +44,13 @@ use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Models\Warehouse\WarehouseProduct;
 use Symfony\Component\Console\Input\ArrayInput;
 use HugaShop\Models\Warehouse\WarehousePurchase;
+use HugaShop\Models\Product\ProductFeatureOption;
 use Symfony\Component\Mailer\Transport\Transports;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Console\Output\BufferedOutput;
 use HugaShop\Extensions\TestScript\Services\Composer;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use HugaShop\Extensions\TestScript\Services\SystemCheck;
-use HugaShop\Models\Product\ProductFeatureOption;
-use HugaShop\Models\Product\ProductOption;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 final class TestScriptController extends BaseAdminController
@@ -111,7 +112,7 @@ final class TestScriptController extends BaseAdminController
                         if (0) {
 
                             // Works well
-                            $result[] = UserNotifier::sendNotifierToManager('newOrderToAdmin', [
+                            $result[] = NotifierFactory::sendNotifierToManager('newOrderToAdmin', [
                                 'order_id' => 5172
                             ]);
 
@@ -204,7 +205,7 @@ final class TestScriptController extends BaseAdminController
                         // Telegram BOT Send message
                         if (0) {
                             $result[] = $_SERVER['SERVER_NAME'];
-                            $result[] = UserNotifier::sendNotifierToManager('newOrderToAdmin', [
+                            $result[] = NotifierFactory::sendNotifierToManager('newOrderToAdmin', [
                                 'order_id' => 5172
                             ]);
                         }

@@ -11,21 +11,22 @@
 namespace App\Controller\Admin\Order;
 
 use stdClass;
-use HugaShop\Services\Design;
-use HugaShop\Services\Request;
+use App\Event\OrderAddEvent;
 use HugaShop\Models\Settings;
+use HugaShop\Services\Design;
 use HugaShop\Models\Cart\Cart;
 use HugaShop\Models\User\User;
-use App\Event\OrderAddEvent;
+use HugaShop\Services\Request;
 use HugaShop\Models\Order\Order;
 use HugaShop\Models\Order\OrderLabel;
 use HugaShop\Models\User\UserNotifier;
+use HugaShop\Services\NotifierFactory;
+use App\Controller\BaseAdminController;
 use HugaShop\Models\Order\OrderPayment;
 use HugaShop\Models\Order\OrderDelivery;
 use HugaShop\Models\Order\OrderPurchase;
 use HugaShop\Models\User\UserPermission;
 use HugaShop\Models\Finance\FinancePurse;
-use App\Controller\BaseAdminController;
 use HugaShop\Models\Finance\FinancePayment;
 use HugaShop\Models\Finance\FinanceCurrency;
 use Symfony\Component\HttpFoundation\Response;
@@ -316,7 +317,7 @@ class OrderController extends BaseAdminController
             if (Request::post('notify_user') and !empty($order->email)) {
 
                 // Send email to User
-                UserNotifier::sendNotifier('Email', 'newOrderToUser', [
+                NotifierFactory::sendNotifier('Email', 'newOrderToUser', [
                     'order_id' => $order->id,
                     'to_email' => $order->email,
                     'from_name' => Settings::getParam('company_name')

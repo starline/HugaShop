@@ -10,12 +10,12 @@
 
 namespace App\Controller\Front\User;
 
-use HugaShop\Models\User\User;
 use HugaShop\Services\Config;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
+use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
-use HugaShop\Models\User\UserNotifier;
+use HugaShop\Services\NotifierFactory;
 use App\Controller\BaseFrontController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -104,7 +104,7 @@ class UserLoginController extends BaseFrontController
                     Request::setSession('password_remind_user_id', $user->id);
 
                     // Отправляем письмо пользователю для восстановления пароля
-                    if (UserNotifier::sendNotifier('Email', 'userPasswordRemind', [
+                    if (NotifierFactory::sendNotifier('Email', 'userPasswordRemind', [
                         'user_id' => $user->id,
                         'code' => $code,
                         'to_email' => $user->email
