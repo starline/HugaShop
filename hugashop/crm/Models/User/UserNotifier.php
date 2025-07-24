@@ -469,7 +469,6 @@ class UserNotifier extends BaseModel
     public static function getUserNotifierTypes(int $user_id, ?string $type = null): array
     {
         $query = UserNotifierType::query()
-            ->select('user_id', 'notifier_id', 'type')
             ->where('user_id', $user_id);
 
         if (!empty($type)) {
@@ -479,11 +478,8 @@ class UserNotifier extends BaseModel
         $results = $query->get();
 
         // Группировка по notifier_id
-        $grouped = [];
-        foreach ($results as $row) {
-            $grouped[$row->notifier_id][] = $row->type;
-        }
-
-        return $grouped;
+        return $results->groupBy('notifier_id')
+            ->map(fn($items) => $items->pluck('type')->all())
+            ->toArray();
     }
 }
