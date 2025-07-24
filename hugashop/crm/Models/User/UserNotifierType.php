@@ -20,4 +20,14 @@ class UserNotifierType extends BaseModel
         'notifier_id' =>            ['type' => 'int',           'req' => true],
         'type' =>                   ['type' => 'varchar']
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function notifier()
+    {
+        return $this->belongsTo(UserNotifier::class, 'notifier_id');
+    }
 }
