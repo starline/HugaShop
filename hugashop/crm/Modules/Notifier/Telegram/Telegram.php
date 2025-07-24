@@ -4,16 +4,17 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.2
+ * @version 1.3
  *
  */
 
 namespace HugaShop\Modules\Notifier\Telegram;
 
+use HugaShop\Modules\Notifier\NotifierInterface;
 use HugaShop\Services\Config;
 use TelegramBot\NotifyBot;
 
-class Telegram
+class Telegram implements NotifierInterface
 {
     /**
      * Send Message to telegram Chat
