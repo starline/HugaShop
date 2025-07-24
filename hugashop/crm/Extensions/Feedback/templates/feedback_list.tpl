@@ -33,13 +33,17 @@
 
 				<div class="list">
 					{foreach $feedbacks as $feedback}
-						<div class="list_row {if !$feedback->visible}visible_off{/if}">
+						<div class="list_row">
 							<div class="checkbox">
 								<input class="form-check-input" type="checkbox" name="check[]" value="{$feedback->id}" />
 							</div>
 
-							<div class='col comment_text'>
-								{$feedback->message|strip_tags|nl2br|raw}
+							<div class='col'>
+								<div>{$feedback->name} <span class="badge text-bg-round">{$feedback->email}</span><span
+										class="badge text-bg-round ms-2">ip: {$feedback->ip}</span>
+								</div>
+								<div class="badge text-bg-round my-2">{$feedback->created_at|date:m} {$feedback->created_at|time}</div>
+								<div class="notice">{$feedback->message|strip_tags|nl2br|raw}</div>
 							</div>
 
 							<div class="icons">

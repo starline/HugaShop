@@ -65,7 +65,7 @@ class Helper
     /**
      * Formatting date
      * @param $date
-     * @param string $format
+     * @param string $format m - mounth
      *
      */
     public static function dateFormat($date = null, ?string $format = null)

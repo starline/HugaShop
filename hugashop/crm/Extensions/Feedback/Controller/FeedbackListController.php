@@ -1,4 +1,5 @@
 <?php
+
 /**
  * HugaShop - Sell anything
  *
@@ -50,6 +51,7 @@ final class FeedbackListController extends BaseAdminController
         Design::assign('pagination', PaginationService::getPagination($feedbacks_count, $filter));
         Design::assign('feedbacks', $feedbacks);
         Design::assign('feedbacks_count', $feedbacks_count);
+        Design::assign('extension', $this->getExtension());
 
         return $this->fetchExtResponse('feedback_list.tpl');
     }

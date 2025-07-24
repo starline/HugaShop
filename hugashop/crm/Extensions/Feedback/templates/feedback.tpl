@@ -3,10 +3,25 @@
 {$meta_title = 'Oбратный отзыв'}
 
 {block name=content}
+
+	<!-- Breadcrumbs -->
+	<div id="path">
+		<ul itemscope itemtype="https://schema.org/BreadcrumbList">
+			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+				<a href="{'Main'|linkLang}" itemprop="item">
+					<span itemprop="name">{'Главная'|trans}</span>
+					<meta itemprop="position" content="1" />
+				</a>
+			</li>
+		</ul>
+	</div>
+
 	<h1>Обратная связь</h1>
 
 	{if $message_sent}
-		{$name}, ваше сообщение отправлено.
+		<div class="alert alert-info">
+			{$name}, ваше сообщение отправлено.
+		</div>
 	{else}
 
 		{if $error}

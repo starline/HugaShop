@@ -9,7 +9,7 @@
     <div class="header_top">
         <h1>{$meta_title}</h1>
 
-        <form method="post" id="search">
+        <form method="get" id="search">
             <div class="input-group">
                 <input class="search form-control" type="text" name="keyword" placeholder="Название модуля"
                     value="{$keyword}" />
