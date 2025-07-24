@@ -21,7 +21,6 @@ use HugaShop\Models\Content\ContentPost;
 use HugaShop\Models\Order\OrderDelivery;
 use HugaShop\Models\Order\OrderPurchase;
 use HugaShop\Models\Content\ContentComment;
-use HugaShop\Models\Content\ContentFeedback;
 use HugaShop\Models\Finance\FinanceCurrency;
 use Illuminate\Database\Capsule\Manager as DB;
 
@@ -49,7 +48,6 @@ class UserNotifier extends BaseModel
         ],
         'admin' => [
             'commentToAdmin' => 'Новый Комментарий',
-            'feedbackToAdmin' => 'Новый Отзыв',
             'newOrderToAdmin' => 'Новый Заказ',
         ],
         'requared' => [
@@ -140,9 +138,6 @@ class UserNotifier extends BaseModel
      */
     public static function sendNotifierToManager(string $message_type, array $message_params)
     {
-        if (empty($message_type)) {
-            return false;
-        }
 
         // User List to notifier
         $user_managers = User::getUsers(['manager' => 1]);
@@ -151,12 +146,11 @@ class UserNotifier extends BaseModel
 
             // Get avaliable notifier modules for User
             $user_notifier_types = UserNotifier::getUserNotifierTypes($user->id, $message_type);
-            foreach ($user_notifier_types as $notifier_id => $types) {
+            foreach ($user_notifier_types as $notifier_id => $t) {
                 $notifier = UserNotifier::getOne($notifier_id);
                 UserNotifier::sendNotifier($notifier->module, $message_type, $message_params);
             }
         }
-        return true;
     }
 
 
@@ -182,30 +176,6 @@ class UserNotifier extends BaseModel
 
         Design::assign([
             'comment' => $comment
-        ]);
-
-        // Image template
-        $template = Design::fetch($template_path);
-        $message_params['subject'] = Design::getTemplateVars('subject');
-
-        return $template;
-    }
-
-
-    /**
-     * Send Feedback to Admin
-     *
-     * @param string $template_path
-     * @param array $message_params
-     */
-    private static function feedbackToAdmin(string $template_path, array &$message_params)
-    {
-        if (empty($message_params['feedback_id']) || empty($feedback = ContentFeedback::getOne(intval($message_params['feedback_id'])))) {
-            return false;
-        }
-
-        Design::assign([
-            'feedback' => $feedback
         ]);
 
         // Image template

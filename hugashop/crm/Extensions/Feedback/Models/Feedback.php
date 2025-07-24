@@ -8,30 +8,19 @@
  *
  */
 
-namespace HugaShop\Models\Content;
+namespace HugaShop\Extensions\Feedback\Models;
 
-use HugaShop\Models\BaseModel;
+use HugaShop\Extensions\BaseExtensionModel;
 
-class ContentFeedback extends BaseModel
+final class Feedback extends BaseExtensionModel
 {
 
+    public $timestamps = true;
     protected static $table_fields = [
         'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'name' =>               ['type' => 'varchar',       'req' => true],
-        'date' =>               ['type' => 'tinyint',       'def' => 'CURRENT_TIMESTAMP'],
         'ip' =>                 ['type' => 'varchar',       'length' => 20],
         'email' =>              ['type' => 'varchar'],
         'message' =>            ['type' => 'text']
     ];
-
-
-    /**
-     * Добавляем Feedback
-     * @param $feedback
-     */
-    public static function addFeedback(object $feedback)
-    {
-        $feedback->date = date("Y-m-d H:i:s");
-        return ContentFeedback::createOne($feedback);
-    }
 }

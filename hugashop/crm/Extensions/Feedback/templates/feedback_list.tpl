@@ -1,7 +1,6 @@
 {extends file='wrapper/main.tpl'}
-{include file='content/parts/menu_part.tpl'}
+{include file='extension/parts/menu_part.tpl'}
 
-{* Title *}
 {$meta_title='Обратная связь'}
 
 {block name=content}
@@ -26,10 +25,9 @@
 	</div>
 
 	<div id="main_list">
+		{if $feedbacks->isNotEmpty()}
+			{include file='parts/pagination.tpl'}
 
-		{include file='parts/pagination.tpl'}
-
-		{if $feedbacks}
 			<form method="post" class="list_form">
 				{getCSRFInput}
 
@@ -63,11 +61,10 @@
 				</div>
 			</form>
 
+			{include file='parts/pagination.tpl'}
 		{else}
 			Нет сообщений
 		{/if}
-
-		{include file='parts/pagination.tpl'}
 	</div>
 {/block}
 
