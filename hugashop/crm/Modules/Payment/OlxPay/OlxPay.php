@@ -2,13 +2,15 @@
 
 namespace HugaShop\Modules\Payment\OlxPay;
 
+use HugaShop\Modules\Payment\PaymentInterface;
+
 use HugaShop\Models\Order\Order;
 use HugaShop\Services\Config;
 use HugaShop\Services\Design;
 use HugaShop\Models\Order\OrderPayment;
 use HugaShop\Models\Finance\FinanceCurrency;
 
-class OlxPay
+class OlxPay implements PaymentInterface
 {
 
     public function checkoutForm($order_id, $view_type)
@@ -58,5 +60,10 @@ class OlxPay
 
             return false;
         }
+    }
+
+    public function callback(?string $order_url = null, ?string $form_type = null)
+    {
+        return false;
     }
 }

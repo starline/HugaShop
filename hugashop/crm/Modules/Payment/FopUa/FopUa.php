@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.4
+ * @version 2.5
  *
  * Использует библиотку intl (MessageFormatter)
  * Установка на Linus: sudo apt-get install php7.4-intl
@@ -15,6 +15,8 @@
  */
 
 namespace HugaShop\Modules\Payment\FopUa;
+
+use HugaShop\Modules\Payment\PaymentInterface;
 
 use TCPDF;
 use MessageFormatter;
@@ -31,7 +33,7 @@ use HugaShop\Models\Order\OrderDelivery;
 use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Product\Product;
 
-class FopUa
+class FopUa implements PaymentInterface
 {
     public function checkoutForm($order_id, $view_type)
     {
