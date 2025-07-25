@@ -613,7 +613,7 @@
 							<span class="percent" data-bs-toggle="tooltip" title="Маржа = % прибыли в выручке">Маржа:
 								{($order->profit_price / $order->total_price * 100)|number:2}%</span>
 							<span class="percent" data-bs-toggle="tooltip" title="ROI = % возврата инвестиций">ROI:
-								{($order->profit_price / ($order->total_price - $order->profit_price)*100)|number:2}%</span>
+								{($order->profit_price / max(0.01, $order->total_price - $order->profit_price) * 100)|number:2}%</span>
 						</div>
 					{/if}
 				{/if}
