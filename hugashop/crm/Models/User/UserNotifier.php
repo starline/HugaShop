@@ -65,6 +65,8 @@ class UserNotifier extends BaseModel
      */
     public static function deleteNotifier($id)
     {
+        Cache::cache(self::class)->clear();
+        self::$settings_cache = [];
         UserNotifierType::where('notifier_id', $id)->delete();
         return self::deleteOne($id);
     }
