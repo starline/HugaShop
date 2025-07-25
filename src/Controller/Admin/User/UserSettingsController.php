@@ -10,13 +10,14 @@
 
 namespace App\Controller\Admin\User;
 
-use HugaShop\Models\User\User;
 use HugaShop\Services\Design;
+use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
 use HugaShop\Models\User\UserGroup;
 use HugaShop\Models\User\UserNotifier;
-use HugaShop\Models\User\UserPermission;
+use HugaShop\Services\NotifierFactory;
 use App\Controller\BaseAdminController;
+use HugaShop\Models\User\UserPermission;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -54,7 +55,7 @@ class UserSettingsController extends BaseAdminController
 
         $permissions            = UserPermission::getUserPermissionsName($current_user->id);
         $notifier_methods       = UserNotifier::getList(['enabled' => 1], order: 'position');
-        $notifier_types         = UserNotifier::getNotifierTypes('admin');
+        $notifier_types         = NotifierFactory::getNotifierTypes('admin');
         $user_notifier_types    = UserNotifier::getUserNotifierTypes($current_user->id);
 
         Design::assign([
