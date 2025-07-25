@@ -43,24 +43,20 @@ class UserNotifier extends BaseModel
             ->withPivot('type');
     }
 
+
     public static function createOne(array|object $values): object
     {
-        $notifier = parent::createOne($values);
-
         Cache::cache(self::class)->clear();
         self::$settings_cache = [];
-
-        return $notifier;
+        return parent::createOne($values);
     }
+
 
     public static function updateOne(int $id, array|object $values)
     {
-        $result = parent::updateOne($id, $values);
-
         Cache::cache(self::class)->clear();
         self::$settings_cache = [];
-
-        return $result;
+        return parent::updateOne($id, $values);
     }
 
 
@@ -76,28 +72,20 @@ class UserNotifier extends BaseModel
 
     /**
      * Get Notifier Method settings
-     * @param int|string $method_id
-     * @return object
+     * @param string $module_name
      */
-    public static function getNotifierSettings(int|string $id): object|bool
+    public static function getNotifierSettings(string $module_name): object
     {
-        $key = is_int($id) ? $id : $id;
 
-        if (isset(self::$settings_cache[$key])) {
-            return self::$settings_cache[$key];
+        if (isset(self::$settings_cache[$module_name])) {
+            return self::$settings_cache[$module_name];
         }
 
-        $cache_item = Cache::cache(self::class)->getItem('settings_' . $key);
+        $cache_item = Cache::cache(self::class)->getItem('settings_' . $module_name);
         if (!$cache_item->isHit()) {
-            $query = UserNotifier::query();
-
-            if (is_int($id)) {
-                $query->where('id', $id);
-            } else {
-                $query->where('module', $id);
-            }
-
-            $record = $query->value('settings');
+            $$record = UserNotifier::query()
+                ->where('module', $module_name)
+                ->value('settings');
 
             $settings = empty($record) ? false : (object) unserialize($record);
             Cache::cache(self::class)->save($cache_item->set($settings));
@@ -105,7 +93,7 @@ class UserNotifier extends BaseModel
             $settings = $cache_item->get();
         }
 
-        return self::$settings_cache[$key] = $settings;
+        return self::$settings_cache[$module_name] = $settings;
     }
 
 

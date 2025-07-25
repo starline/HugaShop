@@ -25,8 +25,6 @@ class TelegramWebhookController extends BaseFrontController
     {
         try {
 
-            // TODO: добавить notifier id
-
             $notifier_settings = UserNotifier::getNotifierSettings('Telegram');
 
             $Bot = new NotifyBot();
