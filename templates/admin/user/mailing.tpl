@@ -135,7 +135,7 @@
 			{/if}
 
 			<div class="col-12 btn_row">
-				<button class="btn btn-light" type="submit" name="action" value="send">Отправить</button>
+				{include file="parts/button.tpl" class="btn-light" label="Отправить" extra_attrs="name=action value=send"}
 				{include file="parts/button.tpl"}
 			</div>
 

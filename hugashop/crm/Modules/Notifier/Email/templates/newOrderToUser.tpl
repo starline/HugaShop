@@ -3,7 +3,7 @@
 {$subject = "Заказ №`$order->id`" scope=global}
 
 <div id="header">
-	<h1 style="display: inline;">Заказ №{$order->id} {if $order->paid}, оплачен{/if}</h1>
+	<h1>Заказ №{$order->id} {if $order->paid}, оплачен{/if}</h1>
 	<span>от {$order->date|date}</span>
 	<h2>{$settings->company_name} - {$settings->company_description}</h2>
 </div>

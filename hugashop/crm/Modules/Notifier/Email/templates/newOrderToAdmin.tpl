@@ -7,7 +7,7 @@
 {/if}
 
 <div id="header">
-	<h1 style="display: inline;">
+	<h1>
 		<a href="{$config->root_url}{'OrderAdmin'|link:[id => $order->id]}">Заказ №{$order->id}</a>
 	</h1>
 	<span>от {$order->date|date}</span>

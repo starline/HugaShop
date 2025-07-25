@@ -116,8 +116,8 @@ class UserMailing extends BaseModel
         $template_params['utm_link'] = UserMailing::makeShortUTMLink($mailing);
 
         if (!empty($mailing->template_id)) {
-            $template = UserMailTemplate::getOne($mailing->template_id);
-            $message = DesignTwig::renderTemplate($template->content, $template_params);
+            $template   = UserMailTemplate::getOne($mailing->template_id);
+            $message    = DesignTwig::renderTemplate($template->content, $template_params);
         } else {
             $message = $mailing->message;
         }

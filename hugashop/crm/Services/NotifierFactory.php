@@ -64,8 +64,8 @@ class NotifierFactory
         }
 
         // Get module settings
-        $notifier_settings = UserNotifier::getNotifierSettings($module_name);
-        $message_params = array_merge((array) $notifier_settings, $message_params);
+        $notifier_settings  = UserNotifier::getNotifierSettings($module_name);
+        $message_params     = array_merge((array) $notifier_settings, $message_params);
 
         // Fetch template
         $message_content = self::$message_type($current_module_tpl_path, $message_params);

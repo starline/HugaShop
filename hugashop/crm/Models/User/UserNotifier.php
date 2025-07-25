@@ -83,7 +83,7 @@ class UserNotifier extends BaseModel
 
         $cache_item = Cache::cache(self::class)->getItem('settings_' . $module_name);
         if (!$cache_item->isHit()) {
-            $$record = UserNotifier::query()
+            $record = UserNotifier::query()
                 ->where('module', $module_name)
                 ->value('settings');
 

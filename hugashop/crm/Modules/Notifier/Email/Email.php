@@ -4,19 +4,18 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.7
+ * @version 1.8
  *
  */
 
 namespace HugaShop\Modules\Notifier\Email;
-
-use HugaShop\Modules\Notifier\NotifierInterface;
 
 use HugaShop\Models\Settings;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mime\Email as SEmail;
+use HugaShop\Modules\Notifier\NotifierInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 class Email implements NotifierInterface
@@ -39,16 +38,10 @@ class Email implements NotifierInterface
     {
 
         // Defaul params
-        if (empty($params['from_email'])) {
-            $params['from_email'] = 'info@' . Settings::getParam('domain');
-        }
-        if (empty($params['from_name'])) {
-            $params['from_name'] = Settings::getParam('company_name');
-        }
-
-        if (!empty($params['user']->email)) {
-            $params['to_email'] = $params['user']->email;
-        }
+        $params['from_email']   = $params['from_email'] ?? 'info@' . Settings::getParam('domain');
+        $params['from_name']    = !empty($params['from_name']) ? $params['from_name'] : Settings::getParam('company_name');
+        $params['to_email']     = $params['user']->email ?? $params['email'] ?? null;
+        $params['subject']      = $params['subject'] ?? $params['from_name'];
 
         $params_name = [
             'from_email',
@@ -91,12 +84,13 @@ class Email implements NotifierInterface
             $email->replyTo($reply_to);
         }
 
-       // try {
+        try {
             $mailer->send($email);
-        //} catch (TransportExceptionInterface $e) {
+            return true;
+        } catch (TransportExceptionInterface $e) {
 
             // TODO: логируй, уведомляй или используй fallback
 
-        //}
+        }
     }
 }
