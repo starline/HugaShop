@@ -143,21 +143,13 @@ abstract class BaseModel extends Model
 
 
     /**
-     * Check if Model has settings
-     */
-    public static function hasSettings(): bool
-    {
-        return array_key_exists('settings', static::getFields());
-    }
-
-
-    /**
      * Check if Model has position
      */
     public static function hasPosition(): bool
     {
         return array_key_exists('position', static::getFields());
     }
+
 
     /**
      * Check if Model has url
@@ -279,7 +271,6 @@ abstract class BaseModel extends Model
     {
         $model = static::getModel();
         $query = $model->newQuery();
-        $has_settings = static::hasSettings();
 
         if (!$count) {
 
@@ -335,8 +326,8 @@ abstract class BaseModel extends Model
         }
 
         // Results
-        $callback = function () use ($model, $query, $select, $has_settings, $count) {
-            return $model->runWithInitTable(function () use ($query, $select, $has_settings, $count) {
+        $callback = function () use ($model, $query, $select, $count) {
+            return $model->runWithInitTable(function () use ($query, $select, $count) {
 
                 // Get Count
                 if ($count) {
@@ -350,8 +341,8 @@ abstract class BaseModel extends Model
 
                 // Get List
                 $result = $query->get();
-                if ($has_settings) {
-                    foreach ($result as $item) {
+                foreach ($result as $item) {
+                    if (isset($item->settings)) {
                         $item->settings = empty($item->settings) ? new \stdClass() : (object) unserialize($item->settings);
                     }
                 }
@@ -408,13 +399,15 @@ abstract class BaseModel extends Model
         }
 
         $result = $model->runWithInitTable(function () use ($query) {
-            return $query->first();
-        });
+            $result = $query->first();
 
-        // Settings
-        if ($result and static::hasSettings()) {
-            $result->settings = empty($result->settings) ? new \stdClass() : (object) unserialize($result->settings);
-        }
+            // Settings
+            if (isset($result->settings)) {
+                $result->settings = empty($result->settings) ? new \stdClass() : (object) unserialize($result->settings);
+            }
+
+            return $result;
+        });
 
         return $result;
     }
@@ -450,9 +443,11 @@ abstract class BaseModel extends Model
 
         // check allowed params
         if (!empty(static::$table_fields)) {
-            foreach (static::$table_fields as $param_name => $v) {
+            foreach (static::$table_fields as $param_name => $param_settings) {
                 if (array_key_exists($param_name, $values)) {
-                    $valid_values[$param_name] = $values[$param_name];
+                    if (!($param_settings['type'] === 'datetime' and $values[$param_name] === '')) {
+                        $valid_values[$param_name] = $values[$param_name];
+                    }
                 }
             }
         } else {

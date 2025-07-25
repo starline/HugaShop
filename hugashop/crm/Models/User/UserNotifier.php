@@ -14,8 +14,6 @@ use HugaShop\Models\BaseModel;
 use HugaShop\Models\User\UserNotifierType;
 use HugaShop\Services\Cache;
 
-
-
 class UserNotifier extends BaseModel
 {
 
@@ -25,7 +23,7 @@ class UserNotifier extends BaseModel
         'comment' =>        ['type' => 'varchar'],
         'module' =>         ['type' => 'varchar'],
         'type' =>           ['type' => 'varchar'],
-        'settings' =>       ['type' => 'varchar'],
+        'settings' =>       ['type' => 'text'],
         'position' =>       ['type' => 'int',           'def' => 0],
         'enabled' =>        ['type' => 'int',           'def' => 0],
     ];

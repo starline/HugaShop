@@ -55,7 +55,12 @@ class Email implements NotifierInterface
             'to_email',
             'from_name',
             'subject',
-            'reply_to'
+            'reply_to',
+            'use_smpt',
+            'host',
+            'port',
+            'username',
+            'password'
         ];
 
         foreach ($params as $name => $value) {
@@ -68,7 +73,13 @@ class Email implements NotifierInterface
             return false;
         }
 
-        $transport = Transport::fromDsn('sendmail://default');
+        if ($use_smpt) {
+            $dsn = sprintf('smtp://%s:%s@%s:%s', $username, $password, $host, $port);
+        } else {
+            $dsn = 'sendmail://default';
+        }
+
+        $transport = Transport::fromDsn($dsn);
         $mailer = new Mailer($transport);
         $email = (new SEmail())
             ->from(new Address($from_email, $from_name))
@@ -76,13 +87,16 @@ class Email implements NotifierInterface
             ->subject($subject)
             ->html($message);
 
+        if (!empty($reply_to)) {
+            $email->replyTo($reply_to);
+        }
 
-        try {
+       // try {
             $mailer->send($email);
-        } catch (TransportExceptionInterface $e) {
+        //} catch (TransportExceptionInterface $e) {
 
             // TODO: логируй, уведомляй или используй fallback
 
-        }
+        //}
     }
 }

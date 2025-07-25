@@ -3,7 +3,6 @@
 namespace HugaShop\Modules\Payment\NovaPoshtaPay;
 
 use HugaShop\Modules\Payment\PaymentInterface;
-
 use HugaShop\Models\Order\Order;
 use HugaShop\Services\Config;
 use HugaShop\Services\Design;
@@ -12,7 +11,8 @@ use HugaShop\Models\Finance\FinanceCurrency;
 
 class NovaPoshtaPay implements PaymentInterface
 {
-    public function checkoutForm($order_id, $view_type)
+
+    public function checkoutForm(int $order_id, string $view_type)
     {
 
         if (!empty($order_id)) {

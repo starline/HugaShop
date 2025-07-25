@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.5
+ * @version 1.6
  *
  * Список рассылки сообщений
  * Запускается по cron каждые
@@ -17,9 +17,11 @@ use HugaShop\Services\Config;
 use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
 use HugaShop\Services\DesignTwig;
+use HugaShop\Services\NotifierFactory;
 
 class UserMailing extends BaseModel
 {
+
     protected static $table_fields = [
         'id' =>                     ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'user_id' =>                ['type' => 'int'],
@@ -32,11 +34,11 @@ class UserMailing extends BaseModel
         'settings' =>               ['type' => 'text'],
         'ip' =>                     ['type' => 'varchar'],
         'count' =>                  ['type' => 'int',           'def' => 0],
-        'create_date' =>            ['type' => 'datetime',      'def' => 'CURRENT_TIMESTAMP'],
         'sent_date' =>              ['type' => 'datetime'],
         'sending_date' =>           ['type' => 'datetime'],
         'frozen' =>                 ['type' => 'tinyint',       'def' => 0],
-        'send' =>                   ['type' => 'tinyint',       'def' => 0]
+        'send' =>                   ['type' => 'tinyint',       'def' => 0],
+        'create_date' =>            ['type' => 'datetime',      'def' => 'CURRENT_TIMESTAMP']
     ];
 
     public function user()
@@ -108,24 +110,26 @@ class UserMailing extends BaseModel
             return false;
         }
 
-        if (empty($template = UserMailTemplate::getOne($mailing->template_id))) {
-            return false;
-        }
-
         $params[UserMailTemplate::$mail_types[$mailing->type]] = $mailing->contact;
 
         // Рендерим шаблон, вставляю переменные
         $template_params['utm_link'] = UserMailing::makeShortUTMLink($mailing);
-        $message = DesignTwig::renderTemplate($template->content, $template_params);
 
-        if (UserNotifier::send($mailing->notifier_id, $message, $params)) {
-            $update_mailing = new \stdClass();
-            $update_mailing->sent_date =  date('Y-m-d H:i:s');
-            $update_mailing->send = 1;
-            return UserMailing::updateOne($mailing->id, $update_mailing);
+        if (!empty($mailing->template_id)) {
+            $template = UserMailTemplate::getOne($mailing->template_id);
+            $message = DesignTwig::renderTemplate($template->content, $template_params);
+        } else {
+            $message = $mailing->message;
         }
 
-        UserMailing::updateList(ids: $mailing->id, values: ['frozen' => 1]);
+        if (NotifierFactory::send($mailing->notifier_id, $message, $params)) {
+            return UserMailing::updateOne($mailing->id, [
+                'sent_date' => date('Y-m-d H:i:s'),
+                'send' => 1
+            ]);
+        }
+
+        UserMailing::updateOne($mailing->id, ['frozen' => 1]);
         return false;
     }
 

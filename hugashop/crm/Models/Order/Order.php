@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Order extends BaseModel
 {
+
     protected static $table_fields = [
         'id' =>                     ['type' => 'int'],
         'delivery_id' =>            ['type' => 'int'],
@@ -127,13 +128,26 @@ class Order extends BaseModel
      * Выбрать определенный заказ
      * @param int|string $id
      */
-    public static function getOrder(int|string $id, array $join = []): ?self
+    public static function getOrder(int|string $id, array $join = [])
     {
         $query = self::query();
-        if (!empty($join)) $query->with($join);
-        if (is_int($id)) $order = $query->where('id', $id)->first();
-        else $order = $query->where('url', $id)->first();
-        if ($order) $order->settings = empty($order->settings) ? new \stdClass() : (object) unserialize($order->settings);
+
+        if (!empty($join)) {
+            $query->with($join);
+        }
+
+        if (is_int($id)) {
+            $query->where('id', $id);
+        } else {
+            $query->where('url', $id);
+        }
+
+        $order = $query->first();
+        
+        if ($order) {
+            $order->settings = empty($order->settings) ? new \stdClass() : (object) unserialize($order->settings);
+        }
+
         return $order;
     }
 
@@ -217,15 +231,14 @@ class Order extends BaseModel
 
         // Выбираем заказы
         $orders = $query->get();
-        foreach ($orders as $o) {
-            // Преобразуем json в object
+        foreach ($orders as $order) {
+            // Преобразуем serialize data в object
             // Если преобразовывать пустую переменную, в обьект добавляется "scalar"
-            $o->settings = empty($o->settings) ? new \stdClass() : (object) unserialize($o->settings);
+            $order->settings = empty($order->settings) ? new \stdClass() : (object) unserialize($order->settings);
         }
 
         return $orders->keyBy('id')->all();
     }
-
 
 
     /**
@@ -425,27 +438,26 @@ class Order extends BaseModel
         // Вычисляем стоимость заказа со скидкой и купоном
         $order_discount_price = $order_clean_price * (100 - $order->discount) / 100 - $order->coupon_discount;
 
-        $payment_settings = new \stdClass();
         // Выбираем настройки способа оплаты
         if (!empty($order->payment_method_id)) {
-            $payment_settings = OrderPayment::getPaymentMethodSettings($order->payment_method_id);
+            $payment = OrderPayment::getOne($order->payment_method_id);
         }
 
         // Вычисляем внутренюю комиссию способа оплаты
         $order_payment_fee_inside_price = 0;
-        if (!empty($payment_settings->fee_inside)) {
-            $order_payment_fee_inside_price = $order_discount_price * $payment_settings->fee_inside / 100;
+        if (!empty($payment->settings->fee_inside)) {
+            $order_payment_fee_inside_price = $order_discount_price * $payment->settings->fee_inside / 100;
         }
 
         // Добавляем платеж за операцию
         if (!empty($payment_settings->fee_fix_inside)) {
-            $order_payment_fee_inside_price += $payment_settings->fee_fix_inside;
+            $order_payment_fee_inside_price += $payment->settings->fee_fix_inside;
         }
 
         // Вычисляем внутренюю сумму налога которую оплачивает продавец
         $order_payment_tax_inside_price = 0;
         if (!empty($payment_settings->tax_inside)) {
-            $order_payment_tax_inside_price = $order_discount_price * $payment_settings->tax_inside / 100;
+            $order_payment_tax_inside_price = $order_discount_price * $payment->settings->tax_inside / 100;
         }
 
         // Вычисляем общую сумму заказа к оплате
@@ -459,12 +471,12 @@ class Order extends BaseModel
         // Если есть налоги способа оплаты, добавляем к цене
         // Формула: (100-tax%)*PriceWithTax = Price => PriceWithTax = Price/((100-tax%)/100)
         if (!empty($payment_settings->tax)) {
-            $order_payment_price = $order_payment_price / ((100 - $payment_settings->tax) / 100);
+            $order_payment_price = $order_payment_price / ((100 - $payment->settings->tax) / 100);
         }
 
         // Добавляем комиссию сервиса
         if (!empty($payment_settings->fee)) {
-            $order_payment_price = $order_payment_price / ((100 - $payment_settings->fee) / 100);
+            $order_payment_price = $order_payment_price / ((100 - $payment->settings->fee) / 100);
         }
 
         // TODO: Если основная валюта без копеек, округлим сумму

@@ -10,7 +10,6 @@
 
 namespace HugaShop\Models\Order;
 
-use stdClass;
 use HugaShop\Services\Config;
 use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
@@ -20,6 +19,7 @@ use HugaShop\Models\Localization\Language;
 
 class OrderPayment extends BaseModel
 {
+
     protected static $table_fields = [
         'id' =>                     ['type' => 'int',           'length' => 11,       'extra' => 'AUTO_INCREMENT'],
         'name' =>                   ['type' => 'varchar',       'length' => 255,      'required' => true],
@@ -56,14 +56,6 @@ class OrderPayment extends BaseModel
     }
 
 
-    public static function getPaymentMethod(int $payment_method_id)
-    {
-        $payment_method = OrderPayment::getOne($payment_method_id);
-        $payment_method->settings = $payment_method->settings ? (object) unserialize($payment_method->settings) : new stdClass();
-        return $payment_method;
-    }
-
-
     /**
      * Get payments methods
      * @param array $filter
@@ -93,16 +85,6 @@ class OrderPayment extends BaseModel
         }
 
         return $query->orderBy('position')->get();
-    }
-
-
-    /**
-     * Выбираем настройки способа оплаты
-     * @param int $method_id
-     */
-    public static function getPaymentMethodSettings(int $id)
-    {
-        return optional(self::find($id))->settings;
     }
 
 

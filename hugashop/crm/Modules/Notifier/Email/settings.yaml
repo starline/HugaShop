@@ -2,3 +2,13 @@ name: "Оповещение по Email"
 type: email
 settings_params:
   - { variable: from_email, name: "Email отправителя" }
+  - { variable: from_name, name: "Имя отправителя" }
+  - {
+      variable: use_smpt,
+      name: "Использовать SMTP port",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }
+  - { variable: host, name: "SMTP host" }
+  - { variable: port, name: "SMTP port" }
+  - { variable: username, name: "SMTP username" }
+  - { variable: password, name: "SMTP password" }

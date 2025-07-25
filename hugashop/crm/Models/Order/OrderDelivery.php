@@ -20,6 +20,7 @@ use HugaShop\Models\Order\OrderPaymentDelivery;
 
 class OrderDelivery extends BaseModel
 {
+
     protected static $table_fields = [
         'id' =>                 ['type' => 'int',        'extra' => 'AUTO_INCREMENT'],
         'name' =>               ['type' => 'varchar',    'req' => true],

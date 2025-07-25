@@ -14,6 +14,7 @@ use HugaShop\Models\BaseModel;
 
 class UserMailTemplate extends BaseModel
 {
+
     protected static $table_fields = [
         'id' =>             ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'name' =>           ['type' => 'varchar',       'req' => true],

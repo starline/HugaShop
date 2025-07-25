@@ -68,9 +68,6 @@ class OrderController extends BaseFrontController
             // Валюта оплаты
             $payment_currency = FinanceCurrency::getCurrency(intval($payment_method->currency_id));
             Design::assign('payment_currency', $payment_currency);
-
-            // Выбираем настройки способа оплаты
-            $payment_settings = OrderPayment::getPaymentMethodSettings($payment_method->id);
         }
 
         // Все Способы доставки

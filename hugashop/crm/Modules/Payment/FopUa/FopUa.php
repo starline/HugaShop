@@ -16,8 +16,6 @@
 
 namespace HugaShop\Modules\Payment\FopUa;
 
-use HugaShop\Modules\Payment\PaymentInterface;
-
 use TCPDF;
 use MessageFormatter;
 use IntlDateFormatter;
@@ -26,16 +24,18 @@ use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use HugaShop\Models\Order\Order;
-use HugaShop\Models\Finance\FinanceCurrency;
-use HugaShop\Models\Order\OrderPayment;
-use HugaShop\Models\Order\OrderPurchase;
-use HugaShop\Models\Order\OrderDelivery;
-use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Product\Product;
+use HugaShop\Models\Order\OrderPayment;
+use HugaShop\Models\Order\OrderDelivery;
+use HugaShop\Models\Order\OrderPurchase;
+use HugaShop\Models\Localization\Language;
+use HugaShop\Models\Finance\FinanceCurrency;
+use HugaShop\Modules\Payment\PaymentInterface;
 
 class FopUa implements PaymentInterface
 {
-    public function checkoutForm($order_id, $view_type)
+
+    public function checkoutForm(int $order_id, string $view_type)
     {
 
         if (!empty($order_id)) {

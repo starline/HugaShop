@@ -246,9 +246,9 @@ class OrderController extends BaseAdminController
 
                             // Добавляем контрагента "заказ"
                             $contractor = new \stdClass();
-                            $contractor->payment_id =   $payment_income->id;
-                            $contractor->entity_id =    $order->id;
-                            $contractor->entity_name =  'order';
+                            $contractor->payment_id     = $payment_income->id;
+                            $contractor->entity_id      = $order->id;
+                            $contractor->entity_name    = 'order';
                             FinancePaymentContractor::addContractor($contractor);
                         }
                     }

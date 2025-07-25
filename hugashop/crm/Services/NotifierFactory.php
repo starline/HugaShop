@@ -331,7 +331,7 @@ class NotifierFactory
         // Выбираем указаный способ оплаты
         $payment_method = OrderPayment::getOne($order->payment_method_id);
         $payment_currency = FinanceCurrency::getCurrency(intval($payment_method->currency_id));
-        $payment_settings = OrderPayment::getPaymentMethodSettings($order->payment_method_id);
+        $payment_settings = $payment_method->settings;
 
         Design::assign([
             'order' => $order,

@@ -9,16 +9,9 @@
 
 {block name=content}
 
-	{if $message_error}
-		<div class="message message_error">
-			<span class="text">{if $message_error == 'code_exists'}Купон с таким кодом уже существует{/if}</span>
-		</div>
-	{/if}
-
-
 	<!-- Основная форма -->
-	<form method="post" enctype="multipart/form-data">
-		<input name="id" class="name" type="hidden" value="{$mailing->id}" />
+	<form method="post">
+		<input class="name" type="hidden" name="id" value="{$mailing->id}" />
 		{getCSRFInput}
 
 		<div class="row gx-5">
@@ -51,7 +44,7 @@
 
 					{if !$mailing->token|empty}
 						<li>
-							<label for="contact" class="col-form-label">Ссылка для отслеживания</label>
+							<label class="col-form-label">Ссылка для отслеживания</label>
 							<div class="property_value_text copy_field"
 								value="{$config->root_url}/m{$mailing->id}/{$mailing->token}">
 								{$config->root_url}/m{$mailing->id}/{$mailing->token}
@@ -61,7 +54,7 @@
 							</div>
 						</li>
 						<li>
-							<label for="contact" class="col-form-label">Метка для отслеживания</label>
+							<label class="col-form-label">Метка для отслеживания</label>
 							<div class="property_value_text copy_field"
 								value="?utm_mid={$mailing->id}&utm_mtoken={$mailing->token}">
 								?utm_mid={$mailing->id}&utm_mtoken={$mailing->token}
@@ -94,7 +87,7 @@
 			<div class="col-lg-6 layer">
 				<ul class="property_block">
 					<li>
-						<label for="sent_date" class="col-form-label">Отправлен</label>
+						<label class="col-form-label">Отправлен</label>
 						<div class="property_value_text">
 							{if !$mailing->sent_date|empty}
 								{$mailing->sent_date|date} в {$mailing->sent_date|time}
@@ -104,13 +97,13 @@
 						</div>
 					</li>
 					<li>
-						<label for="contact" class="col-form-label">Переходов</label>
+						<label class="col-form-label">Переходов</label>
 						<div class="property_value_text">{$mailing->count}</div>
 					</li>
 
 					{if !$mailing->ip|empty}
 						<li>
-							<label for="contact" class="col-form-label">IP</label>
+							<label class="col-form-label">IP</label>
 							<div class="property_value_text">{$mailing->ip}</div>
 						</li>
 					{/if}
@@ -123,7 +116,7 @@
 					{else}
 						<li>
 							<label class="col-form-label">Шаблон</label>
-							<a href="/admin/user/mailing/template/{$mailing->template_id}">{$mailing->template_id}</a>
+							<a href="{'MailTemplateAdmin'|link:[id => $mailing->template_id]}">{$mailing->template_id}</a>
 						</li>
 					{/if}
 				</ul>
@@ -135,14 +128,14 @@
 					{if $mailing->template->type|in_array:[sms, telegram]}
 						<textarea name="content" class="form-control sms_editor" disabled>{$mailing->template->compiled}</textarea>
 					{else}
-						<textarea name="content" class=" editor_large" disabled>{$mailing->template->compiled}</textarea>
+						<textarea name="content" class="editor_large" disabled>{$mailing->template->compiled}</textarea>
 					{/if}
 
 				</div>
 			{/if}
 
 			<div class="col-12 btn_row">
-				<button class="btn btn-light" type="submit" name="action_send">Отправить</button>
+				<button class="btn btn-light" type="submit" name="action" value="send">Отправить</button>
 				{include file="parts/button.tpl"}
 			</div>
 

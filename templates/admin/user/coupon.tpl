@@ -17,7 +17,7 @@
 
 
 	<!-- Основная форма -->
-	<form method="post" enctype="multipart/form-data">
+	<form method="post">
 		{getCSRFInput}
 
 		<div class="row gx-5">

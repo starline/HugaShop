@@ -15,8 +15,6 @@
 
 namespace HugaShop\Modules\Payment\IpRu;
 
-use HugaShop\Modules\Payment\PaymentInterface;
-
 use TCPDF;
 use TCPDF2DBarcode;
 use MessageFormatter;
@@ -26,14 +24,16 @@ use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use HugaShop\Models\Order\Order;
-use HugaShop\Models\Finance\FinanceCurrency;
 use HugaShop\Models\Order\OrderPayment;
 use HugaShop\Models\Order\OrderDelivery;
 use HugaShop\Models\Order\OrderPurchase;
+use HugaShop\Models\Finance\FinanceCurrency;
+use HugaShop\Modules\Payment\PaymentInterface;
 
 class IpRu implements PaymentInterface
 {
-    public function checkoutForm(int $order_id, $view_type)
+
+    public function checkoutForm(int $order_id, string $view_type)
     {
 
         if (!empty($order_id)) {

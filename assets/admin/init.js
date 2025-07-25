@@ -42,16 +42,10 @@ $(function () {
 
 
     // Action btn
-    $('button.btn').on('click', function () {
+    $('button.btn').one('click', function () {
         const $btn = $(this);
-
-        $btn.prop('disabled', true);
         $btn.find('.spinner-border').show();
         $btn.find('.btn-content').addClass('invisible');
-
-        if ($btn.attr('type') === 'submit') {
-            $btn.closest('form').trigger('submit');
-        }
     });
 
 

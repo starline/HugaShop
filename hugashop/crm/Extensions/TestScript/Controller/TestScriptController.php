@@ -604,7 +604,7 @@ final class TestScriptController extends BaseAdminController
 
 
 
-                    
+
                     // Подбираем сопутсвующие товары
                 case 'related_products': {
 
@@ -714,13 +714,13 @@ final class TestScriptController extends BaseAdminController
                             // Переносим поле sms_delivery_note в settings
                             if (0 and isset($order->sms_delivery_note) and $order->sms_delivery_note == 1) {
                                 $order->settings->delivery_sms = $order->sms_delivery_note;
-                                Order::updateOrder($order->id, array('settings' => $order->settings), false);
+                                Order::updateOrder($order->id, ['settings' => $order->settings], false);
                             }
 
                             // Переносим поле delivery_info в settings
                             if (0 and !empty($order->delivery_info)) {
                                 $order->settings->delivery_info = $order->delivery_info;
-                                Order::updateOrder($order->id, array('settings' => $order->settings), false);
+                                Order::updateOrder($order->id, ['settings' => $order->settings], false);
                             }
                         }
                         break;
