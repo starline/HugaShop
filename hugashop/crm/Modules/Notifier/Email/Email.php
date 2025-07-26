@@ -40,7 +40,7 @@ class Email implements NotifierInterface
         // Defaul params
         $params['from_email']   = $params['from_email'] ?? 'info@' . Settings::getParam('domain');
         $params['from_name']    = !empty($params['from_name']) ? $params['from_name'] : Settings::getParam('company_name');
-        $params['to_email']     = $params['user']->email ?? $params['email'] ?? null;
+        $params['to_email']     = $params['user']->email ?? $params['to_email'] ?? null;
         $params['subject']      = $params['subject'] ?? $params['from_name'];
 
         $params_name = [

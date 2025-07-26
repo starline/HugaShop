@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
@@ -43,11 +43,15 @@ class MailTemplateListController extends BaseAdminController
 
         $filter = PaginationService::initFilter();
 
-        $mail_template_list =   UserMailTemplate::getList($filter, order: ['id', 'DESC']);
-        $mail_template_count =  UserMailTemplate::getCount($filter);
+        if (!empty($type = Request::get('type', 'string'))) {
+            $filter['type'] = $type;
+            Design::assign('type', $type);
+        }
+
+        $mail_template_list   = UserMailTemplate::getList($filter, order: ['id', 'DESC']);
+        $mail_template_count  = UserMailTemplate::getCount($filter);
 
         Design::assign('pagination', PaginationService::getPagination($mail_template_count, $filter));
-
         Design::assign('mail_template_count', $mail_template_count);
         Design::assign('mail_template_list', $mail_template_list);
 

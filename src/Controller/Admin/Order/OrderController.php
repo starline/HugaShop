@@ -319,8 +319,7 @@ class OrderController extends BaseAdminController
                 // Send email to User
                 NotifierFactory::sendNotifier('Email', 'newOrderToUser', [
                     'order_id' => $order->id,
-                    'to_email' => $order->email,
-                    'from_name' => Settings::getParam('company_name')
+                    'to_email' => $order->email
                 ]);
             }
 

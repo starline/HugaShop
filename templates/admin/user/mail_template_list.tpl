@@ -14,7 +14,7 @@
 					Еще нет шаблонов
 				{/if}
 			</h1>
-			<a class="add" href="/admin/user/mailing/template">Новый Шаблон</a>
+			<a class="add" href="{'MailTemplateNewAdmin'|link}">Новый Шаблон</a>
 		</div>
 
 
@@ -48,7 +48,6 @@
 		</div>
 
 
-
 		<div id="main_list">
 			{if $mail_template_list}
 
@@ -59,7 +58,8 @@
 
 					<div class="list">
 						{foreach $mail_template_list as $mail_template}
-							<div class="list_row {if $mail_template->send}highlight{/if} mail_template" item_id="{$mail_template->id}">
+							<div class="list_row {if $mail_template->send}highlight{/if} mail_template"
+								item_id="{$mail_template->id}">
 								<div class="checkbox">
 									<input class="form-check-input" type="checkbox" name="check[]" value="{$mail_template->id}" />
 								</div>
@@ -69,7 +69,7 @@
 								</div>
 
 								<div class="col">
-									<a href="/admin/user/mailing/template/{$mail_template->id}">{$mail_template->name}</a>
+									<a href="{'MailTemplateNewAdmin'|link:[id => $mail_template->id]}">{$mail_template->name}</a>
 								</div>
 
 								<div>

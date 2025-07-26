@@ -49,9 +49,9 @@ class NotifierFactory
      */
     public static function sendNotifier(string $module_name, string $message_type, array $message_params)
     {
-        $current_module_dir = Config::get('notifier_dir') . "$module_name/";
-        $current_module_tpl_path = $current_module_dir . "templates/$message_type.tpl";
-        $ClassName = "HugaShop\\Modules\\Notifier\\{$module_name}\\{$module_name}";
+        $current_module_dir         = Config::get('notifier_dir') . "$module_name/";
+        $current_module_tpl_path    = $current_module_dir . "templates/$message_type.tpl";
+        $ClassName                  = "HugaShop\\Modules\\Notifier\\{$module_name}\\{$module_name}";
 
         // Select Smarty template, module file, module name
         if (empty($module_name) || !class_exists($ClassName) || !file_exists($current_module_tpl_path)) {
