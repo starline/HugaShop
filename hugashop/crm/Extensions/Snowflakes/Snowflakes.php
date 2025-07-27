@@ -22,8 +22,8 @@ final class Snowflakes extends BaseExtension
     public static function getFrontBodyTemplate()
     {
         if (!empty(self::getSettings()->enabled) and !empty(self::getSettings()->countSnowflake)) {
-            return self::fetchTemplate('templates/snow.tpl');
+            return self::fetchTemplate('snow.tpl');
         }
-        return null;
+        return;
     }
 }

@@ -112,7 +112,7 @@ final class TestScriptController extends BaseAdminController
                         if (0) {
 
                             // Works well
-                            $result[] = NotifierFactory::sendNotifierToManager('newOrderToAdmin', [
+                            $result[] = NotifierFactory::sendToManagers('newOrderToAdmin', [
                                 'order_id' => 5172
                             ]);
 
@@ -205,7 +205,7 @@ final class TestScriptController extends BaseAdminController
                         // Telegram BOT Send message
                         if (0) {
                             $result[] = $_SERVER['SERVER_NAME'];
-                            $result[] = NotifierFactory::sendNotifierToManager('newOrderToAdmin', [
+                            $result[] = NotifierFactory::sendToManagers('newOrderToAdmin', [
                                 'order_id' => 5172
                             ]);
                         }

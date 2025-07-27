@@ -39,7 +39,7 @@ final class FacebookPixel extends BaseExtension
             if (empty(self::getSettings()->currency_code)) {
                 self::getSettings()->currency_code = FinanceCurrency::getMainCurrency()->code;
             }
-            return self::fetchTemplate('templates/pixel.tpl');
+            return self::fetchTemplate('pixel.tpl');
         }
         return;
     }

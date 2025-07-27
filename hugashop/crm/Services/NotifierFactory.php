@@ -41,7 +41,7 @@ class NotifierFactory
 
 
     /**
-     * Send notification via Module
+     * Send notification template via Module
      *
      * @param string $module_name
      * @param string $message_type
@@ -76,7 +76,7 @@ class NotifierFactory
 
 
     /**
-     * Send notification via Module
+     * Send notification message via Module
      *
      * @param string $module_name
      * @param string $message_content
@@ -112,6 +112,72 @@ class NotifierFactory
 
 
     /**
+     * Send Notifier manager. Select avaliable notifier Method
+     * Send notification only to Managers
+     *
+     * @param string $message_type
+     * @param array $message_params
+     */
+    public static function sendToManagers(string $message_type, array $message_params)
+    {
+
+        // User List to notifier
+        $user_managers = User::getUsers(['manager' => 1]);
+        foreach ($user_managers as $user) {
+            $message_params['user'] = $user;
+
+            // Get avaliable notifier modules for User
+            $user_notifier_types = UserNotifier::getUserNotifierTypes($user->id, $message_type);
+            foreach ($user_notifier_types as $notifier_id => $t) {
+                $notifier = UserNotifier::getOne($notifier_id);
+                self::sendNotifier($notifier->module, $message_type, $message_params);
+            }
+        }
+    }
+
+    public static function sendToManagersNew(string $getTemplateMethod, $data)
+    {
+        // User List to notifier
+        $user_managers = User::getUsers(['manager' => 1]);
+        foreach ($user_managers as $user) {
+            $message_params['user'] = $user;
+
+            // Get avaliable notifier modules for User
+            $user_notifier_types = UserNotifier::getUserNotifierTypes($user->id, $getTemplateMethod);
+            foreach ($user_notifier_types as $notifier_id => $t) {
+                $notifier = UserNotifier::getOne($notifier_id);
+                self::sendNotifierNew($notifier->module, $getTemplateMethod, $data);
+            }
+        }
+    }
+
+
+    public static function sendNotifierNew(string $module_name, string $getTemplateMethod, array $message_data)
+    {
+
+        [$class, $method] = explode('::', $getTemplateMethod);
+
+        // Проверить есть ли такой method (message function)
+        if (!class_exists($class) || !method_exists($class, $method)) {
+            return false;
+        }
+
+        // Get module settings
+        $notifier_settings  = UserNotifier::getNotifierSettings($module_name);
+        $message_data       = array_merge((array) $notifier_settings, $message_data);
+
+        // Fetch template
+        $message_content = $class::$method($module_name, $message_data);
+
+        // Run
+        $Module = "HugaShop\\Modules\\Notifier\\{$module_name}\\{$module_name}";
+        return $Module::send($message_content, $message_data);
+    }
+
+
+
+
+    /**
      * Get notifier types for entity
      * @param string $entity
      */
@@ -132,31 +198,6 @@ class NotifierFactory
 
 
     /**
-     * Send Notifier manager. Select avaliable notifier Method
-     * Send notification anly to Managers
-     *
-     * @param string $message_type
-     * @param array $message_params
-     */
-    public static function sendNotifierToManager(string $message_type, array $message_params)
-    {
-
-        // User List to notifier
-        $user_managers = User::getUsers(['manager' => 1]);
-        foreach ($user_managers as $user) {
-            $message_params['user'] = $user;
-
-            // Get avaliable notifier modules for User
-            $user_notifier_types = UserNotifier::getUserNotifierTypes($user->id, $message_type);
-            foreach ($user_notifier_types as $notifier_id => $t) {
-                $notifier = UserNotifier::getOne($notifier_id);
-                self::sendNotifier($notifier->module, $message_type, $message_params);
-            }
-        }
-    }
-
-
-    /**
      * Send Comment to Admin
      *
      * @param string $template_path
@@ -169,16 +210,14 @@ class NotifierFactory
             return false;
         }
 
-        if ($comment->type == 'product') {
+        if ($comment->type == Product::class) {
             $comment->product = Product::getProduct(intval($comment->entity_id));
         }
-        if ($comment->type == 'blog') {
+        if ($comment->type == ContentPost::class) {
             $comment->post = ContentPost::getOne($comment->entity_id);
         }
 
-        Design::assign([
-            'comment' => $comment
-        ]);
+        Design::assign('comment', $comment);
 
         // Image template
         $template = Design::fetch($template_path);
@@ -241,8 +280,8 @@ class NotifierFactory
         $purchases = OrderPurchase::getPurchases(['order_id' => $order->id], ['image', 'product']);
 
         // Get Delivery and Payment methods
-        $payment_method = OrderPayment::getOne($order->payment_method_id);
-        $delivery_method = OrderDelivery::getOne($order->delivery_id);
+        $payment_method     = OrderPayment::getOne($order->payment_method_id);
+        $delivery_method    = OrderDelivery::getOne($order->delivery_id);
 
 
         Design::assign([
@@ -303,7 +342,6 @@ class NotifierFactory
         }
 
         $message_params['order'] = $order;
-
         Design::assign('order', $order);
 
         // Image template
@@ -329,9 +367,9 @@ class NotifierFactory
         $message_params['order'] = $order;
 
         // Выбираем указаный способ оплаты
-        $payment_method = OrderPayment::getOne($order->payment_method_id);
-        $payment_currency = FinanceCurrency::getCurrency(intval($payment_method->currency_id));
-        $payment_settings = $payment_method->settings;
+        $payment_method     = OrderPayment::getOne($order->payment_method_id);
+        $payment_currency   = FinanceCurrency::getCurrency(intval($payment_method->currency_id));
+        $payment_settings   = $payment_method->settings;
 
         Design::assign([
             'order' => $order,

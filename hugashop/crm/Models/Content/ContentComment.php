@@ -290,7 +290,7 @@ class ContentComment extends BaseModel
                     }
 
                     // Отправляем email
-                    NotifierFactory::sendNotifierToManager('commentToAdmin', message_params: ['comment_id' => $comment->id]);
+                    NotifierFactory::sendToManagers('commentToAdmin', message_params: ['comment_id' => $comment->id]);
                     Request::makeRedirect($_SERVER['REQUEST_URI'] . '#comment_' . $comment->id);
                 }
             }

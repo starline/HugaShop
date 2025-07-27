@@ -43,7 +43,7 @@ final class InfoBlock extends BaseExtension
             }
 
             Design::assign('InfoBlock', $block->body);
-            $info_block = self::fetchTemplate('templates/info_block.tpl');
+            $info_block = self::fetchTemplate('info_block.tpl');
 
             Cache::cache(InfoBlockModel::class)->save($cache_item->set($info_block));
         } else {

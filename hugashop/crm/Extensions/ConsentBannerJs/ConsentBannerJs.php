@@ -31,7 +31,7 @@ final class ConsentBannerJs extends BaseExtension
                 Design::$Translator->addResource('yaml', $translate_file_path, Design::$locale);
             }
 
-            return self::fetchTemplate('templates/banner.tpl');
+            return self::fetchTemplate('banner.tpl');
         }
     }
 }

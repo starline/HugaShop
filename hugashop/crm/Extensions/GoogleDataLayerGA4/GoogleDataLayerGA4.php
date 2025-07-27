@@ -38,7 +38,7 @@ final class GoogleDataLayerGA4 extends BaseExtension
 
             self::getSettings()->cookie_key = Config::get('cookie_prefix') . self::$cookie_key;
 
-            return self::fetchTemplate('templates/datalayer.tpl');
+            return self::fetchTemplate('datalayer.tpl');
         }
 
         return null;

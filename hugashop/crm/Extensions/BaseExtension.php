@@ -101,7 +101,7 @@ class BaseExtension
      */
     public static function getTemplatePath(string $template)
     {
-        return self::getExtensionDir() . $template;
+        return self::getExtensionDir() . 'templates/' . $template;
     }
 
 
