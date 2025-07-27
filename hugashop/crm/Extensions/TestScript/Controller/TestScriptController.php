@@ -50,6 +50,7 @@ use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Console\Output\BufferedOutput;
 use HugaShop\Extensions\TestScript\Services\Composer;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use HugaShop\Extensions\Feedback\Services\NotifyService;
 use HugaShop\Extensions\TestScript\Services\SystemCheck;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
@@ -109,12 +110,10 @@ final class TestScriptController extends BaseAdminController
 
 
                         // Mailer
-                        if (1) {
+                        if (0) {
 
                             // Works well
-                            $result[] = NotifierFactory::sendToManagersNew([NotifierFactory::class, 'newOrderToAdmin'], [
-                                'order_id' => 5311
-                            ]);
+                            $result[] = NotifierFactory::sendToManagersNew([NotifyService::class, 'feedbackToAdmin'], ['feedback' => 'name']);
                         }
 
 

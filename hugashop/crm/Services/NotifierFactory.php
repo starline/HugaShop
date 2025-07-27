@@ -172,8 +172,12 @@ class NotifierFactory
         $message_content = $class::$method($module_name, $message_data);
 
         // Run
-        $Module = "HugaShop\\Modules\\Notifier\\{$module_name}\\{$module_name}";
-        return $Module::send($message_content, $message_data);
+        if (!empty($message_content)) {
+            $Module = "HugaShop\\Modules\\Notifier\\{$module_name}\\{$module_name}";
+            return $Module::send($message_content, $message_data);
+        }
+
+        return;
     }
 
 

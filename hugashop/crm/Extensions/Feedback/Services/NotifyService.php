@@ -10,12 +10,14 @@
 
 namespace HugaShop\Extensions\Feedback\Services;
 
-use HugaShop\Extensions\BaseExtension;
 use HugaShop\Services\Design;
+use HugaShop\Extensions\BaseExtensionTrait;
 
 
-final class NotifyService extends BaseExtension
+final class NotifyService
 {
+
+    use BaseExtensionTrait;
 
     /**
      * Send Feedback to Admin
@@ -30,14 +32,15 @@ final class NotifyService extends BaseExtension
             return;
         }
 
-        $template_path = self::getTemplatePath($module_name . '_feedback_admin' . '.tpl');
+        $template_path = self::getTemplatePath(strtolower($module_name) . '_feedback_admin.tpl');
+        
         if (!file_exists($template_path)) {
             return;
         }
 
         // Image template
         Design::assign('feedback', $message_data['feedback']);
-        
+
         $message                  = Design::fetch($template_path);
         $message_data['subject']  = Design::getTemplateVars('subject');
 

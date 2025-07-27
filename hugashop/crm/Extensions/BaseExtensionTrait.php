@@ -21,7 +21,7 @@ trait BaseExtensionTrait
     /** 
      * Universal get extension name
      */
-    private function getName(?string $class = null)
+    private static function getName(?string $class = null)
     {
         // Получаем полное имя текущего класса
         $class = $class ?: static::class;
@@ -44,9 +44,9 @@ trait BaseExtensionTrait
     /**
      * Get Extension settings
      */
-    private function getSettings(?string $param = null)
+    private static function getSettings(?string $param = null)
     {
-        $extension_name = $this->getName();
+        $extension_name = self::getName();
         $result = $settings = (object) (Settings::getParam($extension_name) ?? []);
 
         if (!is_null($param)) {
@@ -60,9 +60,9 @@ trait BaseExtensionTrait
     /**
      * Get Extension config
      */
-    public function getConfig(?string $param = null)
+    public static function getConfig(?string $param = null)
     {
-        $config = Helper::getModule($this->getName(), Config::get('extension_dir'));
+        $config = Helper::getModule(self::getName(), Config::get('extension_dir'));
 
         if (is_null($param)) {
             return $config;
@@ -74,9 +74,9 @@ trait BaseExtensionTrait
     /**
      * Get Extension directory
      */
-    public function getExtensionDir()
+    public static function getExtensionDir()
     {
-        return Config::get('extension_dir') . $this->getName() . '/';
+        return Config::get('extension_dir') . self::getName() . '/';
     }
 
 
@@ -84,18 +84,9 @@ trait BaseExtensionTrait
      * Get extension template
      * @param string $template
      */
-    public function getTemplatePath(string $template)
+    public static function getTemplatePath(string $template)
     {
-        return $this->getExtensionDir() . 'templates/' . $template;
-    }
-
-
-    /**
-     * Fetch extension template
-     */
-    public function fetchExtResponse(string $template, ?string $block = null)
-    {
-        return $this->fetchResponse($this->getTemplatePath($template), $block);
+        return self::getExtensionDir() . 'templates/' . $template;
     }
 
 
@@ -104,9 +95,9 @@ trait BaseExtensionTrait
      */
     public function getExtension()
     {
-        $extension = $this->getConfig();
-        $extension->settings = $this->getSettings();
-        $extension->hasIndex = $this->hasIndex();
+        $extension = self::getConfig();
+        $extension->settings = self::getSettings();
+        $extension->hasIndex = self::hasIndex();
         return $extension;
     }
 
@@ -114,9 +105,18 @@ trait BaseExtensionTrait
     /**
      * Has index function
      */
-    public function hasIndex()
+    public static function hasIndex()
     {
-        $ext_namespace = Extension::getNameSpace($this->getName());
+        $ext_namespace = Extension::getNameSpace(self::getName());
         return $ext_namespace ? (method_exists($ext_namespace, 'index') ? true : false) : false;
+    }
+
+    
+    /**
+     * Fetch extension template
+     */
+    public function fetchExtResponse(string $template, ?string $block = null)
+    {
+        return $this->fetchResponse(self::getTemplatePath($template), $block);
     }
 }
