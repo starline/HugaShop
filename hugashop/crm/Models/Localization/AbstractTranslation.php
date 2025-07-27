@@ -4,13 +4,12 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.7
+ * @version 1.8
  *
  */
 
 namespace HugaShop\Models\Localization;
 
-use Illuminate\Support\Str;
 use HugaShop\Models\BaseModel;
 
 class AbstractTranslation extends BaseModel
