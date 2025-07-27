@@ -34,25 +34,24 @@ class AbstractTranslation extends BaseModel
      */
     public static function setTableTranslation(string $base_model)
     {
+        $model = $base_model::getModel();
 
-        if (class_exists($base_model)) {
-            $translatable_fields = $base_model::getTranslatableFields();
-            $base_fields = $base_model::getFields();
+        $translatable_fields = $base_model::getTranslatableFields();
+        $base_fields = $base_model::getFields();
 
-            // reboot table field
-            static::$table_fields = self::$base_table_fields;
+        // reboot table field
+        static::$table_fields = self::$base_table_fields;
 
-            // Добавляем поля для перевода
-            foreach ($translatable_fields as $field) {
-                static::$table_fields[$field] = $base_fields[$field];
-            }
+        // Добавляем поля для перевода
+        foreach ($translatable_fields as $field) {
+            static::$table_fields[$field] = $base_fields[$field];
         }
 
-        $table_name = Str::snake(class_basename($base_model) . 'Translation');
+        $table_name = $model->getTable() . '_translation';
 
-        $query = new static;
-        $query->setTable($table_name);
+        $translate_nodel = new static;
+        $translate_nodel->setTable($table_name);
 
-        return $query;
+        return $translate_nodel;
     }
 }

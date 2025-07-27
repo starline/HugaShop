@@ -2,5 +2,5 @@ name: "Обратная связь"
 description: "Форма обратной связи для пользователей"
 notifier:
   admin:
-    - Service/NotifyService::feedbackToAdmin
+    - Service/NotifyService::feedbackToAdmin: "Обратная связь"
 version: 1.2

@@ -26,16 +26,16 @@ class NotifierFactory
 
     public static $message_types = [
         'user' => [
-            'newOrderToUser'        => 'О новом заказе',
-            'deliveryTrackNumber'   => 'Трэк номер доставка',
-            'paymentInfo'           => 'Реквизиты об оплате'
+            'newOrderToUser'              => 'О новом заказе',
+            'deliveryTrackNumberToUser'   => 'Трэк номер доставка',
+            'paymentDetailsToUser'        => 'Реквизиты об оплате'
         ],
         'admin' => [
             'commentToAdmin'        => 'Новый Комментарий',
             'newOrderToAdmin'       => 'Новый Заказ',
         ],
-        'requared' => [
-            'userPasswordRemind'
+        'system' => [
+            'passwordRemindToUser'
         ]
     ];
 
@@ -308,7 +308,7 @@ class NotifierFactory
      * @param string $template_path
      * @param array $message_params
      */
-    public static function userPasswordRemind(string $template_path, array &$message_params)
+    public static function passwordRemindToUser(string $template_path, array &$message_params)
     {
 
         if (empty($message_params['user_id']) || empty($user = User::getUser($message_params['user_id']))) {
@@ -337,7 +337,7 @@ class NotifierFactory
      * @param string $template_path
      * @param array $message_params
      */
-    public static function deliveryTrackNumber(string $template_path, array &$message_params)
+    public static function deliveryTrackNumberToUser(string $template_path, array &$message_params)
     {
 
         if (empty($message_params['order_id']) || empty($order = Order::getOrder(intval($message_params['order_id'])))) {
@@ -360,7 +360,7 @@ class NotifierFactory
      * @param string $template_path
      * @param array $message_params
      */
-    public static function paymentDetails(string $template_path, array &$message_params)
+    public static function paymentDetailsToUser(string $template_path, array &$message_params)
     {
 
         if (empty($message_params['order_id']) || empty($order = Order::getOrder(intval($message_params['order_id'])))) {

@@ -186,7 +186,7 @@ class Product extends BaseModel
     public static function getProducts(array $filter = [], array $join = [], bool $count = false)
     {
 
-        $model = static::getModel();
+        $model = self::getModel();
         $query = $model->newQuery();
 
         $baseTable          = $model->getTable();
@@ -196,7 +196,7 @@ class Product extends BaseModel
         // Join translation table for current locale if needed
         $transTable = null;
         if ($language_code = Language::checkOrGetCode()) {
-            $transModel  = AbstractTranslation::setTableTranslation(static::class);
+            $transModel  = AbstractTranslation::setTableTranslation(self::class);
             $transTable  = $transModel->getTable();
 
             $select = ["{$base_table_prefix}.*"];

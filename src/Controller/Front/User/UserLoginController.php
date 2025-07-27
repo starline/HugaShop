@@ -104,7 +104,7 @@ class UserLoginController extends BaseFrontController
                     Request::setSession('password_remind_user_id', $user->id);
 
                     // Отправляем письмо пользователю для восстановления пароля
-                    if (NotifierFactory::sendNotifier('Email', 'userPasswordRemind', [
+                    if (NotifierFactory::sendNotifier('Email', 'passwordRemindToUser', [
                         'user_id' => $user->id,
                         'code' => $code,
                         'to_email' => $user->email
@@ -122,9 +122,9 @@ class UserLoginController extends BaseFrontController
         $session_lifetime = ini_get("session.gc_maxlifetime"); # seconds
         $session_lifetime = $session_lifetime / 60; # minutes
 
-        Design::assign('noindex', true); # Закрываем от индексации
-        Design::assign('canonical', $this->generateUrl('UserPasswordRemind'));
-        Design::assign('session_lifetime', $session_lifetime);
+        Design::assign('noindex',           true); # Закрываем от индексации
+        Design::assign('canonical',         $this->generateUrl('UserPasswordRemind'));
+        Design::assign('session_lifetime',  $session_lifetime);
 
         return $this->fetchResponse('user/user_password_remind.tpl');
     }
@@ -149,7 +149,7 @@ class UserLoginController extends BaseFrontController
             }
         }
 
-        Design::assign('noindex', true); # Закрываем от индексации
+        Design::assign('noindex',   true); # Закрываем от индексации
         Design::assign('canonical', $this->generateUrl('UserPasswordRemindCode'));
 
         return $this->fetchResponse('user/user_password_remind.tpl');

@@ -153,7 +153,7 @@ trait TranslationTrait
      */
     public static function getOneEditTranslate(int|array $id, array|string $join = [])
     {
-        $result = self::getOne($id, $join);
+        $result = static::getOne($id, $join);
 
         if ($language_code = Language::checkOrGetCode() and static::isTranslatable()) {
             $result = static::fillTranslation($result, $language_code, merge_fields: false);
@@ -167,6 +167,7 @@ trait TranslationTrait
      */
     public static function getOneTranslate(int|array $id, array|string $join = [])
     {
+
         // TODO caching
         $result = self::getOne($id, $join);
 
@@ -187,7 +188,7 @@ trait TranslationTrait
         $result = self::getList($filter, $order, $join, select: $select, cache: $cache);
 
         if ($language_code = Language::checkOrGetCode() and static::isTranslatable() and $result) {
-            static::fillTranslations($result, $language_code, merge_fields: false);
+            $result = static::fillTranslations($result, $language_code, merge_fields: false);
         }
         return $result;
     }
@@ -203,7 +204,7 @@ trait TranslationTrait
         $result = self::getList($filter, $order, $join, select: $select, cache: $cache);
 
         if ($language_code = Language::checkOrGetCode() and static::isTranslatable() and $result) {
-            static::fillTranslations($result, $language_code, merge_fields: true);
+            $result = static::fillTranslations($result, $language_code, merge_fields: true);
         }
         return $result;
     }
