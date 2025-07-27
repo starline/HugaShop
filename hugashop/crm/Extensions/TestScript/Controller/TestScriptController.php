@@ -113,7 +113,7 @@ final class TestScriptController extends BaseAdminController
 
                             // Works well
                             $result[] = NotifierFactory::sendToManagersNew([NotifierFactory::class, 'newOrderToAdmin'], [
-                                'order_id' => 5172
+                                'order_id' => 5311
                             ]);
                         }
 

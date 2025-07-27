@@ -56,14 +56,14 @@ class UserSettingsController extends BaseAdminController
 
         $permissions            = UserPermission::getUserPermissionsName($current_user->id);
         $notifier_methods       = UserNotifier::getList(['enabled' => 1], order: 'position');
-        $notifier_types         = NotifierFactory::getNotifierTypes('admin');
+        $notifier_messages      = NotifierFactory::getNotifierMessages('admin');
         $user_notifier_types    = UserNotifierType::getUserTypes($current_user->id);
 
         Design::assign('current_user',          $current_user);
         Design::assign('permissions',           $permissions);
         Design::assign('permissions_list',      UserPermission::$permissions_list);
         Design::assign('groups',                UserGroup::getList(order: 'position'));  # Выбираем все группы пользователей
-        Design::assign('notifier_types',        $notifier_types);
+        Design::assign('notifier_messages',     $notifier_messages);
         Design::assign('notifier_methods',      $notifier_methods);
         Design::assign('user_notifier_types',   $user_notifier_types);
 

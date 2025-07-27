@@ -66,10 +66,10 @@
 							<label for="{$method->module}" class="col-form-label">{$method->name}</label>
 							<select class="form-select" name="user_notifier_types[{$method->id}][]" multiple
 								id="{$method->module}">
-								{foreach $notifier_types as $type_name => $type_description}
-									<option value='{$type_name}'
-										{if in_array($type_name, $user_notifier_types[$method->id])}selected{/if}>
-										{$type_description}
+								{foreach $notifier_messages as $message_key => $message_params}
+									<option value="{$message_key}"
+										{if in_array($message_key, $user_notifier_types[$method->id])}selected{/if}>
+										{$message_params.name}
 									</option>
 								{/foreach}
 							</select>

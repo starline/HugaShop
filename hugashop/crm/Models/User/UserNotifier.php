@@ -95,13 +95,13 @@ class UserNotifier extends BaseModel
      * Get Allowed notifier type for User
      * @param int $user_id
      */
-    public static function getAllowedNotifier(int $user_id, string $message_type)
+    public static function getAllowedNotifier(int $user_id, string $message_key)
     {
         return self::query()
             ->where('enabled', 1)
-            ->whereHas('types', function ($query) use ($user_id, $message_type) {
-                $query->where('user_id', $user_id)
-                    ->where('type', $message_type);
+            ->whereHas('types', function ($sub_query) use ($user_id, $message_key) {
+                $sub_query->where('user_id', $user_id)
+                    ->where('type', $message_key);
             })
             ->get();
     }
