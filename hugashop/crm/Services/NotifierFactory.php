@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  */
 
@@ -186,7 +186,21 @@ class NotifierFactory
      */
     public static function getNotifierTypes(string $entity)
     {
-        return self::$message_types[$entity] ?? null;
+        $types = self::$message_types[$entity] ?? [];
+
+        // Get extra notifier messages from extensions
+        $extensions = Helper::getModules(Config::get('extension_dir'));
+        foreach ($extensions as $extension) {
+            if (!empty($extension->notifier->$entity)) {
+                foreach ((array) $extension->notifier->$entity as $row) {
+                    foreach ((array) $row as $type => $name) {
+                        $types[$type] = $name;
+                    }
+                }
+            }
+        }
+
+        return $types;
     }
 
 
