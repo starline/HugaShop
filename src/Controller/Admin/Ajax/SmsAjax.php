@@ -38,7 +38,7 @@ class SmsAjax extends BaseAdminController
             if (Request::post('type') == 'delivery') {
                 if (!empty($order->delivery_note)) {
 
-                    $sms_result = NotifierFactory::sendNotifierNew('Turbosms', [NotifierFactory::class, 'deliveryTrackNumberToUser'], [
+                    $sms_result = NotifierFactory::sendNotifier('Turbosms', [NotifierFactory::class, 'deliveryTrackNumberToUser'], [
                         'order_id' => $order->id
                     ]);
 
@@ -65,7 +65,7 @@ class SmsAjax extends BaseAdminController
                 if (!empty($order->payment_method_id)) {
 
                     // Отправляем СМС
-                    $sms_result = NotifierFactory::sendNotifierNew('Turbosms', [NotifierFactory::class, 'paymentDetailsToUser'], [
+                    $sms_result = NotifierFactory::sendNotifier('Turbosms', [NotifierFactory::class, 'paymentDetailsToUser'], [
                         'order_id' => $order->id
                     ]);
 

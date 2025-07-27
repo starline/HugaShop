@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.4
+ * @version 2.5
  *
  */
 
@@ -80,7 +80,7 @@ class NotifierFactory
      * Send Notifier manager. Select avaliable notifier Method
      * Send notification only to Managers
      */
-    public static function sendToManagersNew(callable $callback, array $message_data)
+    public static function sendToManagers(callable $callback, array $message_data)
     {
 
         // User List to notifier
@@ -93,7 +93,7 @@ class NotifierFactory
             // Get avaliable notifier modules for User
             $user_notifiers = UserNotifier::getAllowedNotifier($user->id, $method);
             foreach ($user_notifiers as $notifier) {
-                self::sendNotifierNew($notifier->module, $callback, $message_data);
+                self::sendNotifier($notifier->module, $callback, $message_data);
             }
         }
     }
@@ -102,7 +102,7 @@ class NotifierFactory
     /**
      * Send notification template via Module
      */
-    public static function sendNotifierNew(string $module_name, callable $callback, array $message_data)
+    public static function sendNotifier(string $module_name, callable $callback, array $message_data)
     {
 
         [$class, $method] = $callback;

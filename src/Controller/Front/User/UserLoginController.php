@@ -104,7 +104,7 @@ class UserLoginController extends BaseFrontController
                     Request::setSession('password_remind_user_id', $user->id);
 
                     // Отправляем письмо пользователю для восстановления пароля
-                    if (NotifierFactory::sendNotifierNew('Email', [NotifierFactory::class, 'passwordRemindToUser'], [
+                    if (NotifierFactory::sendNotifier('Email', [NotifierFactory::class, 'passwordRemindToUser'], [
                         'user_id' => $user->id,
                         'code' => $code,
                         'to_email' => $user->email

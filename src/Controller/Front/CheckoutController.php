@@ -193,14 +193,14 @@ class CheckoutController extends BaseFrontController
 
 
                         // Send email to User
-                        NotifierFactory::sendNotifierNew('Email', [NotifierFactory::class, 'newOrderToUser'], [
+                        NotifierFactory::sendNotifier('Email', [NotifierFactory::class, 'newOrderToUser'], [
                             'order_id' => $order->id,
                             'to_email' => $order->email
                         ]);
 
 
                         // Send Notification to Admin. Telegram|Email|SMS|...
-                        NotifierFactory::sendToManagersNew([NotifierFactory::class, 'newOrderToAdmin'], [
+                        NotifierFactory::sendToManagers([NotifierFactory::class, 'newOrderToAdmin'], [
                             'order_id' => $order->id
                         ]);
 
