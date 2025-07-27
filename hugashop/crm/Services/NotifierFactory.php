@@ -41,41 +41,6 @@ class NotifierFactory
 
 
     /**
-     * Send notification template via Module
-     *
-     * @param string $module_name
-     * @param string $message_type
-     * @param array $message_data
-     */
-    public static function sendNotifier(string $module_name, string $message_type, array $message_data)
-    {
-        $current_module_dir         = Config::get('notifier_dir') . "$module_name/";
-        $current_module_tpl_path    = $current_module_dir . "templates/$message_type.tpl";
-        $ClassName                  = "HugaShop\\Modules\\Notifier\\{$module_name}\\{$module_name}";
-
-        // Select Smarty template, module file, module name
-        if (empty($module_name) || !class_exists($ClassName) || !file_exists($current_module_tpl_path)) {
-            return false;
-        }
-
-        // Проверить есть ли такой method (message function)
-        if (!method_exists(self::class, $message_type)) {
-            return false;
-        }
-
-        // Get module settings
-        $notifier_settings  = UserNotifier::getNotifierSettings($module_name);
-        $message_data     = array_merge((array) $notifier_settings, $message_data);
-
-        // Fetch template
-        $message_content = self::$message_type($current_module_tpl_path, $message_data);
-
-        // Run
-        return $ClassName::send($message_content, $message_data);
-    }
-
-
-    /**
      * Send notification message via Module
      *
      * @param string $module_name
@@ -114,27 +79,7 @@ class NotifierFactory
     /**
      * Send Notifier manager. Select avaliable notifier Method
      * Send notification only to Managers
-     *
-     * @param string $message_type
-     * @param array $message_data
      */
-    public static function sendToManagers(string $message_type, array $message_data)
-    {
-
-        // User List to notifier
-        $user_managers = User::getUsers(['manager' => 1]);
-        foreach ($user_managers as $user) {
-            $message_data['user'] = $user;
-
-            // Get avaliable notifier modules for User
-            $user_notifiers = UserNotifier::getAllowedNotifier($user->id, $message_type);
-            foreach ($user_notifiers as $notifier) {
-                self::sendNotifier($notifier->module, $message_type, $message_data);
-            }
-        }
-    }
-
-
     public static function sendToManagersNew(callable $callback, array $message_data)
     {
 
@@ -154,6 +99,9 @@ class NotifierFactory
     }
 
 
+    /**
+     * Send notification template via Module
+     */
     public static function sendNotifierNew(string $module_name, callable $callback, array $message_data)
     {
 

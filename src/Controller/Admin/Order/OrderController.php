@@ -317,7 +317,7 @@ class OrderController extends BaseAdminController
             if (Request::post('notify_user') and !empty($order->email)) {
 
                 // Send email to User
-                NotifierFactory::sendNotifier('Email', 'newOrderToUser', [
+                NotifierFactory::sendNotifierNew('Email', [NotifierFactory::class, 'newOrderToUser'], [
                     'order_id' => $order->id,
                     'to_email' => $order->email
                 ]);

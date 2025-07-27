@@ -198,7 +198,7 @@ class ContentComment extends BaseModel
     {
 
         // TODO удалить фотографии комментария
-        
+
         return self::where('entity_id', $entity_id)
             ->where('entity_type', $entity_class)
             ->delete();
@@ -290,7 +290,7 @@ class ContentComment extends BaseModel
                     }
 
                     // Отправляем email
-                    NotifierFactory::sendToManagers('commentToAdmin', message_params: ['comment_id' => $comment->id]);
+                    NotifierFactory::sendToManagersNew([NotifierFactory::class, 'commentToAdmin'], ['comment_id' => $comment->id]);
                     Request::makeRedirect($_SERVER['REQUEST_URI'] . '#comment_' . $comment->id);
                 }
             }
