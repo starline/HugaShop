@@ -26,16 +26,16 @@ class NotifierFactory
 
     public static $message_types = [
         'user' => [
-            'newOrderToUser'              => ['name' => 'О новом заказе'],
-            'deliveryTrackNumberToUser'   => ['name' => 'Трэк номер доставка'],
-            'paymentDetailsToUser'        => ['name' => 'Реквизиты об оплате']
+            'newOrderToUser'              => 'О новом заказе',
+            'deliveryTrackNumberToUser'   => 'Трэк номер доставка',
+            'paymentDetailsToUser'        => 'Реквизиты об оплате'
         ],
         'admin' => [
-            'commentToAdmin'              => ['name' => 'Новый Комментарий'],
-            'newOrderToAdmin'             => ['name' => 'Новый Заказ'],
+            'commentToAdmin'              => 'Новый Комментарий',
+            'newOrderToAdmin'             => 'Новый Заказ',
         ],
         'system' => [
-            'passwordRemindToUser'        => ['name' => 'Восстановление пароля']
+            'passwordRemindToUser'        => 'Восстановление пароля'
         ]
     ];
 
@@ -196,11 +196,8 @@ class NotifierFactory
         foreach ($extensions as $extension) {
             if (!empty($extension->notifier->$type)) {
                 foreach ((array) $extension->notifier->$type as $message) {
-                    foreach ((array) $message as $message_key => $message_params) {
-                        $messages[$message_key] = [
-                            'name' => $message_params->name,
-                            'class' => $message_params->class
-                        ];
+                    foreach ((array) $message as $message_key => $message_name) {
+                        $messages[$message_key] = $message_name;
                     }
                 }
             }
