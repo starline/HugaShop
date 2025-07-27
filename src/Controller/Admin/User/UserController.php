@@ -10,15 +10,15 @@
 
 namespace App\Controller\Admin\User;
 
-use HugaShop\Models\User\User;
 use HugaShop\Services\Design;
+use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
+use HugaShop\Models\Order\Order;
 use App\Services\PaginationService;
 use HugaShop\Models\User\UserGroup;
-use HugaShop\Models\Order\Order;
-use HugaShop\Models\User\UserNotifier;
-use HugaShop\Models\User\UserPermission;
 use App\Controller\BaseAdminController;
+use HugaShop\Models\User\UserPermission;
+use HugaShop\Models\User\UserNotifierType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -53,7 +53,7 @@ class UserController extends BaseAdminController
                 // If NOT already a manager - clear permission data
                 if (isset($current_user->manager) and $current_user->manager == 0) {
                     UserPermission::updatePermissions($current_user->id, []);
-                    UserNotifier::updateUserNotifierTypes($current_user->id, null);
+                    UserNotifierType::updateTypes($current_user->id, null);
                 }
 
                 // Делаем редирект на страницу с ID
@@ -87,15 +87,12 @@ class UserController extends BaseAdminController
         $filter["paid"] = 1; # оплаченые
         $orders_price = Order::getOrdersPrice($filter);
 
-
         Design::assign('pagination', PaginationService::getPagination($orders_count, $filter));
-        Design::assign([
-            'current_user'  => $current_user,
-            'groups'        => UserGroup::getList(order: 'position'),   # Выбираем все группы пользователей
-            'orders'        => $orders,
-            'orders_count'  => $orders_count,
-            'orders_price'  => $orders_price
-        ]);
+        Design::assign('current_user',      $current_user);
+        Design::assign('groups',            UserGroup::getList(order: 'position'));   # Выбираем все группы пользователей
+        Design::assign('orders',            $orders);
+        Design::assign('orders_count',      $orders_count);
+        Design::assign('orders_price',      $orders_price);
 
         return $this->fetchResponse('user/user.tpl');
     }

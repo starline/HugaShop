@@ -109,39 +109,12 @@ final class TestScriptController extends BaseAdminController
 
 
                         // Mailer
-                        if (0) {
+                        if (1) {
 
                             // Works well
-                            $result[] = NotifierFactory::sendToManagers('newOrderToAdmin', [
+                            $result[] = NotifierFactory::sendToManagersNew([NotifierFactory::class, 'newOrderToAdmin'], [
                                 'order_id' => 5172
                             ]);
-
-                            if (0) {
-                                $transport = Transport::fromDsn('sendmail://default');
-                                //$transport = Transport::fromDsn('native://default');
-                                //$transport = Transport::fromDsn('smtp://localhost');
-
-                                //$mailer = new Mailer($transport);
-                                $mailer = new Transports([$transport]);
-
-                                $email = (new Email())
-                                    ->from(new Address('notify@grizlicnc.com.ua', 'Grizlicnc.com.ua'))
-                                    ->to('aa.guzhva@gmail.com')
-                                    ->subject('Script Time for Symfony Mailer!')
-                                    ->text('Sending emails is fun again!')
-                                    ->html('<p>See Twig integration for better HTML integration!</p>');
-
-                                //$result[] = $mailer;
-
-                                try {
-                                    $send = $mailer->send($email);
-                                    //dump($send->getDebug());
-                                } catch (TransportExceptionInterface $e) {
-                                    // some error prevented the email sending; display an
-                                    // error message or try to resend the message
-                                    $result[] = $e;
-                                }
-                            }
                         }
 
 
@@ -322,7 +295,7 @@ final class TestScriptController extends BaseAdminController
                          * переименовываем s_product.created в created_at
                          * 
                          */
-                        if (1) {
+                        if (0) {
 
                             // 1. Исправляем типы комментарий
                             if (0) {

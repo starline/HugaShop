@@ -127,35 +127,38 @@ class NotifierFactory
             $message_params['user'] = $user;
 
             // Get avaliable notifier modules for User
-            $user_notifier_types = UserNotifier::getUserNotifierTypes($user->id, $message_type);
-            foreach ($user_notifier_types as $notifier_id => $t) {
-                $notifier = UserNotifier::getOne($notifier_id);
+            $user_notifiers = UserNotifier::getAllowedNotifier($user->id, $message_type);
+            foreach ($user_notifiers as $notifier) {
                 self::sendNotifier($notifier->module, $message_type, $message_params);
             }
         }
     }
 
-    public static function sendToManagersNew(string $getTemplateMethod, $data)
+
+    public static function sendToManagersNew(callable $callback, array $message_data)
     {
+
         // User List to notifier
         $user_managers = User::getUsers(['manager' => 1]);
         foreach ($user_managers as $user) {
             $message_params['user'] = $user;
 
+            $message_type = $callback[0] . '::' . $callback[1];
+
             // Get avaliable notifier modules for User
-            $user_notifier_types = UserNotifier::getUserNotifierTypes($user->id, $getTemplateMethod);
-            foreach ($user_notifier_types as $notifier_id => $t) {
-                $notifier = UserNotifier::getOne($notifier_id);
-                self::sendNotifierNew($notifier->module, $getTemplateMethod, $data);
+            $user_notifiers = UserNotifier::getAllowedNotifier($user->id, $message_type);
+            dd($user_notifiers);
+            foreach ($user_notifiers as $notifier) {
+                self::sendNotifierNew($notifier->module, $callback, $message_data);
             }
         }
     }
 
 
-    public static function sendNotifierNew(string $module_name, string $getTemplateMethod, array $message_data)
+    public static function sendNotifierNew(string $module_name, string $callback, array $message_data)
     {
 
-        [$class, $method] = explode('::', $getTemplateMethod);
+        [$class, $method] = $callback;
 
         // Проверить есть ли такой method (message function)
         if (!class_exists($class) || !method_exists($class, $method)) {

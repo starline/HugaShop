@@ -52,7 +52,7 @@ final class FeedbackController extends BaseFrontController
                 $feedback = Feedback::createOne($feedback);
 
                 // Отправка увидомления
-                NotifierFactory::sendToManagersNew(NotifyService::class . '::feedbackToAdmin', ['feedback' => $feedback]);
+                NotifierFactory::sendToManagersNew([NotifyService::class, 'feedbackToAdmin'], ['feedback' => $feedback]);
             }
         }
 

@@ -68,7 +68,6 @@ class UserPermission extends BaseModel
         'page'                  => 'Контент - Страницы',
         'blog'                  => 'Контент - Блог',
         'comment'               => 'Контент - Комментарии',
-        'feedback'              => 'Контент - Обратная связь',
 
         'finance'               => 'Финансы',
         'stats'                 => 'Статистика',

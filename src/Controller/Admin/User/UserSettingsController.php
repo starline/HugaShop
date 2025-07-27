@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.4
+ * @version 2.5
  *
  */
 
@@ -18,6 +18,7 @@ use HugaShop\Models\User\UserNotifier;
 use HugaShop\Services\NotifierFactory;
 use App\Controller\BaseAdminController;
 use HugaShop\Models\User\UserPermission;
+use HugaShop\Models\User\UserNotifierType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -43,7 +44,7 @@ class UserSettingsController extends BaseAdminController
 
             // Update User Notifier Types
             $user_notifier_types_arr = Request::post('user_notifier_types', 'array');
-            UserNotifier::updateUserNotifierTypes($current_user->id, $user_notifier_types_arr);
+            UserNotifierType::updateTypes($current_user->id, $user_notifier_types_arr);
         }
 
 
@@ -56,17 +57,15 @@ class UserSettingsController extends BaseAdminController
         $permissions            = UserPermission::getUserPermissionsName($current_user->id);
         $notifier_methods       = UserNotifier::getList(['enabled' => 1], order: 'position');
         $notifier_types         = NotifierFactory::getNotifierTypes('admin');
-        $user_notifier_types    = UserNotifier::getUserNotifierTypes($current_user->id);
+        $user_notifier_types    = UserNotifierType::getUserTypes($current_user->id);
 
-        Design::assign([
-            'current_user'          => $current_user,
-            'permissions'           => $permissions,
-            'permissions_list'      => UserPermission::$permissions_list,
-            'groups'                => UserGroup::getList(order: 'position'),  # Выбираем все группы пользователей
-            'notifier_types'        => $notifier_types,
-            'notifier_methods'      => $notifier_methods,
-            'user_notifier_types'   => $user_notifier_types
-        ]);
+        Design::assign('current_user',          $current_user);
+        Design::assign('permissions',           $permissions);
+        Design::assign('permissions_list',      UserPermission::$permissions_list);
+        Design::assign('groups',                UserGroup::getList(order: 'position'));  # Выбираем все группы пользователей
+        Design::assign('notifier_types',        $notifier_types);
+        Design::assign('notifier_methods',      $notifier_methods);
+        Design::assign('user_notifier_types',   $user_notifier_types);
 
         return $this->fetchResponse('user/user_settings.tpl');
     }
