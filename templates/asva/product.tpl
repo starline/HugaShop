@@ -25,9 +25,7 @@
 
 	<div class="row product_one">
 		<div class="col-12 col-lg-6">
-
 			<div class="image_box mb-4">
-
 				<div class="promo_block">
 					{if $product->sale}
 						<div class="sale" title="Акция и скидка">Супер цена!</div>
@@ -69,7 +67,6 @@
 						товар</a>
 				</div>
 			{/if}
-
 
 			<form class="variants" id="variants" action="/cart">
 				{getCSRFInput}
@@ -135,8 +132,6 @@
 						product_price="{$product->price|price_html:clean}"
 						product_old_price="{$product->old_price|price_html:clean}" product_max_stock="{$product->stock}" />
 				{/if}
-
-
 
 				<div class="status_stock my-3">
 					{$show_buy_btn = false}
@@ -207,8 +202,10 @@
 					{/foreach}
 				</ul>
 			{/if}
+
 		</div>
 	</div>
+
 
 	<!-- Описание товара -->
 	{if $product->body}
