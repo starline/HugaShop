@@ -3,9 +3,12 @@ framework:
         # The paths to make available to the asset mapper.
         paths:
             - assets/
+            - templates/
         missing_import_mode: strict
         excluded_patterns:
             - "**tinymce**"
+            - "**/*.tpl"
+            - "**/translations/**"
 
 when@prod:
     framework:

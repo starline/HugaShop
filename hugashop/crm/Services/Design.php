@@ -65,7 +65,7 @@ class Design
         self::getSmarty()->assign('theme', self::$theme);
 
         // Template
-        self::getSmarty()->setTemplateDir(Config::get('templates_dir') . self::$theme . '/');
+        self::getSmarty()->setTemplateDir(Config::get('templates_dir') . self::$theme . '\/html\/');
 
         // Caching
         self::getSmarty()->setCaching(Config::get('smarty')->caching);
@@ -277,7 +277,7 @@ class Design
             $asset_file = $folder . '/' . $asset_file;
         } else {
             if (!empty(self::$theme)) {
-                $asset_file = self::$theme . '/' . $asset_file;
+                $asset_file = 'assets/' . self::$theme . '/assets/' . $asset_file;
             }
         }
 

@@ -17,7 +17,7 @@ return [
         'entrypoint' => true,
     ],
     'grizlicnc' => [
-        'path' => './assets/grizlicnc/init.js',
+        'path' => './templates/grizlicnc/assets/init.js',
         'entrypoint' => true,
     ],
     'asva' => [
