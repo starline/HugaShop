@@ -2,163 +2,295 @@
 
 {block name=content}
 
-	<!-- Breadcrumbs -->
-	<div class="breadcrumbs-wrapper">
-		<ul class="breadcrumbs" itemscope itemtype="https://schema.org/BreadcrumbList">
-			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-				<a href="{'Main'|linkLang}" itemprop="item">
-					<span itemprop="name">{'Главная'|trans}</span>
-					<meta itemprop="position" content="1">
-				</a>
-			</li>
+	<div class="left-side">
+		<div class="main-selection-wrapper" id="active_main_selection">
+			<div class="main-selection-title-m" onclick="openTip('main_selection'); return false;">
+				<span>Фильтр шин</span>
+				<i class="ico ico-arrow-3"></i>
+			</div>
 
-			{$item_position = 2}
-			{if $category}
-				{foreach $category->path as $cat}
-					<li>→</li>
-					<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-						<a href="{'Products'|linkLang:[url => $cat->url]}" itemprop="item">
-							<span itemprop="name">{$cat->name}</span>
-							<meta itemprop="position" content="{$item_position++}">
-						</a>
-					</li>
-				{/foreach}
-			{/if}
-		</ul>
+			<div class="main-mobile-menu-bg"></div>
+			<div class="main-mobile-menu">
+				<span class="ico ico-close" onclick="closeTip('main_selection'); return false;">x</span>
+				<div class="main-mobile-menu-overflow">
+					<div class="main-selection">
+						<div class="selection-tire-wrapper">
+							<div class="selection-tire-title">подбор по размеру</div>
+						</div>
+
+						<div class="selection-tire-filtres">
+							<form id="form_filter" action="/catalog/by_size/" method="GET" class="sorting_form">
+
+								<input type="hidden" name="season" value="7" />
+
+								<div class="selection-tire-filter diametr">
+									<label for="width">Ширина</label>
+									<select name="tire_width" id="width">
+										<option value="0">Все</option>
+									</select>
+								</div>
+
+								<div class="selection-tire-filter width">
+									<label for="height">Профиль</label>
+									<select name="tire_height" id="height">
+										<option value="0">Все</option>
+									</select>
+								</div>
+
+								<div class="selection-tire-filter profile">
+									<label for="diameter">Диаметр</label>
+									<select name="tire_diameter" id="diameter">
+										<option selected="selected" value="0">Все</option>
+									</select>
+								</div>
+
+								<button>подобрать</button>
+							</form>
+
+							<div class="selection-tire car">
+								<a href="#">Подобрать по автомобилю</a>
+							</div>
+						</div>
+
+
+						<div class="main-filters-title">параметры подбора</div>
+
+						<div class="main-filters">
+							<div class="main-filter selected">
+								<div class="main-filter-item-wrapper">
+									<div class="main-filter-item">
+										<a href="/catalog/by_size/">
+											<i class="ico ico-x-filter"></i>
+											<span class="link">очистить фильтры</span>
+										</a>
+									</div>
+								</div>
+							</div>
+
+							{* Features filter *}
+							{if $features}
+								<table id="features">
+									{foreach $features as $key=>$f}
+										<tr>
+											<td class="feature_name" data-feature="{$f->id}">
+												{$f->name}:
+											</td>
+											<td class="feature_values">
+												<a href="{url params=[$f->id=>null, page=>null]}"
+													{if !$smarty.get.$key}class="selected" {/if} rel="nofollow">Все</a>
+												{foreach $f->options as $o}
+													<a href="{url params=[$f->id=>$o->value, page=>null]}"
+														{if $smarty.get.$key == $o->value}class="selected" {/if}
+														rel="nofollow">{$o->value}</a>
+												{/foreach}
+											</td>
+										</tr>
+									{/foreach}
+								</table>
+							{/if}
+
+
+							<div class="main-filter">
+								<div class="main-filter-title">Сезонность</div>
+								<div class="main-filter-item-wrapper">
+									<div class="main-filter-item">
+										<a href="/catalog/by_size/?season=6" class="">
+											<i class="ico ico-li"></i>
+											<i class="ico ico-summer"></i>
+											<span class="link">Летние</span>
+										</a>
+									</div>
+									<div class="main-filter-item">
+										<a href="/catalog/by_size/?season=5" class="">
+											<i class="ico ico-li"></i>
+											<i class="ico ico-winter"></i>
+											<span class="link">Зимние</span>
+										</a>
+									</div>
+									<div class="main-filter-item">
+										<a href="/catalog/by_size/?season=7" class="selected">
+											<i class="ico ico-li"></i>
+											<i class="ico ico-allseason"></i>
+											<span class="link">Всесезонные</span>
+										</a>
+									</div>
+								</div>
+							</div>
+
+							<div class="main-filter">
+								<div class="main-filter-title">Производитель</div>
+								<div class="main-filter-item-wrapper manufacturer-filter" id="active_filter_more_f48">
+									{foreach $brands as $brand}
+										<div class="main-filter-item">
+											<a href="/catalog/by_size/?BRAND_ID=56305&amp;season=7" class="">
+												<i class="ico ico-li"></i>
+												<span class="link">Accelera</span>
+											</a>
+										</div>
+									{/foreach}
+								</div>
+
+								<div class="filter-more">
+									<a href="#" class="more" onclick="openTip('filter_more_f48'); return false;">
+										<i class="ico ico-plus"></i>
+										<span>Больше</span>
+									</a>
+									<a href="#" class="less" onclick="closeTip('filter_more_f48'); return false;">
+										<i class="ico ico-minus"></i>
+										<span>Меньше</span>
+									</a>
+								</div>
+							</div>
+
+
+							<div class="main-filter">
+								<div class="main-filter-title">применение</div>
+								<div class="main-filter-item-wrapper">
+									<div class="main-filter-item">
+										<a href="#" class="">
+											<i class="ico ico-li"></i>
+											<i class="ico ico-car"></i>
+											<span class="link">Легковые</span>
+										</a>
+									</div>
+									<div class="main-filter-item">
+										<a href="#" class="">
+											<i class="ico ico-li"></i>
+											<i class="ico ico-suv"></i>
+											<span class="link">Внедорожные</span>
+										</a>
+									</div>
+									<div class="main-filter-item">
+										<a href="#" class="">
+											<i class="ico ico-li"></i>
+											<i class="ico ico-van"></i>
+											<span class="link">На Микроавтобус</span>
+										</a>
+									</div>
+									<div class="main-filter-item">
+										<a href="#" class="">
+											<i class="ico ico-li"></i>
+											<i class="ico ico-truck"></i>
+											<span class="link">Грузовые</span>
+										</a>
+									</div>
+								</div>
+							</div>
+
+							<div class="main-filter">
+								<div class="main-filter-title">Особые характеристики</div>
+								<div class="main-filter-item-wrapper option-filter" id="active_filter_more_f58">
+
+									<div class="main-filter-item">
+										<a rel="nofollow" href="/catalog/by_size/?option=204291&amp;season=7" class="">
+											<i class="ico ico-li"></i>
+											<span class="link">"бархатная" боковина</span>
+										</a>
+									</div>
+
+								</div>
+
+								<div class="filter-more">
+									<a href="#" class="more" onclick="openTip('filter_more_f58'); return false;">
+										<i class="ico ico-plus"></i>
+										<span>Больше</span>
+									</a>
+									<a href="#" class="less" onclick="closeTip('filter_more_f58'); return false;">
+										<i class="ico ico-minus"></i>
+										<span>Меньше</span>
+									</a>
+								</div>
+							</div>
+
+							<div class="main-filter links_block">
+								<div class="main-filter-title">Популярные запросы</div>
+								<ul class="main-filter-item-wrapper option-filter" style="list-style: none;">
+									<li><a
+											href="/catalog/by_size/?BRAND_ID=60967&amp;tire_width=445&amp;tire_height=65&amp;tire_diameter=22.5#25430-0">Белшина
+											445/65 R22.5</a></li>
+									<li><a href="/catalog/by_size/?BRAND_ID=61939&amp;tire_diameter=20#25442-1">Ауфине
+											R20</a></li>
+									<li><a href="/catalog/by_size/?BRAND_ID=61939&amp;tire_diameter=22.5#25445-2">Ауфине
+											R22.5</a></li>
+									<li><a
+											href="/catalog/by_size/?BRAND_ID=61939&amp;tire_width=215&amp;tire_height=75&amp;tire_diameter=17.5#25448-3">Aufine
+											R17.5 75 215</a></li>
+									<li><a
+											href="/catalog/by_size/?BRAND_ID=61939&amp;tire_width=235&amp;tire_height=75&amp;tire_diameter=17.5#25454-4">Aufine
+											R17.5 75 235</a></li>
+									<li><a
+											href="/catalog/by_size/?BRAND_ID=61939&amp;tire_width=285&amp;tire_height=70&amp;tire_diameter=19.5#25458-5">Aufine
+											285/70 R19.5</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
+	<div class="right-side">
+		<!-- Breadcrumbs -->
+		<div class="breadcrumbs-wrapper">
+			<ul class="breadcrumbs" itemscope itemtype="https://schema.org/BreadcrumbList">
+				<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+					<a href="{'Main'|linkLang}" itemprop="item">
+						<span itemprop="name">{'Главная'|trans}</span>
+						<meta itemprop="position" content="1">
+					</a>
+				</li>
 
-	<div class="row">
-		<div class="col-lg-3" id="catalog_menu">
-			<div class="offcanvas-lg offcanvas-start" tabindex="-1" id="bdSidebar"
-				aria-labelledby="bdSidebarOffcanvasLabel">
+				{$item_position = 2}
+				{if $category}
+					{foreach $category->path as $cat}
+						<li><span class="delimiter"></span></li>
+						<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+							<a href="{'Products'|linkLang:[url => $cat->url]}" itemprop="item">
+								<span itemprop="name">{$cat->name}</span>
+								<meta itemprop="position" content="{$item_position++}">
+							</a>
+						</li>
+					{/foreach}
+				{/if}
+			</ul>
+		</div>
 
-				<div class="offcanvas-header border-bottom">
-					<h5 class="offcanvas-title" id="bdSidebarOffcanvasLabel">{$category->name}</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"
-						data-bs-target="#bdSidebar"></button>
-				</div>
-
-				<div class="offcanvas-body">
-
-					<ul>
-						{if !$category|empty}
-							{foreach $category->path[0]->subcategories as $c}
-								<li class="category_main">
-									<a {if $category->id == $c->id}class="selected" {/if} href="{'Products'|linkLang:[url => $c->url]}"
-										data-category="{$c->id}">{$c->name}</a>
-									{if $c->subcategories}
-										<ul>
-											{foreach $c->subcategories as $sc}
-												<li>
-													<a {if $category->id == $sc->id}class="selected" {/if} href="{$sc->url}"
-														data-category="{$sc->id}">{$sc->name}</a>
-												</li>
-											{/foreach}
-										</ul>
-									{/if}
-								</li>
-							{/foreach}
-						{/if}
-					</ul>
-				</div>
-
+		<div class="block-title-wrapper">
+			<div class="block-title">
+				<h1>{$h1}</h1>
+				{if 'product_category'|user_access AND $category->id}
+					<div class="admin_edit">
+						<a href="{'CategoryAdmin'|link:[id => $category->id]}" data-bs-toggle="tooltip"
+							title="{'Редактировать категорию'|trans}">{'Редактировать категорию'|trans}</a>
+					</div>
+				{/if}
 			</div>
 		</div>
 
-		<nav class="d-lg-none my-4" aria-label="Main navigation">
-			<button class="navbar-toggler text-bg-secondary p-2" type="button" data-bs-toggle="offcanvas"
-				data-bs-target="#bdSidebar" aria-controls="bdSidebar" aria-label="Toggle docs navigation">
-				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="bi" fill="currentColor"
-					viewBox="0 0 16 16">
-					<path fill-rule="evenodd"
-						d="M2.5 11.5A.5.5 0 0 1 3 11h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 3h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z">
-					</path>
-				</svg>
+		{if $category->annotation}
+			<div class="seo-announce">
+				{$category->annotation|raw}
+			</div>
+		{/if}
 
-				<span class="fs-6 pe-1">Категории товаров</span>
-			</button>
-		</nav>
 
-		<div class="col-lg-9 wrap_products">
-
-			{* Заголовок страницы *}
-			{if $seo->h1}
-				<h1>{$seo->h1}</h1>
-			{else}
-				<h1>{if $category->h1}{$category->h1}{else}{$category->name}{/if}</h1>
+		<div class="block-item-list">
+			{if $products->isNotEmpty()}
+				{foreach $products as $product}
+					{include file='parts/product_item.tpl'}
+				{/foreach}
 			{/if}
-
-
-			{if 'product_category'|user_access AND $category->id}
-				<div class="admin_edit">
-					<a href="{'CategoryAdmin'|link:[id => $category->id]}" data-bs-toggle="tooltip"
-						title="{'Редактировать категорию'|trans}">{'Редактировать категорию'|trans}</a>
-				</div>
-			{/if}
-
-
-			{if $category->annotation}
-				<div class="description_html category_annotation">
-					{$category->annotation|raw}
-				</div>
-			{/if}
-
-
-			<!-- Products -->
-			{if $products}
-
-				{* Features filter *}
-				{if $features}
-					<table id="features">
-						{foreach $features as $key=>$f}
-							<tr>
-								<td class="feature_name" data-feature="{$f->id}">
-									{$f->name}:
-								</td>
-								<td class="feature_values">
-									<a href="{url params=[$f->id=>null, page=>null]}" {if !$smarty.get.$key}class="selected" {/if}
-										rel="nofollow">Все</a>
-									{foreach $f->options as $o}
-										<a href="{url params=[$f->id=>$o->value, page=>null]}"
-											{if $smarty.get.$key == $o->value}class="selected" {/if} rel="nofollow">{$o->value}</a>
-									{/foreach}
-								</td>
-							</tr>
-						{/foreach}
-					</table>
-				{/if}
-
-
-				{* Product sort *}
-				{if $products|count > 0}
-					<div class="sort">
-						{'Сортировать по'|trans}
-						<a {if $sort=='position'} class="selected" {/if} href="{url sort=position page=null}"
-							rel="nofollow">{'умолчанию'|trans}</a>
-						<a {if $sort=='price'} class="selected" {/if} href="{url sort=price page=null}"
-							rel="nofollow">{'цене'|trans}</a>
-					</div>
-				{/if}
-
-				<ul class="product_list products gallerywide catalog" list_id="{$category->url}" list_name="{$category->name}">
-					{foreach $products as $product}
-						{include file='parts/product_item.tpl'}
-					{/foreach}
-				</ul>
-
-				{include file="parts/pagination.tpl"}
-
-			{else}
-				{'Товары не найдены'|trans}
-			{/if}
-
-			{if $category->description AND $show_description}
-				<div class="description_html category_description">
-					{$category->description|raw}
-				</div>
-			{/if}
-
 		</div>
+
+
+		{include file="parts/pagination.tpl"}
+
+		{if $category->description AND $show_description}
+			<div class="description_html category_description">
+				{$category->description|raw}
+			</div>
+		{/if}
 	</div>
+
 {/block}

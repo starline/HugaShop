@@ -279,6 +279,12 @@ a.admin_bookmark svg {
 	right: 0px;
 }
 
+.price_html .price_sign {
+	font-size: 0.6em;
+	color: #4b4b4b;
+	margin-left: 4px;
+}
+
 /*header*/
 .header-wrapper {
 	background: #2f95ff;
@@ -2646,7 +2652,8 @@ a.admin_bookmark svg {
 	margin-top: 20px;
 }
 
-.block-item-price .item-buy a {
+.block-item-price .item-buy button {
+	white-space: nowrap;
 	background: #85cb42;
 	border: none;
 	border-radius: 2px;
@@ -2659,7 +2666,7 @@ a.admin_bookmark svg {
 	padding: 16px 50px;
 }
 
-.block-item-price .item-buy a:hover {
+.block-item-price .item-buy button:hover {
 	background: #74bb30;
 }
 
@@ -4722,7 +4729,7 @@ a#buy {
 		margin-left: 30px;
 	}
 
-	.block-item-price .item-buy a {
+	.block-item-price .item-buy button {
 		padding: 16px 35px;
 	}
 
@@ -5791,7 +5798,7 @@ a#buy {
 		margin-left: 12px;
 	}
 
-	.block-item-price .item-buy a {
+	.block-item-price .item-buy button {
 		padding: 8px 26px;
 		font-size: 16px;
 		letter-spacing: .1em;

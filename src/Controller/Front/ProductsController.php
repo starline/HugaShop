@@ -129,18 +129,15 @@ class ProductsController extends BaseFrontController
             $noindex = true; # Close indexation
         }
 
-        if (empty($category->meta_title)) {
-            $category->meta_title = $category->name;
-        }
-
         // Если description пустой, берем title + product_meta_description
         if (empty($category->meta_description)) {
             $category->meta_description = $category->meta_title . ' ' . Settings::getParam('product_meta_description');
         }
 
 
-        Design::assign('meta_title',        $category->meta_title);
+        Design::assign('meta_title',        $category->meta_title ?: $category->name);
         Design::assign('meta_description',  $category->meta_description);
+        Design::assign('h1',                $category->h1 ?: $category->name);
 
         Design::assign('products',          $products);
         Design::assign('products_count',    $products_count);

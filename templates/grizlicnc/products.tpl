@@ -46,8 +46,8 @@
 						{if !$category|empty}
 							{foreach $category->path[0]->subcategories as $c}
 								<li class="category_main">
-									<a {if $category->id == $c->id}class="selected" {/if} href="{'Products'|linkLang:[url => $c->url]}"
-										data-category="{$c->id}">{$c->name}</a>
+									<a {if $category->id == $c->id}class="selected" {/if}
+										href="{'Products'|linkLang:[url => $c->url]}" data-category="{$c->id}">{$c->name}</a>
 									{if $c->subcategories}
 										<ul>
 											{foreach $c->subcategories as $sc}
@@ -83,13 +83,7 @@
 
 		<div class="col-lg-9 wrap_products">
 
-			{* Заголовок страницы *}
-			{if $seo->h1}
-				<h1>{$seo->h1}</h1>
-			{else}
-				<h1>{if $category->h1}{$category->h1}{else}{$category->name}{/if}</h1>
-			{/if}
-
+			<h1>{$h1}</h1>
 
 			{if 'product_category'|user_access AND $category->id}
 				<div class="admin_edit">

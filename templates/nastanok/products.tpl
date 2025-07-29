@@ -54,15 +54,7 @@
 
 		<div class="col-lg-9 wrap_products {if !$category}wide{/if}">
 
-			{* Заголовок страницы *}
-			{if $seo->h1}
-				<h1>{$seo->h1}</h1>
-			{elseif $keyword}
-				<h1>Поиск {$keyword}</h1>
-			{else}
-				<h1>{if $category->h1}{$category->h1}{else}{$category->name}{/if}</h1>
-			{/if}
-
+			<h1>{$h1}</h1>
 
 			{if 'product_category'|user_access AND $category->id}
 				<div class="admin_edit">

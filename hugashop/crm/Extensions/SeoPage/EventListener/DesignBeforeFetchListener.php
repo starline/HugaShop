@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  */
 
@@ -49,6 +49,11 @@ class DesignBeforeFetchListener
 
         $seo = $cache_item->get();
         Design::assign('seo', $seo);
+
+        // H1
+        if (!empty($seo->h1)) {
+            Design::assign('h1', $seo->h1);
+        }
 
         // Задаем meta-теги из SEO страницы
         if (!empty($seo->meta_title)) {
