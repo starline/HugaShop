@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.6
+ * @version 2.7
  *
  */
 
@@ -37,7 +37,6 @@ class ProductFeature extends BaseModel
      */
     public static function getFeatures(array $filter = [], bool $count = false)
     {
-
         // Фильтрация по category_id
         if (!empty($filter['category_id'])) {
             $feature_ids = ProductCategoryFeature::query()
@@ -50,7 +49,7 @@ class ProductFeature extends BaseModel
         }
 
         if ($count) {
-            return self::getCount();
+            return self::getCount($filter);
         }
 
         return self::getListTranslate($filter, order: 'position')->keyBy('id');
@@ -62,7 +61,7 @@ class ProductFeature extends BaseModel
      */
     public static function countFeatures(array $filter = []): int
     {
-        return self::getFeatures($filter, count: true);
+        return (int) self::getFeatures($filter, count: true);
     }
 
 
@@ -72,7 +71,7 @@ class ProductFeature extends BaseModel
      */
     public static function getFeatureByName(string $name)
     {
-        return ProductFeature::where('name', trim($name))->first();
+        return self::where('name', trim($name))->first();
     }
 
 

@@ -4,13 +4,14 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  */
 
 namespace HugaShop\Models\Product;
 
 use HugaShop\Models\BaseModel;
+use Illuminate\Support\Collection;
 
 class ProductCategorySynonym extends BaseModel
 {
@@ -28,19 +29,17 @@ class ProductCategorySynonym extends BaseModel
         return $this->belongsTo(ProductCategory::class, 'category_id');
     }
 
+    
     /**
      * Функция возвращает cинонимы, удовлетворяющих фильтру
      * @param array $filter
      */
-    public static function getSynonyms(array $filter)
+    public static function getSynonyms(array $filter = []): Collection
     {
-
         $query = self::with('category');
-
         if (!empty($filter['category_id'])) {
             $query->where('category_id', (int) $filter['category_id']);
         }
-
         return $query->orderBy('position')->get();
     }
 
@@ -50,16 +49,14 @@ class ProductCategorySynonym extends BaseModel
      * (в зависимости от типа аргумента, int - id, string - name)
      * @param $id id или url поста
      */
-    public static function getSynonym($id)
+    public static function getSynonym(int|string $id)
     {
         $query = self::with('category');
-
         if (is_int($id)) {
             $query->where('id', $id);
         } else {
             $query->where('name', $id);
         }
-
         return $query->first();
     }
 
@@ -76,7 +73,6 @@ class ProductCategorySynonym extends BaseModel
 
         // Готовим массив для массовой вставки
         $insertData = [];
-
         foreach ($synonyms as $index => $synonym) {
             if (!empty($synonym)) {
                 $insertData[] = [
@@ -99,7 +95,7 @@ class ProductCategorySynonym extends BaseModel
     /**
      * Delete Category synonymms
      */
-    public static function deleteCategorySynonyms($category_id)
+    public static function deleteCategorySynonyms(int $category_id): int
     {
         return self::where('category_id', $category_id)->delete();
     }
