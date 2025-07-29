@@ -1,5 +1,5 @@
 <!-- BackToTop -->
-<link rel="stylesheet" href="{'BackToTop/button.css'|asset:'extensions'}" />
+<link rel="stylesheet" href="{'button.css'|asset:'BackToTop':'extension'}" />
 <div class="back-to-top"></div>
 <script>
     let mobile_show = parseInt('{$BackToTop->mobile_show}');

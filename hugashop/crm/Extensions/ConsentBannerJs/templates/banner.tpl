@@ -1,6 +1,6 @@
 <!-- ConsentBanner -->
-<link rel="stylesheet" href="{'ConsentBannerJs/light.css'|asset:'extensions'}" />
-<script defer src="{'ConsentBannerJs/cb.min.js'|asset:'extensions'}"></script>
+<link rel="stylesheet" href="{'light.css'|asset:'ConsentBannerJs':'extension'}" />
+<script defer src="{'cb.min.js'|asset:'ConsentBannerJs':'extension'}"></script>
 <script>
     window.addEventListener('consent-banner.ready', () => {
         cookiesBannerJs(

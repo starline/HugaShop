@@ -105,6 +105,7 @@ class TemplatesController extends BaseAdminController
         return $this->fetchResponse('settings/templates.tpl');
     }
 
+
     private function getTemplates(string $dir, string $sub = ''): array
     {
         $list = [];

@@ -1,6 +1,6 @@
 <!-- Snowflakes -->
-<link rel="stylesheet" href="{'Snowflakes/snow.min.css'|asset:'extensions'}" />
-<script type="text/javascript" src="{'Snowflakes/snow.js'|asset:'extensions'}"></script>
+<link rel="stylesheet" href="{'snow.min.css'|asset:'Snowflakes':'extension'}" />
+<script type="text/javascript" src="{'snow.js'|asset:'Snowflakes':'extension'}"></script>
 <script>
     new Snow({
         'countSnowflake': {$Snowflakes->countSnowflake}

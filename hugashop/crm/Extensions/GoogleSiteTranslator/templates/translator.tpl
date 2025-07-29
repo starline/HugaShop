@@ -1,7 +1,7 @@
-<link rel="stylesheet" href="{'GoogleSiteTranslator/translator.css'|asset:'extensions'}" />
+<link rel="stylesheet" href="{'translator.css'|asset:'GoogleSiteTranslator':'extension'}" />
 
-<script type="text/javascript" src="{'GoogleSiteTranslator/js.cookie.min.js'|asset:'extensions'}"></script>
-<script type="text/javascript" src="{'GoogleSiteTranslator/translator.js'|asset:'extensions'}"></script>
+<script type="text/javascript" src="{'js.cookie.min.js'|asset:'GoogleSiteTranslator':'extension'}"></script>
+<script type="text/javascript" src="{'translator.js'|asset:'GoogleSiteTranslator':'extension'}"></script>
 
 <!-- GoogleSiteTranslator -->
 <script>
@@ -30,9 +30,9 @@
 
 {if $GoogleSiteTranslator->use_own_template != 1}
     <div class="language">
-        <img src="{'GoogleSiteTranslator/lang__uk.png'|asset:'extensions'}" alt="UA" title="Українська мова"
+        <img src="{'lang__uk.png'|asset:'GoogleSiteTranslator':'extension'}" alt="UA" title="Українська мова"
             data-google-lang="uk" class="language__img">
-        <img src="{'GoogleSiteTranslator/lang__ru.png'|asset:'extensions'}" alt="RU" title="Руский язык"
+        <img src="{'lang__ru.png'|asset:'GoogleSiteTranslator':'extension'}" alt="RU" title="Руский язык"
             data-google-lang="ru" class="language__img">
     </div>
 {/if}

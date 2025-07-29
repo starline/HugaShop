@@ -271,22 +271,24 @@ class Design
      * @param string $asset_file
      * @param ?string $folder
      */
-    public static function getAssetUrl(string $asset_file, ?string $folder = null)
+    public static function getAssetUrl(string $asset_file, ?string $folder = null, ?string $type = null)
     {
 
         if (!empty($folder)) {
-            $asset_file = rtrim($folder) . '/' . ltrim($asset_file, '/');
-        } else {
-            if (!empty(self::$theme)) {
-                $asset_file =  self::$theme . '/assets/' . ltrim($asset_file, '/');
+            if ($type === 'extension') {
+                $asset_file = trim($folder, '/') . '/templates/assets/' . ltrim($asset_file, '/');
+            } else {
+                $asset_file = rtrim($folder, '/') . '/' . ltrim($asset_file, '/');
             }
+        } elseif (!empty(self::$theme)) {
+            $asset_file =  self::$theme . '/assets/' . ltrim($asset_file, '/');
         }
-        dump($asset_file);
+
         if (!empty(self::$Packages)) {
             return self::$Packages->getUrl($asset_file);
-        } else {
-            return $asset_file;
         }
+
+        return $asset_file;
     }
 
 

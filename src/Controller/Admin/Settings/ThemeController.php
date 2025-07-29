@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.3
+ * @version 1.4
  *
  * Theme
  *
@@ -35,9 +35,7 @@ class ThemeController extends BaseAdminController
 
         if (Request::checkCSRF()) {
 
-            // TODO: Необзхрдимо изменять имя темы в папке public/templates
-
-            $this->dir_delete(Config::get('compiled_dir'), false);
+            $this->dirDelete(Config::get('compiled_dir'), false);
 
             $old_names = Request::post('old_name');
             $new_names = Request::post('new_name');
@@ -74,16 +72,16 @@ class ThemeController extends BaseAdminController
                                 $new_name = $new_name . '_1';
                             }
                         }
-                        $this->dir_copy($this->themes_dir . Settings::getParam('theme'), $this->themes_dir . $new_name);
+                        $this->dirCopy($this->themes_dir . Settings::getParam('theme'), $this->themes_dir . $new_name);
                         @unlink($this->themes_dir . $new_name . '/locked');
                         Settings::set('theme', $new_name);
                         break;
                     }
 
                 case 'delete_theme': {
-                        $this->dir_delete($this->themes_dir . $action_theme);
+                        $this->dirDelete($this->themes_dir . $action_theme);
                         if ($action_theme === Settings::getParam('theme')) {
-                            $t = reset($this->get_themes());
+                            $t = reset($this->getThemes());
                             Settings::set('theme', $t->name);
                         }
                         break;
@@ -91,7 +89,7 @@ class ThemeController extends BaseAdminController
             }
         }
 
-        $themes = $this->get_themes();
+        $themes = $this->getThemes();
 
         // Если нет прав на запись - передаем в дизайн предупреждение
         if (!is_writable($this->themes_dir)) {
@@ -111,14 +109,14 @@ class ThemeController extends BaseAdminController
     }
 
 
-    private function dir_copy($src, $dst)
+    private function dirCopy($src, $dst)
     {
         if (is_dir($src)) {
             mkdir($dst, 0777);
             $files = scandir($src);
             foreach ($files as $file) {
                 if ($file != "." && $file != "..") {
-                    $this->dir_copy("$src/$file", "$dst/$file");
+                    $this->dirCopy("$src/$file", "$dst/$file");
                 }
             }
         } elseif (file_exists($src)) {
@@ -129,7 +127,7 @@ class ThemeController extends BaseAdminController
     }
 
 
-    private function dir_delete($path, $delete_self = true)
+    private function dirDelete($path, $delete_self = true)
     {
         if (!$dh = @opendir($path)) {
             return;
@@ -140,7 +138,7 @@ class ThemeController extends BaseAdminController
             }
 
             if (!@unlink($path . '/' . $obj)) {
-                $this->dir_delete($path . '/' . $obj, true);
+                $this->dirDelete($path . '/' . $obj, true);
             }
         }
         closedir($dh);
@@ -150,7 +148,8 @@ class ThemeController extends BaseAdminController
         return;
     }
 
-    private function get_themes()
+
+    private function getThemes()
     {
         if ($handle = opendir($this->themes_dir)) {
             while (false !== ($file = readdir($handle))) {

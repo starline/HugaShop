@@ -2,13 +2,19 @@ framework:
     asset_mapper:
         # The paths to make available to the asset mapper.
         paths:
-            - assets/
+            - hugashop/crm/Extensions/
             - templates/
         missing_import_mode: strict
         excluded_patterns:
             - "**tinymce**"
             - "**/*.tpl"
+            - "**/*.php"
+            - "**/*.yaml"
             - "**/translations/**"
+            - "**/Model/**"
+            - "**/Services/**"
+            - "**/Controller/**"
+            - "**/EventListener/**"
 
 when@prod:
     framework:
