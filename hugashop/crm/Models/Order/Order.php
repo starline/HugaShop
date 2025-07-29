@@ -143,7 +143,7 @@ class Order extends BaseModel
         }
 
         $order = $query->first();
-        
+
         if ($order) {
             $order->settings = empty($order->settings) ? new \stdClass() : (object) unserialize($order->settings);
         }
@@ -155,10 +155,10 @@ class Order extends BaseModel
     /**
      * Выбрать список заказов
      * @param array $filter
-     * @param string|bool $select = false|count|sum
      * @param array $join = ['payment_method', 'delivery_method', 'purchases' 'labels']
+     * @param string $select = count|sum
      */
-    public static function getOrders(array $filter = [], string|bool $select = false, array $join = [])
+    public static function getOrders(array $filter = [], array $join = [], ?string $select = null)
     {
         $query = self::query();
 
@@ -214,9 +214,10 @@ class Order extends BaseModel
         // Выбираем кол-во
         if ($select === 'count') {
             return $query->count();
+        }
 
-            // Выбираем общую стоимость заказов
-        } elseif ($select === 'sum') {
+        // Выбираем общую стоимость заказов
+        elseif ($select === 'sum') {
             return $query->selectRaw('SUM(total_price) as sum_total_price, SUM(profit_price) as sum_profit_price')->first();
         }
 
@@ -237,7 +238,7 @@ class Order extends BaseModel
             $order->settings = empty($order->settings) ? new \stdClass() : (object) unserialize($order->settings);
         }
 
-        return $orders->keyBy('id')->all();
+        return $orders->keyBy('id');
     }
 
 
@@ -258,7 +259,7 @@ class Order extends BaseModel
      */
     public static function getOrdersPrice(array $filter = [])
     {
-        return Order::getOrders($filter, 'sum');
+        return Order::getOrders($filter, select: 'sum');
     }
 
 

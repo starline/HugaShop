@@ -84,19 +84,20 @@ class ProductsController extends BaseFrontController
 
 
         // Характеристики
-        $features = [];
+        $features = ProductFeature::getFeatures(['category_id' => $category->id, 'in_filter' => 1]);
+
         $selected_features = [];
-        foreach (ProductFeature::getFeatures(['category_id' => $category->id, 'in_filter' => 1]) as $feature) {
+        foreach ($features as $feature) {
             if (($val = strval(Request::get($feature->id))) != '') {
                 $selected_features[$feature->id] = $val;
             }
         }
 
-        // Характеристики
+        // Опции Характеристик
         $options_filter['visible'] = 1;
         $options_filter['category_id'] = $category->children;
         if (!empty($features)) {
-            $options_filter['feature_id'] = array_keys($features);
+            $options_filter['feature_id'] = $features->pluck('id')->toArray();
         }
 
         if (!empty($selected_features)) {
@@ -112,12 +113,13 @@ class ProductsController extends BaseFrontController
             }
         }*/
 
+            /*
         // Delete fetures withot options
         foreach ($features as $i => &$feature) {
             if (empty($feature->options)) {
                 unset($features[$i]);
             }
-        }
+        }*/
 
         // Выбираем товары
         $products        = Product::getProducts($filter, ['image']);
@@ -129,14 +131,8 @@ class ProductsController extends BaseFrontController
             $noindex = true; # Close indexation
         }
 
-        // Если description пустой, берем title + product_meta_description
-        if (empty($category->meta_description)) {
-            $category->meta_description = $category->meta_title . ' ' . Settings::getParam('product_meta_description');
-        }
-
-
         Design::assign('meta_title',        $category->meta_title ?: $category->name);
-        Design::assign('meta_description',  $category->meta_description);
+        Design::assign('meta_description',  $category->meta_description ?: $category->meta_title . ' ' . Settings::getParam('product_meta_description'));
         Design::assign('h1',                $category->h1 ?: $category->name);
 
         Design::assign('products',          $products);

@@ -65,6 +65,7 @@
 
 				function do_export(page) {
 					filter_arr['page'] = typeof(page) != 'undefined' ? page : 1;
+					filter_arr['csrf'] = window.csrf;
 
 					$.ajax({
 						url: "/admin/ajax/" + entity + "/export",

@@ -581,67 +581,63 @@ final class TestScriptController extends BaseAdminController
                 case 'related_products': {
 
                         // Выбираем все товары, активные
-                        $products = Product::getProducts(array("visible" => true));
-                        //$products = Product::getProducts(array("visible" => true, "id" => 434));
+                        $products = Product::getProducts(["visible" => 1]);
+                        //$products = Product::getProducts(["visible" => 1, "id" => 434]);
 
                         foreach ($products as $product) {
 
                             // Выбираем все текущие связанные товары
-                            //$cur_rel_products = ProductRelated::getRelatedProducts($product->id);
-                            $cur_rel_products = [];
+                            //$cur_rel_product_ids = ProductRelated::getRelatedProducts($product->id)->pluck('related_id')->toArray();
+                            $cur_rel_product_ids = [];
 
                             // Выбираем Все товары в выполненных заказах
-                            $purchases_ids = [];
-                            $orders_done = Order::getOrders(['product_id' => $product->id]);
-                            if (!empty($orders_done)) {
-                                $purchases = OrderPurchase::getPurchases(['order_id' => array_keys($orders_done)]);
-                                foreach ($purchases as $pur) {
-                                    $purchases_ids[] = $pur->product_id;
-                                }
-                            }
+                            $orders_done = Order::getOrders(['product_id' => $product->id], join: ['purchases']);
+                            $purchase_ids = $orders_done
+                                ->flatMap(fn($order) => $order->purchases)
+                                ->pluck('id')
+                                ->toArray();
 
                             // Соединяем выбранные товары. убираем дубликаты
-                            $rel_products_ids = array_unique(array_merge(array_keys($cur_rel_products), $purchases_ids));
+                            $rel_products_ids = array_unique(array_merge($cur_rel_product_ids, $purchase_ids));
 
                             // Выбираем все товары в категории
                             // Если товаров меньше чем в настройках, выбираем все товары родительской категории
-                            $category_products = [];
-                            $parent_category_products = [];
+                            $category_product_ids = [];
+                            $parent_category_product_ids = [];
                             if (count($rel_products_ids) < Settings::getParam('rel_products_num')) {
-                                $category_products = Product::getProducts(array("visible" => true, "in_stock" => true, "category_id" => $product->category_id));
-                                $rel_products_ids = array_unique(array_merge($rel_products_ids, array_keys($category_products)));
+                                $category_product_ids = Product::getProducts(["visible" => 1, "in_stock" => 1, "category_id" => $product->category_id])->pluck('id')->toArray();
+                                $rel_products_ids = array_unique(array_merge($rel_products_ids, $category_product_ids));
 
                                 if (count($rel_products_ids) < Settings::getParam('rel_products_num') and !empty($product->category_id)) {
                                     $category = ProductCategory::getCategoryById($product->category_id);
                                     $parent_category = ProductCategory::getCategoryById($category->parent_id);
                                     if (!empty($parent_category->children)) {
-                                        $parent_category_products = Product::getProducts(array("visible" => true, "in_stock" => true, "category_id" => $parent_category->children));
-                                        $rel_products_ids = array_unique(array_merge($rel_products_ids, array_keys($parent_category_products)));
+                                        $parent_category_product_ids = Product::getProducts(["visible" => 1, "in_stock" => 1, "category_id" => $parent_category->children])->pluck('id')->toArray();
+                                        $rel_products_ids = array_unique(array_merge($rel_products_ids, $parent_category_product_ids));
                                     }
                                 }
                             }
 
                             // Проверяем что товары в наличии, активны, продажи. Сортировка по рентабельности
-                            $active_products = Product::getProducts(array("id" => $rel_products_ids, "visible" => true, "in_stock" => true, "top" => true, "date_from" => date('Y-m-d', strtotime('-180 days'))));
-                            $rel_products_ids = array_keys($active_products);
+                            $active_product_ids = Product::getProducts(["id" => $rel_products_ids, "visible" => 1, "in_stock" => 1, "top" => 1, "date_from" => date('Y-m-d', strtotime('-180 days'))])->pluck('id')->toArray();
 
                             // Если товаров мало, добавляем
                             if (count($rel_products_ids) < Settings::getParam('rel_products_num')) {
-                                $rel_products_ids = array_unique(array_merge($rel_products_ids, array_keys($cur_rel_products)));
+                                $rel_products_ids = array_unique(array_merge($rel_products_ids, $cur_rel_product_ids));
                                 if (count($rel_products_ids) < Settings::getParam('rel_products_num')) {
-                                    $rel_products_ids = array_unique(array_merge($rel_products_ids, $purchases_ids));
+                                    $rel_products_ids = array_unique(array_merge($rel_products_ids, $purchase_ids));
                                     if (count($rel_products_ids) < Settings::getParam('rel_products_num')) {
-                                        $rel_products_ids = array_unique(array_merge($rel_products_ids, array_keys($category_products)));
+                                        $rel_products_ids = array_unique(array_merge($rel_products_ids, $category_product_ids));
                                         if (count($rel_products_ids) < Settings::getParam('rel_products_num')) {
-                                            $rel_products_ids = array_unique(array_merge($rel_products_ids, array_keys($parent_category_products)));
+                                            $rel_products_ids = array_unique(array_merge($rel_products_ids, $parent_category_product_ids));
                                         }
                                     }
                                 }
                             }
 
                             // Проверяем что товары в наличии, активны
-                            $new_active_products = Product::getProducts(array("id" => $rel_products_ids, "visible" => true, "in_stock" => true));
-                            $rel_products_ids = array_unique(array_merge(array_keys($active_products), array_keys($new_active_products)));
+                            $new_active_product_ids = Product::getProducts(['id' => $rel_products_ids, 'visible' => 1, 'in_stock' => 1])->pluck('id')->toArray();
+                            $rel_products_ids = array_unique(array_merge($active_product_ids, $new_active_product_ids));
 
                             // Удаляем текущий товар из выбрки
                             foreach ($rel_products_ids as $index => $value) {

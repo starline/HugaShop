@@ -4,13 +4,12 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.2
  *
  */
 
 namespace App\Controller\Admin\Ajax\Export;
 
-use HugaShop\Models\Image;
 use HugaShop\Services\Config;
 use HugaShop\Models\Product\Product;
 use HugaShop\Services\Request;
@@ -22,13 +21,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class ProductExport extends BaseAdminController
 {
     private $columns_names = array(
-        'sku' =>                  'Арт.',
-        'name' =>                 'Название товара (вариант)',
-        'price' =>                'Цена',
-        'cost_price' =>            'Оптовая цена',
-        'stock' =>                'Вналичии',
-        'url' =>                  'Ссылка на сайт',
-        //'brand' =>            	'Бранд',
+        'sku'           => 'Арт.',
+        'name'          => 'Название товара (вариант)',
+        'price'         => 'Цена',
+        'cost_price'    => 'Оптовая цена',
+        'stock'         => 'Наличие',
+        'url'           => 'Ссылка на сайт',
+        'brand'         => 'Бранд',
         //'body' =>             	'Описание html',
         //'images' =>           	'Изображения',
         //'category'=>				'Категория',
@@ -47,9 +46,6 @@ class ProductExport extends BaseAdminController
         $this->checkAdminAccess('export', checkCSRF: true);
 
         $export_file_path = Config::get('export_files_dir') . $this->filename;
-
-        // Эксель кушает только 1251
-        //setlocale(LC_ALL, 'ru_RU.1251');
 
         // Страница, которую экспортируем
         $page = Request::get('page');
@@ -90,7 +86,7 @@ class ProductExport extends BaseAdminController
 
 
         // Выбираем товаары с базы
-        $products = Product::getProducts($filter);
+        $products = Product::getProducts($filter, join: ['images', 'brand']);
         if (empty($products)) {
             return new JsonResponse(['end' => true]);
         }
@@ -124,34 +120,35 @@ class ProductExport extends BaseAdminController
         // }
 
 
-        // Изображения товаров
-        $images = Image::getImages(array_keys($products), 'product', true);
-
-        foreach ($images as $image) {
-
-            // Добавляем изображения к товару
-            if (empty($products[$image->entity_id]->images)) {
-                $products[$image->entity_id]->images = $image->filename;
-
-                // остальные изображения через запятую
-            } else {
-                $products[$image->entity_id]->images = $products[$image->entity_id]->images . ', ' . $image->filename;
-            }
-        }
-
-        // Выбирааем все варианты товаров
-        $products = Product::getList(['id' => array_keys($products)]);
         foreach ($products as $product) {
             foreach ($this->columns_names as $column_var => $column_name) {
                 if (!empty($product->$column_var)) {
-                    $res[$column_var] = $product->$column_var;
+                    switch ($column_var) {
+                        case 'brand': {
+                                if (!empty($product->brand->name)) {
+                                    $res[$column_var] = $product->brand->name;
+                                }
+                                break;
+                            }
+                        case 'url': {
 
-                    // сформируем сссылку на товар
-                    if ($column_var == 'url') {
-                        $res[$column_var] = Config::get('root_url') . '/tovar-' . $res[$column_var];
+                                // сформируем сссылку на товар
+                                $res[$column_var] = Config::get('root_url') . '/' . Config::PRODUCT_PREFIX . $product->url;
+                                break;
+                            }
+                        case 'images': {
+                                foreach ($product->images as $image) {
+                                    $filenames[] = $image->filename;
+                                }
+                                if (!empty($filenames)) {
+                                    $res[$column_var] = implode(',', $filenames);
+                                }
+                                break;
+                            }
+                        default: {
+                                $res[$column_var] = $product->$column_var;;
+                            }
                     }
-                } else {
-                    $res[$column_var] = '';
                 }
             }
             fputcsv($f, $res, $this->column_delimiter);

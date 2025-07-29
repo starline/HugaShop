@@ -37,7 +37,7 @@ class MainController extends BaseAdminController
 
         $filter['page'] = max(1, Request::getInt('page'));
         $filter['limit'] = Request::get('page', 'string') == 'all' ? 'all' : Settings::getParam('products_num_admin');
-        $orders = Order::getOrders($filter, false, ['delivery_method', 'payment_method']); # Выбираем все заказы
+        $orders = Order::getOrders($filter, join: ['delivery_method', 'payment_method']); # Выбираем все заказы
 
         $seo['title'] = 'Заголовок';
 

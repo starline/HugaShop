@@ -4,26 +4,39 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.3
  *
  */
 
 namespace HugaShop\Models\Product;
 
 use HugaShop\Models\BaseModel;
+use HugaShop\Models\Product\ProductFeature;
+use HugaShop\Models\Product\ProductCategory;
 
 class ProductCategoryFeature extends BaseModel
 {
 
     protected static $table_fields = [
-        'product_id' =>         ['type' => 'int',           'req' => true],
+        'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
+        'category_id ' =>       ['type' => 'int',           'req' => true],
         'feature_id' =>         ['type' => 'int',           'req' => true],
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(ProductCategory::class, 'product_id');
+    }
+
+    public function feature()
+    {
+        return $this->belongsTo(ProductFeature::class, 'product_id');
+    }
 
 
     /**
      * Get products gategories where are features
-     * @param $id
+     * @param $feature_id
      */
     public static function getFeatureCategories(int $feature_id): array
     {
@@ -35,7 +48,7 @@ class ProductCategoryFeature extends BaseModel
 
     /**
      * Add feature to category
-     * @param int $id
+     * @param int $feature_id
      * @param int $category_id
      */
     public static function addFeatureCategory(int $feature_id, int $category_id)

@@ -158,7 +158,7 @@ class ProductController extends BaseAdminController
 
                 if (!empty($name) && !empty($value)) {
 
-                    $feature = ProductFeature::getFeature($name);
+                    $feature = ProductFeature::getFeatureByName($name);
                     if (empty($feature)) {
                         $feature = ProductFeature::createOne(['name' => trim($name)]);
                     }

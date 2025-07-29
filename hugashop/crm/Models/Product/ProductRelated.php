@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.5
  *
  */
 
@@ -16,6 +16,7 @@ class ProductRelated extends BaseModel
 {
 
     protected static $table_fields = [
+        'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'product_id' =>         ['type' => 'int',           'req' => true],
         'related_id' =>         ['type' => 'int',           'req' => true],
         'position' =>           ['type' => 'int',           'def' => 0]
@@ -26,6 +27,12 @@ class ProductRelated extends BaseModel
     {
         return $this->belongsTo(Product::class, 'related_id');
     }
+
+    public function parent_product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+
 
     /**
      * Выбираем связанные товары

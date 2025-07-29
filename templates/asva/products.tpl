@@ -19,7 +19,7 @@
 						</div>
 
 						<div class="selection-tire-filtres">
-							<form id="form_filter" action="/catalog/by_size/" method="GET" class="sorting_form">
+							<form id="form_filter" action="#" method="GET" class="sorting_form">
 
 								<input type="hidden" name="season" value="7" />
 
@@ -59,7 +59,7 @@
 							<div class="main-filter selected">
 								<div class="main-filter-item-wrapper">
 									<div class="main-filter-item">
-										<a href="/catalog/by_size/">
+										<a href="#">
 											<i class="ico ico-x-filter"></i>
 											<span class="link">очистить фильтры</span>
 										</a>
@@ -94,21 +94,21 @@
 								<div class="main-filter-title">Сезонность</div>
 								<div class="main-filter-item-wrapper">
 									<div class="main-filter-item">
-										<a href="/catalog/by_size/?season=6" class="">
+										<a href="#" class="">
 											<i class="ico ico-li"></i>
 											<i class="ico ico-summer"></i>
 											<span class="link">Летние</span>
 										</a>
 									</div>
 									<div class="main-filter-item">
-										<a href="/catalog/by_size/?season=5" class="">
+										<a href="#" class="">
 											<i class="ico ico-li"></i>
 											<i class="ico ico-winter"></i>
 											<span class="link">Зимние</span>
 										</a>
 									</div>
 									<div class="main-filter-item">
-										<a href="/catalog/by_size/?season=7" class="selected">
+										<a href="#" class="selected">
 											<i class="ico ico-li"></i>
 											<i class="ico ico-allseason"></i>
 											<span class="link">Всесезонные</span>
@@ -122,7 +122,7 @@
 								<div class="main-filter-item-wrapper manufacturer-filter" id="active_filter_more_f48">
 									{foreach $brands as $brand}
 										<div class="main-filter-item">
-											<a href="/catalog/by_size/?BRAND_ID=56305&amp;season=7" class="">
+											<a href="#" class="">
 												<i class="ico ico-li"></i>
 												<span class="link">Accelera</span>
 											</a>
@@ -182,7 +182,7 @@
 								<div class="main-filter-item-wrapper option-filter" id="active_filter_more_f58">
 
 									<div class="main-filter-item">
-										<a rel="nofollow" href="/catalog/by_size/?option=204291&amp;season=7" class="">
+										<a rel="nofollow" href="#" class="">
 											<i class="ico ico-li"></i>
 											<span class="link">"бархатная" боковина</span>
 										</a>
@@ -205,21 +205,17 @@
 							<div class="main-filter links_block">
 								<div class="main-filter-title">Популярные запросы</div>
 								<ul class="main-filter-item-wrapper option-filter" style="list-style: none;">
-									<li><a
-											href="/catalog/by_size/?BRAND_ID=60967&amp;tire_width=445&amp;tire_height=65&amp;tire_diameter=22.5#25430-0">Белшина
+									<li><a href="#">Белшина
 											445/65 R22.5</a></li>
-									<li><a href="/catalog/by_size/?BRAND_ID=61939&amp;tire_diameter=20#25442-1">Ауфине
+									<li><a href="#">Ауфине
 											R20</a></li>
-									<li><a href="/catalog/by_size/?BRAND_ID=61939&amp;tire_diameter=22.5#25445-2">Ауфине
+									<li><a href="#">Ауфине
 											R22.5</a></li>
-									<li><a
-											href="/catalog/by_size/?BRAND_ID=61939&amp;tire_width=215&amp;tire_height=75&amp;tire_diameter=17.5#25448-3">Aufine
+									<li><a href="#">Aufine
 											R17.5 75 215</a></li>
-									<li><a
-											href="/catalog/by_size/?BRAND_ID=61939&amp;tire_width=235&amp;tire_height=75&amp;tire_diameter=17.5#25454-4">Aufine
+									<li><a href="#">Aufine
 											R17.5 75 235</a></li>
-									<li><a
-											href="/catalog/by_size/?BRAND_ID=61939&amp;tire_width=285&amp;tire_height=70&amp;tire_diameter=19.5#25458-5">Aufine
+									<li><a href="#">Aufine
 											285/70 R19.5</a></li>
 								</ul>
 							</div>

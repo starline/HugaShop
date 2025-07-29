@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.0
+ * @version 3.1
  *
  */
 
@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Builder;
 class ProductBrand extends BaseModel
 {
 
+    public $timestamps = true;
     protected static $table_fields = [
         'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'url' =>                ['type' => 'varchar'],
@@ -98,7 +99,7 @@ class ProductBrand extends BaseModel
         // Удаляем изображение
         self::deleteImage($id);
 
-        if (ProductBrand::deleteOne($id)) {
+        if (self::deleteOne($id)) {
             Product::where('brand_id', $id)->update(['brand_id' => null]);
         } else {
             return false;
@@ -113,7 +114,7 @@ class ProductBrand extends BaseModel
     public static function deleteImage(int $brand_id)
     {
 
-        $brand = ProductBrand::find($brand_id);
+        $brand = self::find($brand_id);
 
         if (!$brand || empty($brand->image)) {
             return;
@@ -126,7 +127,7 @@ class ProductBrand extends BaseModel
         $brand->save();
 
         // Проверяем, используется ли это изображение другими брендами
-        $count = ProductBrand::where('image', $filename)->count();
+        $count = self::where('image', $filename)->count();
 
         if ($count === 0) {
             @unlink(Config::get('images_brands_dir') . $filename);

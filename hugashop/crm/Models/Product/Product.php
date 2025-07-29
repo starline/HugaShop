@@ -6,8 +6,6 @@
  * @author Andri Huga
  * @version 3.9
  *
- * Product Content
- *
  */
 
 namespace HugaShop\Models\Product;
@@ -30,7 +28,6 @@ class Product extends BaseModel
 {
 
     public $timestamps = true;
-
     protected static $table_fields = [
         'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'url' =>                ['type' => 'varchar'],
