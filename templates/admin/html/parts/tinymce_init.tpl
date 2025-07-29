@@ -1,7 +1,7 @@
 <script type="text/javascript" src="/tinymce/tinymce.min.js"></script>
 
 <script type="module">
-	let php_theme = "{'/css/common.css'|asset:$settings->theme}";
+	let php_theme = '{"css/common.css"|asset:"{$settings->theme}/assets"}';
 
 	{literal}
 		tinymce.init({

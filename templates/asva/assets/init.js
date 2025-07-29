@@ -7,8 +7,8 @@
  * 
  */
 
-import "./css/common.css";
 import "./css/jquery.fancybox.min.css";
+import "./css/common.css";
 
 import "./js/jquery/jquery.js";
 import "./js/jquery/jquery.fancybox.min.js";
