@@ -6,6 +6,7 @@
  * @version 1.4
  */
 
+
 export function makeChart(element, chartOptions = {}, datasets = []) {
     if (!element) {
         console.warn('makeChart: element not found');

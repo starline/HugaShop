@@ -164,7 +164,7 @@
 
 
 {block name=body_script append}
-	<script type="text/javascript" src="{'js/chart/luxon.js'|asset}"></script>
+	<script type="text/javascript" src="{'js/luxon.js'|asset}"></script>
 	<script type="module">
 		import 'https://cdn.jsdelivr.net/npm/apexcharts';
 		import { makeChart } from '{"js/chart.js"|asset}';

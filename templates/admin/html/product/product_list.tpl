@@ -340,7 +340,7 @@
 
 {block name=body_script append}
 
-	<script type="text/javascript" src="{'js/chart/luxon.js'|asset}"></script>
+	<script type="text/javascript" src="{'js/luxon.js'|asset}"></script>
 	<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 	<script type="module">
