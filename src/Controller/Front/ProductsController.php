@@ -86,6 +86,7 @@ class ProductsController extends BaseFrontController
         // Характеристики
         $features = ProductFeature::getFeatures(['category_id' => $category->id, 'in_filter' => 1]);
 
+        // Check allowed feature fron GET
         $selected_features = [];
         foreach ($features as $feature) {
             if (($val = strval(Request::get($feature->id))) != '') {
@@ -94,7 +95,7 @@ class ProductsController extends BaseFrontController
         }
 
         // Опции Характеристик
-        $options_filter['visible'] = 1;
+        $options_filter['product_visible'] = 1;
         $options_filter['category_id'] = $category->children;
         if (!empty($features)) {
             $options_filter['feature_id'] = $features->pluck('id')->toArray();
@@ -103,23 +104,24 @@ class ProductsController extends BaseFrontController
         if (!empty($selected_features)) {
             Design::assign('canonical', Request::url($selected_features, true)); # Set canonical, clear other params
             $options_filter['features'] = $selected_features;
-            $filter['features'] = $selected_features;
+            $filter['features']         = $selected_features;
         }
 
-        /*$options = ProductOption::getOptions($options_filter);
+        $options = ProductOption::getOptions($options_filter);
+
         foreach ($options as $option) {
             if (isset($features[$option->feature_id])) {
-                $features[$option->feature_id]->options[] = $option;
+                $features[$option->feature_id]->options[] = $option->option;
             }
-        }*/
+        }
 
-            /*
         // Delete fetures withot options
         foreach ($features as $i => &$feature) {
             if (empty($feature->options)) {
                 unset($features[$i]);
             }
-        }*/
+        }
+
 
         // Выбираем товары
         $products        = Product::getProducts($filter, ['image']);

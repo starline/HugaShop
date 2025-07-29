@@ -308,24 +308,6 @@ class Helper
 
 
     /**
-     * Прроверяем параметры фильта на пустые значения
-     * @param array $filter
-     * @param array $params
-     */
-    public static function checkFilterParams(array $filter, array $params): bool
-    {
-        foreach ($params as $param) {
-            if (isset($filter[$param])) {
-                if (empty($filter[$param])) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-
-    /**
      * Преобразовываем массив в GET запрос
      * @param array $params
      */

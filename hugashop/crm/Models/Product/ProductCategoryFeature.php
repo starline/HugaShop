@@ -25,20 +25,20 @@ class ProductCategoryFeature extends BaseModel
 
     public function category()
     {
-        return $this->belongsTo(ProductCategory::class, 'product_id');
+        return $this->belongsTo(ProductCategory::class, 'category_id');
     }
 
     public function feature()
     {
-        return $this->belongsTo(ProductFeature::class, 'product_id');
+        return $this->belongsTo(ProductFeature::class, 'feature_id');
     }
 
 
     /**
-     * Get products gategories where are features
+     * Get products categories where are features
      * @param $feature_id
      */
-    public static function getFeatureCategories(int $feature_id): array
+    public static function getFeatureCategoryIds(int $feature_id): array
     {
         return self::where('feature_id', $feature_id)
             ->pluck('category_id')
@@ -56,7 +56,7 @@ class ProductCategoryFeature extends BaseModel
         return self::firstOrCreate([
             'feature_id' => $feature_id,
             'category_id' => $category_id,
-        ]) instanceof self;
+        ]);
     }
 
 

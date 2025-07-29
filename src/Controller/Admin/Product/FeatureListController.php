@@ -51,10 +51,10 @@ class FeatureListController extends BaseAdminController
                             foreach ($ids as $id) {
 
                                 // текущие категории
-                                $cats = ProductCategoryFeature::getFeatureCategories($id);
+                                $category_ids = ProductCategoryFeature::getFeatureCategoryIds($id);
 
                                 // В каких категориях оставлять
-                                $diff = array_diff($cats, (array)$current_cat);
+                                $diff = array_diff($category_ids, (array)$current_cat);
                                 if (!empty($current_cat) && !empty($diff)) {
                                     ProductCategoryFeature::updateFeatureCategories($id, $diff);
                                 } else {

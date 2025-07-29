@@ -24,6 +24,11 @@ class ProductFeature extends BaseModel
         'position'      => ['type' => 'int',        'def' => 0]
     ];
 
+    public function options()
+    {
+        return $this->hasMany(ProductFeatureOption::class, 'feature_id');
+    }
+
 
     /**
      * Выбираем названия характеристик

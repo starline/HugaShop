@@ -10,7 +10,6 @@
 
 namespace HugaShop\Models\Product;
 
-use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
 
 class ProductOption extends BaseModel
@@ -107,25 +106,16 @@ class ProductOption extends BaseModel
     public static function getOptions(array $filter = [])
     {
 
-        if (!Helper::checkFilterParams($filter, ['feature_id', 'product_id', 'category_id'])) {
-            return array();
-        }
-
-        $table        = (new self())->getTable();
-        $optionTable  = (new ProductFeatureOption())->getTable();
-
         $query = self::query()
-            ->with(['product', 'feature', 'option']) // eager load отношения
-            ->leftJoin($optionTable, "$optionTable.id", '=', "$table.option_id")
-            ->select("{$table}.*");
+            ->with(['product', 'feature', 'option']);
 
         // Присоединение таблицы продуктов для фильтрации по видимости и категории
-        if (isset($filter['visible'])) {
-            $query->whereHas('product', function ($q) use ($filter) {
-                $q->where('visible', (int) $filter['visible']);
+        if (isset($filter['product_visible'])) {
+            $query->whereHas('product', function ($sub_query) use ($filter) {
+                $sub_query->where('visible', (int) $filter['product_visible']);
 
                 if (isset($filter['category_id'])) {
-                    $q->whereIn('category_id', (array)$filter['category_id']);
+                    $sub_query->whereIn('category_id', (array)$filter['category_id']);
                 }
             });
         }
@@ -139,22 +129,18 @@ class ProductOption extends BaseModel
         }
 
         if (!empty($filter['features'])) {
-            foreach ($filter['features'] as $feature => $value) {
-                $query->where(function ($q) use ($feature, $value) {
-                    $q->where('feature_id', $feature)
-                        ->orWhereHas('product.options', function ($sub) use ($feature, $value) {
-                            $sub->where('feature_id', $feature)
+            foreach ($filter['features'] as $feature_id => $value) {
+                $query->where(function ($sub_query) use ($feature_id, $value) {
+                    $sub_query->where('feature_id', $feature_id)
+                        ->orWhereHas('product.options', function ($sub) use ($feature_id, $value) {
+                            $sub->where('feature_id', $feature_id)
                                 ->where('value', $value);
                         });
                 });
             }
         }
 
-        if (isset($filter['limit']) && $filter['limit'] !== 'all') {
-            $query->limit((int) $filter['limit']);
-        }
-
-        $query->orderByRaw("{$optionTable}.value = 0, -{$optionTable}.value DESC, {$optionTable}.value");
+        //$query->orderByRaw("option.value = 0, -option.value DESC, option.value");
 
         return $query->get();
     }

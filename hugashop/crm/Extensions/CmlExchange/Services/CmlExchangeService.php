@@ -639,7 +639,7 @@ final class CmlExchangeService
                     $feature_id = Request::getSession('features_mapping')[strval($xml_option->Ид)];
                     if (isset($category_id) && !empty($feature_id)) {
                         ProductCategoryFeature::addFeatureCategory($feature_id, $category_id);
-                        $values = array();
+                        $values = [];
                         foreach ($xml_option->Значение as $xml_value) {
                             if (!empty(Request::getSession('features_values')[strval($xml_value)])) {
                                 $values[] = strval(Request::getSession('features_values')[strval($xml_value)]);
