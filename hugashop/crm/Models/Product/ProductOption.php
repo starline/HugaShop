@@ -124,10 +124,6 @@ class ProductOption extends BaseModel
             $query->whereIn('feature_id', (array)$filter['feature_id']);
         }
 
-        if (isset($filter['product_id'])) {
-            $query->whereIn('product_id', (array)$filter['product_id']);
-        }
-
         if (!empty($filter['features'])) {
             foreach ($filter['features'] as $feature_id => $value) {
                 $query->where(function ($sub_query) use ($feature_id, $value) {
