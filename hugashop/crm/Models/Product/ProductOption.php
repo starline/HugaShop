@@ -128,7 +128,7 @@ class ProductOption extends BaseModel
             foreach ($filter['features'] as $feature_id => $value) {
                 $query->where(function ($sub_query) use ($feature_id, $value) {
                     $sub_query->where('feature_id', $feature_id)
-                        ->orWhereHas('product.options', function ($sub) use ($feature_id, $value) {
+                        ->orWhereHas('option', function ($sub) use ($feature_id, $value) {
                             $sub->where('feature_id', $feature_id)
                                 ->where('value', $value);
                         });
@@ -138,6 +138,6 @@ class ProductOption extends BaseModel
 
         //$query->orderByRaw("option.value = 0, -option.value DESC, option.value");
 
-        return $query->get();
+        return $query->get()->unique('option_id')->values();
     }
 }
