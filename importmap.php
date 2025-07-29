@@ -13,7 +13,7 @@
  */
 return [
     'admin' => [
-        'path' => './assets/admin/init.js',
+        'path' => './templates/admin/assets/init.js',
         'entrypoint' => true,
     ],
     'grizlicnc' => [
@@ -21,10 +21,7 @@ return [
         'entrypoint' => true,
     ],
     'asva' => [
-        'path' => './assets/asva/init.js',
+        'path' => './templates/asva/assets/init.js',
         'entrypoint' => true,
-    ],
-    'jquery' => [
-        'version' => '3.7.1',
-    ],
+    ]
 ];

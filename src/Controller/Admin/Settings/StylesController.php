@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.3
+ * @version 1.5
  *
  * Style
  *
@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class StylesController extends BaseAdminController
 {
-    private $styles_dir;
+
 
     #[Route('/admin/styles', name: 'StylesAdmin')]
     public function index(): Response
@@ -30,17 +30,17 @@ class StylesController extends BaseAdminController
 
         $this->checkAdminAccess('design');
 
-        $this->styles_dir = Config::get('root_dir') . 'assets/' . Settings::getParam('theme') . '/css/';
+        $styles_dir = Config::get('templates_dir') . Settings::getParam('theme') . '/assets/css/';
         $styles = [];
 
         // Порядок файлов в меню
         $sort = ['style.css'];
 
         // Читаем все css-файлы
-        if ($handle = opendir($this->styles_dir)) {
+        if ($handle = opendir($styles_dir)) {
             $i = count($sort);
             while (false !== ($file = readdir($handle))) {
-                if (is_file($this->styles_dir . $file) && $file[0] != '.'  && pathinfo($file, PATHINFO_EXTENSION) == 'css') {
+                if (is_file($styles_dir . $file) && $file[0] != '.'  && pathinfo($file, PATHINFO_EXTENSION) == 'css') {
                     if (($key = array_search($file, $sort)) !== false) {
                         $styles[$key] = $file;
                     } else {
@@ -73,15 +73,15 @@ class StylesController extends BaseAdminController
         Design::assign('style_file', $style_file);
 
         // Если можем прочитать файл - передаем содержимое в дизайн
-        if (is_readable($this->styles_dir . $style_file)) {
-            $style_content = file_get_contents($this->styles_dir . $style_file);
+        if (is_readable($styles_dir . $style_file)) {
+            $style_content = file_get_contents($styles_dir . $style_file);
             Design::assign('style_content', $style_content);
         }
 
         // Если нет прав на запись - передаем в дизайн предупреждение
-        if (!empty($style_file) && !is_writable($this->styles_dir . $style_file) && !is_file($this->styles_dir . '../locked')) {
+        if (!empty($style_file) && !is_writable($styles_dir . $style_file) && !is_file($styles_dir . '../locked')) {
             Design::assign('message_error', 'permissions');
-        } elseif (is_file($this->styles_dir . '../locked')) {
+        } elseif (is_file($styles_dir . '../locked')) {
             Design::assign('message_error', 'theme_locked');
         } else {
 

@@ -58,7 +58,7 @@
 								{/if}
 							</div>
 
-							<img class="preview" src='{"images/preview.png"|asset:"{$t->name}"}' />
+							<img class="preview" src='{"images/preview.png"|asset:"{$t->name}/assets"}' />
 						</li>
 					{/foreach}
 				</ul>

@@ -273,14 +273,15 @@ class Design
      */
     public static function getAssetUrl(string $asset_file, ?string $folder = null)
     {
+
         if (!empty($folder)) {
-            $asset_file = $folder . '/' . $asset_file;
+            $asset_file = rtrim($folder) . '/' . ltrim($asset_file, '/');
         } else {
             if (!empty(self::$theme)) {
-                $asset_file = 'assets/' . self::$theme . '/assets/' . $asset_file;
+                $asset_file =  self::$theme . '/assets/' . ltrim($asset_file, '/');
             }
         }
-
+        dump($asset_file);
         if (!empty(self::$Packages)) {
             return self::$Packages->getUrl($asset_file);
         } else {

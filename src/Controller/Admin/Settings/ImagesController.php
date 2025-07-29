@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  * Images
  *
@@ -22,8 +22,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ImagesController extends BaseAdminController
 {
-    private $images_dir;
-    private $images_url;
+
 
     #[Route('/admin/images', name: 'ImagesAdmin')]
     public function index(): Response
@@ -31,14 +30,14 @@ class ImagesController extends BaseAdminController
 
         $this->checkAdminAccess('design');
 
-        $this->images_dir = Config::get('root_dir') . 'assets/' . Settings::getParam('theme') . '/images/';
-        $this->images_url = Settings::getParam('theme') . '/images/';
+        $images_dir = Config::get('templates_dir') . Settings::getParam('theme') . '/assets/images/';
+        $images_url = Settings::getParam('theme') . '/assets/images';
 
         $allowed_extentions = array('png', 'gif', 'jpg', 'jpeg', 'ico');
-        $images = array();
+        $images = [];
 
         // Сохраняем
-        if (Request::method('post') && !is_file($this->images_dir . '../locked')) {
+        if (Request::method('post') && !is_file($images_dir . '../locked')) {
             $old_names = Request::post('old_name');
             $new_names = Request::post('new_name');
             if (is_array($old_names)) {
@@ -46,9 +45,9 @@ class ImagesController extends BaseAdminController
                     $new_name = $new_names[$i];
                     $new_name = trim(pathinfo($new_name, PATHINFO_FILENAME) . '.' . pathinfo($old_name, PATHINFO_EXTENSION), '.');
 
-                    if (is_writable($this->images_dir) && is_file($this->images_dir . $old_name) && !is_file($this->images_dir . $new_name)) {
-                        rename($this->images_dir . $old_name, $this->images_dir . $new_name);
-                    } elseif (is_file($this->images_dir . $new_name) && $new_name != $old_name) {
+                    if (is_writable($images_dir) && is_file($images_dir . $old_name) && !is_file($images_dir . $new_name)) {
+                        rename($images_dir . $old_name, $images_dir . $new_name);
+                    } elseif (is_file($images_dir . $new_name) && $new_name != $old_name) {
                         $message_error = 'name_exists';
                     }
                 }
@@ -57,7 +56,7 @@ class ImagesController extends BaseAdminController
             $delete_image = trim(Request::post('delete_image'), '.');
 
             if (!empty($delete_image)) {
-                @unlink($this->images_dir . $delete_image);
+                @unlink($images_dir . $delete_image);
             }
 
             // Загрузка изображений
@@ -65,7 +64,7 @@ class ImagesController extends BaseAdminController
                 for ($i = 0; $i < count($images['name']); $i++) {
                     $name = trim($images['name'][$i], '.');
                     if (in_array(strtolower(pathinfo($name, PATHINFO_EXTENSION)), $allowed_extentions)) {
-                        move_uploaded_file($images['tmp_name'][$i], $this->images_dir . $name);
+                        move_uploaded_file($images['tmp_name'][$i], $images_dir . $name);
                     }
                 }
             }
@@ -80,13 +79,13 @@ class ImagesController extends BaseAdminController
 
 
         // Чтаем все файлы
-        if ($handle = opendir($this->images_dir)) {
+        if ($handle = opendir($images_dir)) {
             while (false !== ($file = readdir($handle))) {
-                if (is_file($this->images_dir . $file) && $file[0] != '.' && in_array(pathinfo($file, PATHINFO_EXTENSION), $allowed_extentions)) {
+                if (is_file($images_dir . $file) && $file[0] != '.' && in_array(pathinfo($file, PATHINFO_EXTENSION), $allowed_extentions)) {
                     $image = new \stdClass();
                     $image->name = $file;
-                    $image->size = filesize($this->images_dir . $file);
-                    list($image->width, $image->height) = @getimagesize($this->images_dir . $file);
+                    $image->size = filesize($images_dir . $file);
+                    list($image->width, $image->height) = @getimagesize($images_dir . $file);
                     $images[$file] = $image;
                 }
             }
@@ -96,16 +95,16 @@ class ImagesController extends BaseAdminController
 
 
         // Если нет прав на запись - передаем в дизайн предупреждение
-        if (!is_writable($this->images_dir)) {
+        if (!is_writable($images_dir)) {
             Design::assign('message_error', 'permissions');
-        } elseif (is_file($this->images_dir . '../locked')) {
+        } elseif (is_file($images_dir . '../locked')) {
             Design::assign('message_error', 'theme_locked');
         }
 
         Design::assign('current_theme', Settings::getParam('theme'));
         Design::assign('images', $images);
-        Design::assign('images_dir', $this->images_dir);
-        Design::assign('images_url', $this->images_url);
+        Design::assign('images_dir', $images_dir);
+        Design::assign('images_url', $images_url);
 
         return $this->fetchResponse('settings/images.tpl');
     }
