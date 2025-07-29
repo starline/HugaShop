@@ -1,7 +1,13 @@
-* {
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	box-sizing: border-box;
+/**
+ * Main CSS Style
+ * @author Andri Huga
+ */
+
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900,900i&amp;subset=cyrillic");
+@import url("bootstrap.min.css");
+
+:root {
+	--bs-body-color: #4b4b4b;
 }
 
 * img {
@@ -11,11 +17,8 @@
 }
 
 body {
-	color: #4b4b4b;
 	font-family: 'Roboto', sans-serif;
 	font-size: 14px;
-	margin: 0;
-	padding: 0;
 	min-width: 360px;
 }
 
@@ -2223,7 +2226,6 @@ a.admin_bookmark svg {
 	padding: 28px 10px 8px;
 	border-bottom: 1px solid #dbdfe3;
 	margin: 0 20px;
-
 }
 
 .selection-buyer-title span {
@@ -2238,7 +2240,8 @@ a.admin_bookmark svg {
 }
 
 .selection-buyer .unique p {
-	font-size: 12px;
+	font-size: 0.75rem;
+	margin-top: 10px;
 }
 
 .delivery-srvice h3 {
@@ -2392,7 +2395,6 @@ a.admin_bookmark svg {
 
 .block-title h1 {
 	color: #2f95ff;
-	float: left;
 	font-size: 32px;
 	font-weight: 300;
 	margin: 0 0 10px 0;

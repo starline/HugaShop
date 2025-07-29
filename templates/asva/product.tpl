@@ -9,224 +9,294 @@
 				<a href="{'Main'|linkLang}" itemprop="item"><span itemprop="name">{'Главная'|trans}</span>
 					<meta itemprop="position" content="1">
 				</a>
-				<span>→</span>
 			</li>
+			<li><span class="delimiter"></span></li>
 			{$item_position = 2}
 			{foreach $category->path as $path}
 				<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
 					<a href="{'Products'|linkLang:['url' => $path->url]}" itemprop="item">
 						<span itemprop="name">{$path->name}</span>
 						<meta itemprop="position" content="{$item_position++}">
-					</a>{if !$path@last} → {/if}
+					</a>
 				</li>
 			{/foreach}
+			<li><span class="delimiter"></span></li>
+			<li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem">
+				<span itemprop="name">{$product->name}{if $product->variant_name} - {$product->variant_name}{/if}</span>
+				<meta itemprop="position" content="{$item_position++}">
+			</li>
 		</ul>
 	</div>
 
-	<div class="row product_one">
-		<div class="col-12 col-lg-6">
-			<div class="image_box mb-4">
-				<div class="promo_block">
-					{if $product->sale}
-						<div class="sale" title="Акция и скидка">Супер цена!</div>
-					{/if}
-				</div>
+	<!-- Карточка товара -->
+	<div class="right-side left_product_page">
+		<div class="block-title-wrapper">
+			<div class="block-title">
+				<h1>{$product->name}{if $product->variant_name} - {$product->variant_name}{/if}</h1>
 
-				{if $product->image}
-					<div class="image">
-						<a href="{$product->image->filename|resize:1080:1080:w}" class="zoom" data-fancybox="images"
-							data-caption="{$product->name} - Фото: 1">
-							<img src="{$product->image->filename|resize:720:720:w}" alt="{$product->name} | Фото: 1"
-								title="{$product->name} - Фото: 1">
-						</a>
+				{if 'product_content'|user_access AND $product->id}
+					<div class="admin_edit">
+						<a href="{'ProductAdmin'|link:[id=>$product->id]}" data-bs-toggle="tooltip">Редактировать
+							товар</a>
 					</div>
+				{/if}
+			</div>
+		</div>
+
+
+		<div class="tire-description-wrapper">
+			<div class="tire-image">
+				{if $product->image}
+					<a href="{$product->image->filename|resize:1080:1080:w}" data-fancybox="images"
+						data-caption="{$product->name}{if $product->variant_name} - {$product->variant_name}{/if}">
+						<img src="{$product->image->filename|resize:720:720:w}"
+							alt="{$product->name}{if $product->variant_name} - {$product->variant_name}{/if}"
+							title="{$product->name}{if $product->variant_name} - {$product->variant_name}{/if}">
+					</a>
 				{/if}
 
 				{if $product->images|count > 1}
-					<div class="row g-2 my-2">
+					<div class="tire-image-tiny">
 						{foreach $product->images as $i => $image}
-							<div class="col-2">
-								<a href="{$image->filename|resize:1080:1080:w}" class="zoom" data-fancybox="images"
-									data-caption="{$product->name} - Фото: {$i+1}">
-									<img class="img-thumbnail img-fluid" src="{$image->filename|resize:60:60:c}"
-										alt="{$product->name} - Фото: {$i+1}" title="{$product->name} - Фото: {$i+1}">
-								</a>
-							</div>
+							<a href="{$image->filename|resize:1080:1080:w}" data-fancybox="images"
+								data-caption="{$product->name} - Фото: {$i+1}">
+								<img src="{$image->filename|resize:60:60:c}" alt="{$product->name} - Фото: {$i+1}"
+									title="{$product->name} - Фото: {$i+1}" width="110" height="auto">
+							</a>
 						{/foreach}
 					</div>
 				{/if}
 			</div>
-		</div>
 
-		<div class="col-12 col-lg-6">
-			<h1>{$product->name} {if $product->variant_name} - {$product->variant_name}{/if}</h1>
 
-			{if 'product_content'|user_access AND $product->id}
-				<div class="admin_edit">
-					<a href="{'ProductAdmin'|link:[id=>$product->id]}" data-bs-toggle="tooltip">Редактировать
-						товар</a>
-				</div>
-			{/if}
-
-			<form class="variants" id="variants" action="/cart">
-				{getCSRFInput}
-
-				<span class="price mb-4">
-					{if $product->old_price > $product->price AND !$product->disable}
-						<div class="old-price text-end">{$product->old_price|price_html|raw}</div>
-					{/if}
-					<span class="price_name">Цена:</span> <span class="cur_price">{$product->price|price_html|raw}</span>
-				</span>
-
-				{if $product_variants->isNotEmpty()}
-					<div class="d-flex flex-wrap gap-2 my-4">
-						{foreach $product_variants as $product_variant}
-							<div class="variant">
-								<input type="radio" class="btn-check" name="product" value="{$product_variant->product->id}"
-									id="product_{$product_variant->product->id}" autocomplete="off"
-									{if $product->id === $product_variant->product->id}checked{/if}
-									{if !$product_variant->product->stock AND !$product_variant->product->custom}disabled{/if}
-									product_id="{$product_variant->product->id}" sku="{$product_variant->product->sku}"
-									name="{$product_variant->product->name}"
-									variant_name="{$product_variant->product->variant_name}"
-									price="{$product_variant->product->price|price_html:clean}"
-									max_stock="{$product_variant->product->stock}"
-									old_price="{$product_variant->product->old_price|price_html:clean}" />
-
-								{if $product_variant->product->variant_name}
-									<label class="btn btn-outline-secondary" for="product_{$product_variant->product->id}">
-										<div class="fw-bold">{$product_variant->product->variant_name}</div>
-										<div class="border-top">
-											<div class="status_stock">
-												{if $product->disable}
-													<span class="notinstock">Товар больше не поставляется</span>
-												{elseif $product_variant->product->stock>0}
-													<span class="instock">В наличии</span>
-													{if $product_variant->product->stock|instock:4:'заканчивается'}
-														<span
-															class="instock_count">{$product_variant->product->stock|instock:4:'заканчивается'}</span>
-													{/if}
-												{elseif $product_variant->product->custom}
-													<span class="awaiting">Под заказ</span>
-												{elseif $product_variant->product->awaiting}
-													<span class="awaiting">Ожидается поставка
-														{if !$product_variant->product->awaiting_date|empty and $smarty.now < $product_variant->product->awaiting_date|strtotime}
-															<span>{$product_variant->product->awaiting_date|date}</span>
-														{/if}
-													</span>
-												{else}
-													<span class="notinstock">Нет в наличии</span>
-												{/if}
-											</div>
-
-											<span class="variant_price">{$product_variant->product->price|price_html|raw}</span>
-										</div>
-									</label>
-								{/if}
-							</div>
-						{/foreach}
-					</div>
-				{else}
-					<input type="hidden" name="product" value="{$product->id}" product_id="{$product->id}"
-						product_sku="{$product->sku}" product_name="{$product->name}" variant_name="{$product->variant_name}"
-						product_price="{$product->price|price_html:clean}"
-						product_old_price="{$product->old_price|price_html:clean}" product_max_stock="{$product->stock}" />
-				{/if}
-
-				<div class="status_stock my-3">
-					{$show_buy_btn = false}
-					{if $product->disable}
-						<span class="notinstock">Товар больше не поставляется</span>
-					{elseif $product->stock > 0}
-						{$show_buy_btn = true}
-						<span class="instock">В наличии</span>
-						{if $product->stock|instock:4:'заканчивается'}
-							<span class="instock_count badge text-bg-warning">{$product->stock|instock:4:'заканчивается'}</span>
-						{/if}
-					{elseif $product->custom}
-						{$show_buy_btn = true}
-						<span class="awaiting">Под заказ</span>
-					{elseif $product->awaiting}
-						<span class="awaiting">Ожидается поставка
-							{if !$product->awaiting_date|empty and $smarty.now < $product->awaiting_date|strtotime}
-								<span>{$product->awaiting_date|date}</span>
-							{/if}
-						</span>
+			<div class="tire-description icons">
+				<a class="tire-brand" href="" title="{$product->brand->name}">
+					{if $product->brand->image}
+						<img src="{$product->brand->image->filename|resize:154:48}" alt="{$product->brand->name}"
+							title="{$product->brand->name}" width="154" height="48">
 					{else}
-						<span class="notinstock">Нет в наличии</span>
+						{$product->brand->name}
 					{/if}
+				</a>
+				<div class="tire-code">
+					<div><b>АРТИКУЛ:</b> {$product->sku}</div>
+					<ul class="tire-rating star-rating">
+						<li class="current-rating" style="width:177.5px"></li>
+					</ul>
 				</div>
-
-				{if $show_buy_btn}
-					<div class="row">
-						<div class="col-auto">
-							<div class="product_amount">
-								<div class="input-group">
-									<div class="input-group-text items minus">-</div>
-									<input type="text" name="amount" value="1" class="form-control text-center" />
-									<div class="input-group-text items plus">+</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="col-7 col-lg-5 d-grid">
-							<button type="submit" class="btn btn-primary" value="в корзину" data-result-text="Добавлено">
-								<svg class="cart-icon" viewBox="0 0 1024 1024">
-									<path fill="#fff"
-										d="M97.718857 109.714286a109.714286 109.714286 0 0 1 107.349333 87.064381L220.16 268.190476h0.24381l49.005714 234.666667L306.541714 682.666667h459.678476l70.460953-341.333334H285.500952l-15.286857-73.142857h566.491429a73.142857 73.142857 0 0 1 71.631238 87.942095l-70.460952 341.333334A73.142857 73.142857 0 0 1 766.22019 755.809524H306.541714a73.142857 73.142857 0 0 1-71.631238-58.343619l-69.241905-335.335619-0.463238 0.097524-31.695238-150.357334A36.571429 36.571429 0 0 0 97.718857 182.857143H35.157333v-73.142857zM304.761905 926.47619a60.952381 60.952381 0 1 0 0-121.904761 60.952381 60.952381 0 0 0 0 121.904761z m438.857143 0a60.952381 60.952381 0 1 0 0-121.904761 60.952381 60.952381 0 0 0 0 121.904761z">
-									</path>
-								</svg>
-								<span>{'Добавить в корзину'|trans}</span>
-							</button>
-						</div>
-					</div>
-				{/if}
-			</form>
-
-			<div class="info-box">
-				{extension name='InfoBlock' id=1 enabled=1}
 			</div>
 
-			{if $product->features}
-				<h2 class="mt-4">Характеристики</h2>
-				<ul class="features">
-					{foreach $product->features as $f}
-						<li>
-							<div class="label">
-								<span>{$f->name}</span>
-							</div>
-							<div class="value">
-								<span>{$f->value}</span>
-							</div>
-						</li>
-					{/foreach}
-				</ul>
-			{/if}
 
+			<div class="tire-description">
+				<div class="detail-item-description  no">
+					<form class="sale_block" id="sale_block_form" action="/cart">
+						{getCSRFInput}
+						<div class="price-tire">
+							<span class="price">
+								<span class="price-pdv"></span>
+								<span class="price-amount">{$product->price|price_html|raw}</span>
+							</span>
+							<a href="#" class="you-price" data-fancybox="" data-animation-duration="700" data-touch="false"
+								data-src="#wish_cheaper">Хочу дешевле</a>
+						</div>
+
+						<div class="product-item-purchase">
+							<div class="productQty-item">
+								<div class="basketQtyMinus minus_click fa fa-minus" id="sub" rel="{$product->id}"></div>
+								<input type="text" class="basketQty" name="quantity" id="item_count{$product->id}"
+									count="{$product->stock}" value="4" size="4" maxlength="6">
+
+								<div class="basketQtyPlus plus_click fa fa-plus" id="add" rel="{$product->id}"></div>
+								<span>из {$product->stock}</span>
+							</div>
+
+							<div class="buy-item">
+								<input type="hidden" name="product" value="{$product->id}" product_id="{$product->id}"
+									product_sku="{$product->sku}" product_name="{$product->name}"
+									variant_name="{$product->variant_name}"
+									product_price="{$product->price|price_html:clean}"
+									product_old_price="{$product->old_price|price_html:clean}"
+									product_max_stock="{$product->stock}" />
+
+								<button class="button buy" type="submit"
+									onclick="ajaxAdd2Basket({$product->id},'item_count{$product->id}');return false;"
+									name="BUY">Купить</button>
+
+								<!-- Кредит онлайн -->
+								<span class="button credit" id="finmaster" shopid="02_ACV_001" pid="{$product->id}"
+									ptitle="{$product->name}{if $product->variant_name} - {$product->variant_name}{/if}"
+									pprice="10550">купить в кредит</span>
+							</div>
+						</div>
+					</form>
+				</div>
+
+				<div class="detal-item">
+					<div class="specifications-title">
+						<div>характеристики шины</div>
+						<div class="tire-icons">
+							<i class="ico ico-truck-trl" alt="Грузовые, прицепная ось" title="Грузовые, прицепная ось"></i>
+							<i class="ico ico-allseason" alt="Всесезонная шина" title="Всесезонная шина"></i>
+						</div>
+					</div>
+
+					{if $product->features}
+						<div class="specifications-items">
+							{foreach $product->features as $f}
+								<div feature_id="{$f->id}">
+									<span>{$f->name}:</span>
+									<a>{$f->value}</a>
+								</div>
+							{/foreach}
+						</div>
+					{/if}
+
+					<div class="info">
+						В исключительных случаях информация о Стране происхождения и Дате выпуска товара может отличаться
+						(показаны данные последней поставки).
+					</div>
+				</div>
+			</div>
 		</div>
+
+
+		<div class="tires-description-details">
+			<h3 class="tire-description-title">описание шины</h3>
+
+			<div class="tire-description-content">
+				{if $product->body}
+					{$product->body|raw}
+				{else}
+					<!-- Автоматический SEO модуль -->
+					<p class="seo-modul">
+						Всесезонная шина типоразмера 385/65 R22.5 подходит для установки на Грузовые авто.
+						Представленная автошина выпущена на заводе в стране: Китай. Маркер даты изготовления этого экземпляра:
+						1824. Обычно указывается неделя и год выпуска покрышки, но иногда на странице информации о шине показан
+						только год. Поскольку высота протектора составляет 65% от ширины протектора - это делает движение по
+						асфальту комфортным. Диаметр колеса R22.5 оптимальный для многих машин.
+						Покупая авторезину стоит обратить внимание на индекс скорости и нагрузки, от этих значений зависит режим
+						эксплуатации автошины.
+						Для Grenlander FT138 индекс скорости "L", а индекс нагрузки составляет 160.
+						Когда вы убедились в правильности подобранных параметров, можно купить шину Grenlander FT138 385/65
+						R22.5 оформив заказ на сайте или по телефону.
+					</p>
+				{/if}
+
+				<p>
+					<span>Детальное описание и таблица типоразмеров на странице модели <a class="desc-more"
+							href="/catalog/142270/254897/">шины {$product->name}</a></span>
+				</p>
+			</div>
+		</div>
+
+
+		<div class="analogs-by-type-wrapper">
+			<h3 class="analogs-by-type-title">Аналоги по типоразмеру</h3>
+
+			<div class="analogs-by-type-items">
+				<div class="analogs-by-type-item-title">
+					<div class="art">Артикул</div>
+					<div class="name">название</div>
+					<div class="spec">характеристики</div>
+					<div class="price">цена</div>
+					<div class="buy"></div>
+				</div>
+
+				{foreach $product_analogs as $aproduct}
+					<div class="analogs-by-type-item">
+						<div class="art">{$aproduct->name}</div>
+						<a href="/catalog/59988/69032/69029/" class="name">
+							385/65 R 22.5 Satoya ST-082 160K прич </a>
+
+						<div class="spec">
+							<i class="ico ico-truck-trl" alt="Грузовые, прицепная ось" title="Грузовые, прицепная ось"></i> <i
+								class="ico ico-allseason" alt="Всесезонная шина" title="Всесезонная шина"></i>
+						</div>
+
+						<div class="price">9979 </div>
+
+						<div class="buy">
+							<a class="button" href="/catalog/59988/69032/69029/">Купить</a>
+						</div>
+					</div>
+				{/foreach}
+
+			</div>
+
+			<p>* Возможно, показаны не все представленные в магазине аналоги по типоразмерам. Для выбора из полного
+				ассортимента воспользуйтесь сервисом</p>
+
+			<div class="analogs-by-type-more">
+				<a href="#" class="button">показать
+					еще шины 385/65 R22.5 </a>
+			</div>
+		</div>
+
+		{include file='parts/comments.tpl'}
 	</div>
 
+	<!-- Информация для покупки -->
+	<div class="left-side right_product_page">
+		<div class="main-selection-buyer">
 
-	<!-- Описание товара -->
-	{if $product->body}
-		<h2 class="mt-4">Описание</h2>
-		<div class="description_html">
-			{$product->body|raw}
+			<div class="selection-buyer delivery">
+				<div class="selection-buyer-title">
+					<span>Только у нас</span>
+				</div>
+
+				<div class="selection-buyer-info unique">
+					<p>- Свяжемся с вами в течение 15 минут</p>
+					<p>- Все менеджеры - шинные эксперты</p>
+					<p>- Оригинальная продукция. Сертификаты</p>
+					<p>- Официальный диллер</p>
+					<p>- 20 лет на рынке</p>
+				</div>
+			</div>
+
+
+			<div class="selection-buyer delivery">
+				<div class="selection-buyer-title">
+					<span>доставка</span>
+				</div>
+				<div class="selection-buyer-info delivery-srvices">
+					<div class="delivery-srvice pickup">
+						<h3>Самовывоз в Киеве </h3>
+						<p>- <a href="/detail/contacts.php" rel="nofollow">из офиса</a> <span>(бесплатно)</span></p>
+						<p>- <a href="/uslugi-shinomontaga/" ref="nofollow">установка шин на шиносервисе</a></p>
+					</div>
+					<div class="delivery-srvice city">
+						<h3>Доставка по Киеву </h3>
+						<p><a href="/information/delivery/" rel="nofollow">Стоимость услуги 500 грн</a></p>
+					</div>
+					<div class="delivery-srvice country">
+						<h3>Доставка по Украине </h3>
+						<p><span>по тарифам перевозчиков</span></p>
+					</div>
+					<div class="delivery-srvice transport">
+						<p><a href="/information/delivery/" rel="nofollow">Условия доставки</a></p>
+						<img src="{'images/ico-np.jpg'|asset}" alt="НоваяПочта">
+						<img src="{'images/ico-cat.jpg'|asset}" alt="CAT">
+						<img src="{'images/ico-delivery.jpg'|asset}" alt="DELIVERY">
+					</div>
+				</div>
+			</div>
+
+
+			<div class="selection-buyer warranty">
+				<div class="selection-buyer-title">
+					<span>гарантия</span>
+				</div>
+				<div class="selection-buyer-info warranty-info">
+					<div class="warranty-srvice from-store">
+						<a href="/information/garanty/" rel="nofollow">Гарантия от магазина</a>
+					</div>
+
+					<div class="warranty-srvice from-store">
+						<a href="/information/garanty/" rel="nofollow"> Вы можете вернуть товар (14 дней)</a>
+					</div>
+				</div>
+			</div>
 		</div>
-	{/if}
-
-
-	{if $product->related}
-		<div id="related_products" class="related_products_box">
-			<h2>С этим товаром покупают</h2>
-			<ul class="products owl-carousel">
-				{foreach $product->related as $product}
-					{include file='parts/product_item.tpl'}
-				{/foreach}
-			</ul>
-		</div>
-	{/if}
-
-	{include file='parts/comments.tpl'}
+	</div>
 
 {/block}

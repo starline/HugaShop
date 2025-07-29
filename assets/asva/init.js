@@ -7,8 +7,6 @@
  * 
  */
 
-import "https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900,900i&amp;subset=cyrillic";
-
 import "./css/common.css";
 import "./css/jquery.fancybox.min.css";
 

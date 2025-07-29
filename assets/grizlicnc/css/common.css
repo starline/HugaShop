@@ -17,12 +17,8 @@
 	--bs-success-rgb: 86, 173, 76;
 }
 
-
-html {
-	font-size: 14px;
-}
-
 body {
+	font-size: 14px;
 	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
 }
 
