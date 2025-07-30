@@ -33,7 +33,7 @@ final class FacebookPixel extends BaseExtension
      */
     public static function getFrontHeadTemplate()
     {
-        if (!empty(self::getSettings()->enabled)) {
+        if (self::isEnabled()) {
 
             // Set currency
             if (empty(self::getSettings()->currency_code)) {

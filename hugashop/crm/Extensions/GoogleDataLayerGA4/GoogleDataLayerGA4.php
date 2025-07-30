@@ -29,7 +29,7 @@ final class GoogleDataLayerGA4 extends BaseExtension
      */
     public static function getFrontBodyTemplate()
     {
-        if (!empty(self::getSettings()->enabled)) {
+        if (self::isEnabled()) {
 
             // Set currency
             if (empty(self::getSettings()->currency_code)) {

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
  */
 
 namespace HugaShop\Extensions\ProductPriceRequest\Controller;
@@ -31,7 +31,6 @@ final class PriceRequestItemController extends BaseAdminController
 
         Design::assign('request', $request);
         Design::assign('extension', $this->getExtension());
-        Design::assign('meta_title', 'Запрос #' . $request->id);
 
         return $this->fetchExtResponse('item.tpl');
     }

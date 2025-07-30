@@ -30,13 +30,16 @@
                                 <span class="badge text-bg-round" data-bs-toggle="tooltip" title="Глуба страницы">{$p->depth}</span>
                             </div>
                             <div class="col-3 col-lg-2">
-                                <span class="badge text-bg-round" data-bs-toggle="tooltip" title="Исходящие внутрение ссылки">{$p->out_internal}</span>
+                                <span class="badge text-bg-round" data-bs-toggle="tooltip"
+                                    title="Исходящие внутрение ссылки">{$p->out_internal}</span>
                             </div>
                             <div class="col-3 col-lg-2">
-                                <span class="badge text-bg-round" data-bs-toggle="tooltip" title="Исходящие внешник ссылки">{$p->out_external}</span>
+                                <span class="badge text-bg-round" data-bs-toggle="tooltip"
+                                    title="Исходящие внешник ссылки">{$p->out_external}</span>
                             </div>
                             <div class="col-3 col-lg-2 text-end">
-                                <span class="badge text-bg-round" data-bs-toggle="tooltip" title="Входящие внутрение ссылки">{$p->in_internal}</span>
+                                <span class="badge text-bg-round" data-bs-toggle="tooltip"
+                                    title="Входящие внутрение ссылки">{$p->in_internal}</span>
                             </div>
                         </div>
                     </div>
@@ -63,7 +66,11 @@
                         $.ajax({
                             type: 'POST',
                             url: window.location.href,
-                            data: {scan: 1, start: start ? 1 : 0, csrf: window.csrf},
+                            data: {
+                                scan: 1,
+                                start: start ? 1 : 0,
+                                csrf: window.csrf
+                            },
                             dataType: 'json',
                             success: function(data) {
                                 $('#scan_count').text(data.scanned + '/' + data.pending);

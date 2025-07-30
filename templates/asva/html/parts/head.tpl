@@ -28,6 +28,10 @@
 
 	{importmap point='asva'}
 
+	<script type="module">
+		window.csrf = "{setCSRF}";
+	</script>
+
 	{block name=head_css}{/block}
 	{block name=head_script}{/block}
 

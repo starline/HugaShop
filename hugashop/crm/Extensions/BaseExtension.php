@@ -63,6 +63,16 @@ class BaseExtension
 
 
     /**
+     * Check if extension is enabled
+     * @return bool
+     */
+    public static function isEnabled(): bool
+    {
+        return static::getSettings('enabled') ? true : false;
+    }
+
+
+    /**
      * Get Extension directory
      */
     public static function getExtensionDir()

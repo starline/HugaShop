@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
  */
 
 namespace HugaShop\Extensions\ProductPriceRequest\Controller;
@@ -36,14 +36,13 @@ final class PriceRequestListController extends BaseAdminController
             }
         }
 
-        $filter = PaginationService::initFilter();
-        $requests = PriceRequest::getList($filter, order: ['created_at', 'desc'], join: ['product']);
+        $filter         = PaginationService::initFilter();
+        $requests       = PriceRequest::getList($filter, order: ['created_at', 'desc'], join: ['product']);
         $requests_count = PriceRequest::getCount($filter);
 
         Design::assign('requests', $requests);
         Design::assign('pagination', PaginationService::getPagination($requests_count, $filter));
         Design::assign('extension', $this->getExtension());
-        Design::assign('meta_title', 'Запросы на скидку');
 
         return $this->fetchExtResponse('list.tpl');
     }

@@ -228,7 +228,10 @@
                                     url: calculate_product_url,
                                     type: 'POST',
                                     dataType: 'json',
-                                    data: { id: productId, csrf: window.csrf },
+                                    data: {
+                                        id: productId,
+                                        csrf: window.csrf
+                                    },
                                     success: function(res) {
                                         if (res && res[lang] !== undefined) {
                                             const badge = row.find(`[data-lang="${lang}"]`);
@@ -267,7 +270,10 @@
                     $.ajax({
                         type: 'POST',
                         url: filling_url,
-                        data: {id: id, csrf: window.csrf},
+                        data: {
+                            id: id,
+                            csrf: window.csrf
+                        },
                         dataType: 'json',
                         success: function(res) {
                             if (res.description) {

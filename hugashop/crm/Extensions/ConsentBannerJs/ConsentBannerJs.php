@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.3
+ * @version 1.4
  * 
  * @link https://github.com/tagconcierge/consent-banner-js
  *
@@ -23,7 +23,7 @@ final class ConsentBannerJs extends BaseExtension
      */
     public static function getFrontBodyTemplate()
     {
-        if (!empty(self::getSettings()->enabled)) {
+        if (self::isEnabled()) {
 
             // If Trnaslation file exists
             $translate_file_path = self::getExtensionDir() . 'translations/messages.' . Design::$locale . '.yaml';
