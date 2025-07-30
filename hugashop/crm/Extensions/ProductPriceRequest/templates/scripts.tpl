@@ -1,24 +1,29 @@
 <script type="module">
-    let price_request_form_link = "{'ExtPriceRequestForm'|link}";
-    let price_request_link = "{'ExtPriceRequest'|link}";
+    import { asignFancyAjax } from "{'js/common.js'|asset}";
+
+    let price_request_link = "{'ExtPriceRequestForm'|link}";
 
     $(function() {
         $('body').on('click', '.you-price', function(e) {
             e.preventDefault();
-            const productId = $(this).data('product-id');
-            $.post(price_request_form_link, {
-                product_id: productId,
-                csrf: window.csrf
-            }, function(html) {
-                $.fancybox.open(html);
-            });
-        });
 
-        $(document).on('submit', '#price_request_form', function(e) {
-            e.preventDefault();
-            const form = $(this);
-            $.post(price_request_link, form.serialize(), function(html) {
-                $.fancybox.open(html);
+            const productId = $(this).data('product-id');
+
+            $.fancybox.open({
+                type: 'ajax',
+                src: price_request_link,
+                ajax: {
+                    settings: {
+                        method: 'POST',
+                        data: {
+                            product_id: productId,
+                            csrf: window.csrf
+                        }
+                    }
+                },
+                touch: false,
+                closeExisting: true,
+                afterShow: asignFancyAjax
             });
         });
     });

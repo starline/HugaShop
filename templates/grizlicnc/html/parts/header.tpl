@@ -53,7 +53,6 @@
 						</div>
 
 						<div class="col-3" id="cart_informer">
-
 							{block name=cart_informer}
 								<a class="cart_info float-end" href="{'Cart'|linkLang}" rel="nofollow"
 									data-bs-toggle="tooltip" data-bs-html="true"
@@ -70,7 +69,6 @@
 									{/if}
 								</a>
 							{/block}
-
 						</div>
 					</div>
 				</div>

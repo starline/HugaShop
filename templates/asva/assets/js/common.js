@@ -2,15 +2,20 @@
  * Custom javascript code
  * 
  * @author Andri Huga
- * @version 1.6
+ * @version 1.9
  * 
  */
 
+// Get Cart informer
 export function getCartInformer(product_id = null, amount = null, callback = null) {
-    const cart_url = $("#cart_informer a").attr('href') + '?informer';
+
+    const cart = "#cart_informer";
+    const cart_a = "#cart_informer a";
+    const cart_url = $(cart_a).attr('href');
+
     $.ajax({
         type: "POST",
-        url: cart_url,
+        url: cart_url + '?informer',
         data: {
             product_id: product_id,
             amount: amount,
@@ -18,7 +23,19 @@ export function getCartInformer(product_id = null, amount = null, callback = nul
         },
         dataType: 'html',
         success: function (data) {
-            $('#cart_informer').html(data);
+            $(cart).html(data);
+
+            // Assign Cart Popup
+            $(cart_a).fancybox({
+                type: 'ajax',
+                src: cart_url,
+                touch: false,
+                closeExisting: true,
+                afterShow: asignFancyAjax,
+            });
+
+            assignTooltip(cart);
+
             if (callback) {
                 callback();
             }
@@ -27,6 +44,17 @@ export function getCartInformer(product_id = null, amount = null, callback = nul
 }
 
 
+// Tooltips
+export function assignTooltip(selector) {
+    const container = selector ? document.querySelector(selector) : document;
+    if (!container) return;
+
+    const tooltipTriggerList = container.querySelectorAll('[data-bs-toggle="tooltip"]');
+    [...tooltipTriggerList].forEach(el => new bootstrap.Tooltip(el));
+}
+
+
+// Get UI language. Browser
 export function getUiLanguage() {
     return navigator.language || navigator.userLanguage || null;
 }
@@ -35,22 +63,10 @@ export function getUiLanguage() {
 // Form in Fancy
 export function asignFancyAjax() {
 
-    // Get Cart Popup
-    const cart = $("#cart_informer a");
-    const cart_link = cart.attr('href');
-    cart.fancybox({
-        type: 'ajax',
-        src: cart_link,
-        touch: false,
-        closeExisting: true,
-        afterShow: asignFancyAjax,
-    });
-
     // Ajax links
     $('.fancybox-inner a.ajax').on('click', function (e) {
         e.preventDefault();
         $.post($(this).attr('href'), function (response) {
-            getCartInformer();
             $.fancybox.open({
                 type: 'html',
                 src: response,
@@ -72,7 +88,6 @@ export function asignFancyAjax() {
             success: function (response) {
                 response = parseResponseByType(response);
                 if (response.type == 'html') {
-                    getCartInformer();
                     $.fancybox.open({
                         type: 'html',
                         src: response.data,

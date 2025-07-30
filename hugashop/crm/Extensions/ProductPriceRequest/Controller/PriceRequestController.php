@@ -24,21 +24,24 @@ final class PriceRequestController extends BaseFrontController
 {
     use BaseExtensionTrait;
 
-    #[Route('/ProductPriceRequest/form', name: 'ExtPriceRequestForm', methods: ['POST'], priority: 20)]
+    #[Route('/ProductPriceRequest/form', name: 'ExtPriceRequestForm', priority: 21)]
     public function form(): Response
     {
 
-        if (!Request::checkCSRF()) {
+        if (!Request::checkCSRF() and !Request::post('product_id')) {
             throw $this->createNotFoundException('Extension is not enabled...');
         }
 
         $data = new \stdClass();
-        $data->product_id = Request::getInt('product_id');
+        $data->product_id = Request::post('product_id');
         $data->name       = '';
         $data->phone      = '';
         $data->email      = '';
         $data->link       = '';
 
+        $product = Product::getProduct($data->product_id, join: ['image']);
+
+        Design::assign('product', $product);
         Design::assign('form_data', $data);
 
         return $this->fetchExtResponse('form.tpl', 'price_request');

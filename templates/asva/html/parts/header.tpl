@@ -49,18 +49,20 @@
 
 
 			<!-- Корзина -->
-			{block name=cart_informer}
-				<a href="{'Cart'|linkLang}" rel="nofollow" class="basket"
-					title="{$cart->purchases_count} {$cart->purchases_count|plural:'товар':'товаров':'товара'}. {if $cart->purchases_price > 0}</br> На сумму: {$cart->purchases_price|price_html:no_html}{/if}">
-					<i class="ico ico-basket"></i>
+			<span id="cart_informer">
+				{block name=cart_informer}
+					<a href="{'Cart'|linkLang}" rel="nofollow" class="basket"
+						title="{$cart->purchases_count} {$cart->purchases_count|plural:'товар':'товаров':'товара'}. {if $cart->purchases_price > 0}</br> На сумму: {$cart->purchases_price|price_html:no_html}{/if}">
+						<i class="ico ico-basket"></i>
 
-					{if $cart->purchases_count > 0}
-						<span>
-							{$cart->purchases_count}
-						</span>
-					{/if}
-				</a>
-			{/block}
+						{if $cart->purchases_count > 0}
+							<span>
+								{$cart->purchases_count}
+							</span>
+						{/if}
+					</a>
+				{/block}
+			</span>
 
 
 			<!-- Вход -->

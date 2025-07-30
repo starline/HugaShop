@@ -3,7 +3,7 @@
  * Custom javascript code
  * 
  * @author Andri Huga
- * @version 1.7
+ * @version 1.9
  * 
  */
 
@@ -20,18 +20,12 @@ import './js/jquery/jquery.form.js';
 import './js/owlcarousel/owl.carousel.min.js';
 import './js/htmx.min.js';
 import './js/bootstrap.bundle.min.js';
-import { getCartInformer, asignFancyAjax, loaderLayer, owlCarouselInit } from './js/common.js';
+import { getCartInformer, asignFancyAjax, assignTooltip, loaderLayer, owlCarouselInit } from './js/common.js';
 
 $(function () {
 
-    // Tooltips
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-    [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
-
-
-    // Fancy
-    asignFancyAjax();
-
+    assignTooltip();
+    getCartInformer();
     owlCarouselInit($('#related_products'));
 
     //  Автозаполнитель поиска
@@ -104,7 +98,7 @@ $(function () {
     });
 
 
-    // Select product vaariant
+    // Select product variant
     $('.variants input[name=product]').on('change', function () {
 
         loaderLayer('.variants');
@@ -178,19 +172,18 @@ $(function () {
 
     // Event
     $(document).on('addToCardEvent', function (e, item) {
-        getCartInformer(item.product_id, item.amount, function () {
-
-            // Popup
-            const cart_url = $("#cart_informer a").attr('href');
-
-            $.fancybox.open({
-                type: 'ajax',
-                src: cart_url,
-                touch: false,
-                closeExisting: true,
-                afterShow: asignFancyAjax
-            });
-        });
+        getCartInformer(item.product_id, item.amount,
+            function () {
+                const cart_url = $("#cart_informer a").attr('href');
+                $.fancybox.open({ // Popup
+                    type: 'ajax',
+                    src: cart_url,
+                    touch: false,
+                    closeExisting: true,
+                    afterShow: asignFancyAjax
+                });
+            }
+        );
     });
 
 

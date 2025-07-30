@@ -20,7 +20,7 @@ final class PriceRequestItemController extends BaseAdminController
 {
     use BaseExtensionTrait;
 
-    #[Route('/ProductPriceRequest/{id}', name: 'ExtPriceRequestItem', priority: 20)]
+    #[Route('/ProductPriceRequest/{id}', requirements: ['id' => '\d+'], name: 'ExtPriceRequestItem', priority: 20)]
     public function item(int $id): Response
     {
         $this->checkAdminAccess('extension');

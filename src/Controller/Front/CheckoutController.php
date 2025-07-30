@@ -72,17 +72,16 @@ class CheckoutController extends BaseFrontController
         // Данные пользователя
         if (!empty($user = User::authUser())) {
 
-            $last_order = Order::getOrders(['user_id' => $user->id, 'limit' => 1]);
-            $last_order = reset($last_order);
+            $last_order = Order::getOrders(['user_id' => $user->id, 'limit' => 1])->first();
 
             if ($last_order) {
-                $pre_order->name =      $last_order->name;
-                $pre_order->email =     $last_order->email;
-                $pre_order->phone =     $last_order->phone;
-                $pre_order->address =   $last_order->address;
+                $pre_order->name     = $last_order->name;
+                $pre_order->email    = $last_order->email;
+                $pre_order->phone    = $last_order->phone;
+                $pre_order->address  = $last_order->address;
             } else {
-                $pre_order->name =  $user->name;
-                $pre_order->email = $user->email;
+                $pre_order->name     = $user->name;
+                $pre_order->email    = $user->email;
             }
         }
 
@@ -149,10 +148,10 @@ class CheckoutController extends BaseFrontController
                         else {
 
                             $user = new \stdClass();
-                            $user->name = $pre_order->name;
-                            $user->email = $pre_order->email;
-                            $user->phone = $pre_order->phone;
-                            $user->enabled = 1;
+                            $user->name     = $pre_order->name;
+                            $user->email    = $pre_order->email;
+                            $user->phone    = $pre_order->phone;
+                            $user->enabled  = 1;
 
                             $pre_order->user_id = User::addUser($user)->id;
                         }
