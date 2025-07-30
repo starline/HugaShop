@@ -7,7 +7,7 @@
  * @version 1.0
  */
 
-namespace HugaShop\Extensions\PriceRequest\Controller;
+namespace HugaShop\Extensions\ProductPriceRequest\Controller;
 
 use HugaShop\Services\Design;
 use HugaShop\Services\Request;
@@ -16,13 +16,13 @@ use App\Controller\BaseAdminController;
 use HugaShop\Extensions\BaseExtensionTrait;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Response;
-use HugaShop\Extensions\PriceRequest\Models\PriceRequest;
+use HugaShop\Extensions\ProductPriceRequest\Models\PriceRequest;
 
 final class PriceRequestListController extends BaseAdminController
 {
     use BaseExtensionTrait;
 
-    #[Route('/PriceRequest', name: 'ExtPriceRequestList', priority: 20)]
+    #[Route('/ProductPriceRequest', name: 'ExtPriceRequestList', priority: 20)]
     public function index(): Response
     {
         $this->checkAdminAccess('extension');

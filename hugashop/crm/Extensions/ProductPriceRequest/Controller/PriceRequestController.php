@@ -7,7 +7,7 @@
  * @version 1.1
  */
 
-namespace HugaShop\Extensions\PriceRequest\Controller;
+namespace HugaShop\Extensions\ProductPriceRequest\Controller;
 
 use HugaShop\Services\Design;
 use HugaShop\Services\Request;
@@ -16,15 +16,15 @@ use App\Controller\BaseFrontController;
 use HugaShop\Extensions\BaseExtensionTrait;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Response;
-use HugaShop\Extensions\PriceRequest\Models\PriceRequest;
-use HugaShop\Extensions\PriceRequest\Services\NotifyService;
+use HugaShop\Extensions\ProductPriceRequest\Models\PriceRequest;
+use HugaShop\Extensions\ProductPriceRequest\Services\NotifyService;
 use HugaShop\Models\Product\Product;
 
 final class PriceRequestController extends BaseFrontController
 {
     use BaseExtensionTrait;
 
-    #[Route('/PriceRequest/form', name: 'ExtPriceRequestForm', methods: ['GET'], priority: 20)]
+    #[Route('/ProductPriceRequest/form', name: 'ExtPriceRequestForm', methods: ['GET'], priority: 20)]
     public function form(): Response
     {
         $data = new \stdClass();
@@ -39,7 +39,8 @@ final class PriceRequestController extends BaseFrontController
         return $this->fetchExtResponse('form.tpl', 'price_request');
     }
 
-    #[Route('/PriceRequest', name: 'ExtPriceRequest', methods: ['POST'], priority: 20)]
+
+    #[Route('/ProductPriceRequest', name: 'ExtPriceRequest', methods: ['POST'], priority: 20)]
     public function request(): Response
     {
         if (Request::checkCSRF()) {

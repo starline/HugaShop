@@ -7,7 +7,7 @@
  * @version 1.0
  */
 
-namespace HugaShop\Extensions\PriceRequest\Services;
+namespace HugaShop\Extensions\ProductPriceRequest\Services;
 
 use HugaShop\Services\Design;
 use HugaShop\Extensions\BaseExtensionTrait;
@@ -19,7 +19,7 @@ final class NotifyService
     /**
      * Email message to admin
      */
-    public static function requestToAdmin(string $module_name, array &$message_data)
+    public static function priceRequestToAdmin(string $module_name, array &$message_data)
     {
         if (empty($message_data['request']) || empty($message_data['product'])) {
             return;

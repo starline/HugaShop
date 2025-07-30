@@ -7,7 +7,7 @@
  * @version 1.0
  */
 
-namespace HugaShop\Extensions\PriceRequest\Models;
+namespace HugaShop\Extensions\ProductPriceRequest\Models;
 
 use HugaShop\Extensions\BaseExtensionModel;
 use HugaShop\Models\Product\Product;

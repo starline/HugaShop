@@ -7,11 +7,11 @@
  * @version 1.1
  */
 
-namespace HugaShop\Extensions\PriceRequest;
+namespace HugaShop\Extensions\ProductPriceRequest;
 
 use HugaShop\Extensions\BaseExtension;
 
-final class PriceRequest extends BaseExtension
+final class ProductPriceRequest extends BaseExtension
 {
     /**
      * Render scripts on front pages
