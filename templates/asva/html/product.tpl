@@ -96,8 +96,7 @@
 								<span class="price-pdv"></span>
 								<span class="price-amount">{$product->price|price_html|raw}</span>
 							</span>
-							<a href="#" class="you-price" data-fancybox="" data-animation-duration="700" data-touch="false"
-								data-src="#wish_cheaper">Хочу дешевле</a>
+							<a href="#" class="you-price" data-product-id="{$product->id}">Хочу дешевле</a>
 						</div>
 
 						<div class="product-item-purchase">

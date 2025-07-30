@@ -1,0 +1,6 @@
+name: "Запрос на скидку"
+description: "Форма запроса более низкой цены"
+notifier:
+  admin:
+    - requestToAdmin: "Запрос на скидку"
+version: 1.0
