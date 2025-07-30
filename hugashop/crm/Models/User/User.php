@@ -25,10 +25,9 @@ class User extends BaseModel
     public static $cookie_uid = 'UID';
 
     public $timestamps = true;
-
     protected static $table_fields = [
         'id' =>             ['type' => 'int',                               'extra' => 'AUTO_INCREMENT'],
-        'name' =>           ['type' => 'varchar',       'search' => true,   'req' => true,],
+        'name' =>           ['type' => 'varchar',       'search' => true,   'req' => true],
         'email' =>          ['type' => 'varchar',       'search' => true],
         'phone' =>          ['type' => 'varchar',       'search' => true],
         'comment' =>        ['type' => 'varchar',       'search' => true],

@@ -18,6 +18,7 @@ class UserPermission extends BaseModel
 {
 
     protected static $table_fields = [
+        'id' =>             ['type' => 'int',                               'extra' => 'AUTO_INCREMENT'],
         'user_id' =>        ['type' => 'int',           'req' => true],
         'name' =>           ['type' => 'varchar',       'req' => true]
 
@@ -86,7 +87,7 @@ class UserPermission extends BaseModel
      */
     public static function getUserPermissionsName(int $user_id)
     {
-        return UserPermission::where('user_id', $user_id)->pluck('name')->toArray();
+        return self::where('user_id', $user_id)->pluck('name')->toArray();
     }
 
 
@@ -99,7 +100,7 @@ class UserPermission extends BaseModel
     {
 
         // Delete all permissions
-        UserPermission::deleteBy('user_id', $user_id);
+        self::deleteBy('user_id', $user_id);
 
         if (!empty($permissions) && is_array($permissions)) {
             $values = [];
@@ -110,7 +111,7 @@ class UserPermission extends BaseModel
                 }
             }
 
-            return UserPermission::insert($values);
+            return self::insert($values);
         }
         return true;
     }

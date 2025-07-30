@@ -52,10 +52,10 @@ class UserNotifierType extends BaseModel
      * @param int $user_id
      * @param ?array $notifier_types
      */
-    public static function updateTypes(int $user_id, ?array $notifier_types = null): bool
+    public static function updateTypes(int $user_id, ?array $notifier_types = []): bool
     {
         // Удаляем все старые записи
-        self::query()->where('user_id', $user_id)->delete();
+        self::deleteBy('user_id', $user_id);
 
         // Вставляем новые, если есть
         if (!empty($notifier_types) && is_array($notifier_types)) {
@@ -73,9 +73,7 @@ class UserNotifierType extends BaseModel
                 }
             }
 
-            if (!empty($insertData)) {
-                self::insert($insertData);
-            }
+            self::insert($insertData);
         }
 
         return true;

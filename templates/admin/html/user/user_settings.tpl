@@ -69,7 +69,7 @@
 								{foreach $notifier_messages as $message_key => $message_name}
 									<option value="{$message_key}"
 										{if in_array($message_key, $user_allowed_messages[$method->id])}selected{/if}>
-										{message_name}
+										{$message_name}
 									</option>
 								{/foreach}
 							</select>

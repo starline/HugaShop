@@ -86,7 +86,7 @@ class ProductController extends BaseAdminController
     {
 
         if (empty($product = Request::getInputCheckEditAccess(Product::class, $id))) {
-            return null;
+            return;
         }
 
         if (empty($product->id)) {

@@ -37,7 +37,7 @@ final class PriceRequestController extends BaseFrontController
         if (!empty($request = Request::getInputAcces(PriceRequest::getFields()))) {
 
             $request->ip = $_SERVER['REMOTE_ADDR'];
-            $request  = PriceRequest::createOne($request);
+            $request = PriceRequest::createOne($request);
 
             NotifierFactory::sendToManagers([
                 NotifyService::class,

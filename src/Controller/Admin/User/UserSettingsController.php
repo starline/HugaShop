@@ -57,7 +57,7 @@ class UserSettingsController extends BaseAdminController
         $permissions            = UserPermission::getUserPermissionsName($current_user->id);
         $notifier_methods       = UserNotifier::getList(['enabled' => 1], order: 'position');
         $notifier_messages      = NotifierFactory::getNotifierMessages('admin');
-        $user_allowed_messages    = UserNotifierType::getUserTypes($current_user->id);
+        $user_allowed_messages  = UserNotifierType::getUserTypes($current_user->id);
 
         Design::assign('current_user',          $current_user);
         Design::assign('permissions',           $permissions);
