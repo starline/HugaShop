@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.5
+ * @version 3.6
  *
  */
 
@@ -16,7 +16,6 @@ use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Models\Cart\Cart;
 use HugaShop\Models\User\User;
-use HugaShop\Models\Finance\FinanceCurrency;
 use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Product\ProductCategory;
 use Symfony\Contracts\Service\Attribute\Required;

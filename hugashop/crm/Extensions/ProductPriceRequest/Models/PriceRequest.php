@@ -21,7 +21,7 @@ final class PriceRequest extends BaseExtensionModel
         'product_id' => ['type' => 'int',       'req' => true],
         'name'       => ['type' => 'varchar',   'req' => true],
         'phone'      => ['type' => 'varchar'],
-        'email'      => ['type' => 'varchar'],
+        'email'      => ['type' => 'varchar',   'req' => true],
         'link'       => ['type' => 'varchar'],
         'ip'         => ['type' => 'varchar',   'length' => 20]
     ];

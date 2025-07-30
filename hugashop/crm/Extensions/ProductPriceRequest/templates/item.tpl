@@ -1,7 +1,7 @@
 {extends 'wrapper/main.tpl'}
 {include 'extension/parts/menu_part.tpl'}
 
-{$meta_title='Запрос #' . $request->id}
+{$meta_title="Запрос #{$request->id}"}
 
 {block name=content }
     <div class="header_top">
@@ -18,7 +18,7 @@
                 <li><b>Дата:</b> {$request->created_at|date} {$request->created_at|time}</li>
             </ul>
         </div>
-        
+
         <div class="col-lg-6">
             {if $request->product}
                 <h2>Товар</h2>
