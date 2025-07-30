@@ -13,6 +13,8 @@ export function getCartInformer(product_id = null, amount = null, callback = nul
     const cart_a = "#cart_informer a";
     const cart_url = $(cart_a).attr('href');
 
+    if (!document.querySelector(cart)) return;
+
     $.ajax({
         type: "POST",
         url: cart_url + '?informer',

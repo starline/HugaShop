@@ -22,7 +22,6 @@ use HugaShop\Services\Request;
 use HugaShop\Models\Order\Order;
 use HugaShop\Models\User\UserCoupon;
 use HugaShop\Models\Cart\CartPurchase;
-use HugaShop\Models\User\UserNotifier;
 use HugaShop\Services\NotifierFactory;
 use App\Controller\BaseFrontController;
 use HugaShop\Models\Order\OrderPayment;

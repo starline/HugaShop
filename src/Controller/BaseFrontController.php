@@ -45,10 +45,7 @@ class BaseFrontController extends BaseController
             'config'            => Config::getAll(), # Configuration
             'settings'          => Settings::getAllParams(),
             'user'              => User::authUser(),
-            'currency'          => FinanceCurrency::getMainCurrency(),
-            'currencies'        => FinanceCurrency::getCurrencies(['enabled' => 1]), # All enabled currencies
             'categories'        => ProductCategory::getCategoriesTree(['visible' => 1]),
-            'cart'              => Cart::getCurrentCart(), # current cart
             'languages'         => Language::getLanguages(),
             'current_language'  => $current_language,
             'main_language'     => Language::getMain()

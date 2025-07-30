@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.5
+ * @version 1.6
  * 
  * @link https://ogp.me/
  *
@@ -17,9 +17,10 @@ namespace HugaShop\Extensions\OpenGraph;
 
 use DateTime;
 use DateTimeZone;
-use HugaShop\Services\Design;
 use HugaShop\Models\Settings;
+use HugaShop\Services\Design;
 use HugaShop\Extensions\BaseExtension;
+use HugaShop\Models\Finance\FinanceCurrency;
 
 final class OpenGraph extends BaseExtension
 {
@@ -29,14 +30,19 @@ final class OpenGraph extends BaseExtension
      */
     public static function getFrontHeadTemplate(array $params = [])
     {
-        $timezone           = new DateTimeZone(Settings::getParam('timezone'));
-        $timezone_offset    = $timezone->getOffset(new DateTime) / 60 / 60;
-        $timezone_offset    = $timezone_offset > 0 ? '+' . $timezone_offset : $timezone_offset;
-
         if (self::isEnabled()) {
+
+            if (!Design::getTemplateVars('currency')) {
+                Design::assign('currency', FinanceCurrency::getMainCurrency());
+            }
+
+            $timezone           = new DateTimeZone(Settings::getParam('timezone'));
+            $timezone_offset    = $timezone->getOffset(new DateTime) / 60 / 60;
+            $timezone_offset    = $timezone_offset > 0 ? '+' . $timezone_offset : $timezone_offset;
             Design::assign('timezone_offset', $timezone_offset);
+
             return self::fetchTemplate('graph.tpl');
         }
-        return null;
+        return;
     }
 }
