@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.5
+ * @version 2.7
  *
  */
 
@@ -129,8 +129,6 @@ class NotifierFactory
     }
 
 
-
-
     /**
      * Get notifier messages
      * @param string $entity
@@ -168,10 +166,10 @@ class NotifierFactory
     /**
      * Send Comment to Admin
      *
-     * @param string $template_path
+     * @param string $module_name
      * @param array $message_data
      */
-    public static function commentToAdmin(string $template_path, array &$message_data)
+    public static function commentToAdmin(string $module_name, array $message_data)
     {
 
         if (empty($message_data['comment_id']) || empty($comment = ContentComment::getOne($message_data['comment_id']))) {
@@ -188,17 +186,14 @@ class NotifierFactory
         Design::assign('comment', $comment);
 
         // Image template
-        $template = Design::fetch($template_path);
-        $message_data['subject'] = Design::getTemplateVars('subject');
-
-        return $template;
+        return Design::fetch(self::getTemplatePath($module_name, __FUNCTION__));
     }
 
 
     /**
      * Notification adout New Order for Admin
      *
-     * @param string $template_path
+     * @param string $module_name
      * @param array $message_data
      */
     public static function newOrderToAdmin(string $module_name, array &$message_data)
@@ -207,29 +202,20 @@ class NotifierFactory
             return false;
         }
 
-        $module_dir       = Config::get('notifier_dir') . "$module_name/";
-        $template_path    = $module_dir . "templates/newOrderToAdmin.tpl";
-
-        $purchases = OrderPurchase::getPurchases(['order_id' => $order->id], ['image', 'product']);
-
-        // Get Delivery and Payment methods
-        $delivery_method = OrderDelivery::getOne($order->delivery_id);
-        $payment_method = OrderPayment::getOne($order->payment_method_id);
-
         Design::assign([
-            'order' => $order,
-            'purchases' => $purchases,
-            'payment_method' => $payment_method,
-            'delivery_method' => $delivery_method
+            'order'             => $order,
+            'purchases'         => OrderPurchase::getPurchases(['order_id' => $order->id], ['image', 'product']),
+            'payment_method'    => OrderPayment::getOne($order->payment_method_id),
+            'delivery_method'   => OrderDelivery::getOne($order->delivery_id)
         ]);
 
         // Image template
-        $template = Design::fetch($template_path);
-        $message_data['subject'] = Design::getTemplateVars('subject');
+        $template = Design::fetch(self::getTemplatePath($module_name, __FUNCTION__));
 
         // Link in Button
-        $message_data['url_text'] = Design::getTemplateVars('url_text');
-        $message_data['url'] = Design::getTemplateVars('url');
+        $message_data['subject']    = Design::getTemplateVars('subject');
+        $message_data['url_text']   = Design::getTemplateVars('url_text');
+        $message_data['url']        = Design::getTemplateVars('url');
 
         return $template;
     }
@@ -238,45 +224,35 @@ class NotifierFactory
     /**
      * Notification adout New Order for User
      *
-     * @param string $template_path
+     * @param string $module_name
      * @param array $message_data
      */
-    public static function newOrderToUser(string $template_path, array &$message_data)
+    public static function newOrderToUser(string $module_name, array &$message_data)
     {
 
         if (empty($message_data['order_id']) || empty($order = Order::getOrder(intval($message_data['order_id']))) || empty($order->email)) {
             return false;
         }
 
-        $purchases = OrderPurchase::getPurchases(['order_id' => $order->id], ['image', 'product']);
-
-        // Get Delivery and Payment methods
-        $payment_method     = OrderPayment::getOne($order->payment_method_id);
-        $delivery_method    = OrderDelivery::getOne($order->delivery_id);
-
-
         Design::assign([
-            'order' => $order,
-            'purchases' => $purchases,
-            'payment_method' => $payment_method,
-            'delivery_method' => $delivery_method
+            'order'             => $order,
+            'purchases'         => OrderPurchase::getPurchases(['order_id' => $order->id], ['image', 'product']),
+            'payment_method'    => OrderPayment::getOne($order->payment_method_id),
+            'delivery_method'   => OrderDelivery::getOne($order->delivery_id)
         ]);
 
         // Image template
-        $template = Design::fetch($template_path);
-        $message_data['subject'] = Design::getTemplateVars('subject');
-
-        return $template;
+        return Design::fetch(self::getTemplatePath($module_name, __FUNCTION__));
     }
 
 
     /**
      * Send code for Passwords Remind
      *
-     * @param string $template_path
+     * @param string $module_name
      * @param array $message_data
      */
-    public static function passwordRemindToUser(string $template_path, array &$message_data)
+    public static function passwordRemindToUser(string $module_name, array &$message_data)
     {
 
         if (empty($message_data['user_id']) || empty($user = User::getUser($message_data['user_id']))) {
@@ -289,8 +265,7 @@ class NotifierFactory
         ]);
 
         // Image template
-        $template = Design::fetch($template_path);
-        $message_data['subject'] = Design::getTemplateVars('subject');
+        $template = Design::fetch(self::getTemplatePath($module_name, __FUNCTION__));
 
         Design::clearAssign('user');
         Design::clearAssign('code');
@@ -305,7 +280,7 @@ class NotifierFactory
      * @param string $template_path
      * @param array $message_data
      */
-    public static function deliveryTrackNumberToUser(string $template_path, array &$message_data)
+    public static function deliveryTrackNumberToUser(string $module_name, array &$message_data)
     {
 
         if (empty($message_data['order_id']) || empty($order = Order::getOrder(intval($message_data['order_id'])))) {
@@ -316,19 +291,17 @@ class NotifierFactory
         Design::assign('order', $order);
 
         // Image template
-        $template = Design::fetch($template_path);
-
-        return $template;
+        return Design::fetch(self::getTemplatePath($module_name, __FUNCTION__));
     }
 
 
     /**
      * Send Payment Details to User
      *
-     * @param string $template_path
+     * @param string $module_name
      * @param array $message_data
      */
-    public static function paymentDetailsToUser(string $template_path, array &$message_data)
+    public static function paymentDetailsToUser(string $module_name, array &$message_data)
     {
 
         if (empty($message_data['order_id']) || empty($order = Order::getOrder(intval($message_data['order_id'])))) {
@@ -339,19 +312,24 @@ class NotifierFactory
 
         // Выбираем указаный способ оплаты
         $payment_method     = OrderPayment::getOne($order->payment_method_id);
-        $payment_currency   = FinanceCurrency::getCurrency(intval($payment_method->currency_id));
-        $payment_settings   = $payment_method->settings;
 
         Design::assign([
-            'order' => $order,
-            'payment_method' => $payment_method,
-            'payment_currency' => $payment_currency,
-            'payment_settings' => $payment_settings
+            'order'             => $order,
+            'payment_method'    => $payment_method,
+            'payment_currency'  => FinanceCurrency::getCurrency(intval($payment_method->currency_id)),
+            'payment_settings'  => $payment_method->settings
         ]);
 
         // Image template
-        $template = Design::fetch($template_path);
+        return Design::fetch(self::getTemplatePath($module_name, __FUNCTION__));
+    }
 
-        return $template;
+
+    /**
+     * Make template path
+     */
+    public static function getTemplatePath(string $module_name, string $template_name)
+    {
+        return Config::get('notifier_dir') . "$module_name/" . "templates/$template_name.tpl";
     }
 }

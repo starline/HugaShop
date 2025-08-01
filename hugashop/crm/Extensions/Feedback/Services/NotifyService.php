@@ -32,7 +32,7 @@ final class NotifyService
             return;
         }
 
-        $template_path = self::getTemplatePath(strtolower($module_name) . '_feedback_admin.tpl');
+        $template_path = self::getTemplatePath(strtolower($module_name) . '_feedbackToAdmin.tpl');
         
         if (!file_exists($template_path)) {
             return;

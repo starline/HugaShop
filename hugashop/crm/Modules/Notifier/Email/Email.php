@@ -11,6 +11,7 @@
 namespace HugaShop\Modules\Notifier\Email;
 
 use HugaShop\Models\Settings;
+use HugaShop\Services\Design;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport;
@@ -41,7 +42,7 @@ class Email implements NotifierInterface
         $params['from_email']   = $params['from_email'] ?? 'info@' . Settings::getParam('domain');
         $params['from_name']    = !empty($params['from_name']) ? $params['from_name'] : Settings::getParam('company_name');
         $params['to_email']     = $params['user']->email ?? $params['to_email'] ?? null;
-        $params['subject']      = $params['subject'] ?? $params['from_name'];
+        $params['subject']      = $params['subject'] ??  Design::getTemplateVars('subject') ?? $params['from_name'];
 
         $params_name = [
             'from_email',

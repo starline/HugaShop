@@ -11,7 +11,6 @@
 
 namespace App\EventListener;
 
-use HugaShop\Services\Config;
 use HugaShop\Services\Design;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
