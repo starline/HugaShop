@@ -2,7 +2,7 @@
  * Custom javascript code
  * 
  * @author Andri Huga
- * @version 1.9
+ * @version 2.0
  * 
  */
 
@@ -84,10 +84,13 @@ export function asignFancyAjax() {
         e.preventDefault();
         $(this).ajaxSubmit({
             dataType: "html",
-            beforeSubmit: function (arr, form, options) {
-                // show loader
+            beforeSubmit: function (formData, form, options) {
+                $.fancybox.getInstance()?.showLoading();
             },
-            success: function (response) {
+            success: function (response, statusText, xhr, $form) {
+                if ($form.is('#cart_form')) {
+                    getCartInformer();
+                }
                 response = parseResponseByType(response);
                 if (response.type == 'html') {
                     $.fancybox.open({
