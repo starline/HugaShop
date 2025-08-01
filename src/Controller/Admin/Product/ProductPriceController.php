@@ -4,7 +4,7 @@
  * HugaShop - Selling anything
  *
  * @author Andri Huga
- * @version 3.2
+ * @version 3.3
  * 
  * ProductPriceAdmin
  *
@@ -38,7 +38,7 @@ class ProductPriceController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($product = Request::getInputCheckEditAccess(Product::class, $id))) {
+        if (!empty($product = Request::getInputCheckEditAccess(Product::class, $id, exclude: ['name']))) {
 
             // Преобразовываем дату datapiker для mysql
             if (!empty($product->awaiting_date)) {

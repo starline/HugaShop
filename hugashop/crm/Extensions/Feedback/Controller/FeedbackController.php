@@ -42,7 +42,7 @@ final class FeedbackController extends BaseFrontController
             } elseif (empty($feedback->email)) {
                 Design::append('form_invalid', 'email');
             } elseif (empty($feedback->message)) {
-                Design::append('form_invalid', 'text');
+                Design::append('form_invalid', 'message');
             } elseif (!Helper::checkCaptcha()) {
                 Design::assign('error', 'captcha');
             } else {

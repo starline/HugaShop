@@ -169,7 +169,7 @@ class NotifierFactory
      * @param string $module_name
      * @param array $message_data
      */
-    public static function commentToAdmin(string $module_name, array $message_data)
+    public static function commentToAdmin(string $module_name, array &$message_data)
     {
 
         if (empty($message_data['comment_id']) || empty($comment = ContentComment::getOne($message_data['comment_id']))) {

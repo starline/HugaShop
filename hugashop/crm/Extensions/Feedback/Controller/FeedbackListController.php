@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.2
+ * @version 1.3
  */
 
 namespace HugaShop\Extensions\Feedback\Controller;
@@ -45,7 +45,7 @@ final class FeedbackListController extends BaseAdminController
             Design::assign('keyword', $keyword);
         }
 
-        $feedbacks       = Feedback::getList($filter, order: 'id');
+        $feedbacks       = Feedback::getList($filter, order: ['id', 'desc']);
         $feedbacks_count = Feedback::getCount($filter);
 
         Design::assign('pagination', PaginationService::getPagination($feedbacks_count, $filter));

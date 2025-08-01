@@ -373,7 +373,7 @@ class Request
      *
      * @param array $fillable_params
      */
-    public static function getInputAcces(array $fillable_params)
+    public static function getInputAcces(array $fillable_params, array $exclude = [])
     {
         if (!self::method('post')) {
             return;
@@ -388,10 +388,13 @@ class Request
         $decline = false;
 
         foreach ($fillable_params as $param_name => $param_data) {
+            if (in_array($param_name, $exclude)) {
+                continue;
+            }
 
             // Empty required param
             if (!empty($param_data['required']) || !empty($param_data['req'])) {
-                if (empty(Request::post($param_name, $param_data['type']))) {
+                if (Request::has($param_name) and empty(Request::post($param_name, $param_data['type']))) {
                     Design::append('service_messages_empty', $param_name);
                     Design::append('form_invalid', $param_name);
                     $decline = true;
@@ -433,13 +436,13 @@ class Request
     /**
      * Get post data and check edit locked
      */
-    public static function getInputCheckEditAccess(string $model_name, ?int $item_id = null)
+    public static function getInputCheckEditAccess(string $model_name, ?int $item_id = null, array $exclude = [])
     {
         if (LockEditService::isEditLocked($model_name, $item_id)) {
             return null;
         }
 
-        return self::getInputAcces($model_name::getFields());
+        return self::getInputAcces($model_name::getFields(), $exclude);
     }
 
 

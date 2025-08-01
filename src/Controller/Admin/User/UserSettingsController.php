@@ -34,7 +34,7 @@ class UserSettingsController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($current_user = Request::getInputCheckEditAccess(User::class, $id))) {
+        if (!empty($current_user = Request::getInputCheckEditAccess(User::class, $id, exclude: ['name']))) {
 
             Design::setFlashMessage('update', User::updateUser($current_user->id, $current_user));
 
