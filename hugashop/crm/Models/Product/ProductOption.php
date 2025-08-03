@@ -105,44 +105,6 @@ class ProductOption extends BaseModel
      */
     public static function getOptions(array $filter = [])
     {
-
-        $query = self::query()
-            ->with(['feature', 'option']);
-
-        // Присоединение таблицы продуктов для фильтрации по видимости и категории
-        if (isset($filter['product_visible'])) {
-            $query->whereHas('product', function ($sub_query) use ($filter) {
-                $sub_query->where('visible', (int) $filter['product_visible']);
-
-                if (isset($filter['category_id'])) {
-                    $sub_query->whereIn('category_id', (array)$filter['category_id']);
-                }
-            });
-        }
-
-        if (isset($filter['feature_id'])) {
-            $query->whereIn('feature_id', (array)$filter['feature_id']);
-        }
-
-        if (!empty($filter['features'])) {
-            foreach ($filter['features'] as $feature_id => $value) {
-                $query->where(function ($sub_query) use ($feature_id, $value) {
-                    $sub_query->where('feature_id', $feature_id)
-                        ->orWhereHas('option', function ($sub) use ($feature_id, $value) {
-                            $sub->where('feature_id', $feature_id)
-                                ->where('value', $value);
-                        });
-                });
-            }
-        }
-
-        //$query->orderByRaw("option.value = 0, -option.value DESC, option.value");
-
-        $rr = $query->get()->unique('option_id')->values();
-
-        $sql = vsprintf(str_replace('?', "'%s'", $query->toSql()), $query->getBindings());
-        dump($sql);
-
-        return $rr;
+        return;
     }
 }
