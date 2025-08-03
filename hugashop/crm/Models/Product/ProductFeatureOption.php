@@ -18,7 +18,6 @@ class ProductFeatureOption extends BaseModel
 {
 
     public $timestamps = true;
-
     protected static $table_fields = [
         'id' =>             ['type' => 'int',      'extra' => 'AUTO_INCREMENT'],
         'feature_id' =>     ['type' => 'int',      'req' => true],

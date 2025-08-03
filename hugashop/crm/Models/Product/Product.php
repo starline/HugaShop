@@ -31,12 +31,12 @@ class Product extends BaseModel
     protected static $table_fields = [
         'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'url' =>                ['type' => 'varchar'],
-        'name' =>               ['type' => 'varchar',       'trans' => true,    'req' => true],
+        'name' =>               ['type' => 'varchar',       'trans' => true,    'req' => true,      'search' => true],
         'meta_title' =>         ['type' => 'varchar',       'trans' => true],
         'meta_description' =>   ['type' => 'varchar',       'trans' => true],
-        'annotation' =>         ['type' => 'varchar',       'trans' => true],
+        'annotation' =>         ['type' => 'varchar',       'trans' => true,                        'search' => true],
         'body' =>               ['type' => 'text',          'trans' => true],
-        'variant_name' =>       ['type' => 'varchar',       'trans' => true],
+        'variant_name' =>       ['type' => 'varchar',       'trans' => true,                        'search' => true],
         'brand_id' =>           ['type' => 'int'],
         'category_id' =>        ['type' => 'int'],
         'disable' =>            ['type' => 'tinyint',       'def' => 0,                             'access' => 'product_price'],
@@ -265,9 +265,9 @@ class Product extends BaseModel
 
         // Feature filter
         if (!empty($filter['features']) && is_array($filter['features'])) {
-            foreach ($filter['features'] as $feature_id => $value) {
-                $query->whereHas('options', function ($q) use ($feature_id, $value) {
-                    $q->where('feature_id', $feature_id)->whereIn('value', (array)$value);
+            foreach ($filter['features'] as $feature_id => $option_id) {
+                $query->whereHas('options', function ($q) use ($feature_id, $option_id) {
+                    $q->where('feature_id', $feature_id)->whereIn('option_id', (array)$option_id);
                 });
             }
         }

@@ -21,6 +21,7 @@ class ProductFeature extends BaseModel
         'id'            => ['type' => 'int',        'extra' => 'AUTO_INCREMENT'],
         'name'          => ['type' => 'varchar',    'req' => true, 'trans' => true, 'search' => true],
         'in_filter'     => ['type' => 'tinyint',    'def' => 0],
+        'index'         => ['type' => 'tinyint',    'def' => 0],
         'position'      => ['type' => 'int',        'def' => 0]
     ];
 

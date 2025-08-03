@@ -18,6 +18,22 @@
 		<div class="row gx-5">
 
 			<div class="col-12">
+				<div class="over_name">
+					<div class="checkbox_line">
+						<div class="form-check form-switch">
+							<input type="hidden" name="in_filter" value="0" />
+							<input class="form-check-input" name="in_filter" value="1" type="checkbox" role="switch"
+								id="in_filter" {if $feature->in_filter}checked{/if} />
+							<label class="form-check-label" for="in_filter">Использовать в фильтре</label>
+						</div>
+						<div class="form-check form-switch">
+							<input type="hidden" name="index" value="0" />
+							<input class="form-check-input" name="index" value="1" type="checkbox" role="switch"
+								id="index" {if $feature->index}checked{/if}/>
+							<label class="form-check-label" for="index">Индексировать фильтр</label>
+						</div>
+					</div>
+				</div>
 				<div class="name_row">
 					<input class="form-control form-control-lg" name="name" type="text" value="{$feature->name}" />
 					<input name="id" type="hidden" value="{$feature->id}" />
@@ -40,44 +56,33 @@
 			</div>
 
 			<div class="col-lg-6 layer">
-				<h2>Настройки свойства</h2>
-				<div class="form-check form-switch">
-					<input type="hidden" name="in_filter" value="0">
-					<input class="form-check-input" type="checkbox" name="in_filter" value="1" id="in_filter" role="switch"
-						{if $feature->in_filter}checked{/if} />
-					<label class="form-check-label" for="in_filter">Использовать в фильтре</label>
-				</div>
-
-				<div class="layer">
-					<h2 class="mt-4">Варианты свойства</h2>
-					<ul class="list mini options">
-
-						{foreach $options as $option}
-							<li class="list_row">
-								<div class="col">
-									<input class="form-control" name="options[{$option->id}]" type="text"
-										value="{$option->value}" />
-								</div>
-								<div class="icons">
-									<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
-								</div>
-							</li>
-						{/foreach}
-
-						<li class="list_row" id="new" style="display:none;">
+				<h2 class="mt-4">Варианты свойства</h2>
+				<ul class="list mini options">
+					{foreach $options as $option}
+						<li class="list_row">
 							<div class="col">
-								<input class="form-control" name="options[]" type="text" value="" />
+								<input class="form-control" name="options[{$option->id}]" type="text"
+									value="{$option->value}" />
 							</div>
 							<div class="icons">
 								<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
 							</div>
 						</li>
-					</ul>
+					{/foreach}
 
-					<div class="btn_row_add">
-						<div class="add mt-3">
-							<i class="dash_link">Добавить вариант</i>
+					<li class="list_row" id="new" style="display:none;">
+						<div class="col">
+							<input class="form-control" name="options[]" type="text" value="" />
 						</div>
+						<div class="icons">
+							<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
+						</div>
+					</li>
+				</ul>
+
+				<div class="btn_row_add">
+					<div class="add mt-3">
+						<i class="dash_link">Добавить вариант</i>
 					</div>
 				</div>
 			</div>

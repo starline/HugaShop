@@ -22,6 +22,7 @@ use App\Controller\BaseFrontController;
 use HugaShop\Models\Product\ProductOption;
 use HugaShop\Models\Product\ProductFeature;
 use HugaShop\Models\Product\ProductCategory;
+use HugaShop\Models\Product\ProductFeatureOption;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -37,10 +38,9 @@ class ProductsController extends BaseFrontController
         return $this->redirectToRoute('Products', ['url' => $category->url], 301);
     }
 
-
-    #[Route('/{url}/c{id}', requirements: ['id' => '\d+'], name: 'ProductCategory')]
     #[Route('/{url}', name: 'Products')]
-    public function products(string $url, ?int $id = null): Response
+    #[Route('/{url}/{filter}', name: 'ProductsFilter')]
+    public function products(string $url, ?string $filter = null): Response
     {
 
         // Выберем текущую категорию
@@ -56,8 +56,8 @@ class ProductsController extends BaseFrontController
 
 
         // Постраничная навигация
-        $filter = PaginationService::initFilter();
-        $filter['visible'] = 1;
+        $product_filter = PaginationService::initFilter();
+        $product_filter['visible'] = 1;
 
         $noindex = true; # Right away close indexation
 
@@ -69,63 +69,48 @@ class ProductsController extends BaseFrontController
             $noindex = false; # Open indexation
         }
 
-        $filter['category_id'] = $category->children;
+        $product_filter['category_id'] = $category->children;
 
         // Сортировка
         if ($sort = Request::get('sort', 'string')) {
-            $filter['sort'] = $sort;
+            $product_filter['sort'] = $sort;
             $noindex = true; # Close indexation
         } else {
-            $filter['sort'] = 'position';
+            $product_filter['sort'] = 'position';
         }
 
-        $filter['sort_in_stock'] = true;
-        $filter['sort_disable'] = true;
-
+        $product_filter['sort_in_stock'] = true;
+        $product_filter['sort_disable'] = true;
 
         // Характеристики
-        $features = ProductFeature::getFeatures(['category_id' => $category->id, 'in_filter' => 1]);
+        $category_features = ProductFeature::getFeatures(['category_id' => $category->id, 'in_filter' => 1]);
 
         // Check allowed feature from GET
         $selected_features = [];
-        foreach ($features as $feature) {
+        foreach ($category_features as $feature) {
             if (($val = strval(Request::get($feature->id))) != '') {
-                $selected_features[$feature->id] = $val;
+                $option_id = ProductFeatureOption::where('value', $val)->where('feature_id', $feature->id)->first()->id;
+                $selected_features[$feature->id] = $option_id;
             }
-        }
-
-        // Опции Характеристик
-        $options_filter['product_visible'] = 1;
-        $options_filter['category_id'] = $category->children;
-        if (!empty($features)) {
-            $options_filter['feature_id'] = $features->pluck('id')->toArray();
         }
 
         if (!empty($selected_features)) {
             Design::assign('canonical', Request::url($selected_features, clear: true)); # Set canonical url
-            $options_filter['features'] = $selected_features;
-            $filter['features']         = $selected_features;
+            $product_filter['features'] = $selected_features;
         }
 
-        $options = ProductOption::getOptions($options_filter);
-dump($options);
-        foreach ($options as $option) {
-            if (isset($features[$option->feature_id])) {
-                $features[$option->feature_id]->options[] = $option->option;
-            }
-        }
-
-        // Delete fetures withot options
-        foreach ($features as $i => &$feature) {
-            if (empty($feature->options)) {
-                unset($features[$i]);
-            }
-        }
+        // Опции Характеристик
+        $features = ProductOption::getOptions([
+            'product_visible'   => 1,
+            'category_id'       => $category->children,
+            'feature_in_filter' => 1,
+            'feature_selected'  => $selected_features
+        ]);
 
 
         // Выбираем товары
-        $products        = Product::getProducts($filter, ['image']);
-        $products_count  = Product::countProducts($filter);
+        $products        = Product::getProducts($product_filter, ['image']);
+        $products_count  = Product::countProducts($product_filter);
 
 
         // Закрываем пагинатор от индексации
@@ -141,8 +126,8 @@ dump($options);
         Design::assign('products_count',    $products_count);
 
         Design::assign('noindex',           $noindex);
-        Design::assign('pagination',        PaginationService::getPagination($products_count, $filter));
-        Design::assign('sort',              $filter['sort']);
+        Design::assign('pagination',        PaginationService::getPagination($products_count, $product_filter));
+        Design::assign('sort',              $product_filter['sort']);
         Design::assign('category',          $category);
         Design::assign('features',          $features);
 

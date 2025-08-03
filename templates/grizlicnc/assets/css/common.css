@@ -933,6 +933,12 @@ footer .posts_content a {
 	text-decoration: none;
 }
 
+#features a.disabled {
+	opacity: .4;
+	cursor: default;
+	pointer-events: none;
+}
+
 /* @group Сортировка */
 .sort {
 	color: #505050;

@@ -112,11 +112,12 @@
 									{$f->name}:
 								</td>
 								<td class="feature_values">
-									<a href="{url params=[$f->id=>null, page=>null]}" {if !$smarty.get.$key}class="selected" {/if}
+									<a href="{url params=[$f->id=>null, page=>null]}" {if !$smarty.get.{$f->id}}class="selected" {/if}
 										rel="nofollow">Все</a>
 									{foreach $f->options as $o}
 										<a href="{url params=[$f->id=>$o->value, page=>null]}"
-											{if $smarty.get.$key == $o->value}class="selected" {/if} rel="nofollow">{$o->value}</a>
+											class="{if $smarty.get.{$f->id} == $o->value}selected{/if} {if $o->disabled}disabled{/if}"
+											rel="nofollow">{$o->value} {$o->product_count}</a>
 									{/foreach}
 								</td>
 							</tr>
