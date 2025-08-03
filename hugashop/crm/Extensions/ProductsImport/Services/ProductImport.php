@@ -11,7 +11,7 @@
 namespace HugaShop\Extensions\ProductsImport\Services;
 
 use HugaShop\Models\Product\Product;
-use HugaShop\Models\Warehouse\WarehouseProduct;
+use HugaShop\Models\Warehouse\WarehousePlaceProduct;
 
 final class ProductImport
 {
@@ -36,7 +36,7 @@ final class ProductImport
             $amount = (int) $item['amount'];
 
             Product::changeAmount($product->id, $amount);
-            WarehouseProduct::changeAmount($product->id, $place_id, $amount);
+            WarehousePlaceProduct::changeAmount($product->id, $place_id, $amount);
 
             $it = new \stdClass();
             $it->product = Product::getOne($product->id);

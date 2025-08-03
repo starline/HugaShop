@@ -22,7 +22,7 @@ use HugaShop\Models\Product\ProductRelated;
 use HugaShop\Models\Product\ProductVariant;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use HugaShop\Models\Warehouse\WarehouseProduct;
+use HugaShop\Models\Warehouse\WarehousePlaceProduct;
 
 class ProductPriceController extends BaseAdminController
 {
@@ -84,7 +84,7 @@ class ProductPriceController extends BaseAdminController
             $product_variants = ProductVariant::getVariants($product->id, ['product', 'product.image']);
             Design::assign('product_variants', $product_variants);
 
-            $warehouse_products = WarehouseProduct::getList(['product_id' => $product->id], join: 'place');
+            $warehouse_products = WarehousePlaceProduct::getList(['product_id' => $product->id], join: 'place');
             Design::assign('warehouse_products', $warehouse_products);
         }
 

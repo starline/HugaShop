@@ -20,15 +20,10 @@ use HugaShop\Services\Helper;
 use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
 use HugaShop\Models\Order\Order;
-use Symfony\Component\Mime\Email;
-use Symfony\Component\Mime\Address;
 use HugaShop\Models\Product\Product;
 use HugaShop\Models\Cart\CartPurchase;
-use HugaShop\Models\User\UserNotifier;
 use HugaShop\Services\NotifierFactory;
-use Symfony\Component\Process\Process;
 use App\Controller\BaseAdminController;
-use Symfony\Component\Mailer\Transport;
 use HugaShop\Models\Content\ContentPost;
 use HugaShop\Models\Order\OrderPurchase;
 use HugaShop\Models\Product\ProductOption;
@@ -41,18 +36,15 @@ use Symfony\Component\Filesystem\Filesystem;
 use HugaShop\Models\Warehouse\WarehousePlace;
 use Illuminate\Database\Capsule\Manager as DB;
 use Symfony\Component\Routing\Attribute\Route;
-use HugaShop\Models\Warehouse\WarehouseProduct;
 use Symfony\Component\Console\Input\ArrayInput;
 use HugaShop\Models\Warehouse\WarehousePurchase;
 use HugaShop\Models\Product\ProductFeatureOption;
-use Symfony\Component\Mailer\Transport\Transports;
-use Symfony\Component\Process\PhpExecutableFinder;
+use HugaShop\Models\Warehouse\WarehousePlaceProduct;
 use Symfony\Component\Console\Output\BufferedOutput;
 use HugaShop\Extensions\TestScript\Services\Composer;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use HugaShop\Extensions\Feedback\Services\NotifyService;
 use HugaShop\Extensions\TestScript\Services\SystemCheck;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 final class TestScriptController extends BaseAdminController
 {
@@ -439,7 +431,7 @@ final class TestScriptController extends BaseAdminController
                                 if ($place) {
                                     Product::chunk(100, function ($products) use ($place) {
                                         foreach ($products as $product) {
-                                            WarehouseProduct::createOne([
+                                            WarehousePlaceProduct::createOne([
                                                 'product_id' => $product->id,
                                                 'place_id'   => $place->id,
                                                 'cost_price' => $product->cost_price ?? 0,

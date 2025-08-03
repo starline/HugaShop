@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.6
+ * @version 1.7
  *
  */
 
@@ -14,7 +14,7 @@ namespace HugaShop\Models\Warehouse;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\Warehouse\WarehousePlace;
 
-class WarehouseProduct extends BaseModel
+class WarehousePlaceProduct extends BaseModel
 {
     protected $table = 'wh_place_product';
 
@@ -23,7 +23,8 @@ class WarehouseProduct extends BaseModel
         'product_id' => ['type' => 'int'],
         'place_id'   => ['type' => 'int'],
         'cost_price' => ['type' => 'decimal', 'def'  => 0.00],
-        'amount'     => ['type' => 'int',     'def'  => 0],
+        'price'      => ['type' => 'decimal', 'def'  => 0.00],
+        'amount'     => ['type' => 'int',     'def'  => 0]
     ];
 
 

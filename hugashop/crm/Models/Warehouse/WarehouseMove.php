@@ -17,7 +17,7 @@ use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\User\User;
 use HugaShop\Models\Product\Product;
-use HugaShop\Models\Warehouse\WarehouseProduct;
+use HugaShop\Models\Warehouse\WarehousePlaceProduct;
 use Illuminate\Support\Collection;
 use HugaShop\Models\Finance\FinancePayment;
 use HugaShop\Models\Finance\FinancePaymentContractor;
@@ -278,7 +278,7 @@ class WarehouseMove extends BaseModel
             foreach (WarehousePurchase::getList(['move_id' => $movement->id]) as $purchase) {
                 if ($purchase->amount) {
                     Product::changeAmount($purchase->product_id, $factor * $purchase->amount);
-                    WarehouseProduct::changeAmount($purchase->product_id, $movement->place_id, $factor * $purchase->amount);
+                    WarehousePlaceProduct::changeAmount($purchase->product_id, $movement->place_id, $factor * $purchase->amount);
                 }
             }
             $movement->update(['closed' => 1]);
@@ -307,7 +307,7 @@ class WarehouseMove extends BaseModel
             foreach (WarehousePurchase::getList(['move_id' => $movement->id]) as $purchase) {
                 if ($purchase->amount) {
                     Product::changeAmount($purchase->product_id, - ($factor) * $purchase->amount);
-                    WarehouseProduct::changeAmount($purchase->product_id, $movement->place_id, - ($factor) * $purchase->amount);
+                    WarehousePlaceProduct::changeAmount($purchase->product_id, $movement->place_id, - ($factor) * $purchase->amount);
                 }
             }
             $movement->update(['closed' => 0]);

@@ -12,7 +12,7 @@ namespace HugaShop\Models\Warehouse;
 
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\Product\Product;
-use HugaShop\Models\Warehouse\WarehouseProduct;
+use HugaShop\Models\Warehouse\WarehousePlaceProduct;
 use Illuminate\Support\Collection;
 
 class WarehousePurchase extends BaseModel
@@ -92,7 +92,7 @@ class WarehousePurchase extends BaseModel
 
             if (!empty($purchase->product_id)) {
                 Product::changeAmount($purchase_old->product_id, -$factor * ($purchase_old->amount - $purchase->amount));
-                WarehouseProduct::changeAmount($purchase_old->product_id, $movement->place_id, -$factor * ($purchase_old->amount - $purchase->amount));
+                WarehousePlaceProduct::changeAmount($purchase_old->product_id, $movement->place_id, -$factor * ($purchase_old->amount - $purchase->amount));
             }
         }
 
@@ -135,7 +135,7 @@ class WarehousePurchase extends BaseModel
         if ($movement->closed && !empty($purchase->amount)) {
             $factor = in_array($movement->status, [3, 4]) ? -1 : 1;
             Product::changeAmount($product->id, $factor * $purchase->amount);
-            WarehouseProduct::changeAmount($product->id, $movement->place_id, $factor * $purchase->amount);
+            WarehousePlaceProduct::changeAmount($product->id, $movement->place_id, $factor * $purchase->amount);
         }
 
         return WarehousePurchase::createOne($purchase);
@@ -165,7 +165,7 @@ class WarehousePurchase extends BaseModel
             // Если поставка, отнимаем со склада
             $factor = in_array($movement->status, [3, 4]) ? 1 : -1;
             Product::changeAmount($purchase->product_id, $factor * $purchase->amount);
-            WarehouseProduct::changeAmount($purchase->product_id, $movement->place_id, $factor * $purchase->amount);
+            WarehousePlaceProduct::changeAmount($purchase->product_id, $movement->place_id, $factor * $purchase->amount);
         }
 
         return self::deleteOne($id) > 0;
