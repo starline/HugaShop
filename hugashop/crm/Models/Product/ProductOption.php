@@ -107,7 +107,7 @@ class ProductOption extends BaseModel
     {
 
         $query = self::query()
-            ->with(['product', 'feature', 'option']);
+            ->with(['feature', 'option']);
 
         // Присоединение таблицы продуктов для фильтрации по видимости и категории
         if (isset($filter['product_visible'])) {
@@ -138,6 +138,11 @@ class ProductOption extends BaseModel
 
         //$query->orderByRaw("option.value = 0, -option.value DESC, option.value");
 
-        return $query->get()->unique('option_id')->values();
+        $rr = $query->get()->unique('option_id')->values();
+
+        $sql = vsprintf(str_replace('?', "'%s'", $query->toSql()), $query->getBindings());
+        dump($sql);
+
+        return $rr;
     }
 }

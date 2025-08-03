@@ -37,6 +37,7 @@ class ProductFeature extends BaseModel
      */
     public static function getFeatures(array $filter = [], bool $count = false)
     {
+
         // Фильтрация по category_id
         if (!empty($filter['category_id'])) {
             $feature_ids = ProductCategoryFeature::query()
