@@ -69,7 +69,6 @@ class ProductPriceController extends BaseAdminController
         #### View
         #########
         if (!empty($id)) {
-
             $product = Product::getProduct(intval($id), join: [
                 'related',
                 'related.image'
@@ -79,13 +78,9 @@ class ProductPriceController extends BaseAdminController
                 return $this->redirectToRoute('ProductListAdmin');
             }
 
-            Design::assign('product', $product);
-
-            $product_variants = ProductVariant::getVariants($product->id, ['product', 'product.image']);
-            Design::assign('product_variants', $product_variants);
-
-            $warehouse_products = WarehousePlaceProduct::getList(['product_id' => $product->id], join: 'place');
-            Design::assign('warehouse_products', $warehouse_products);
+            Design::assign('product',               $product);
+            Design::assign('product_variants',      ProductVariant::getVariants($product->id, ['product', 'product.image']));
+            Design::assign('warehouse_products',    WarehousePlaceProduct::getList(['product_id' => $product->id], join: 'place'));
         }
 
         return $this->fetchResponse('product/product_price.tpl');

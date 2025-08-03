@@ -8,16 +8,16 @@
  *
  */
 
-
 namespace HugaShop\Models\Warehouse;
 
 use HugaShop\Models\BaseModel;
+use HugaShop\Models\Product\Product;
 use HugaShop\Models\Warehouse\WarehousePlace;
 
 class WarehousePlaceProduct extends BaseModel
 {
-    protected $table = 'wh_place_product';
 
+    protected $table = 'wh_place_product';
     protected static $table_fields = [
         'id'         => ['type' => 'int',     'extra' => 'AUTO_INCREMENT'],
         'product_id' => ['type' => 'int'],
@@ -26,6 +26,16 @@ class WarehousePlaceProduct extends BaseModel
         'price'      => ['type' => 'decimal', 'def'  => 0.00],
         'amount'     => ['type' => 'int',     'def'  => 0]
     ];
+
+    public function place()
+    {
+        return $this->belongsTo(WarehousePlace::class, 'place_id');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
 
 
     /**
@@ -46,10 +56,5 @@ class WarehousePlaceProduct extends BaseModel
         ]);
 
         $item->increment('amount', $amount);
-    }
-
-    public function place()
-    {
-        return $this->belongsTo(WarehousePlace::class, 'place_id');
     }
 }

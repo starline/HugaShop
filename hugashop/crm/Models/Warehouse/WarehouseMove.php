@@ -25,8 +25,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class WarehouseMove extends BaseModel
 {
-    protected $table = 'wh_move';
 
+    protected $table = 'wh_move';
     protected static $table_fields = [
         'id'            => ['type' => 'int',      'extra' => 'AUTO_INCREMENT'],
         'date'          => ['type' => 'datetime', 'def'   => 'CURRENT_TIMESTAMP', 'access' => false],

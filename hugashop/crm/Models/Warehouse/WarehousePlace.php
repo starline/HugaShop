@@ -14,15 +14,15 @@ use HugaShop\Models\BaseModel;
 
 class WarehousePlace extends BaseModel
 {
-    protected $table = 'wh_place';
 
+    protected $table = 'wh_place';
+    public $timestamps = true;
     protected static $table_fields = [
-        'id'       => ['type' => 'int',     'extra' => 'AUTO_INCREMENT'],
-        'name'     => ['type' => 'varchar', 'req' => true],
-        'enabled'  => ['type' => 'tinyint', 'def' => 0],
+        'id'       => ['type' => 'int',         'extra' => 'AUTO_INCREMENT'],
+        'name'     => ['type' => 'varchar',     'req' => true],
+        'enabled'  => ['type' => 'tinyint',     'def' => 0],
         'comment'  => ['type' => 'varchar'],
-        'date'     => ['type' => 'datetime', 'def' => 'CURRENT_TIMESTAMP'],
-        'position' => ['type' => 'int',     'def' => 0],
+        'position' => ['type' => 'int',         'def' => 0],
     ];
 
 

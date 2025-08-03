@@ -17,8 +17,8 @@ use Illuminate\Support\Collection;
 
 class WarehousePurchase extends BaseModel
 {
-    protected $table = 'wh_purchase';
 
+    protected $table = 'wh_purchase';
     protected static $table_fields = [
         'id'           => ['type' => 'int',      'extra' => 'AUTO_INCREMENT'],
         'move_id'      => ['type' => 'int'],
@@ -41,6 +41,7 @@ class WarehousePurchase extends BaseModel
     {
         return $this->belongsTo(WarehouseMove::class, 'move_id', 'id');
     }
+
 
     /**
      * Выбираем товары в поставке
