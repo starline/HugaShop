@@ -41,7 +41,7 @@
                             <a href="#">Название</a>
                             <div class="notice">Примечание, комментарий, заметки</div>
                         </div>
-                        <div class="col-2">
+                        <div>
                             <span class="badge text-bg-round">отметка</span>
                         </div>
                     </div>
@@ -50,7 +50,7 @@
                             <a href="#">Название второй позиции</a>
                             <div class="notice">Примечание, комментарий, заметки для второй позиции</div>
                         </div>
-                        <div class="col-2">
+                        <div>
                             <span class="badge text-bg-round">отметка</span>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                             <a href="#">Название третьей позиции</a>
                             <div class="notice">Примечание, комментарий, заметки для третьей позиции</div>
                         </div>
-                        <div class="col-2">
+                        <div>
                             <span class="badge text-bg-round">отметка</span>
                         </div>
                     </div>
@@ -143,10 +143,11 @@
             <div class="col-lg-6 layer">
                 <h2>Input List</h2>
                 <ul class="list mini_list sortable_on">
-                    {$param_array = [0 => [name => 'name', value => 'value'], 1 => [name => 'name_1', value => 'value_1']]}
+                    {$param_array = [0 => [id => 1, name => 'name', value => 'value'], 1 => [id => 2,name => 'name_1', value => 'value_1']]}
                     {foreach $param_array as $i=>$item}
                         <li class="list_row">
-                            <input type="hidden" name="item[{$i}][id]" value="10291">
+                            <input type="hidden" name="item[{$i}][id]" value="{$item.id}">
+
                             <div class="move">
                                 <div class="move_zone"></div>
                             </div>
