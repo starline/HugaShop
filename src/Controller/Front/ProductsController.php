@@ -89,8 +89,9 @@ class ProductsController extends BaseFrontController
         $selected_features = [];
         foreach ($category_features as $feature) {
             if (($val = strval(Request::get($feature->id))) != '' || (!empty($feature->url) and $val = strval(Request::get($feature->url))) != '') {
-                $option_id = ProductFeatureOption::where('value', $val)->where('feature_id', $feature->id)->first()->id;
-                $selected_features[$feature->id] = $option_id;
+                if ($option_id = ProductFeatureOption::where('value', $val)->where('feature_id', $feature->id)->first()?->id) {
+                    $selected_features[$feature->id] = $option_id;
+                }
             }
         }
 
