@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.9
+ * @version 4.2
  *
  */
 
@@ -484,7 +484,10 @@ class Product extends BaseModel
         // Дублируем изображения
         $images = Image::getImages($id, 'product');
         foreach ($images as $image) {
-            Image::addImage($new_id, 'product', $image->filename);
+            $new_filename = Image::copyImage($image->filename);
+            if ($new_filename) {
+                Image::addImage($new_id, 'product', $new_filename);
+            }
         }
 
         // Дублируем свойства

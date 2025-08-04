@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.9
+ * @version 4.0
  * 
  * Intervention Image
  * @link https://image.intervention.io/v3/getting-started/installation
@@ -83,6 +83,37 @@ class Image extends BaseModel
         ]);
 
         return $image->id;
+    }
+
+
+    /**
+     * Copy original image file and return new unique filename
+     * @param string $filename
+     * @return string|null
+     */
+    public static function copyImage(string $filename): ?string
+    {
+        $src = Config::get('images_originals_dir') . $filename;
+        if (!is_file($src)) {
+            return null;
+        }
+
+        $ext  = pathinfo($filename, PATHINFO_EXTENSION);
+        $base = pathinfo($filename, PATHINFO_FILENAME);
+
+        $unique = $base;
+        $i = 1;
+        while (self::where('filename', $unique . '.' . $ext)->exists()) {
+            $unique = $base . '-' . $i++;
+        }
+
+        $new_filename = $unique . '.' . $ext;
+        $dest = Config::get('images_originals_dir') . $new_filename;
+        if (!@copy($src, $dest)) {
+            return null;
+        }
+
+        return $new_filename;
     }
 
 
