@@ -73,17 +73,18 @@
 				<ul class="list mini_list options">
 					{foreach $options as $option}
 						<li class="list_row">
+							<input type="hidden" name="options[{$option->position}][id]" value="{$options->id}" />
 							<div class="move">
 								<div class="move_zone"></div>
 							</div>
 							<div class="col">
 								<div class="row gy-3">
 									<div class="col-12 col-md-8">
-										<input class="form-control" name="options[{$option->id}][value]" type="text"
+										<input class="form-control" name="options[{$option->position}][value]" type="text"
 											value="{$option->value}" placeholder="Значение опции" />
 									</div>
 									<div class="col-12 col-md-4">
-										<input class="form-control" name="options[{$option->id}][url]" type="text"
+										<input class="form-control" name="options[{$option->position}][url]" type="text"
 											value="{$option->url}" placeholder="url опции" />
 									</div>
 								</div>
@@ -95,9 +96,21 @@
 					{/foreach}
 
 					<li class="list_row" id="new" style="display:none;">
+						<input type="hidden" name="options[INDEX][id]" value="">
+						<div class="move">
+							<div class="move_zone"></div>
+						</div>
 						<div class="col">
-							<input class="form-control" name="options[]" type="text" value=""
-								placeholder="Значение характеристики" />
+							<div class="row gy-3">
+								<div class="col-12 col-md-8">
+									<input class="form-control" name="options[INDEX][value]" type="text" value=""
+										placeholder="Значение характеристики" />
+								</div>
+								<div class="col-12 col-md-4">
+									<input class="form-control" name="options[INDEX][url]" type="text" value=""
+										placeholder="url опции" />
+								</div>
+							</div>
 						</div>
 						<div class="icons">
 							<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
