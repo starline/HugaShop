@@ -47,7 +47,6 @@
 
 
 		<div id="main_list">
-
 			{if $features}
 
 				{include file='parts/pagination.tpl'}
@@ -70,6 +69,12 @@
 
 								<div class="col">
 									<a href="/admin/product/feature/{$feature->id}">{$feature->name}</a>
+								</div>
+
+								<div class="col-2">
+									{if $feature->index}
+										<span class="badge text-bg-round">index</span>
+									{/if}
 								</div>
 
 								<div class="icons">
@@ -100,7 +105,6 @@
 				Нет свойств
 			{/if}
 		</div>
-
 	</div>
 {/block}
 

@@ -34,7 +34,7 @@ class Image extends BaseModel
         'filename' =>           ['type' => 'varchar'],
         'visible' =>            ['type' => 'tinyint',       'def' => 1],
         'position' =>           ['type' => 'created',       'def' => 0],
-        'created' =>            ['type' => 'varchar',       'def' => 'CURRENT_TIMESTAMP']
+        'created_at' =>         ['type' => 'varchar',       'def' => 'CURRENT_TIMESTAMP']
     ];
 
     public function entity()
@@ -69,6 +69,7 @@ class Image extends BaseModel
     {
         // Check and Make uniq name
         $unique_name = $base_name = $filename;
+
         $i = 1;
         while (self::where('filename', $unique_name)->exists()) {
             $unique_name = $base_name . '-' . $i++;
@@ -407,7 +408,7 @@ class Image extends BaseModel
             }
         }
 
-        return null;
+        return;
     }
 
 

@@ -9,6 +9,7 @@
 	--text-link: #0095eb;
 	--text-flash: #ff5000;
 	--text-alt: #fff;
+	--text-dim: #979797;
 	--bg-dim-color: #7b7b7b;
 	--bg-soft-color: #f4f4f4;
 	--bs-link-color: #7b7b7b;
@@ -923,25 +924,39 @@ footer .posts_content a {
 	padding: 7px;
 }
 
-#features a {
-	padding-right: 6px;
+#features .option {
+	padding-right: 8px;
+	margin-right: 8px;
+	position: relative;
+}
+
+#features .option a {
 	white-space: nowrap;
 }
 
-#features a.selected {
-	color: #505050;
+#features .option a.selected {
+	color: var(--text-flash);
 	text-decoration: none;
 }
 
-#features a.disabled {
+#features .option a.disabled {
 	opacity: .4;
 	cursor: default;
 	pointer-events: none;
 }
 
+#features .option .product_count {
+	position: absolute;
+	font-size: 0.8em;
+	top: -5px;
+	right: -2px;
+	color: var(--text-dim);
+}
+
+
 /* @group Сортировка */
 .sort {
-	color: #505050;
+	color: var(--text-dim);
 	font-size: 12px;
 	margin-top: 10px;
 	margin-bottom: 10px;
@@ -954,7 +969,7 @@ footer .posts_content a {
 }
 
 .sort .selected {
-	color: #505050;
+	color: var(--text-dim);
 	text-decoration: none;
 	margin-right: 5px;
 }

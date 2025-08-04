@@ -47,8 +47,8 @@ class ProductOption extends BaseModel
     {
         $product_options = self::getList(['product_id' => $product_id]);
 
-        $features_ids   = $product_options->pluck('feature_id')->toArray();
-        $options_ids    = $product_options->pluck('option_id')->toArray();
+        $features_ids = $product_options->pluck('feature_id')->toArray();
+        $options_ids  = $product_options->pluck('option_id')->toArray();
 
         $features   = ProductFeature::getListTranslate(['id' => $features_ids], 'position');
         $options    = ProductFeatureOption::getListTranslate(['id' => $options_ids])->keyBy('feature_id');
@@ -141,7 +141,13 @@ class ProductOption extends BaseModel
                 foreach ($filter['feature_selected'] as $feature_id => $option_ids) {
                     $query->where(function ($sub) use ($feature_id, $option_ids) {
                         $sub->where('feature_id', $feature_id)
-                            ->orWhereIn('option_id', (array) $option_ids);
+                            ->orWhereIn('product_id', function ($q) use ($option_ids) {
+
+                                // находим товары, у которых уже выбраны переданные опции
+                                $q->select('product_id')
+                                    ->from((new self())->getTable())
+                                    ->whereIn('option_id', (array) $option_ids);
+                            });
                     });
                 }
             });

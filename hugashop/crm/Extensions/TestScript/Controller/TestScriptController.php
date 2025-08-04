@@ -285,6 +285,7 @@ final class TestScriptController extends BaseAdminController
                          * переименовываем s_user.created в created_at
                          * переименовываем s_product.created в created_at
                          * переименовываем wh_place.date в created_at
+                         * переименовываем content_image.created в created_at
                          * 
                          */
                         if (0) {

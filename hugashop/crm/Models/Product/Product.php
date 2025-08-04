@@ -466,18 +466,17 @@ class Product extends BaseModel
 
         unset($product->created);
 
-        $product->visible = 0;
-        $product->featured = 0;
-        $product->meta_title = '';
-        $product->sale = 0;
-        $product->name .= " - копия";
+        $product->visible       = 0;
+        $product->featured      = 0;
+        $product->meta_title    = '';
+        $product->sale          = 0;
+        $product->name          = $product->name . " - копия";
 
         // Сдвигаем товары вперед и вставляем копию на соседнюю позицию
         self::where('position', '>', $product->position)->increment('position');
 
         // Вставляем дубликат на следующую позицию
-        $original_position = $product->position;
-        $product->position = $original_position + 1;
+        $product->position = $product->position + 1;
         $product->save();
 
         $new_id = $product->id;
@@ -489,12 +488,12 @@ class Product extends BaseModel
         }
 
         // Дублируем свойства
-        $options = ProductOption::getProductOptions($id);
-        foreach ($options as $o) {
+        $options = ProductOption::getList(['product_id' => $id]);
+        foreach ($options as $option) {
             ProductOption::createOne([
-                'product_id' => $new_id,
-                'feature_id' => $o->feature_id,
-                'option_id' => $o->option_id
+                'product_id'    => $new_id,
+                'feature_id'    => $option->feature_id,
+                'option_id'     => $option->option_id
             ]);
         }
 
