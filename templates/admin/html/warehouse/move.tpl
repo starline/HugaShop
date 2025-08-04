@@ -430,6 +430,7 @@
 
 	<script type="module">
 		import "{'js/jquery/datepicker/jquery.ui.datepicker-ru.js'|asset}";
+		import { indexListRows } from '{"js/common.js"|asset}';
 
 		const currency = '{$currency->sign}';
 		const max_order_amount = '{$settings->max_order_amount}';
@@ -451,27 +452,17 @@
 					opacity: 0.95,
 					axis: 'y',
 					update: function(event, ui) {
-						indexListRows('#purchases');
+						indexListRows('#purchases', 'purchases');
 					}
 				});
 
 				// Удаление товара
 				$(".purchases").on('click', 'i.delete', function() {
 					$(this).closest(".list_row").fadeOut(200, function() { $(this).remove(); });
-					indexListRows('#purchases');
+					indexListRows('#purchases', 'purchases');
 					return false;
 				});
 
-				// После завершения сортировки переиндексировать input-ы
-				function indexListRows(container_selector) {
-					$(container_selector).find('.list_row').each(function(idx) {
-						$(this).find('input, select, textarea').each(function() {
-							this.name = this.name.replace(/purchases\[(?:\d+|INDEX)\]/,
-								'purchases[' + idx + ']');
-						});
-					});
-					console.log('index row');
-				}
 
 				// Редактировать покупки
 				$(".edit_purchases").click(function() {
@@ -533,7 +524,7 @@
 
 						$("input#add_purchase").val('').focus().blur();
 
-						indexListRows('#purchases');
+						indexListRows('#purchases', 'purchases');
 						new_item.show();
 
 					},

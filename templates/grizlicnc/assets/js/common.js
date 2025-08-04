@@ -163,3 +163,15 @@ export function owlCarouselInit(target) {
         });
     }
 }
+
+
+// После завершения сортировки переиндексировать input-ы
+export function indexListRows(container_selector, item_name) {
+    $(container_selector).find('.list_row').each(function (idx) {
+        $(this).find('input, select, textarea').each(function () {
+            const pattern = new RegExp(item_name + '\\[(?:\\d+|INDEX)\\]');
+            this.name = this.name.replace(pattern, item_name + '[' + idx + ']');
+        });
+    });
+    console.log('index row');
+}

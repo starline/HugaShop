@@ -144,15 +144,16 @@
                 <h2>Input List</h2>
                 <ul class="list mini_list sortable_on">
                     {$param_array = [0 => [id => 1, name => 'name', value => 'value'], 1 => [id => 2,name => 'name_1', value => 'value_1']]}
-                    {foreach $param_array as $i=>$item}
+                    {foreach $param_array as $item}
                         <li class="list_row">
-                            <input type="hidden" name="item[{$i}][id]" value="{$item.id}">
+                            <input type="hidden" name="item[{$item@index}][id]" value="{$item.id}">
 
                             <div class="move">
                                 <div class="move_zone"></div>
                             </div>
                             <div class="col">
-                                <input class="form-control" name="item[{$i}][name]" type="text" value="{$item.value}" />
+                                <input class="form-control" name="item[{$item@index}][name]" type="text"
+                                    value="{$item.value}" />
                             </div>
                             <div class="icons">
                                 <i class="delete material-icons" title="Удалить">cancel</i>
@@ -162,11 +163,12 @@
 
 
                     <li id="new" class="list_row" style="display:none;">
+                        <input type="hidden" name="item[INDEX][id]" value="">
                         <div class="move">
                             <div class="move_zone"></div>
                         </div>
                         <div class="col">
-                            <input class="form-control" name="name[]" type="text" value="" />
+                            <input class="form-control" name="name[INDEX][name]" type="text" value="" />
                         </div>
                         <div class="icons">
                             <i class="delete material-icons" title="Удалить">cancel</i>

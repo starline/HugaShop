@@ -367,7 +367,7 @@
 
 	<script type="module">
 		import '{"js/jquery/datepicker/jquery.ui.datepicker-ru.js"|asset}';
-		import { ajax_icon } from '{"js/common.js"|asset}';
+		import { ajax_icon, indexListRows } from '{"js/common.js"|asset}';
 		import { makeChart } from '{"js/chart.js"|asset}';
 
 		let php_product_id = '{$product->id}';
@@ -382,17 +382,6 @@
 				$("input[name*=awaiting_date]").datepicker({
 					regional: 'ru'
 				});
-
-
-				// После завершения сортировки переиндексировать input-ы
-				function indexListRows(container_selector, name_prefix) {
-					const regex = new RegExp(name_prefix + '\\[(?:\\d+|INDEX)\\]');
-					$(container_selector).find('.list_row').each(function(idx) {
-						$(this).find('input, select, textarea').each(function() {
-							this.name = this.name.replace(regex, name_prefix + '[' + idx + ']');
-						});
-					});
-				}
 
 
 				// Варианты товара

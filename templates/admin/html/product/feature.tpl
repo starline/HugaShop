@@ -73,18 +73,18 @@
 				<ul class="list mini_list options">
 					{foreach $options as $option}
 						<li class="list_row">
-							<input type="hidden" name="options[{$option->position}][id]" value="{$options->id}" />
+							<input type="hidden" name="options[{$option@index}][id]" value="{$option->id}" />
 							<div class="move">
 								<div class="move_zone"></div>
 							</div>
 							<div class="col">
 								<div class="row gy-3">
 									<div class="col-12 col-md-8">
-										<input class="form-control" name="options[{$option->position}][value]" type="text"
+										<input class="form-control" name="options[{$option@index}][value]" type="text"
 											value="{$option->value}" placeholder="Значение опции" />
 									</div>
 									<div class="col-12 col-md-4">
-										<input class="form-control" name="options[{$option->position}][url]" type="text"
+										<input class="form-control" name="options[{$option@index}][url]" type="text"
 											value="{$option->url}" placeholder="url опции" />
 									</div>
 								</div>
