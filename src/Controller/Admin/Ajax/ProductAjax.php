@@ -31,11 +31,7 @@ class ProductAjax extends BaseAdminController
         $category_id    = Request::input('category_id', 'int');
         $product_id     = Request::input('product_id', 'int');
 
-        if (!empty($category_id)) {
-            $features = ProductFeature::getFeatures(['category_id' => $category_id]);
-        } else {
-            $features = ProductFeature::getFeatures();
-        }
+        $features = ProductFeature::getFeatures(['category_id' => $category_id]);
 
         $options = [];
         if (!empty($product_id)) {

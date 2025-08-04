@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.7
+ * @version 2.8
  *
  */
 
@@ -20,6 +20,7 @@ class ProductFeature extends BaseModel
     protected static $table_fields = [
         'id'            => ['type' => 'int',        'extra' => 'AUTO_INCREMENT'],
         'name'          => ['type' => 'varchar',    'req' => true, 'trans' => true, 'search' => true],
+        'url'           => ['type' => 'varchar'],
         'in_filter'     => ['type' => 'tinyint',    'def' => 0],
         'index'         => ['type' => 'tinyint',    'def' => 0],
         'position'      => ['type' => 'int',        'def' => 0]
@@ -28,6 +29,14 @@ class ProductFeature extends BaseModel
     public function options()
     {
         return $this->hasMany(ProductFeatureOption::class, 'feature_id');
+    }
+
+    /**
+     * Define relation with ProductCategoryFeature
+     */
+    public function categories()
+    {
+        return $this->hasMany(ProductCategoryFeature::class, 'feature_id');
     }
 
 
@@ -64,6 +73,25 @@ class ProductFeature extends BaseModel
     public static function countFeatures(array $filter = []): int
     {
         return (int) self::getFeatures($filter, count: true);
+    }
+
+
+    /**
+     * Получить фильтрованные характеристики
+     * @param array $filter
+     * @return array
+     */
+    public static function getCategoryFeatures(int|array $category_id)
+    {
+        $query = self::query()->where('in_filter', 1);
+
+        // Фильтрация по category_id
+        $query->whereHas('categories', function ($sq) use ($category_id) {
+            $sq->whereIn('category_id', (array) $category_id);
+        });
+
+        return $query->get()
+            ->keyBy('id');
     }
 
 

@@ -79,7 +79,6 @@ class FeatureListController extends BaseAdminController
             if ($query_filter == 'in_filter') {
                 $filter['in_filter'] = 1;
             }
-
             Design::assign('filter', $query_filter);
         }
 

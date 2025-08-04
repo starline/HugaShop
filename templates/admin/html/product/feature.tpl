@@ -28,8 +28,8 @@
 						</div>
 						<div class="form-check form-switch">
 							<input type="hidden" name="index" value="0" />
-							<input class="form-check-input" name="index" value="1" type="checkbox" role="switch"
-								id="index" {if $feature->index}checked{/if}/>
+							<input class="form-check-input" name="index" value="1" type="checkbox" role="switch" id="index"
+								{if $feature->index}checked{/if} />
 							<label class="form-check-label" for="index">Индексировать фильтр</label>
 						</div>
 					</div>
@@ -53,6 +53,19 @@
 					{/function}
 					{category_select categories=$categories}
 				</select>
+			</div>
+
+			<div class="col-lg-6 layer">
+				<h2>Параметры страницы</h2>
+				<ul class="property_block">
+					<li>
+						<label for="url" class="col-form-label">URL</label>
+						<input class="form-control" id="url" name="url" type="text" value="{$feature->url}" />
+					</li>
+					<div class="btn_row">
+						{include file="parts/button.tpl"}
+					</div>
+				</ul>
 			</div>
 
 			<div class="col-lg-6 layer">

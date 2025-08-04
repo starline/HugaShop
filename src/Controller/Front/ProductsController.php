@@ -83,12 +83,12 @@ class ProductsController extends BaseFrontController
         $product_filter['sort_disable'] = true;
 
         // Характеристики
-        $category_features = ProductFeature::getFeatures(['category_id' => $category->id, 'in_filter' => 1]);
+        $category_features = ProductFeature::getCategoryFeatures($category->id);
 
         // Check allowed feature from GET
         $selected_features = [];
         foreach ($category_features as $feature) {
-            if (($val = strval(Request::get($feature->id))) != '' || ($val = strval(Request::get($feature->url))) != '') {
+            if (($val = strval(Request::get($feature->id))) != '' || (!empty($feature->url) and $val = strval(Request::get($feature->url))) != '') {
                 $option_id = ProductFeatureOption::where('value', $val)->where('feature_id', $feature->id)->first()->id;
                 $selected_features[$feature->id] = $option_id;
             }
