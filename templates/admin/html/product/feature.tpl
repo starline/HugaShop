@@ -70,12 +70,23 @@
 
 			<div class="col-lg-6 layer">
 				<h2 class="mt-4">Варианты свойства</h2>
-				<ul class="list mini options">
+				<ul class="list mini_list options">
 					{foreach $options as $option}
 						<li class="list_row">
+							<div class="move">
+								<div class="move_zone"></div>
+							</div>
 							<div class="col">
-								<input class="form-control" name="options[{$option->id}]" type="text"
-									value="{$option->value}" />
+								<div class="row gy-3">
+									<div class="col-12 col-md-8">
+										<input class="form-control" name="options[{$option->id}][value]" type="text"
+											value="{$option->value}" placeholder="Значение опции" />
+									</div>
+									<div class="col-12 col-md-4">
+										<input class="form-control" name="options[{$option->id}][url]" type="text"
+											value="{$option->url}" placeholder="url опции" />
+									</div>
+								</div>
 							</div>
 							<div class="icons">
 								<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
@@ -85,7 +96,8 @@
 
 					<li class="list_row" id="new" style="display:none;">
 						<div class="col">
-							<input class="form-control" name="options[]" type="text" value="" />
+							<input class="form-control" name="options[]" type="text" value=""
+								placeholder="Значение характеристики" />
 						</div>
 						<div class="icons">
 							<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>

@@ -142,15 +142,16 @@
             <!-- Mini input list -->
             <div class="col-lg-6 layer">
                 <h2>Input List</h2>
-                <ul class="list mini mini_list sortable_on">
+                <ul class="list mini_list sortable_on">
                     {$param_array = [0 => [name => 'name', value => 'value'], 1 => [name => 'name_1', value => 'value_1']]}
-                    {foreach $param_array as $item}
+                    {foreach $param_array as $i=>$item}
                         <li class="list_row">
+                            <input type="hidden" name="item[{$i}][id]" value="10291">
                             <div class="move">
                                 <div class="move_zone"></div>
                             </div>
                             <div class="col">
-                                <input class="form-control" name="name[]" type="text" value="{$item.value}" />
+                                <input class="form-control" name="item[{$i}][name]" type="text" value="{$item.value}" />
                             </div>
                             <div class="icons">
                                 <i class="delete material-icons" title="Удалить">cancel</i>

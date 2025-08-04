@@ -129,7 +129,7 @@
 				<!-- Cинонимы категории -->
 				<div class="layer">
 					<h2>Синонимы категрии</h2>
-					<ul class="list mini features_variants sortable_on">
+					<ul class="list mini_list features_variants sortable_on">
 						{foreach $synonyms as $synonym}
 							<li class="list_row">
 								<div class="move">

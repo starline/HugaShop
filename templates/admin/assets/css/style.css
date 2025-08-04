@@ -1468,6 +1468,7 @@ div#sort_links b {
 /* Списки */
 .list .list_row {
 	display: flex;
+	--bs-gutter-x: 1.5rem;
 }
 
 .list .list_row:nth-of-type(odd) {
@@ -1491,15 +1492,6 @@ div#sort_links b {
 	width: auto;
 	padding-bottom: 16px;
 	padding-top: 16px;
-}
-
-.list.mini .list_row {
-	align-items: center;
-}
-
-.list.mini .list_row .move,
-.list.mini .list_row .icons {
-	padding-top: 10px;
 }
 
 .list .list_row .move {
@@ -1572,6 +1564,19 @@ div#sort_links b {
 .list .list_row .payment_amount .order_date {
 	margin-right: 0;
 	font-weight: 400;
+}
+
+.list.mini_list .list_row {
+	align-items: center;
+}
+
+.list.mini_list .list_row .move {
+	margin-bottom: 2px;
+}
+
+.list.mini_list .list_row .icons i {
+	margin-left: 0;
+	margin-bottom: 0;
 }
 
 .list .notice_block {

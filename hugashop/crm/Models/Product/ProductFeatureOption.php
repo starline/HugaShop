@@ -19,9 +19,10 @@ class ProductFeatureOption extends BaseModel
 
     public $timestamps = true;
     protected static $table_fields = [
-        'id' =>             ['type' => 'int',      'extra' => 'AUTO_INCREMENT'],
-        'feature_id' =>     ['type' => 'int',      'req' => true],
-        'value' =>          ['type' => 'varchar',  'req' => true,   'trans' => true,    'search' => true]
+        'id'            => ['type' => 'int',      'extra' => 'AUTO_INCREMENT'],
+        'feature_id'    => ['type' => 'int',      'req' => true],
+        'url'           => ['type' => 'varchar'],
+        'value'         => ['type' => 'varchar',  'req' => true,   'trans' => true,    'search' => true]
     ];
 
 
