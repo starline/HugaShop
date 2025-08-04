@@ -247,7 +247,11 @@
 											lang: lang_code,
 											csrf: window.csrf
 										},
-										noCache: false
+										noCache: false,
+										onSelect: function(suggestion) {
+											$(this).attr('name', 'options[' + suggestion.feature_id +
+												'][' + suggestion.id + ']');
+										}
 									});
 							}
 						}
@@ -258,8 +262,9 @@
 
 				// Автодополнение свойств
 				$('.features input[name*=options]').each(function(index) {
-					let feature_id = $(this).closest('li').attr('feature_id');
-					$(this).autocomplete({
+					let $input = $(this);
+					let feature_id = $input.closest('li').attr('feature_id');
+					$input.autocomplete({
 						serviceUrl: '/admin/ajax/product/get_option',
 						type: 'POST',
 						minChars: 0,
@@ -268,15 +273,19 @@
 							lang: lang_code,
 							csrf: window.csrf
 						},
-						noCache: false
+						noCache: false,
+						onSelect: function(suggestion) {
+							$input.attr('name', 'options[' + suggestion.feature_id + '][' +
+								suggestion.id + ']');
+						}
 					});
 				});
 
 
 				// Автозаполнение названия характеристик
 				$('.features').on('focus', 'input[name*=new_features_names]', function(index) {
-					let $nameInput = $(this);
-					$nameInput.autocomplete({
+					let $input = $(this);
+					$input.autocomplete({
 						serviceUrl: '/admin/ajax/product/get_feature_name',
 						type: 'POST',
 						minChars: 0,
@@ -287,7 +296,7 @@
 						},
 						noCache: false,
 						onSelect: function(suggestion) {
-							let $line = $nameInput.closest('li');
+							let $line = $input.closest('li');
 							$line.attr('feature_id', suggestion.data);
 							$line.find('input[name*=new_features_values]').autocomplete({
 								serviceUrl: '/admin/ajax/product/get_option',
@@ -298,7 +307,11 @@
 									lang: lang_code,
 									csrf: window.csrf
 								},
-								noCache: false
+								noCache: false,
+								onSelect: function(suggestion) {
+									$input.attr('name', 'options[' + suggestion
+										.feature_id + '][' + suggestion.id + ']');
+								}
 							});
 						}
 					});

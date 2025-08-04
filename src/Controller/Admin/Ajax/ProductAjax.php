@@ -74,11 +74,19 @@ class ProductAjax extends BaseAdminController
         $feature_id     = Request::input('feature_id', 'int');
 
         $options        = ProductFeatureOption::getListTranslate(['feature_id' => $feature_id, 'search' => $keyword, 'limit' => $limit]);
-        $options_value  = $options?->pluck('value');
+
+        $suggestions = [];
+        foreach ($options as $option) {
+            $suggestions[] = [
+                'value' => $option->value,
+                'id' => $option->id,
+                'feature_id' => $option->feature_id
+            ];
+        }
 
         $res = new \stdClass();
         $res->query = $keyword;
-        $res->suggestions = $options_value;
+        $res->suggestions = $suggestions;
 
         return new JsonResponse($res);
     }
