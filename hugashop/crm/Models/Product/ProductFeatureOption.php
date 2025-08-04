@@ -22,7 +22,8 @@ class ProductFeatureOption extends BaseModel
         'id'            => ['type' => 'int',      'extra' => 'AUTO_INCREMENT'],
         'feature_id'    => ['type' => 'int',      'req' => true],
         'url'           => ['type' => 'varchar'],
-        'value'         => ['type' => 'varchar',  'req' => true,   'trans' => true,    'search' => true]
+        'value'         => ['type' => 'varchar',  'req' => true,   'trans' => true,    'search' => true],
+        'position'      => ['type' => 'int',        'def' => 0]
     ];
 
 
