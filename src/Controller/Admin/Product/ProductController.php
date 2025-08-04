@@ -67,7 +67,7 @@ class ProductController extends BaseAdminController
             $options_ids                    = $features_options->pluck('option_id')->all();
 
             Design::assign('options',       ProductFeatureOption::getListTranslate(['id' => $options_ids])->keyBy('feature_id'));
-            Design::assign('features',      ProductFeature::getListTranslate(['id' => $features_ids]));
+            Design::assign('features',      ProductFeature::getListTranslate(['id' => $features_ids], 'position'));
             Design::assign('seo_keywords',  SeoKeywords::getKeywords($product->id, 'product'));
             Design::assign('product',       $product);
         }
