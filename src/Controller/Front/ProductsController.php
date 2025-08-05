@@ -122,6 +122,7 @@ class ProductsController extends BaseFrontController
         Design::assign('sort',              $product_filter['sort']);
         Design::assign('category',          $category);
         Design::assign('features',          $features);
+        Design::assign('selected_features', $selected_features);
 
         return $this->fetchResponse('products.tpl');
     }
