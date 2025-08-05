@@ -88,6 +88,14 @@ class ProductsController extends BaseFrontController
         if (!empty($selected_features)) {
             Design::assign('canonical', Request::url($selected_features, clear: true)); # Set canonical url
             $product_filter['features'] = $selected_features;
+
+            // Open indexation if only one feature selected and it is indexable
+            if (count($selected_features) === 1) {
+                $feature_id = array_key_first($selected_features);
+                if ($category_features->get($feature_id)?->index == 1) {
+                    $noindex = false; # Open indexation
+                }
+            }
         }
 
         // Опции Характеристик
@@ -104,8 +112,8 @@ class ProductsController extends BaseFrontController
         $products_count  = Product::countProducts($product_filter);
 
 
-        // Закрываем пагинатор от индексации
-        if (!empty(Request::get('page'))) {
+        // Закрываем пагинатор|сортировку от индексации
+        if (Request::getInt('page') || Request::get('sort', 'string')) {
             $noindex = true; # Close indexation
         }
 

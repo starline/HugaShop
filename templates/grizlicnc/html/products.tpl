@@ -120,7 +120,7 @@
 										<span class="option">
 											<a href="{url params=[$f->url=>$o->url, page=>null]}"
 												class="{if $smarty.get.{$f->url} ==$o->url}selected{/if} {if $o->disabled}disabled{/if}"
-												rel="nofollow">{$o->value}</a>
+												{if !$f->index}rel="nofollow" {/if}>{$o->value}</a>
 											<span class="product_count">{$o->product_count}</span>
 										</span>
 									{/foreach}

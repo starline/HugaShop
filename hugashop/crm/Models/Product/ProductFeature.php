@@ -79,7 +79,6 @@ class ProductFeature extends BaseModel
     /**
      * Получить фильтрованные характеристики
      * @param array $filter
-     * @return array
      */
     public static function getCategoryFeatures(int|array $category_id)
     {
