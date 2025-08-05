@@ -77,7 +77,8 @@ class ProductFeatureOption extends BaseModel
 
             if ($option) {
                 $option->value    = $value;
-                $option->url      = ($url !== '' && (!is_numeric($url) || (is_numeric($url) && $url === $option->id))) ? $url : $option->id;
+
+                $option->url      = $url !== '' ? $url : $option->id;
                 $option->position = $position;
                 $option->save();
             } else {
@@ -88,7 +89,7 @@ class ProductFeatureOption extends BaseModel
                     'position'   => $position,
                 ]);
 
-                if ($option->url === '' || (is_numeric($option->url) && $option->url !== $option->id)) {
+                if ($option->url === '') {
                     $option->url = $option->id;
                     $option->save();
                 }
