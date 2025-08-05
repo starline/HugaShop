@@ -61,23 +61,18 @@ class ProductFeatureOption extends BaseModel
 
         $keep_ids = [];
         foreach ($options as $position => $data) {
-            $id    = (int) ($data['id'] ?? 0);
-            $value = trim($data['value'] ?? '');
-            $url   = $data['url'] ? Helper::slugEn($data['url']) : '';
 
+            $value = trim($data['value'] ?? '');
             if ($value === '') {
                 continue;
             }
 
-            $option = null;
-
-            if ($id > 0) {
-                $option = self::find($id);
-            }
+            $id     = $data['id'] ?? null;
+            $url    = $data['url'] ? self::makeUniqueUrl($feature_id, $data['url'], $id) : '';
+            $option = $id ? self::find($id) : null;
 
             if ($option) {
                 $option->value    = $value;
-
                 $option->url      = $url !== '' ? $url : $option->id;
                 $option->position = $position;
                 $option->save();
@@ -103,5 +98,33 @@ class ProductFeatureOption extends BaseModel
             ->delete();
 
         return true;
+    }
+
+
+    /**
+     * Генерация уникального url для характеристики
+     * @param int $feature_id
+     * @param string $url
+     * @param int $except_id
+     */
+    protected static function makeUniqueUrl(int $feature_id, string $url, ?int $except_id = null): string
+    {
+        if ($url === '' || !$except_id) {
+            return $url;
+        }
+
+        $base = Helper::slugEn($url);
+        $i    = 1;
+
+        while (self::where('feature_id', $feature_id)
+            ->where('url', $url)
+            ->where('id', '!=', $except_id)
+            ->exists()
+        ) {
+            $i++;
+            $url = $base . '-' . $i;
+        }
+
+        return $url;
     }
 }
