@@ -18,8 +18,11 @@
 	--bs-success-rgb: 86, 173, 76;
 }
 
-body {
+html {
 	font-size: 14px;
+}
+
+body {
 	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
 }
 
@@ -106,13 +109,16 @@ body {
 	padding: 33px;
 }
 
-.btn-primary {
-	text-shadow: 0px -1px 0px rgba(107, 81, 76, 0.33);
-	--bs-btn-border-color: none;
-	box-sizing: border-box;
-	border: 0;
-	outline: 0;
+.btn {
+	--bs-btn-padding-x: 1.2rem;
+	position: relative;
+}
 
+.btn .spinner-border {
+	display: none;
+	position: absolute;
+	left: 46%;
+	top: 26%;
 }
 
 .btn:hover {
@@ -120,20 +126,38 @@ body {
 }
 
 .btn svg {
-	margin-top: -5px;
 	width: 17px;
 	fill: var(--text-alt);
 }
 
-.btn-primary {
-	color: var(--text-alt);
-	box-shadow: 3px 3px 5px 0 #c3ddc0, inset 0 -4px 0 0 #4aa340;
-	background-color: #56ad4c;
+.btn.disabled .spinner-border {
+	display: block;
 }
 
-.btn-primary:hover,
-.btn-primary:active {
-	background-color: #4aa340 !important;
+.btn .btn-content {
+	gap: .25rem;
+	align-items: center;
+	display: flex;
+}
+
+.btn.disabled .btn-content {
+	visibility: hidden !important
+}
+
+.btn-primary {
+	box-shadow: 3px 3px 5px #c3ddc0, inset 0 -4px #4aa340;
+	--bs-btn-color: var(--text-alt);
+	--bs-btn-bg: #56ad4c;
+	--bs-btn-border-color: #56ad4c;
+	--bs-btn-hover-color: #fff;
+	--bs-btn-hover-bg: #4aa340;
+	--bs-btn-hover-border-color: #4aa340;
+	--bs-btn-active-color: var(--text-alt);
+	--bs-btn-active-bg: #4aa340;
+	--bs-btn-active-border-color: #4aa340;
+	--bs-btn-disabled-color: var(--text-alt);
+	--bs-btn-disabled-bg: #56ad4c;
+	--bs-btn-disabled-border-color: #56ad4c;
 }
 
 h1 {

@@ -21,14 +21,15 @@ import './js/jquery/jquery.form.js';
 import './js/owlcarousel/owl.carousel.min.js';
 import './js/htmx.min.js';
 import './js/bootstrap.bundle.min.js';
-import { getCartInformer, asignFancyAjax, assignTooltip, loaderLayer, owlCarouselInit } from './js/common.js';
+import { getCartInformer, asignFancyAjax, assignTooltip, loaderLayer, owlCarouselInit, assignButton, allButtonOn } from './js/common.js';
 
 $(function () {
 
     assignTooltip();
     getCartInformer();
     owlCarouselInit($('#related_products'));
-    
+    assignButton('button.btn');
+
     //  Автозаполнитель поиска
     $("#search input").autocomplete({
         serviceUrl: '/ajax/product/search',
@@ -62,6 +63,9 @@ $(function () {
         keyword = keyword.replaceAll(" ", "+");
         location.href = "/s/" + keyword;
     });
+
+
+
 
 
     // Зум картинок
@@ -175,6 +179,7 @@ $(function () {
     $(document).on('addToCardEvent', function (e, item) {
         getCartInformer(item.product_id, item.amount,
             function () {
+                allButtonOn('button.btn');
                 const cart_url = $("#cart_informer a").attr('href');
                 $.fancybox.open({ // Popup
                     type: 'ajax',

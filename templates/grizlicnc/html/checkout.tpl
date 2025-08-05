@@ -190,9 +190,8 @@
 							<div class="left_part">Итого:</div>
 							<div class="right_part">{$cart->purchases_price|price_html|raw}</div>
 						</div>
-						<button class="btn btn-primary mt-5" form="cart" type="submit" name="checkout" value="true">
-							Подтвердить заказ
-						</button>
+
+						{include file="parts/button.tpl" label="Подтвердить заказ" type="submit" extra_attrs='name=checkout value=true'}
 					</div>
 				</div>
 

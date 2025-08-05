@@ -103,8 +103,10 @@
                 <div class="g-recaptcha" data-sitekey="{$config->recaptcha->public_key}"></div>
             </div>
 
+
             <div class="col-12">
-                <button class="btn btn-light" type="submit" name="comment" value="true">{'Отправить'|trans}</button>
+                {include file="parts/button.tpl" label="{'Отправить'|trans}" class="btn-light" type="submit"
+                extra_attrs='name=comment value=true'}
             </div>
         </div>
     </form>
