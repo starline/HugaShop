@@ -107,20 +107,19 @@
 				{if $features}
 					<table id="features">
 						{foreach $features as $f}
-							{if $f->url}{$key = $f->url}{else}{$key = $f->id}{/if}
 							<tr>
 								<td class="feature_name" data-feature="{$f->id}">
 									{$f->name}:
 								</td>
 								<td class="feature_values">
 									<span class="option">
-										<a href="{url params=[$key=>null, page=>null]}" {if !$smarty.get.$key}class="selected" {/if}
-											rel="nofollow">Все</a>
+										<a href="{url params=[$f->url=>null, page=>null]}" {if !$smarty.get.{$f->url}}class="selected"
+											{/if} rel="nofollow">Все</a>
 									</span>
 									{foreach $f->options as $o}
 										<span class="option">
-											<a href="{url params=[$key=>$o->url, page=>null]}"
-												class="{if $smarty.get.$key ==$o->url}selected{/if} {if $o->disabled}disabled{/if}"
+											<a href="{url params=[$f->url=>$o->url, page=>null]}"
+												class="{if $smarty.get.{$f->url} ==$o->url}selected{/if} {if $o->disabled}disabled{/if}"
 												rel="nofollow">{$o->value}</a>
 											<span class="product_count">{$o->product_count}</span>
 										</span>

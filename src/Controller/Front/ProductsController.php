@@ -55,32 +55,21 @@ class ProductsController extends BaseFrontController
         }
 
 
-        // Постраничная навигация
-        $product_filter = PaginationService::initFilter();
-        $product_filter['visible'] = 1;
-
-        $noindex = true; # Right away close indexation
-
-
         // If selected only category.
+        $noindex = true; # Right away close indexation
         if (empty(Request::gets())) {
             Design::assign('canonical', $this->generateUrlWithLocale('Products', ['url' => $category->url])); # Set hard canonical url
             Design::assign('show_description', true);
             $noindex = false; # Open indexation
         }
 
-        $product_filter['category_id'] = $category->children;
-
-        // Сортировка
-        if ($sort = Request::get('sort', 'string')) {
-            $product_filter['sort'] = $sort;
-            $noindex = true; # Close indexation
-        } else {
-            $product_filter['sort'] = 'position';
-        }
-
-        $product_filter['sort_in_stock'] = true;
-        $product_filter['sort_disable'] = true;
+        // Постраничная навигация
+        $product_filter = PaginationService::initFilter();
+        $product_filter['visible'] = 1;
+        $product_filter['category_id']      = $category->children;
+        $product_filter['sort']             = Request::get('sort', 'string') ?: 'position';
+        $product_filter['sort_in_stock']    = true;
+        $product_filter['sort_disable']     = true;
 
         // Характеристики
         $category_features = ProductFeature::getCategoryFeatures($category->id);
