@@ -413,7 +413,7 @@ class Request
                 $res->$param_name = Request::post($param_name, $param_data['type']);
 
                 // Triming varchar
-                if ($param_data['type'] == 'varchar') {
+                if ($param_data['type'] == 'varchar' || $param_data['type'] == 'string') {
                     $res->$param_name = trim($res->$param_name);
 
                     // Cut string by MySQL length if specified

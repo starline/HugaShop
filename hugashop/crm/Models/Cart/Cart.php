@@ -18,6 +18,10 @@ use HugaShop\Models\Order\Order;
 
 class Cart extends BaseModel
 {
+
+    private static $cookie_cart = 'CART';
+    private static $current_cart;
+
     protected static $table_fields = [
         'id' =>                 ['type' => 'int',       'extra' => 'AUTO_INCREMENT'],
         'token' =>              ['type' => 'varchar'],
@@ -32,9 +36,6 @@ class Cart extends BaseModel
         'referral' =>           ['type' => 'varchar',   'access' => false, 'length' => 900],
         'language' =>           ['type' => 'varchar',   'access' => false],
     ];
-
-    private static $cookie_cart = 'CART';
-    private static $current_cart;
 
     public function order()
     {

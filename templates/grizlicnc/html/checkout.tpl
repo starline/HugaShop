@@ -17,7 +17,7 @@
 								<div class="col-lg-6">
 									<label class="form-label" for="phone">Телефон <span>(Обязательно)</span></label>
 									<input class="form-control {if phone|in_array:$form_invalid}is-invalid{/if}" id="phone"
-										name="phone" type="text" value="{$order->phone}" autocomplete="tel"
+										name="phone" type="text" value="{$pre_order->phone}" autocomplete="tel"
 										placeholder="Телефон" />
 									<div class="invalid-feedback">Введите Телефон</div>
 								</div>
@@ -25,7 +25,7 @@
 								<div class="col-lg-6">
 									<label class="form-label" for="name">Имя, фамилия <span>(Обязательно)</span></label>
 									<input class="form-control {if name|in_array:$form_invalid}is-invalid{/if}" id="name"
-										name="name" type="text" value="{$order->name}" autocomplete="name"
+										name="name" type="text" value="{$pre_order->name}" autocomplete="name"
 										placeholder="Имя и Фамилия" />
 									<div class="invalid-feedback">Введите Имя и Фамилия</div>
 								</div>
@@ -33,20 +33,21 @@
 								<div class="col-lg-6">
 									<label class="form-label" for="email">Email <span>(Сюда отправим инфрмацию о
 											заказe)</span></label>
-									<input class="form-control" id="email" name="email" type="email" value="{$order->email}"
+									<input class="form-control" id="email" name="email" type="email" value="{$pre_order->email}"
 										autocomplete="email" placeholder="Email" />
 								</div>
 
 								<div class="col-lg-6">
 									<label class="form-label" for="address">Город доставки</label>
 									<input class="form-control" id="address" name="address" type="text"
-										value="{$order->address}" autocomplete="address-level1" placeholder="Город доставки" />
+										value="{$pre_order->address}" autocomplete="address-level1"
+										placeholder="Город доставки" />
 								</div>
 
 								<div class="col-12">
 									<label class="form-label" for="comment">Номер отделения или комментарий к заказу</label>
 									<textarea class="form-control" id="comment" name="comment" id="order_comment"
-										placeholder="Комментарий">{$order->comment}</textarea>
+										placeholder="Комментарий">{$pre_order->comment}</textarea>
 								</div>
 							</div>
 						</div>
@@ -57,16 +58,15 @@
 							<h2>Доставка</h2>
 							<div class="acc_wrapper accordion" id="deliveries">
 								{foreach $delivery_methods as $delivery}
-									<h3>
+									<h3 class="acc_header">
 										<div class="checkbox">
 											<input type="radio" name="delivery_id" value="{$delivery->id}"
-												{if $order->delivery_id == $delivery->id || $delivery@index == 0}checked{/if}
+												{if $pre_order->delivery_id == $delivery->id || $delivery@index == 0}checked{/if}
 												id="deliveries_{$delivery->id}">
 											<label for="deliveries_{$delivery->id}">{$delivery->public_name}
-
-												{if $order->total_price < $delivery->free_from && $delivery->price > 0}
+												{if $cart->total_price < $delivery->free_from && $delivery->price > 0}
 													<span class="delivery_price">от {$delivery->price|price_html|raw}</span>
-												{elseif $order->total_price >= $delivery->free_from || $delivery->price == 0}
+												{elseif $cart->total_price >= $delivery->free_from || $delivery->price == 0}
 													<span class="delivery_price">бесплатно</span>
 												{/if}
 											</label>
@@ -90,7 +90,7 @@
 									<h3 class="acc_header">
 										<div class="checkbox">
 											<input type="radio" name="payment_method_id" value='{$payment_method->id}'
-												{if $payment_method->id == $order->payment_method_id || $payment_method@index == 0}checked{/if}
+												{if $pre_order->payment_method_id == $payment_method->id}checked{/if}
 												id="payment_{$payment_method->id}">
 											<label for="payment_{$payment_method->id}">{$payment_method->public_name}</label>
 										</div>
@@ -141,20 +141,20 @@
 						</div>
 					{/foreach}
 
-					{if $order->discount > 0}
+					{if $pre_order->discount > 0}
 						<div class="purchase_row">
 							<div class="amount">скидка</div>
 							<div class="price">
-								{$order->discount}&nbsp;%
+								{$pre_order->discount}&nbsp;%
 							</div>
 						</div>
 					{/if}
 
-					{if $order->coupon_discount > 0}
+					{if $pre_order->coupon_discount > 0}
 						<div class="purchase_row">
 							<div class="amount">купон</div>
 							<div class="price">
-								&minus;{$order->coupon_discount|price_html|raw}
+								&minus;{$pre_order->coupon_discount|price_html|raw}
 							</div>
 						</div>
 					{/if}
@@ -171,7 +171,7 @@
 							{/if}
 							<div class="row">
 								<label for="coupon_code">Введите промокод <span>узнай свою скидку</span></label>
-								<input id="coupon_code" name="coupon_code" type="text" value="{$order->coupon_code}"
+								<input id="coupon_code" name="coupon_code" type="text" value="{$pre_order->coupon_code}"
 									autocomplete="off" />
 							</div>
 							<div class="row">
@@ -212,9 +212,10 @@
 
 		{literal}
 			$(function() {
+
 				$(".accordion").accordion({
-					'heightStyle': 'content',
-					'icons': false,
+					heightStyle: 'content',
+					icons: false,
 					activate: function(event, ui) {
 						$("input", ui.newHeader).prop('checked', true);
 					}
