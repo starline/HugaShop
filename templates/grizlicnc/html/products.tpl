@@ -135,7 +135,7 @@
 				{if $products|count > 0}
 					<div class="sort">
 						{'Сортировать по'|trans}
-						<a {if $sort=='position'} class="selected" {/if} href="{url sort=position page=null}"
+						<a {if $sort=='position'} class="selected" {/if} href="{url sort=null page=null}"
 							rel="nofollow">{'умолчанию'|trans}</a>
 						<a {if $sort=='price'} class="selected" {/if} href="{url sort=price page=null}"
 							rel="nofollow">{'цене'|trans}</a>

@@ -54,23 +54,6 @@ class ProductsController extends BaseFrontController
             return $this->redirectToRoute('ProductCategory', ['url' => $category->url], 301);
         }
 
-
-        // If selected only category.
-        $noindex = true; # Right away close indexation
-        if (empty(Request::gets())) {
-            Design::assign('canonical', $this->generateUrlWithLocale('Products', ['url' => $category->url])); # Set hard canonical url
-            Design::assign('show_description', true);
-            $noindex = false; # Open indexation
-        }
-
-        // Постраничная навигация
-        $product_filter = PaginationService::initFilter();
-        $product_filter['visible'] = 1;
-        $product_filter['category_id']      = $category->children;
-        $product_filter['sort']             = Request::get('sort', 'string') ?: 'position';
-        $product_filter['sort_in_stock']    = true;
-        $product_filter['sort_disable']     = true;
-
         // Характеристики
         $category_features = ProductFeature::getCategoryFeatures($category->id);
 
@@ -85,18 +68,33 @@ class ProductsController extends BaseFrontController
             }
         }
 
-        if (!empty($selected_features)) {
-            Design::assign('canonical', Request::url($selected_features, clear: true)); # Set canonical url
-            $product_filter['features'] = $selected_features;
+        $product_filter                     = PaginationService::initFilter();
+        $product_filter['visible']          = 1;
+        $product_filter['category_id']      = $category->children;
+        $product_filter['sort']             = Request::get('sort', 'string') ?: 'position';
+        $product_filter['sort_in_stock']    = true;
+        $product_filter['sort_disable']     = true;
+        $product_filter['features']         = $selected_features;
 
-            // Open indexation if only one feature selected and it is indexable
-            if (count($selected_features) === 1) {
-                $feature_id = array_key_first($selected_features);
-                if ($category_features->get($feature_id)?->index == 1) {
-                    $noindex = false; # Open indexation
-                }
+
+        $noindex = true; # Right away close indexation
+
+        // If selected only category.
+        if (empty(Request::gets())) {
+            Design::assign('canonical', $this->generateUrlWithLocale('Products', ['url' => $category->url])); # Set hard canonical url
+            Design::assign('show_description', true);
+            $noindex = false; # Open indexation
+        }
+
+        // Open indexation if only one feature selected and it is indexable
+        if (count(Request::gets()) === 1 && count($selected_features) === 1) {
+            $feature_id = array_key_first($selected_features);
+            if (isset($category_features[$feature_id]) && (int) $category_features[$feature_id]->index === 1) {
+                Design::assign('canonical', Request::url($selected_features, clear: true)); # Set canonical url
+                $noindex = false; # Open indexation
             }
         }
+
 
         // Опции Характеристик
         $features = ProductOption::getOptions([
@@ -107,15 +105,10 @@ class ProductsController extends BaseFrontController
         ]);
 
 
+
         // Выбираем товары
         $products        = Product::getProducts($product_filter, ['image']);
         $products_count  = Product::countProducts($product_filter);
-
-
-        // Закрываем пагинатор|сортировку от индексации
-        if (Request::getInt('page') || Request::get('sort', 'string')) {
-            $noindex = true; # Close indexation
-        }
 
         Design::assign('meta_title',        $category->meta_title ?: $category->name);
         Design::assign('meta_description',  $category->meta_description ?: $category->meta_title . ' ' . Settings::getParam('product_meta_description'));
