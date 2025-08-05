@@ -88,8 +88,9 @@ class ProductsController extends BaseFrontController
         // Check allowed feature from GET
         $selected_features = [];
         foreach ($category_features as $feature) {
-            if (($val = strval(Request::get($feature->id))) != '' || (!empty($feature->url) and $val = strval(Request::get($feature->url))) != '') {
-                if ($option_id = ProductFeatureOption::where('id', $val)->where('feature_id', $feature->id)->first()?->id) {
+            $option_url = Request::get($feature->url, 'string');
+            if (!empty($option_url)) {
+                if ($option_id = ProductFeatureOption::where('url', $option_url)->where('feature_id', $feature->id)->first()?->id) {
                     $selected_features[$feature->id] = $option_id;
                 }
             }

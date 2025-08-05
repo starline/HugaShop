@@ -119,8 +119,8 @@
 									</span>
 									{foreach $f->options as $o}
 										<span class="option">
-											<a href="{url params=[$key=>$o->id, page=>null]}"
-												class="{if $smarty.get.$key == $o->id}selected{/if} {if $o->disabled}disabled{/if}"
+											<a href="{url params=[$key=>$o->url, page=>null]}"
+												class="{if $smarty.get.$key ==$o->url}selected{/if} {if $o->disabled}disabled{/if}"
 												rel="nofollow">{$o->value}</a>
 											<span class="product_count">{$o->product_count}</span>
 										</span>

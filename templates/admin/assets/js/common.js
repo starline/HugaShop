@@ -188,6 +188,36 @@ export function indexListRows(container_selector, item_name) {
 }
 
 
+// Tooltips
+export function assignTooltip(selector) {
+	const container = selector ? document.querySelector(selector) : document;
+	if (!container) return;
+
+	const tooltipTriggerList = container.querySelectorAll('[data-bs-toggle="tooltip"]');
+	[...tooltipTriggerList].forEach(el => new bootstrap.Tooltip(el));
+}
+
+
+// Action btn
+export function assignButton(selector) {
+	$(selector).on('click', function (e) {
+
+		// Если уже в процессе — не даём нажимать повторно
+		if ($(this).hasClass('disabled')) {
+			e.preventDefault();
+			(this).prop('disabled', true);
+			return;
+		}
+
+		$(this).addClass('disabled');
+	});
+}
+
+export function allButtonOn(selector) {
+	$(selector).removeClass('disabled').prop('disabled', false);
+}
+
+
 // RU -> EN
 export function translit(str) {
 	let ru = (

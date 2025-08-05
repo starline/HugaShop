@@ -55,37 +55,59 @@
 				</select>
 			</div>
 
-			<div class="col-lg-6 layer">
-				<h2>Параметры страницы</h2>
-				<ul class="property_block">
-					<li>
-						<label for="url" class="col-form-label">URL</label>
-						<input class="form-control" id="url" name="url" type="text" value="{$feature->url}" />
-					</li>
-					<div class="btn_row">
-						{include file="parts/button.tpl"}
-					</div>
-				</ul>
-			</div>
+			<div class="col-lg-6 ">
 
-			<div class="col-lg-6 layer">
-				<h2 class="mt-4">Варианты свойства</h2>
-				<ul class="list mini_list options">
-					{foreach $options as $option}
-						<li class="list_row">
-							<input type="hidden" name="options[{$option@index}][id]" value="{$option->id}" />
+				<div class="layer">
+					<h2>Параметры страницы</h2>
+					<ul class="property_block">
+						<li>
+							<label for="url" class="col-form-label">URL</label>
+							<input class="form-control" id="url" name="url" type="text" value="{$feature->url}" />
+						</li>
+					</ul>
+				</div>
+
+				<div class="layer">
+					<h2 class="mt-4">Варианты свойства</h2>
+					<ul class="list mini_list options">
+						{foreach $options as $option}
+							<li class="list_row">
+								<input type="hidden" name="options[{$option@index}][id]" value="{$option->id}" />
+								<div class="move">
+									<div class="move_zone"></div>
+								</div>
+								<div class="col">
+									<div class="row gy-3">
+										<div class="col-12 col-md-8">
+											<input class="form-control" name="options[{$option@index}][value]" type="text"
+												value="{$option->value}" placeholder="Значение опции" />
+										</div>
+										<div class="col-12 col-md-4">
+											<input class="form-control" name="options[{$option@index}][url]" type="text"
+												value="{$option->url}" placeholder="url опции" />
+										</div>
+									</div>
+								</div>
+								<div class="icons">
+									<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
+								</div>
+							</li>
+						{/foreach}
+
+						<li class="list_row" id="new" style="display:none;">
+							<input type="hidden" name="options[INDEX][id]" value="">
 							<div class="move">
 								<div class="move_zone"></div>
 							</div>
 							<div class="col">
 								<div class="row gy-3">
 									<div class="col-12 col-md-8">
-										<input class="form-control" name="options[{$option@index}][value]" type="text"
-											value="{$option->value}" placeholder="Значение опции" />
+										<input class="form-control" name="options[INDEX][value]" type="text" value=""
+											placeholder="Значение характеристики" />
 									</div>
 									<div class="col-12 col-md-4">
-										<input class="form-control" name="options[{$option@index}][url]" type="text"
-											value="{$option->url}" placeholder="url опции" />
+										<input class="form-control" name="options[INDEX][url]" type="text" value=""
+											placeholder="url опции" />
 									</div>
 								</div>
 							</div>
@@ -93,34 +115,12 @@
 								<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
 							</div>
 						</li>
-					{/foreach}
+					</ul>
 
-					<li class="list_row" id="new" style="display:none;">
-						<input type="hidden" name="options[INDEX][id]" value="">
-						<div class="move">
-							<div class="move_zone"></div>
+					<div class="btn_row_add">
+						<div class="add mt-3">
+							<i class="dash_link">Добавить вариант</i>
 						</div>
-						<div class="col">
-							<div class="row gy-3">
-								<div class="col-12 col-md-8">
-									<input class="form-control" name="options[INDEX][value]" type="text" value=""
-										placeholder="Значение характеристики" />
-								</div>
-								<div class="col-12 col-md-4">
-									<input class="form-control" name="options[INDEX][url]" type="text" value=""
-										placeholder="url опции" />
-								</div>
-							</div>
-						</div>
-						<div class="icons">
-							<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
-						</div>
-					</li>
-				</ul>
-
-				<div class="btn_row_add">
-					<div class="add mt-3">
-						<i class="dash_link">Добавить вариант</i>
 					</div>
 				</div>
 			</div>

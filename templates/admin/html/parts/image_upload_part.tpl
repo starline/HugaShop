@@ -37,6 +37,7 @@
     import '{"js/fancybox/jquery.fancybox.min.js"|asset}';
     import { initImagesUpload } from '{"js/image.js"|asset}';
     import { initFancybox } from '{"js/common.js"|asset}';
+
     {literal}
         $(function() {
 

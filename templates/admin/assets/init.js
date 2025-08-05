@@ -14,6 +14,7 @@ import './js/jquery/jquery-ui.js';
 import './js/jquery/jquery.form.js';
 import './js/autocomplete/jquery.autocomplete.min.js';
 import './js/ctrlnavigate.js';
+import { assignTooltip, assignButton } from './js/common.js';
 
 $(function () {
 
@@ -35,24 +36,8 @@ $(function () {
         }
     });
 
-
-    // Tooltips
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-    [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
-
-
-    // Action btn
-    $('button.btn').on('click', function (e) {
-
-        // Если уже в процессе — не даём нажимать повторно
-        if ($(this).hasClass('disabled')) {
-            e.preventDefault();
-            (this).prop('disabled', true);
-            return;
-        }
-
-        $(this).addClass('disabled');
-    });
+    assignButton('button.btn');
+    assignTooltip();
 
 
     // Выделить все

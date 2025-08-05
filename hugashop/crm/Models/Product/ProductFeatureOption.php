@@ -10,6 +10,7 @@
 
 namespace HugaShop\Models\Product;
 
+use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Product\ProductFeature;
@@ -62,7 +63,7 @@ class ProductFeatureOption extends BaseModel
         foreach ($options as $position => $data) {
             $id    = (int) ($data['id'] ?? 0);
             $value = trim($data['value'] ?? '');
-            $url   = trim($data['url'] ?? '');
+            $url   = $data['url'] ? Helper::slugEn($data['url']) : '';
 
             if ($value === '') {
                 continue;
@@ -76,7 +77,7 @@ class ProductFeatureOption extends BaseModel
 
             if ($option) {
                 $option->value    = $value;
-                $option->url      = $url !== '' ? $url : $option->id;
+                $option->url      = ($url !== '' && (!is_numeric($url) || (is_numeric($url) && $url === $option->id))) ? $url : $option->id;
                 $option->position = $position;
                 $option->save();
             } else {
@@ -86,6 +87,11 @@ class ProductFeatureOption extends BaseModel
                     'url'        => $url,
                     'position'   => $position,
                 ]);
+
+                if ($option->url === '' || (is_numeric($option->url) && $option->url !== $option->id)) {
+                    $option->url = $option->id;
+                    $option->save();
+                }
             }
 
             $keep_ids[] = $option->id;

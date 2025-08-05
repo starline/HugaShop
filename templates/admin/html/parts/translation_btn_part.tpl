@@ -25,6 +25,8 @@
 
     {block name=body_script append}
         <script type="module">
+            import { allButtonOn } from '{"js/common.js"|asset}';
+
             const entity = '{$entity}';
             const translate_url = "{'ExtOpenAITranslate'|link}";
 
@@ -88,9 +90,7 @@
                             }
                         },
                         complete: function() {
-                            btn.prop('disabled', false);
-                            btn.find('.spinner-border').hide();
-                            btn.find('.btn-content').removeClass('invisible');
+                            allButtonOn('#translate_button');
                         }
                     });
                     return false;

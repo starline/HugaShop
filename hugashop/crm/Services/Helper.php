@@ -495,7 +495,7 @@ class Helper
     /**
      * Custom Str::slug. With Dot
      */
-    public static function slugEn($title, $separator = '-', $dictionary = ['@' => 'at'])
+    public static function slugEn(string $title, string $separator = '-', array $dictionary = ['@' => 'at'])
     {
         $title = Str::ascii($title, 'en');
 
