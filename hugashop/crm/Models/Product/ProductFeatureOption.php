@@ -23,7 +23,7 @@ class ProductFeatureOption extends BaseModel
         'feature_id'    => ['type' => 'int',      'req' => true],
         'url'           => ['type' => 'varchar'],
         'value'         => ['type' => 'varchar',  'req' => true,   'trans' => true,    'search' => true],
-        'position'      => ['type' => 'int',        'def' => 0]
+        'position'      => ['type' => 'int',      'def' => 0]
     ];
 
 
@@ -36,7 +36,7 @@ class ProductFeatureOption extends BaseModel
     /**
      * Обновление вариантов характеристик
      * @param int $feature_id
-     * @param array $options
+     * @param array $options [ [id, value, url], ... ]
      */
     public static function updateFeatureOptions(int $feature_id, array $options)
     {
@@ -44,52 +44,52 @@ class ProductFeatureOption extends BaseModel
             return false;
         }
 
-        // Prepare incoming values
-        $values = array_unique(
-            array_filter(
-                array_map('trim', $options),
-                fn($v) => $v !== ''
-            )
-        );
+        // Обновление только переводов
+        if ($language_code = Language::checkOrGetCode()) {
+            $options_trans = array_filter($options, function ($option) {
+                return isset($option['id'], $option['value']) && trim($option['value']) !== '';
+            });
 
-        $language_code = Language::checkOrGetCode();
-
-        // If editing translation only update translation records
-        if ($language_code) {
-            $ids = self::where('feature_id', $feature_id)
-                ->pluck('id')
-                ->toArray();
-
-            foreach ($ids as $id) {
-                if (!empty($values[$id])) {
-                    self::updateOrCreateTranslation($id, $language_code, ['value' => $values[$id]]);
-                }
+            foreach ($options_trans as $option) {
+                self::updateOrCreateTranslation((int) $option['id'], $language_code, ['value' => trim($option['value'])]);
             }
 
             return true;
         }
 
+
         $keep_ids = [];
+        foreach ($options as $position => $data) {
+            $id    = (int) ($data['id'] ?? 0);
+            $value = trim($data['value'] ?? '');
+            $url   = trim($data['url'] ?? '');
 
-        foreach ($values as $id => $value) {
+            if ($value === '') {
+                continue;
+            }
 
-            $option = self::find($id);
+            $option = null;
+
+            if ($id > 0) {
+                $option = self::find($id);
+            }
 
             if ($option) {
-                $option->value = $value;
+                $option->value    = $value;
+                $option->url      = $url !== '' ? $url : $option->id;
+                $option->position = $position;
                 $option->save();
             } else {
-
-                // Если ID не найден — создаём новую без id
-                $option = self::firstOrCreate([
+                $option = self::create([
                     'feature_id' => $feature_id,
                     'value'      => $value,
+                    'url'        => $url,
+                    'position'   => $position,
                 ]);
             }
 
             $keep_ids[] = $option->id;
         }
-
 
         self::where('feature_id', $feature_id)
             ->whereNotIn('id', $keep_ids)

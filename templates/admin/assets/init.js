@@ -42,10 +42,16 @@ $(function () {
 
 
     // Action btn
-    $('button.btn').one('click', function () {
-        const $btn = $(this);
-        $btn.find('.spinner-border').show();
-        $btn.find('.btn-content').addClass('invisible');
+    $('button.btn').on('click', function (e) {
+
+        // Если уже в процессе — не даём нажимать повторно
+        if ($(this).hasClass('disabled')) {
+            e.preventDefault();
+            (this).prop('disabled', true);
+            return;
+        }
+
+        $(this).addClass('disabled');
     });
 
 

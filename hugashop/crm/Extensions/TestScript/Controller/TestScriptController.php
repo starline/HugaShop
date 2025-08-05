@@ -292,6 +292,10 @@ final class TestScriptController extends BaseAdminController
 
                             // 1. Исправляем типы комментарий
                             if (0) {
+
+                                // Создаем поля в таблице
+                                ProductFeatureOption::getList(select: 'url');
+
                                 ContentComment::chunk(100, function ($comments) { #  обрабатывает по 100 записей за раз, чтобы не съесть всю память
                                     foreach ($comments as $comment) {
                                         if (!empty($comment->type)) {

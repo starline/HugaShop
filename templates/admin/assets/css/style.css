@@ -137,6 +137,14 @@ textarea {
 	box-shadow: 0 0 0 0.25rem rgb(124 165 17 / 38%);
 }
 
+.form-control::placeholder {
+	opacity: 0.3;
+}
+
+.form-control::-moz-placeholder {
+	opacity: 0.3;
+}
+
 .form-check-input {
 	cursor: pointer;
 }
@@ -163,11 +171,20 @@ textarea {
 	top: 26%;
 }
 
+.btn.disabled .spinner-border {
+	display: block;
+}
+
 .btn .btn-content {
 	gap: .25rem;
 	align-items: center;
 	display: flex;
 }
+
+.btn.disabled .btn-content {
+	visibility: hidden !important
+}
+
 
 .btn-primary {
 	--bs-btn-color: #fff;

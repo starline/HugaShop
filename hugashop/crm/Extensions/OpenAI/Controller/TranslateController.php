@@ -136,8 +136,8 @@ final class TranslateController extends BaseAdminController
                         ['role' => 'user', 'content' => $option->value],
                     ]
                 ]);
-                
-                $translated_options[$option->id] = trim($result->choices[0]->message->content);
+
+                $translated_options[] = ['id' => $option->id, 'value' => trim($result->choices[0]->message->content)];
             }
 
             if ($save && !empty($translated_options)) {

@@ -58,7 +58,6 @@ class FeatureController extends BaseAdminController
         #########
         if (!empty($id)) {
             $feature = ProductFeature::getOneEditTranslate($id);
-
             if (empty($feature->id)) {
                 return $this->redirectToRoute('FeatureListAdmin');
             }
@@ -66,7 +65,7 @@ class FeatureController extends BaseAdminController
             Design::assign('feature_categories', ProductCategoryFeature::getFeatureCategoryIds($feature->id));
 
             // Значения характеристики
-            Design::assign('options', ProductFeatureOption::getListEditTranslate(['feature_id' => $feature->id]));
+            Design::assign('options', ProductFeatureOption::getListEditTranslate(['feature_id' => $feature->id], order: 'position'));
         }
 
         Design::assign('feature', $feature);

@@ -136,23 +136,38 @@
 
 {block name=body_script append}
 	<script type="module">
+		import { indexListRows } from '{"js/common.js"|asset}';
+
 		{literal}
 			$(function() {
 
-				// Добавление варианта
-				const new_option = $('.options #new').clone(true).removeAttr('id');
-				$('.options #new').removeAttr('id').remove();
+				const optionsList = $('.options');
+
+				optionsList.sortable({
+					items: '.list_row',
+					handle: '.move_zone',
+					tolerance: 'pointer',
+					opacity: 0.95,
+					axis: 'y',
+					update: function() {
+						indexListRows('.options', 'options');
+					}
+				});
+
+				const new_option = optionsList.find('#new').clone(true).removeAttr('id');
+				optionsList.find('#new').remove();
 
 				$('.add').click(function() {
-					new_option.clone().appendTo('.options').show()
-						.find('input[name="options[]"]').focus();
+					let new_item = new_option.clone().appendTo(optionsList).show();
+					indexListRows('.options', 'options');
+					new_item.find('input[type="text"]').first().focus();
 					return false;
 				});
 
-				// Удаление варианта
-				$(".options").on('click', '.delete', function() {
-					$(this).closest(".list_row").fadeOut(200, function() {
+				optionsList.on('click', '.delete', function() {
+					$(this).closest('.list_row').fadeOut(200, function() {
 						$(this).remove();
+						indexListRows('.options', 'options');
 					});
 					return false;
 				});
