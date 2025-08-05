@@ -7,7 +7,7 @@
 
 	<title>{$meta_title}</title>
 
-	<link rel="icon" href='{"images/favicon.ico"|asset:"{$settings->theme}"}' type="image/x-icon" />
+	<link rel="icon" href='{"images/favicon.ico"|asset:"{$settings->theme}/assets"}' type="image/x-icon" />
 
 	{importmap point='admin'}
 
