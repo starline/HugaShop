@@ -56,6 +56,25 @@
                                 const value = data[field];
                                 let el = $('[name="' + field + '"]');
 
+                                // Специальный формат: массив объектов {id, value}
+                                if (
+                                    field === 'options' &&
+                                    Array.isArray(value) &&
+                                    value.length &&
+                                    typeof value[0] === 'object' &&
+                                    'id' in value[0]
+                                ) {
+                                    value.forEach(function(opt) {
+                                        const row = $('input[name^="options"][name$="[id]"][value="' +
+                                            opt.id + '"]').closest('.list_row');
+                                        if (row.length) {
+                                            row.find('input[name^="options"][name$="[value]"]').val(opt
+                                                .value);
+                                        }
+                                    });
+                                    continue;
+                                }
+
                                 // Если пришел массив значений (например, options[])
                                 if (Array.isArray(value)) {
                                     el = $('[name="' + field + '[]"]');
