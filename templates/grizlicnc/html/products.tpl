@@ -106,7 +106,6 @@
 				{* Features filter *}
 				{if $features}
 					<table id="features">
-						{$selected_options_count = 0}
 						{foreach $features as $f}
 							<tr>
 								<td class="feature_name" data-feature="{$f->id}">

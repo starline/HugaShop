@@ -39,11 +39,10 @@ class ProductsController extends BaseFrontController
     }
 
     #[Route('/{url}', name: 'Products')]
-    #[Route('/{url}/filter/{filter}', requirements: ['filter' => '.+'], name: 'ProductsFilter')]
-    public function products(string $url, ?string $filter = null): Response
+    #[Route('/{url}/filter/{filter_path}', requirements: ['filter' => '.+'], name: 'ProductsFilter')]
+    public function products(string $url, ?string $filter_path = null): Response
     {
-        $filters = explode('/', $filter);
-        dump($filters);
+
         // Выберем текущую категорию
         $category = ProductCategory::getCategoryByURL($url);
         if (empty($category)) {
@@ -58,13 +57,19 @@ class ProductsController extends BaseFrontController
         // Характеристики
         $category_features = ProductFeature::getCategoryFeatures($category->id);
 
-        // Check allowed feature from GET
+        // Parse options from friendly URL /filter/option1/option2
         $selected_features = [];
-        foreach ($category_features as $feature) {
-            $option_url = Request::get($feature->url, 'string');
-            if (!empty($option_url)) {
-                if ($option_id = ProductFeatureOption::where('url', $option_url)->where('feature_id', $feature->id)->first()?->id) {
-                    $selected_features[$feature->id] = $option_id;
+        if (!empty($filter_path)) {
+            $filter_urls = array_filter(explode('/', $filter_path));
+            if (!empty($filter_urls)) {
+                $options = ProductFeatureOption::query()
+                    ->whereIn('url', $filter_urls)
+                    ->get();
+
+                foreach ($options as $option) {
+                    if (isset($category_features[$option->feature_id])) {
+                        $selected_features[$option->feature_id] = $option->id;
+                    }
                 }
             }
         }
@@ -81,21 +86,20 @@ class ProductsController extends BaseFrontController
         $noindex = true; # Right away close indexation
 
         // If selected only category.
-        if (empty(Request::gets())) {
+        if (empty(Request::gets()) and empty($selected_features)) {
             Design::assign('canonical', $this->generateUrlWithLocale('Products', ['url' => $category->url])); # Set hard canonical url
             Design::assign('show_description', true);
             $noindex = false; # Open indexation
         }
 
         // Open indexation if only one feature selected and it is indexable
-        if (count(Request::gets()) === 1 && count($selected_features) === 1) {
+        if (empty(Request::gets()) && count($selected_features) === 1) {
             $feature_id = array_key_first($selected_features);
             if (isset($category_features[$feature_id]) && (int) $category_features[$feature_id]->index === 1) {
                 Design::assign('canonical', Request::url($selected_features, clear: true)); # Set canonical url
                 $noindex = false; # Open indexation
             }
         }
-
 
         // Опции Характеристик
         $features = ProductOption::getOptions([
@@ -104,8 +108,6 @@ class ProductsController extends BaseFrontController
             'feature_in_filter' => 1,
             'feature_selected'  => $selected_features
         ]);
-
-
 
         // Выбираем товары
         $products        = Product::getProducts($product_filter, ['image']);
