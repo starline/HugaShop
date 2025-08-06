@@ -113,13 +113,13 @@
 								</td>
 								<td class="feature_values">
 									<span class="option">
-										<a href="{url params=[$f->url => null, sort => null, page => null]}"
-											{if !$smarty.get.{$f->url}}class="selected" {/if} rel="nofollow">Все</a>
+										<a href="{filter_url feature_id=$f->id}" {if !$selected_features[$f->id]}class="selected" {/if}
+											rel="nofollow">Все</a>
 									</span>
 									{foreach $f->options as $o}
 										<span class="option">
-											<a href="{url params=[$f->url => $o->url, sort => null, page => null]}"
-												class="{if $smarty.get.{$f->url} ==$o->url}selected{/if} {if $o->disabled}disabled{/if}"
+											<a href="{filter_url feature_id=$f->id option_url=$o->url}"
+												class="{if $selected_features[$f->id]==$o->id}selected{/if} {if $o->disabled}disabled{/if}"
 												{if !$f->index || $selected_features|count > 1}rel="nofollow" {/if}>{$o->value}</a>
 											<span class="product_count">{$o->product_count}</span>
 										</span>

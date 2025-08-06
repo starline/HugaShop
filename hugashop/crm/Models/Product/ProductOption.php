@@ -182,6 +182,6 @@ class ProductOption extends BaseModel
             }
         }
 
-        return $result;
+        return $result->keyBy('id');
     }
 }

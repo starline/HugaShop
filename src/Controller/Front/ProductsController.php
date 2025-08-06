@@ -39,7 +39,7 @@ class ProductsController extends BaseFrontController
     }
 
     #[Route('/{url}', name: 'Products')]
-    #[Route('/{url}/filter/{filter_path}', requirements: ['filter' => '.+'], name: 'ProductsFilter')]
+    #[Route('/{url}/filter/{filter_path}', requirements: ['filter_path' => '.+'], name: 'ProductsFilter')]
     public function products(string $url, ?string $filter_path = null): Response
     {
 
@@ -127,6 +127,69 @@ class ProductsController extends BaseFrontController
         Design::assign('features',          $features);
         Design::assign('selected_features', $selected_features);
 
+        Design::setFunctionPlugin('filter_url', $this, 'filterUrl');
+
         return $this->fetchResponse('products.tpl');
+    }
+
+
+    /**
+     * Generate URL for feature option filter
+     * @param array $params
+     */
+    public function filterUrl(array $params): string
+    {
+        $featureId = $params['feature_id'] ?? null;
+        $optionUrl = $params['option_url'] ?? null;
+
+        $category = Design::getTemplateVars('category');
+        $selected = Design::getTemplateVars('selected_features') ?? [];
+        $features = Design::getTemplateVars('features') ?? [];
+
+        $optionUrls = [];
+        foreach ($features as $fid => $feature) {
+            if (isset($selected[$fid])) {
+                foreach ($feature->options as $opt) {
+                    if ($opt->id == $selected[$fid]) {
+                        $optionUrls[$fid] = $opt->url;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if ($featureId) {
+            if (empty($optionUrl)) {
+                unset($optionUrls[$featureId]);
+            } else {
+                $optionUrls[$featureId] = $optionUrl;
+            }
+
+            $sorted = [];
+            foreach ($features as $fid => $feature) {
+                if (isset($optionUrls[$fid])) {
+                    $sorted[$fid] = $optionUrls[$fid];
+                }
+            }
+            $optionUrls = $sorted;
+        }
+
+        $urlParams = ['url' => $category->url];
+        if (!empty($optionUrls)) {
+            $urlParams['filter_path'] = implode('/', $optionUrls);
+            $route = 'ProductsFilter';
+        } else {
+            $route = 'Products';
+        }
+
+        $url = $this->generateUrlWithLocale($route, $urlParams);
+
+        $query = Request::gets();
+        unset($query['sort'], $query['page']);
+        if (!empty($query)) {
+            $url .= '?' . http_build_query($query);
+        }
+
+        return $url;
     }
 }
