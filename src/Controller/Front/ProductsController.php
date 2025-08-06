@@ -13,18 +13,19 @@
 
 namespace App\Controller\Front;
 
+use HugaShop\Services\Url;
+use HugaShop\Models\Settings;
 use HugaShop\Services\Design;
 use HugaShop\Services\Request;
-use HugaShop\Models\Settings;
 use App\Services\PaginationService;
 use HugaShop\Models\Product\Product;
 use App\Controller\BaseFrontController;
 use HugaShop\Models\Product\ProductOption;
 use HugaShop\Models\Product\ProductFeature;
 use HugaShop\Models\Product\ProductCategory;
-use HugaShop\Models\Product\ProductFeatureOption;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use HugaShop\Models\Product\ProductFeatureOption;
 
 class ProductsController extends BaseFrontController
 {
@@ -96,7 +97,7 @@ class ProductsController extends BaseFrontController
         if (empty(Request::gets()) && count($selected_features) === 1) {
             $feature_id = array_key_first($selected_features);
             if (isset($category_features[$feature_id]) && (int) $category_features[$feature_id]->index === 1) {
-                Design::assign('canonical', Request::url($selected_features, clear: true)); # Set canonical url
+                Design::assign('canonical', $this->filterUrl([])); # Set canonical url
                 $noindex = false; # Open indexation
             }
         }
