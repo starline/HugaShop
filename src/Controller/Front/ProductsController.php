@@ -39,10 +39,11 @@ class ProductsController extends BaseFrontController
     }
 
     #[Route('/{url}', name: 'Products')]
-    #[Route('/{url}/{filter}', name: 'ProductsFilter')]
+    #[Route('/{url}/filter/{filter}', requirements: ['filter' => '.+'], name: 'ProductsFilter')]
     public function products(string $url, ?string $filter = null): Response
     {
-
+        $filters = explode('/', $filter);
+        dump($filters);
         // Выберем текущую категорию
         $category = ProductCategory::getCategoryByURL($url);
         if (empty($category)) {

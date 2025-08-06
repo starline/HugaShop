@@ -82,7 +82,7 @@ class ProductController extends BaseAdminController
     /**
      * Update or Create heandle
      */
-    private function updateOrCreateHeandle($id)
+    private function updateOrCreateHeandle(int $id)
     {
 
         if (empty($product = Request::getInputCheckEditAccess(Product::class, $id))) {
