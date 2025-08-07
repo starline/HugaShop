@@ -115,22 +115,25 @@ class ProductsController extends BaseFrontController
 
         $noindex = true; # Right away close indexation
 
-        // If selected only category.
-        if (empty(Request::gets()) and empty($selected_features)) {
-            Design::assign('show_description', true);
-            $noindex = false; # Open indexation
-        }
+        // Exclude page|sort|...
+        if (empty(Request::gets())) {
 
-        // Open indexation if only one feature selected and it is indexable
-        if (empty(Request::gets()) && count($selected_features) === 1) {
-            $feature_id = array_key_first($selected_features);
-            if (isset($category_features[$feature_id]) && (int) $category_features[$feature_id]->index === 1) {
+            // If selected only category.
+            if (empty($selected_features)) {
+                Design::assign('show_description', true);
                 $noindex = false; # Open indexation
+            }
+
+            // Open indexation if only one feature selected and it is indexable
+            if (count($selected_features) === 1) {
+                $feature_id = array_key_first($selected_features);
+                if (isset($category_features[$feature_id]) && (int) $category_features[$feature_id]->index === 1) {
+                    $noindex = false; # Open indexation
+                }
             }
         }
 
         Design::assign('noindex', $noindex);
-
         Design::setFunctionPlugin('filter_url', $this, 'filterUrl');
 
         return $this->fetchResponse('products.tpl');
