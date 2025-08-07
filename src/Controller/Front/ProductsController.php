@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 4.0
+ * @version 4.1
  *
  * Этот класс использует шаблон products.tpl
  * Отображение списка товаров, каталог товаров
@@ -60,6 +60,7 @@ class ProductsController extends BaseFrontController
 
         // Parse options from friendly URL /filter/option1/option2
         $selected_features = [];
+        $filter_urls = [];
         if (!empty($filter_path)) {
             $filter_urls = array_filter(explode('/', $filter_path));
             if (!empty($filter_urls)) {
@@ -97,7 +98,11 @@ class ProductsController extends BaseFrontController
         if (empty(Request::gets()) && count($selected_features) === 1) {
             $feature_id = array_key_first($selected_features);
             if (isset($category_features[$feature_id]) && (int) $category_features[$feature_id]->index === 1) {
-                Design::assign('canonical', $this->filterUrl([])); # Set canonical url
+                $option_url = reset($filter_urls);
+                Design::assign('canonical', $this->filterUrl([
+                    'feature_id' => $feature_id,
+                    'option_url' => $option_url,
+                ])); # Set canonical url
                 $noindex = false; # Open indexation
             }
         }
