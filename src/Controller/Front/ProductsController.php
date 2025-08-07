@@ -40,7 +40,7 @@ class ProductsController extends BaseFrontController
 
 
     #[Route('/{url}', name: 'Products')]
-    #[Route('/{url}/filter/{filter_path}', requirements: ['filter_path' => '.+'], name: 'ProductsFilter')]
+    #[Route('/{url}/{filter_path}', requirements: ['filter_path' => '.+'], name: 'ProductsFilter')]
     public function products(string $url, ?string $filter_path = null): Response
     {
 
