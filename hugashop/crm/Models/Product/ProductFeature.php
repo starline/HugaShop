@@ -118,10 +118,10 @@ class ProductFeature extends BaseModel
             ->toArray();
 
         // Удаляем опции товара с этой характеристикой
-        ProductOption::where('feature_id', $id)->delete();
+        ProductOption::deleteBy('feature_id', $id);
 
         // Удаляем связь с категориями
-        ProductCategoryFeature::where('feature_id', $id)->delete();
+        ProductCategoryFeature::deleteBy('feature_id', $id);
 
         // Удаляем варианты характеристик
         if (!empty($option_ids)) {

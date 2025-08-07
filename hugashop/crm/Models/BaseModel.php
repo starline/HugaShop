@@ -244,12 +244,9 @@ abstract class BaseModel extends Model
      */
     public static function deleteOne(array|int $ids)
     {
-        $ids_arr = (array) $ids;
-
         if (static::isTranslatable()) {
-            static::deleteTranslations($ids_arr);
+            static::deleteTranslations($ids);
         }
-
         return self::query()->whereId($ids)->delete();
     }
 
