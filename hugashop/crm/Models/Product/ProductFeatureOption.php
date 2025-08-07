@@ -35,6 +35,15 @@ class ProductFeatureOption extends BaseModel
 
 
     /**
+     * Get First or create
+     */
+    public static function firstOrCreate(array $params)
+    {
+        return;
+    }
+
+
+    /**
      * Обновление вариантов характеристик
      * @param int $feature_id
      * @param array $options [ [id, value, url], ... ]
