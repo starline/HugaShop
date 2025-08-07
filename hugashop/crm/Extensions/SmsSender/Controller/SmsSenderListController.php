@@ -11,6 +11,7 @@
 namespace HugaShop\Extensions\SmsSender\Controller;
 
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
 use HugaShop\Extensions\BaseExtensionTrait;
@@ -28,7 +29,7 @@ final class SmsSenderListController extends BaseAdminController
     public function index()
     {
         // Обработка действий
-        if (Request::checkCSRF()) {
+        if (Secure::checkCSRF()) {
             $ids = Request::post('check');
             if (is_array($ids) && Request::post('action') === 'delete') {
                 SmsSender::deleteOne($ids);

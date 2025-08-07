@@ -10,6 +10,7 @@
 namespace HugaShop\Extensions\OpenAI\Controller;
 
 use OpenAI;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use HugaShop\Models\Product\Product;
 use App\Controller\BaseAdminController;
@@ -28,7 +29,7 @@ final class FillingController extends BaseAdminController
     #[Route('/OpenAI/ajax/filling', name: 'ExtOpenAIFilling', priority: 20)]
     public function index()
     {
-        if (!Request::checkCSRF()) {
+        if (!Secure::checkCSRF()) {
             return new JsonResponse(['error' => 'csrf']);
         }
 

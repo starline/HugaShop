@@ -9,6 +9,7 @@
 
 namespace App\Controller\Admin\Ajax;
 
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use App\Services\LockEditService;
 use App\Controller\BaseAdminController;
@@ -22,7 +23,7 @@ class LockEditAjax extends BaseAdminController
     #[Route('/admin/ajax/lock/{locked_key}', name: 'LockEditAjax')]
     public function lock(string $locked_key): JsonResponse
     {
-        if (!Request::checkCSRF()) {
+        if (!Secure::checkCSRF()) {
             return new JsonResponse(['error' => 'csrf']);
         }
 
@@ -30,12 +31,12 @@ class LockEditAjax extends BaseAdminController
         return new JsonResponse(['status' => $status]);
     }
 
-    
+
     // Unlocking
     #[Route('/admin/ajax/unlock/{locked_key}', name: 'UnlockEditAjax')]
     public function unlock(string $locked_key): JsonResponse
     {
-        if (!Request::checkCSRF()) {
+        if (!Secure::checkCSRF()) {
             return new JsonResponse(['error' => 'csrf']);
         }
 

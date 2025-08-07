@@ -11,7 +11,7 @@
 namespace HugaShop\Extensions\CarouselPromo\Controller;
 
 use HugaShop\Services\Design;
-use HugaShop\Services\Request;
+use HugaShop\Services\Secure;
 use App\Controller\BaseAdminController;
 use HugaShop\Extensions\BaseExtensionTrait;
 use Symfony\Component\Routing\Attribute\Route;
@@ -29,7 +29,7 @@ final class CarouselPromoController extends BaseAdminController
     {
 
         // Обработка действий
-        if (Request::checkCSRF()) {
+        if (Secure::checkCSRF()) {
             //...
         }
 

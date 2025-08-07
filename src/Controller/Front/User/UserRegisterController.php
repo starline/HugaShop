@@ -10,9 +10,10 @@
 
 namespace App\Controller\Front\User;
 
-use HugaShop\Models\User\User;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
+use HugaShop\Services\Secure;
+use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
 use App\Controller\BaseFrontController;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,7 +30,7 @@ class UserRegisterController extends BaseFrontController
             return $this->redirectToRoute('User');
         }
 
-        if (Request::checkCSRF()) {
+        if (Secure::checkCSRF()) {
 
             $name            = Request::post('name', 'string');
             $email           = Request::post('email', 'string');

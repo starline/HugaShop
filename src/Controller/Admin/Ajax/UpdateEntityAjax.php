@@ -10,27 +10,28 @@
 
 namespace App\Controller\Admin\Ajax;
 
+use HugaShop\Services\Secure;
 use HugaShop\Models\User\User;
-use HugaShop\Models\Order\Order;
-use HugaShop\Models\Product\Product;
 use HugaShop\Services\Request;
+use HugaShop\Models\Order\Order;
 use HugaShop\Services\Extension;
+use HugaShop\Models\Product\Product;
 use HugaShop\Models\Order\OrderLabel;
+use HugaShop\Models\User\UserNotifier;
+use App\Controller\BaseAdminController;
+use HugaShop\Models\Order\OrderPayment;
 use HugaShop\Models\Content\ContentPage;
 use HugaShop\Models\Content\ContentPost;
-use HugaShop\Models\Finance\FinancePurse;
-use HugaShop\Models\Order\OrderPayment;
-use HugaShop\Models\Product\ProductBrand;
-use HugaShop\Models\User\UserNotifier;
 use HugaShop\Models\Order\OrderDelivery;
+use HugaShop\Models\User\UserPermission;
+use HugaShop\Models\Finance\FinancePurse;
+use HugaShop\Models\Product\ProductBrand;
 use HugaShop\Models\Content\ContentComment;
 use HugaShop\Models\Finance\FinancePayment;
 use HugaShop\Models\Product\ProductFeature;
-use HugaShop\Models\User\UserPermission;
-use HugaShop\Models\Warehouse\WarehousePlace;
 use HugaShop\Models\Finance\FinanceCurrency;
 use HugaShop\Models\Product\ProductCategory;
-use App\Controller\BaseAdminController;
+use HugaShop\Models\Warehouse\WarehousePlace;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -40,7 +41,7 @@ class UpdateEntityAjax extends BaseAdminController
     public function update_entity()
     {
 
-        if (!Request::checkCSRF()) {
+        if (!Secure::checkCSRF()) {
             throw $this->createNotFoundException('Access denied'); # 404
         }
 

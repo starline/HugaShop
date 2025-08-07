@@ -12,15 +12,16 @@ namespace App\Controller\Admin\Product;
 
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
-use HugaShop\Models\Product\Product;
-use HugaShop\Models\Product\ProductBrand;
-use App\Controller\BaseAdminController;
 use App\Services\PaginationService;
+use HugaShop\Models\Product\Product;
+use App\Controller\BaseAdminController;
+use HugaShop\Models\Product\ProductBrand;
 use HugaShop\Models\Product\ProductCategory;
+use Illuminate\Database\Capsule\Manager as DB;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Illuminate\Database\Capsule\Manager as DB;
 
 class ProductListController extends BaseAdminController
 {
@@ -35,7 +36,7 @@ class ProductListController extends BaseAdminController
 
         ## Обработка действий
         #####################
-        if (Request::checkCSRF()) {
+        if (Secure::checkCSRF()) {
 
             foreach (Helper::getPositions('DESC') as $id => $position) {
                 Product::updateProduct($id, ['position' => $position]);

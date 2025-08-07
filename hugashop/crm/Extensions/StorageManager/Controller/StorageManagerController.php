@@ -10,13 +10,14 @@
 namespace HugaShop\Extensions\StorageManager\Controller;
 
 use stdClass;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Routing\Attribute\Route;
-use App\Controller\BaseAdminController;
-use HugaShop\Extensions\BaseExtensionTrait;
 use HugaShop\Services\Config;
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
+use Symfony\Component\Finder\Finder;
+use App\Controller\BaseAdminController;
+use HugaShop\Extensions\BaseExtensionTrait;
+use Symfony\Component\Routing\Attribute\Route;
 
 final class StorageManagerController extends BaseAdminController
 {
@@ -48,7 +49,7 @@ final class StorageManagerController extends BaseAdminController
             ],
         ];
 
-        if (Request::checkCSRF()) {
+        if (Secure::checkCSRF()) {
             foreach ($dirs as $dirName => $dirParams) {
                 if ($dirParams['clear'] === true && Request::post($dirName, 'string')) {
                     if (!is_dir($dirParams['path'])) {

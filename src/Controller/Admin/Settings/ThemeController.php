@@ -12,10 +12,11 @@
 
 namespace App\Controller\Admin\Settings;
 
+use HugaShop\Models\Settings;
 use HugaShop\Services\Config;
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
-use HugaShop\Models\Settings;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -33,7 +34,7 @@ class ThemeController extends BaseAdminController
         $this->themes_dir = Config::get('root_dir') . 'templates/';
         $message_error = '';
 
-        if (Request::checkCSRF()) {
+        if (Secure::checkCSRF()) {
 
             $this->dirDelete(Config::get('compiled_dir'), false);
 

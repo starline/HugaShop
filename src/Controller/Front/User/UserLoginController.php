@@ -13,6 +13,7 @@ namespace App\Controller\Front\User;
 use HugaShop\Services\Config;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
+use HugaShop\Services\Secure;
 use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
 use HugaShop\Services\NotifierFactory;
@@ -31,7 +32,7 @@ class UserLoginController extends BaseFrontController
             return $this->redirectToRoute('UserOrderList');
         }
 
-        if (Request::checkCSRF()) {
+        if (Secure::checkCSRF()) {
 
             $email     = Request::post('email', 'string');
             $password  = Request::post('password', 'string');
@@ -89,7 +90,7 @@ class UserLoginController extends BaseFrontController
         }
 
         // Если запостили email
-        if (Request::checkCSRF()) {
+        if (Secure::checkCSRF()) {
 
             if (!empty($email = Request::post('email'))) {
                 Design::assign('email', $email);

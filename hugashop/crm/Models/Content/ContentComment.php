@@ -13,6 +13,7 @@ namespace HugaShop\Models\Content;
 use HugaShop\Models\Image;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
+use HugaShop\Services\Secure;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
@@ -219,7 +220,7 @@ class ContentComment extends BaseModel
         }
 
         // Принимаем комментарий
-        if (Request::checkCSRF()) {
+        if (Secure::checkCSRF()) {
 
             $comment = new \stdClass();
             $comment->name =        Request::post('comment_name', 'string');

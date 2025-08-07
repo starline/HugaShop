@@ -12,6 +12,7 @@ namespace App\Controller\Admin\Content;
 
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
 use HugaShop\Models\Content\ContentPage;
@@ -28,7 +29,7 @@ class PageListController extends BaseAdminController
         $this->checkAdminAccess('page');
 
         // Обработка действий
-        if (Request::checkCSRF()) {
+        if (Secure::checkCSRF()) {
 
             // Действия с выбранными
             $ids = Request::post('check');

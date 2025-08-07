@@ -12,6 +12,7 @@ namespace HugaShop\Extensions\InfoBlock\Controller;
 
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
 use HugaShop\Extensions\BaseExtensionTrait;
@@ -31,7 +32,7 @@ final class InfoBlockListController extends BaseAdminController
     {
 
         // Обработка действий
-        if (Request::checkCSRF()) {
+        if (Secure::checkCSRF()) {
 
             // Действия с выбранными
             $ids = Request::post('check');

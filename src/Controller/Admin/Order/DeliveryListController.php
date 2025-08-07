@@ -10,12 +10,13 @@
 
 namespace App\Controller\Admin\Order;
 
-use HugaShop\Models\Order\Order;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
-use HugaShop\Models\Order\OrderDelivery;
+use HugaShop\Models\Order\Order;
 use App\Controller\BaseAdminController;
+use HugaShop\Models\Order\OrderDelivery;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -28,7 +29,7 @@ class DeliveryListController extends BaseAdminController
         $this->checkAdminAccess('order_delivery');
 
         // Обработка действий
-        if (Request::checkCSRF()) {
+        if (Secure::checkCSRF()) {
 
             // Действия с выбранными
             $ids = Request::post('check');

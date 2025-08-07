@@ -122,7 +122,8 @@ export function ajax_icon(icon, entity, var_name, csrf) {
 	}
 
 	let state = line.hasClass(var_name + '_off') ? 1 : 0;
-
+	csrf = csrf ?? window.csrf;
+	
 	$.ajax({
 		type: 'POST',
 		url: '/admin/ajax/update_entity',

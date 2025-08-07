@@ -13,13 +13,13 @@
 namespace App\Controller\Admin\Order;
 
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
-use App\Services\PaginationService;
 use HugaShop\Models\Order\Order;
-use HugaShop\Models\User\UserPermission;
+use App\Services\PaginationService;
 use HugaShop\Models\Order\OrderLabel;
-use HugaShop\Models\Order\OrderPurchase;
 use App\Controller\BaseAdminController;
+use HugaShop\Models\User\UserPermission;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -33,7 +33,7 @@ class OrderListController extends BaseAdminController
         $this->checkAdminAccess('order');
 
         // Обработка действий
-        if (Request::checkCSRF()) {
+        if (Secure::checkCSRF()) {
 
             // Действия с выбранными
             $ids = Request::post('check');
@@ -165,7 +165,7 @@ class OrderListController extends BaseAdminController
         $orders_price   = Order::getOrdersPrice($filter); # Выбираем общую сумму заказов
         $labels         = OrderLabel::getLabels(); # Метки заказов
 
-        
+
         Design::assign('pagination', PaginationService::getPagination($orders_count, $filter));
         Design::assign('orders_count', $orders_count);
         Design::assign('orders_price', $orders_price);

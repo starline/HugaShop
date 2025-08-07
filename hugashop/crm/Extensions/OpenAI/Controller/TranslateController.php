@@ -10,6 +10,7 @@
 namespace HugaShop\Extensions\OpenAI\Controller;
 
 use OpenAI;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use HugaShop\Models\Product\Product;
 use App\Controller\BaseAdminController;
@@ -38,7 +39,7 @@ final class TranslateController extends BaseAdminController
     #[Route('/OpenAI/ajax/translate', name: 'ExtOpenAITranslate', priority: 20)]
     public function index()
     {
-        if (!Request::checkCSRF()) {
+        if (!Secure::checkCSRF()) {
             return new JsonResponse(['error' => 'csrf']);
         }
 

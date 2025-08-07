@@ -14,6 +14,7 @@ namespace HugaShop\Services;
 
 use HugaShop\Models\Settings;
 use HugaShop\Services\Config;
+use HugaShop\Services\Secure;
 use App\Services\LockEditService;
 use HugaShop\Models\User\UserPermission;
 
@@ -308,52 +309,6 @@ class Request
 
 
     /**
-     * CSRF protect
-     * Get input for FORM
-     */
-    public static function getCSRFInput()
-    {
-        $token = self::setCSRF();
-        return '<input type="hidden" name="csrf" value="' . $token . '">';
-    }
-
-
-    /**
-     * CSRF protect
-     * Set token
-     */
-    public static function setCSRF()
-    {
-        if (empty(self::getSession('csrf'))) {
-            self::setSession('csrf', bin2hex(random_bytes(16))); # random token
-        }
-        return self::getSession('csrf');
-    }
-
-
-    /**
-     * CSRF protect
-     * Check token
-     */
-    public static function checkCSRF(): bool
-    {
-        if (!self::method('post') and !self::method('get')) {
-            return false;
-        }
-
-        if (empty(self::getSession('csrf')) || empty(self::input('csrf'))) {
-            return false;
-        }
-
-        if (self::getSession('csrf') != self::input('csrf')) {
-            return false;
-        }
-
-        return true;
-    }
-
-
-    /**
      * XSS protect
      * @param $text
      */
@@ -380,7 +335,7 @@ class Request
         }
 
         // Check CSRF
-        if (!self::checkCSRF()) {
+        if (!Secure::checkCSRF()) {
             return;
         }
 

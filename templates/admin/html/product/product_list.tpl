@@ -347,7 +347,6 @@
 		import { ajax_icon } from '{"js/common.js"|asset}';
 		import { makeChart } from '{"js/chart.js"|asset}';
 
-		var csrf = '{setCSRF}';
 		const php_category_id = '{$category->id}';
 		const php_currency_name = '{$currency->name}';
 		const php_currency_sign = '{$currency->sign}';
@@ -393,19 +392,19 @@
 
 				// Скрыт/Видим
 				$("i.enable.edit").click(function() {
-					ajax_icon($(this), 'product', 'visible', csrf);
+					ajax_icon($(this), 'product', 'visible');
 					return false;
 				});
 
 				// Сделать хитом
 				$("a.featured.edit").click(function() {
-					ajax_icon($(this), 'product', 'featured', csrf);
+					ajax_icon($(this), 'product', 'featured');
 					return false;
 				});
 
 				// Сделать акционным
 				$("a.sale.edit").click(function() {
-					ajax_icon($(this), 'product', 'sale', csrf);
+					ajax_icon($(this), 'product', 'sale');
 					return false;
 				});
 

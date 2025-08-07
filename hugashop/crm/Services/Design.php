@@ -19,10 +19,11 @@ namespace HugaShop\Services;
 
 use Smarty\Smarty;
 use HugaShop\Models\Image;
+use HugaShop\Models\Settings;
 use HugaShop\Services\Config;
 use HugaShop\Services\Helper;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
-use HugaShop\Models\Settings;
 use HugaShop\Services\Extension;
 use HugaShop\Models\User\UserPermission;
 use HugaShop\Models\Finance\FinanceCurrency;
@@ -97,8 +98,8 @@ class Design
         // Add Smarty Plugins
         self::setFunctionPlugin('url',               self::class,               'urlFunctionPlugin');
         self::setFunctionPlugin('extension',         self::class,               'extensionFunctionPlugin');
-        self::setFunctionPlugin('setCSRF',           Request::class,            'setCSRF');
-        self::setFunctionPlugin('getCSRFInput',      Request::class,            'getCSRFInput');
+        self::setFunctionPlugin('setCSRF',           Secure::class,             'setCSRF');
+        self::setFunctionPlugin('getCSRFInput',      Secure::class,             'getCSRFInput');
 
         self::setModifierPlugin('asset',             self::class,               'getAssetUrl');
         self::setModifierPlugin('resize',            Image::class,              'getImageURL');

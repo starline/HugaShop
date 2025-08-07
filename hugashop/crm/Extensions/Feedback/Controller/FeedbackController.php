@@ -11,6 +11,7 @@ namespace HugaShop\Extensions\Feedback\Controller;
 
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use HugaShop\Services\NotifierFactory;
 use App\Controller\BaseFrontController;
@@ -27,7 +28,7 @@ final class FeedbackController extends BaseFrontController
     #[Route('/feedback', name: 'ExtFeedback', priority: 1)]
     public function feedback(): Response
     {
-        if (Request::checkCSRF()) {
+        if (Secure::checkCSRF()) {
             $feedback = new \stdClass();
             $feedback->name    = Request::post('name');
             $feedback->email   = Request::post('email');

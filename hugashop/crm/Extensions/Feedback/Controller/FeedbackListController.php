@@ -10,6 +10,7 @@
 namespace HugaShop\Extensions\Feedback\Controller;
 
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use App\Services\PaginationService;
 use App\Controller\BaseAdminController;
@@ -26,7 +27,7 @@ final class FeedbackListController extends BaseAdminController
     public function index(): Response
     {
 
-        if (Request::checkCSRF()) {
+        if (Secure::checkCSRF()) {
             $ids = Request::post('check');
             if (!empty($ids)) {
                 switch (Request::post('action')) {

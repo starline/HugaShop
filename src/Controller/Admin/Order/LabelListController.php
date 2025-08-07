@@ -12,6 +12,7 @@ namespace App\Controller\Admin\Order;
 
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use HugaShop\Models\Order\OrderLabel;
 use App\Controller\BaseAdminController;
@@ -27,7 +28,7 @@ class LabelListController extends BaseAdminController
         $this->checkAdminAccess('order_label');
 
         // Обработка действий
-        if (Request::checkCSRF()) {
+        if (Secure::checkCSRF()) {
 
             // Действия с выбранными
             $ids = Request::post('check');

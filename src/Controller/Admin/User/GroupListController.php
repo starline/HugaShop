@@ -12,10 +12,11 @@ namespace App\Controller\Admin\User;
 
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use HugaShop\Models\User\UserGroup;
-use HugaShop\Models\User\UserPermission;
 use App\Controller\BaseAdminController;
+use HugaShop\Models\User\UserPermission;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -28,7 +29,7 @@ class GroupListController extends BaseAdminController
         $this->checkAdminAccess('user_group');
 
         // Обработка действий
-        if (Request::checkCSRF() and UserPermission::checkAccess("user_group_edit")) {
+        if (Secure::checkCSRF() and UserPermission::checkAccess("user_group_edit")) {
 
             // Действия с выбранными
             $ids = Request::post('check');

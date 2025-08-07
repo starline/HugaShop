@@ -10,6 +10,7 @@
 namespace HugaShop\Extensions\ProductFilling\Controller;
 
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use App\Services\PaginationService;
 use App\Controller\BaseAdminController;
@@ -93,7 +94,7 @@ final class ProductFillingController extends BaseAdminController
     public function calculateProduct()
     {
 
-        if (!Request::checkCSRF()) {
+        if (!Secure::checkCSRF()) {
             return new JsonResponse(['error' => 'csrf']);
         }
 

@@ -13,6 +13,7 @@ namespace App\Controller;
 use HugaShop\Models\Settings;
 use HugaShop\Services\Config;
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
 use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
 use HugaShop\Models\Order\Order;
@@ -66,7 +67,7 @@ class BaseAdminController extends BaseController
      */
     public function checkAdminAccess(string|array $access_type, bool $checkCSRF = false)
     {
-        if ($checkCSRF and !Request::checkCSRF()) {
+        if ($checkCSRF and !Secure::checkCSRF()) {
             throw $this->createNotFoundException('Access denied...'); # 404
         }
 

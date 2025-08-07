@@ -12,6 +12,7 @@ namespace HugaShop\Extensions\YandexMerchant\Controller;
 use HugaShop\Services\Cache;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
 use HugaShop\Extensions\BaseExtensionTrait;
@@ -26,7 +27,7 @@ final class YandexMerchantListController extends BaseAdminController
     #[Route('/YandexMerchant', name: 'ExtYandexMerchantList', priority: 20)]
     public function index()
     {
-        if (Request::checkCSRF()) {
+        if (Secure::checkCSRF()) {
             $ids = Request::post('check');
             if (is_array($ids)) {
                 switch (Request::post('action')) {

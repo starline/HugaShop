@@ -12,9 +12,10 @@ namespace App\Controller\Admin\Warehouse;
 
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
-use HugaShop\Models\Warehouse\WarehousePlace;
 use App\Controller\BaseAdminController;
+use HugaShop\Models\Warehouse\WarehousePlace;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -27,7 +28,7 @@ class PlaceListController extends BaseAdminController
         $this->checkAdminAccess('warehouse_place');
 
         // Обработка действий
-        if (Request::checkCSRF()) {
+        if (Secure::checkCSRF()) {
 
             // Действия с выбранными
             $ids = Request::post('check');

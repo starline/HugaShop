@@ -10,10 +10,11 @@
 
 namespace App\Controller\Front\User;
 
-use HugaShop\Models\User\User;
-use HugaShop\Models\Order\Order;
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
+use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
+use HugaShop\Models\Order\Order;
 use App\Controller\BaseFrontController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -47,7 +48,7 @@ class UserController extends BaseFrontController
      */
     public function handleUserUpdate()
     {
-        if (!Request::checkCSRF()) {
+        if (!Secure::checkCSRF()) {
             return false;
         }
 
@@ -71,7 +72,7 @@ class UserController extends BaseFrontController
             }
         }
 
-        
+
         $password           = Request::post('password', 'string');
         $old_password       = Request::post('old_password', 'string');
         $confirm_password   = Request::post('confirm_password', 'string');

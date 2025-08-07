@@ -12,12 +12,13 @@ namespace HugaShop\Extensions\ProductsImport\Controller;
 use HugaShop\Services\Config;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
 use HugaShop\Extensions\BaseExtensionTrait;
+use HugaShop\Models\Warehouse\WarehousePlace;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use HugaShop\Models\Warehouse\WarehousePlace;
 use HugaShop\Extensions\ProductsImport\Services\CsvReader;
 use HugaShop\Extensions\ProductsImport\Services\ProductImport;
 
@@ -50,7 +51,7 @@ final class ProductsImportController extends BaseAdminController
             return $this->getTemplatePath('index.tpl');
         }
 
-        if (Request::checkCSRF() && Request::files('file')) {
+        if (Secure::checkCSRF() && Request::files('file')) {
             $place_id = Request::postInt('place_id');
 
             if ($place_id) {

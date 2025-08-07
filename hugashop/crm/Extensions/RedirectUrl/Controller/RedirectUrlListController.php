@@ -11,6 +11,7 @@
 namespace HugaShop\Extensions\RedirectUrl\Controller;
 
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
 use HugaShop\Extensions\BaseExtensionTrait;
@@ -28,7 +29,7 @@ final class RedirectUrlListController extends BaseAdminController
     public function links()
     {
         // Handle actions
-        if (Request::checkCSRF()) {
+        if (Secure::checkCSRF()) {
             $ids = Request::post('check');
             if (is_array($ids)) {
                 switch (Request::post('action')) {

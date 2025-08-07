@@ -11,10 +11,11 @@
 namespace App\Controller\Admin\Content;
 
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use App\Services\PaginationService;
-use HugaShop\Models\Content\ContentPost;
 use App\Controller\BaseAdminController;
+use HugaShop\Models\Content\ContentPost;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -27,7 +28,7 @@ class PostListController extends BaseAdminController
         $this->checkAdminAccess('blog');
 
         // Обработка действий
-        if (Request::checkCSRF()) {
+        if (Secure::checkCSRF()) {
 
             // Действия с выбранными
             $ids = Request::post('check');
@@ -62,7 +63,7 @@ class PostListController extends BaseAdminController
 
         $posts =        ContentPost::getPosts($filter);
         $posts_count =  ContentPost::countPosts($filter);
-        
+
         Design::assign('pagination', PaginationService::getPagination($posts_count, $filter));
         Design::assign('posts_count', $posts_count);
         Design::assign('posts', $posts);

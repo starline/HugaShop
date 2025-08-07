@@ -11,11 +11,12 @@
 namespace App\Controller\Admin\Warehouse;
 
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use App\Services\PaginationService;
-use HugaShop\Models\Warehouse\WarehouseMove;
-use HugaShop\Models\User\UserPermission;
 use App\Controller\BaseAdminController;
+use HugaShop\Models\User\UserPermission;
+use HugaShop\Models\Warehouse\WarehouseMove;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -28,7 +29,7 @@ class MoveListController extends BaseAdminController
         $this->checkAdminAccess('warehouse');
 
         // Обработка действий
-        if (Request::checkCSRF() and UserPermission::checkAccess("warehouse_edit")) {
+        if (Secure::checkCSRF() and UserPermission::checkAccess("warehouse_edit")) {
 
             // Действия с выбранными
             $ids = Request::post('check', 'array');

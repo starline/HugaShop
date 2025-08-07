@@ -11,12 +11,13 @@
 namespace App\Controller\Admin\Content;
 
 use HugaShop\Services\Design;
-use HugaShop\Models\Product\Product;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use App\Services\PaginationService;
+use HugaShop\Models\Product\Product;
+use App\Controller\BaseAdminController;
 use HugaShop\Models\Content\ContentPost;
 use HugaShop\Models\Content\ContentComment;
-use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -29,7 +30,7 @@ class CommentListController extends BaseAdminController
         $this->checkAdminAccess('comment');
 
         // Обработка действий
-        if (Request::checkCSRF()) {
+        if (Secure::checkCSRF()) {
 
             // Действия с выбранными
             $ids = Request::post('check');

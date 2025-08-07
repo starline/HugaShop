@@ -11,6 +11,7 @@
 namespace App\Controller\Admin\Settings;
 
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
 use HugaShop\Models\Localization\Language;
@@ -26,7 +27,7 @@ class LanguageListController extends BaseAdminController
         $this->checkAdminAccess('settings');
 
         // Обработка действий
-        if (Request::checkCSRF()) {
+        if (Secure::checkCSRF()) {
 
             // Действия с выбранными
             $ids = Request::post('check');

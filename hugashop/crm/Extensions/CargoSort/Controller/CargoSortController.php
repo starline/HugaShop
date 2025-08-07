@@ -9,11 +9,12 @@
 
 namespace HugaShop\Extensions\CargoSort\Controller;
 
-use App\Controller\BaseAdminController;
-use HugaShop\Extensions\BaseExtensionTrait;
 use HugaShop\Services\Config;
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
+use App\Controller\BaseAdminController;
+use HugaShop\Extensions\BaseExtensionTrait;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class CargoSortController extends BaseAdminController
@@ -51,7 +52,7 @@ final class CargoSortController extends BaseAdminController
 
         setlocale(LC_ALL, $old_locale);
 
-        if (Request::checkCSRF() && Request::files('file')) {
+        if (Secure::checkCSRF() && Request::files('file')) {
             $this->box_size = Request::post('box_size');
             $this->box_cost = Request::post('box_cost');
             $this->box_delivery_cost = Request::post('box_delivery_cost');

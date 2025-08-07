@@ -11,13 +11,14 @@
 namespace App\Controller\Admin\Finance;
 
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use HugaShop\Models\Order\Order;
 use HugaShop\Models\Product\Product;
 use HugaShop\Models\User\UserCoupon;
+use App\Controller\BaseAdminController;
 use HugaShop\Models\Order\OrderDelivery;
 use HugaShop\Models\Order\OrderPurchase;
-use App\Controller\BaseAdminController;
 use HugaShop\Models\Finance\FinanceCurrency;
 use Illuminate\Database\Capsule\Manager as DB;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,7 +34,7 @@ class CurrencyController extends BaseAdminController
         $this->checkAdminAccess('finance');
 
         // Обработка действий
-        if (Request::checkCSRF()) {
+        if (Secure::checkCSRF()) {
 
             foreach (Request::post('currency') as $n => $va) {
                 foreach ($va as $i => $v) {

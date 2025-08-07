@@ -14,6 +14,7 @@ namespace App\Controller\Admin\Product;
 
 use HugaShop\Services\Config;
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
 use Symfony\Component\Routing\Attribute\Route;
@@ -49,7 +50,7 @@ class ProductImportController extends BaseAdminController
         setlocale(LC_ALL, $old_locale);
 
 
-        if (Request::checkCSRF() && Request::files("file")) {
+        if (Secure::checkCSRF() && Request::files("file")) {
 
             $price_type = Request::post('price_type', 'string');
             Design::assign('price_type', $price_type);
