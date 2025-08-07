@@ -186,7 +186,7 @@ class ProductController extends BaseAdminController
                 ->whereNotIn('feature_id', $keep_feature_ids)
                 ->delete();
         } else {
-            ProductOption::query()->where('product_id', $product->id)->delete();
+            ProductOption::deleteBy('product_id', $product->id);
         }
 
         return $product;
