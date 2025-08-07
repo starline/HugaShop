@@ -39,8 +39,8 @@ class ProductsController extends BaseFrontController
     }
 
 
-    #[Route('/{url}', name: 'Products', priority: 1)]
-    #[Route('/{url}/{filter_path}', requirements: ['filter_path' => '.+'], name: 'ProductsFilter', priority: 1)]
+    #[Route('/{url}', name: 'Products', priority: 0)]
+    #[Route('/{url}/{filter_path}', requirements: ['filter_path' => '.+'], name: 'ProductsFilter', priority: 0)]
     public function products(string $url, ?string $filter_path = null): Response
     {
 

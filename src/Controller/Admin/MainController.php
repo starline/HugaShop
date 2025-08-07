@@ -11,7 +11,6 @@
 namespace App\Controller\Admin;
 
 use HugaShop\Models\Settings;
-use HugaShop\Services\Config;
 use HugaShop\Services\Request;
 use HugaShop\Models\Order\Order;
 use App\Controller\BaseAdminController;

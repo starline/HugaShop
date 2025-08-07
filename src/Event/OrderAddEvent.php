@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  * 
  * @author Andi Huga
- * @version 1.0
+ * @version 1.1
  * 
  */
 
@@ -18,12 +18,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 final class OrderAddEvent extends Event
 {
-    private $order;
-
-    public function __construct($order)
-    {
-        $this->order = $order;
-    }
+    public function __construct(private $order) {}
 
     public function getOrder()
     {

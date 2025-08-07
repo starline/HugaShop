@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\Request as HttpRequest;
 class LocaleService
 {
 
-
     /**
      * Prepare request path and set locale
      */

@@ -3,7 +3,7 @@
 /**
  * 
  * @author Andi Huga
- * @version 1.0
+ * @version 1.1
  * 
  */
 
@@ -16,12 +16,8 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 final class UserAddEvent extends Event
 {
-    private $user;
 
-    public function __construct($user)
-    {
-        $this->user = $user;
-    }
+    public function __construct(private $user) {}
 
     public function getUser()
     {

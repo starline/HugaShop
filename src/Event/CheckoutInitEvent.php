@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  * 
  * @author Andi Huga
- * @version 1.0
+ * @version 1.1
  * 
  */
 
@@ -17,12 +17,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 final class CheckoutInitEvent extends Event
 {
-    private $cart;
-
-    public function __construct(array $cart)
-    {
-        $this->cart = (object) $cart;
-    }
+    public function __construct(private $cart) {}
 
     public function getCart()
     {
