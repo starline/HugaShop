@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.7
+ * @version 1.8
  *
  */
 
@@ -144,6 +144,26 @@ trait TranslationTrait
                 ['entity_id' => $entity_id, 'language_code' => $code],
                 $data
             );
+        });
+    }
+
+
+    /**
+     * Delete translations for provided entity IDs
+     */
+    public static function deleteTranslations(int|array $entity_ids)
+    {
+        $ids = (array) $entity_ids;
+        if (empty($ids)) {
+            return 0;
+        }
+
+        $model = AbstractTranslation::setTableTranslation(static::class);
+
+        return $model->runWithInitTable(function () use ($model, $ids) {
+            return $model->newQuery()
+                ->whereIn('entity_id', $ids)
+                ->delete();
         });
     }
 
