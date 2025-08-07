@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.6
+ * @version 2.7
  *
  */
 
@@ -244,6 +244,12 @@ abstract class BaseModel extends Model
      */
     public static function deleteOne(array|int $ids)
     {
+        $ids_arr = (array) $ids;
+
+        if (static::isTranslatable()) {
+            static::deleteTranslations($ids_arr);
+        }
+
         return self::query()->whereId($ids)->delete();
     }
 
