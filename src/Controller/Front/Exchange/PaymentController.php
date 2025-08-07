@@ -3,7 +3,7 @@
 /**
  *
  * @author Andi Huga
- * @version 1.9
+ * @version 2.0
  *
  */
 
@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class PaymentController extends BaseFrontController
 {
-    #[Route('/exchange/payment/{id}', requirements: ['id' => '\d+'], priority: 4, name: 'PaymentExchange')]
+    #[Route('/exchange/payment/{id}', requirements: ['id' => '\d+'], name: 'PaymentExchange', priority: 4)]
     public function index(int $id)
     {
 

@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class MailingController extends BaseFrontController
 {
-    #[Route('/m{id}/{token}', requirements: ['id' => '\d+'], priority: 4, name: 'MailingExchange')]
+    #[Route('/m{id}/{token}', requirements: ['id' => '\d+'], name: 'MailingExchange', priority: 10)]
     public function index(int $id, string $token)
     {
         if (empty($id) || empty($token)) {

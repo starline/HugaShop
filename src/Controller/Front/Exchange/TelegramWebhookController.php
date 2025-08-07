@@ -13,14 +13,15 @@ namespace App\Controller\Front\Exchange;
 use HugaShop\Services\Config;
 use TelegramBot\NotifyBot;
 use HugaShop\Models\User\UserNotifier;
-use HugaShop\Models\User\UserPermission;;
+use HugaShop\Models\User\UserPermission;
 use App\Controller\BaseFrontController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class TelegramWebhookController extends BaseFrontController
 {
-    #[Route('/exchange/telegram', name: 'TelegramWebhook')]
+
+    #[Route('/exchange/telegram', name: 'TelegramWebhook', priority: 4)]
     public function index()
     {
         try {
