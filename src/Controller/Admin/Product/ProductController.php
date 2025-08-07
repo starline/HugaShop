@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.5
+ * @version 2.6
  *
  */
 
@@ -98,15 +98,13 @@ class ProductController extends BaseAdminController
         SeoKeywords::catchKeywords($product->id, 'product');
         ImageService::catchImages($product->id, 'product');
 
-        // Сначала очищаем связи, чтобы удалить неактуальные данные
-        // TODO удалить все не переданные характеристики после обновления и добавления
-        ProductOption::query()->where('product_id', $product->id)->delete();
-
         // Характеристики текущей категории
         $category_features = [];
         foreach (ProductFeature::getFeatures(['category_id' => $product->category_id]) as $f) {
             $category_features[] = $f->id;
         }
+
+        $keep_feature_ids = [];
 
         // Устанавливаем характеристики товара
         if ($options = Request::post('options', 'array')) {
@@ -142,6 +140,8 @@ class ProductController extends BaseAdminController
                     ['option_id' => $feature_option->id]
                 );
 
+                $keep_feature_ids[] = (int) $feature_id;
+
                 if (!in_array($feature_id, $category_features)) {
                     ProductCategoryFeature::addFeatureCategory($feature_id, $product->category_id);
                 }
@@ -173,8 +173,20 @@ class ProductController extends BaseAdminController
                         ['product_id' => $product->id, 'feature_id' => $feature->id],
                         ['option_id' => $feature_option->id]
                     );
+
+                    $keep_feature_ids[] = $feature->id;
                 }
             }
+        }
+
+        // Удаляем не переданные характеристики
+        if (!empty($keep_feature_ids)) {
+            ProductOption::query()
+                ->where('product_id', $product->id)
+                ->whereNotIn('feature_id', $keep_feature_ids)
+                ->delete();
+        } else {
+            ProductOption::query()->where('product_id', $product->id)->delete();
         }
 
         return $product;
