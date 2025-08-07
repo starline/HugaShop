@@ -47,10 +47,9 @@ class FinanceCategory extends BaseModel
      * Удаляем финансовую категорию
      * @param int|array $id - id или array(id, id, ...)
      */
-    public static function deleteCategory(int|array $id)
+    public static function deleteCategory(int|array $ids)
     {
-        $id_arr = (array)$id;
-        self::deleteOne($id_arr);
+        self::deleteOne($ids);
 
         // Очищаем взаимосвязанные таблицы
         //FinancePayment->update('finance_category_id=NULL')->where('finance_category_id in(?@)', $id_arr)->get();
