@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.9
+ * @version 3.0
  *
  */
 
@@ -117,15 +117,6 @@ class ProductFeature extends BaseModel
             ->pluck('id')
             ->toArray();
 
-        // Удаляем переводы основной характеристики и её вариантов
-        self::deleteTranslations($id);
-        if (!empty($option_ids)) {
-            ProductFeatureOption::deleteTranslations($option_ids);
-        }
-
-        // Удаляем основную характеристику
-        self::where('id', $id)->delete();
-
         // Удаляем опции товара с этой характеристикой
         ProductOption::where('feature_id', $id)->delete();
 
@@ -133,6 +124,11 @@ class ProductFeature extends BaseModel
         ProductCategoryFeature::where('feature_id', $id)->delete();
 
         // Удаляем варианты характеристик
-        ProductFeatureOption::where('feature_id', $id)->delete();
+        if (!empty($option_ids)) {
+            ProductFeatureOption::deleteOne($option_ids);
+        }
+
+        // Удаляем основную характеристику
+        self::deleteOne($id);
     }
 }
