@@ -12,10 +12,11 @@ namespace App\Controller\Admin\Content;
 
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
-use HugaShop\Services\Request;
-use HugaShop\Models\Content\ContentComment;
+use HugaShop\Services\Secure;
 use App\Services\ImageService;
+use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
+use HugaShop\Models\Content\ContentComment;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -29,7 +30,7 @@ class CommentController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($comment = Request::getInputCheckEditAccess(ContentComment::class, $id))) {
+        if (!empty($comment = Secure::getInputCheckEditAccess(ContentComment::class, $id))) {
 
             $comment->date = Helper::dateConvert($comment->date . ' ' . Request::post('time', 'string'), 'Y-m-d H:i:s');
             Design::setFlashMessage('update', ContentComment::updateOne($comment->id, $comment));

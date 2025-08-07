@@ -11,9 +11,9 @@
 namespace App\Controller\Admin\Finance;
 
 use HugaShop\Services\Design;
-use HugaShop\Services\Request;
-use HugaShop\Models\Finance\FinanceCategory;
+use HugaShop\Services\Secure;
 use App\Controller\BaseAdminController;
+use HugaShop\Models\Finance\FinanceCategory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -28,7 +28,7 @@ class CategoryController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($category = Request::getInputCheckEditAccess(FinanceCategory::class, $id))) {
+        if (!empty($category = Secure::getInputCheckEditAccess(FinanceCategory::class, $id))) {
 
             if (empty($category->id)) {
                 $category = Design::setFlashMessage('add', FinanceCategory::createOne($category));

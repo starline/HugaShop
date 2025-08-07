@@ -12,6 +12,7 @@ namespace HugaShop\Extensions\YandexMerchant\Controller;
 use HugaShop\Services\Cache;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
 use HugaShop\Extensions\BaseExtensionTrait;
@@ -31,7 +32,7 @@ final class YandexMerchantController extends BaseAdminController
     {
         $pricefeed_categories = [];
 
-        if (!empty($pricefeed = Request::getInputCheckEditAccess(YandexMerchant::class, $id))) {
+        if (!empty($pricefeed = Secure::getInputCheckEditAccess(YandexMerchant::class, $id))) {
             if (empty($pricefeed->id)) {
                 $pricefeed->token = Helper::makeToken();
                 $pricefeed = Design::setFlashMessage('add', YandexMerchant::createOne($pricefeed));

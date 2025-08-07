@@ -11,6 +11,7 @@
 namespace App\Controller\Admin\User;
 
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use HugaShop\Services\DesignTwig;
 use HugaShop\Models\User\UserMailing;
@@ -31,7 +32,7 @@ class MailingController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($mailing = Request::getInputCheckEditAccess(UserMailing::class, $id))) {
+        if (!empty($mailing = Secure::getInputCheckEditAccess(UserMailing::class, $id))) {
             if (empty($mailing->id)) {
                 $mailing->id = Design::setFlashMessage('add', UserMailing::addMailing($mailing));
             } else {

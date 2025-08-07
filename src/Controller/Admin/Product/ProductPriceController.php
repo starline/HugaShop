@@ -14,6 +14,7 @@ namespace App\Controller\Admin\Product;
 
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use HugaShop\Models\Product\Product;
 use App\Controller\BaseAdminController;
@@ -38,7 +39,7 @@ class ProductPriceController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($product = Request::getInputCheckEditAccess(Product::class, $id, exclude: ['name']))) {
+        if (!empty($product = Secure::getInputCheckEditAccess(Product::class, $id, exclude: ['name']))) {
 
             // Преобразовываем дату datapiker для mysql
             if (!empty($product->awaiting_date)) {

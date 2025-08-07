@@ -15,6 +15,7 @@ namespace App\Controller\Admin\Finance;
 
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
+use HugaShop\Services\Secure;
 use App\Services\ImageService;
 use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
@@ -52,7 +53,7 @@ class PaymentController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($payment = Request::getInputCheckEditAccess(FinancePayment::class, $id))) {
+        if (!empty($payment = Secure::getInputCheckEditAccess(FinancePayment::class, $id))) {
 
             // Если платеж верефицирован, определяем пользователя
             if (!empty($payment->verified)) {

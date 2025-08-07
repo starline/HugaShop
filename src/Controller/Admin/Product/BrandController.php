@@ -12,6 +12,7 @@ namespace App\Controller\Admin\Product;
 
 use HugaShop\Services\Config;
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use App\Services\LanguageService;
 use App\Controller\BaseAdminController;
@@ -35,7 +36,7 @@ class BrandController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($brand = Request::getInputCheckEditAccess(ProductBrand::class, $id))) {
+        if (!empty($brand = Secure::getInputCheckEditAccess(ProductBrand::class, $id))) {
 
             if (empty($brand->id)) {
                 $brand = Design::setFlashMessage('add', ProductBrand::createOne($brand));

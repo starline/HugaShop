@@ -12,6 +12,7 @@ namespace App\Controller\Admin\Product;
 
 use HugaShop\Models\SeoFaqs;
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
 use App\Services\ImageService;
 use HugaShop\Services\Request;
 use HugaShop\Models\SeoKeywords;
@@ -37,7 +38,7 @@ class CategoryController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($category = Request::getInputCheckEditAccess(ProductCategory::class, $id))) {
+        if (!empty($category = Secure::getInputCheckEditAccess(ProductCategory::class, $id))) {
 
             if (empty($category->id)) {
                 $category = Design::setFlashMessage('add', ProductCategory::addCategory($category));

@@ -10,20 +10,21 @@
 
 namespace HugaShop\Extensions\SmsSender\Controller;
 
+use HugaShop\Models\Settings;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
-use HugaShop\Models\Settings;
 use HugaShop\Models\Order\Order;
 use HugaShop\Models\Product\Product;
 use HugaShop\Models\User\UserMailing;
 use HugaShop\Models\User\UserNotifier;
-use HugaShop\Extensions\BaseExtensionTrait;
 use App\Controller\BaseAdminController;
-use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Models\User\UserMailTemplate;
-use HugaShop\Extensions\SmsSender\Models\SmsSenderMail;
+use HugaShop\Extensions\BaseExtensionTrait;
+use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Extensions\SmsSender\Models\SmsSender;
+use HugaShop\Extensions\SmsSender\Models\SmsSenderMail;
 
 final class SmsSenderController extends BaseAdminController
 {
@@ -40,7 +41,7 @@ final class SmsSenderController extends BaseAdminController
         $mailing_list = [];
 
         // Update
-        if (!empty($mailing = Request::getInputCheckEditAccess(SmsSender::class, $id))) {
+        if (!empty($mailing = Secure::getInputCheckEditAccess(SmsSender::class, $id))) {
             $product_list = preg_split('/\r\n|\r|\n/', Request::post('product_list', 'string'));
             $mailing->product_list = serialize($product_list);
 

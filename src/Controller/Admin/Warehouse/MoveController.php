@@ -12,6 +12,7 @@ namespace App\Controller\Admin\Warehouse;
 
 use stdClass;
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
 use App\Services\ImageService;
 use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
@@ -35,7 +36,7 @@ class MoveController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($movement = Request::getInputCheckEditAccess(WarehouseMove::class, $id))) {
+        if (!empty($movement = Secure::getInputCheckEditAccess(WarehouseMove::class, $id))) {
 
             // Создаем новую поставку/списание
             if (empty($movement->id)) {

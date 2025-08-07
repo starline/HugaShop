@@ -11,6 +11,7 @@
 namespace App\Controller\Admin\Product;
 
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use App\Services\LanguageService;
 use App\Controller\BaseAdminController;
@@ -36,7 +37,7 @@ class FeatureController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($feature = Request::getInputCheckEditAccess(ProductFeature::class, $id))) {
+        if (!empty($feature = Secure::getInputCheckEditAccess(ProductFeature::class, $id))) {
             if (empty($feature->id)) {
                 $feature = Design::setFlashMessage('add', ProductFeature::createOne($feature));
             } else {

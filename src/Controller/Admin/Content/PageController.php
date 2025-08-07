@@ -11,7 +11,7 @@
 namespace App\Controller\Admin\Content;
 
 use HugaShop\Services\Design;
-use HugaShop\Services\Request;
+use HugaShop\Services\Secure;
 use App\Services\LanguageService;
 use App\Controller\BaseAdminController;
 use HugaShop\Models\Content\ContentPage;
@@ -33,7 +33,7 @@ class PageController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($page = Request::getInputCheckEditAccess(ContentPage::class, $id))) {
+        if (!empty($page = Secure::getInputCheckEditAccess(ContentPage::class, $id))) {
             if (empty($page->id)) {
                 $page = Design::setFlashMessage('add', ContentPage::addPage($page));
             } else {

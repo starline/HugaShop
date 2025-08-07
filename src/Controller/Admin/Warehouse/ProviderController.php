@@ -11,9 +11,9 @@
 namespace App\Controller\Admin\Warehouse;
 
 use HugaShop\Services\Design;
-use HugaShop\Services\Request;
-use HugaShop\Models\Product\ProductProvider;
+use HugaShop\Services\Secure;
 use App\Controller\BaseAdminController;
+use HugaShop\Models\Product\ProductProvider;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -30,7 +30,7 @@ class ProviderController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($provider = Request::getInputCheckEditAccess(ProductProvider::class, $id))) {
+        if (!empty($provider = Secure::getInputCheckEditAccess(ProductProvider::class, $id))) {
             if (empty($provider->id)) {
                 $provider = Design::setFlashMessage('add', ProductProvider::createOne($provider));
             } else {

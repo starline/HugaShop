@@ -12,8 +12,8 @@ namespace App\Controller\Admin\Content;
 
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
+use HugaShop\Services\Secure;
 use App\Services\ImageService;
-use HugaShop\Services\Request;
 use HugaShop\Models\SeoKeywords;
 use App\Services\LanguageService;
 use App\Controller\BaseAdminController;
@@ -35,7 +35,7 @@ class PostController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($post = Request::getInputCheckEditAccess(ContentPost::class, $id))) {
+        if (!empty($post = Secure::getInputCheckEditAccess(ContentPost::class, $id))) {
 
             $post->date = Helper::dateConvert($post->date . ' 12:00', 'Y-m-d');
 

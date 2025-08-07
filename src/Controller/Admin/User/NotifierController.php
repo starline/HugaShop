@@ -13,6 +13,7 @@
 namespace App\Controller\Admin\User;
 
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use HugaShop\Models\User\UserNotifier;
 use HugaShop\Services\NotifierFactory;
@@ -34,7 +35,7 @@ class NotifierController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($notifier = Request::getInputCheckEditAccess(UserNotifier::class, $id))) {
+        if (!empty($notifier = Secure::getInputCheckEditAccess(UserNotifier::class, $id))) {
 
             $notifier->settings = Request::post('notifier_settings');
 

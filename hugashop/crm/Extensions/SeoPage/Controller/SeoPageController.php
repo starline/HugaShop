@@ -11,7 +11,7 @@
 namespace HugaShop\Extensions\SeoPage\Controller;
 
 use HugaShop\Services\Design;
-use HugaShop\Services\Request;
+use HugaShop\Services\Secure;
 use App\Services\LanguageService;
 use App\Controller\BaseAdminController;
 use HugaShop\Extensions\BaseExtensionTrait;
@@ -39,7 +39,7 @@ final class SeoPageController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($page = Request::getInputCheckEditAccess(SeoPage::class, $id))) {
+        if (!empty($page = Secure::getInputCheckEditAccess(SeoPage::class, $id))) {
 
             // Не допустить одинаковые URL разделов.
             if (($p = SeoPage::getOne(['url' => $page->url])) && $p->id != $page->id) {

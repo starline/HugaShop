@@ -11,7 +11,7 @@
 namespace App\Controller\Admin\Settings;
 
 use HugaShop\Services\Design;
-use HugaShop\Services\Request;
+use HugaShop\Services\Secure;
 use App\Controller\BaseAdminController;
 use HugaShop\Models\Localization\Language;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,7 +29,7 @@ class LanguageController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($language = Request::getInputCheckEditAccess(Language::class, $id))) {
+        if (!empty($language = Secure::getInputCheckEditAccess(Language::class, $id))) {
             if (empty($language->id)) {
                 $language = Design::setFlashMessage('add', Language::createOne($language));
             } else {

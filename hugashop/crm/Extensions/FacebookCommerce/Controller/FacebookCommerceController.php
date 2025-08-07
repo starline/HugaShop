@@ -12,6 +12,7 @@ namespace HugaShop\Extensions\FacebookCommerce\Controller;
 use HugaShop\Services\Cache;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
 use HugaShop\Extensions\BaseExtensionTrait;
@@ -34,7 +35,7 @@ final class FacebookCommerceController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($pricefeed = Request::getInputCheckEditAccess(FacebookCommerce::class, $id))) {
+        if (!empty($pricefeed = Secure::getInputCheckEditAccess(FacebookCommerce::class, $id))) {
             if (empty($pricefeed->id)) {
                 $pricefeed->token = Helper::makeToken();
                 $pricefeed = Design::setFlashMessage('add', FacebookCommerce::createOne($pricefeed));

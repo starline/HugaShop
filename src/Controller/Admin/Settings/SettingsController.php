@@ -15,6 +15,7 @@ use HugaShop\Models\Image;
 use HugaShop\Models\Settings;
 use HugaShop\Services\Config;
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use App\Services\LockEditService;
 use App\Controller\BaseAdminController;
@@ -56,7 +57,7 @@ class SettingsController extends BaseAdminController
 
         #### Update
         ###########
-        if (!LockEditService::isEditLocked(Settings::class, item_id: 1) and !empty($settings = Request::getInputAcces($this->fields))) {
+        if (!LockEditService::isEditLocked(Settings::class, item_id: 1) and !empty($settings = Secure::getInputAcces($this->fields))) {
 
             // Выбираем найстройки из POST
             foreach ($settings as $name => $val) {

@@ -11,8 +11,8 @@
 namespace App\Controller\Admin\User;
 
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
 use HugaShop\Models\User\User;
-use HugaShop\Services\Request;
 use HugaShop\Models\Order\Order;
 use App\Services\PaginationService;
 use HugaShop\Models\User\UserGroup;
@@ -33,7 +33,7 @@ class UserController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($current_user = Request::getInputCheckEditAccess(User::class, $id))) {
+        if (!empty($current_user = Secure::getInputCheckEditAccess(User::class, $id))) {
 
             // Не допустить одинаковые email пользователей
             // Разрешить пустые email

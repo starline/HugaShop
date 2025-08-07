@@ -11,9 +11,9 @@
 namespace App\Controller\Admin\User;
 
 use HugaShop\Services\Design;
-use HugaShop\Services\Request;
-use HugaShop\Models\User\UserMailTemplate;
+use HugaShop\Services\Secure;
 use App\Controller\BaseAdminController;
+use HugaShop\Models\User\UserMailTemplate;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -28,7 +28,7 @@ class MailTemplateController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($mail_template = Request::getInputCheckEditAccess(UserMailTemplate::class, $id))) {
+        if (!empty($mail_template = Secure::getInputCheckEditAccess(UserMailTemplate::class, $id))) {
             if (empty($mail_template->id)) {
                 $mail_template = Design::setFlashMessage('add', UserMailTemplate::createOne($mail_template));
             } else {

@@ -11,6 +11,7 @@
 namespace App\Controller\Admin\User;
 
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
 use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
 use HugaShop\Models\User\UserGroup;
@@ -34,7 +35,7 @@ class UserSettingsController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($current_user = Request::getInputCheckEditAccess(User::class, $id, exclude: ['name']))) {
+        if (!empty($current_user = Secure::getInputCheckEditAccess(User::class, $id, exclude: ['name']))) {
 
             Design::setFlashMessage('update', User::updateUser($current_user->id, $current_user));
 

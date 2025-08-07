@@ -14,12 +14,12 @@ use stdClass;
 use App\Event\OrderAddEvent;
 use HugaShop\Models\Settings;
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
 use HugaShop\Models\Cart\Cart;
 use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
 use HugaShop\Models\Order\Order;
 use HugaShop\Models\Order\OrderLabel;
-use HugaShop\Models\User\UserNotifier;
 use HugaShop\Services\NotifierFactory;
 use App\Controller\BaseAdminController;
 use HugaShop\Models\Order\OrderPayment;
@@ -44,7 +44,7 @@ class OrderController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($order = Request::getInputCheckEditAccess(Order::class, $id))) {
+        if (!empty($order = Secure::getInputCheckEditAccess(Order::class, $id))) {
 
             // Если выбрали "заказ оплачен", но не выбрали способ оплаты - отменим оплату
             if (!empty($order->paid) and !$order->payment_method_id) {

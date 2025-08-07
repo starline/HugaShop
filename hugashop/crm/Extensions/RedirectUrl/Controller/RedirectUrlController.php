@@ -11,7 +11,7 @@
 namespace HugaShop\Extensions\RedirectUrl\Controller;
 
 use HugaShop\Services\Design;
-use HugaShop\Services\Request;
+use HugaShop\Services\Secure;
 use App\Controller\BaseAdminController;
 use HugaShop\Extensions\BaseExtensionTrait;
 use Symfony\Component\Routing\Attribute\Route;
@@ -30,7 +30,7 @@ final class RedirectUrlController extends BaseAdminController
     {
         #### Update
         ###########
-        if (!empty($link = Request::getInputCheckEditAccess(RedirectUrl::class, $id))) {
+        if (!empty($link = Secure::getInputCheckEditAccess(RedirectUrl::class, $id))) {
             if (empty($link->id)) {
                 $link = Design::setFlashMessage('add', RedirectUrl::createOne($link));
             } else {

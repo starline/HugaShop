@@ -11,7 +11,7 @@
 namespace App\Controller\Admin\Order;
 
 use HugaShop\Services\Design;
-use HugaShop\Services\Request;
+use HugaShop\Services\Secure;
 use HugaShop\Models\Order\OrderLabel;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +28,7 @@ class LabelController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($label = Request::getInputCheckEditAccess(OrderLabel::class, $id))) {
+        if (!empty($label = Secure::getInputCheckEditAccess(OrderLabel::class, $id))) {
 
             if (!empty($label->color)) {
                 $label->color = str_replace('#', '', $label->color);

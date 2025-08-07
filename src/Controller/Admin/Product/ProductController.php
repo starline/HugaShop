@@ -11,6 +11,7 @@
 namespace App\Controller\Admin\Product;
 
 use HugaShop\Services\Design;
+use HugaShop\Services\Secure;
 use App\Services\ImageService;
 use HugaShop\Services\Request;
 use HugaShop\Models\SeoKeywords;
@@ -85,7 +86,7 @@ class ProductController extends BaseAdminController
     private function updateOrCreateHeandle(int $id)
     {
 
-        if (empty($product = Request::getInputCheckEditAccess(Product::class, $id))) {
+        if (empty($product = Secure::getInputCheckEditAccess(Product::class, $id))) {
             return;
         }
 

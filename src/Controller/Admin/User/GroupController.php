@@ -13,7 +13,7 @@
 namespace App\Controller\Admin\User;
 
 use HugaShop\Services\Design;
-use HugaShop\Services\Request;
+use HugaShop\Services\Secure;
 use HugaShop\Models\User\UserGroup;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +30,7 @@ class GroupController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($group = Request::getInputCheckEditAccess(UserGroup::class, $id))) {
+        if (!empty($group = Secure::getInputCheckEditAccess(UserGroup::class, $id))) {
             if (empty($group->id)) {
                 $group = Design::setFlashMessage('add', UserGroup::createOne($group));
             } else {

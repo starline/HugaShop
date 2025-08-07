@@ -11,10 +11,10 @@
 namespace App\Controller\Admin\Finance;
 
 use HugaShop\Services\Design;
-use HugaShop\Services\Request;
+use HugaShop\Services\Secure;
+use App\Controller\BaseAdminController;
 use HugaShop\Models\Finance\FinancePurse;
 use HugaShop\Models\Finance\FinanceCurrency;
-use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -29,7 +29,7 @@ class PurseController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($purse = Request::getInputCheckEditAccess(FinancePurse::class, $id))) {
+        if (!empty($purse = Secure::getInputCheckEditAccess(FinancePurse::class, $id))) {
 
             if (empty($purse->id)) {
                 $purse = Design::setFlashMessage('add', FinancePurse::createOne($purse));

@@ -13,14 +13,15 @@ namespace HugaShop\Extensions\GoogleMerchant\Controller;
 use HugaShop\Services\Cache;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
 use HugaShop\Extensions\BaseExtensionTrait;
-use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Models\Product\ProductCategory;
+use Symfony\Component\Routing\Attribute\Route;
+use HugaShop\Extensions\GoogleMerchant\Models\GoogleMerchant;
 use HugaShop\Extensions\GoogleMerchant\Services\FeedGenerator;
 use HugaShop\Extensions\GoogleMerchant\Models\GoogleMerchantCategory;
-use HugaShop\Extensions\GoogleMerchant\Models\GoogleMerchant;
 
 final class GoogleMerchantController extends BaseAdminController
 {
@@ -32,7 +33,7 @@ final class GoogleMerchantController extends BaseAdminController
     {
         $pricefeed_categories = [];
 
-        if (!empty($pricefeed = Request::getInputCheckEditAccess(GoogleMerchant::class, $id))) {
+        if (!empty($pricefeed = Secure::getInputCheckEditAccess(GoogleMerchant::class, $id))) {
             if (empty($pricefeed->id)) {
                 $pricefeed->token = Helper::makeToken();
                 $pricefeed = Design::setFlashMessage('add', GoogleMerchant::createOne($pricefeed));

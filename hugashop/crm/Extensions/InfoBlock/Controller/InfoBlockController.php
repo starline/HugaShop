@@ -11,7 +11,7 @@
 namespace HugaShop\Extensions\InfoBlock\Controller;
 
 use HugaShop\Services\Design;
-use HugaShop\Services\Request;
+use HugaShop\Services\Secure;
 use App\Services\LanguageService;
 use App\Controller\BaseAdminController;
 use HugaShop\Extensions\BaseExtensionTrait;
@@ -36,7 +36,7 @@ final class InfoBlockController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($block = Request::getInputCheckEditAccess(InfoBlock::class, $id))) {
+        if (!empty($block = Secure::getInputCheckEditAccess(InfoBlock::class, $id))) {
             if (empty($block->id)) {
                 $block = Design::setFlashMessage('add', InfoBlock::createOne($block));
             } else {

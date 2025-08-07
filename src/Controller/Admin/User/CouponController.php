@@ -12,6 +12,7 @@ namespace App\Controller\Admin\User;
 
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
+use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use HugaShop\Models\User\UserCoupon;
 use App\Controller\BaseAdminController;
@@ -29,7 +30,7 @@ class CouponController extends BaseAdminController
 
         #### Update
         ###########
-        if (!empty($coupon = Request::getInputCheckEditAccess(UserCoupon::class, $id))) {
+        if (!empty($coupon = Secure::getInputCheckEditAccess(UserCoupon::class, $id))) {
 
             $expires = Request::post('expires', 'bool');
             if (!empty($expires) and !empty($coupon->expire)) {
