@@ -13,7 +13,6 @@
 
 namespace App\Controller\Front;
 
-use HugaShop\Services\Url;
 use HugaShop\Models\Settings;
 use HugaShop\Services\Design;
 use HugaShop\Services\Request;
@@ -38,6 +37,7 @@ class ProductsController extends BaseFrontController
         }
         return $this->redirectToRoute('Products', ['url' => $category->url], 301);
     }
+
 
     #[Route('/{url}', name: 'Products')]
     #[Route('/{url}/filter/{filter_path}', requirements: ['filter_path' => '.+'], name: 'ProductsFilter')]
@@ -84,33 +84,10 @@ class ProductsController extends BaseFrontController
         $product_filter['sort_disable']     = true;
         $product_filter['features']         = $selected_features;
 
-
-        $noindex = true; # Right away close indexation
-
-        // If selected only category.
-        if (empty(Request::gets()) and empty($selected_features)) {
-            Design::assign('canonical', $this->generateUrlWithLocale('Products', ['url' => $category->url])); # Set hard canonical url
-            Design::assign('show_description', true);
-            $noindex = false; # Open indexation
-        }
-
-        // Open indexation if only one feature selected and it is indexable
-        if (empty(Request::gets()) && count($selected_features) === 1) {
-            $feature_id = array_key_first($selected_features);
-            if (isset($category_features[$feature_id]) && (int) $category_features[$feature_id]->index === 1) {
-                $option_url = reset($filter_urls);
-                Design::assign('canonical', $this->filterUrl([
-                    'feature_id' => $feature_id,
-                    'option_url' => $option_url,
-                ])); # Set canonical url
-                $noindex = false; # Open indexation
-            }
-        }
-
         // Опции Характеристик
         $features = ProductOption::getOptions([
             'product_visible'   => 1,
-            'category_id'       => $category->children,
+            'category_id'       => $category->id,
             'feature_in_filter' => 1,
             'feature_selected'  => $selected_features
         ]);
@@ -126,12 +103,33 @@ class ProductsController extends BaseFrontController
         Design::assign('products',          $products);
         Design::assign('products_count',    $products_count);
 
-        Design::assign('noindex',           $noindex);
         Design::assign('pagination',        PaginationService::getPagination($products_count, $product_filter));
         Design::assign('sort',              $product_filter['sort']);
         Design::assign('category',          $category);
         Design::assign('features',          $features);
         Design::assign('selected_features', $selected_features);
+
+
+        // Set canonical url
+        Design::assign('canonical', $this->filterUrl(['option_url' => reset($filter_urls)]));
+
+        $noindex = true; # Right away close indexation
+
+        // If selected only category.
+        if (empty(Request::gets()) and empty($selected_features)) {
+            Design::assign('show_description', true);
+            $noindex = false; # Open indexation
+        }
+
+        // Open indexation if only one feature selected and it is indexable
+        if (empty(Request::gets()) && count($selected_features) === 1) {
+            $feature_id = array_key_first($selected_features);
+            if (isset($category_features[$feature_id]) && (int) $category_features[$feature_id]->index === 1) {
+                $noindex = false; # Open indexation
+            }
+        }
+
+        Design::assign('noindex', $noindex);
 
         Design::setFunctionPlugin('filter_url', $this, 'filterUrl');
 

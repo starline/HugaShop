@@ -68,7 +68,7 @@ class ProductFeatureOption extends BaseModel
             }
 
             $id     = $data['id'] ?? null;
-            $url    = $data['url'] ? self::makeUniqueUrl($feature_id, $data['url'], $id) : '';
+            $url    = $data['url'] ? self::makeUniqueUrl($data['url'], $id) : '';
             $option = $id ? self::find($id) : null;
 
             if ($option) {
@@ -105,24 +105,23 @@ class ProductFeatureOption extends BaseModel
      * Генерация уникального url для характеристики
      * @param int $feature_id
      * @param string $url
-     * @param int $except_id
+     * @param ?int $except_id
      */
-    protected static function makeUniqueUrl(int $feature_id, string $url, ?int $except_id = null): string
+    protected static function makeUniqueUrl(string $url, ?int $except_id = null): string
     {
-        if ($url === '' || !$except_id) {
-            return $url;
-        }
 
         $base = Helper::slugEn($url);
-        $i    = 1;
+        $url = $base;
 
-        while (self::where('feature_id', $feature_id)
-            ->where('url', $url)
-            ->where('id', '!=', $except_id)
-            ->exists()
-        ) {
-            $i++;
-            $url = $base . '-' . $i;
+        $query = self::query();
+
+        if ($except_id) {
+            $query->where('id', '!=', $except_id);
+        }
+
+        $i = 1;
+        while ($query->clone()->where('url', $url)->exists()) {
+            $url = $base . '-' . $i++;
         }
 
         return $url;

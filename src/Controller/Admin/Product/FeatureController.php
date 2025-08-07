@@ -43,11 +43,8 @@ class FeatureController extends BaseAdminController
                 Design::setFlashMessage('update', ProductFeature::updateOne($feature->id, $feature));
             }
 
-            $feature_categories = Request::post('feature_categories', 'array');
-            ProductCategoryFeature::updateFeatureCategories($feature->id, $feature_categories);
-
-            $options = Request::post('options', 'array');
-            ProductFeatureOption::updateFeatureOptions($feature->id, $options);
+            ProductCategoryFeature::updateFeatureCategories($feature->id,  Request::post('feature_categories', 'array'));
+            ProductFeatureOption::updateFeatureOptions($feature->id, Request::post('options', 'array'));
 
             // Делаем редирект на страницу с ID
             return $this->redirectToRouteLang('FeatureAdmin', ['id' => $feature->id]);
