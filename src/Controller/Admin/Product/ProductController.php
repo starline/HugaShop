@@ -99,7 +99,7 @@ class ProductController extends BaseAdminController
         ImageService::catchImages($product->id, 'product');
 
         // Сначала очищаем связи, чтобы удалить неактуальные данные
-        // TODO удалить все не переданные. после обновления и добавления
+        // TODO удалить все не переданные характеристики после обновления и добавления
         ProductOption::query()->where('product_id', $product->id)->delete();
 
         // Характеристики текущей категории
