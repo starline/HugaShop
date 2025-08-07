@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.6
+ * @version 2.7
  *
  */
 
@@ -99,12 +99,6 @@ class ProductController extends BaseAdminController
         SeoKeywords::catchKeywords($product->id, 'product');
         ImageService::catchImages($product->id, 'product');
 
-        // Характеристики текущей категории
-        $category_features = [];
-        foreach (ProductFeature::getFeatures(['category_id' => $product->category_id]) as $f) {
-            $category_features[] = $f->id;
-        }
-
         $keep_feature_ids = [];
 
         // Устанавливаем характеристики товара
@@ -142,6 +136,11 @@ class ProductController extends BaseAdminController
                 );
 
                 $keep_feature_ids[] = (int) $feature_id;
+
+                // Характеристики текущей категории
+                $category_features = ProductFeature::getCategoryFeatures($product->category_id)
+                    ->keys()
+                    ->all();
 
                 if (!in_array($feature_id, $category_features)) {
                     ProductCategoryFeature::addFeatureCategory($feature_id, $product->category_id);
