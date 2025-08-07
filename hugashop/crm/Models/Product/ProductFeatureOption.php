@@ -56,18 +56,13 @@ class ProductFeatureOption extends BaseModel
         }
 
         $url = trim((string) ($params['url'] ?? ''));
-        $url = $url !== '' ? self::makeUniqueUrl($url) : '';
+        $url = $url === '' ? self::makeUniqueUrl($value) : self::makeUniqueUrl($url);
 
         $option = self::create([
             'feature_id' => $feature_id,
             'value'      => $value,
             'url'        => $url,
         ]);
-
-        if ($option->url === '') {
-            $option->url = $option->id;
-            $option->save();
-        }
 
         return $option;
     }
@@ -106,28 +101,16 @@ class ProductFeatureOption extends BaseModel
                 continue;
             }
 
-            $id     = $data['id'] ?? null;
-            $url    = $data['url'] ? self::makeUniqueUrl($data['url'], $id) : '';
-            $option = $id ? self::find($id) : null;
+            $params = [
+                'id'         => $data['id'] ?? null,
+                'feature_id' => $feature_id,
+                'value'      => $value,
+                'url'        => $data['url'] ?? '',
+            ];
 
-            if ($option) {
-                $option->value    = $value;
-                $option->url      = $url !== '' ? $url : $option->id;
-                $option->position = $position;
-                $option->save();
-            } else {
-                $option = self::create([
-                    'feature_id' => $feature_id,
-                    'value'      => $value,
-                    'url'        => $url,
-                    'position'   => $position,
-                ]);
-
-                if ($option->url === '') {
-                    $option->url = $option->id;
-                    $option->save();
-                }
-            }
+            $option = self::firstOrCreate($params);
+            $option->position = $position;
+            $option->save();
 
             $keep_ids[] = $option->id;
         }
