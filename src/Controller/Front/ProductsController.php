@@ -56,7 +56,7 @@ class ProductsController extends BaseFrontController
         }
 
         // Характеристики
-        $category_features = ProductFeature::getCategoryFeatures($category->id);
+        $category_features = ProductFeature::getCategoryFeatures($category->id, in_filter: true);
 
         // Parse options from friendly URL /filter/option1/option2
         $selected_features = [];

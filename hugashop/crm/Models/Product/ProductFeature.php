@@ -77,12 +77,16 @@ class ProductFeature extends BaseModel
 
 
     /**
-     * Получить фильтрованные характеристики
+     * Получить характеристики category
      * @param array $filter
      */
-    public static function getCategoryFeatures(int|array $category_id)
+    public static function getCategoryFeatures(int|array $category_id, bool $in_filter = false)
     {
-        $query = self::query()->where('in_filter', 1);
+        $query = self::query();
+
+        if ($in_filter) {
+            $query->where('in_filter', 1);
+        }
 
         // Фильтрация по category_id
         $query->whereHas('categories', function ($sq) use ($category_id) {
