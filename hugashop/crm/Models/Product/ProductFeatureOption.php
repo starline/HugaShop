@@ -39,7 +39,37 @@ class ProductFeatureOption extends BaseModel
      */
     public static function firstOrCreate(array $params)
     {
-        return;
+        $feature_id = $params['feature_id'] ?? null;
+        $value      = trim((string) ($params['value'] ?? ''));
+
+        if (empty($feature_id) || $value === '') {
+            return null;
+        }
+
+        $option = self::query()
+            ->where('feature_id', $feature_id)
+            ->where('value', $value)
+            ->first();
+
+        if ($option) {
+            return $option;
+        }
+
+        $url = trim((string) ($params['url'] ?? ''));
+        $url = $url !== '' ? self::makeUniqueUrl($url) : '';
+
+        $option = self::create([
+            'feature_id' => $feature_id,
+            'value'      => $value,
+            'url'        => $url,
+        ]);
+
+        if ($option->url === '') {
+            $option->url = $option->id;
+            $option->save();
+        }
+
+        return $option;
     }
 
 

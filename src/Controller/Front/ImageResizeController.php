@@ -24,7 +24,7 @@ use Symfony\Component\HttpKernel\Attribute\Cache;
  */
 class ImageResizeController extends BaseController
 {
-    #[Route('/files/resize/{file}', name: 'ImageResize')]
+    #[Route('/files/resize/{file}', name: 'ImageResize', priority: 10)]
     #[Cache(public: true, maxage: 315360000, mustRevalidate: true)]
     public function imageResize(string $file, Request $request): Response
     {

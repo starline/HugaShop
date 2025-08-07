@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class SitemapController extends BaseFrontController
 {
-    #[Route('/sitemap.xml', priority: 5)]
+    #[Route('/sitemap.xml', priority: 10)]
     public function index(): Response
     {
 

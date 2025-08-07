@@ -25,8 +25,8 @@ use Symfony\Component\Routing\Attribute\Route;
 class OrderController extends BaseFrontController
 {
 
-    #[Route('/order', name: 'preOrder', priority: 5)]
-    #[Route('/order/{id}/{order_url}', requirements: ['id' => '\d+'], name: 'Order', priority: 6)]
+    #[Route('/order', name: 'preOrder', priority: 10)]
+    #[Route('/order/{id}/{order_url}', requirements: ['id' => '\d+'], name: 'Order', priority: 10)]
     public function order(?int $id = null, ?string $order_url = null): Response
     {
 

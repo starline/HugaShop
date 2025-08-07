@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class MainController extends BaseFrontController
 {
 
-    #[Route('/', name: 'Main', priority: 8)]
+    #[Route('/', name: 'Main', priority: 10)]
     public function main(): Response
     {
 

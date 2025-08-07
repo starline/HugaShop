@@ -13,7 +13,6 @@ namespace App\Controller\Front\User;
 use HugaShop\Models\User\User;
 use HugaShop\Services\Design;
 use HugaShop\Models\Order\Order;
-use HugaShop\Models\Order\OrderPurchase;
 use App\Controller\BaseFrontController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -21,11 +20,11 @@ use Symfony\Component\Routing\Attribute\Route;
 class UserOrderListController extends BaseFrontController
 {
 
-    #[Route('/user/orders', name: 'UserOrderList')]
+    #[Route('/user/orders', name: 'UserOrderList', priority: 10)]
     public function orders(): Response
     {
 
-        if (empty(User::isLoggedIn())) {
+        if (!User::isLoggedIn()) {
             return $this->redirectToRoute('UserLogin');
         }
 

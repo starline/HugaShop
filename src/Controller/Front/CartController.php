@@ -29,7 +29,7 @@ class CartController extends BaseFrontController
     /**
      * Cart remove items
      */
-    #[Route('/cart/remove/{product_id}', name: 'CartRemove', priority: 2)]
+    #[Route('/cart/remove/{product_id}', name: 'CartRemove', priority: 10)]
     public function cartRemove(int $product_id)
     {
         CartPurchase::updatePurchase(null, $product_id, ['disabled' => 1]); # Удаление товар из корзины
@@ -40,7 +40,7 @@ class CartController extends BaseFrontController
     /**
      * Cart add items
      */
-    #[Route('/cart/add', name: 'CartAdd', priority: 2)]
+    #[Route('/cart/add', name: 'CartAdd', priority: 10)]
     public function cartAdd()
     {
         $product_id     = Request::input('product_id', 'int') ?: null;
@@ -65,7 +65,7 @@ class CartController extends BaseFrontController
     /**
      * ViewCart
      */
-    #[Route('/cart', name: 'Cart', priority: 1)]
+    #[Route('/cart', name: 'Cart', priority: 10)]
     public function cart(): Response
     {
 

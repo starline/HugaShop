@@ -43,7 +43,7 @@ class CheckoutController extends BaseFrontController
     ];
 
 
-    #[Route('/checkout', name: 'Checkout', priority: 1)]
+    #[Route('/checkout', name: 'Checkout', priority: 10)]
     public function checkout(): Response
     {
 

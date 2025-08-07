@@ -29,7 +29,7 @@ use HugaShop\Models\Product\ProductFeatureOption;
 class ProductsController extends BaseFrontController
 {
 
-    #[Route('/c/{id}', requirements: ['id' => '\d+'], name: 'ProductCategoryId')]
+    #[Route('/c/{id}', requirements: ['id' => '\d+'], name: 'ProductCategoryId', priority: 10)]
     public function category(int $id): Response
     {
         if (empty($category = ProductCategory::getCategoryById($id))) {
@@ -39,8 +39,8 @@ class ProductsController extends BaseFrontController
     }
 
 
-    #[Route('/{url}', name: 'Products')]
-    #[Route('/{url}/{filter_path}', requirements: ['filter_path' => '.+'], name: 'ProductsFilter')]
+    #[Route('/{url}', name: 'Products', priority: 1)]
+    #[Route('/{url}/{filter_path}', requirements: ['filter_path' => '.+'], name: 'ProductsFilter', priority: 1)]
     public function products(string $url, ?string $filter_path = null): Response
     {
 

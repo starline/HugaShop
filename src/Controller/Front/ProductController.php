@@ -26,9 +26,9 @@ use Symfony\Component\Routing\Attribute\Route;
 class ProductController extends BaseFrontController
 {
 
-    #[Route('/p/{id}', requirements: ['id' => '\d+'], name: 'ProductShortId')]
-    #[Route('/product/{id}', requirements: ['id' => '\d+'], name: 'ProductId')]
-    #[Route('/{url}/pd{id}', requirements: ['id' => '\d+'], name: 'ProductUrl', priority: 1)]
+    #[Route('/p/{id}', requirements: ['id' => '\d+'], name: 'ProductShortId', priority: 10)]
+    #[Route('/product/{id}', requirements: ['id' => '\d+'], name: 'ProductId', priority: 10)]
+    #[Route('/{url}/pd{id}', requirements: ['id' => '\d+'], name: 'ProductUrl', priority: 10)]
     public function product_id(int $id, ?string $url = null): Response
     {
         if (empty($product = Product::getProduct($id))) {
@@ -40,7 +40,7 @@ class ProductController extends BaseFrontController
 
 
 
-    #[Route(Config::PRODUCT_PREFIX . '{url}', name: 'Product')]
+    #[Route(Config::PRODUCT_PREFIX . '{url}', name: 'Product', priority: 10)]
     public function product_url(string $url, ?int $id = null): Response
     {
 

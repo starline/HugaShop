@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class PageController extends BaseFrontController
 {
 
-    #[Route('/info/{url}', name: 'Page')]
+    #[Route('/info/{url}', name: 'Page', priority: 10)]
     public function page(string $url): Response
     {
 

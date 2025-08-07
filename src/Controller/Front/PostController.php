@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class PostController extends BaseFrontController
 {
-    #[Route('/blog/{url}', name: 'Post')]
+    #[Route('/blog/{url}', name: 'Post', priority: 10)]
     public function post(string $url): Response
     {
 

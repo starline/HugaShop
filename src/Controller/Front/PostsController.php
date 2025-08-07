@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class PostsController extends BaseFrontController
 {
 
-    #[Route('/blog', name: 'PostList', priority: 1)]
+    #[Route('/blog', name: 'PostList', priority: 10)]
     public function postList(): Response
     {
 

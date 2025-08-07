@@ -80,7 +80,7 @@ class ProductSearchController extends BaseFrontController
      * Old search url
      * make redirect
      */
-    #[Route('/search/{search_query}', name: 'ProductsOldSearch')]
+    #[Route('/search/{search_query}', name: 'ProductsOldSearch', priority: 10)]
     public function search_old(string $search_query)
     {
         return $this->redirectToRoute('ProductsSearch', ['search_query' => $search_query], 301);
@@ -90,7 +90,7 @@ class ProductSearchController extends BaseFrontController
     /**
      * Ajax product search
      */
-    #[Route('/ajax/product/search', name: 'AjaxProductSearch', priority: 1)]
+    #[Route('/ajax/product/search', name: 'AjaxProductSearch', priority: 10)]
     public function search_ajax(): JsonResponse
     {
 
