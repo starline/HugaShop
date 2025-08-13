@@ -71,6 +71,7 @@
 					</div>
 				{/foreach}
 
+				{include file='parts/pagination.tpl'}
 			</div>
 		</div>
 	</div>
