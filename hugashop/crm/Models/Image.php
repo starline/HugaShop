@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 4.0
+ * @version 4.1
  * 
  * Intervention Image
  * @link https://image.intervention.io/v3/getting-started/installation
@@ -150,6 +150,19 @@ class Image extends BaseModel
             }
 
             @unlink(Config::get('images_resized_dir') . $filename);
+        }
+    }
+
+    /**
+     * Delete images by entity
+     * @param int|array $entity_id
+     * @param string $entity_type
+     */
+    public static function deleteEntityImages(int|array $entity_id, string $entity_type): void
+    {
+        $images = self::getImages($entity_id, $entity_type);
+        foreach ($images as $image) {
+            self::deleteImage($image->id);
         }
     }
 

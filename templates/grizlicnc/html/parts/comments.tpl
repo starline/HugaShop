@@ -99,9 +99,11 @@
                 <div id="comment_images_preview" class="comment_images row g-2 mt-2"></div>
             </div>
 
-            <div class="col-12">
-                <div class="g-recaptcha" data-sitekey="{$config->recaptcha->public_key}"></div>
-            </div>
+            {if $user|empty}
+                <div class="col-12">
+                    <div class="g-recaptcha" data-sitekey="{$config->recaptcha->public_key}"></div>
+                </div>
+            {/if}
 
 
             <div class="col-12">
@@ -113,7 +115,9 @@
 </div>
 
 
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{if $user|empty}
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{/if}
 <script type="module">
     {literal}
         $('.add_answer').click(function() {
