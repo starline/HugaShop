@@ -103,8 +103,8 @@
                 <div class="col-12">
                     <div class="g-recaptcha" data-sitekey="{$config->recaptcha->public_key}"></div>
                 </div>
+                <script src="https://www.google.com/recaptcha/api.js" async defer></script>
             {/if}
-
 
             <div class="col-12">
                 {include file="parts/button.tpl" label="{'Отправить'|trans}" class="btn-light" type="submit"
@@ -115,9 +115,6 @@
 </div>
 
 
-{if $user|empty}
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-{/if}
 <script type="module">
     {literal}
         $('.add_answer').click(function() {

@@ -13,10 +13,10 @@
 namespace App\Controller\Front;
 
 use HugaShop\Services\Design;
+use App\Services\CommentService;
 use App\Controller\BaseFrontController;
 use HugaShop\Models\Content\ContentPost;
 use HugaShop\Models\User\UserPermission;
-use HugaShop\Models\Content\ContentComment;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -34,7 +34,7 @@ class PostController extends BaseFrontController
         }
 
         // Comments
-        ContentComment::handleComments($post->id, ContentPost::class);
+        CommentService::handleComments($post->id, ContentPost::class);
 
         // Next and Preview post
         Design::assign('next_post', ContentPost::getNextPost($post->id));

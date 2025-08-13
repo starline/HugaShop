@@ -11,15 +11,15 @@
 namespace App\Controller\Front;
 
 use HugaShop\Models\Settings;
+use HugaShop\Services\Config;
 use HugaShop\Services\Design;
 use App\Event\ProductViewEvent;
+use App\Services\CommentService;
 use HugaShop\Models\Product\Product;
 use App\Controller\BaseFrontController;
-use HugaShop\Models\Content\ContentComment;
+use HugaShop\Models\Product\ProductOption;
 use HugaShop\Models\Product\ProductVariant;
 use HugaShop\Models\Product\ProductCategory;
-use HugaShop\Models\Product\ProductOption;
-use HugaShop\Services\Config;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -74,7 +74,7 @@ class ProductController extends BaseFrontController
         Design::assign('category', $category);
 
         // Comments
-        ContentComment::handleComments($product->id, Product::class);
+        CommentService::handleComments($product->id, Product::class);
 
         // SEO metateg
         if (empty($product->meta_title)) {
