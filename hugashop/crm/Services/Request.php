@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.5
+ * @version 3.6
  *
  * Класс-обертка для обращения к переменным $_GET, $_POST, $_FILES, $_COOKIE, $_SESSION
  *
@@ -243,25 +243,6 @@ class Request
 
 
     /**
-     * Рекурсивная чистка магических слешей
-     * @param $var
-     */
-    public function stripslashes_recursive($var)
-    {
-        $res = [];
-        if (is_array($var)) {
-            foreach ($var as $k => $v) {
-                $res[stripcslashes($k)] = $this->stripslashes_recursive($v);
-            }
-        } else {
-            $res = stripcslashes($var);
-        }
-
-        return $res;
-    }
-
-
-    /**
      * Creat URL
      * @param array $params - переменные
      * @param bool $clear - зачищает пустые переменные
@@ -300,16 +281,6 @@ class Request
 
         $result = http_build_url("", $url);
         return $result;
-    }
-
-
-    /**
-     * XSS protect
-     * @param $text
-     */
-    public static function escape(string $text)
-    {
-        return htmlspecialchars($text);
     }
 
 

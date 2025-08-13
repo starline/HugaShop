@@ -14,7 +14,7 @@
 			</div>
 		{/if}
 
-		<form class="form-signin" method="post" action="/user/login">
+		<form class="form-signin" method="post">
 			{getCSRFInput}
 
 			<div class="form-floating">
@@ -45,6 +45,10 @@
 				<div class="col-6 text-end">
 					<a href="{'UserPasswordRemind'|linkLang}">{'Забыл пароль?'|trans}</a>
 				</div>
+			</div>
+
+			<div>
+				{extension name='GoogleAuth'}
 			</div>
 
 		</form>

@@ -4,14 +4,14 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
  */
 
 namespace HugaShop\Extensions\GoogleAuth\Controller;
 
-use HugaShop\Models\User\User;
 use HugaShop\Services\Config;
 use HugaShop\Services\Helper;
+use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
 use App\Controller\BaseFrontController;
 use HugaShop\Extensions\BaseExtensionTrait;
@@ -22,41 +22,42 @@ final class GoogleAuthController extends BaseFrontController
 {
     use BaseExtensionTrait;
 
-    #[Route('/GoogleAuth', name: 'ExtGoogleAuth', priority: 10)]
+    #[Route('/google-auth', name: 'ExtGoogleAuth', priority: 1)]
     public function auth(): Response
     {
         if (User::isLoggedIn()) {
             return $this->redirectToRoute('User');
         }
 
-        $settings = $this->getExtension()->settings;
-        $clientId = $settings->client_id ?? null;
-        $clientSecret = $settings->client_secret ?? null;
+        $settings       = $this->getExtension()->settings;
+        $clientId       = $settings->client_id ?? null;
+        $clientSecret   = $settings->client_secret ?? null;
 
         if (empty($clientId) || empty($clientSecret)) {
             return $this->redirectToRoute('UserRegister');
         }
 
-        $redirectUri = Config::get('root_url') . '/extension/GoogleAuth';
+        $redirectUri = Config::get('root_url') . $this->generateUrlWithLocale('ExtGoogleAuth');
         $code = Request::get('code', 'string');
 
         if (empty($code)) {
             $params = http_build_query([
-                'response_type' => 'code',
-                'client_id' => $clientId,
-                'redirect_uri' => $redirectUri,
-                'scope' => 'email profile',
-                'prompt' => 'select_account'
+                'response_type'     => 'code',
+                'client_id'         => $clientId,
+                'redirect_uri'      => $redirectUri,
+                'scope'             => 'email profile',
+                'prompt'            => 'select_account'
             ]);
+
             return $this->redirect('https://accounts.google.com/o/oauth2/v2/auth?' . $params);
         }
 
         $params = [
-            'code' => $code,
-            'client_id' => $clientId,
+            'code'          => $code,
+            'client_id'     => $clientId,
             'client_secret' => $clientSecret,
-            'redirect_uri' => $redirectUri,
-            'grant_type' => 'authorization_code'
+            'redirect_uri'  => $redirectUri,
+            'grant_type'    => 'authorization_code'
         ];
 
         $ch = curl_init('https://oauth2.googleapis.com/token');
@@ -86,10 +87,10 @@ final class GoogleAuthController extends BaseFrontController
             $user = User::getUser(['email' => $info['email']]);
         } else {
             $user = User::addUser([
-                'name' => $info['name'] ?? $info['email'],
-                'email' => $info['email'],
-                'password' => Helper::makeToken($info['email']),
-                'enabled' => 1
+                'name'      => $info['name'] ?? $info['email'],
+                'email'     => $info['email'],
+                'password'  => Helper::makeToken($info['email']),
+                'enabled'   => 1
             ]);
         }
 

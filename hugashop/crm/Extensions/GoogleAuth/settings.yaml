@@ -1,7 +1,11 @@
 name: "Google авторизация"
 description: "Регистрация и авторизация пользователей через Google OAuth"
 settings_params:
-  - { variable: enabled, name: "Включено", options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }] }
+  - {
+      variable: enabled,
+      name: "Включено",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }
   - { variable: client_id, name: "Client ID" }
   - { variable: client_secret, name: "Client Secret" }
-version: 1.0
+version: 1.1
