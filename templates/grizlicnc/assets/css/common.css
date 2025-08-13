@@ -1534,6 +1534,7 @@ a.admin_bookmark svg {
 }
 
 .profile .purchases .image img {
+	border-radius: 3px;
 	margin: 0;
 }
 

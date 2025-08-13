@@ -53,8 +53,8 @@
 					<a class="my-3" href='#'
 						onclick="$('#password_form').show(); $(this).hide(); return false;">{'Изменить пароль'|trans}</a>
 
-					<div class="mt-5" id="password_form" style="display:none;">
-						<div class="form-floating my-3">
+					<div class="border-top mt-5" id="password_form" style="display:none;">
+						<div class="form-floating my-3 mt-5">
 							<input class="form-control {if password|in_array:$form_invalid}is-invalid{/if}"
 								id="old_password" value="" name="old_password" type="password" />
 							<label for="old_password">{'Старый пароль'|trans}</label>

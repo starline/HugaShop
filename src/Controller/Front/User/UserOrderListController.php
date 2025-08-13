@@ -31,7 +31,7 @@ class UserOrderListController extends BaseFrontController
 
         $user = User::authUser();
 
-        $filter = PaginationService::initFilter();
+        $filter = PaginationService::initFilter(per_page: 10);
         $filter['user_id'] = $user->id;
 
         $orders = Order::getOrders($filter, join: [
