@@ -1,0 +1,7 @@
+{
+    "name": "hugashop/extension-google-auth",
+    "type": "library",
+    "require": {
+        "spatie/crawler": "^8.4"
+    }
+}

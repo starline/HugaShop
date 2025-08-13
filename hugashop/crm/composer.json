@@ -15,7 +15,7 @@
   ],
   "require": {
     "php": ">=8.1",
-    "smarty/smarty": "^5.4",
+    "smarty/smarty": "^5.5",
     "illuminate/database": "^12.18",
     "illuminate/events": "^12.18",
     "illuminate/http": "^12.19",

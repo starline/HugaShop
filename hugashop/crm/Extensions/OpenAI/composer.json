@@ -1,0 +1,7 @@
+{
+    "name": "hugashop/extension-google-auth",
+    "type": "library",
+    "require": {
+        "openai-php/client": "^0.15"
+    }
+}
