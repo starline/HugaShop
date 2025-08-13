@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.2
+ * @version 1.3
  */
 
 namespace HugaShop\Extensions\GoogleAuth\Controller;
@@ -17,6 +17,8 @@ use App\Controller\BaseFrontController;
 use HugaShop\Extensions\BaseExtensionTrait;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Google\Client;
+use Google\Service\Oauth2;
 
 final class GoogleAuthController extends BaseFrontController
 {
@@ -51,37 +53,22 @@ final class GoogleAuthController extends BaseFrontController
         $code           = Request::get('code', 'string');
         $isPopup        = Request::get('popup', 'bool') || $state === 'popup';
 
-        if (empty($code)) {
-            $params = [
-                'response_type'     => 'code',
-                'client_id'         => $clientId,
-                'redirect_uri'      => $redirectUri,
-                'scope'             => 'email profile',
-                'prompt'            => 'select_account'
-            ];
+        $client = new Client();
+        $client->setClientId($clientId);
+        $client->setClientSecret($clientSecret);
+        $client->setRedirectUri($redirectUri);
+        $client->setScopes(['email', 'profile']);
+        $client->setPrompt('select_account');
 
-            if ($isPopup) {
-                $params['state'] = 'popup';
-            }
-
-            return $this->redirect('https://accounts.google.com/o/oauth2/v2/auth?' . http_build_query($params));
+        if ($isPopup) {
+            $client->setState('popup');
         }
 
-        $params = [
-            'code'          => $code,
-            'client_id'     => $clientId,
-            'client_secret' => $clientSecret,
-            'redirect_uri'  => $redirectUri,
-            'grant_type'    => 'authorization_code'
-        ];
+        if (empty($code)) {
+            return $this->redirect($client->createAuthUrl());
+        }
 
-        $ch = curl_init('https://oauth2.googleapis.com/token');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
-        $tokenResponse = curl_exec($ch);
-        curl_close($ch);
-        $tokenInfo = json_decode($tokenResponse, true);
+        $tokenInfo = $client->fetchAccessTokenWithAuthCode($code);
 
         if (empty($tokenInfo['access_token'])) {
             if ($state === 'popup') {
@@ -90,27 +77,26 @@ final class GoogleAuthController extends BaseFrontController
             return $this->redirectToRoute('UserRegister');
         }
 
-        $ch = curl_init('https://www.googleapis.com/oauth2/v2/userinfo');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Authorization: Bearer ' . $tokenInfo['access_token']]);
-        $userInfoResponse = curl_exec($ch);
-        curl_close($ch);
-        $info = json_decode($userInfoResponse, true);
+        $oauth2 = new Oauth2($client);
+        $info   = $oauth2->userinfo->get();
 
-        if (empty($info['email'])) {
+        if (empty($info->getEmail())) {
             if ($state === 'popup') {
                 return $this->popupResponse();
             }
             return $this->redirectToRoute('UserRegister');
         }
 
-        if (User::checkEmailExists($info['email'])) {
-            $user = User::getUser(['email' => $info['email']]);
+        $email = $info->getEmail();
+        $name  = $info->getName() ?: $email;
+
+        if (User::checkEmailExists($email)) {
+            $user = User::getUser(['email' => $email]);
         } else {
             $user = User::addUser([
-                'name'      => $info['name'] ?? $info['email'],
-                'email'     => $info['email'],
-                'password'  => Helper::makeToken($info['email']),
+                'name'      => $name,
+                'email'     => $email,
+                'password'  => Helper::makeToken($email),
                 'enabled'   => 1
             ]);
         }
