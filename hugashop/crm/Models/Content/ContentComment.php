@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.8
+ * @version 3.0
  *
  */
 
@@ -197,8 +197,13 @@ class ContentComment extends BaseModel
      */
     public static function deleteEntityComments($entity_id, $entity_class)
     {
+        $comment_ids = self::where('entity_id', $entity_id)
+            ->where('entity_type', $entity_class)
+            ->pluck('id');
 
-        // TODO удалить фотографии комментария
+        if ($comment_ids->isNotEmpty()) {
+            Image::deleteEntityImages($comment_ids->toArray(), 'comment');
+        }
 
         return self::where('entity_id', $entity_id)
             ->where('entity_type', $entity_class)
@@ -248,7 +253,7 @@ class ContentComment extends BaseModel
             if (!empty($comment->name) and !empty($comment->text) and empty($check_bot_email)) {
 
                 // Chack Captcha
-                if (!Helper::checkCaptcha()) {
+                if (empty(User::authUser('id')) && !Helper::checkCaptcha()) {
                     Design::assign('error', 'captcha');
                 } else {
 
