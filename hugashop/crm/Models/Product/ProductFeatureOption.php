@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.6
+ * @version 2.7
  *
  */
 
@@ -48,48 +48,25 @@ class ProductFeatureOption extends BaseModel
             return null;
         }
 
-        unset($params['url'], $params['id']);
+        $data = $params;
+        unset($data['url'], $data['id']);
 
-        // Если передан id
         if ($id && ($option = self::find($id))) {
-            $option->fill($params);
-
-            if (!empty($url)) {
-                $option->url = self::makeUniqueUrl($url, $option->id);
-            }
-
-            $option->save();
-            return $option;
+            $option->fill($data);
+        } else {
+            $option = self::updateOrCreate(
+                ['feature_id' => $feature_id, 'value' => $value],
+                $data
+            );
         }
 
-        // Пытаемся найти по feature_id + value
-        $option = self::query()
-            ->where('feature_id', $feature_id)
-            ->where('value', $value)
-            ->first();
-
-        if ($option) {
-
-            // Обновление найденной записи, если есть url
-            if (!empty($url)) {
-                $option->url = self::makeUniqueUrl($url, $option->id);
-                $option->save();
-            }
-
-            return $option;
-        }
-
-        // Создание новой записи без URL
-        $option = self::create($params);
-
-        // Если url не задан — ставим id
         if (!empty($url)) {
             $option->url = self::makeUniqueUrl($url, $option->id);
-            $option->save();
-        } else {
+        } elseif (empty($option->url)) {
             $option->url = self::makeUniqueUrl($option->id, $option->id);
-            $option->save();
         }
+
+        $option->save();
 
         return $option;
     }
