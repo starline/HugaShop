@@ -14,7 +14,7 @@
 			</div>
 		{/if}
 
-		<form class="form-signin" method="post">
+		<form class="form-signin" method="post" action="{'UserRegister'|linkLang}">
 			{getCSRFInput}
 
 			<div class="form-floating my-3">

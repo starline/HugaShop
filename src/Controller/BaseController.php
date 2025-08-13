@@ -22,9 +22,11 @@ use Symfony\Component\Translation\Translator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Translation\LocaleSwitcher;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Bridge\Twig\Extension\ImportMapRuntime;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -48,7 +50,7 @@ class BaseController extends AbstractController
 
         Design::setModifierPlugin('linkLang', $this, 'generateUrlWithLocale');
         Design::setModifierPlugin('link', $UrlGenerator, 'generate');
-        
+
         Design::assign('route', $this->route = $this->requestStack->getCurrentRequest()->attributes->get('_route'));
 
         // Show Profiler
@@ -189,5 +191,40 @@ class BaseController extends AbstractController
         }
 
         return $url;
+    }
+
+
+    /**
+     * Extend redirectToRoute
+     */
+    protected function redirectToRoute(string $route, array $parameters = [], int $status = 302): RedirectResponse
+    {
+        $response = parent::redirectToRoute($route, $parameters, $status);
+        if (Request::isAjax()) {
+            $url = $this->generateUrlWithLocale($route, $parameters);
+            $response->headers->set('X-Redirect', $url);
+            $response->setStatusCode(200);
+            $response->headers->remove('Location');
+            $response->setContent(json_encode(['redirect' => $url]));
+            $response->headers->set('Content-Type', 'application/json');
+        }
+        return $response;
+    }
+
+
+    /**
+     * Extend Redirect
+     */
+    protected function redirect(string $url, int $status = 302): RedirectResponse
+    {
+        $response = parent::redirect($url, $status);
+        if (Request::isAjax()) {
+            $response->headers->set('X-Redirect', $url);
+            $response->setStatusCode(200);
+            $response->headers->remove('Location');
+            $response->setContent(json_encode(['redirect' => $url]));
+            $response->headers->set('Content-Type', 'application/json');
+        }
+        return $response;
     }
 }

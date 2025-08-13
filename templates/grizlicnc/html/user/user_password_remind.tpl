@@ -19,7 +19,7 @@
 				</div>
 			{/if}
 
-			<form method="post">
+			<form method="post" action="{'UserPasswordRemind'|linkLang}">
 				{getCSRFInput}
 
 				<div class="my-3">{'Введите email, который вы указывали при регистрации'|trans}</div>

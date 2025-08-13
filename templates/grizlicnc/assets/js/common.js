@@ -82,15 +82,25 @@ export function asignFancyAjax() {
     // Ajax форм
     $('.fancybox-inner form').on('submit', function (e) {
         e.preventDefault();
+
         $(this).ajaxSubmit({
             dataType: "html",
             beforeSubmit: function (formData, form, options) {
                 $.fancybox.getInstance()?.showLoading();
             },
             success: function (response, statusText, xhr, $form) {
+
+                // Приоритет: редирект через заголовок
+                let redirectUrl = xhr.getResponseHeader('X-Redirect');
+                if (redirectUrl) {
+                    window.location.href = redirectUrl;
+                    return;
+                }
+
                 if ($form.is('#cart_form')) {
                     getCartInformer();
                 }
+
                 response = parseResponseByType(response);
                 if (response.type == 'html') {
                     $.fancybox.open({
@@ -101,14 +111,17 @@ export function asignFancyAjax() {
                         afterShow: asignFancyAjax
                     });
                 } else {
-                    data = response.data;
+                    data = response.data || {};
                     if (data.redirect) {
                         window.location.href = data.redirect;
                     }
                 }
             },
             error: function (xmlRequest, textStatus, errorThrown) {
-                alert(errorThrown);
+                console.error(errorThrown || 'Request failed');
+            },
+            complete: function () {
+                $.fancybox.getInstance()?.hideLoading();
             }
         });
     });

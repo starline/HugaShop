@@ -65,7 +65,12 @@ $(function () {
     });
 
 
-
+    $('#account .login').fancybox({
+        type: 'ajax',
+        touch: false,
+        closeExisting: true,
+        afterShow: asignFancyAjax
+    });
 
 
     // Зум картинок
