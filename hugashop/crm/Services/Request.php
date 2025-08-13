@@ -117,10 +117,8 @@ class Request
      * Возвращает переменную $_POST, отфильтрованную по заданному типу, если во втором параметре указан тип фильтра
      * Если $type не задан, возвращает переменную в чистом виде
      * Если переменной не существует в $_POST, возвращаем NULL
-     * @param $name
-     * @param $type
      */
-    public static function post($name = null, string|null $type = null)
+    public static function post(?string $name = null, ?string $type = null)
     {
 
         // Returne all $_POST values
@@ -140,7 +138,7 @@ class Request
             $val = file_get_contents('php://input');
         }
 
-        //echo $name."=".$val.'<br>';
+        //dump($name . "=" . $val);
 
         return $val;
     }

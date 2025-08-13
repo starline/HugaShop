@@ -476,7 +476,7 @@ final class TestScriptController extends BaseAdminController
 
                             // Перенесем ProductOption в ProductFeatuerOption
                             // Удалить PRIMARY KEY - ALTER TABLE `s_product_option` DROP PRIMARY KEY;
-                            // Добавить поле id autouncrement для s_product_option
+                            // Добавить поле id autoincrement для s_product_option
                             if (0) {
 
                                 // create DB
@@ -490,12 +490,10 @@ final class TestScriptController extends BaseAdminController
                                         foreach ($options as $o) {
 
                                             // Check if option exist Make option
-                                            $feature_option = ProductFeatureOption::firstOrCreate(
-                                                [
-                                                    'feature_id' => $o->feature_id,
-                                                    'value'      => $o->value,
-                                                ]
-                                            );
+                                            $feature_option = ProductFeatureOption::firstOrCreate([
+                                                'feature_id' => $o->feature_id,
+                                                'value'      => $o->value,
+                                            ]);
 
                                             // save option_id
                                             $o->option_id = $feature_option->id;

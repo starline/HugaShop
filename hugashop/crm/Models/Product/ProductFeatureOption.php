@@ -35,36 +35,36 @@ class ProductFeatureOption extends BaseModel
 
 
     /**
-     * Get First or create
+     * Get first matching option or create a new one
      */
     public static function firstOrCreate(array $params)
     {
         $feature_id = $params['feature_id'] ?? null;
-        $value      = trim((string) ($params['value'] ?? ''));
+        $value = trim((string) ($params['value'] ?? ''));
 
-        if (empty($feature_id) || $value === '') {
+        if (!$feature_id || $value === '') {
             return null;
         }
 
-        $option = self::query()
+        // Ищем готовый вариант
+        if ($option = self::query()
             ->where('feature_id', $feature_id)
             ->where('value', $value)
-            ->first();
-
-        if ($option) {
+            ->first()
+        ) {
             return $option;
         }
 
-        $url = trim((string) ($params['url'] ?? ''));
-        $url = $url === '' ? self::makeUniqueUrl($value) : self::makeUniqueUrl($url);
+        // Генерируем уникальный URL
+        $url_source = trim((string) ($params['url'] ?? $value));
+        $url = self::makeUniqueUrl($url_source);
 
-        $option = self::create([
+        // Создаём и возвращаем
+        return self::create([
             'feature_id' => $feature_id,
             'value'      => $value,
             'url'        => $url,
         ]);
-
-        return $option;
     }
 
 
@@ -75,9 +75,6 @@ class ProductFeatureOption extends BaseModel
      */
     public static function updateFeatureOptions(int $feature_id, array $options)
     {
-        if (empty($feature_id)) {
-            return false;
-        }
 
         // Обновление только переводов
         if ($language_code = Language::checkOrGetCode()) {
@@ -96,6 +93,7 @@ class ProductFeatureOption extends BaseModel
         $keep_ids = [];
         foreach ($options as $position => $data) {
 
+            // skip empty value
             $value = trim($data['value'] ?? '');
             if ($value === '') {
                 continue;
@@ -109,10 +107,13 @@ class ProductFeatureOption extends BaseModel
             ];
 
             $option = self::firstOrCreate($params);
-            $option->position = $position;
-            $option->save();
 
-            $keep_ids[] = $option->id;
+            if (!empty($option)) {
+                $option->position = $position;
+                $option->save();
+
+                $keep_ids[] = $option->id;
+            }
         }
 
         self::where('feature_id', $feature_id)
