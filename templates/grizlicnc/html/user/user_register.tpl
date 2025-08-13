@@ -45,9 +45,7 @@
                         <div class="w-100">
                                 <button class="btn btn-primary">{'Зарегистрироваться'|trans}</button>
                         </div>
-                        <div class="w-100 my-3">
-                                <a class="btn btn-outline-danger w-100" href="{'UserRegisterGoogle'|linkLang}">{'Войти через Google'|trans}</a>
-                        </div>
+                        {extension name='GoogleAuth'}
                 </form>
         </div>
 
