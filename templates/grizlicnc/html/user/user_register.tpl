@@ -38,15 +38,18 @@
 				<div class="invalid-feedback">{'Введите пароль'|trans}</div>
 			</div>
 
-			<div class="w-100 my-3">
-				<div class="g-recaptcha" data-sitekey="{$config->recaptcha->public_key}"></div>
-			</div>
+                        <div class="w-100 my-3">
+                                <div class="g-recaptcha" data-sitekey="{$config->recaptcha->public_key}"></div>
+                        </div>
 
-			<div class="w-100">
-				<button class="btn btn-primary">{'Зарегистрироваться'|trans}</button>
-			</div>
-		</form>
-	</div>
+                        <div class="w-100">
+                                <button class="btn btn-primary">{'Зарегистрироваться'|trans}</button>
+                        </div>
+                        <div class="w-100 my-3">
+                                <a class="btn btn-outline-danger w-100" href="{'UserRegisterGoogle'|linkLang}">{'Войти через Google'|trans}</a>
+                        </div>
+                </form>
+        </div>
 
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 {/block}
