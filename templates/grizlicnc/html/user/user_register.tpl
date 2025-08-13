@@ -46,9 +46,8 @@
 				<button class="btn btn-primary">{'Зарегистрироваться'|trans}</button>
 			</div>
 
-			<div class="w-100">
-				{extension name='GoogleAuth'}
-			</div>
+			{extension name='GoogleAuth'}
+
 		</form>
 	</div>
 

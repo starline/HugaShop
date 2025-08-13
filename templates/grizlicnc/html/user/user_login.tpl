@@ -47,9 +47,7 @@
 				</div>
 			</div>
 
-			<div>
-				{extension name='GoogleAuth'}
-			</div>
+			{extension name='GoogleAuth'}
 
 		</form>
 	</div>
