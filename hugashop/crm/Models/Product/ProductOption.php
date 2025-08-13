@@ -78,15 +78,12 @@ class ProductOption extends BaseModel
         ]);
 
         // Сохраняем связь товара и характеристики
-        return self::updateOrCreate(
-            [
-                'product_id' => $product_id,
-                'feature_id' => $feature_id,
-            ],
-            [
-                'option_id' => $featureOption->id,
-            ]
-        );
+        return self::updateOrCreate([
+            'product_id' => $product_id,
+            'feature_id' => $feature_id,
+        ], [
+            'option_id' => $featureOption->id,
+        ]);
     }
 
 

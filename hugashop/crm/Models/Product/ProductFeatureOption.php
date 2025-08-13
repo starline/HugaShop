@@ -39,32 +39,59 @@ class ProductFeatureOption extends BaseModel
      */
     public static function firstOrCreate(array $params)
     {
+        $id         = $params['id'] ?? null;
         $feature_id = $params['feature_id'] ?? null;
-        $value = trim((string) ($params['value'] ?? ''));
+        $value      = trim((string) ($params['value'] ?? ''));
+        $url        = $params['url'] ?? null;
 
-        if (!$feature_id || $value === '') {
+        if ((!$feature_id || $value === '') && !$id) {
             return null;
         }
 
-        // Ищем готовый вариант
-        if ($option = self::query()
-            ->where('feature_id', $feature_id)
-            ->where('value', $value)
-            ->first()
-        ) {
+        unset($params['url'], $params['id']);
+
+        // Если передан id
+        if ($id && ($option = self::find($id))) {
+            $option->fill($params);
+
+            if (!empty($url)) {
+                $option->url = self::makeUniqueUrl($url, $option->id);
+            }
+
+            $option->save();
             return $option;
         }
 
-        // Генерируем уникальный URL
-        $url_source = trim((string) ($params['url'] ?? $value));
-        $url = self::makeUniqueUrl($url_source);
+        // Пытаемся найти по feature_id + value
+        $option = self::query()
+            ->where('feature_id', $feature_id)
+            ->where('value', $value)
+            ->first();
 
-        // Создаём и возвращаем
-        return self::create([
-            'feature_id' => $feature_id,
-            'value'      => $value,
-            'url'        => $url,
-        ]);
+        if ($option) {
+
+            // Обновление найденной записи, если есть url
+            if (!empty($url)) {
+                $option->url = self::makeUniqueUrl($url, $option->id);
+                $option->save();
+            }
+
+            return $option;
+        }
+
+        // Создание новой записи без URL
+        $option = self::create($params);
+
+        // Если url не задан — ставим id
+        if (!empty($url)) {
+            $option->url = self::makeUniqueUrl($url, $option->id);
+            $option->save();
+        } else {
+            $option->url = self::makeUniqueUrl($option->id, $option->id);
+            $option->save();
+        }
+
+        return $option;
     }
 
 
@@ -93,7 +120,7 @@ class ProductFeatureOption extends BaseModel
         $keep_ids = [];
         foreach ($options as $position => $data) {
 
-            // skip empty value
+            // Skip empty value
             $value = trim($data['value'] ?? '');
             if ($value === '') {
                 continue;
@@ -103,17 +130,12 @@ class ProductFeatureOption extends BaseModel
                 'id'         => $data['id'] ?? null,
                 'feature_id' => $feature_id,
                 'value'      => $value,
-                'url'        => $data['url'] ?? '',
+                'url'        => $data['url'] ?? null,
+                'position'   => $position
             ];
 
             $option = self::firstOrCreate($params);
-
-            if (!empty($option)) {
-                $option->position = $position;
-                $option->save();
-
-                $keep_ids[] = $option->id;
-            }
+            $keep_ids[] = $option->id;
         }
 
         self::where('feature_id', $feature_id)
@@ -138,6 +160,7 @@ class ProductFeatureOption extends BaseModel
 
         $query = self::query();
 
+        // exception
         if ($except_id) {
             $query->where('id', '!=', $except_id);
         }
