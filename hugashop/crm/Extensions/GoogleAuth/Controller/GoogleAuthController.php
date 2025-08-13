@@ -25,31 +25,46 @@ final class GoogleAuthController extends BaseFrontController
     #[Route('/google-auth', name: 'ExtGoogleAuth', priority: 1)]
     public function auth(): Response
     {
+
+        $state = Request::get('state', 'string');
+
         if (User::isLoggedIn()) {
+            if ($state === 'popup') {
+                return $this->popupResponse();
+            }
             return $this->redirectToRoute('User');
         }
+
 
         $settings       = $this->getExtension()->settings;
         $clientId       = $settings->client_id ?? null;
         $clientSecret   = $settings->client_secret ?? null;
 
         if (empty($clientId) || empty($clientSecret)) {
+            if ($state === 'popup') {
+                return $this->popupResponse();
+            }
             return $this->redirectToRoute('UserRegister');
         }
 
-        $redirectUri = Config::get('root_url') . $this->generateUrlWithLocale('ExtGoogleAuth');
-        $code = Request::get('code', 'string');
+        $redirectUri    = Config::get('root_url') . $this->generateUrlWithLocale('ExtGoogleAuth');
+        $code           = Request::get('code', 'string');
+        $isPopup        = Request::get('popup', 'bool') || $state === 'popup';
 
         if (empty($code)) {
-            $params = http_build_query([
+            $params = [
                 'response_type'     => 'code',
                 'client_id'         => $clientId,
                 'redirect_uri'      => $redirectUri,
                 'scope'             => 'email profile',
                 'prompt'            => 'select_account'
-            ]);
+            ];
 
-            return $this->redirect('https://accounts.google.com/o/oauth2/v2/auth?' . $params);
+            if ($isPopup) {
+                $params['state'] = 'popup';
+            }
+
+            return $this->redirect('https://accounts.google.com/o/oauth2/v2/auth?' . http_build_query($params));
         }
 
         $params = [
@@ -69,6 +84,9 @@ final class GoogleAuthController extends BaseFrontController
         $tokenInfo = json_decode($tokenResponse, true);
 
         if (empty($tokenInfo['access_token'])) {
+            if ($state === 'popup') {
+                return $this->popupResponse();
+            }
             return $this->redirectToRoute('UserRegister');
         }
 
@@ -80,6 +98,9 @@ final class GoogleAuthController extends BaseFrontController
         $info = json_decode($userInfoResponse, true);
 
         if (empty($info['email'])) {
+            if ($state === 'popup') {
+                return $this->popupResponse();
+            }
             return $this->redirectToRoute('UserRegister');
         }
 
@@ -97,10 +118,23 @@ final class GoogleAuthController extends BaseFrontController
         Request::setSession('user_id', $user->id);
         User::setRememberMeCookie($user->id);
 
+        if ($state === 'popup') {
+            return $this->popupResponse();
+        }
+
         if (!empty(Request::getSession('last_visited_page'))) {
             return $this->redirect(Request::getSession('last_visited_page'));
         }
 
         return $this->redirectToRoute('Main');
+    }
+
+
+    /**
+     * Popup Response
+     */
+    private function popupResponse()
+    {
+        return new Response('<script>window.opener.location.reload();window.close();</script>');
     }
 }
