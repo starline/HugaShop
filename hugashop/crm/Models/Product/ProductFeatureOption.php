@@ -48,15 +48,14 @@ class ProductFeatureOption extends BaseModel
             return null;
         }
 
-        $data = $params;
-        unset($data['url'], $data['id']);
+        unset($params['url'], $params['id']);
 
         if ($id && ($option = self::find($id))) {
-            $option->fill($data);
+            $option->fill($params);
         } else {
             $option = self::updateOrCreate(
                 ['feature_id' => $feature_id, 'value' => $value],
-                $data
+                $params
             );
         }
 
