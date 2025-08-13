@@ -184,7 +184,7 @@
 				[{
 						filter: {
 							manager_id: php_manager_id,
-							filter: 'byMonth'
+							filter: 'byMonth',
 							type: 'totalPrice'
 						},
 						options: {
@@ -196,7 +196,7 @@
 					{
 						filter: {
 							manager_id: php_manager_id,
-							filter: 'byMonth'
+							filter: 'byMonth',
 							type: 'amount'
 						},
 						options: {
@@ -208,7 +208,7 @@
 					{
 						filter: {
 							manager_id: php_manager_id,
-							filter: 'byMonth'
+							filter: 'byMonth',
 							type: 'totalPayments'
 						},
 						options: {
