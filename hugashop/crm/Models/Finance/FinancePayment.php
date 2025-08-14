@@ -90,7 +90,7 @@ class FinancePayment extends BaseModel
         }
 
         if (isset($filter['category_id'])) {
-            $query->where('fc.id', (int)$filter['category_id']);
+            $query->where('finance_category_id', (int)$filter['category_id']);
         }
 
         if (isset($filter['payments_type'])) {

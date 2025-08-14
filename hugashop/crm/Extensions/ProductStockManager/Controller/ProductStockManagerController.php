@@ -47,7 +47,7 @@ final class ProductStockManagerController extends BaseAdminController
             Design::assign('filter', $query_filter);
         }
 
-        $products       = Product::getProducts($filter, join: ['image']);
+        $products       = Product::getProducts($filter, join: ['image', 'movements']);
         $products_count = Product::countProducts($filter);
 
         if ($products->isNotEmpty()) {

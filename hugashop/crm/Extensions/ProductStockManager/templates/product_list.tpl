@@ -91,27 +91,73 @@
 
         <div id="main_list">
             {if $products}
-                
+
                 {include file='parts/pagination.tpl'}
 
                 <div class="list">
                     {foreach $products as $product}
-                        <div class="list_row" item_id="{$product->id}">
-                            <div class="image">
-                                <img
-                                    src="{if $product->image->filename}{$product->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}" />
-                            </div>
+                        <div class="list_row {if !$product->visible}visible_off{/if} {if $product->disable}disable{/if} {if !$product->featured}featured_off{/if} {if !$product->sale}sale_off{/if}"
+                            item_id="{$product->id}">
 
                             <div class="col row">
+                                <div class="col_image image">
+                                    <img
+                                        src="{if $product->image->filename}{$product->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}" />
+                                </div>
+
                                 <div class="col">
                                     <a
                                         href="{'ProductAdmin'|link:[id=>$product->id]}?return={$smarty.server.REQUEST_URI}">{$product->name}</a>
-                                    {if $product->variant_name}<span class="small"> - {$product->variant_name}</span>{/if}
+
+                                    {if $product->variant_name}
+                                        <i class="small"> - {$product->variant_name}</i>
+                                    {/if}
+
+
+                                    {if $product->order_date}
+                                        <div class="notice" data-bs-toggle="tooltip" title="Дата последнего заказа">
+                                            Последний заказ: <span>{$product->order_date|date}</span>
+                                            прошло <span>{(($config->now - $product->order_date|strtotime)/60/60/24)|round}</span>
+                                            дней
+                                        </div>
+                                    {elseif $product->never_ordered}
+                                        <div class="notice">Ни разу не был заказан</div>
+                                    {elseif $product->profit}
+                                        <div class="notice">
+                                            Прибыль: {$product->profit|price_html:profit|raw}
+                                            Продано <span>{$product->sold} {$settings->units}</span>
+                                        </div>
+                                    {elseif $product->need}
+                                        <div class="notice">
+                                            Нужно закупить: <span>{$product->need} {$settings->units}</span>
+                                            Продано <span>{$product->sold} {$settings->units}</span>
+                                        </div>
+                                    {/if}
+
+
+                                    <div class="icons flex-row mt-2">
+                                        {if 'product_price'|user_access}
+                                            <a class="show_chart" data-bs-toggle="tooltip" title="Показать график продаж"></a>
+                                        {/if}
+
+                                        <a class="featured {if 'product_price'|user_access}edit{/if}" data-bs-toggle="tooltip"
+                                            title="Рекомендуемый"></a>
+                                        <a class="sale {if 'product_price'|user_access}edit{/if}" data-bs-toggle="tooltip"
+                                            title="Акция"></a>
+                                        <i class="enable {if 'product_price'|user_access}edit{/if} material-icons visibility"
+                                            data-bs-toggle="tooltip" title="Активен" title="Активен"></i>
+                                        {if 'product_price'|user_access}
+                                            <i class="duplicate material-icons library_add" data-bs-toggle="tooltip"
+                                                title="Дублировать"></i>
+                                        {/if}
+                                        <a class="material-icons launch" data-bs-toggle="tooltip" title="Предпросмотр в новом окне"
+                                            href="{$config->root_url}/product/{$product->id}" target="_blank"></a>
+                                    </div>
                                 </div>
 
-                                <div class="col-12 col-md-4">
+                                <div class="col-12 col-md-4 variants">
                                     <div class="row">
-                                        <div class="col-6 text-end">
+                                        <div class="col-4 text-end">
                                             {if $product->sku}
                                                 <div class="badge text-bg-round copy_field" value="{$product->sku}">{$product->sku}
                                                     <div class="copy_hover" data-bs-toggle="tooltip"
@@ -121,11 +167,32 @@
                                                 </div>
                                             {/if}
                                         </div>
-                                        <div class="col-6 text-end">
-                                            {if $product->stock !== null}
-                                                <span class="badge text-bg-secondary">{$product->stock}</span>
+
+                                        <span class="col-4 price">
+                                            {if 'product_price'|user_access}
+                                                <a data-bs-toggle="tooltip" data-bs-html="true" {if $product->cost_price > 0}
+                                                        title="Оптовая цена &mdash; {$product->cost_price|number} {$currency->sign}</br>Доход &mdash; {$product->profit_price|number} {$currency->sign}</br> Старая цена  &mdash; {$product->old_price|number} {$currency->sign}"
+                                                    {/if}
+                                                    href="/admin/product/{$product->id}/price?return={$smarty.server.REQUEST_URI}">{$product->price|price_html|raw}</a>
+                                            {else}
+                                                {$product->price|price_html|raw}
                                             {/if}
-                                        </div>
+                                        </span>
+
+                                        <span class="col-4">
+                                            <div class="stock">
+                                                {if $product->stock|is_null}
+                                                    ∞
+                                                {else}
+                                                    {$product->stock} {$settings->units}
+                                                {/if}
+
+                                                {if $product->movements_amount}
+                                                    <span class="wmovements" data-bs-toggle="tooltip" data-bs-html="true"
+                                                        title="{foreach $product->movements as $mov}<div class='text-nowrap'>Поставка №{$mov->move_id} | {$mov->awaiting_date|date} | +{$mov->amount}</div>{/foreach}">+{$product->movements_amount}</span>
+                                                {/if}
+                                            </div>
+                                        </span>
                                     </div>
                                 </div>
                             </div>

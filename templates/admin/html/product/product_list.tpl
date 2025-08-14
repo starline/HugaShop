@@ -187,27 +187,6 @@
 										{/if}
 
 
-										{if $product->order_date}
-											<div class="notice" data-bs-toggle="tooltip" title="Дата последнего заказа">
-												Последний заказ: <span>{$product->order_date|date}</span>
-												прошло <span>{(($config->now - $product->order_date|strtotime)/60/60/24)|round}</span>
-												дней
-											</div>
-										{elseif $product->never_ordered}
-											<div class="notice">Ни разу не был заказан</div>
-										{elseif $product->profit}
-											<div class="notice">
-												Прибыль: {$product->profit|price_html:profit|raw}
-												Продано <span>{$product->sold} {$settings->units}</span>
-											</div>
-										{elseif $product->need}
-											<div class="notice">
-												Нужно закупить: <span>{$product->need} {$settings->units}</span>
-												Продано <span>{$product->sold} {$settings->units}</span>
-											</div>
-										{/if}
-
-
 										<div class="icons flex-row mt-2">
 											{if 'product_price'|user_access}
 												<a class="show_chart" data-bs-toggle="tooltip" title="Показать график продаж"></a>

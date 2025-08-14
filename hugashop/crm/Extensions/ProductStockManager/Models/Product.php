@@ -41,9 +41,9 @@ final class Product extends ProductModel
             $query->with($join);
         }
 
-        $query->orderByDesc('id');
+        $query->orderByDesc('position');
 
-        if (!empty($filter['limit']) && $filter['limit'] !== 'all') {
+        if (!empty($filter['limit'])) {
             $limit = max(1, (int)$filter['limit']);
             $page  = max(1, (int)($filter['page'] ?? 1));
             $query->limit($limit)->offset(($page - 1) * $limit);
