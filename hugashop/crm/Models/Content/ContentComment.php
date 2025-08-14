@@ -4,22 +4,16 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.0
+ * @version 3.1
  *
  */
 
 namespace HugaShop\Models\Content;
 
 use HugaShop\Models\Image;
-use HugaShop\Services\Design;
-use HugaShop\Services\Helper;
-use HugaShop\Services\Secure;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\User\User;
-use HugaShop\Services\Request;
 use HugaShop\Models\Product\Product;
-use HugaShop\Models\User\UserNotifier;
-use HugaShop\Services\NotifierFactory;
 use Illuminate\Database\Eloquent\Builder;
 
 class ContentComment extends BaseModel

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.4
+ * @version 2.5
  *
  */
 
@@ -22,7 +22,6 @@ use Symfony\Component\Translation\Translator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Translation\LocaleSwitcher;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Bridge\Twig\Extension\ImportMapRuntime;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
@@ -195,7 +194,7 @@ class BaseController extends AbstractController
 
 
     /**
-     * Extend redirectToRoute
+     * Extend redirectToRoute Symfony
      */
     protected function redirectToRoute(string $route, array $parameters = [], int $status = 302): RedirectResponse
     {
@@ -213,7 +212,7 @@ class BaseController extends AbstractController
 
 
     /**
-     * Extend Redirect
+     * Extend Redirect Symfony
      */
     protected function redirect(string $url, int $status = 302): RedirectResponse
     {
