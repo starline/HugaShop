@@ -22,6 +22,16 @@ final class Product extends ProductModel
         $model = static::getModel();
         $query = $model->newQuery();
 
+        if (Arr::has($filter, 'top')) {
+            if (empty($filter['date_from'])) {
+                $filter['date_from'] = date('Y-m-d', strtotime('-30 days'));
+            }
+            $SELECT = Database->placehold(", ordpur.profit as profit, ordpur.sold as sold");
+            $JOIN = Database->placehold(" LEFT JOIN (SELECT SUM((op.price-op.cost_price)*op.amount) as profit, product_id, SUM(op.amount) as sold FROM __order_purchase op LEFT JOIN __order ord on ord.id = op.order_id WHERE ord.date>? AND ord.paid=1 AND ord.closed=1 GROUP BY product_id) ordpur on ordpur.product_id=p.id ", $filter['date_from']);
+            $WHERE = Database->placehold(" AND ordpur.profit IS NOT NULL ");
+            $ORDER = Database->placehold("ordpur.profit DESC");
+        }
+
         if (!empty($filter['keyword'])) {
             $keywords = explode(' ', trim($filter['keyword']));
             $query->where(function ($q) use ($keywords) {

@@ -39,49 +39,38 @@
                     <!-- Фильтры -->
                     <ul class="menu_list layer">
                         <li class="{if !$filter}selected{/if}">
-                            <a href="{url page=null filter=null date_from=null}">Все товары</a>
+                            <a href="{url clear=true}">Все товары</a>
                         </li>
                         <li class="{if $filter == 'sale'}selected{/if}">
-                            <a href="{url page=null filter='sale' date_from=null}">Акция</a>
+                            <a href="{url filter='sale' clear=true}">Акция</a>
                         </li>
                         <li class="{if $filter == 'featured'}selected{/if}">
-                            <a href="{url page=null filter='featured' date_from=null}">Рекомендуемые</a>
+                            <a href="{url filter='featured' clear=true}">Рекомендуемые</a>
                         </li>
                         <li {if $filter == 'discounted'}class="selected" {/if}>
-                            <a href="{url page=null filter='discounted' date_from=null}">Со скидкой</a>
-                        </li>
-                        <li {if $filter == 'visible'}class="selected" {/if}>
-                            <a href="{url page=null filter='visible' date_from=null}">Активные</a>
+                            <a href="{url filter='discounted' clear=true}">Со скидкой</a>
                         </li>
                         <li {if $filter == 'hidden'}class="selected" {/if}>
-                            <a href="{url page=null filter='hidden' date_from=null}">Неактивные</a>
+                            <a href="{url filter='hidden' clear=true}">Неактивные</a>
                         </li>
                         <li {if $filter == 'outofstock'}class="selected" {/if}>
-                            <a href="{url page=null filter='outofstock' date_from=null}">Нет в наличии</a>
+                            <a href="{url filter='outofstock' clear=true}">Нет в наличии</a>
                         </li>
-                        <li {if $filter == 'instock'}class="selected" {/if}>
-                            <a href="{url page=null filter='instock' date_from=null}">В наличии</a>
+                        <li {if $filter == 'stagnation'}class="selected" {/if}>
+                            <a href="{url filter='stagnation' clear=true}">Застой склада</a>
                         </li>
-
-                        {if 'product_price'|user_access}
-                            <li {if $filter == 'stagnation'}class="selected" {/if}>
-                                <a href="{url keyword=null page=null filter='stagnation' date_from=null}">Застой склада</a>
-                            </li>
-
-                            <li {if $filter == 'purchase'}class="selected" {/if}>
-                                <a href="{url keyword=null page=null filter='purchase' date_from='-60 days'|date:'Y-m-d'}">Необходимо
-                                    закупить</a>
-                            </li>
-
-                            <li {if $filter == 'top' AND $date_from == '-30 days'|date:'Y-m-d'}class="selected" {/if}>
-                                <a href="{url keyword=null page=null filter='top' date_from='-30 days'|date:'Y-m-d'}">Лучшие
-                                    продажи за 30 дней</a>
-                            </li>
-                            <li {if $filter == 'top' AND $date_from == '-90 days'|date:'Y-m-d'}class="selected" {/if}>
-                                <a href="{url keyword=null page=null filter='top' date_from='-90 days'|date:'Y-m-d'}">Лучшие
-                                    продажи за 90 дней</a>
-                            </li>
-                        {/if}
+                        <li {if $filter == 'purchase'}class="selected" {/if}>
+                            <a href="{url filter='purchase' date_from='-60 days'|date:'Y-m-d' clear=true}">Необходимо
+                                закупить</a>
+                        </li>
+                        <li {if $filter == 'top' AND $date_from == '-30 days'|date:'Y-m-d'}class="selected" {/if}>
+                            <a href="{url filter='top' date_from='-30 days'|date:'Y-m-d' clear=true}">Лучшие
+                                продажи за 30 дней</a>
+                        </li>
+                        <li {if $filter == 'top' AND $date_from == '-90 days'|date:'Y-m-d'}class="selected" {/if}>
+                            <a href="{url filter='top' date_from='-90 days'|date:'Y-m-d' clear=true}">Лучшие
+                                продажи за 90 дней</a>
+                        </li>
                     </ul>
                 </div>
 
@@ -107,7 +96,7 @@
 
                                 <div class="col">
                                     <a
-                                        href="{'ProductAdmin'|link:[id=>$product->id]}?return={$smarty.server.REQUEST_URI}">{$product->name}</a>
+                                        href="{'ProductAdmin'|link:[id => $product->id]}?return={$smarty.server.REQUEST_URI}">{$product->name}</a>
 
                                     {if $product->variant_name}
                                         <i class="small"> - {$product->variant_name}</i>
@@ -136,22 +125,13 @@
 
 
                                     <div class="icons flex-row mt-2">
-                                        {if 'product_price'|user_access}
-                                            <a class="show_chart" data-bs-toggle="tooltip" title="Показать график продаж"></a>
-                                        {/if}
-
-                                        <a class="featured {if 'product_price'|user_access}edit{/if}" data-bs-toggle="tooltip"
-                                            title="Рекомендуемый"></a>
-                                        <a class="sale {if 'product_price'|user_access}edit{/if}" data-bs-toggle="tooltip"
-                                            title="Акция"></a>
-                                        <i class="enable {if 'product_price'|user_access}edit{/if} material-icons visibility"
-                                            data-bs-toggle="tooltip" title="Активен" title="Активен"></i>
-                                        {if 'product_price'|user_access}
-                                            <i class="duplicate material-icons library_add" data-bs-toggle="tooltip"
-                                                title="Дублировать"></i>
-                                        {/if}
+                                        <a class="show_chart" data-bs-toggle="tooltip" title="Показать график продаж"></a>
+                                        <a class="featured" data-bs-toggle="tooltip" title="Рекомендуемый"></a>
+                                        <a class="sale" data-bs-toggle="tooltip" title="Акция"></a>
+                                        <i class="enable material-icons visibility" data-bs-toggle="tooltip" title="Активен"
+                                            title="Активен"></i>
                                         <a class="material-icons launch" data-bs-toggle="tooltip" title="Предпросмотр в новом окне"
-                                            href="{$config->root_url}/product/{$product->id}" target="_blank"></a>
+                                            href="{'ProductId'|link:[id => $product->id]}" target="_blank"></a>
                                     </div>
                                 </div>
 
@@ -169,14 +149,10 @@
                                         </div>
 
                                         <span class="col-4 price">
-                                            {if 'product_price'|user_access}
-                                                <a data-bs-toggle="tooltip" data-bs-html="true" {if $product->cost_price > 0}
-                                                        title="Оптовая цена &mdash; {$product->cost_price|number} {$currency->sign}</br>Доход &mdash; {$product->profit_price|number} {$currency->sign}</br> Старая цена  &mdash; {$product->old_price|number} {$currency->sign}"
-                                                    {/if}
-                                                    href="/admin/product/{$product->id}/price?return={$smarty.server.REQUEST_URI}">{$product->price|price_html|raw}</a>
-                                            {else}
-                                                {$product->price|price_html|raw}
-                                            {/if}
+                                            <a data-bs-toggle="tooltip" data-bs-html="true" {if $product->cost_price > 0}
+                                                    title="Оптовая цена &mdash; {$product->cost_price|number} {$currency->sign}</br>Доход &mdash; {$product->profit_price|number} {$currency->sign}</br> Старая цена  &mdash; {$product->old_price|number} {$currency->sign}"
+                                                {/if}
+                                                href="{'ProductPriceAdmin'|link:[id => $product->id]}?return={$smarty.server.REQUEST_URI}">{$product->price|price_html|raw}</a>
                                         </span>
 
                                         <span class="col-4">
@@ -199,6 +175,7 @@
                         </div>
                     {/foreach}
                 </div>
+
                 {include file='parts/pagination.tpl'}
             {else}
                 <div class="p-3">Нет товаров</div>
