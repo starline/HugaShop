@@ -74,10 +74,6 @@ final class Product extends ProductModel
 
         // Товары застоявшиеся на складе
         if (isset($filter['stagnation'])) {
-            $SELECT = Database->placehold(", orde.id as order_id, orde.date as order_date, IF (orde.date IS NULL, 1, 0) as never_ordered");
-            $JOIN = Database->placehold(" LEFT JOIN __order orde on orde.id=(SELECT order_id FROM __order_purchase LEFT JOIN __order o on o.id=order_id AND o.paid=1 WHERE product_id=p.id ORDER BY o.date DESC LIMIT 1)");
-            $WHERE = Database->placehold(" AND IF (stock>0 OR stock IS NULL, 1, 0) = 1 ");
-            $ORDER = Database->placehold("orde.date ASC");
         }
 
 
