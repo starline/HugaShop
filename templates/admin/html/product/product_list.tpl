@@ -81,47 +81,27 @@
 					<!-- Категории товаров -->
 					{include file='parts/categories_tree_part.tpl'}
 
-					<!-- Фильтры -->
-					<ul class="menu_list layer">
-						<li class="{if !$filter}selected{/if}">
-							<a href="{url page=null filter=null}">Все товары</a>
-						</li>
-						<li class="{if $filter == 'sale'}selected{/if}">
-							<a href="{url page=null filter='sale'}">Акция</a>
-						</li>
-						<li class="{if $filter == 'featured'}selected{/if}">
-							<a href="{url page=null filter='featured'}">Рекомендуемые</a>
-						</li>
-						<li {if $filter == 'discounted'}class="selected" {/if}>
-							<a href="{url page=null filter='discounted'}">Со скидкой</a>
-						</li>
-						<li {if $filter == 'visible'}class="selected" {/if}>
-							<a href="{url page=null filter='visible'}">Активные</a>
-						</li>
-						<li {if $filter == 'hidden'}class="selected" {/if}>
-							<a href="{url page=null filter='hidden'}">Неактивные</a>
-						</li>
-						<li {if $filter == 'outofstock'}class="selected" {/if}>
-							<a href="{url page=null filter='outofstock'}">Нет в наличии</a>
-						</li>
-						<li {if $filter == 'instock'}class="selected" {/if}>
-							<a href="{url page=null filter='instock'}">В наличии</a>
-						</li>
-					</ul>
+                                       <!-- Фильтры -->
+                                       <select class="form-select js-url-select" name="filter">
+                                               <option value="" {if !$filter}selected{/if}>Все товары</option>
+                                               <option value="sale" {if $filter == 'sale'}selected{/if}>Акция</option>
+                                               <option value="featured" {if $filter == 'featured'}selected{/if}>Рекомендуемые</option>
+                                               <option value="discounted" {if $filter == 'discounted'}selected{/if}>Со скидкой</option>
+                                               <option value="visible" {if $filter == 'visible'}selected{/if}>Активные</option>
+                                               <option value="hidden" {if $filter == 'hidden'}selected{/if}>Неактивные</option>
+                                               <option value="outofstock" {if $filter == 'outofstock'}selected{/if}>Нет в наличии</option>
+                                               <option value="instock" {if $filter == 'instock'}selected{/if}>В наличии</option>
+                                       </select>
 
-					{if $brands}
-						<ul class="menu_list layer">
-							<li {if !$brand->id}class="selected" {/if}>
-								<a href="{url brand_id=null}">Все бренды</a>
-							</li>
-							{foreach $brands as $b}
-								<li brand_id="{$b->id}" class="{if $brand->id == $b->id}selected{/if}">
-									<a href="{url keyword=null page=null brand_id=$b->id}">{$b->name}</a>
-								</li>
-							{/foreach}
-						</ul>
-					{/if}
-				</div>
+                                       {if $brands}
+                                               <select class="form-select js-url-select" name="brand_id" data-clear="keyword">
+                                                       <option value="" {if !$brand->id}selected{/if}>Все бренды</option>
+                                                       {foreach $brands as $b}
+                                                               <option value="{$b->id}" {if $brand->id == $b->id}selected{/if}>{$b->name}</option>
+                                                       {/foreach}
+                                               </select>
+                                       {/if}
+                                </div>
 
 			</div>
 		</div>
@@ -314,16 +294,35 @@
 		const php_currency_sign = '{$currency->sign}';
 
 
-		{literal}
-			$(function() {
+{literal}
+                       $(function() {
 
-				// Перенос товара на другую страницу
-				$("#action select[name=action]").change(function() {
-					if ($(this).val() == 'move_to_page')
-						$("span#move_to_page").css('display', 'inline-block');
-					else
-						$("span#move_to_page").hide();
-				});
+                               let current_url = new URL(window.location.href);
+
+                               // Select filter and brand
+                               $('select.js-url-select').change(function() {
+                                       const param = $(this).attr('name');
+                                       const selected = $(this).val();
+                                       if (selected !== '')
+                                               current_url.searchParams.set(param, selected);
+                                       else
+                                               current_url.searchParams.delete(param);
+
+                                       const clears = $(this).data('clear');
+                                       if (clears)
+                                               clears.split(',').forEach(p => current_url.searchParams.delete(p));
+
+                                       current_url.searchParams.delete('page');
+                                       window.location.href = current_url.toString();
+                               });
+
+                               // Перенос товара на другую страницу
+                               $("#action select[name=action]").change(function() {
+                                       if ($(this).val() == 'move_to_page')
+                                               $("span#move_to_page").css('display', 'inline-block');
+                                       else
+                                               $("span#move_to_page").hide();
+                               });
 
 				$(".pagination a.droppable").droppable({
 					tolerance: "pointer",
