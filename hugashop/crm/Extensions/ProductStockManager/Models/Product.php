@@ -10,6 +10,8 @@
 namespace HugaShop\Extensions\ProductStockManager\Models;
 
 use Illuminate\Support\Arr;
+use HugaShop\Models\Order\Order;
+use HugaShop\Models\Order\OrderPurchase;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Capsule\Manager as DB;
 use HugaShop\Models\Product\Product as ProductModel;
@@ -74,6 +76,16 @@ final class Product extends ProductModel
 
         // Товары застоявшиеся на складе
         if (isset($filter['stagnation'])) {
+            $ordersTable = Order::getModel()->getTable();
+            $orderPurchaseTable = OrderPurchase::getModel()->getTable();
+
+            $query->withMax([
+                'order_purchases as order_date' => fn($q) => $q
+                    ->join($ordersTable, "$orderPurchaseTable.order_id", '=', "$ordersTable.id")
+                    ->where("$ordersTable.paid", 1)
+                    ->where("$ordersTable.closed", 1),
+            ], "$ordersTable.date")
+                ->orderBy('order_date');
         }
 
 

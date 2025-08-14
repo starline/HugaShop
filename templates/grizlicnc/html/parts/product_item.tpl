@@ -20,7 +20,8 @@
 
 			<div class="product_info">
 				<a class="name" href="{'Product'|linkLang:[url => $product->url]}"
-					title="{$product->name}">{$product->name}</a>
+					title="{$product->name}">{$product->name}{if $product->variant_name}
+					{$product->variant_name}{/if}</a>
 				<div class="annotation">{$product->annotation}</div>
 			</div>
 

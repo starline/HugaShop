@@ -102,14 +102,14 @@
                                         <i class="small"> - {$product->variant_name}</i>
                                     {/if}
 
-
+                                    {$product|dump}
                                     {if $product->order_date}
                                         <div class="notice" data-bs-toggle="tooltip" title="Дата последнего заказа">
                                             Последний заказ: <span>{$product->order_date|date}</span>
                                             прошло <span>{(($config->now - $product->order_date|strtotime)/60/60/24)|round}</span>
                                             дней
                                         </div>
-                                    {elseif $product->never_ordered}
+                                    {elseif $product->order_date|is_null}
                                         <div class="notice">Ни разу не был заказан</div>
                                     {elseif $product->profit}
                                         <div class="notice">

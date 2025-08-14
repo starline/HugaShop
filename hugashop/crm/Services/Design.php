@@ -107,6 +107,8 @@ class Design
         self::setModifierPlugin('first',             self::class,               'first_modifier');
         self::setModifierPlugin('cut',               self::class,               'cut_modifier');
         self::setModifierPlugin('byte_convert',      Helper::class,             'convertBytes');
+        self::setModifierPlugin('dump',              self::class,               'dump');
+
 
         // DATE Plugins
         self::setModifierPlugin('date',              Helper::class,             'dateFormat');
@@ -464,5 +466,14 @@ class Design
         } else {
             return array_slice($array, 0, count($array) + $num, true);
         }
+    }
+
+
+    /**
+     * Dump
+     */
+    public static function dump($var)
+    {
+        dump($var);
     }
 }
