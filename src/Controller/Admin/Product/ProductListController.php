@@ -166,19 +166,10 @@ class ProductListController extends BaseAdminController
                 $filter['in_stock'] = 0;
             } elseif ($query_filter == 'instock') {
                 $filter['in_stock'] = 1;
-            } elseif ($query_filter == 'stagnation') {
-                $filter['stagnation'] = 1;
-            } elseif ($query_filter == 'purchase') {
-                $filter['purchase'] = 1;
-            } elseif ($query_filter == 'top') {
-                $filter['top'] = 1;
             }
 
             Design::assign('filter', $query_filter);
         }
-
-        $filter['date_from'] = Request::get('date_from');
-        Design::assign('date_from', $filter['date_from']);
 
         // Поиск (type 'string' - сжирает запятые)
         $keyword = Request::get('keyword');
@@ -207,17 +198,11 @@ class ProductListController extends BaseAdminController
             }
         }
 
-        // Бренды категории
-        $brands = ProductBrand::getBrands(['category_id' => $filter['category_id']]);
-
-        // Категории
-        $categories = ProductCategory::getCategoriesTree();
-
-        Design::assign('pagination',        PaginationService::getPagination($products_count, $filter));
         Design::assign('products',          $products);
         Design::assign('products_count',    $products_count);
-        Design::assign('categories',        $categories);
-        Design::assign('brands',            $brands);
+        Design::assign('pagination',        PaginationService::getPagination($products_count, $filter));
+        Design::assign('categories',        ProductCategory::getCategoriesTree());
+        Design::assign('brands',            ProductBrand::getBrands(['category_id' => $filter['category_id']]));
 
         return $this->fetchResponse('product/product_list.tpl');
     }

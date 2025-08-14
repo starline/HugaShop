@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
  */
 
 namespace HugaShop\Extensions\ProductStockManager\Models;
@@ -13,6 +13,7 @@ use HugaShop\Models\Product\Product as ProductModel;
 
 final class Product extends ProductModel
 {
+
     /**
      * Get Products
      */
@@ -26,8 +27,8 @@ final class Product extends ProductModel
             $query->where(function ($q) use ($keywords) {
                 foreach ($keywords as $kw) {
                     $q->orWhere('name', 'like', "%$kw%")
-                      ->orWhere('sku', 'like', "%$kw%")
-                      ->orWhere('variant_name', 'like', "%$kw%");
+                        ->orWhere('sku', 'like', "%$kw%")
+                        ->orWhere('variant_name', 'like', "%$kw%");
                 }
             });
         }
@@ -48,14 +49,15 @@ final class Product extends ProductModel
             $query->limit($limit)->offset(($page - 1) * $limit);
         }
 
-        return $model->runWithInitTable(fn () => $query->get()->keyBy('id'));
+        return $model->runWithInitTable(fn() => $query->get()->keyBy('id'));
     }
+
 
     /**
      * Count
      */
-    public static function countProducts(array $filter = [])
+    public static function countProducts(array $filter = [], array $join = [])
     {
-        return self::getProducts($filter, count: true);
+        return self::getProducts($filter, $join, count: true);
     }
 }

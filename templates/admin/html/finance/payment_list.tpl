@@ -199,7 +199,7 @@
 
          // Сделать проверенным
          $("a.verified.edit").click(function() {
-            ajax_icon($(this), 'payment', 'verified', csrf);
+            ajax_icon($(this), 'payment', 'verified');
             return false;
          });
 
@@ -243,8 +243,7 @@
                      'filter': 'byMonth',
                      'type': 'plus',
                      'purse_id': purse_id,
-                     'category_id': category_id,
-                     'csrf': csrf
+                     'category_id': category_id
                   },
                   options: {
                      label: 'Сумма приходов, ' + php_currency_sign,
@@ -258,8 +257,7 @@
                      'filter': 'byMonth',
                      'type': 'minus',
                      'purse_id': purse_id,
-                     'category_id': category_id,
-                     'csrf': csrf
+                     'category_id': category_id
                   },
                   options: {
                      label: 'Сумма расходов, ' + php_currency_sign,

@@ -99,6 +99,6 @@ final class Product extends ProductModel
      */
     public static function countProducts(array $filter = [], array $join = [])
     {
-        return self::getProducts($filter, count: true);
+        return self::getProducts($filter, $join, count: true);
     }
 }
