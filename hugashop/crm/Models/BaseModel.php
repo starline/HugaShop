@@ -308,12 +308,15 @@ abstract class BaseModel extends Model
 
         // Поиск по ключевому слову
         if (!empty($filter['search'])) {
+            $keywords = explode(' ', trim($filter['search']));
             $search_fields = static::getSearchFields();
-            $query->where(function (Builder $sub_query) use ($search_fields, $filter) {
-                foreach ($search_fields as $field) {
-                    $sub_query->orWhere($field, 'like', '%' . $filter['search'] . '%');
-                }
-            });
+            foreach ($keywords as $kw) {
+                $query->where(function (Builder $sub_query) use ($search_fields, $kw) {
+                    foreach ($search_fields as $field) {
+                        $sub_query->orWhere($field, 'like', '%' . $kw . '%');
+                    }
+                });
+            }
         }
 
         // Reset extra filters

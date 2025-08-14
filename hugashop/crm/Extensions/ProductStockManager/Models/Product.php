@@ -10,7 +10,7 @@
 namespace HugaShop\Extensions\ProductStockManager\Models;
 
 use Illuminate\Support\Arr;
-use HugaShop\Services\Config;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Capsule\Manager as DB;
 use HugaShop\Models\Product\Product as ProductModel;
 
@@ -24,6 +24,7 @@ final class Product extends ProductModel
     {
         $model = static::getModel();
         $query = $model->newQuery();
+
 
         // Best sellers
         if (Arr::has($filter, 'top')) {
@@ -43,6 +44,7 @@ final class Product extends ProductModel
                 ->having('profit', '>', 0)
                 ->orderByDesc('profit');
         }
+
 
         // Proposals for purchase
         if (isset($filter['purchase'])) {
@@ -70,16 +72,19 @@ final class Product extends ProductModel
         }
 
 
+        // Keywords
         if (!empty($filter['keyword'])) {
             $keywords = explode(' ', trim($filter['keyword']));
-            $query->where(function ($q) use ($keywords) {
-                foreach ($keywords as $kw) {
-                    $q->orWhere('name', 'like', "%$kw%")
-                        ->orWhere('sku', 'like', "%$kw%")
-                        ->orWhere('variant_name', 'like', "%$kw%");
-                }
-            });
+            $search_fields = static::getSearchFields();
+            foreach ($keywords as $kw) {
+                $query->where(function (Builder $sub_query) use ($search_fields, $kw) {
+                    foreach ($search_fields as $field) {
+                        $sub_query->orWhere($field, 'like', '%' . $kw . '%');
+                    }
+                });
+            }
         }
+
 
         if ($count) {
             return $query->count();
