@@ -4,16 +4,14 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.4
+ * @version 1.5
  */
 
 namespace HugaShop\Extensions\ProductStockManager\Models;
 
 use Illuminate\Support\Arr;
-use HugaShop\Models\Order\OrderPurchase;
-use HugaShop\Models\Product\ProductVariant;
+use HugaShop\Services\Config;
 use Illuminate\Database\Capsule\Manager as DB;
-use HugaShop\Models\Warehouse\WarehousePurchase;
 use HugaShop\Models\Product\Product as ProductModel;
 
 final class Product extends ProductModel
@@ -26,8 +24,6 @@ final class Product extends ProductModel
     {
         $model = static::getModel();
         $query = $model->newQuery();
-        $products_table = $model->getTable();
-        $query->select("$products_table.*");
 
         // Best sellers
         if (Arr::has($filter, 'top')) {
@@ -48,9 +44,29 @@ final class Product extends ProductModel
                 ->orderByDesc('profit');
         }
 
-        // Предложение по закупке
+        // Proposals for purchase
         if (isset($filter['purchase'])) {
-            $dateFrom = $filter['date_from'] ?? date('Y-m-d', strtotime('-60 days'));
+            $date_from   = $filter['date_from'] ?? date('Y-m-d', strtotime('-60 days'));
+            $ordersScope = function ($q) use ($date_from) {
+                $q->where('date', '>', $date_from)
+                    ->where('paid', 1)
+                    ->where('closed', 1);
+            };
+
+            $base = $query->withSum([
+                'order_purchases as sold' => fn($q) => $q->whereHas('order', $ordersScope),
+            ], 'amount')
+                ->with('movements')
+                ->withSum('movements as waiting', 'amount');
+
+            // Оборачиваем в подзапрос и считаем need по алиасам
+            $sub_alias = 'p';
+            $sub_prefix_alias = $model->getConnection()->getTablePrefix() . 'p';
+            $query->fromSub($base, $sub_alias)
+                ->select("$sub_alias.*")
+                ->selectRaw("COALESCE($sub_prefix_alias.sold, 0) * 2 - COALESCE($sub_prefix_alias.stock, 0) - COALESCE($sub_prefix_alias.waiting, 0) AS need")
+                ->having('need', '>', 0)
+                ->orderByDesc('need');
         }
 
 
