@@ -4,11 +4,13 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.4
  */
 
 namespace HugaShop\Extensions\ProductStockManager\Models;
 
+use Illuminate\Support\Arr;
+use Illuminate\Database\Capsule\Manager as DB;
 use HugaShop\Models\Product\Product as ProductModel;
 
 final class Product extends ProductModel
@@ -21,16 +23,28 @@ final class Product extends ProductModel
     {
         $model = static::getModel();
         $query = $model->newQuery();
+        $products_table = $model->getTable();
+        $query->select("$products_table.*");
 
+        // Best sellers
         if (Arr::has($filter, 'top')) {
-            if (empty($filter['date_from'])) {
-                $filter['date_from'] = date('Y-m-d', strtotime('-30 days'));
-            }
-            $SELECT = Database->placehold(", ordpur.profit as profit, ordpur.sold as sold");
-            $JOIN = Database->placehold(" LEFT JOIN (SELECT SUM((op.price-op.cost_price)*op.amount) as profit, product_id, SUM(op.amount) as sold FROM __order_purchase op LEFT JOIN __order ord on ord.id = op.order_id WHERE ord.date>? AND ord.paid=1 AND ord.closed=1 GROUP BY product_id) ordpur on ordpur.product_id=p.id ", $filter['date_from']);
-            $WHERE = Database->placehold(" AND ordpur.profit IS NOT NULL ");
-            $ORDER = Database->placehold("ordpur.profit DESC");
+            $date_from = $filter['date_from'] ?? date('Y-m-d', strtotime('-30 days'));
+            $ordersScope = function ($q) use ($date_from) {
+                $q->where('date', '>', $date_from)
+                    ->where('paid', 1)
+                    ->where('closed', 1);
+            };
+
+            $query->withSum([
+                'order_purchases as profit' => fn($q) => $q->whereHas('order', $ordersScope),
+            ], DB::raw('(price - cost_price) * amount'))
+                ->withSum([
+                    'order_purchases as sold' => fn($q) => $q->whereHas('order', $ordersScope),
+                ], 'amount')
+                ->having('profit', '>', 0)
+                ->orderByDesc('profit');
         }
+
 
         if (!empty($filter['keyword'])) {
             $keywords = explode(' ', trim($filter['keyword']));

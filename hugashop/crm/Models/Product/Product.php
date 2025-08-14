@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 4.2
+ * @version 4.3
  *
  */
 
@@ -21,6 +21,7 @@ use HugaShop\Models\Content\ContentComment;
 use HugaShop\Models\Product\ProductRelated;
 use HugaShop\Models\Product\ProductVariant;
 use HugaShop\Models\Warehouse\WarehousePurchase;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use HugaShop\Models\Localization\AbstractTranslation;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -91,29 +92,14 @@ class Product extends BaseModel
             ->orderBy('position');
     }
 
-
-    /**
-     * Future warehouse movements for the product
-     */
-    public function movements()
+    public function order_purchases(): HasMany
     {
-        return $this->hasMany(WarehousePurchase::class, 'product_id', 'id')
-            ->with(['warehouse_move' => function ($q) {
-                $q->where('status', 1)
-                    ->orderBy('awaiting_date');
-            }])
-            ->whereHas('warehouse_move', function ($q) {
-                $q->where('status', 1);
-            });
+        return $this->hasMany(OrderPurchase::class, 'product_id');
     }
 
-
-    /**
-     * Amount of future warehouse movements
-     */
-    public function getMovementsAmountAttribute()
+    public function move_purchases(): HasMany
     {
-        return $this->movements->sum('amount');
+        return $this->hasMany(WarehousePurchase::class, 'product_id');
     }
 
     public function variants()
@@ -159,6 +145,29 @@ class Product extends BaseModel
             'product_id',
             'feature_id'
         )->orderBy('position');
+    }
+
+    /**
+     * Future warehouse movements for the product
+     */
+    public function movements()
+    {
+        return $this->hasMany(WarehousePurchase::class, 'product_id', 'id')
+            ->with(['warehouse_move' => function ($q) {
+                $q->where('status', 1)
+                    ->orderBy('awaiting_date');
+            }])
+            ->whereHas('warehouse_move', function ($q) {
+                $q->where('status', 1);
+            });
+    }
+
+    /**
+     * Amount of future warehouse movements
+     */
+    public function getMovementsAmountAttribute()
+    {
+        return $this->movements->sum('amount');
     }
 
 
@@ -242,9 +251,13 @@ class Product extends BaseModel
         }
 
         if (Arr::has($filter, 'in_stock')) {
-            $query->where(function ($q) {
-                $q->where('stock', '>', 0)->orWhereNull('stock');
-            });
+            if ($filter['in_stock'] === 1) {
+                $query->where(function ($q) {
+                    $q->where('stock', '>', 0)->orWhereNull('stock');
+                });
+            } else {
+                $query->where('stock', '<=', 0);
+            }
         }
 
         // Keyword search including translations
