@@ -45,6 +45,26 @@ final class Product extends ProductModel
                 ->orderByDesc('profit');
         }
 
+        // Предложение по закупке
+        $group_purchase = "";
+        if (isset($filter['purchase'])) {
+
+            // По-умолчанию берем продажи за 60 дней
+            if (empty($filter['date_from'])) {
+                $filter['date_from'] = date('Y-m-d', strtotime('-60 days'));
+            }
+
+            $SELECT = Database->placehold(", ordpur.sold as sold, IF (whpur.waiting IS NULL, 0, whpur.waiting) as waiting, varnt.stock as stock, MAX(-(varnt.stock - ordpur.sold*2 + IF (whpur.waiting IS NULL, 0, whpur.waiting))) as need, varnt.id as variant_id ");
+            $JOIN = Database->placehold(" 
+                LEFT JOIN (SELECT product_id, id, stock FROM __product_variant) varnt on varnt.product_id=p.id 
+                LEFT JOIN (SELECT variant_id, SUM(op.amount) as sold FROM __order_purchase op LEFT JOIN __order ord on ord.id = op.order_id WHERE ord.date>? AND ord.paid=1 AND ord.closed=1 GROUP BY variant_id) ordpur on ordpur.variant_id=varnt.id 
+                LEFT JOIN (SELECT variant_id, SUM(whp.amount) as waiting FROM __wh_purchase whp LEFT JOIN __wh_move whm on whm.id=whp.move_id WHERE whm.status=1 GROUP BY variant_id) whpur on whpur.variant_id=varnt.id 
+                ", $filter['date_from']);
+            $WHERE = Database->placehold(" AND ordpur.sold is not null AND -(varnt.stock - ordpur.sold*2 + IF (whpur.waiting IS NULL,0,whpur.waiting)) > 0 ");
+            $group_purchase = Database->placehold("GROUP BY p.id");
+            $ORDER = Database->placehold("need DESC");
+        }
+
 
         if (!empty($filter['keyword'])) {
             $keywords = explode(' ', trim($filter['keyword']));
