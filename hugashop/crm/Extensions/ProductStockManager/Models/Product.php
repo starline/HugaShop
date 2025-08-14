@@ -51,34 +51,6 @@ final class Product extends ProductModel
         // Предложение по закупке
         if (isset($filter['purchase'])) {
             $dateFrom = $filter['date_from'] ?? date('Y-m-d', strtotime('-60 days'));
-
-            $soldSub = OrderPurchase::query()
-                ->selectRaw('product_id, SUM(amount) as sold')
-                ->whereHas('order', function ($q) use ($dateFrom) {
-                    $q->where('date', '>', $dateFrom)
-                        ->where('paid', 1)
-                        ->where('closed', 1);
-                })
-                ->groupBy('product_id');
-
-            $waitingSub = WarehousePurchase::query()
-                ->selectRaw('product_id, SUM(amount) as waiting')
-                ->whereHas('warehouse_move', function ($q) {
-                    $q->where('status', 1);
-                })
-                ->groupBy('product_id');
-
-            $query->leftJoinSub($soldSub, 'ordpur', 'ordpur.product_id', '=', "$products_table.id")
-                ->leftJoinSub($waitingSub, 'whpur', 'whpur.product_id', '=', "$products_table.id")
-                ->addSelect([
-                    DB::raw('ordpur.sold as sold'),
-                    DB::raw('COALESCE(whpur.waiting, 0) as waiting'),
-                    DB::raw("$products_table.stock as stock"),
-                    DB::raw("ordpur.sold * 2 - $products_table.stock - COALESCE(whpur.waiting, 0) as need"),
-                ])
-                ->whereNotNull('ordpur.sold')
-                ->whereRaw("ordpur.sold * 2 - $products_table.stock - COALESCE(whpur.waiting, 0) > 0")
-                ->orderByDesc('need');
         }
 
 
