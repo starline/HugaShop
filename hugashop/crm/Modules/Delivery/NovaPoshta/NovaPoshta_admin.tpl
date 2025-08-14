@@ -31,8 +31,7 @@
             </div>
 
             <div class="tracking_info">
-                <a target="_blank"
-                    href="http://novaposhta.ua/tracking/index/cargo_number/{$order->delivery_note}">NovaPoshta.ua
+                <a target="_blank" href="https://novaposhta.ua/tracking/{$order->delivery_note}">NovaPoshta.ua
                     →</a>
             </div>
         </div>

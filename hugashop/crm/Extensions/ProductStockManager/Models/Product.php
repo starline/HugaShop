@@ -10,7 +10,10 @@
 namespace HugaShop\Extensions\ProductStockManager\Models;
 
 use Illuminate\Support\Arr;
+use HugaShop\Models\Order\OrderPurchase;
+use HugaShop\Models\Product\ProductVariant;
 use Illuminate\Database\Capsule\Manager as DB;
+use HugaShop\Models\Warehouse\WarehousePurchase;
 use HugaShop\Models\Product\Product as ProductModel;
 
 final class Product extends ProductModel
@@ -46,23 +49,36 @@ final class Product extends ProductModel
         }
 
         // Предложение по закупке
-        $group_purchase = "";
         if (isset($filter['purchase'])) {
+            $dateFrom = $filter['date_from'] ?? date('Y-m-d', strtotime('-60 days'));
 
-            // По-умолчанию берем продажи за 60 дней
-            if (empty($filter['date_from'])) {
-                $filter['date_from'] = date('Y-m-d', strtotime('-60 days'));
-            }
+            $soldSub = OrderPurchase::query()
+                ->selectRaw('product_id, SUM(amount) as sold')
+                ->whereHas('order', function ($q) use ($dateFrom) {
+                    $q->where('date', '>', $dateFrom)
+                        ->where('paid', 1)
+                        ->where('closed', 1);
+                })
+                ->groupBy('product_id');
 
-            $SELECT = Database->placehold(", ordpur.sold as sold, IF (whpur.waiting IS NULL, 0, whpur.waiting) as waiting, varnt.stock as stock, MAX(-(varnt.stock - ordpur.sold*2 + IF (whpur.waiting IS NULL, 0, whpur.waiting))) as need, varnt.id as variant_id ");
-            $JOIN = Database->placehold(" 
-                LEFT JOIN (SELECT product_id, id, stock FROM __product_variant) varnt on varnt.product_id=p.id 
-                LEFT JOIN (SELECT variant_id, SUM(op.amount) as sold FROM __order_purchase op LEFT JOIN __order ord on ord.id = op.order_id WHERE ord.date>? AND ord.paid=1 AND ord.closed=1 GROUP BY variant_id) ordpur on ordpur.variant_id=varnt.id 
-                LEFT JOIN (SELECT variant_id, SUM(whp.amount) as waiting FROM __wh_purchase whp LEFT JOIN __wh_move whm on whm.id=whp.move_id WHERE whm.status=1 GROUP BY variant_id) whpur on whpur.variant_id=varnt.id 
-                ", $filter['date_from']);
-            $WHERE = Database->placehold(" AND ordpur.sold is not null AND -(varnt.stock - ordpur.sold*2 + IF (whpur.waiting IS NULL,0,whpur.waiting)) > 0 ");
-            $group_purchase = Database->placehold("GROUP BY p.id");
-            $ORDER = Database->placehold("need DESC");
+            $waitingSub = WarehousePurchase::query()
+                ->selectRaw('product_id, SUM(amount) as waiting')
+                ->whereHas('warehouse_move', function ($q) {
+                    $q->where('status', 1);
+                })
+                ->groupBy('product_id');
+
+            $query->leftJoinSub($soldSub, 'ordpur', 'ordpur.product_id', '=', "$products_table.id")
+                ->leftJoinSub($waitingSub, 'whpur', 'whpur.product_id', '=', "$products_table.id")
+                ->addSelect([
+                    DB::raw('ordpur.sold as sold'),
+                    DB::raw('COALESCE(whpur.waiting, 0) as waiting'),
+                    DB::raw("$products_table.stock as stock"),
+                    DB::raw("ordpur.sold * 2 - $products_table.stock - COALESCE(whpur.waiting, 0) as need"),
+                ])
+                ->whereNotNull('ordpur.sold')
+                ->whereRaw("ordpur.sold * 2 - $products_table.stock - COALESCE(whpur.waiting, 0) > 0")
+                ->orderByDesc('need');
         }
 
 
