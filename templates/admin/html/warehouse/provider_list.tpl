@@ -7,9 +7,9 @@
 
 	{* Заголовок *}
 	<div class="header_top">
-               <h1>Поставщики</h1>
-               <a class="add" href="{'ProviderAdmin'|link}">Добавить поставщика</a>
-       </div>
+		<h1>Поставщики</h1>
+		<a class="add" href="{'ProviderAdmin'|link}">Добавить поставщика</a>
+	</div>
 
 
 	<div id="main_list">
