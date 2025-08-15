@@ -257,7 +257,7 @@ textarea {
 	overflow-wrap: anywhere;
 	width: fit-content;
 	cursor: default;
-	font-size: .8rem;
+	font-size: .85rem;
 	font-weight: 400;
 	padding-top: 5px;
 	background-color: var(--background-inside-color);
@@ -854,7 +854,7 @@ a.admin_bookmark svg {
 }
 
 #variants_block ul li.variant_sku_info .variant_sku {
-	font-size: 0.8rem;
+	font-size: 0.85rem;
 }
 
 #variants_block ul li.variant_sku_info .marking_print {
@@ -882,7 +882,7 @@ a.admin_bookmark svg {
 }
 
 #variants_block ul li.variant_price_info .variant_discount {
-	font-size: 0.8rem;
+	font-size: 0.85rem;
 	text-align: center;
 }
 
@@ -901,7 +901,7 @@ a.admin_bookmark svg {
 }
 
 #variants_block ul li.variant_price_info .variant_old {
-	font-size: 0.8rem;
+	font-size: 0.85rem;
 	color: var(--flash-color);
 }
 
@@ -1635,7 +1635,7 @@ div#sort_links b {
 }
 
 .list .order_date .time {
-	font-size: 0.8rem;
+	font-size: 0.85rem;
 	color: var(--text-dim-color)
 }
 
@@ -1747,7 +1747,7 @@ div#sort_links b {
 
 .list .list_row .variants .wmovements {
 	right: 0;
-	font-size: 0.8rem;
+	font-size: 0.85rem;
 	top: -15px;
 	position: absolute;
 	color: var(--lightin-color);
@@ -2153,7 +2153,7 @@ span.alert {
 }
 
 .list.purchases .stock .variant_stock {
-	font-size: 0.8rem;
+	font-size: 0.85rem;
 	line-height: 2.1;
 	color: var(--lightin-dark-color);
 }
@@ -2162,7 +2162,7 @@ span.alert {
 	position: absolute;
 	right: 0;
 	top: -15px;
-	font-size: 0.8rem;
+	font-size: 0.85rem;
 	color: var(--text-dim-color);
 	display: flex;
 	flex-direction: row;
@@ -2230,7 +2230,7 @@ span.alert {
 	opacity: 0.66;
 	cursor: default;
 	position: absolute;
-	font-size: 0.8rem;
+	font-size: 0.85rem;
 	color: var(--text-alt-color);
 	background-color: var(--text-dim-color);
 	padding: 1px 5px;
@@ -2288,7 +2288,7 @@ span.alert {
 
 .order_date_time div {
 	color: var(--text-dim-color);
-	font-size: 0.8rem;
+	font-size: 0.85rem;
 	margin: 8px 0;
 }
 
@@ -2300,7 +2300,7 @@ span.alert {
 }
 
 .order_date_time .order_manager .profit_dicount {
-	font-size: 0.8rem;
+	font-size: 0.85rem;
 	color: var(--flash-color);
 	font-weight: normal;
 }
@@ -2537,13 +2537,13 @@ input.input_autocomplete {
 
 .subtotal .over_line {
 	font-weight: 600;
-	font-size: 0.8rem;
+	font-size: 0.85rem;
 	color: var(--text-dim-color);
 }
 
 
 .subtotal .over_line {
-	font-size: 0.8rem;
+	font-size: 0.85rem;
 	color: var(--text-dim-color);
 }
 
@@ -2635,7 +2635,7 @@ input.input_autocomplete {
 }
 
 .order_label_text {
-	font-size: 0.8rem;
+	font-size: 0.85rem;
 	color: var(--text-alt-color);
 	display: block;
 	padding: 4px 4px;

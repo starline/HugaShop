@@ -407,11 +407,9 @@ class User extends BaseModel
 
         // If user is logged In
         if (empty(self::$auth_user) and !empty($user_id = self::isLoggedIn())) {
-
             $user = User::getOne($user_id, join: 'group');
-
-            if ($user && $user->enabled == 1) {
-                if ($user->manager == 1) {
+            if ($user && $user->enabled === 1) {
+                if ($user->manager === 1) {
                     $user->permissions = UserPermission::getUserPermissionsName($user->id);
                 }
                 self::$auth_user = $user;

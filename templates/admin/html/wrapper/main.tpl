@@ -54,11 +54,6 @@
 									<span>
 										<div class="menu_icon">
 											<img loading="lazy" src="{'images/menu/orders.png'|asset}" />
-											{if $orders_info_count[0]}
-												<div
-													class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-													{$orders_info_count[0]}</div>
-											{/if}
 										</div>
 										<b>CRM</b>
 									</span>
@@ -67,6 +62,10 @@
 										<li
 											class="mini {if $route|in_array:[OrderListAdmin, OrderAdmin, OrderNewAdmin]}active{/if}">
 											<a href=" {'OrderListAdmin'|link:[status => 0]}">Заказы</a>
+											{if $orders_info_count[0]}
+												<div class="badge rounded-pill bg-danger">
+													{$orders_info_count[0]}</div>
+											{/if}
 										</li>
 
 										<li class="mini {if $route|in_array:['CartListAdmin']}active{/if}">
@@ -171,12 +170,6 @@
 									<span>
 										<div class="menu_icon">
 											<img loading="lazy" src="{'images/menu/pages.png'|asset}">
-											{if $new_comments_counter}
-												<div
-													class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-													<span>{$new_comments_counter}</span>
-												</div>
-											{/if}
 										</div>
 										<b>Контент</b>
 									</span>
@@ -192,6 +185,11 @@
 										{if 'comment'|user_access}
 											<li class="mini {if $route|in_array:[CommentListAdmin, CommentAdmin]}active{/if}">
 												<a href="/admin/comments">Комментарии</a>
+												{if $new_comments_counter}
+													<div class="badge rounded-pill bg-danger">
+														{$new_comments_counter}
+													</div>
+												{/if}
 											</li>
 										{/if}
 

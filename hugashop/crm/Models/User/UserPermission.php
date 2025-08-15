@@ -18,7 +18,7 @@ class UserPermission extends BaseModel
 {
 
     protected static $table_fields = [
-        'id' =>             ['type' => 'int',                               'extra' => 'AUTO_INCREMENT'],
+        'id' =>             ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'user_id' =>        ['type' => 'int',           'req' => true],
         'name' =>           ['type' => 'varchar',       'req' => true]
 
