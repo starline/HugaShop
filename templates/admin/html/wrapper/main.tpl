@@ -318,7 +318,7 @@
 				</main>
 
 				<footer class="mt-4 mb-4">
-					<span>HugaShop v2.5</span>
+					<span>HugaShop v{$config->version}</span>
 				</footer>
 			</div>
 		</div>

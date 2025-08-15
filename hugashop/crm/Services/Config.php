@@ -32,6 +32,9 @@ class Config
     // Product URL prefix
     public const PRODUCT_PREFIX = '/tovar-';
 
+    // Core version
+    public const VERSION = '2.6';
+
 
     /**
      * Записываем настройки файла в $vars
@@ -87,6 +90,7 @@ class Config
         self::$vars['images_watermark_file'] =      self::$root_dir . 'public/files/watermark/watermark.png';
 
         self::$vars['now'] = time(); # Now time from 1970
+        self::$vars['version'] = self::VERSION;
     }
 
 
