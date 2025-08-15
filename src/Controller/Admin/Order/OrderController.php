@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.9
+ * @version 3.0
  *
  */
 
@@ -112,8 +112,7 @@ class OrderController extends BaseAdminController
 
 
             // Обновляем метки заказа
-            $order_labels = Request::post('order_labels', 'array');
-            OrderLabel::updateOrderLabels($order->id, $order_labels);
+            OrderLabel::updateOrderLabels($order->id, Request::post('order_labels', 'array'));
 
 
             // Save Purchases
@@ -149,7 +148,7 @@ class OrderController extends BaseAdminController
             }
 
             // Обновляем общую стоимость и прибыль, комиссию менеджера
-            Order::updateTotalPrice($order->id, modified: false);
+            Order::updateTotalPrice($order->id);
 
 
             ////////////////////////////////////////////
@@ -207,7 +206,7 @@ class OrderController extends BaseAdminController
 
                     $payment_method = OrderPayment::getOne($order->payment_method_id);
 
-                    // В настройках способа оплаты должжен быть указан колешел
+                    // В настройках способа оплаты должен быть указан кошелек
                     if (!empty($payment_method->finance_purse_id)) {
 
                         $payment_income = new \stdClass();
@@ -368,9 +367,9 @@ class OrderController extends BaseAdminController
 
             // Выбираем товары заказа
             foreach ($order->purchases as $purchase) {
-                $total->purchases_weight += $purchase->total_weight; # Общий вес
-                $total->purchases_price += $purchase->total_price; # Общая стоимость товаров. Без учета скидок
-                $total->purchases_count += $purchase->amount;
+                $total->purchases_weight    += $purchase->total_weight; # Общий вес
+                $total->purchases_price     += $purchase->total_price; # Общая стоимость товаров. Без учета скидок
+                $total->purchases_count     += $purchase->amount;
             }
 
             // Выбранный Менеджер
