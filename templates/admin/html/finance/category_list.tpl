@@ -12,7 +12,7 @@
 			<h1>Нет категорий платежей</h1>
 		{/if}
 
-                <a class="add" href="{'FinanceCategoryNewAdmin'|link}">Добавить категорию платежей</a>
+		<a class="add" href="{'FinanceCategoryNewAdmin'|link}">Добавить категорию платежей</a>
 	</div>
 
 	{if $categories}
@@ -35,7 +35,7 @@
 
 							<div class="col row">
 								<div class="col-12 col-sm-10">
-                                                                        <a href="{'FinanceCategoryAdmin'|link:[id => $c->id]}">{$c->name}</a>
+									<a href="{'FinanceCategoryAdmin'|link:[id => $c->id]}">{$c->name}</a>
 									<div class="notice">{$c->comment|strip_tags|nl2br|raw}</div>
 								</div>
 

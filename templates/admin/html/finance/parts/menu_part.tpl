@@ -6,14 +6,14 @@
 			<a href="{'PaymentListAdmin'|link}">Платежи</a>
 		</li>
 
-                <li class="mini right {if $route|in_array:[PurseListAdmin, PurseAdmin, PurseNewAdmin]}active{/if}">
-                        <a href="{'PurseListAdmin'|link}">Кошелки</a>
-                </li>
+		<li class="mini right {if $route|in_array:[PurseListAdmin, PurseAdmin, PurseNewAdmin]}active{/if}">
+			<a href="{'PurseListAdmin'|link}">Кошелки</a>
+		</li>
 
 		<li
-                        class="mini right {if $route|in_array:[FinanceCategoryAdmin, FinanceCategoryListAdmin, FinanceCategoryNewAdmin]}active{/if}">
-                        <a href="{'FinanceCategoryListAdmin'|link}">Категории платежей</a>
-                </li>
+			class="mini right {if $route|in_array:[FinanceCategoryAdmin, FinanceCategoryListAdmin, FinanceCategoryNewAdmin]}active{/if}">
+			<a href="{'FinanceCategoryListAdmin'|link}">Категории платежей</a>
+		</li>
 	{/if}
 
 

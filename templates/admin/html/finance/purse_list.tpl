@@ -21,7 +21,7 @@
 			<h1>Нет кошельков</h1>
 		{/if}
 
-                <a class="add" href="{'PurseNewAdmin'|link}">Добавить кошелек</a>
+		<a class="add" href="{'PurseNewAdmin'|link}">Добавить кошелек</a>
 	</div>
 
 
@@ -46,7 +46,7 @@
 
 							<div class="col row">
 								<div class="col-12 col-sm-8">
-                                                                        <a href="{'PurseAdmin'|link:[id => $p->id]}">{$p->name}</a>
+									<a href="{'PurseAdmin'|link:[id => $p->id]}">{$p->name}</a>
 									<div class="notice">{$p->comment|strip_tags|nl2br|raw}</div>
 								</div>
 
