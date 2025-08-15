@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.8
+ * @version 2.9
  *
  */
 
@@ -376,9 +376,9 @@ class OrderController extends BaseAdminController
             if (!empty($order->manager_id)) {
                 $order_manager = User::getUser($order->manager_id);
                 $order_manager->interest_price = $order->interest_price;
-                if (intval($order_manager->group->discount) > 0 and intval($order->total_price) > 0) {
+                if (!empty($order_manager->group) && intval($order_manager->group->discount) > 0 && intval($order->total_price) > 0) {
                     $real_manager_discount = ($order_manager->interest_price / $order->total_price) * 100;
-                    $order_manager->interest_discount =  $real_manager_discount;
+                    $order_manager->interest_discount = $real_manager_discount;
                 }
 
                 Design::assign('order_manager', $order_manager);
