@@ -291,7 +291,7 @@ class Statistics
             ->where('closed', 1);
 
         if (!empty($type) && $type === 'totalPrice') {
-            $query->selectRaw('SUM(interest_price) as total_price');
+            $query->selectRaw('SUM(manager_profit) as total_price');
         } elseif (!empty($type) && $type === 'amount') {
             $query->selectRaw('COUNT(*) as total_price');
         } else {

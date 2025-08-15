@@ -81,7 +81,7 @@ class CurrencyController extends BaseAdminController
                         'total_price'      => DB::raw("total_price * $coef"),
                         'profit_price'     => DB::raw("profit_price * $coef"),
                         'coupon_discount'  => DB::raw("coupon_discount * $coef"),
-                        'interest_price'   => DB::raw("interest_price * $coef"),
+                        'manager_profit'   => DB::raw("manager_profit * $coef"),
                         'payment_price'    => DB::raw("payment_price * $coef"),
                     ]);
 

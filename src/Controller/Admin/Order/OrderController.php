@@ -348,6 +348,8 @@ class OrderController extends BaseAdminController
                 'label_ids',
                 'user',
                 'user.group',
+                'manager',
+                'manager.group',
                 'payments',
                 'payments.category',
                 'payments.purse',
@@ -371,19 +373,10 @@ class OrderController extends BaseAdminController
                 $total->purchases_count += $purchase->amount;
             }
 
-
             // Выбранный Менеджер
-            if (!empty($order->manager_id)) {
-                $order_manager = User::getUser($order->manager_id);
-                $order_manager->interest_price = $order->interest_price;
-                if (!empty($order_manager->group) && intval($order_manager->group->discount) > 0 && intval($order->total_price) > 0) {
-                    $real_manager_discount = ($order_manager->interest_price / $order->total_price) * 100;
-                    $order_manager->interest_discount = $real_manager_discount;
-                }
-
-                Design::assign('order_manager', $order_manager);
+            if (!empty($order->manager->id) and intval($order->total_price) > 0) {
+                $order->manager->interest_discount = ($order->manager_profit / $order->total_price) * 100;
             }
-
 
             // Платежи
             foreach ($order->payments as $payment) {

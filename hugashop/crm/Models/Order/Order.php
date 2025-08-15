@@ -27,7 +27,7 @@ class Order extends BaseModel
 {
 
     protected static $table_fields = [
-        'id' =>                     ['type' => 'int'],
+        'id' =>                     ['type' => 'int',       'extra' => 'AUTO_INCREMENT'],
         'delivery_id' =>            ['type' => 'int'],
         'delivery_price' =>         ['type' => 'decimal',   'length' => 10.2],
         'delivery_note' =>          ['type' => 'varchar'],
@@ -47,14 +47,15 @@ class Order extends BaseModel
         'url' =>                    ['type' => 'varchar',                           'access' => false],
         'total_price' =>            ['type' => 'decimal',   'length' => 10.2,       'access' => false],
         'profit_price' =>           ['type' => 'decimal',   'length' => 10.2,       'access' => false],
-        'interest_price' =>         ['type' => 'decimal',   'length' => 10.2,       'access' => false],
         'payment_price' =>          ['type' => 'decimal',   'length' => 10.2,       'access' => false],
         'discount' =>               ['type' => 'decimal',   'length' => 10.2],
         'coupon_discount' =>        ['type' => 'decimal',   'length' => 10.2],
         'coupon_code' =>            ['type' => 'varchar'],
         'date' =>                   ['type' => 'datetime',  'def' => 'CURRENT_TIMESTAMP',   'access' => false],
-        'modified' =>               ['type' => 'datetime', 'access' => false],
+        'modified' =>               ['type' => 'datetime',  'access' => false],
         'manager_id' =>             ['type' => 'int'],
+        'manager_rate' =>           ['type' => 'int',       'def' => 0,             'access' => false],
+        'manager_profit' =>         ['type' => 'decimal',   'length' => 10.2,       'access' => false],
         'settings' =>               ['type' => 'text']
     ];
 
@@ -415,10 +416,10 @@ class Order extends BaseModel
      * @param bool $modified - update edit date
      * @return $order_id
      */
-    public static function updateTotalPrice(int $order_id, $modified = true)
+    public static function updateTotalPrice(int $order_id, bool $modified = true)
     {
         // Get order informatiion
-        if (!$order = self::with(['purchases', 'manager.group', 'payment_method'])->find($order_id)) {
+        if (!$order = self::with(['purchases', 'manager', 'manager.group', 'payment_method'])->find($order_id)) {
             return false;
         }
 
@@ -494,10 +495,11 @@ class Order extends BaseModel
 
                 // Вычисляем ROI заказа
                 // Корректируем Комиссию менеджера
-                // BUG: Костыль, требует доработки.
+                // TODO: Костыль, требует доработки.
                 if ($order_cost_price > 0) {
                     $roi = ($order_discount_price - $order_cost_price) / $order_cost_price * 100;
                     if ($roi < 70) {
+
                         // Пропорциональное уменьшение % менеджера
                         $manager_discount = $manager->group->discount * $roi / 70;
                     }
@@ -505,6 +507,7 @@ class Order extends BaseModel
 
                 $manager_interest = ($order_discount_price * $manager_discount / 100);
                 if ($order_clean_price > 0) {
+
                     // Реальный % скидки на заказ c учетом купона и дисконта(%)
                     $real_order_discaunt = (1 - $order_discount_price / $order_clean_price) * 100;
 
@@ -525,7 +528,7 @@ class Order extends BaseModel
         $data = [
             'total_price'    => $order_discount_price,
             'profit_price'   => $order_profit_price,
-            'interest_price' => $manager_interest,
+            'manager_profit' => $manager_interest,
             'payment_price'  => $order_payment_price,
         ];
         if ($modified) {

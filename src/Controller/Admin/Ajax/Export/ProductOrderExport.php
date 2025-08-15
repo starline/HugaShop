@@ -38,7 +38,7 @@ class ProductOrderExport extends BaseAdminController
         'delivery_price' =>         'Цена доставки',
         'payment_price' =>          'Оплачено',
         'payment_name'  =>          'Способ оплаты',
-        'interest_price' =>         '% менеджера',
+        'manager_profit' =>         '% менеджера',
     );
 
     private $column_delimiter = ';';

@@ -62,17 +62,17 @@
 
 			<div class="order_date_time">
 
-				{if !$order_manager->id|empty}
+				{if !$order->manager->id|empty}
 					<div class="order_manager">
-						Менеджер: <a href="/admin/user/{$order_manager->id}" target="_blank">{$order_manager->name}</a>
-						{if $order_manager->interest_price and ($user->id == $order_manager->id OR 'order_finance'|user_access)}
+						Менеджер: <a href="/admin/user/{$order->manager->id}" target="_blank">{$order->manager->name}</a>
+						{if $order->manager_profit and ($user->id == $order->manager->id OR 'order_finance'|user_access)}
 							<span class="manager_profit">
 								<span data-bs-toggle="tooltip" title="Комиссия менеджера с продажи">
-									{$order_manager->interest_price|price_html:profit|raw}
+									{$order->manager_profit|price_html:profit|raw}
 								</span>
-								{if $order_manager->interest_discount > 0}
+								{if $order->manager->interest_discount > 0}
 									<span class="profit_dicount" data-bs-toggle="tooltip" title="% за заказ">
-										{$order_manager->interest_discount|number:1}%
+										{$order->manager->interest_discount|number:1}%
 									</span>
 								{/if}
 							</span>
