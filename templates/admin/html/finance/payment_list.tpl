@@ -189,7 +189,7 @@
       import { ajax_icon } from '{"js/common.js"|asset}';
       import { makeChart } from '{"js/chart.js"|asset}';
 
-
+      let stats_url = "{'FinanceStatsAdmin'|link}";
       let php_currency_name = "{$currency->name}";
       let php_currency_sign = "{$currency->sign}";
       let purse_id = "{$purse_id}";
@@ -248,7 +248,7 @@
                   options: {
                      label: 'Сумма приходов, ' + php_currency_sign,
                      color: '#76c100',
-                     url: '{'FinanceStatsAdmin'|link}',
+                     url: stats_url,
                      range: 'year'
                   }
                },
@@ -262,7 +262,7 @@
                   options: {
                      label: 'Сумма расходов, ' + php_currency_sign,
                      color: '#f8a13f',
-                     url: '{'FinanceStatsAdmin'|link}',
+                     url: stats_url,
                      range: 'year'
                   }
                }
