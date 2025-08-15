@@ -61,7 +61,7 @@
 									<ul>
 										<li
 											class="mini {if $route|in_array:[OrderListAdmin, OrderAdmin, OrderNewAdmin]}active{/if}">
-											<a href=" {'OrderListAdmin'|link:[status => 0]}">Заказы</a>
+											<a href="{'OrderListAdmin'|link:[status => 0]}">Заказы</a>
 											{if $orders_info_count[0]}
 												<div class="badge rounded-pill bg-danger">
 													{$orders_info_count[0]}</div>
