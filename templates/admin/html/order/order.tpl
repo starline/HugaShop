@@ -63,8 +63,9 @@
 			<div class="order_date_time">
 
 				{if !$order->manager->id|empty}
-                                        <div class="order_manager">
-                                                Менеджер: <a href="{'UserAdmin'|link:[id => $order->manager->id]}" target="_blank">{$order->manager->name}</a>
+					<div class="order_manager">
+						Менеджер: <a href="{'UserAdmin'|link:[id => $order->manager->id]}"
+							target="_blank">{$order->manager->name}</a>
 						{if $order->manager_profit and ($user->id == $order->manager->id OR 'order_finance'|user_access)}
 							<span class="manager_profit">
 								<span data-bs-toggle="tooltip" title="Комиссия менеджера с продажи">
@@ -203,8 +204,8 @@
 				<div class="view_user">
 					{if !$order->user}
 						Не зарегистрирован
-                                        {else}
-                                                <a href="{'UserAdmin'|link:[id => $order->user->id]}">{$order->user->name}</a>
+					{else}
+						<a href="{'UserAdmin'|link:[id => $order->user->id]}">{$order->user->name}</a>
 						{if $order->user->group->name}
 							<div>{$order->user->group->name}</div>
 						{/if}
@@ -246,11 +247,11 @@
 										<img
 											src="{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}" />
 									</div>
-                                                                        <div class="col">
-                                                                                <a class="product_name"
-                                                                                        href="{'ProductPriceAdmin'|link:[id => $purchase->product_id]}">{$purchase->product_name}</a>
-                                                                                <div class="variant_name">{$purchase->variant_name}</div>
-                                                                        </div>
+									<div class="col">
+										<a class="product_name"
+											href="{'ProductPriceAdmin'|link:[id => $purchase->product_id]}">{$purchase->product_name}</a>
+										<div class="variant_name">{$purchase->variant_name}</div>
+									</div>
 								</div>
 							</div>
 
@@ -682,19 +683,22 @@
 									</div>
 
 									<div class="col-12 col-md-6">
-                                                                                {$p->purse->name}
-                                                                                <div class="notice">
-                                                                                        {if $p->contractor->entity_name == 'order'}
-                                                                                                <a href="{'OrderAdmin'|link:[id => $p->contractor->entity_id]}">{$p->contractor->entity_name}</a>
-                                                                                        {elseif $p->contractor->entity_name == 'user'}
-                                                                                                <a href="{'UserAdmin'|link:[id => $p->contractor->entity_id]}">{$p->contractor->entity_name}</a>
-                                                                                        {elseif $p->contractor->entity_name == 'wh_movement'}
-                                                                                                <a href="{'MoveAdmin'|link:[id => $p->contractor->entity_id]}">{$p->contractor->entity_name}</a>
-                                                                                        {else}
-                                                                                                {$p->contractor->entity_name}
-                                                                                        {/if}
-                                                                                </div>
-                                                                        </div>
+										{$p->purse->name}
+										<div class="notice">
+											{if $p->contractor->entity_name == 'order'}
+												<a
+													href="{'OrderAdmin'|link:[id => $p->contractor->entity_id]}">{$p->contractor->entity_name}</a>
+											{elseif $p->contractor->entity_name == 'user'}
+												<a
+													href="{'UserAdmin'|link:[id => $p->contractor->entity_id]}">{$p->contractor->entity_name}</a>
+											{elseif $p->contractor->entity_name == 'wh_movement'}
+												<a
+													href="{'MoveAdmin'|link:[id => $p->contractor->entity_id]}">{$p->contractor->entity_name}</a>
+											{else}
+												{$p->contractor->entity_name}
+											{/if}
+										</div>
+									</div>
 								</div>
 
 								<div class="icons">
