@@ -28,7 +28,7 @@
 
          {foreach $payments_types as $pt}
             <a class="add {$pt->type}" data-bs-toggle="tooltip" title="Создать {$pt->name}"
-               href="/admin/finance/payment?cur_type={$pt->id}">{$pt->name}</a>
+               href="{'PaymentNewAdmin'|link:[cur_type => $pt->id]}">{$pt->name}</a>
          {/foreach}
       </div>
 
@@ -117,7 +117,7 @@
                            <div class="row">
                               <div class="col-5 col-sm-3 text-end {if $p->related_payment_id}transfer{/if}">
                                  <a
-                                    href="/admin/finance/payment/{$p->id}">{$p->amount|price_html:profit:$p->currency_code|raw}</a>
+                                    href="{'PaymentAdmin'|link:[id => $p->id]}">{$p->amount|price_html:profit:$p->currency_code|raw}</a>
 
                                  {if $p->currency_rate!=1 AND !$p->related_payment_id}
                                     <div class="notice">{$p->currency_amount|price_html|raw}</div>
@@ -145,8 +145,8 @@
 
                                        {if !$p->contractor->entity->name|empty}
                                           <div class="notice">
-                                             <a
-                                                href="/admin/{$p->contractor->view_name}/{$p->contractor->entity_id}">{$p->contractor->entity->name}</a>
+                                               <a
+                                                  href="{$p->contractor->view_name|replace:'/':' '|capitalize|replace:' ':''|cat:'Admin'|link:[id => $p->contractor->entity_id]}">{$p->contractor->entity->name}</a>
                                           </div>
                                        {/if}
                                     </div>
@@ -248,7 +248,7 @@
                   options: {
                      label: 'Сумма приходов, ' + php_currency_sign,
                      color: '#76c100',
-                     url: '/admin/ajax/stats/finance',
+                     url: '{'FinanceStatsAdmin'|link}',
                      range: 'year'
                   }
                },
@@ -262,7 +262,7 @@
                   options: {
                      label: 'Сумма расходов, ' + php_currency_sign,
                      color: '#f8a13f',
-                     url: '/admin/ajax/stats/finance',
+                     url: '{'FinanceStatsAdmin'|link}',
                      range: 'year'
                   }
                }
