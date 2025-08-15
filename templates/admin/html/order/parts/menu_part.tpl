@@ -1,3 +1,4 @@
+{* @version 0.1 *}
 {block name="tabs"}
 
 	{if 'order'|user_access and $route|in_array:[OrderListAdmin, OrderAdmin, OrderNewAdmin]}
@@ -38,36 +39,36 @@
 	{/if}
 
 
-	{if 'order'|user_access and $route|in_array:[CartListAdmin]}
-		<li class="mini active">
-			<a href="/admin/order/carts">Корзины</a>
-		</li>
-	{/if}
+        {if 'order'|user_access and $route|in_array:[CartListAdmin]}
+                <li class="mini active">
+                        <a href="{'CartListAdmin'|link}">Корзины</a>
+                </li>
+        {/if}
 
 
 	{if $route|in_array:[ManagerProfitAdmin, OrderPaymentListAdmin, OrderPaymentAdmin, OrderPaymentNewAdmin, DeliveryListAdmin, OrderDeliveryAdmin, OrderDeliveryNewAdmin, LabelListAdmin, LabelAdmin, LabelNewAdmin]}
 		{if 'user_manager'|user_access}
 			<li class="mini {if $route|in_array:[ManagerProfitAdmin]}active{/if}">
-				<a href="/admin/order/manager_profit">Доход менеджера</a>
+                                <a href="{'ManagerProfitAdmin'|link}">Доход менеджера</a>
 			</li>
 		{/if}
 
 		{if 'order_payment'|user_access}
 			<li class="mini {if $route|in_array:[OrderPaymentListAdmin, OrderPaymentAdmin, OrderPaymentNewAdmin]}active{/if}">
-				<a href="/admin/order/payments">Оплата</a>
+                                <a href="{'OrderPaymentListAdmin'|link}">Оплата</a>
 			</li>
 		{/if}
 
 		{if 'order_delivery'|user_access}
 			<li class="mini {if $route|in_array:[DeliveryListAdmin, OrderDeliveryAdmin, OrderDeliveryNewAdmin]}active{/if}">
-				<a href="/admin/order/deliveries">Доставка</a>
+                                <a href="{'DeliveryListAdmin'|link}">Доставка</a>
 			</li>
 		{/if}
 
 		{if 'order_label'|user_access}
-			<li class="mini {if $route|in_array:[LabelListAdmin, LabelAdmin, LabelNewAdmin]}active{/if}"><a
-					href="/admin/order/labels">Метки</a></li>
-		{/if}
-	{/if}
+                        <li class="mini {if $route|in_array:[LabelListAdmin, LabelAdmin, LabelNewAdmin]}active{/if}"><a
+                                        href="{'LabelListAdmin'|link}">Метки</a></li>
+                {/if}
+        {/if}
 
 {/block}

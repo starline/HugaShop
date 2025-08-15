@@ -1,3 +1,4 @@
+{* @version 0.1 *}
 <div class="header-upper-wrapper">
 	<div class="header-upper asva-container">
 
@@ -19,9 +20,9 @@
 			</div>
 		</div>
 
-		<div class="header-logo">
-			<a href="/"><img src="{'images/logo-m.png'|asset}" rel="nofollow"></a>
-		</div>
+                <div class="header-logo">
+                        <a href="{'Main'|linkLang}"><img src="{'images/logo-m.png'|asset}" rel="nofollow"></a>
+                </div>
 
 
 		<div class="header-upper-menu" id="active_header_search">
@@ -92,29 +93,29 @@
 
 <div class="header-wrapper">
 	<div class="header asva-container">
-		<div class="header-logo hidden-phone">
-			<a href="/" title="Интернет магазин шин и дисков АСВА">
-				<img src="{'images/logo.png'|asset}" alt="Интернет магазин шин и дисков АСВА">
-			</a>
-		</div>
-		<div class="header-links">
-			<a href="/shini" title="Шины на авто">
-				<i class="ico ico-tire-car"></i>
-				<span>Шины</span>
-			</a>
-			<a href="/diski" title="Диски на авто">
-				<i class="ico ico-tire-disk"></i>
-				<span>диски</span>
-			</a>
-			<a href="/info/uslugi-shinomontaga" title="Шиномонтаж">
-				<i class="ico ico-tire-fitting"></i>
-				<span>шиномонтаж</span>
-			</a>
-			<a href="/info/tire-storage" title="Хранение">
-				<i class="ico ico-tire-storage"></i>
-				<span>Хранение</span>
-			</a>
-		</div>
+                <div class="header-logo hidden-phone">
+                        <a href="{'Main'|linkLang}" title="Интернет магазин шин и дисков АСВА">
+                                <img src="{'images/logo.png'|asset}" alt="Интернет магазин шин и дисков АСВА">
+                        </a>
+                </div>
+                <div class="header-links">
+                        <a href="{'Products'|linkLang:[url => 'shini']}" title="Шины на авто">
+                                <i class="ico ico-tire-car"></i>
+                                <span>Шины</span>
+                        </a>
+                        <a href="{'Products'|linkLang:[url => 'diski']}" title="Диски на авто">
+                                <i class="ico ico-tire-disk"></i>
+                                <span>диски</span>
+                        </a>
+                        <a href="{'Page'|linkLang:[url => 'uslugi-shinomontaga']}" title="Шиномонтаж">
+                                <i class="ico ico-tire-fitting"></i>
+                                <span>шиномонтаж</span>
+                        </a>
+                        <a href="{'Page'|linkLang:[url => 'tire-storage']}" title="Хранение">
+                                <i class="ico ico-tire-storage"></i>
+                                <span>Хранение</span>
+                        </a>
+                </div>
 
 
 		<!-- Контакты -->
