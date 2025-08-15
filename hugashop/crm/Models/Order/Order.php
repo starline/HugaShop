@@ -487,7 +487,7 @@ class Order extends BaseModel
         // Комиссия вычисляется от чистой стоимости заказа (с учетом скидки)
         // Комиссия менеджера уменьшается пропорционально сделаной им скидки
         // TODO Комиссия менеджера уменьшается на заказы от рекламы
-        $manager_interest = 0;
+        $manager_profit = 0;
         if (!empty($order->manager_id)) { # если присвоен менеджер
             $manager = User::getUser($order->manager_id);
             if (!empty($manager->group->discount)) {
@@ -505,32 +505,33 @@ class Order extends BaseModel
                     }
                 }
 
-                $manager_interest = ($order_discount_price * $manager_discount / 100);
+                $manager_profit = ($order_discount_price * $manager_discount / 100);
                 if ($order_clean_price > 0) {
 
                     // Реальный % скидки на заказ c учетом купона и дисконта(%)
                     $real_order_discaunt = (1 - $order_discount_price / $order_clean_price) * 100;
 
                     // Вычет из комиссия менеджера = скидка на заказ % * 2
-                    $manager_interest -= $manager_interest * $real_order_discaunt * 2 / 100;
+                    $manager_profit -= $manager_profit * $real_order_discaunt * 2 / 100;
                 }
 
                 // Округляем до 0.00
-                $manager_interest = round($manager_interest, 2);
+                $manager_profit = round($manager_profit, 2);
             }
         }
 
         // Вычисляем конечную прибыль от заказа
         // Берем общую сумму заказа (после скидки и купона) и отнимает расходы
         // В расходы включены комиссия менеджера, комиссия платежной системы, комиссия способа доставки(?)
-        $order_profit_price = ($order_discount_price - $order_cost_price) - $manager_interest - $order_payment_fee_inside_price - $order_payment_tax_inside_price;
+        $order_profit_price = ($order_discount_price - $order_cost_price) - $manager_profit - $order_payment_fee_inside_price - $order_payment_tax_inside_price;
 
         $data = [
             'total_price'    => $order_discount_price,
             'profit_price'   => $order_profit_price,
-            'manager_profit' => $manager_interest,
+            'manager_profit' => $manager_profit,
             'payment_price'  => $order_payment_price,
         ];
+
         if ($modified) {
             $data['modified'] = date('Y-m-d H:i:s');
         }
