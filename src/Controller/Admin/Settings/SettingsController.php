@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.5
+ * @version 2.6
  *
  */
 
@@ -28,12 +28,12 @@ class SettingsController extends BaseAdminController
     private $allowed_image_extentions = array('png', 'gif', 'jpg', 'jpeg', 'ico');
 
     private $fields = [
-        'domain' =>                             ['type' => 'string', 'trim' => true],
-        'company_name' =>                       ['type' => 'string', 'trim' => true, 'empty' => false],
-        'company_description' =>                ['type' => 'string', 'trim' => true],
+        'domain' =>                             ['type' => 'string'],
+        'company_name' =>                       ['type' => 'string', 'req' => true],
+        'company_description' =>                ['type' => 'string'],
         'date_format' =>                        ['type' => 'string'],
         'decimals_point' =>                     ['type' => 'string'],
-        'thousands_separator' =>                ['type' => 'string'],
+        'thousands_separator' =>                ['type' => 'string', 'trim' => false],
         'products_num' =>                       ['type' => 'string'],
         'rel_products_num' =>                   ['type' => 'int'],
         'products_num_admin' =>                 ['type' => 'int'],

@@ -113,7 +113,10 @@ class Secure
 
                 // Triming varchar
                 if ($param_data['type'] == 'varchar' || $param_data['type'] == 'string') {
-                    $res->$param_name = trim($res->$param_name);
+                    $trim = $param_data['trim'] ?? true;
+                    if ($trim) {
+                        $res->$param_name = trim($res->$param_name);
+                    }
 
                     // Cut string by MySQL length if specified
                     if (!empty($param_data['length']) && is_string($res->$param_name)) {
