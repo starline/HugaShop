@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.7
+ * @version 2.8
  *
  */
 
@@ -185,8 +185,7 @@ class NotifierFactory
 
         Design::assign('comment', $comment);
 
-        // Image template
-        return Design::fetch(self::getTemplatePath($module_name, __FUNCTION__));
+        return self::fetchTemplate($module_name, __FUNCTION__);
     }
 
 
@@ -210,7 +209,7 @@ class NotifierFactory
         ]);
 
         // Image template
-        $template = Design::fetch(self::getTemplatePath($module_name, __FUNCTION__));
+        $template = self::fetchTemplate($module_name, __FUNCTION__);
 
         // Link in Button
         $message_data['subject']    = Design::getTemplateVars('subject');
@@ -241,8 +240,7 @@ class NotifierFactory
             'delivery_method'   => OrderDelivery::getOne($order->delivery_id)
         ]);
 
-        // Image template
-        return Design::fetch(self::getTemplatePath($module_name, __FUNCTION__));
+        return self::fetchTemplate($module_name, __FUNCTION__);
     }
 
 
@@ -265,7 +263,7 @@ class NotifierFactory
         ]);
 
         // Image template
-        $template = Design::fetch(self::getTemplatePath($module_name, __FUNCTION__));
+        $template = self::fetchTemplate($module_name, __FUNCTION__);
 
         Design::clearAssign('user');
         Design::clearAssign('code');
@@ -290,8 +288,7 @@ class NotifierFactory
         $message_data['order'] = $order;
         Design::assign('order', $order);
 
-        // Image template
-        return Design::fetch(self::getTemplatePath($module_name, __FUNCTION__));
+        return self::fetchTemplate($module_name, __FUNCTION__);
     }
 
 
@@ -320,8 +317,7 @@ class NotifierFactory
             'payment_settings'  => $payment_method->settings
         ]);
 
-        // Image template
-        return Design::fetch(self::getTemplatePath($module_name, __FUNCTION__));
+        return self::fetchTemplate($module_name, __FUNCTION__);
     }
 
 
@@ -330,6 +326,17 @@ class NotifierFactory
      */
     public static function getTemplatePath(string $module_name, string $template_name)
     {
-        return Config::get('notifier_dir') . "$module_name/" . "templates/$template_name.tpl";
+        $path = Config::get('notifier_dir') . "$module_name/templates/$template_name.tpl";
+        return file_exists($path) ? $path : null;
+    }
+
+
+    /**
+     * Image template
+     */
+    private static function fetchTemplate(string $module_name, string $template_name)
+    {
+        $template_path = self::getTemplatePath($module_name, $template_name);
+        return $template_path ? Design::fetch($template_path) : null;
     }
 }

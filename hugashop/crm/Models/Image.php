@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 4.1
+ * @version 4.3
  * 
  * Intervention Image
  * @link https://image.intervention.io/v3/getting-started/installation
@@ -173,7 +173,7 @@ class Image extends BaseModel
      * @param $filename
      * @param ?string $flags w - watermark, c - cut for size
      */
-    public static function getImageURL($filename, $width = 0, $height = 0, string $flags = '')
+    public static function getImageURL(string $filename, int $width = 0, int $height = 0, string $flags = '')
     {
         $watermark  = str_contains($flags, 'w');
         $cut        = str_contains($flags, 'c');
@@ -221,7 +221,7 @@ class Image extends BaseModel
      * @param $filename файл с изображением (без пути к файлу)
      * @return string имя файла превью
      */
-    public static function resize($filename)
+    public static function resize(string $filename)
     {
 
         $params = self::getResizeParams($filename);
@@ -267,31 +267,31 @@ class Image extends BaseModel
 
         $original_file_path = $originals_dir . $original_file;
         $new_file_path      = $resized_dir . $resized_file;
+        $sharpen            = Settings::getParam('images_sharpen') ?? 0;
 
-        return self::resizeUploadImage($original_file_path, $new_file_path, $width, $height, $watermark, $cut);
+        return self::resizeUploadImage($original_file_path, $new_file_path, $width, $height, $watermark, $cut, $sharpen);
     }
 
 
     /**
-     * Ресайз загруженых изображений
+     * Resize uploaded images
      */
-    public static function resizeUploadImage(string $original_file_path, string $new_file_path, $width = null, $height = null, $watermark = false, $cut = false)
+    public static function resizeUploadImage(string $original_file_path, string $new_file_path, ?int $width = null, ?int $height = null, ?string $watermark = null, ?string $cut = null, int $sharpen = 0)
     {
 
         $quality = Config::get('images_quality');
 
         // Четкость изображения. 0-100 (больше - четче)
-        $sharpen = min(100, (int)Settings::getParam('images_sharpen')) / 100;
+        $sharpen = max(0, min(100, $sharpen));
 
         // Прозрачность водяного знака. Настройки сайта.
         $watermark_transparency = min(100, (int)Settings::getParam('watermark_transparency'));
 
         // create image manager with desired driver
         $manager = new ImageManager(Driver::class);
-
         $image = $manager->read($original_file_path); # read image from file system
 
-        if (!empty($width) and !empty($height) and $cut) {
+        if ($width and $height and $cut) {
             $image = $image->coverDown(width: $width, height: $height); # Cut image proportionally to size
         } else {
             $image = $image->scaleDown(width: $width, height: $height); # resize image proportionally to width
@@ -315,7 +315,7 @@ class Image extends BaseModel
             $image = $image->place($water_image, 'top-left', $offset_x, $offset_y, $watermark_transparency);
         }
 
-        if (!empty($sharpen)) {
+        if ($sharpen > 0) {
             $image = $image->sharpen($sharpen);
         }
 
