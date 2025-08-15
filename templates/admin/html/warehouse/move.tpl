@@ -1,3 +1,4 @@
+{* @version 0.1 *}
 {extends 'wrapper/main.tpl'}
 {include 'warehouse/parts/menu_part.tpl'}
 
@@ -48,8 +49,8 @@
 				</select>
 			</h1>
 
-			{if !$movement->id|empty}
-				<a class="print_icon fl_r" href="{url type=print}" target="_blank">
+                        {if !$movement->id|empty}
+                                <a class="print_icon fl_r" href="{'MoveAdmin'|link:[id => $movement->id, type => 'print']}" target="_blank">
 					<img loading="lazy" src="{'images/printer.png'|asset}" data-bs-toggle="tooltip" title="Печать поставки">
 				</a>
 			{/if}
@@ -68,11 +69,11 @@
 					</div>
 				{/if}
 
-				{if !$movement->manager|empty}
-					<div class="order_manager">
-						Последняя правка: <a href="/admin/user/{$movement->manager->id}">{$movement->manager->name}</a>
-					</div>
-				{/if}
+                                {if !$movement->manager|empty}
+                                        <div class="order_manager">
+                                                Последняя правка: <a href="{'UserAdmin'|link:[id => $movement->manager->id]}">{$movement->manager->name}</a>
+                                        </div>
+                                {/if}
 
 				<ul>
 					<li class="awaiting_date">
