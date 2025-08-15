@@ -68,34 +68,34 @@
 											{/if}
 										</li>
 
-										<li class="mini {if $route|in_array:['CartListAdmin']}active{/if}">
-											<a href="/admin/order/carts">Корзины</a>
-										</li>
+                                                                                <li class="mini {if $route|in_array:['CartListAdmin']}active{/if}">
+                                                                                        <a href="{'CartListAdmin'|link}">Корзины</a>
+                                                                                </li>
 
 										{if 'user_manager'|user_access}
-											<li class="mini right {if $route|in_array:[ManagerProfitAdmin]}active{/if}">
-												<a href="/admin/order/manager_profit">Доход менеджера</a>
-											</li>
+                                                                                        <li class="mini right {if $route|in_array:[ManagerProfitAdmin]}active{/if}">
+                                                                                                <a href="{'ManagerProfitAdmin'|link}">Доход менеджера</a>
+                                                                                        </li>
 										{/if}
 
 										{if 'order_payment'|user_access}
 											<li
-												class="mini {if $route|in_array:[OrderPaymentListAdmin, OrderPaymentAdmin, OrderPaymentNewAdmin]}active{/if}">
-												<a href="/admin/order/payments">Оплата</a>
+                                                                                                class="mini {if $route|in_array:[OrderPaymentListAdmin, OrderPaymentAdmin, OrderPaymentNewAdmin]}active{/if}">
+                                                                                                <a href="{'OrderPaymentListAdmin'|link}">Оплата</a>
 											</li>
 										{/if}
 
 										{if 'order_delivery'|user_access}
 											<li
-												class="mini {if $route|in_array:[DeliveryListAdmin, OrderDeliveryAdmin, OrderDeliveryNewAdmin]}active{/if}">
-												<a href="/admin/order/deliveries">Доставка</a>
+                                                                                                class="mini {if $route|in_array:[DeliveryListAdmin, OrderDeliveryAdmin, OrderDeliveryNewAdmin]}active{/if}">
+                                                                                                <a href="{'DeliveryListAdmin'|link}">Доставка</a>
 											</li>
 										{/if}
 
 										{if 'order_label'|user_access}
 											<li
-												class="mini {if $route|in_array:[LabelListAdmin, LabelAdmin, LabelNewAdmin]}active{/if}">
-												<a href="/admin/order/labels">Метки</a>
+                                                                                                class="mini {if $route|in_array:[LabelListAdmin, LabelAdmin, LabelNewAdmin]}active{/if}">
+                                                                                                <a href="{'LabelListAdmin'|link}">Метки</a>
 											</li>
 										{/if}
 									</ul>
@@ -120,11 +120,11 @@
 											</li>
 										{/if}
 
-										{if 'warehouse'|user_access}
-											<li class="mini {if $route|in_array:['MoveAdmin','MoveListAdmin']}active{/if}">
-												<a href="/admin/warehouse/moves">Поставки</a>
-											</li>
-										{/if}
+                                                                                {if 'warehouse'|user_access}
+                                                                                        <li class="mini {if $route|in_array:['MoveAdmin','MoveListAdmin']}active{/if}">
+                                                                                                <a href="{'MoveListAdmin'|link}">Поставки</a>
+                                                                                        </li>
+                                                                                {/if}
 									</ul>
 								</li>
 							{/if}
@@ -142,22 +142,22 @@
 									<ul>
 										{if 'user'|user_access}
 											<li
-												class="mini {if $route|in_array:[UserListAdmin, UserAdmin, UserSettingsAdmin]} active{/if}">
-												<a href="/admin/users">Покупатели</a>
+                                                                                                class="mini {if $route|in_array:[UserListAdmin, UserAdmin, UserSettingsAdmin]} active{/if}">
+                                                                                                <a href="{'UserListAdmin'|link}">Покупатели</a>
 											</li>
 										{/if}
 
 										{if 'user_notifier'|user_access}
 											<li
-												class="mini {if $route|in_array:[MailingNewAdmin, MailingAdmin, MailingListAdmin, NotifierAdmin, NotifierListAdmin, NotifierNewAdmin, MailTemplateNewAdmin, MailTemplateListAdmin, MailTemplateAdmin]}active{/if}">
-												<a href="/admin/user/mailings">Список рассылки</a>
+                                                                                                class="mini {if $route|in_array:[MailingNewAdmin, MailingAdmin, MailingListAdmin, NotifierAdmin, NotifierListAdmin, NotifierNewAdmin, MailTemplateNewAdmin, MailTemplateListAdmin, MailTemplateAdmin]}active{/if}">
+                                                                                                <a href="{'MailingListAdmin'|link}">Список рассылки</a>
 											</li>
 										{/if}
 
 										{if 'user_coupon'|user_access}
 											<li
-												class="right mini {if $route|in_array:[CouponListAdmin, CouponAdmin, CouponNewAdmin]}active{/if}">
-												<a href="/admin/user/coupons">Купоны</a>
+                                                                                                class="right mini {if $route|in_array:[CouponListAdmin, CouponAdmin, CouponNewAdmin]}active{/if}">
+                                                                                                <a href="{'CouponListAdmin'|link}">Купоны</a>
 											</li>
 										{/if}
 									</ul>
@@ -178,13 +178,13 @@
 										{if 'blog'|user_access}
 											<li
 												class="mini {if $route|in_array:[PostAdmin, PostListAdmin, PostNewAdmin]}active{/if}">
-												<a href="/admin/posts">Блог</a>
+                                                                                                <a href="{'PostListAdmin'|link}">Блог</a>
 											</li>
 										{/if}
 
 										{if 'comment'|user_access}
 											<li class="mini {if $route|in_array:[CommentListAdmin, CommentAdmin]}active{/if}">
-												<a href="/admin/comments">Комментарии</a>
+                                                                                                <a href="{'CommentListAdmin'|link}">Комментарии</a>
 												{if $new_comments_counter}
 													<div class="badge rounded-pill bg-danger">
 														{$new_comments_counter}
@@ -196,13 +196,13 @@
 
 										{if 'feedback'|user_access}
 											<li class="mini right {if $route|in_array:[FeedbackListAdmin]}active{/if}">
-												<a href="/admin/feedbacks">Обратная связь</a>
+                                                                                                <a href="{'FeedbackListAdmin'|link}">Обратная связь</a>
 											</li>
 										{/if}
 
 										{if 'page'|user_access}
 											<li class="mini right  {if $route|in_array:[PageListAdmin, PageAdmin]}active{/if}">
-												<a href="/admin/pages">Страницы</a>
+                                                                                                <a href="{'PageListAdmin'|link}">Страницы</a>
 											</li>
 										{/if}
 									</ul>
