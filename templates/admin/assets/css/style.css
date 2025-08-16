@@ -467,7 +467,7 @@ select option.disabled {
 #tab_menu li.mini>a,
 #tab_menu li.mini>span {
 	width: max-content;
-	font-size: .85rem;
+	font-size: .9rem;
 	margin-top: 3px;
 	padding-bottom: 8px;
 }
@@ -481,9 +481,9 @@ select option.disabled {
 	border-top: 3px solid var(--flash-dim-color);
 	background-color: var(--background-inside-color);
 	background-image: none;
-	margin-top: -3px;
+	margin-top: -5px;
 	padding-top: 15px;
-	padding-bottom: 10px;
+	padding-bottom: 12px;
 	text-shadow: 0 1px 0 var(--text-alt-color);
 	color: var(--flash-dim-color);
 }
