@@ -4,7 +4,7 @@
     let price_request_link = "{'ExtPriceRequestForm'|link}";
 
     $(function() {
-        $('body').on('click', '.you-price', function(e) {
+        $('body').on('click', '#product-price-request', function(e) {
             e.preventDefault();
 
             const productId = $(this).data('product-id');

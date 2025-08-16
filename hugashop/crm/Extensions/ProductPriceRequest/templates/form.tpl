@@ -1,21 +1,23 @@
 {block name=price_request}
     <div id="wish_cheaper">
         <div class="row">
-            <div class="col-12 mb-3">
-                <h1>Запросить цену</h1>
-                <p>Если вы нашли этот товар дешевле, пожалуйста, сообщите нам об этом. Мы постараемся предложить вам лучшую
-                    цену.</p>
-            </div>
-
             <div class="col-12 col-md-6">
                 <div>
                     <img src="{$product->image->filename|resize:720}" alt="{$product->name}" class="img-fluid mb-3">
                 </div>
                 <p>Товар: <strong>{$product->name}</strong></p>
-                <p>Цена: <strong>{$product->price}</strong></p>
+                <p>Цена: <strong>{$product->price|price_html|raw}</strong></p>
             </div>
 
             <div class="col-12 col-md-6">
+
+                <div class="mb-5">
+                    <h1>Запросить цену</h1>
+                    <p>Если вы нашли этот товар дешевле, пожалуйста, сообщите нам об этом. Мы постараемся предложить вам
+                        лучшую
+                        цену.</p>
+                </div>
+
                 <form method="post" action="{'ExtPriceRequestForm'|link}" class="needs-validation">
                     <input type="hidden" name="product_id" value="{$product->id}">
                     {getCSRFInput}
@@ -41,7 +43,7 @@
                         <input class="form-control" type="text" name="comment" id="pr_comment" value="{$request->comment}">
                     </div>
                     <div class="text-end">
-                        <button class="btn btn-light" type="submit">Отправить</button>
+                        <button class="btn btn-primary" type="submit">Отправить</button>
                     </div>
                 </form>
             </div>

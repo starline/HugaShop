@@ -24,7 +24,7 @@ final class PriceRequest extends BaseExtensionModel
         'email'      => ['type' => 'varchar',   'req' => true],
         'comment'    => ['type' => 'varchar'],
         'user_agent' => ['type' => 'varchar',   'access' => false],
-        'ip'         => ['type' => 'varchar',   'length' => 20]
+        'ip'         => ['type' => 'varchar',   'access' => false,  'length' => 20]
     ];
 
     public function product()

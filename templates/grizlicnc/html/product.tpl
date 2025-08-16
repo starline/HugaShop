@@ -186,6 +186,12 @@
 							</button>
 						</div>
 					</div>
+
+					<div class="my-3">
+						<a href="#" id="product-price-request" class="you-price" data-product-id="{$product->id}"
+							rel="nofollow">Хочу
+							дешевле</a>
+					</div>
 				{/if}
 			</form>
 
@@ -193,10 +199,10 @@
 				{extension name='InfoBlock' id=1 enabled=1}
 			</div>
 
-			{if $product->features}
+			{if $product_features}
 				<h2 class="mt-4">Характеристики</h2>
 				<ul class="features">
-					{foreach $product->features as $f}
+					{foreach $product_features as $f}
 						<li>
 							<div class="label">
 								<span>{$f->name}</span>

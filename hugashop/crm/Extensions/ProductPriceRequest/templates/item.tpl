@@ -27,10 +27,6 @@
                     <div class="col-form-label">{$request->comment}</div>
                 </li>
                 <li>
-                    <div class="col-form-label">IP:</div>
-                    <div class="col-form-label">{$request->ip}</div>
-                </li>
-                <li>
                     <div class="col-form-label">Дата:</div>
                     <div class="col-form-label">{$request->created_at|date} {$request->created_at|time}</div>
                 </li>

@@ -59,8 +59,7 @@ class ProductPriceController extends BaseAdminController
             }
 
             // Варианты товара
-            $variants = Request::post('product_variants', 'array');
-            ProductVariant::updateVariants($product->id, $variants);
+            ProductVariant::updateVariants($product->id, Request::post('product_variants', 'array'));
 
             return $this->redirectToRoute('ProductPriceAdmin', ['id' => $product->id]);
         }

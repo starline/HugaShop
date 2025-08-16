@@ -62,8 +62,6 @@ class ProductController extends BaseFrontController
             return $this->redirectToRoute('Product', ['url' => $product->url], 301);
         }
 
-        $product->features = ProductOption::getProductOptions($product->id);
-
         // Comments
         CommentService::handleComments($product->id, Product::class);
 
@@ -81,6 +79,7 @@ class ProductController extends BaseFrontController
         Design::assign('product',           $product);
         Design::assign('meta_title',        $product->meta_title);
         Design::assign('meta_description',  $product->meta_description);
+        Design::assign('product_features',  ProductOption::getProductOptions($product->id));
         Design::assign('product_variants',  ProductVariant::getVariants($product->id));
         Design::assign('related_products',  ProductRelated::getRelatedProducts($product->id, ['image'], limit: 8));
         Design::assign('category',          ProductCategory::getCategory(intval($product->category_id)));

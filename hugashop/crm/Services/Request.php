@@ -42,7 +42,7 @@ class Request
     /**
      * Define a parameter
      */
-    public static function has($key)
+    public static function has(string $key)
     {
         return array_key_exists($key, $_GET) || array_key_exists($key, $_POST);
     }

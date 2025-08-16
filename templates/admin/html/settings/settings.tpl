@@ -94,18 +94,18 @@
 				<h2>Настройки каталога</h2>
 				<ul class="property_block">
 					<li class="row_sm">
-						<label class="col-form-label" for=products_num>Товаров на странице сайта</label>
-						<input class="form-control" name="products_num" id=products_num type="text"
+						<label class="col-form-label" for="products_num">Товаров на странице сайта</label>
+						<input class="form-control" name="products_num" id="products_num" type="text"
 							value="{$settings->products_num}" />
 					</li>
 					<li class="row_sm">
 						<label class="col-form-label" for=products_num_admin>Товаров на странице админки</label>
-						<input class="form-control" name="products_num_admin" id=products_num_admin type="text"
+						<input class="form-control" name="products_num_admin" id="products_num_admin" type="text"
 							value="{$settings->products_num_admin}" />
 					</li>
 					<li class="row_sm">
-						<label class="col-form-label" for=units>Единицы измерения товаров</label>
-						<input class="form-control" name="units" id=units type="text" value="{$settings->units}" />
+						<label class="col-form-label" for="units">Единицы измерения товаров</label>
+						<input class="form-control" name="units" id="units" type="text" value="{$settings->units}" />
 					</li>
 					<li class="row_sm">
 						<label class="col-form-label" for=weight_units>Единицы измерения веса</label>
@@ -160,7 +160,7 @@
 							<label for="watermark_transparency" class="col-form-label">Непрозрачность знака (меньше &mdash;
 								прозрачней)</label>
 							<div class="input-group">
-								<input class="form-control" name="watermark_transparency" id=watermark_transparency
+								<input class="form-control" name="watermark_transparency" id="watermark_transparency"
 									type=text value="{$settings->watermark_transparency}" />
 								<span class="input-group-text">%</span>
 							</div>
@@ -169,10 +169,10 @@
 						{if ($imagick)}
 							<li class="row_sm">
 								<label for="images_sharpen" class="col-form-label">Резкость изображений (рекомендуется
-									20%)</label>
+									8%)</label>
 								<div class="input-group">
-									<input class="form-control" name="images_sharpen" id=images_sharpen type=text
-										value="{$settings->images_sharpen}" />
+									<input class="form-control" name="images_sharpen" id="images_sharpen" type="text"
+										value="{$settings->images_sharpen}" placeholder="от 0 до 100" />
 									<span class="input-group-text">%</span>
 								</div>
 							</li>
