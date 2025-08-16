@@ -39,16 +39,7 @@ class ProductRelated extends BaseModel
      */
     public static function getRelatedProducts(int $product_id, array $join = [], int $limit = 0)
     {
-        $query = self::query()
-            ->where('product_id', $product_id)
-            ->with($join)
-            ->orderBy('position');
-
-        if ($limit) {
-            $query->limit($limit);
-        }
-
-        return $query->get()->keyBy('related_id');
+        return Product::getList(['related.product_id' => $product_id], order: 'position', join: $join);
     }
 
 

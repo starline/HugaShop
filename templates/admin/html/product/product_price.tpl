@@ -306,29 +306,29 @@
 				<div class="list related_products sortable_on">
 					{foreach $related_products as $rel_product}
 						<div
-							class="list_row {if !$rel_product->product->visible}visible_off{/if} {if $rel_product->product->disable}disable{/if}">
-							<input type="hidden" name="related_products[]" value="{$rel_product->product->id}">
+							class="list_row {if !$rel_product->visible}visible_off{/if} {if $rel_product->disable}disable{/if}">
+							<input type="hidden" name="related_products[]" value="{$rel_product->id}">
 
 							<div class="move">
 								<div class="move_zone"></div>
 							</div>
 							<div class="image">
 								<img
-									src="{if $rel_product->product->image->filename}{$rel_product->product->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}">
+									src="{if $rel_product->image->filename}{$rel_product->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}">
 							</div>
 
 
 							<div class="col row">
 								<div class="col-12 col-md-9">
 									<a class="product_name"
-										href="{'ProductAdmin'|link:[id => $rel_product->id]}?return={$smarty.server.REQUEST_URI|escape}">{$rel_product->product->name}</a>
+										href="{'ProductAdmin'|link:[id => $rel_product->id]}?return={$smarty.server.REQUEST_URI|escape}">{$rel_product->name}</a>
 									<div class="variant_name">{$rel_product->variant_name}</div>
 								</div>
 
 								<div class="col-12 col-md-3">
 									<div class="sku text-end">
-										<div class="badge text-bg-round copy_field" value="{$rel_product->product->sku}">
-											<span>{$rel_product->product->sku}</span>
+										<div class="badge text-bg-round copy_field" value="{$rel_product->sku}">
+											<span>{$rel_product->sku}</span>
 											<div class="copy_hover" data-bs-toggle="tooltip"
 												data-bs-original-title="Скопировать">
 												<i class="material-icons">content_copy</i>

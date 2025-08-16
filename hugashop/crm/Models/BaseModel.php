@@ -327,7 +327,16 @@ abstract class BaseModel extends Model
             if (is_array($value)) {
                 $query->whereIn($field, $value);
             } else {
-                $query->where($field, $value);
+
+                // Если есть точка -> связь. Например "related.product_id"
+                if (str_contains($field, '.')) {
+                    [$relation, $rel_field] = explode('.', $field, 2);
+                    $query->whereHas($relation, function ($q) use ($rel_field, $value) {
+                        $q->where($rel_field, '=', $value);
+                    });
+                } else {
+                    $query->where($field, '=', $value);
+                }
             }
         }
 
