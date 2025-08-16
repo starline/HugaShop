@@ -1,0 +1,1 @@
+{block name=$ajax_block}{/block}
