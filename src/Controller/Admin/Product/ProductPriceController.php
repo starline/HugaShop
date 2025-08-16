@@ -76,7 +76,7 @@ class ProductPriceController extends BaseAdminController
             }
 
             Design::assign('product',               $product);
-            Design::assign('product_variants',      ProductVariant::getVariants($product->id, ['product', 'product.image']));
+            Design::assign('product_variants',      ProductVariant::getVariants($product->id, ['image']));
             Design::assign('related_products',      ProductRelated::getRelatedProducts($product->id, ['image']));
             Design::assign('warehouse_products',    WarehousePlaceProduct::getList(['product_id' => $product->id], join: 'place'));
         }

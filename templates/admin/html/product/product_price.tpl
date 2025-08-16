@@ -197,28 +197,28 @@
 				<div class="list product_variants sortable_on">
 					{foreach $product_variants as $product_variant}
 						<div
-							class="list_row {if !$product_variant->product->visible}visible_off{/if} {if $product_variant->product->disable}disable{/if}">
-							<input type="hidden" name="product_variants[]" value="{$product_variant->product_id}">
+							class="list_row {if !$product_variant->visible}visible_off{/if} {if $product_variant->disable}disable{/if}">
+							<input type="hidden" name="product_variants[]" value="{$product_variant->id}">
 
 							<div class="move">
 								<div class="move_zone"></div>
 							</div>
 							<div class="image">
 								<img
-									src="{if $product_variant->product->image->filename}{$product_variant->product->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}">
+									src="{if $product_variant->image->filename}{$product_variant->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}">
 							</div>
 
 							<div class="col row">
 								<div class="col-12 col-md-9">
 									<a class="product_name"
-										href="{'ProductAdmin'|link:[id => $product_variant->product_id]}?return={$smarty.server.REQUEST_URI|urlencode}">{$product_variant->product->name}</a>
-									<div class="variant_name">{$product_variant->product->variant_name}</div>
+										href="{'ProductAdmin'|link:[id => $product_variant->id]}?return={$smarty.server.REQUEST_URI|urlencode}">{$product_variant->name}</a>
+									<div class="variant_name">{$product_variant->variant_name}</div>
 								</div>
 
 								<div class="col-12 col-md-3">
 									<div class="sku text-end">
-										<div class="badge text-bg-round copy_field" value="{$product_variant->product->sku}">
-											<span>{$product_variant->product->sku}</span>
+										<div class="badge text-bg-round copy_field" value="{$product_variant->sku}">
+											<span>{$product_variant->sku}</span>
 											<div class="copy_hover" data-bs-toggle="tooltip"
 												data-bs-original-title="Скопировать">
 												<i class="material-icons">content_copy</i>

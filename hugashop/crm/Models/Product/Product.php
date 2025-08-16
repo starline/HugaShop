@@ -518,7 +518,7 @@ class Product extends BaseModel
             ->exists();
 
         if ($has_variants) {
-            $variants = ProductVariant::getVariants($id)->pluck('product_id')->toArray();
+            $variants = ProductVariant::getVariants($id)->pluck('id')->toArray();
             $variants[] = $new_id;
             ProductVariant::updateVariants($id, $variants);
         }

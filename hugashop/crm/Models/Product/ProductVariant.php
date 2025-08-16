@@ -46,11 +46,7 @@ class ProductVariant extends BaseModel
             ->where('product_id', $product_id)
             ->value('parent_id') ?? $product_id;
 
-        return self::query()
-            ->where('parent_id', $parent_id)
-            ->with($join)
-            ->orderBy('position')
-            ->get();
+        return Product::getListTranslate(['variants.parent_id' => $parent_id], order: 'position', join: $join);
     }
 
 

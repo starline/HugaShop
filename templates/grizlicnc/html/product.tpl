@@ -85,36 +85,33 @@
 					<div class="d-flex flex-wrap gap-2 my-4">
 						{foreach $product_variants as $product_variant}
 							<div class="variant">
-								<input type="radio" class="btn-check" name="product" value="{$product_variant->product->id}"
-									id="product_{$product_variant->product->id}" autocomplete="off"
-									{if $product->id === $product_variant->product->id}checked{/if}
-									{if !$product_variant->product->stock AND !$product_variant->product->custom}disabled{/if}
-									product_id="{$product_variant->product->id}" sku="{$product_variant->product->sku}"
-									name="{$product_variant->product->name}"
-									variant_name="{$product_variant->product->variant_name}"
-									price="{$product_variant->product->price|price_html:clean}"
-									max_stock="{$product_variant->product->stock}"
-									old_price="{$product_variant->product->old_price|price_html:clean}" />
+								<input type="radio" class="btn-check" name="product" value="{$product_variant->id}"
+									id="product_{$product_variant->id}" autocomplete="off"
+									{if $product->id === $product_variant->id}checked{/if}
+									{if !$product_variant->stock AND !$product_variant->custom}disabled{/if}
+									product_id="{$product_variant->id}" sku="{$product_variant->sku}"
+									name="{$product_variant->name}" variant_name="{$product_variant->variant_name}"
+									price="{$product_variant->price|price_html:clean}" max_stock="{$product_variant->stock}"
+									old_price="{$product_variant->old_price|price_html:clean}" />
 
-								{if $product_variant->product->variant_name}
-									<label class="btn btn-outline-secondary" for="product_{$product_variant->product->id}">
-										<div class="fw-bold">{$product_variant->product->variant_name}</div>
+								{if $product_variant->variant_name}
+									<label class="btn btn-outline-secondary" for="product_{$product_variant->id}">
+										<div class="fw-bold">{$product_variant->variant_name}</div>
 										<div class="border-top">
 											<div class="status_stock">
 												{if $product->disable}
 													<span class="notinstock">Товар больше не поставляется</span>
-												{elseif $product_variant->product->stock>0}
+												{elseif $product_variant->stock>0}
 													<span class="instock">В наличии</span>
-													{if $product_variant->product->stock|instock:4:'заканчивается'}
-														<span
-															class="instock_count">{$product_variant->product->stock|instock:4:'заканчивается'}</span>
+													{if $product_variant->stock|instock:4:'заканчивается'}
+														<span class="instock_count">{$product_variant->stock|instock:4:'заканчивается'}</span>
 													{/if}
-												{elseif $product_variant->product->custom}
+												{elseif $product_variant->custom}
 													<span class="awaiting">Под заказ</span>
-												{elseif $product_variant->product->awaiting}
+												{elseif $product_variant->awaiting}
 													<span class="awaiting">Ожидается поставка
-														{if !$product_variant->product->awaiting_date|empty and $smarty.now < $product_variant->product->awaiting_date|strtotime}
-															<span>{$product_variant->product->awaiting_date|date}</span>
+														{if !$product_variant->awaiting_date|empty and $smarty.now < $product_variant->awaiting_date|strtotime}
+															<span>{$product_variant->awaiting_date|date}</span>
 														{/if}
 													</span>
 												{else}
@@ -122,7 +119,7 @@
 												{/if}
 											</div>
 
-											<span class="variant_price">{$product_variant->product->price|price_html|raw}</span>
+											<span class="variant_price">{$product_variant->price|price_html|raw}</span>
 										</div>
 									</label>
 								{/if}
