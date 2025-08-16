@@ -14,8 +14,9 @@ use HugaShop\Services\Config;
 use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\Finance\FinancePurse;
-use HugaShop\Models\Finance\FinanceCurrency;
 use HugaShop\Models\Localization\Language;
+use HugaShop\Models\Finance\FinanceCurrency;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class OrderPayment extends BaseModel
 {
@@ -45,7 +46,7 @@ class OrderPayment extends BaseModel
         return $this->belongsTo(FinanceCurrency::class, 'currency_id');
     }
 
-    public function deliveries()
+    public function deliveries(): HasMany
     {
         return $this->hasMany(OrderPaymentDelivery::class, 'payment_method_id');
     }

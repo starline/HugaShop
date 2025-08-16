@@ -17,6 +17,7 @@ use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\Finance\FinancePurse;
 use HugaShop\Models\Order\OrderPaymentDelivery;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class OrderDelivery extends BaseModel
 {
@@ -44,7 +45,7 @@ class OrderDelivery extends BaseModel
         return $this->belongsTo(FinancePurse::class, 'finance_purse_id');
     }
 
-    public function payments()
+    public function payments(): HasMany
     {
         return $this->hasMany(OrderPaymentDelivery::class, 'delivery_id');
     }

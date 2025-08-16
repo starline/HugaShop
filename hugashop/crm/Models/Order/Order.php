@@ -79,14 +79,11 @@ class Order extends BaseModel
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function purchases()
+    public function purchases(): HasMany
     {
         return $this->hasMany(OrderPurchase::class, 'order_id')->orderBy('position');
     }
 
-    /**
-     * Relationship for order labels IDs
-     */
     public function label_ids(): HasMany
     {
         return $this->hasMany(OrderLabelRelated::class, 'order_id');
