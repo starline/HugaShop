@@ -179,8 +179,7 @@
 
 					<div class='view_entity'>
 						{if !$contractor->entity_id|empty}
-							<a
-								href="{$contractor->view_name|replace:'/':' '|capitalize|replace:' ':''|cat:'Admin'|link:[id => $contractor->entity_id]}">{$contractor->entity->name}</a>
+							<a href="/admin/{$contractor->view_name}/{$contractor->entity_id}">{$contractor->entity->name}</a>
 						{/if}
 					</div>
 

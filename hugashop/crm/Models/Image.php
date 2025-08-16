@@ -223,11 +223,11 @@ class Image extends BaseModel
      */
     public static function resize(string $filename)
     {
-
         $params = self::getResizeParams($filename);
         if (!$params) {
             return false;
         }
+
         list($source_file, $width, $height, $set_watermark, $cut) = $params;
 
 
