@@ -154,7 +154,7 @@ class Cart extends BaseModel
         $cart->token =          Helper::makeToken(uniqid(), 16);
         $cart->ip =             $_SERVER['REMOTE_ADDR'];
         $cart->user_agent =     $_SERVER['HTTP_USER_AGENT']; # Browser
-        $cart->language =       Request::post('language', 'string') ?? null;
+        $cart->language =       Request::post('language', 'string');
         $cart->session_start =  Request::getSession('session_start') ?? null;
         $cart->referral =       Request::getSession('referral') ?? null;
 

@@ -37,8 +37,8 @@
                         <div class="invalid-feedback">Введите Email</div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label" for="pr_link">Ссылка на дешевле</label>
-                        <input class="form-control" type="text" name="link" id="pr_link" value="{$request->link}">
+                        <label class="form-label" for="pr_comment">Ссылка на дешевле или причина запроса</label>
+                        <input class="form-control" type="text" name="comment" id="pr_comment" value="{$request->comment}">
                     </div>
                     <div class="text-end">
                         <button class="btn btn-light" type="submit">Отправить</button>

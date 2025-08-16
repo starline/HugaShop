@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.6
+ * @version 3.7
  *
  * Класс-обертка для обращения к переменным $_GET, $_POST, $_FILES, $_COOKIE, $_SESSION
  *
@@ -53,12 +53,11 @@ class Request
      * @param string $var_name
      * @param string $type
      */
-    public static function input(?string $var_name = null, ?string $type = null)
+    public static function input(string $var_name, ?string $type = null, mixed $default = null)
     {
-        $val = null;
-        $val = self::post($var_name, $type);
+        $val = self::post($var_name, $type, $default);
         if (empty($val)) {
-            $val = self::get($var_name, $type);
+            $val = self::get($var_name, $type, $default);
         }
         return $val;
     }
@@ -67,25 +66,18 @@ class Request
     /**
      * Возвращает переменную _GET, отфильтрованную по заданному типу, если во втором параметре указан тип фильтра
      * Если $type не задан, возвращает переменную в чистом виде
-     * @param $name
-     * @param $type
+     * Возвращает $default (по умолчанию null), если ключа нет.
      */
-    public static function get($name = null, $type = null)
+    public static function get(string $name, ?string $type = null, mixed $default = null)
     {
-        // Returne all $_GET values
-        if (is_null($name) and is_null($type)) {
-            return self::gets();
+        $val = $_GET[$name] ?? $default;
+
+        // Если тип не задан или значение отсутствует — возвращаем как есть
+        if ($type === null) {
+            return $val;
         }
 
-        $val = null; # если переменная не задана возвращаем null
-        if (!empty($name) and isset($_GET[$name])) {
-            $val = $_GET[$name];
-            if (!is_null($type)) {
-                $val = self::getValueByType($val, $type);
-            }
-        }
-
-        return $val;
+        return self::getValueByType($val, $type);
     }
 
 
@@ -116,31 +108,18 @@ class Request
     /**
      * Возвращает переменную $_POST, отфильтрованную по заданному типу, если во втором параметре указан тип фильтра
      * Если $type не задан, возвращает переменную в чистом виде
-     * Если переменной не существует в $_POST, возвращаем NULL
+     * Возвращает $default (по умолчанию null), если ключа нет.
      */
-    public static function post(?string $name = null, ?string $type = null)
+    public static function post(string $name, ?string $type = null, mixed $default = null)
     {
+        $val = $_POST[$name] ?? $default;
 
-        // Returne all $_POST values
-        if (is_null($name) and is_null($type)) {
-            return self::posts();
+        // Если тип не задан или значение отсутствует — возвращаем как есть
+        if ($type === null) {
+            return $val;
         }
 
-        $val = null;
-        if (!empty($name)) {
-            if (isset($_POST[$name])) {
-                $val = $_POST[$name];
-            }
-            if (!is_null($type)) {
-                $val = self::getValueByType($val, $type);
-            }
-        } elseif (empty($name)) {
-            $val = file_get_contents('php://input');
-        }
-
-        //dump($name . "=" . $val);
-
-        return $val;
+        return self::getValueByType($val, $type);
     }
 
 
@@ -170,6 +149,15 @@ class Request
 
 
     /**
+     * Get content
+     */
+    public static function getContent()
+    {
+        return file_get_contents('php://input');
+    }
+
+
+    /**
      * Перобразовываем переменные согласно их типу
      * @param string|null|array|int $val
      * @param string $type
@@ -178,7 +166,7 @@ class Request
     {
 
         // Массив (автоопределение)
-        if (is_array($val) and $type != 'array') {
+        if (is_array($val) and $type !== 'array') {
             reset($val);
             return $val;
         }
@@ -208,7 +196,7 @@ class Request
         }
 
         // Array
-        if ($type == 'array') {
+        if ($type === 'array') {
             $val_arr = [];  # if empty or null
             if (is_array($val)) { # if array
                 $val_arr = $val;

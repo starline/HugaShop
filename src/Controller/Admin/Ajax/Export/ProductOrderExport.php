@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.2
  *
  */
 
@@ -41,11 +41,11 @@ class ProductOrderExport extends BaseAdminController
         'manager_profit' =>         '% менеджера',
     );
 
-    private $column_delimiter = ';';
-    private $filename = 'product_orders.csv';
+    private $column_delimiter   = ';';
+    private $filename           = 'product_orders.csv';
 
 
-    #[Route('/admin/ajax/product_orders/export/')]
+    #[Route('/admin/ajax/product_orders/export', name: 'ProductOrderExport')]
     public function index()
     {
 
@@ -121,7 +121,6 @@ class ProductOrderExport extends BaseAdminController
                             } else {
                                 $str[] = "";
                             }
-
                             break;
 
                         case 'total_price':

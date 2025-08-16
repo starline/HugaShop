@@ -10,12 +10,57 @@
     <div class="row gx-5">
         <div class="col-lg-6">
             <ul class="property_block">
-                <li><b>ФИО:</b> {$request->name}</li>
-                <li><b>Телефон:</b> {$request->phone}</li>
-                <li><b>Email:</b> {$request->email}</li>
-                <li><b>Ссылка:</b> <a href="{$request->link}" target="_blank">{$request->link}</a></li>
-                <li><b>IP:</b> {$request->ip}</li>
-                <li><b>Дата:</b> {$request->created_at|date} {$request->created_at|time}</li>
+                <li>
+                    <div class="col-form-label">ФИО:</div>
+                    <div class="col-form-label">{$request->name}</div>
+                </li>
+                <li>
+                    <div class="col-form-label">Телефон:</div>
+                    <div class="col-form-label">{$request->phone}</div>
+                </li>
+                <li>
+                    <div class="col-form-label">Email:</div>
+                    <div class="col-form-label">{$request->email}</div>
+                </li>
+                <li>
+                    <div class="col-form-label">Комментарий к запросу:</div>
+                    <div class="col-form-label">{$request->comment}</div>
+                </li>
+                <li>
+                    <div class="col-form-label">IP:</div>
+                    <div class="col-form-label">{$request->ip}</div>
+                </li>
+                <li>
+                    <div class="col-form-label">Дата:</div>
+                    <div class="col-form-label">{$request->created_at|date} {$request->created_at|time}</div>
+                </li>
+
+                <li>
+                    <div class="col-form-label"></div>
+                    <div class="col-form-label">
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <div>IP: {$request->ip}</div>
+                                <div>
+                                    <a class="badge text-bg-secondary" href='https://www.ipaddress.com/ipv4/{$request->ip}'
+                                        target="_blank">где
+                                        это?</a>
+                                </div>
+                            </div>
+
+                            {if !$request->user_agent|empty}
+                                <div class="list-group-item">
+                                    <div class="col-6">{$request->user_agent->os} {$request->user_agent->os_version}</div>
+                                    <span class="badge text-bg-secondary">{$request->user_agent->device_type}</span>
+                                </div>
+                                <div class="list-group-item">
+                                    <div class="col-6">{$request->user_agent->browser}</div>
+                                    <span class="badge text-bg-secondary">{$request->user_agent->device}</span>
+                                </div>
+                            {/if}
+                        </div>
+                    </div>
+                </li>
             </ul>
         </div>
 

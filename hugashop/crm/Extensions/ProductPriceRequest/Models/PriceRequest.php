@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.2
  */
 
 namespace HugaShop\Extensions\ProductPriceRequest\Models;
@@ -22,7 +22,8 @@ final class PriceRequest extends BaseExtensionModel
         'name'       => ['type' => 'varchar',   'req' => true],
         'phone'      => ['type' => 'varchar'],
         'email'      => ['type' => 'varchar',   'req' => true],
-        'link'       => ['type' => 'varchar'],
+        'comment'    => ['type' => 'varchar'],
+        'user_agent' => ['type' => 'varchar',   'access' => false],
         'ip'         => ['type' => 'varchar',   'length' => 20]
     ];
 

@@ -37,8 +37,9 @@ final class PriceRequestController extends BaseFrontController
 
         if (!empty($request = Secure::getInputAcces(PriceRequest::getFields()))) {
 
-            $request->ip = $_SERVER['REMOTE_ADDR'];
-            $request = PriceRequest::createOne($request);
+            $request->ip            = $_SERVER['REMOTE_ADDR'];
+            $request->user_agent    = $_SERVER['HTTP_USER_AGENT']; # Browser
+            $request                = PriceRequest::createOne($request);
 
             NotifierFactory::sendToManagers([
                 NotifyService::class,

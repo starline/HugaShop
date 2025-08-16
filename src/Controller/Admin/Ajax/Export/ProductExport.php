@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.2
+ * @version 1.3
  *
  */
 
@@ -33,13 +33,13 @@ class ProductExport extends BaseAdminController
         //'category'=>				'Категория',
     );
 
-    private $column_delimiter = ";";
-    private $subcategory_delimiter = '/';
-    private $products_count = 10; # кол-во товаров обработаных за раз
-    private $filename = 'products.csv';
+    private $column_delimiter       = ";";
+    private $subcategory_delimiter  = '/';
+    private $products_count         = 10; # кол-во товаров обработаных за раз
+    private $filename               = 'products.csv';
 
 
-    #[Route('/admin/ajax/products/export')]
+    #[Route('/admin/ajax/products/export', name: 'ProductExport')]
     public function index()
     {
 

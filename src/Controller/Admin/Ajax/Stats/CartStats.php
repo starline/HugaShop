@@ -4,7 +4,7 @@
  * HugaShop - Selling anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
@@ -24,9 +24,9 @@ class CartStats extends BaseAdminController
 
         $this->checkAdminAccess('order', checkCSRF: true);
 
-        $from_date = Request::post('fromDate') ?: null;
-        $to_date   = Request::post('toDate') ?: null;
-        $type      = Request::post('type') ?: null;
+        $from_date = Request::post('fromDate');
+        $to_date   = Request::post('toDate');
+        $type      = Request::post('type');
 
         if (Request::post('filter') === 'byMonth') {
             $result = Statistics::cartsByMonth($from_date, $to_date, $type);

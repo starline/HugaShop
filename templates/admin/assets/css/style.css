@@ -53,6 +53,11 @@
 	--bs-border-color: #c3c3c3;
 	--bs-success-rgb: 88, 175, 15;
 	--bs-danger-rgb: 255, 0, 0;
+
+}
+
+.badge {
+	--bs-badge-font-size: 0.85em;
 }
 
 .list-group {

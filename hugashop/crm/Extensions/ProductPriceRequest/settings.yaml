@@ -1,5 +1,5 @@
-name: "Запрос на скидку"
-description: "Форма запроса более низкой цены"
+name: "Запрос на скидку «Хочу дешевле!»"
+description: "Форма запроса более низкой цены."
 settings_params:
   - {
       variable: enabled,
@@ -9,4 +9,4 @@ settings_params:
 notifier:
   admin:
     - priceRequestToAdmin: "Запрос на скидку"
-version: 1.1
+version: 1.2

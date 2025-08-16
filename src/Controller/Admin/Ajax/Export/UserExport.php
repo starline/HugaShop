@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.2
  *
  */
 
@@ -33,12 +33,12 @@ class UserExport extends BaseAdminController
         'comment' =>        'comment'
     );
 
-    private $column_delimiter = ';';
-    private $users_count = 100;
-    private $filename = 'users.csv';
+    private $column_delimiter   = ';';
+    private $users_count        = 100;
+    private $filename           = 'users.csv';
 
 
-    #[Route('/admin/ajax/users/export')]
+    #[Route('/admin/ajax/users/export', name: 'UserExport')]
     public function index()
     {
 

@@ -43,9 +43,9 @@ class CartController extends BaseFrontController
     #[Route('/cart/add', name: 'CartAdd', priority: 10)]
     public function cartAdd()
     {
-        $product_id     = Request::input('product_id', 'int') ?: null;
-        $sku            = Request::input('sku', 'string') ?: null;
-        $amount         = Request::input('amount', 'int') ?: 1;
+        $product_id     = Request::input('product_id', 'int');
+        $sku            = Request::input('sku', 'string');
+        $amount         = Request::input('amount', 'int', 1);
 
         // SKU
         if ($sku and !$product_id) {
@@ -111,8 +111,8 @@ class CartController extends BaseFrontController
     public function cartInformer()
     {
 
-        $amount     = Request::input('amount', 'int') ?: 1;
-        $product_id = Request::input('product_id', 'int') ?: null;
+        $amount     = Request::input('amount', 'int', 1);
+        $product_id = Request::input('product_id', 'int');
 
         // Add product to cart
         if (!empty($product_id)) {
