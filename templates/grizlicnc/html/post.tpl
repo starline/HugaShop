@@ -30,16 +30,13 @@
 			{include file='parts/menu_part.tpl'}
 		</div>
 
-		<div class="col-lg-9">
+		<div class="col-lg-9 position-relative">
+			{if 'blog'|user_access AND $post->id}
+				<a class="admin_edit" href="{'PostAdmin'|linkLang:[id => $post->id]}" data-bs-toggle="tooltip"
+					title="{'Редактировать статью'|trans}">{'Редактировать статью'|trans}</a>
+			{/if}
 
 			<h1>{$post->name}</h1>
-
-			{if 'blog'|user_access AND $post->id}
-				<div class="admin_edit">
-					<a href="{'PostAdmin'|linkLang:[id => $post->id]}" data-bs-toggle="tooltip"
-						title="{'Редактировать статью'|trans}">{'Редактировать статью'|trans}</a>
-				</div>
-			{/if}
 
 			<p>{$post->date|date}</p>
 

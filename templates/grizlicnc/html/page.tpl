@@ -24,17 +24,14 @@
 			{include file='parts/menu_part.tpl'}
 		</div>
 
-		<div class="col-lg-9">
-			<h1>{$page->h1}</h1>
-
+		<div class="col-lg-9 position-relative">
 			{if 'page'|user_access AND $page->id}
-				<div class="admin_edit">
-					<a href="{'PageAdmin'|linkLang:[id => $page->id]}" data-bs-toggle="tooltip"
-						title="{'Редактировать страницу'|trans}">
-						{'Редактировать страницу'|trans}
-					</a>
-				</div>
+				<a class="admin_edit" href="{'PageAdmin'|linkLang:[id => $page->id]}" data-bs-toggle="tooltip"
+					title="{'Редактировать страницу'|trans}">
+					{'Редактировать страницу'|trans}
+				</a>
 			{/if}
+			<h1>{$page->h1}</h1>
 
 			<!-- Page Body -->
 			<div class="description_html">

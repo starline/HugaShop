@@ -1461,19 +1461,19 @@ a.admin_bookmark svg {
 	right: 0px;
 }
 
-.admin_edit {
-	margin-top: -23px;
-	padding-bottom: 8px;
+a.admin_edit {
+	top: -17px;
+	position: absolute;
 }
 
-.admin_edit a {
+a.admin_edit {
 	font-style: italic;
 	color: #448600;
 	text-decoration: underline;
 	font-size: 0.9rem;
 }
 
-.admin_edit a:hover {
+a.admin_edit:hover {
 	color: #e84d07;
 }
 

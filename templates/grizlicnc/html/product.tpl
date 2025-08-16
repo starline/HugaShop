@@ -60,15 +60,15 @@
 			</div>
 		</div>
 
-		<div class="col-12 col-lg-6">
+		<div class="col-12 col-lg-6 position-relative">
 			<h1>{$product->name} {if $product->variant_name} - {$product->variant_name}{/if}</h1>
 
 			{if 'product_content'|user_access AND $product->id}
-				<div class="admin_edit">
-					<a href="{'ProductAdmin'|link:[id=>$product->id]}" data-bs-toggle="tooltip">Редактировать
-						товар</a>
-				</div>
+				<a class="admin_edit" href="{'ProductAdmin'|link:[id=>$product->id]}" data-bs-toggle="tooltip">Редактировать
+					товар</a>
 			{/if}
+
+			<div class="my-3">{'Код'|trans}: <span class="badge text-bg-secondary rounded-pill">{$product->sku}</span></div>
 
 
 			<form class="variants" id="variants" action="/cart">
