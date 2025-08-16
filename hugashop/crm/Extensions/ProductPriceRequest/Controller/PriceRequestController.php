@@ -4,12 +4,13 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.2
  */
 
 namespace HugaShop\Extensions\ProductPriceRequest\Controller;
 
 use HugaShop\Services\Design;
+use HugaShop\Services\Helper;
 use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use HugaShop\Models\Product\Product;
@@ -37,19 +38,23 @@ final class PriceRequestController extends BaseFrontController
 
         if (!empty($request = Secure::getInputAcces(PriceRequest::getFields()))) {
 
-            $request->ip            = $_SERVER['REMOTE_ADDR'];
-            $request->user_agent    = $_SERVER['HTTP_USER_AGENT']; # Browser
-            $request                = PriceRequest::createOne($request);
+            if (Helper::checkCaptcha()) {
+                $request->ip            = $_SERVER['REMOTE_ADDR'];
+                $request->user_agent    = $_SERVER['HTTP_USER_AGENT']; # Browser
+                $request                = PriceRequest::createOne($request);
 
-            NotifierFactory::sendToManagers([
-                NotifyService::class,
-                'priceRequestToAdmin'
-            ], [
-                'request' => $request,
-                'product' => $product
-            ]);
+                NotifierFactory::sendToManagers([
+                    NotifyService::class,
+                    'priceRequestToAdmin'
+                ], [
+                    'request' => $request,
+                    'product' => $product
+                ]);
 
-            return $this->fetchExtResponse('form.tpl', 'request_sent');
+                return $this->fetchExtResponse('form.tpl', 'request_sent');
+            } else {
+                Design::assign('error', 'captcha');
+            }
         }
 
         Design::assign('product', $product);

@@ -18,6 +18,14 @@
                         цену.</p>
                 </div>
 
+                {if $error}
+                    <div class="alert alert-danger">
+                        {if $error=='captcha'}
+                            Подтвердите что вы не робот
+                        {/if}
+                    </div>
+                {/if}
+
                 <form method="post" action="{'ExtPriceRequestForm'|link}" class="needs-validation">
                     <input type="hidden" name="product_id" value="{$product->id}">
                     {getCSRFInput}
@@ -42,10 +50,14 @@
                         <label class="form-label" for="pr_comment">Ссылка на дешевле или причина запроса</label>
                         <input class="form-control" type="text" name="comment" id="pr_comment" value="{$request->comment}">
                     </div>
+                    <div class="mb-3">
+                        <div class="g-recaptcha" data-sitekey="{$config->recaptcha->public_key}"></div>
+                    </div>
                     <div class="text-end">
                         <button class="btn btn-primary" type="submit">Отправить</button>
                     </div>
                 </form>
+                <script src="https://www.google.com/recaptcha/api.js" async defer></script>
             </div>
         </div>
     </div>
