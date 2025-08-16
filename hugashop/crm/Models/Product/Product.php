@@ -514,7 +514,7 @@ class Product extends BaseModel
         }
 
         // Дублируем связанные товары
-        $related = ProductRelated::getRelatedProducts($id);
+        $related = ProductRelated::getList(['product_id' => $id]);
         foreach ($related as $rel) {
             ProductRelated::addRelatedProduct($new_id, $rel->related_id);
         }

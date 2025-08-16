@@ -199,6 +199,7 @@
 						<div
 							class="list_row {if !$product_variant->product->visible}visible_off{/if} {if $product_variant->product->disable}disable{/if}">
 							<input type="hidden" name="product_variants[]" value="{$product_variant->product_id}">
+
 							<div class="move">
 								<div class="move_zone"></div>
 							</div>
@@ -236,24 +237,21 @@
 					<div id="new_product_variant" class="list_row" style="display:none;">
 						<input type="hidden" name="product_variants[]" value="">
 
-						<div class="col row gy-5">
+						<div class="move">
+							<div class="move_zone"></div>
+						</div>
+						<div class="image">
+							<img src="">
+						</div>
+
+						<div class="col row">
 							<div class="col-12 col-md-9">
-								<div class="row">
-									<div class="move">
-										<div class="move_zone"></div>
-									</div>
-									<div class="image">
-										<img src="">
-									</div>
-									<div class="col">
-										<a class="product_name" href=""></a>
-										<div class="variant_name"></div>
-									</div>
-								</div>
+								<a class="product_name" href=""></a>
+								<div class="variant_name"></div>
 							</div>
 
 							<div class="col-12 col-md-3">
-								<div class="col sku text-end">
+								<div class="sku text-end">
 									<div class="badge text-bg-round copy_field" value="">
 										<span></span>
 										<div class="copy_hover" data-bs-toggle="tooltip"
@@ -302,26 +300,42 @@
 			<div class="col-lg-6 layer">
 				<h2>
 					Связанные товары
-					<span class="sum_total">{$product->related|count}
-						{$product->related|count|plural:'товар':'товаров':'товара'}</span>
+					<span class="sum_total">{$related_products|count}
+						{$related_products|count|plural:'товар':'товаров':'товара'}</span>
 				</h2>
 				<div class="list related_products sortable_on">
-					{foreach $product->related as $rel_product}
+					{foreach $related_products as $rel_product}
 						<div
-							class="list_row {if !$rel_product->visible}visible_off{/if} {if $rel_product->disable}disable{/if}">
-							<input type="hidden" name="related_products[]" value="{$rel_product->id}">
+							class="list_row {if !$rel_product->product->visible}visible_off{/if} {if $rel_product->product->disable}disable{/if}">
+							<input type="hidden" name="related_products[]" value="{$rel_product->product->id}">
+
 							<div class="move">
 								<div class="move_zone"></div>
 							</div>
-
 							<div class="image">
 								<img
-									src="{if $rel_product->image->filename}{$rel_product->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}">
+									src="{if $rel_product->product->image->filename}{$rel_product->product->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}">
 							</div>
 
-							<div class="col">
-								<a class="related_product_name"
-									href="{'ProductAdmin'|link:[id => $rel_product->id]}?return={$smarty.server.REQUEST_URI|escape}">{$rel_product->name}</a>
+
+							<div class="col row">
+								<div class="col-12 col-md-9">
+									<a class="product_name"
+										href="{'ProductAdmin'|link:[id => $rel_product->id]}?return={$smarty.server.REQUEST_URI|escape}">{$rel_product->product->name}</a>
+									<div class="variant_name">{$rel_product->variant_name}</div>
+								</div>
+
+								<div class="col-12 col-md-3">
+									<div class="sku text-end">
+										<div class="badge text-bg-round copy_field" value="{$rel_product->product->sku}">
+											<span>{$rel_product->product->sku}</span>
+											<div class="copy_hover" data-bs-toggle="tooltip"
+												data-bs-original-title="Скопировать">
+												<i class="material-icons">content_copy</i>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 
 							<div class="icons">
@@ -338,8 +352,22 @@
 						<div class="image">
 							<img src="">
 						</div>
-						<div class="col">
-							<a class="related_product_name" href=""></a>
+						<div class="col row">
+							<div class="col-12 col-md-9">
+								<a class="product_name" href=""></a>
+								<div class="variant_name"></div>
+							</div>
+							<div class="col-12 col-md-3">
+								<div class="sku text-end">
+									<div class="badge text-bg-round copy_field" value="">
+										<span></span>
+										<div class="copy_hover" data-bs-toggle="tooltip"
+											data-bs-original-title="Скопировать">
+											<i class="material-icons">content_copy</i>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 						<div class="icons">
 							<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
@@ -458,10 +486,23 @@
 						let new_item = new_related_product.clone().appendTo('.related_products');
 						let product = suggestion.data;
 
-						new_item.find('a.related_product_name').html(product.name);
-						new_item.find('a.related_product_name')
+						new_item.find('a.product_name').html(product.name);
+						new_item.find('a.product_name')
 							.attr('href', '/admin/product/' + product.id);
 						new_item.find('input[name*="related_products"]').val(product.id);
+
+						if (product.variant_name) {
+							new_item.find('.variant_name').text(product.variant_name);
+						} else {
+							new_item.find('.variant_name').remove();
+						}
+
+						if (product.sku) {
+							new_item.find('.sku .copy_field').attr('value', product.sku);
+							new_item.find('.sku .copy_field span').text(product.sku);
+						} else {
+							new_item.find('.sku .copy_field').remove();
+						}
 
 						if (product.image)
 							new_item.find('.image img').attr("src", product.image.url);

@@ -585,7 +585,7 @@ final class TestScriptController extends BaseAdminController
                         foreach ($products as $product) {
 
                             // Выбираем все текущие связанные товары
-                            //$cur_rel_product_ids = ProductRelated::getRelatedProducts($product->id)->pluck('related_id')->toArray();
+                            //$cur_rel_product_ids = ProductRelated::getList(['product_id' => $product->id])->pluck('related_id')->toArray();
                             $cur_rel_product_ids = [];
 
                             // Выбираем Все товары в выполненных заказах

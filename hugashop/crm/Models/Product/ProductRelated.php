@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.5
+ * @version 2.6
  *
  */
 
@@ -36,16 +36,18 @@ class ProductRelated extends BaseModel
 
     /**
      * Выбираем связанные товары
-     * @param int $product_id
-     * @param int $limit
      */
-    public static function getRelatedProducts(int $product_id, int $limit = 0)
+    public static function getRelatedProducts(int $product_id, array $join = [], int $limit = 0)
     {
-        $query = self::where('product_id', $product_id);
+        $query = self::query()
+            ->where('product_id', $product_id)
+            ->with($join)
+            ->orderBy('position');
+
         if ($limit) {
             $query->limit($limit);
         }
-        $query->orderBy('position');
+
         return $query->get()->keyBy('related_id');
     }
 

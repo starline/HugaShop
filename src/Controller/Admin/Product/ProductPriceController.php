@@ -70,17 +70,14 @@ class ProductPriceController extends BaseAdminController
         #### View
         #########
         if (!empty($id)) {
-            $product = Product::getProduct(intval($id), join: [
-                'related',
-                'related.image'
-            ]);
-
+            $product = Product::getProduct(intval($id));
             if (empty($product->id)) {
                 return $this->redirectToRoute('ProductListAdmin');
             }
 
             Design::assign('product',               $product);
             Design::assign('product_variants',      ProductVariant::getVariants($product->id, ['product', 'product.image']));
+            Design::assign('related_products',      ProductRelated::getRelatedProducts($product->id, ['product', 'product.image']));
             Design::assign('warehouse_products',    WarehousePlaceProduct::getList(['product_id' => $product->id], join: 'place'));
         }
 
