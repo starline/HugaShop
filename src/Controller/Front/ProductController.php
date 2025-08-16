@@ -20,6 +20,7 @@ use App\Controller\BaseFrontController;
 use HugaShop\Models\Product\ProductOption;
 use HugaShop\Models\Product\ProductVariant;
 use HugaShop\Models\Product\ProductCategory;
+use HugaShop\Models\Product\ProductRelated;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -48,9 +49,7 @@ class ProductController extends BaseFrontController
         $product = Product::getOneTranslate(['url' => $url], join: [
             'image',
             'images',
-            'brand',
-            'related',
-            'related.image'
+            'brand'
         ]);
 
 
@@ -65,14 +64,6 @@ class ProductController extends BaseFrontController
 
         $product->features = ProductOption::getProductOptions($product->id);
 
-        // Variants
-        $product_variants = ProductVariant::getVariants($product->id, ['product', 'product.image']);
-        Design::assign('product_variants', $product_variants);
-
-        // Категория товара
-        $category = ProductCategory::getCategory(intval($product->category_id));
-        Design::assign('category', $category);
-
         // Comments
         CommentService::handleComments($product->id, Product::class);
 
@@ -86,10 +77,13 @@ class ProductController extends BaseFrontController
         }
 
         // И передаем его в шаблон
-        Design::assign('canonical', $this->generateUrlWithLocale('Product', ['url' => $product->url]));
-        Design::assign('product', $product);
-        Design::assign('meta_title', $product->meta_title);
-        Design::assign('meta_description', $product->meta_description);
+        Design::assign('canonical',         $this->generateUrlWithLocale('Product', ['url' => $product->url]));
+        Design::assign('product',           $product);
+        Design::assign('meta_title',        $product->meta_title);
+        Design::assign('meta_description',  $product->meta_description);
+        Design::assign('product_variants',  ProductVariant::getVariants($product->id, ['product']));
+        Design::assign('related_products',  ProductRelated::getRelatedProducts($product->id, ['image'], limit: 8));
+        Design::assign('category',          ProductCategory::getCategory(intval($product->category_id)));
 
         // Event product view
         $this->setEvent(new ProductViewEvent($product));

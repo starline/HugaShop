@@ -23,7 +23,6 @@ use HugaShop\Models\Product\ProductVariant;
 use HugaShop\Models\Warehouse\WarehousePurchase;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use HugaShop\Models\Localization\AbstractTranslation;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends BaseModel
 {
@@ -57,13 +56,13 @@ class Product extends BaseModel
     ];
 
     public static $table_keys = [
-        'url' => ['url'],
-        'brand_id' => ['brand_id'],
-        'visible' => ['visible'],
-        'featured' => ['featured'],
-        'sale' => ['sale'],
-        'disable' => ['disable'],
-        'category_id' => ['category_id', 'visible']
+        'url'           => ['url'],
+        'brand_id'      => ['brand_id'],
+        'visible'       => ['visible'],
+        'featured'      => ['featured'],
+        'sale'          => ['sale'],
+        'disable'       => ['disable'],
+        'category_id'   => ['category_id', 'visible']
 
     ];
 
@@ -104,23 +103,16 @@ class Product extends BaseModel
 
     public function variants()
     {
-        return $this->hasMany(ProductVariant::class, 'product_id');
+        return $this->hasMany(ProductVariant::class, 'product_id')
+            ->orderBy('position');
     }
 
-    public function related(): BelongsToMany
+    public function related()
     {
-        return $this->belongsToMany(
-            Product::class,
-            ProductRelated::class,   # имя таблицы связей
-            'product_id',            # внешний ключ для текущего товара
-            'related_id'             # внешний ключ для связанного товара
-        )->withPivot('position',)
-            ->orderBy('pivot_position');
+        return $this->hasMany(ProductRelated::class, 'related_id')
+            ->orderBy('position');
     }
 
-    /**
-     * Features
-     */
     public function options()
     {
         return $this->hasMany(ProductOption::class, 'product_id');

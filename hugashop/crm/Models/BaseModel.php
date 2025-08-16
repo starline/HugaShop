@@ -78,7 +78,7 @@ abstract class BaseModel extends Model
         $capsule->bootEloquent();
 
         // DB query Debuging
-        if (Config::get('database')->debug) {
+        if (!Config::get('database')->debug) {
             DB::connection()->listen(function ($query) {
                 $dump_result =  "SQL: {$query->sql}\n";
                 $dump_result .= "Binding: " . implode(', ', $query->bindings) . "\n";

@@ -223,11 +223,11 @@
 	{/if}
 
 
-	{if $product->related}
+	{if $related_products}
 		<div id="related_products" class="related_products_box">
 			<h2>С этим товаром покупают</h2>
 			<ul class="products owl-carousel">
-				{foreach $product->related as $product}
+				{foreach $related_products as $product}
 					{include file='parts/product_item.tpl'}
 				{/foreach}
 			</ul>

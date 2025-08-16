@@ -30,6 +30,11 @@ class ProductVariant extends BaseModel
         return $this->belongsTo(Product::class, 'product_id');
     }
 
+    public function parent_product()
+    {
+        return $this->belongsTo(Product::class, 'parent_id');
+    }
+
 
     /**
      * Get all variants for product including parent
@@ -43,7 +48,6 @@ class ProductVariant extends BaseModel
 
         return self::query()
             ->where('parent_id', $parent_id)
-            ->orWhere('product_id', $parent_id) // сам родитель
             ->with($join)
             ->orderBy('position')
             ->get();
@@ -118,7 +122,7 @@ class ProductVariant extends BaseModel
     {
 
         // TODO если он был родительским вариантов, переназначить родителя группы на следующий товар по списку, если он есть.
-        
+
         self::where('product_id', $product_id)
             ->orWhere('parent_id', $product_id)
             ->delete();

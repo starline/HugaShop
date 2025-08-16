@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.6
+ * @version 2.7
  *
  */
 
@@ -20,6 +20,10 @@ class ProductRelated extends BaseModel
         'product_id' =>         ['type' => 'int',           'req' => true],
         'related_id' =>         ['type' => 'int',           'req' => true],
         'position' =>           ['type' => 'int',           'def' => 0]
+    ];
+
+    protected static $table_key = [
+        'product_id' => ['product_id']
     ];
 
 
@@ -39,7 +43,12 @@ class ProductRelated extends BaseModel
      */
     public static function getRelatedProducts(int $product_id, array $join = [], int $limit = 0)
     {
-        return Product::getList(['related.product_id' => $product_id], order: 'position', join: $join);
+        $filter = ['related.product_id' => $product_id];
+        if ($limit > 0) {
+            $filter['limit'] = $limit;
+        }
+
+        return Product::getListTranslate($filter, order: 'position', join: $join);
     }
 
 
