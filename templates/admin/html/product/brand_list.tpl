@@ -6,10 +6,10 @@
 {block name=content}
 
 	{* Заголовок *}
-	<div class=header_top>
-		<h1>{$meta_title}</h1>
-		<a class="add" href="/admin/product/brand">Добавить бренд</a>
-	</div>
+<div class=header_top>
+<h1>{$meta_title}</h1>
+<a class="add" href="{'BrandNewAdmin'|link}">Добавить бренд</a>
+</div>
 
 
 	<div id="main_list">
@@ -28,9 +28,9 @@
 								</div>
 							{/if}
 
-							<div class="col">
-								<a href="/admin/product/brand/{$brand->id}">{$brand->name}</a>
-							</div>
+<div class="col">
+<a href="{'BrandAdmin'|link:[id => $brand->id]}">{$brand->name}</a>
+</div>
 
 							{if $brand->image}
 								<div class="brand_image">

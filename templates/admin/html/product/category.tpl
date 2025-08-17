@@ -68,11 +68,11 @@
 							{category_select cats=$categories}
 						</select>
 
-						{if $category->id}
-							<a class="out_link mt-3" href="/admin/products?category_id={$category->id}">
-								Перейти к товарам категории в админке
-							</a>
-						{/if}
+{if $category->id}
+<a class="out_link mt-3" href="{'ProductListAdmin'|link:[category_id => $category->id]}">
+Перейти к товарам категории в админке
+</a>
+{/if}
 					</div>
 				</div>
 

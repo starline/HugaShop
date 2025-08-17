@@ -33,23 +33,23 @@
 				<h1>Нет товаров</h1>
 			{/if}
 
-			{if 'product_content'|user_access}
-				<a class="add" href="/admin/product">Добавить товар</a>
-			{/if}
+{if 'product_content'|user_access}
+<a class="add" href="{'ProductNewAdmin'|link}">Добавить товар</a>
+{/if}
 
 			<div class="btns_wrap">
-				{if 'product_import'|user_access AND $products_count > 0}
-					<a class="export_btn" href="/admin/products/export?{$smarty.server.QUERY_STRING}">
-						<img src="{'images/export_excel.png'|asset}" name="export" data-bs-toggle="tooltip"
-							title="Экспортировать товары" />
-					</a>
+{if 'product_import'|user_access AND $products_count > 0}
+<a class="export_btn" href="{'ProductExport'|link}?{$smarty.server.QUERY_STRING}">
+<img src="{'images/export_excel.png'|asset}" name="export" data-bs-toggle="tooltip"
+title="Экспортировать товары" />
+</a>
 
-					<a class="export_btn" href="/admin/products/import">
-						<img src="{'images/import_excel.png'|asset}" name="import" data-bs-toggle="tooltip"
-							title="Импортировать товары" />
-					</a>
-				{/if}
-			</div>
+<a class="export_btn" href="{'ProductsImportPAdmin'|link}">
+<img src="{'images/import_excel.png'|asset}" name="import" data-bs-toggle="tooltip"
+title="Импортировать товары" />
+</a>
+{/if}
+</div>
 
 			<!-- Search -->
 			<form method="get" id="search">
@@ -110,9 +110,9 @@
 
 		<!--  Основная форма -->
 		<div id="main_list">
-			{if $category->id}
-				<a class="out_link" target="_self" href="{$config->root_url}/{$category->url}">Открыть категорию на сайте</a>
-			{/if}
+{if $category->id}
+<a class="out_link" target="_self" href="{'Products'|linkLang:[url => $category->url]}">Открыть категорию на сайте</a>
+{/if}
 
 			{if $products}
 				{if 'stats'|user_access AND $category->id}
@@ -183,9 +183,9 @@
 												<i class="duplicate material-icons library_add" data-bs-toggle="tooltip"
 													title="Дублировать"></i>
 											{/if}
-											<a class="material-icons launch" data-bs-toggle="tooltip"
-												title="Предпросмотр в новом окне" href="{$config->root_url}/product/{$product->id}"
-												target="_blank"></a>
+<a class="material-icons launch" data-bs-toggle="tooltip"
+title="Предпросмотр в новом окне" href="{'Product'|linkLang:[url => $product->url]}"
+target="_blank"></a>
 										</div>
 									</div>
 
@@ -207,7 +207,7 @@
 													<a data-bs-toggle="tooltip" data-bs-html="true" {if $product->cost_price > 0}
 															title="Оптовая цена &mdash; {$product->cost_price|number} {$currency->sign}</br>Доход &mdash; {$product->profit_price|number} {$currency->sign}</br> Старая цена  &mdash; {$product->old_price|number} {$currency->sign}"
 														{/if}
-														href="/admin/product/{$product->id}/price?return={$smarty.server.REQUEST_URI}">{$product->price|price_html|raw}</a>
+href="{'ProductPriceAdmin'|link:[id => $product->id]}?return={$smarty.server.REQUEST_URI}">{$product->price|price_html|raw}</a>
 												{else}
 													{$product->price|price_html|raw}
 												{/if}
