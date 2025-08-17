@@ -1,5 +1,5 @@
 {* Информера корзины (отдаётся аяксом) *}
-<a class="cart_info float-end" href="/cart" rel="nofollow" data-bs-toggle="tooltip"
+<a class="cart_info float-end" href="{'Cart'|linkLang}" rel="nofollow" data-bs-toggle="tooltip"
 	title="{$cart->purchases_count} {$cart->purchases_count|plural:'товар':'товаров':'товара'}. {if $cart->purchases_price>0}На сумму: {$cart->purchases_price|price_html:no_html}{/if}">
 	<svg class="cart-icon" viewBox="0 0 2.99438 2.65203">
 		<path

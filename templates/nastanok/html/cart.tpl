@@ -22,19 +22,19 @@
                     {foreach $purchases as $purchase}
                         <div class="purchase_row">
                             <div class="remove">
-                                <a href="/cart/remove/{$purchase->variant->id}" class="ajax">
+                                <a href="{'CartRemove'|linkLang:[product_id => $purchase->product->id]}" class="ajax">
                                     <img loading="lazy" src="{'/images/delete.png'|asset}" data-bs-toggle="tooltip"
                                         title="Удалить из корзины" alt="Удалить из корзины">
                                 </a>
                             </div>
                             <div class="image">
-                                <a href="/tovar-{$purchase->product->url}">
+                                <a href="{'Product'|linkLang:[url => $purchase->product->url]}">
                                     <img loading="lazy" src="{$purchase->product->image->filename|resize:120:120:c}"
                                         alt="{$purchase->product->name}">
                                 </a>
                             </div>
                             <div class="name">
-                                <a href="/tovar-{$purchase->product->url}">{$purchase->product->name}</a>
+                                <a href="{'Product'|linkLang:[url => $purchase->product->url]}">{$purchase->product->name}</a>
                                 {if $purchase->variant->name} - {$purchase->variant->name}{/if}
                             </div>
                             <div class="amount">
@@ -61,7 +61,7 @@
                             {if $is_ajax}
                                 <div class="btn btn-light fancy_close mmx-3">Продолжить покупки</div>
                             {/if}
-                            <a class="btn btn-primary" href="/checkout">Оформить заказ</a>
+                            <a class="btn btn-primary" href="{'Checkout'|linkLang}">Оформить заказ</a>
                         </div>
                     </div>
                 </div>

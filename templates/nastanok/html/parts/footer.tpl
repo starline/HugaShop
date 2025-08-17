@@ -21,13 +21,13 @@
             <div class="posts_content">
                 <div class="title_wrap">
                     <h3>Полезная информация</h3>
-                    <span> → <a href="/blog">все статьи</a></span>
+                    <span> → <a href="{'PostList'|linkLang}">все статьи</a></span>
                 </div>
 
                 <div class="last_posts">
                     {foreach $last_posts as $post}
                         <div data-post="{$post->id}">
-                            <a href="/blog/{$post->url}" class="title">{$post->name}</a>
+                            <a href="{'Post'|linkLang:[url => $post->url]}" class="title">{$post->name}</a>
                             <div>{$post->annotation}</div>
                         </div>
                     {/foreach}
@@ -120,11 +120,11 @@
                     <p>Информация</p>
                     <ul>
                         <li>
-                            <a href="/info/dostavka" data-bs-toggle="tooltip"
+                            <a href="{'Page'|linkLang:[url => 'dostavka']}" data-bs-toggle="tooltip"
                                 title="Условия доставки и оплаты товаров">Доставка и Оплата</a>
                         </li>
                         <li>
-                            <a href="/info/contact" data-bs-toggle="tooltip" title="Контактная информация">Контакты</a>
+                            <a href="{'Page'|linkLang:[url => 'contact']}" data-bs-toggle="tooltip" title="Контактная информация">Контакты</a>
                         </li>
                     </ul>
                 </div>

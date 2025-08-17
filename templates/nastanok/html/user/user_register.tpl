@@ -6,7 +6,7 @@
 {block name=content}
 	<div class="login_wrap my-5">
 
-		<h1>Регистрация <a href="/user/login">Вход →</a></h1>
+                <h1>Регистрация <a href="{'UserLogin'|linkLang}">Вход →</a></h1>
 
 		{if $error|in_array:['user_exists', 'captcha']}
 			<div class="alert alert-danger">
