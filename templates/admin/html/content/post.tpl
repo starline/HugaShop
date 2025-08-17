@@ -28,9 +28,9 @@
 							<label class="form-check-label" for="active_checkbox">Активна</label>
 						</div>
 					</div>
-					<a class="out_link" target="_self" href="{$config->root_url}/blog/{$post->url}">Открыть статью на
-						сайте</a>
-				</div>
+                                        <a class="out_link" target="_self" href="{'Post'|linkLang:[url => $post->url]}">Открыть статью на
+                                                сайте</a>
+                                </div>
 
 				<div class="name_row">
 					<span class="item_id">H1</span>

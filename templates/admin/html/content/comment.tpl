@@ -21,10 +21,10 @@
             <div class="col-12">
                 <div class="over_name">
                     {if $comment->type == 'product'}
-                        <a class="out_link" target="_bkank" href="{$config->root_url}/product/{$comment->entity->id}">Открыть
+                        <a class="out_link" target="_bkank" href="{'ProductId'|linkLang:[id => $comment->entity->id]}">Открыть
                             товар на сайте</a>
                     {elseif $comment->type == 'blog'}
-                        <a class="out_link" target="_bkank" href="{$config->root_url}/blog/{$comment->entity->url}">Открыть
+                        <a class="out_link" target="_bkank" href="{'Post'|linkLang:[url => $comment->entity->url]}">Открыть
                             статью на
                             сайте</a>
                     {/if}
@@ -47,7 +47,7 @@
                     {if !empty($comment->user)}
                         <li>
                             <div class="col-form-label">Пользователь</div>
-                            <div><a href="/admin/user/{$comment->user->id}">{$comment->user->name}</a></div>
+                            <div><a href="{'UserAdmin'|link:[id => $comment->user->id]}">{$comment->user->name}</a></div>
                         </li>
                     {/if}
 

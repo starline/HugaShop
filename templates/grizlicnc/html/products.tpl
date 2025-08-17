@@ -52,9 +52,9 @@
 										<ul>
 											{foreach $c->subcategories as $sc}
 												<li>
-													<a {if $category->id == $sc->id}class="selected" {/if} href="{$sc->url}"
-														data-category="{$sc->id}">{$sc->name}</a>
-												</li>
+                                                                                        <a {if $category->id == $sc->id}class="selected" {/if} href="{'Products'|linkLang:[url => $sc->url]}"
+                                                                                                                data-category="{$sc->id}">{$sc->name}</a>
+                                                                                        </li>
 											{/foreach}
 										</ul>
 									{/if}
