@@ -48,15 +48,15 @@
 						</div>
 					</div>
 					<div class="link_line">
-						{if $product->category_id}
-							<a class='out_link' href="/admin/products?category_id={$product->category_id}">Перейти к товарам
-								категории в админке</a>
-						{/if}
-						{if $product->id}
-							<a class="out_link" target="_self" href="{$settings->site_url}/product/{$product->id}">Открыть товар
-								на сайте</a>
-						{/if}
-					</div>
+{if $product->category_id}
+<a class='out_link' href="{'ProductListAdmin'|link:[category_id => $product->category_id]}">Перейти к товарам
+категории в админке</a>
+{/if}
+{if $product->id}
+<a class="out_link" target="_self" href="{'Product'|linkLang:[url => $product->url]}">Открыть товар
+на сайте</a>
+{/if}
+</div>
 				</div>
 				<div class="name_row">
 					<input class="form-control form-control-lg" name="name" type="text" value="{$product->name}"

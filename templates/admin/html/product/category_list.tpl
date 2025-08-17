@@ -6,11 +6,11 @@
 {block name=content}
 
 	{* Заголовок *}
-	<div class="header_top">
-		<h1>{$meta_title}</h1>
-		<a class="add" href="/admin/product/category">Добавить
-			категорию</a>
-	</div>
+<div class="header_top">
+<h1>{$meta_title}</h1>
+<a class="add" href="{'CategoryNewAdmin'|link}">Добавить
+категорию</a>
+</div>
 
 
 	<div id="main_list">
@@ -37,7 +37,7 @@
 
 										<div class="col row">
 											<div class="col-12 col-md-10 {if $category->level == 1}fw-semibold{/if}">
-												<a href="/admin/product/category/{$category->id}">{$category->name}</a>
+<a href="{'CategoryAdmin'|link:[id => $category->id]}">{$category->name}</a>
 											</div>
 											<div class="col-12 col-md-2 text-end">
 												{if $category->main}
@@ -47,8 +47,8 @@
 										</div>
 
 										<div class="icons">
-											<a class="material-icons launch" title="Предпросмотр в новом окне"
-												href="{$config->root_url}/{$category->url}"></a>
+<a class="material-icons launch" title="Предпросмотр в новом окне"
+href="{'Products'|linkLang:[url => $category->url]}"></a>
 											<i class="enable material-icons visibility" title="Активна"></i>
 											<i class="delete material-icons" title="Удалить">cancel</i>
 										</div>
