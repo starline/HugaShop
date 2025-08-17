@@ -3,7 +3,7 @@
         <div class="footer-info-links">
             <div>
                 <div class="f-title">Информация</div>
-                <a href="/news/">Новости магазина</a>
+                <a href="{'PostList'|linkLang}">Новости магазина</a>
                 <a href="/article/">Полезные статьи</a>
                 <a href="/information/reference_data/">Маркировка шин</a>
                 <a href="/spec_orders/">Акции и скидки</a>
