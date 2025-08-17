@@ -8,7 +8,7 @@
     {* Заголовок *}
     <div class="header_top">
         <h1>Склады</h1>
-        <a class="add" href="/admin/warehouse/place">Добавить склад</a>
+        <a class="add" href="{'PlaceNewAdmin'|link}">Добавить склад</a>
     </div>
 
 

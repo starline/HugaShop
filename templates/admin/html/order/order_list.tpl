@@ -26,7 +26,7 @@
 				{/if}
 			</h1>
 
-			<a class="add" href="/admin/order">Добавить заказ</a>
+                        <a class="add" href="{'OrderNewAdmin'|link}">Добавить заказ</a>
 
 			{if $orders_count > 0 and 'export'|user_access}
 				<form class="export_btn" method="post" action="/admin/orders/export?{$smarty.server.QUERY_STRING}"
