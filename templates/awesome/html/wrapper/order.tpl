@@ -11,11 +11,11 @@
 
 				<div class="col-12 col-lg-4">
 					<div class="logo">
-						<a href="/" data-bs-toggle="tooltip"
-							title="{$settings->company_name} - {$settings->company_description}">
-							<img loading="lazy" alt="{$settings->company_name} - {$settings->company_description}"
-								src="{'images/logo.png'|asset}" />
-						</a>
+                                                <a href="{'Main'|linkLang}" data-bs-toggle="tooltip"
+                                                        title="{$settings->company_name} - {$settings->company_description}">
+                                                        <img loading="lazy" alt="{$settings->company_name} - {$settings->company_description}"
+                                                                src="{'images/logo.png'|asset}" />
+                                                </a>
 					</div>
 				</div>
 
