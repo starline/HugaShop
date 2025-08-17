@@ -13,7 +13,6 @@ namespace HugaShop\Models\Product;
 use HugaShop\Models\Image;
 use HugaShop\Models\SeoFaqs;
 use HugaShop\Services\Cache;
-use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
 use HugaShop\Models\SeoKeywords;
 use HugaShop\Models\Product\Product;
@@ -26,7 +25,7 @@ class ProductCategory extends BaseModel
     protected static $table_fields = [
         'id' =>                 ['type' => 'int'],
         'parent_id' =>          ['type' => 'int'],
-        'url' =>                ['type' => 'varchar'],
+        'url' =>                ['type' => 'varchar',       'slug' => true],
         'name' =>               ['type' => 'varchar',       'trans' => true,    'req' => true],
         'meta_title' =>         ['type' => 'varchar',       'trans' => true],
         'meta_description' =>   ['type' => 'varchar',       'trans' => true],

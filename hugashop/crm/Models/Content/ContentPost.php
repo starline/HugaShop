@@ -20,7 +20,7 @@ class ContentPost extends BaseModel
 
     protected static $table_fields = [
         'id' =>                     ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
-        'url' =>                    ['type' => 'varchar'],
+        'url' =>                    ['type' => 'varchar',       'slug' => true],
         'name' =>                   ['type' => 'varchar',       'trans' => true, 'required' => 'true'],
         'meta_title' =>             ['type' => 'varchar',       'trans' => true],
         'meta_description' =>       ['type' => 'varchar',       'trans' => true],

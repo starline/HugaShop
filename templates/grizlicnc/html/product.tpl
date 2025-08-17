@@ -25,8 +25,7 @@
 
 	<div class="row product_one">
 		<div class="col-12 col-lg-6">
-
-			<div class="image_box mb-4">
+			<div class="image_box me-lg-4 mb-4">
 
 				<div class="promo_block">
 					{if $product->sale}

@@ -20,7 +20,7 @@ class ProductBrand extends BaseModel
     public $timestamps = true;
     protected static $table_fields = [
         'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
-        'url' =>                ['type' => 'varchar'],
+        'url' =>                ['type' => 'varchar',       'slug' => true],
         'name' =>               ['type' => 'varchar',       'trans' => true, 'req' => true],
         'meta_title' =>         ['type' => 'varchar',       'trans' => true],
         'meta_description' =>   ['type' => 'varchar',       'trans' => true],

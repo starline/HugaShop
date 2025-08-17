@@ -22,7 +22,7 @@ class ProductFeatureOption extends BaseModel
     protected static $table_fields = [
         'id'            => ['type' => 'int',      'extra' => 'AUTO_INCREMENT'],
         'feature_id'    => ['type' => 'int',      'req' => true],
-        'url'           => ['type' => 'varchar'],
+        'url'           => ['type' => 'varchar',  'slug' => true],
         'value'         => ['type' => 'varchar',  'req' => true,   'trans' => true,    'search' => true],
         'position'      => ['type' => 'int',      'def' => 0]
     ];

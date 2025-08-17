@@ -4,28 +4,27 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.0
+ * @version 3.1
  *
  */
 
 namespace HugaShop\Models\Content;
 
-use HugaShop\Services\Helper;
 use HugaShop\Models\BaseModel;
 
 class ContentPage extends BaseModel
 {
     protected static $table_fields = [
-        'id' =>                     ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
-        'url' =>                    ['type' => 'varchar',                               'required' => 'true'],
-        'name' =>                   ['type' => 'varchar',       'trans' => true,        'required' => 'true'],
-        'h1' =>                     ['type' => 'varchar',       'trans' => true],
-        'meta_title' =>             ['type' => 'varchar',       'trans' => true],
-        'meta_description' =>       ['type' => 'varchar',       'trans' => true],
-        'body' =>                   ['type' => 'text',          'trans' => true],
-        'menu' =>                   ['type' => 'tinyint',       'def' => 0],
-        'position' =>               ['type' => 'int',           'def' => 0],
-        'visible' =>                ['type' => 'tinyint',       'def' => 0]
+        'id'                => ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
+        'url'               => ['type' => 'varchar',       'slug' => true,         'required' => 'true'],
+        'name'              => ['type' => 'varchar',       'trans' => true,        'required' => 'true'],
+        'h1'                => ['type' => 'varchar',       'trans' => true],
+        'meta_title'        => ['type' => 'varchar',       'trans' => true],
+        'meta_description'  => ['type' => 'varchar',       'trans' => true],
+        'body'              => ['type' => 'text',          'trans' => true],
+        'menu'              => ['type' => 'tinyint',       'def' => 0],
+        'position'          => ['type' => 'int',           'def' => 0],
+        'visible'           => ['type' => 'tinyint',       'def' => 0]
     ];
 
     private static $menu;
