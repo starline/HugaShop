@@ -183,8 +183,8 @@
 				{/if}
 
 				<p>
-                                <span>Детальное описание и таблица типоразмеров на странице модели <a class="desc-more"
-                                                        href="{'Products'|linkLang:[url => 'catalog/142270/254897']}">шины {$product->name}</a></span>
+					<span>Детальное описание и таблица типоразмеров на странице модели <a class="desc-more"
+							href="{'Products'|linkLang:[url => $product->url]}">шины {$product->name}</a></span>
 				</p>
 			</div>
 		</div>
@@ -205,7 +205,7 @@
 				{foreach $product_analogs as $aproduct}
 					<div class="analogs-by-type-item">
 						<div class="art">{$aproduct->name}</div>
-                                                <a href="{'Products'|linkLang:[url => 'catalog/59988/69032/69029']}" class="name">
+						<a href="{'Products'|linkLang:[url => $product->url]}" class="name">
 							385/65 R 22.5 Satoya ST-082 160K прич </a>
 
 						<div class="spec">
@@ -216,7 +216,7 @@
 						<div class="price">9979 </div>
 
 						<div class="buy">
-                                                        <a class="button" href="{'Products'|linkLang:[url => 'catalog/59988/69032/69029']}">Купить</a>
+							<a class="button" href="{'Products'|linkLang:[url => $product->url]}">Купить</a>
 						</div>
 					</div>
 				{/foreach}
@@ -261,19 +261,24 @@
 				<div class="selection-buyer-info delivery-srvices">
 					<div class="delivery-srvice pickup">
 						<h3>Самовывоз в Киеве </h3>
-                                                  <p>- <a href="{'Page'|linkLang:[url => 'contact']}" rel="nofollow">из офиса</a> <span>(бесплатно)</span></p>
-                                                  <p>- <a href="{'Page'|linkLang:[url => 'uslugi-shinomontaga']}" ref="nofollow">установка шин на шиносервисе</a></p>
+						<p>- <a href="{'Page'|linkLang:[url => 'contact']}" rel="nofollow">из офиса</a>
+							<span>(бесплатно)</span>
+						</p>
+						<p>- <a href="{'Page'|linkLang:[url => 'uslugi-shinomontaga']}" ref="nofollow">установка шин на
+								шиносервисе</a></p>
 					</div>
 					<div class="delivery-srvice city">
 						<h3>Доставка по Киеву </h3>
-                                                  <p><a href="{'Page'|linkLang:[url => 'information/delivery']}" rel="nofollow">Стоимость услуги 500 грн</a></p>
+						<p><a href="{'Page'|linkLang:[url => 'delivery']}" rel="nofollow">Стоимость услуги 500
+								грн</a></p>
 					</div>
 					<div class="delivery-srvice country">
 						<h3>Доставка по Украине </h3>
 						<p><span>по тарифам перевозчиков</span></p>
 					</div>
 					<div class="delivery-srvice transport">
-                                                  <p><a href="{'Page'|linkLang:[url => 'information/delivery']}" rel="nofollow">Условия доставки</a></p>
+						<p><a href="{'Page'|linkLang:[url => 'delivery']}" rel="nofollow">Условия доставки</a>
+						</p>
 						<img src="{'images/ico-np.jpg'|asset}" alt="НоваяПочта">
 						<img src="{'images/ico-cat.jpg'|asset}" alt="CAT">
 						<img src="{'images/ico-delivery.jpg'|asset}" alt="DELIVERY">
@@ -288,11 +293,12 @@
 				</div>
 				<div class="selection-buyer-info warranty-info">
 					<div class="warranty-srvice from-store">
-                                                  <a href="{'Page'|linkLang:[url => 'information/garanty']}" rel="nofollow">Гарантия от магазина</a>
+						<a href="{'Page'|linkLang:[url => 'garanty']}" rel="nofollow">Гарантия от магазина</a>
 					</div>
 
 					<div class="warranty-srvice from-store">
-                                                  <a href="{'Page'|linkLang:[url => 'information/garanty']}" rel="nofollow"> Вы можете вернуть товар (14 дней)</a>
+						<a href="{'Page'|linkLang:[url => 'garanty']}" rel="nofollow"> Вы можете вернуть товар
+							(14 дней)</a>
 					</div>
 				</div>
 			</div>

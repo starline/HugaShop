@@ -5,9 +5,9 @@
                 <div class="f-title">Информация</div>
                 <a href="{'PostList'|linkLang}">Новости магазина</a>
                 <a href="{'Page'|linkLang:[url => 'article']}">Полезные статьи</a>
-                <a href="{'Page'|linkLang:[url => 'information/reference_data']}">Маркировка шин</a>
+                <a href="{'Page'|linkLang:[url => 'reference_data']}">Маркировка шин</a>
                 <a href="{'Page'|linkLang:[url => 'spec_orders']}">Акции и скидки</a>
-                <a href="{'Page'|linkLang:[url => 'information/credit']}">Шины в кредит</a>
+                <a href="{'Page'|linkLang:[url => 'credit']}">Шины в кредит</a>
             </div>
             <div>
                 <div class="f-title">Шины</div>
@@ -25,14 +25,15 @@
             </div>
             <div>
                 <div class="f-title">Услуги и сервис</div>
-                <a href="{'Page'|linkLang:[url => 'services/tire_repair']}">Ремонт шин</a>
-                <a href="{'Page'|linkLang:[url => 'services/disk_repair']}">Ремонт дисков</a>
-                <a href="{'Page'|linkLang:[url => 'services/tire_storage']}">Сезонное хранение шин</a>
-                <a href="{'Page'|linkLang:[url => 'services/disk_painting']}">Покраска дисков</a>
-                <a href="{'Page'|linkLang:[url => 'services/car_air_conditioning_service']}">Обслуживание автокондиционеров</a>
-                <a href="{'Page'|linkLang:[url => 'services/oil_and_filters_replacement']}">Замена масла и фильтров</a>
-                <a href="{'Page'|linkLang:[url => 'services/brake_shoes_replacement']}">Замена тормозных колодок</a>
-                <a href="{'Page'|linkLang:[url => 'services/auto_parts_selections']}">Подбор запчастей по VIN коду</a>
+                <a href="{'Page'|linkLang:[url => 'tire_repair']}">Ремонт шин</a>
+                <a href="{'Page'|linkLang:[url => 'disk_repair']}">Ремонт дисков</a>
+                <a href="{'Page'|linkLang:[url => 'tire_storage']}">Сезонное хранение шин</a>
+                <a href="{'Page'|linkLang:[url => 'disk_painting']}">Покраска дисков</a>
+                <a href="{'Page'|linkLang:[url => 'car_air_conditioning_service']}">Обслуживание
+                    автокондиционеров</a>
+                <a href="{'Page'|linkLang:[url => 'oil_and_filters_replacement']}">Замена масла и фильтров</a>
+                <a href="{'Page'|linkLang:[url => 'brake_shoes_replacement']}">Замена тормозных колодок</a>
+                <a href="{'Page'|linkLang:[url => 'auto_parts_selections']}">Подбор запчастей по VIN коду</a>
             </div>
 
 
