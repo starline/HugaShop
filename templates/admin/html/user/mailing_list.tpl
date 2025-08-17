@@ -14,7 +14,7 @@
 					Еще нет сообщений
 				{/if}
 			</h1>
-			<a class="add" href="/admin/user/mailing">Новый Сообщение</a>
+                        <a class="add" href="{'MailingNewAdmin'|link}">Новый Сообщение</a>
 		</div>
 
 

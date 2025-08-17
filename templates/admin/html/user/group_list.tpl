@@ -7,7 +7,7 @@
 
 	<div class="header_top">
 		<h1>Группы пользователей</h1>
-		<a class="add" href="/admin/user/group">Добавить группу</a>
+                <a class="add" href="{'GroupNewAdmin'|link}">Добавить группу</a>
 	</div>
 
 
@@ -33,7 +33,7 @@
 
 						<div class="col row">
 							<div class="col-12 col-sm-10 name">
-								<a href="/admin/user/group/{$group->id}">{$group->name}</a>
+                                                                <a href="{'GroupAdmin'|link:[id => $group->id]}">{$group->name}</a>
 							</div>
 
 							<div class="col-12 col-sm-2 text-end">

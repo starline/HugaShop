@@ -11,7 +11,7 @@
 		{else}
 			<h1>Нет купонов</h1>
 		{/if}
-		<a class="add" href="/admin/user/coupon">Новый купон</a>
+                <a class="add" href="{'CouponNewAdmin'|link}">Новый купон</a>
 	</div>
 
 
@@ -32,7 +32,7 @@
 
 							<div class="col row">
 								<div class="col-12 col-sm-4">
-									<a href="/admin/user/coupon/{$coupon->id}">{$coupon->code}</a>
+                                                                        <a href="{'CouponAdmin'|link:[id => $coupon->id]}">{$coupon->code}</a>
 								</div>
 
 								<div class="col-12 col-sm-4">
