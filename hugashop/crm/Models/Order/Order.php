@@ -44,19 +44,19 @@ class Order extends BaseModel
         'address' =>                ['type' => 'varchar'],
         'comment' =>                ['type' => 'varchar'],
         'note' =>                   ['type' => 'varchar'],
-        'url' =>                    ['type' => 'varchar',                           'access' => false],
+        'token' =>                  ['type' => 'varchar',                           'access' => false],
         'total_price' =>            ['type' => 'decimal',   'length' => 10.2,       'access' => false],
         'profit_price' =>           ['type' => 'decimal',   'length' => 10.2,       'access' => false],
         'payment_price' =>          ['type' => 'decimal',   'length' => 10.2,       'access' => false],
         'discount' =>               ['type' => 'decimal',   'length' => 10.2],
         'coupon_discount' =>        ['type' => 'decimal',   'length' => 10.2],
         'coupon_code' =>            ['type' => 'varchar'],
-        'date' =>                   ['type' => 'datetime',  'def' => 'CURRENT_TIMESTAMP',   'access' => false],
-        'modified' =>               ['type' => 'datetime',  'access' => false],
         'manager_id' =>             ['type' => 'int'],
         'manager_rate' =>           ['type' => 'int',       'def' => 0,             'access' => false],
         'manager_profit' =>         ['type' => 'decimal',   'length' => 10.2,       'access' => false],
-        'settings' =>               ['type' => 'text']
+        'settings' =>               ['type' => 'text'],
+        'date' =>                   ['type' => 'datetime',  'def' => 'CURRENT_TIMESTAMP',   'access' => false],
+        'modified' =>               ['type' => 'datetime',  'access' => false]
     ];
 
     public function payment_method()
@@ -310,7 +310,7 @@ class Order extends BaseModel
      */
     public static function addOrder(object $order)
     {
-        $order->url = Helper::makeToken();
+        $order->token = Helper::makeToken();
         $order->date = date("Y-m-d H:i:s");
 
         // Убираем пробелы в номере телефона

@@ -9,7 +9,7 @@
 </div>
 
 <div class="btn_row">
-    <a class='btn btn-light' href="{'PaymentExchange'|link:[id => $payment_method->id]}?order_url={$order->url}&form_type=invoice"
+    <a class='btn btn-light' href="{'PaymentExchange'|link:[id => $payment_method->id]}?order_token={$order->token}&form_type=invoice"
         target="_blank" title="Сформировать Счет">Сформировать Рахунок</a>
 </div>
 *}

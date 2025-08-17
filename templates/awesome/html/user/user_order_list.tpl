@@ -23,7 +23,7 @@
 					<div class="row my-4 pb-4 border-bottom">
 						<div class="col-lg-8">
 							<div>
-								<a href="{'Order'|linkLang:[id => $order->id, order_url => $order->url]}">{'Заказ'|trans}
+								<a href="{'Order'|linkLang:[id => $order->id, order_token => $order->token]}">{'Заказ'|trans}
 									№{$order->id}</a> от {$order->date|date}
 
 								{if $order->paid == 1}

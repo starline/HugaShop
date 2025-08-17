@@ -43,7 +43,7 @@
 			</h1>
 
 			{if !$order->id|empty}
-				<a class="print_icon" href="{'Order'|link:[id => $order->id, order_url => $order->url, type => print]}"
+				<a class="print_icon" href="{'Order'|link:[id => $order->id, order_token => $order->token, type => print]}"
 					target="_blank">
 					<img src="{'images/printer.png'|asset}" data-bs-toggle="tooltip" title="Печать заказа">
 				</a>

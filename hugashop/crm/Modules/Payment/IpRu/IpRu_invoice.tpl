@@ -71,7 +71,7 @@
             <td width="2%" rowspan="2"></td>
             <td width="22%" rowspan="2">
                 <img
-                    src="{$config->root_url}{'PaymentExchange'|link:[id => $payment_method->id]}?order_url={$order->url}&form_type=qrcode" />
+                    src="{$config->root_url}{'PaymentExchange'|link:[id => $payment_method->id]}?order_token={$order->token}&form_type=qrcode" />
             </td>
             <td width="2%" rowspan="2"></td>
             <td width="12%" rowspan="2"><br /><br /><span><b>QR-код для оплаты</b></span><br /><span

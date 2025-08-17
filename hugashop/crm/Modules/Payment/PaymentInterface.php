@@ -24,8 +24,8 @@ interface PaymentInterface
     /**
      * Handle payment callback or render document
      *
-     * @param string|null $order_url
+     * @param string|null $order_token
      * @param string|null $form_type
      */
-    public function callback(?string $order_url = null, ?string $form_type = null);
+    public function callback(?string $order_token = null, ?string $form_type = null);
 }

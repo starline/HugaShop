@@ -36,13 +36,13 @@
 
     <div class="btn_row left">
         <a class="btn btn-light"
-            href="{'PaymentExchange'|link:[id => $payment_method->id]}?order_url={$order->url}&form_type=invoice"
+            href="{'PaymentExchange'|link:[id => $payment_method->id]}?order_token={$order->token}&form_type=invoice"
             target="_blank" data-bs-toggle="tooltip" title="Сформировать Счет">Счет</a>
         <a class="btn btn-light"
-            href="{'PaymentExchange'|link:[id => $payment_method->id]}?order_url={$order->url}&form_type=packing_list"
+            href="{'PaymentExchange'|link:[id => $payment_method->id]}?order_token={$order->token}&form_type=packing_list"
             data-bs-toggle="tooltip" target="_blank" title="Сформировать Расходную накладную">Накладная</a>
         <a class="btn btn-light"
-            href="{'PaymentExchange'|link:[id => $payment_method->id]}?order_url={$order->url}&form_type=commercial_offer"
+            href="{'PaymentExchange'|link:[id => $payment_method->id]}?order_token={$order->token}&form_type=commercial_offer"
             data-bs-toggle="tooltip" target="_blank" title="Коммерческое предложение">КП</a>
     </div>
 </div>

@@ -190,7 +190,7 @@ class CheckoutController extends BaseFrontController
                     $this->setEvent(new OrderAddEvent($order));
 
                     // Перенаправляем на страницу заказа
-                    return $this->redirectToRoute('Order', ['id' => $order->id, 'order_url' => $order->url]);
+                    return $this->redirectToRoute('Order', ['id' => $order->id, 'order_token' => $order->token]);
                 }
             }
         }

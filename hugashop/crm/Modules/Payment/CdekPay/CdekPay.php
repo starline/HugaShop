@@ -62,7 +62,7 @@ class CdekPay implements PaymentInterface
         }
     }
 
-    public function callback(?string $order_url = null, ?string $form_type = null)
+    public function callback(?string $order_token = null, ?string $form_type = null)
     {
         return false;
     }

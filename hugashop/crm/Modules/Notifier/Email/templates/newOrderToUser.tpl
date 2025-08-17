@@ -104,7 +104,7 @@
 
 <p>
 	Вы всегда можете проверить состояние заказа по ссылке:<br>
-	<a href="{$config->root_url}{'Order'|link:[id => $order->id, order_url => $order->url]}">
-		{$config->root_url}{'Order'|link:[id => $order->id, order_url => $order->url]}
+	<a href="{$config->root_url}{'Order'|link:[id => $order->id, order_token => $order->token]}">
+		{$config->root_url}{'Order'|link:[id => $order->id, order_token => $order->token]}
 	</a>
 </p>

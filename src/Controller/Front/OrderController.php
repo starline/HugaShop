@@ -26,21 +26,21 @@ class OrderController extends BaseFrontController
 {
 
     #[Route('/order', name: 'preOrder', priority: 10)]
-    #[Route('/order/{id}/{order_url}', requirements: ['id' => '\d+'], name: 'Order', priority: 10)]
-    public function order(?int $id = null, ?string $order_url = null): Response
+    #[Route('/order/{id}/{order_token}', requirements: ['id' => '\d+'], name: 'Order', priority: 10)]
+    public function order(?int $id = null, ?string $order_token = null): Response
     {
 
         if (empty($id)) {
             if (!empty(Request::getSession('order_id'))) {
                 if (!empty($order = Order::getOrder(intval(Request::getSession('order_id'))))) {
-                    return $this->redirectToRoute('Order', ['id' => $order->id, 'order_url' => $order->url]);
+                    return $this->redirectToRoute('Order', ['id' => $order->id, 'order_token' => $order->token]);
                 }
             }
         } else {
             $order = Order::getOrder($id);
         }
 
-        if (empty($order) || $order->url != $order_url) {
+        if (empty($order) || $order->token != $order_token) {
             return $this->redirectToRoute('Cart');
         }
 

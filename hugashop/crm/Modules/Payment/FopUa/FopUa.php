@@ -71,15 +71,15 @@ class FopUa implements PaymentInterface
 
     /**
      * Выводим PDF документа
-     * @param ?string $order_url
+     * @param ?string $order_token
      * @param ?string $form_type
      */
-    public function callback(?string $order_url = null, ?string $form_type = null)
+    public function callback(?string $order_token = null, ?string $form_type = null)
     {
 
         // Отображаем документ по ссылке на заказ
-        if (empty($order_url)) {
-            $order_url = Request::get('order_url', 'string');
+        if (empty($order_token)) {
+            $order_token = Request::get('order_token', 'string');
         }
 
         if (empty($form_type)) {
@@ -89,9 +89,9 @@ class FopUa implements PaymentInterface
             }
         }
 
-        // Для безопасности, предоставляем доступ к квитанциям только по order_url
-        if (!empty($order_url) and !empty($form_type)) {
-            $order = Order::getOrder($order_url);
+        // Для безопасности, предоставляем доступ к квитанциям только по order_token
+        if (!empty($order_token) and !empty($form_type)) {
+            $order = Order::getOrder($order_token);
 
             // Set buyer name
             if (!empty($order->address)) {
