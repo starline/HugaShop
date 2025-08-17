@@ -127,7 +127,7 @@
 					</div>
 				</span>
 
-<a target="_blank" href="{'ProductPriceAdmin'|link:[id => $item->product->id]}">{$item->product->name}</a>
+				<a target="_blank" href="{'ProductPriceAdmin'|link:[id => $item->product->id]}">{$item->product->name}</a>
 				{if $item->variant->name}
 					- {$item->variant->name} -
 				{/if}

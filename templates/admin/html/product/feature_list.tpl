@@ -8,10 +8,10 @@
 	<div class="two_columns_list">
 
 		<!-- Заголовок -->
-<div class="header_top">
-<h1>{$meta_title}</h1>
-<a class="add" href="{'FeatureNewAdmin'|link}">Добавить свойство</a>
-</div>
+		<div class="header_top">
+			<h1>{$meta_title}</h1>
+			<a class="add" href="{'FeatureNewAdmin'|link}">Добавить свойство</a>
+		</div>
 
 		<!-- Меню -->
 		<div class="navbar-expand-lg" id="right_menu">
@@ -67,9 +67,9 @@
 									<input class="form-check-input" type="checkbox" name="check[]" value="{$feature->id}" />
 								</div>
 
-<div class="col">
-<a href="{'FeatureAdmin'|link:[id => $feature->id]}">{$feature->name}</a>
-</div>
+								<div class="col">
+									<a href="{'FeatureAdmin'|link:[id => $feature->id]}">{$feature->name}</a>
+								</div>
 
 								<div class="col-2">
 									{if $feature->index}
