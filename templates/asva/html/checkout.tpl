@@ -183,7 +183,6 @@
 					</div>
 				{/if}
 
-
 				<div class="form_block">
 					<div class="wrapper">
 						<div class="row checkout_total">

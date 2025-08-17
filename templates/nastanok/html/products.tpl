@@ -27,7 +27,6 @@
 	</div>
 
 	<div class="row">
-
 		<div class="col-lg-3" id="catalog_menu">
 			{if $category}
 				<ul>
@@ -50,7 +49,6 @@
 				</ul>
 			{/if}
 		</div>
-
 
 		<div class="col-lg-9 wrap_products {if !$category}wide{/if}">
 
