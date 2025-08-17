@@ -288,6 +288,7 @@ final class TestScriptController extends BaseAdminController
                          * переименовываем wh_place.date в created_at
                          * переименовываем content_image.created в created_at
                          * переименовываем order.interest_price в manager_profit
+                         * переименовываем order.url в token
                          * 
                          * Добавить id в s_product_related
                          * 

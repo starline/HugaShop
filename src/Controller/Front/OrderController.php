@@ -85,7 +85,7 @@ class OrderController extends BaseFrontController
 
         // Выводим заказ
         if (Request::get('type') === 'print') {
-            return $this->fetchResponse("order_print.tpl", 'content', Config::get('templates_dir') . "/admin/order/"); # fetch without wrapper
+            return $this->fetchResponse("order_print.tpl", 'content', Config::get('templates_dir') . "/admin/html/order/"); # fetch without wrapper
         }
 
         return $this->fetchResponse('order.tpl');

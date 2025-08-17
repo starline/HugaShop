@@ -9,7 +9,7 @@
                     <i class="material-icons">content_copy</i>
                 </div>
             </span>
-            <a target="_blank" href="/admin/product/{$item->product->id}/price">{$item->product->name}</a>
+            <a target="_blank" href="{'ProductPriceAdmin'|link:[id => $item->product->id]}">{$item->product->name}</a>
             <span class="ms-2">{$item->amount} шт.</span>
         {else}
             {$item->error}
