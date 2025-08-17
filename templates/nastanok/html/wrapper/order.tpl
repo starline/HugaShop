@@ -8,7 +8,7 @@
 	<div id="header" class="container my-4">
 		<div class="row content">
 			<div class="col-lg-6 logo">
-				<a href="/" data-bs-toggle="tooltip"
+                                <a href="{'Main'|linkLang}" data-bs-toggle="tooltip"
 					title="{$settings->company_name} - {$settings->company_description}">
 					<img loading="lazy" alt="{$settings->company_name} - {$settings->company_description}"
 						src="{'images/logo.png'|asset}" />

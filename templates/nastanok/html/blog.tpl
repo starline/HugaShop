@@ -6,7 +6,7 @@
 		<ul itemscope itemtype="https://schema.org/BreadcrumbList">
 			<li class='home'></li>
 			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-				<a href="/" itemprop="item">
+                                <a href="{'Main'|linkLang}" itemprop="item">
 					<span itemprop="name">Главная</span>
 					<meta itemprop="position" content="1" />
 				</a>
@@ -26,7 +26,7 @@
 			<div>
 				<div class="date">{$post->date|date}</div>
 				<h3>
-					<a data-post="{$post->id}" href="blog/{$post->url}">{$post->name}</a>
+                                        <a data-post="{$post->id}" href="{'Post'|linkLang:[url => $post->url]}">{$post->name}</a>
 				</h3>
 				<p>{$post->annotation}</p>
 			</div>
