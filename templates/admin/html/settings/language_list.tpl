@@ -7,7 +7,7 @@
 
     <div class="header_top">
         <h1>{$meta_title}</h1>
-        <a class="add" href="/admin/language">Добавить язык</a>
+        <a class="add" href="{'LanguageNewAdmin'|link}">Добавить язык</a>
     </div>
 
     <div id="main_list">
@@ -24,7 +24,7 @@
 
                             <div class="col row">
                                 <div class="col-12 col-sm-8 name">
-                                    <a href="/admin/language/{$language->id}">{$language->name}</a>
+                                    <a href="{'LanguageAdmin'|link:[id => $language->id]}">{$language->name}</a>
                                     <span class="badge text-bg-secondary ms-2">{$language->code}</span>
                                 </div>
                                 <div class="col-12 col-sm-4 text-end">
