@@ -4,13 +4,13 @@
 		<ul id="submenu" class="submenu">
 			{if 'user_settings'|user_access and $current_user->id}
 				<li {if $route == 'UserAdmin'}class="active" {/if}>
-                                        <a href="{'UserAdmin'|link:[id => $current_user->id]}">Информация</a>
+					<a href="{'UserAdmin'|link:[id => $current_user->id]}">Информация</a>
 				</li>
 			{/if}
 
 			{if 'user_settings'|user_access and $current_user->id}
 				<li {if $route == 'UserSettingsAdmin'}class="active" {/if}>
-                                        <a href="{'UserSettingsAdmin'|link:[id => $current_user->id]}">Настройки сотрудника</a>
+					<a href="{'UserSettingsAdmin'|link:[id => $current_user->id]}">Настройки сотрудника</a>
 				</li>
 			{/if}
 

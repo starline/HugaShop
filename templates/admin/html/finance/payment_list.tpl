@@ -145,8 +145,8 @@
 
                                        {if !$p->contractor->entity->name|empty}
                                           <div class="notice">
-                                               <a
-                                                  href="{$p->contractor->view_name|link:[id => $p->contractor->entity_id]}">{$p->contractor->entity->name}</a>
+                                             <a
+                                                href="/admin/{$p->contractor->view_name}/{$p->contractor->entity_id}">{$p->contractor->entity->name}</a>
                                           </div>
                                        {/if}
                                     </div>

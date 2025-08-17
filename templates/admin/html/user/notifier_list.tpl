@@ -7,7 +7,7 @@
 
 	<div class="header_top">
 		<h1>Оповещения пользователей</h1>
-                <a class="add" href="{'NotifierNewAdmin'|link}">Добавить способ оповещения</a>
+		<a class="add" href="{'NotifierNewAdmin'|link}">Добавить способ оповещения</a>
 	</div>
 
 
@@ -30,7 +30,7 @@
 							</div>
 
 							<div class="col">
-                                                                <a href="{'NotifierAdmin'|link:[id => $notifier->id]}">{$notifier->name}</a>
+								<a href="{'NotifierAdmin'|link:[id => $notifier->id]}">{$notifier->name}</a>
 								<div class="notice">{$notifier->comment}</div>
 							</div>
 

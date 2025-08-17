@@ -107,7 +107,7 @@
 
 								<div class="col row">
 									<div class="col-12 col-sm-4">
-                                                                                <a href="{'UserAdmin'|link:[id => $u->id]}">{if $u->name}{$u->name}{else}-{/if}</a>
+										<a href="{'UserAdmin'|link:[id => $u->id]}">{if $u->name}{$u->name}{else}-{/if}</a>
 										<div class="notice">{$groups[$u->group->id]->name}</div>
 									</div>
 
