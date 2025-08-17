@@ -6,7 +6,7 @@
 		<ul itemscope itemtype="https://schema.org/BreadcrumbList">
 			<li class='home'></li>
 			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-                                <a href="{'Main'|linkLang}" itemprop="item"><span itemprop="name">Главная</span>
+				<a href="{'Main'|linkLang}" itemprop="item"><span itemprop="name">Главная</span>
 					<meta itemprop="position" content="1">
 				</a>
 			</li>
@@ -15,7 +15,8 @@
 			{$item_position = 2}
 			{foreach $category->path as $path}
 				<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-                                        <a href="{'Products'|linkLang:[url => $path->url]}" itemprop="item"><span itemprop="name">{$path->name}</span>
+					<a href="{'Products'|linkLang:[url => $path->url]}" itemprop="item"><span
+							itemprop="name">{$path->name}</span>
 						<meta itemprop="position" content="{$item_position++}">
 					</a>
 				</li>
@@ -32,10 +33,11 @@
 	<h1>{$product->name}</h1>
 
 	{if 'product_content'|user_access AND $product->id}
-                <div class="admin_edit">
-                        <a href="{'ProductAdmin'|link:[id => $product->id]}" data-bs-toggle="tooltip" title="Редактировать товар">Редактировать
-                                товар</a>
-                </div>
+		<div class="admin_edit">
+			<a href="{'ProductAdmin'|link:[id => $product->id]}" data-bs-toggle="tooltip"
+				title="Редактировать товар">Редактировать
+				товар</a>
+		</div>
 	{/if}
 
 	<div class="product_one">

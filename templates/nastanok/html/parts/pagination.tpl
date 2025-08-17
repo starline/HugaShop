@@ -1,5 +1,5 @@
 {if $pagination->pages_count > 1}
-	
+
 	<!-- Листалка страниц -->
 	<div class="pagination">
 

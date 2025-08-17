@@ -6,7 +6,7 @@
 		<ul itemscope itemtype="https://schema.org/BreadcrumbList">
 			<li class='home'></li>
 			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-                                <a href="{'Main'|linkLang}" itemprop="item">
+				<a href="{'Main'|linkLang}" itemprop="item">
 					<span itemprop="name">Главная</span>
 					<meta itemprop="position" content="1">
 				</a>
@@ -17,7 +17,7 @@
 				{foreach $category->path as $cat}
 					<li class='arrow'>/</li>
 					<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-                                                <a href="{'Products'|linkLang:[url => $cat->url]}" itemprop="item"><span itemprop="name">{$cat->name}</span>
+						<a href="{'Products'|linkLang:[url => $cat->url]}" itemprop="item"><span itemprop="name">{$cat->name}</span>
 							<meta itemprop="position" content="{$item_position++}">
 						</a>
 					</li>
@@ -34,12 +34,12 @@
 					{foreach $category->path[0]->subcategories as $c}
 						{if $c->visible}
 							<li class="category_main {if $category->id == $c->id}selected{/if}">
-                                                                <a href="{'Products'|linkLang:[url => $c->url]}" data-category="{$c->id}">{$c->name}</a>
+								<a href="{'Products'|linkLang:[url => $c->url]}" data-category="{$c->id}">{$c->name}</a>
 								{if $c->subcategories}
 									<ul>
 										{foreach $c->subcategories as $sc}
 											<li {if $category->id == $sc->id}class="selected" {/if}>
-                                                                                                <a href="{'Products'|linkLang:[url => $sc->url]}" data-category="{$sc->id}">{$sc->name}</a>
+												<a href="{'Products'|linkLang:[url => $sc->url]}" data-category="{$sc->id}">{$sc->name}</a>
 											</li>
 										{/foreach}
 									</ul>
@@ -58,9 +58,9 @@
 
 			{if 'product_category'|user_access AND $category->id}
 				<div class="admin_edit">
-                                        <a href="{'CategoryAdmin'|link:[id => $category->id]}" data-bs-toggle="tooltip"
-                                                title="Редактировать категорию">Редактировать
-                                                категорию</a>
+					<a href="{'CategoryAdmin'|link:[id => $category->id]}" data-bs-toggle="tooltip"
+						title="Редактировать категорию">Редактировать
+						категорию</a>
 				</div>
 			{/if}
 

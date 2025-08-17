@@ -124,7 +124,8 @@
                                 title="Условия доставки и оплаты товаров">Доставка и Оплата</a>
                         </li>
                         <li>
-                            <a href="{'Page'|linkLang:[url => 'contact']}" data-bs-toggle="tooltip" title="Контактная информация">Контакты</a>
+                            <a href="{'Page'|linkLang:[url => 'contact']}" data-bs-toggle="tooltip"
+                                title="Контактная информация">Контакты</a>
                         </li>
                     </ul>
                 </div>

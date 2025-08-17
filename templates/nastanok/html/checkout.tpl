@@ -27,13 +27,13 @@
 						{foreach $purchases as $purchase}
 							<div class="purchase_row">
 								<div class="image">
-                                                                        <a href="{'Product'|linkLang:[url => $purchase->product->url]}">
+									<a href="{'Product'|linkLang:[url => $purchase->product->url]}">
 										<img loading="lazy" src="{$purchase->product->image->filename|resize:60:60:c}"
 											alt="{$purchase->product->name}">
 									</a>
 								</div>
 								<div class="name">
-                                                                        <a href="{'Product'|linkLang:[url => $purchase->product->url]}">{$purchase->product->name}</a>
+									<a href="{'Product'|linkLang:[url => $purchase->product->url]}">{$purchase->product->name}</a>
 									{if $purchase->variant->name}
 										- {$purchase->variant->name}
 									{/if}

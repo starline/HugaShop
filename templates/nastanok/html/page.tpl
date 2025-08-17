@@ -6,7 +6,7 @@
 		<ul itemscope itemtype="https://schema.org/BreadcrumbList">
 			<li class='home'></li>
 			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-                                <a href="{'Main'|linkLang}" itemprop="item">
+				<a href="{'Main'|linkLang}" itemprop="item">
 					<span itemprop="name">Главная</span>
 					<meta itemprop="position" content="1" />
 				</a>
@@ -23,10 +23,11 @@
 	<h1 data-page="{$page->id}">{$meta_title}</h1>
 
 	{if 'page'|user_access AND $page->id}
-                <div class="admin_edit">
-                        <a href="{'PageAdmin'|linkLang:[id => $page->id]}" data-bs-toggle="tooltip" title="Редактировать страницу">Редактировать
-                                страницу</a>
-                </div>
+		<div class="admin_edit">
+			<a href="{'PageAdmin'|linkLang:[id => $page->id]}" data-bs-toggle="tooltip"
+				title="Редактировать страницу">Редактировать
+				страницу</a>
+		</div>
 	{/if}
 
 	<!-- Тело страницы -->

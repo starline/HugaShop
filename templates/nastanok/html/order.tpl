@@ -32,7 +32,8 @@
 					<div class="purchase_row">
 						<div class="image">
 							<a href="{'Product'|link:[url => $purchase->product->url]}">
-								<img loading="lazy" src="{$purchase->product->image->filename|resize:120:120:c}" alt="{$product->name}">
+								<img loading="lazy" src="{$purchase->product->image->filename|resize:120:120:c}"
+									alt="{$product->name}">
 							</a>
 						</div>
 

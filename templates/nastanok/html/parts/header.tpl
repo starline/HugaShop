@@ -4,14 +4,14 @@
 
 		<!-- Меню -->
 		<div class="menu col-lg-9">
-                        <div class=" {if $route|in_array:[PostList, Post]}selected{/if}">
-                                <a href="{'PostList'|linkLang}">База знаний</a>
-                        </div>
+			<div class=" {if $route|in_array:[PostList, Post]}selected{/if}">
+				<a href="{'PostList'|linkLang}">База знаний</a>
+			</div>
 
 			{foreach 'ContentPage'|api:getMenu as $m}
 				<div {if !$page|empty && $page->id == $m->id}class="selected" {/if}>
-                                        <a data-page="{$p->id}" href="{'Page'|linkLang:[url => $m->url]}" data-bs-toggle="tooltip"
-                                                title="{$m->name}">{$m->name}</a>
+					<a data-page="{$p->id}" href="{'Page'|linkLang:[url => $m->url]}" data-bs-toggle="tooltip"
+						title="{$m->name}">{$m->name}</a>
 				</div>
 			{/foreach}
 		</div>
@@ -20,14 +20,14 @@
 		<div class="col-lg-3 text-end ps-2">
 			{if $user->name}
 				<span class="link-primary">
-                                        <a href="{'User'|linkLang}" data-bs-toggle="tooltip"
-                                                title="{if $user->group->discount>0}ваша скидка: {$user->group->discount}%{/if}"
-                                                rel="nofollow">{$user->name}</a>
-                                </span>
-                                <a class="link-secondary ms-2" href="{'UserLogout'|linkLang}" rel="nofollow">выйти</a>
-                        {else}
-                                <a class="link-primary" href="{'UserLogin'|linkLang}" rel="nofollow">Вход</a>
-                        {/if}
+					<a href="{'User'|linkLang}" data-bs-toggle="tooltip"
+						title="{if $user->group->discount>0}ваша скидка: {$user->group->discount}%{/if}"
+						rel="nofollow">{$user->name}</a>
+				</span>
+				<a class="link-secondary ms-2" href="{'UserLogout'|linkLang}" rel="nofollow">выйти</a>
+			{else}
+				<a class="link-primary" href="{'UserLogin'|linkLang}" rel="nofollow">Вход</a>
+			{/if}
 		</div>
 	</div>
 </div>
@@ -38,8 +38,8 @@
 	<div class="row g-4">
 
 		<div class="col-6 col-lg-4">
-                        <a class="logo" href="{'Main'|linkLang}" data-bs-toggle="tooltip"
-                                title="{$settings->company_name} - {$settings->company_description}">
+			<a class="logo" href="{'Main'|linkLang}" data-bs-toggle="tooltip"
+				title="{$settings->company_name} - {$settings->company_description}">
 				<img loading="lazy" alt="{$settings->company_name} - {$settings->company_description}"
 					src="{'images/logo.png'|asset}" />
 			</a>
@@ -96,7 +96,7 @@
 					{foreach $categories as $cat}
 						{if $cat->visible}
 							<td class="{if $cat@last}last{/if}{if $cat@first}first{/if}">
-                                                                <a href="{'Products'|linkLang:[url=>$cat->url]}" class="p-c-title">
+								<a href="{'Products'|linkLang:[url=>$cat->url]}" class="p-c-title">
 									<span class="p-c-title-text">{$cat->name}</span>
 								</a>
 							</td>
