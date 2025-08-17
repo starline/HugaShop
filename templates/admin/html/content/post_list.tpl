@@ -17,8 +17,7 @@
 			<h1>Нет записей</h1>
 		{/if}
 
-                <a class="add" href="{'PostNewAdmin'|link}">Добавить запись</a>
-
+		<a class="add" href="{'PostNewAdmin'|link}">Добавить запись</a>
 
 		{if $posts || $keyword}
 			<!-- Search -->
@@ -49,13 +48,13 @@
 							</div>
 
 							<div class="col">
-                                                                <a href="{'PostAdmin'|link:[id => $post->id]}">{$post->name}</a>
+								<a href="{'PostAdmin'|link:[id => $post->id]}">{$post->name}</a>
 								<div class="comment_info">{$post->date|date}</div>
 							</div>
 
 							<div class="icons">
-                                                                <a class="material-icons launch" data-bs-toggle="tooltip" title="Предпросмотр в новом окне"
-                                                                        href="{'Post'|linkLang:[url => $post->url]}" target="_blank"></a>
+								<a class="material-icons launch" data-bs-toggle="tooltip" title="Предпросмотр в новом окне"
+									href="{'Post'|linkLang:[url => $post->url]}" target="_blank"></a>
 								<i class="enable material-icons visibility" data-bs-toggle="tooltip" title="Активна"></i>
 								<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
 							</div>

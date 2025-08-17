@@ -174,11 +174,11 @@
 						</div>
 					{/if}
 
-                                        <div class="btn_row">
-                                                <a class="btn btn-light"
-                                                        href="{'PaymentNewAdmin'|link:[cur_type => 0, contractor_entity_name => 'wh_movement', contractor_entity_id => $movement->id]}">Добавить
-                                                        платеж</a>
-                                        </div>
+					<div class="btn_row">
+						<a class="btn btn-light"
+							href="{'PaymentNewAdmin'|link:[cur_type => 0, contractor_entity_name => 'wh_movement', contractor_entity_id => $movement->id]}">Добавить
+							платеж</a>
+					</div>
 
 					{if $movement->payments}
 						<div class="list mt-4">

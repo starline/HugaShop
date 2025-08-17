@@ -64,7 +64,7 @@
 								</div>
 								<div class="col">
 									<div class="mb-2">
-                                                                                <a href="{'CommentAdmin'|link:[id => $comment->id]}">{$comment->name}</a>
+										<a href="{'CommentAdmin'|link:[id => $comment->id]}">{$comment->name}</a>
 										<span class="badge text-bg-round">IP: {$comment->ip}</span>
 										{if !$comment->approved}<a class="approve" href="#">Одобрить</a>{/if}
 									</div>
@@ -77,11 +77,11 @@
 										Комментарий оставлен {$comment->date|date} в {$comment->date|time}
 
 										{if $comment->type == 'product'}
-                                                                                        к товару <a target="_blank"
-                                                                                                href="{'ProductShortId'|linkLang:[id => $comment->product->id]}#comment_{$comment->id}">{$comment->product->name}</a>
+											к товару <a target="_blank"
+												href="{'ProductShortId'|linkLang:[id => $comment->product->id]}#comment_{$comment->id}">{$comment->product->name}</a>
 										{elseif $comment->type == 'blog'}
-                                                                                        к статье <a target="_blank"
-                                                                                                href="{'Post'|linkLang:[url => $comment->post->url]}#comment_{$comment->id}">{$comment->post->name}</a>
+											к статье <a target="_blank"
+												href="{'Post'|linkLang:[url => $comment->post->url]}#comment_{$comment->id}">{$comment->post->name}</a>
 										{/if}
 									</div>
 								</div>

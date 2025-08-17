@@ -11,12 +11,10 @@
 		<div class="header_top">
 			<h1>{if $carts_count}{$carts_count}{else}Нет{/if} корзин{$carts_count|plural:'a':'':'ы'}</h1>
 
-                        <a class="add" href="{'OrderNewAdmin'|link}">Добавить заказ</a>
-                </div>
-
-		<div id="right_menu">
+			<a class="add" href="{'OrderNewAdmin'|link}">Добавить заказ</a>
 		</div>
 
+		<div id="right_menu"></div>
 
 		<!-- Список заказов -->
 		<div id="main_list">
