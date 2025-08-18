@@ -45,7 +45,6 @@ final class DatabaseCheckController extends BaseAdminController
 
         try {
 
-            /** @var \HugaShop\Models\BaseModel $model */
             $model = new $class();
             $table = $model->getTable();
 
