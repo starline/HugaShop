@@ -14,6 +14,7 @@
         <button id="scan_button" class="btn btn-primary ms-2">Сканировать</button>
         <span id="scan_count" class="badge text-bg-round ms-2"></span>
     </div>
+    
     <div id="main_list">
         {if $pages}
 
