@@ -10,7 +10,6 @@
 
 namespace HugaShop\Extensions\DatabaseCheck\Controller;
 
-use HugaShop\Services\Config;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
@@ -111,6 +110,10 @@ final class DatabaseCheckController extends BaseAdminController
             $class = 'HugaShop\\Models\\' . str_replace(['/', '.php'], ['\\', ''], $relative);
 
             if (!class_exists($class) || !is_subclass_of($class, \HugaShop\Models\BaseModel::class)) {
+                continue;
+            }
+
+            if (class_basename($class) === 'AbstractTranslation') {
                 continue;
             }
 
