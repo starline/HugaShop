@@ -89,6 +89,18 @@ final class Product extends ProductModel
         }
 
 
+        // Stock
+        if (Arr::has($filter, 'in_stock')) {
+            if ($filter['in_stock'] === 1) {
+                $query->where(function ($q) {
+                    $q->where('stock', '>', 0)->orWhereNull('stock');
+                });
+            } else {
+                $query->where('stock', '<=', 0);
+            }
+        }
+
+
         // Keywords
         if (!empty($filter['keyword'])) {
             $keywords = explode(' ', trim($filter['keyword']));

@@ -35,6 +35,8 @@ final class ProductStockManagerController extends BaseAdminController
         if ($query_filter = Request::get('filter', 'string')) {
             if ($query_filter == 'stagnation') {
                 $filter['stagnation'] = 1;
+            } elseif ($query_filter == 'outofstock') {
+                $filter['in_stock'] = 0;
             } elseif ($query_filter == 'purchase') {
                 $filter['purchase'] = 1;
             } elseif ($query_filter == 'top') {

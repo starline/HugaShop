@@ -41,18 +41,6 @@
                         <li class="{if !$filter}selected{/if}">
                             <a href="{url clear=true}">Все товары</a>
                         </li>
-                        <li class="{if $filter == 'sale'}selected{/if}">
-                            <a href="{url filter='sale' clear=true}">Акция</a>
-                        </li>
-                        <li class="{if $filter == 'featured'}selected{/if}">
-                            <a href="{url filter='featured' clear=true}">Рекомендуемые</a>
-                        </li>
-                        <li {if $filter == 'discounted'}class="selected" {/if}>
-                            <a href="{url filter='discounted' clear=true}">Со скидкой</a>
-                        </li>
-                        <li {if $filter == 'hidden'}class="selected" {/if}>
-                            <a href="{url filter='hidden' clear=true}">Неактивные</a>
-                        </li>
                         <li {if $filter == 'outofstock'}class="selected" {/if}>
                             <a href="{url filter='outofstock' clear=true}">Нет в наличии</a>
                         </li>
@@ -102,15 +90,12 @@
                                         <i class="small"> - {$product->variant_name}</i>
                                     {/if}
 
-                                    {$product|dump}
                                     {if $product->order_date}
                                         <div class="notice" data-bs-toggle="tooltip" title="Дата последнего заказа">
                                             Последний заказ: <span>{$product->order_date|date}</span>
                                             прошло <span>{(($config->now - $product->order_date|strtotime)/60/60/24)|round}</span>
                                             дней
                                         </div>
-                                    {elseif $product->order_date|is_null}
-                                        <div class="notice">Ни разу не был заказан</div>
                                     {elseif $product->profit}
                                         <div class="notice">
                                             Прибыль: {$product->profit|price_html:profit|raw}
@@ -121,8 +106,9 @@
                                             Нужно закупить: <span>{$product->need} {$settings->units}</span>
                                             Продано <span>{$product->sold} {$settings->units}</span>
                                         </div>
+                                    {elseif $product->order_date|is_null}
+                                        <div class="notice">Ни разу не был заказан</div>
                                     {/if}
-
 
                                     <div class="icons flex-row mt-2">
                                         <a class="show_chart" data-bs-toggle="tooltip" title="Показать график продаж"></a>
