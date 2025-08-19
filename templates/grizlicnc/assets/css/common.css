@@ -105,6 +105,20 @@ body {
 	cursor: pointer;
 }
 
+.form-switch {
+	padding-left: 3.2em;
+}
+
+.form-switch .form-check-input {
+	height: 1.5rem;
+	width: 2.4rem;
+	margin-left: -3em;
+}
+
+.form-check .form-check-label {
+	line-height: 2.1;
+}
+
 .btn {
 	--bs-btn-padding-x: 1.2rem;
 	position: relative;

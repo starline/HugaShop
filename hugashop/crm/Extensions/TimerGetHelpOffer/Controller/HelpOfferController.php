@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
  */
 
 namespace HugaShop\Extensions\TimerGetHelpOffer\Controller;
@@ -25,11 +25,14 @@ final class HelpOfferController extends BaseFrontController
 {
     use BaseExtensionTrait;
 
-    #[Route('/TimerGetHelpOffer/form', name: 'ExtTimerGetHelpOfferForm', priority: 21)]
+    #[Route('/TimerGetHelpOffer/form', name: 'ExtTimerGetHelpOfferForm', priority: 20)]
     public function form(): Response
     {
+
+        $hasConsent = Request::post('personal_data');
+
         if (!empty($request = Secure::getInputAcces(HelpOffer::getFields()))) {
-            $hasConsent = Request::post('personal_data');
+
             if ($hasConsent && Helper::checkCaptcha()) {
                 $request->ip         = $_SERVER['REMOTE_ADDR'];
                 $request->user_agent = $_SERVER['HTTP_USER_AGENT'];
@@ -49,7 +52,7 @@ final class HelpOfferController extends BaseFrontController
         }
 
         Design::assign('request', $request);
-        Design::assign('personal_data', Request::post('personal_data'));
+        Design::assign('personal_data', $hasConsent);
 
         return $this->fetchExtResponse('form.tpl', 'help_offer');
     }

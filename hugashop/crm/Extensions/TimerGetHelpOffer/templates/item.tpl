@@ -34,7 +34,8 @@
                             <div class="list-group-item">
                                 <div>IP: {$request->ip}</div>
                                 <div>
-                                    <a class="badge text-bg-secondary" href='https://www.ipaddress.com/ipv4/{$request->ip}' target="_blank">где это?</a>
+                                    <a class="badge text-bg-secondary" href='https://www.ipaddress.com/ipv4/{$request->ip}'
+                                        target="_blank">где это?</a>
                                 </div>
                             </div>
 
