@@ -1,0 +1,22 @@
+name: "Предложение помощи в выборе товара"
+description: "Всплывающее предложение помощи с выбором товара"
+settings_params:
+  - {
+      variable: enabled,
+      name: "Включено",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }
+  - {
+      variable: timer,
+      name: "Таймер показа (сек.)",
+      placeholder: "30",
+    }
+  - {
+      variable: show_on_leave,
+      name: "Показ при уходе",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }
+notifier:
+  admin:
+    - offerToAdmin: "Заявка на помощь с выбором товара"
+version: 1.0
