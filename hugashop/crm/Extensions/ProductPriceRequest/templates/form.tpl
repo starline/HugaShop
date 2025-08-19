@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-12 col-md-6">
                 <div>
-                    <img src="{$product->image->filename|resize:720}" alt="{$product->name}" class="img-fluid mb-3">
+                    <img src="{$product->image->filename|resize:720:720:w}" alt="{$product->name}" class="img-fluid mb-3">
                 </div>
                 <p>Товар: <strong>{$product->name}</strong></p>
                 <p>Цена: <strong>{$product->price|price_html|raw}</strong></p>
