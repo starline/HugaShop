@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 4.8
+ * @version 4.9
  *
  * Smarty 5.x require PHP7.4/PHP8.1
  *
@@ -102,9 +102,9 @@ class Design
 
         self::setModifierPlugin('asset',             self::class,               'getAssetUrl');
         self::setModifierPlugin('resize',            Image::class,              'getImageURL');
-        self::setModifierPlugin('plural',            self::class,               'plural_modifier');
-        self::setModifierPlugin('first',             self::class,               'first_modifier');
-        self::setModifierPlugin('cut',               self::class,               'cut_modifier');
+        self::setModifierPlugin('plural',            self::class,               'pluralModifier');
+        self::setModifierPlugin('first',             self::class,               'firstModifier');
+        self::setModifierPlugin('cut',               self::class,               'cutModifier');
         self::setModifierPlugin('byte_convert',      Helper::class,             'convertBytes');
         self::setModifierPlugin('dump',              self::class,               'dumpModifier');
 
@@ -407,7 +407,7 @@ class Design
      * @param string $plural1
      * @param string $plural2
      */
-    public static function plural_modifier($number, string $singular, string $plural_1, ?string $plural_2 = null)
+    public static function pluralModifier($number, string $singular, string $plural_1, ?string $plural_2 = null)
     {
         if (is_null($number)) {
             return $singular;
@@ -441,7 +441,7 @@ class Design
      * Take fist value of array
      * @param array $params
      */
-    public static function first_modifier(array $params = [])
+    public static function firstModifier(array $params = [])
     {
         if (!is_array($params)) {
             return false;
@@ -456,7 +456,7 @@ class Design
      * @param array $array
      * @param int $num
      */
-    public static function cut_modifier(array $array, $num = 1)
+    public static function cutModifier(array $array, $num = 1)
     {
         if ($num >= 0) {
             return array_slice($array, $num, count($array) - $num, true);
