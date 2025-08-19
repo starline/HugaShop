@@ -1,21 +1,25 @@
-{* LanguageAutoDetect script *}
-<script>
-    (function () {
-        var languages = {$LanguageAutoDetect_languages|json_encode|raw};
-        var currentLang = '{$current_language->code}';
-        var storageKey = 'language_auto_detect_seen';
+<!-- LanguageAutoDetect -->
+<script type="module">
+    import { asignFancyAjax } from "{'js/common.js'|asset}";
+
+    let languages = {$languages|json_encode|raw};
+    let currentLang = '{$current_language->code}';
+    let storageKey = '{$storage_key}';
+
+    $(function() {
 
         if (localStorage.getItem(storageKey)) {
-            return;
+            //return;
         }
 
-        var browserLang = navigator.language || navigator.userLanguage;
+        let browserLang = 'uk-Ru'; //navigator.language || navigator.userLanguage;
         if (!browserLang) {
             return;
         }
+
         browserLang = browserLang.split('-')[0];
 
-        var match = languages.find(function (item) {
+        let match = languages.find(function(item) {
             return item.code === browserLang;
         });
 
@@ -25,13 +29,23 @@
 
         $.fancybox.open({
             type: 'ajax',
-            src: "{'ExtLanguageAutoDetectSwitcher'|linkLang|escape:'javascript'}" + '?match=' + match.code + '&current=' + currentLang,
+            src: "{'ExtLanguageAutoDetectSwitcher'|linkLang}",
+            ajax: {
+                settings: {
+                    method: 'POST',
+                    data: {
+                        match: match.code,
+                        current: currentLang,
+                        csrf: window.csrf
+                    }
+                }
+            },
             touch: false,
             closeExisting: true,
-            afterClose: function () {
+            afterClose: function() {
                 localStorage.setItem(storageKey, 1);
                 asignFancyAjax();
             }
         });
-    })();
+    });
 </script>

@@ -1,3 +1,4 @@
+<!-- ProductPriceRequest -->
 <script type="module">
     import { asignFancyAjax } from "{'js/common.js'|asset}";
 

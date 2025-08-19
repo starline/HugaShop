@@ -11,7 +11,7 @@
  * For debuging in Smarty 5.x use {$var|debug_print_var}
  * 
  * no escaping at all
- * {$myVar|raw}
+ * {$myVar|raw} {$myVar|dump}
  *
  */
 
@@ -34,7 +34,6 @@ class Design
     public static ?string $theme;
     private static $Packages;
     public static $Translator;
-    public static $locale;
 
 
     public static function getSmarty()
@@ -107,7 +106,7 @@ class Design
         self::setModifierPlugin('first',             self::class,               'first_modifier');
         self::setModifierPlugin('cut',               self::class,               'cut_modifier');
         self::setModifierPlugin('byte_convert',      Helper::class,             'convertBytes');
-        self::setModifierPlugin('dump',              self::class,               'dump');
+        self::setModifierPlugin('dump',              self::class,               'dumpModifier');
 
 
         // DATE Plugins
@@ -307,8 +306,6 @@ class Design
 
     /**
      * Set Translator
-     * @param string $locale
-     * @param string $theme
      */
     public static function setTranslator($Translator)
     {
@@ -472,7 +469,7 @@ class Design
     /**
      * Dump
      */
-    public static function dump($var)
+    public static function dumpModifier($var)
     {
         dump($var);
     }

@@ -4,14 +4,13 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
  */
 
 namespace HugaShop\Extensions\LanguageAutoDetect\Controller;
 
 use App\Controller\BaseFrontController;
 use HugaShop\Extensions\BaseExtensionTrait;
-use HugaShop\Extensions\LanguageAutoDetect\LanguageAutoDetect;
 use HugaShop\Models\Localization\Language;
 use HugaShop\Services\Design;
 use HugaShop\Services\Request;
@@ -25,20 +24,21 @@ final class LanguageAutoDetectController extends BaseFrontController
     #[Route('/LanguageAutoDetect/switcher', name: 'ExtLanguageAutoDetectSwitcher', priority: 20)]
     public function switcher(): Response
     {
-        $matchCode = Request::get('match');
-        $currentCode = Request::get('current');
+        $match_code      = Request::input('match');
+        $current_code    = Request::input('current');
 
-        $languages = Language::getLanguages();
-        $match = $languages->firstWhere('code', $matchCode);
-        $current = $languages->firstWhere('code', $currentCode);
+        $languages      = Language::getLanguages();
+        $match          = $languages->firstWhere('code', $match_code);
+        $current        = $languages->firstWhere('code', $current_code);
 
         if (empty($match) || empty($current)) {
             return new Response('', 404);
         }
 
-        $translateFilePath = LanguageAutoDetect::getExtensionDir() . 'translations/messages.' . Design::$locale . '.yaml';
-        if (file_exists($translateFilePath)) {
-            Design::$Translator->addResource('yaml', $translateFilePath, Design::$locale);
+        // If translation file exists
+        $translate_file_path = self::getExtensionDir() . 'translations/messages.' . $current->code . '.yaml';
+        if (file_exists($translate_file_path)) {
+            Design::$Translator->addResource('yaml', $translate_file_path, $current->code);
         }
 
         Design::assign('match_language', $match);
