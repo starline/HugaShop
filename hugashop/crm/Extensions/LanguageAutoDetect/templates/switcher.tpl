@@ -3,7 +3,7 @@
     import { asignFancyAjax } from "{'js/common.js'|asset}";
 
     let languages = {$languages|json_encode|raw};
-    let currentLang = '{$current_language->code}';
+    let current_lang = '{$current_language->code}';
     let storageKey = '{$storage_key}';
 
     $(function() {
@@ -23,7 +23,7 @@
             return item.code === browserLang;
         });
 
-        if (!match || match.code === currentLang) {
+        if (!match || match.code === current_lang) {
             return;
         }
 
@@ -35,7 +35,7 @@
                     method: 'POST',
                     data: {
                         match: match.code,
-                        current: currentLang,
+                        current: current_lang,
                         csrf: window.csrf
                     }
                 }

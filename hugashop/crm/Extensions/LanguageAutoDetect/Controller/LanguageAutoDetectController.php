@@ -24,8 +24,8 @@ final class LanguageAutoDetectController extends BaseFrontController
     #[Route('/LanguageAutoDetect/switcher', name: 'ExtLanguageAutoDetectSwitcher', priority: 20)]
     public function switcher(): Response
     {
-        $match_code      = Request::input('match');
-        $current_code    = Request::input('current');
+        $match_code     = Request::input('match');
+        $current_code   = Request::input('current');
 
         $languages      = Language::getLanguages();
         $match          = $languages->firstWhere('code', $match_code);
