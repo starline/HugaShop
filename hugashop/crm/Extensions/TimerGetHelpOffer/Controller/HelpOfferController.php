@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.2
  */
 
 namespace HugaShop\Extensions\TimerGetHelpOffer\Controller;
@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Extensions\TimerGetHelpOffer\Models\HelpOffer;
 use HugaShop\Extensions\TimerGetHelpOffer\Services\NotifyService;
+use HugaShop\Models\User\User;
 
 final class HelpOfferController extends BaseFrontController
 {
@@ -30,10 +31,11 @@ final class HelpOfferController extends BaseFrontController
     {
 
         $hasConsent = Request::post('personal_data');
+        $isLogged   = User::isLoggedIn();
 
         if (!empty($request = Secure::getInputAcces(HelpOffer::getFields()))) {
 
-            if ($hasConsent && Helper::checkCaptcha()) {
+            if ($hasConsent && ($isLogged || Helper::checkCaptcha())) {
                 $request->ip         = $_SERVER['REMOTE_ADDR'];
                 $request->user_agent = $_SERVER['HTTP_USER_AGENT'];
                 $request             = HelpOffer::createOne($request);

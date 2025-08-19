@@ -31,9 +31,11 @@
                 <label class="form-label" for="hgo_email">Email</label>
                 <input class="form-control" type="email" name="email" id="hgo_email" value="{$request->email}">
             </div>
-            <div class="mb-3">
-                <div class="g-recaptcha" data-sitekey="{$config->recaptcha->public_key}"></div>
-            </div>
+            {if $user|empty}
+                <div class="mb-3">
+                    <div class="g-recaptcha" data-sitekey="{$config->recaptcha->public_key}"></div>
+                </div>
+            {/if}
 
             <div class="form-check form-switch mb-3">
                 <input class="form-check-input {if $error=='personal_data'}is-invalid{/if}" type="checkbox" role="switch"
@@ -46,7 +48,9 @@
                 <button class="btn btn-primary" type="submit">Отправить</button>
             </div>
         </form>
-        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        {if $user|empty}
+            <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        {/if}
     </div>
 {/block}
 
