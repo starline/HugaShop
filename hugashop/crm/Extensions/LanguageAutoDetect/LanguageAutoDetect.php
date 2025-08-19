@@ -18,6 +18,7 @@ use HugaShop\Services\Design;
 final class LanguageAutoDetect extends BaseExtension
 {
 
+    public static $storage_key = 'language_auto_detected';
 
     /**
      * Get block template
@@ -25,7 +26,7 @@ final class LanguageAutoDetect extends BaseExtension
     public static function getFrontBodyTemplate()
     {
         if (self::isEnabled()) {
-            Design::assign('storage_key', 'language_auto_detected');
+            Design::assign('storage_key', self::$storage_key);
             return self::fetchTemplate('switcher.tpl');
         }
     }

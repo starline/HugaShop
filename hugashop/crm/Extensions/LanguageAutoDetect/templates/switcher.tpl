@@ -1,6 +1,6 @@
 <!-- LanguageAutoDetect -->
 <script type="module">
-    import { asignFancyAjax } from "{'js/common.js'|asset}";
+    import { asignFancyAjax, getUiLanguage } from "{'js/common.js'|asset}";
 
     let languages = {$languages|json_encode|raw};
     let current_lang = '{$current_language->code}';
@@ -8,11 +8,11 @@
 
     $(function() {
 
-        if (localStorage.getItem(storageKey)) {
-            //return;
+        if (current_lang === localStorage.getItem(storageKey)) {
+            return;
         }
 
-        let browserLang = 'uk-Ru'; //navigator.language || navigator.userLanguage;
+        let browserLang = getUiLanguage();
         if (!browserLang) {
             return;
         }
@@ -42,9 +42,9 @@
             },
             touch: false,
             closeExisting: true,
-            afterClose: function() {
-                localStorage.setItem(storageKey, 1);
+            afterShow: function() {
                 asignFancyAjax();
+                localStorage.setItem(storageKey, current_lang);
             }
         });
     });

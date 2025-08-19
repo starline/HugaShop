@@ -6,18 +6,30 @@
             <button type="button" class="btn btn-primary js-switch">{$match_language->name}</button>
         </div>
 
-        <script>
-            (function() {
+        <script type="module">
+            let storageKey = '{$storage_key}';
+
+            $(function() {
                 $('.js-current').on('click', function() {
                     $.fancybox.close();
                 });
 
                 $('.js-switch').on('click', function() {
-                    var url = new URL(window.location.href);
-                    url.searchParams.set('lang', '{$match_language->code}');
-                    window.location.href = url.toString();
+                    localStorage.setItem(storageKey, '{$match_language->code}');
+
+                    let path = window.location.pathname;
+                    let langReg = /^\/([a-z]{2})(\/|$)/;
+
+                    if (langReg.test(path)) {
+                        path = path.replace(langReg, '/{$match_language->code}$2');
+                    } else {
+                        path = '/{$match_language->code}' + path;
+                    }
+
+                    window.location.href = window.location.origin + path + window.location.search + window
+                        .location.hash;
                 });
-            })();
+            });
         </script>
     </div>
 {/block}
