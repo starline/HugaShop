@@ -15,6 +15,11 @@
 
         <form method="post" action="{'ExtTimerGetHelpOfferForm'|link}" class="needs-validation">
             {getCSRFInput}
+
+            {if $id}
+                <input type="hidden" name="id" value="{$id}" />
+            {/if}
+
             <div class="mb-3">
                 <label class="form-label" for="hgo_name">Имя</label>
                 <input class="form-control {if 'name'|in_array:$form_invalid}is-invalid{/if}" type="text" name="name"

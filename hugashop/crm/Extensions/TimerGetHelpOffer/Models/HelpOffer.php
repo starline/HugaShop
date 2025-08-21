@@ -20,6 +20,7 @@ final class HelpOffer extends BaseExtensionModel
         'name'       => ['type' => 'varchar', 'req' => true],
         'phone'      => ['type' => 'varchar', 'req' => true],
         'email'      => ['type' => 'varchar'],
+        'page'       => ['type' => 'varchar', 'access' => false],
         'user_agent' => ['type' => 'varchar', 'access' => false],
         'ip'         => ['type' => 'varchar', 'access' => false, 'length' => 20],
     ];

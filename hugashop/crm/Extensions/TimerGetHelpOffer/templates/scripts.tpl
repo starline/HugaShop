@@ -1,16 +1,17 @@
 <script type="module">
     import { asignFancyAjax } from "{'js/common.js'|asset}";
 
-    let offer_link   = "{'ExtTimerGetHelpOfferForm'|link}";
-    let showTimer    = {$TimerGetHelpOffer->timer|default:0} * 1000;
-    let showOnLeave  = {$TimerGetHelpOffer->show_on_leave|default:0};
-    let offerShown   = false;
+    let offer_link = "{'ExtTimerGetHelpOfferForm'|link}";
+    let show_timer = {$TimerGetHelpOffer->timer|default:0} * 1000;
+    let show_on_leave = {$TimerGetHelpOffer->show_on_leave|default:0};
+    let storage_key = 'TimerGetHelpOfferDate';
+    let offer_shown = false;
 
     function openOffer() {
-        if (offerShown) {
+        if (offer_shown) {
             return;
         }
-        offerShown = true;
+        offer_shown = true;
         $.fancybox.open({
             type: 'ajax',
             src: offer_link,
@@ -18,21 +19,28 @@
                 settings: {
                     method: 'POST',
                     data: {
+                        page: window.location.href,
                         csrf: window.csrf
                     }
                 }
             },
             touch: false,
             closeExisting: true,
-            afterShow: asignFancyAjax
+            afterShow: function() {
+                localStorage.setItem(storage_key, new Date().toISOString());
+                asignFancyAjax();
+            }
         });
     }
 
     $(function() {
-        if (showTimer > 0) {
-            setTimeout(openOffer, showTimer);
+        if (localStorage.getItem(storage_key)) {
+            return;
         }
-        if (showOnLeave) {
+        if (show_timer > 0) {
+            setTimeout(openOffer, show_timer);
+        }
+        if (show_on_leave) {
             document.addEventListener('visibilitychange', function() {
                 if (document.hidden) {
                     openOffer();

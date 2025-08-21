@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.2
+ * @version 1.3
  */
 
 namespace HugaShop\Extensions\TimerGetHelpOffer\Controller;
@@ -12,6 +12,7 @@ namespace HugaShop\Extensions\TimerGetHelpOffer\Controller;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Secure;
+use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
 use HugaShop\Services\NotifierFactory;
 use App\Controller\BaseFrontController;
@@ -20,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Extensions\TimerGetHelpOffer\Models\HelpOffer;
 use HugaShop\Extensions\TimerGetHelpOffer\Services\NotifyService;
-use HugaShop\Models\User\User;
+use stdClass;
 
 final class HelpOfferController extends BaseFrontController
 {
@@ -30,15 +31,14 @@ final class HelpOfferController extends BaseFrontController
     public function form(): Response
     {
 
+        $id         = Request::post('id', 'int');
         $hasConsent = Request::post('personal_data');
         $isLogged   = User::isLoggedIn();
 
-        if (!empty($request = Secure::getInputAcces(HelpOffer::getFields()))) {
-
+        if (!empty($request = Secure::getInputAcces(HelpOffer::getFields())) and $id) {
             if ($hasConsent && ($isLogged || Helper::checkCaptcha())) {
-                $request->ip         = $_SERVER['REMOTE_ADDR'];
-                $request->user_agent = $_SERVER['HTTP_USER_AGENT'];
-                $request             = HelpOffer::createOne($request);
+
+                HelpOffer::updateOne($id, $request);
 
                 NotifierFactory::sendToManagers([
                     NotifyService::class,
@@ -53,6 +53,16 @@ final class HelpOfferController extends BaseFrontController
             }
         }
 
+        // Open offer
+        elseif (!empty($page = Request::post('page', 'string'))) {
+            $request             = new stdClass();
+            $request->ip         = $_SERVER['REMOTE_ADDR'];
+            $request->user_agent = $_SERVER['HTTP_USER_AGENT'];
+            $request->page       = $page;
+            $id                  = HelpOffer::createOne($request)?->id;
+        }
+
+        Design::assign('id', $id);
         Design::assign('request', $request);
         Design::assign('personal_data', $hasConsent);
 
