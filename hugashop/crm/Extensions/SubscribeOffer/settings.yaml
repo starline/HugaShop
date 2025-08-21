@@ -1,0 +1,11 @@
+name: "Предложение подписки на новости"
+description: "Всплывающее предложение подписаться на новости и получить купон"
+settings_params:
+  - {
+      variable: enabled,
+      name: "Включено",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }
+  - { variable: coupon_code, name: "Код купона", placeholder: "SALE2024" }
+  - { variable: timer, name: "Таймер показа (сек.)", placeholder: "30" }
+version: 1.0
