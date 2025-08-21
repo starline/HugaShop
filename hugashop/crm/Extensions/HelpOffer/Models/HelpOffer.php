@@ -7,7 +7,7 @@
  * @version 1.1
  */
 
-namespace HugaShop\Extensions\TimerGetHelpOffer\Models;
+namespace HugaShop\Extensions\HelpOffer\Models;
 
 use HugaShop\Extensions\BaseExtensionModel;
 

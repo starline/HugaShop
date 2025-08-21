@@ -7,7 +7,7 @@
  * @version 1.0
  */
 
-namespace HugaShop\Extensions\TimerGetHelpOffer\Services;
+namespace HugaShop\Extensions\HelpOffer\Services;
 
 use HugaShop\Services\Design;
 use HugaShop\Extensions\BaseExtensionTrait;

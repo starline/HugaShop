@@ -7,7 +7,7 @@
  * @version 1.3
  */
 
-namespace HugaShop\Extensions\TimerGetHelpOffer\Controller;
+namespace HugaShop\Extensions\HelpOffer\Controller;
 
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
@@ -19,15 +19,15 @@ use App\Controller\BaseFrontController;
 use HugaShop\Extensions\BaseExtensionTrait;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use HugaShop\Extensions\TimerGetHelpOffer\Models\HelpOffer;
-use HugaShop\Extensions\TimerGetHelpOffer\Services\NotifyService;
+use HugaShop\Extensions\HelpOffer\Models\HelpOffer;
+use HugaShop\Extensions\HelpOffer\Services\NotifyService;
 use stdClass;
 
 final class HelpOfferController extends BaseFrontController
 {
     use BaseExtensionTrait;
 
-    #[Route('/TimerGetHelpOffer/form', name: 'ExtTimerGetHelpOfferForm', priority: 20)]
+    #[Route('/HelpOffer/form', name: 'ExtHelpOfferForm', priority: 20)]
     public function form(): Response
     {
 

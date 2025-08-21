@@ -7,11 +7,11 @@
  * @version 1.0
  */
 
-namespace HugaShop\Extensions\TimerGetHelpOffer;
+namespace HugaShop\Extensions\HelpOffer;
 
 use HugaShop\Extensions\BaseExtension;
 
-final class TimerGetHelpOffer extends BaseExtension
+final class HelpOffer extends BaseExtension
 {
     /**
      * Render scripts on front pages

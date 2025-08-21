@@ -13,7 +13,7 @@
             </div>
         {/if}
 
-        <form method="post" action="{'ExtTimerGetHelpOfferForm'|link}" class="needs-validation">
+        <form method="post" action="{'ExtHelpOfferForm'|link}" class="needs-validation">
             {getCSRFInput}
 
             {if $id}
