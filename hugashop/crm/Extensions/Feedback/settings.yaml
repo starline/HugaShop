@@ -1,5 +1,11 @@
 name: "Обратная связь"
 description: "Форма обратной связи для пользователей"
+settings_params:
+  - {
+      variable: show_menu,
+      name: "Показывать в меню",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }
 notifier:
   admin:
     - feedbackToAdmin: "Обратная связь"

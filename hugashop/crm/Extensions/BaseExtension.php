@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.7
+ * @version 2.8
  *
  */
 
@@ -48,17 +48,7 @@ class BaseExtension
     {
         $extension = self::getConfig();
         $extension->settings = self::getSettings();
-        $extension->hasIndex = self::hasIndex();
         return $extension;
-    }
-
-
-    /**
-     * Has index function
-     */
-    public static function hasIndex()
-    {
-        return method_exists(static::class, 'index') ? true : false;
     }
 
 

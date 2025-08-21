@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.3
+ * @version 3.4
  *
  */
 
@@ -17,6 +17,7 @@ use HugaShop\Services\Secure;
 use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
 use HugaShop\Models\Order\Order;
+use HugaShop\Services\Extension;
 use HugaShop\Models\User\UserPermission;
 use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Content\ContentComment;
@@ -50,12 +51,13 @@ class BaseAdminController extends BaseController
         }
 
         Design::assign([
-            'config' =>                 Config::getAll(), # Configuration
-            'settings' =>               Settings::getAllParams(),
-            'user' =>                   User::authUser(),
-            'currency' =>               FinanceCurrency::getMainCurrency(),
-            'orders_info_count' =>      $orders_info_count,
-            'new_comments_counter' =>   ContentComment::getCommentsCount(filter: ['approved' => 0])
+            'config'                => Config::getAll(), # Configuration
+            'settings'              => Settings::getAllParams(),
+            'user'                  => User::authUser(),
+            'currency'              => FinanceCurrency::getMainCurrency(),
+            'orders_info_count'     => $orders_info_count,
+            'new_comments_counter'  => ContentComment::getCommentsCount(filter: ['approved' => 0]),
+            'extensions_menu'       => Extension::getMenuExtensions()
         ]);
     }
 

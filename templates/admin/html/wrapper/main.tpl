@@ -243,12 +243,25 @@
 
 							{if 'extension'|user_access}
 								<li>
-									<a href="{'ExtensionListAdmin'|link}">
+									<span>
 										<div class="menu_icon">
 											<img loading="lazy" src="{'images/menu/wizards.png'|asset}">
 										</div>
 										<b>Модули</b>
-									</a>
+									</span>
+
+									<ul>
+										<li class="mini {if $route == 'ExtensionListAdmin'}active{/if}">
+											<a href="{'ExtensionListAdmin'|link}">Список модулей</a>
+										</li>
+										{foreach $extensions_menu as $ext_module}
+											<li
+												class="mini {if isset($extension) and $route == 'ExtensionAdmin' and $extension->module == $ext_module->module}active{/if}">
+												<a
+													href="{'ExtensionAdmin'|link:[name => $ext_module->module]}">{$ext_module->name}</a>
+											</li>
+										{/foreach}
+									</ul>
 								</li>
 							{/if}
 

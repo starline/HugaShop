@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.6
+ * @version 1.7
  *
  */
 
@@ -13,7 +13,6 @@ namespace HugaShop\Extensions;
 use HugaShop\Models\Settings;
 use HugaShop\Services\Config;
 use HugaShop\Services\Helper;
-use HugaShop\Services\Extension;
 
 trait BaseExtensionTrait
 {
@@ -97,21 +96,10 @@ trait BaseExtensionTrait
     {
         $extension = self::getConfig();
         $extension->settings = self::getSettings();
-        $extension->hasIndex = self::hasIndex();
         return $extension;
     }
 
 
-    /**
-     * Has index function
-     */
-    public static function hasIndex()
-    {
-        $ext_namespace = Extension::getNameSpace(self::getName());
-        return $ext_namespace ? (method_exists($ext_namespace, 'index') ? true : false) : false;
-    }
-
-    
     /**
      * Fetch extension template
      */

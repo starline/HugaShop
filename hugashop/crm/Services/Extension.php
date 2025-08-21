@@ -51,6 +51,25 @@ class Extension
     }
 
 
+    /**
+     * Get extensions list for Admin menu
+     */
+    public static function getMenuExtensions()
+    {
+        $menu_extensions = [];
+        foreach (self::getExtensionsList() as $ext) {
+            if (empty($Ext = self::getNameSpace($ext->module))) {
+                continue;
+            }
+            $settings = $Ext::getSettings();
+            if (!empty($settings->show_menu)) {
+                $menu_extensions[] = $ext;
+            }
+        }
+        return $menu_extensions;
+    }
+
+
     public static function getNameSpace(string $name)
     {
         $name_space = "HugaShop\\Extensions\\{$name}\\{$name}";
