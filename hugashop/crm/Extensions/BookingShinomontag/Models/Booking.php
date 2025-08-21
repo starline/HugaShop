@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
  */
 
 namespace HugaShop\Extensions\BookingShinomontag\Models;
@@ -13,8 +13,8 @@ use HugaShop\Extensions\BaseExtensionModel;
 
 final class Booking extends BaseExtensionModel
 {
-    public $timestamps = true;
 
+    public $timestamps = true;
     protected static $table_fields = [
         'id'      => ['type' => 'int',     'extra' => 'AUTO_INCREMENT'],
         'date'    => ['type' => 'date',    'req' => true],
