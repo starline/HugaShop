@@ -18,7 +18,8 @@
 
             <div class="mb-3">
                 <label class="form-label" for="sbo_email">Email</label>
-                <input class="form-control {if $error=='email_exists'}is-invalid{/if}" type="email" name="email" id="sbo_email" value="{$email}" required>
+                <input class="form-control {if $error=='email_exists'}is-invalid{/if}" type="email" name="email"
+                    id="sbo_email" value="{$email}" required>
                 <div class="invalid-feedback">Введите email</div>
             </div>
 

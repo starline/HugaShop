@@ -8,4 +8,4 @@ settings_params:
     }
   - { variable: coupon_code, name: "Код купона", placeholder: "SALE2024" }
   - { variable: timer, name: "Таймер показа (сек.)", placeholder: "30" }
-version: 1.0
+version: 1.1
