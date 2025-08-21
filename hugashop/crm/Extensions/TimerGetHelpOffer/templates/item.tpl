@@ -20,13 +20,25 @@
                 </li>
                 <li>
                     <div class="col-form-label">Email:</div>
-                    <div class="col-form-label">{$request->email}</div>
+                    <div class="col-form-label">
+                        <div class="badge text-bg-round copy_field" value="{$request->email}">
+                            {$request->email}
+                            <div class="copy_hover" data-bs-toggle="tooltip" data-bs-original-title="Скопировать">
+                                <i class="material-icons">content_copy</i>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="col-form-label">Страница:</div>
+                    <div class="col-form-label">
+                        <a href="{$request->page}">{$request->page}</a>
+                    </div>
                 </li>
                 <li>
                     <div class="col-form-label">Дата:</div>
                     <div class="col-form-label">{$request->created_at|date} {$request->created_at|time}</div>
                 </li>
-
                 <li>
                     <div class="col-form-label"></div>
                     <div class="col-form-label">
