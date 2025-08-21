@@ -256,7 +256,7 @@
 										</li>
 										{foreach $extensions_menu as $ext_module}
 											<li
-												class="mini {if isset($extension) and $route == 'ExtensionAdmin' and $extension->module == $ext_module->module}active{/if}">
+												class="mini {if isset($extension) and $extension->module == $ext_module->module}active{/if}">
 												<a
 													href="{'ExtensionAdmin'|link:[name => $ext_module->module]}">{$ext_module->name}</a>
 											</li>
