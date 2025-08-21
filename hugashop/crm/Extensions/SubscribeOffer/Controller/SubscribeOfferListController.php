@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
  */
 
 namespace HugaShop\Extensions\SubscribeOffer\Controller;
@@ -42,6 +42,7 @@ final class SubscribeOfferListController extends BaseAdminController
         $requests_count = SubscribeOffer::getCount($filter);
 
         Design::assign('requests', $requests);
+        Design::assign('requests_count', $requests_count);
         Design::assign('pagination', PaginationService::getPagination($requests_count, $filter));
         Design::assign('extension', $this->getExtension());
 

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.2
  */
 
 namespace HugaShop\Extensions\HelpOffer\Controller;
@@ -42,6 +42,7 @@ final class HelpOfferListController extends BaseAdminController
         $requests_count = HelpOffer::getCount($filter);
 
         Design::assign('requests', $requests);
+        Design::assign('requests_count', $requests_count);
         Design::assign('pagination', PaginationService::getPagination($requests_count, $filter));
         Design::assign('extension', $this->getExtension());
 

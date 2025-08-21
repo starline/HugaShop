@@ -16,6 +16,7 @@
             {include file='parts/pagination.tpl'}
             <form method="post" class="list_form">
                 {getCSRFInput}
+
                 <div class="list">
                     {foreach $requests as $r}
                         <div class="list_row">

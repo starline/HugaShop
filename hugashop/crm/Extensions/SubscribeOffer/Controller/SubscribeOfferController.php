@@ -33,7 +33,8 @@ final class SubscribeOfferController extends BaseFrontController
         if ($email && $id) {
             if (!User::checkEmailExists($email) && !SubscribeOffer::getOne(['email' => $email])) {
                 SubscribeOffer::updateOne($id, ['email' => $email]);
-                Design::assign('coupon', $this->getExtension()->coupon_code);
+                Design::assign('coupon', $this->getExtension()->settings->coupon_code);
+
                 return $this->fetchExtResponse('form.tpl', 'request_sent');
             } else {
                 $error = 'email_exists';
