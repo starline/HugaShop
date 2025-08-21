@@ -4,7 +4,7 @@
     let offer_link = "{'ExtTimerGetHelpOfferForm'|link}";
     let show_timer = {$TimerGetHelpOffer->timer|default:0} * 1000;
     let show_on_leave = {$TimerGetHelpOffer->show_on_leave|default:0};
-    let storage_key = 'TimerGetHelpOfferDate';
+    let storage_key = 'get-help-offer';
     let offer_shown = false;
 
     function openOffer() {
