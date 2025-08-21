@@ -34,4 +34,7 @@
     <div id="subscribe_offer_sent">
         <div class="alert alert-success">Спасибо, ваш купон: <strong>{$coupon}</strong></div>
     </div>
+    <script>
+        localStorage.setItem('subscribe-offer-coupon-code', '{$coupon}');
+    </script>
 {/block}

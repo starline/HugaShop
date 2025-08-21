@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
  */
 
 namespace HugaShop\Extensions\SubscribeOffer\Controller;
@@ -32,8 +32,10 @@ final class SubscribeOfferController extends BaseFrontController
 
         if ($email && $id) {
             if (!User::checkEmailExists($email) && !SubscribeOffer::getOne(['email' => $email])) {
-                SubscribeOffer::updateOne($id, ['email' => $email]);
-                Design::assign('coupon', $this->getExtension()->settings->coupon_code);
+                $coupon = $this->getExtension()->settings->coupon_code;
+                SubscribeOffer::updateOne($id, ['email' => $email, 'coupon_code' => $coupon]);
+                Request::setSession('coupon_code', $coupon);
+                Design::assign('coupon', $coupon);
 
                 return $this->fetchExtResponse('form.tpl', 'request_sent');
             } else {
