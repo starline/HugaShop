@@ -123,7 +123,7 @@ export function ajax_icon(icon, entity, var_name, csrf) {
 
 	let state = line.hasClass(var_name + '_off') ? 1 : 0;
 	csrf = csrf ?? window.csrf;
-	
+
 	$.ajax({
 		type: 'POST',
 		url: '/admin/ajax/update_entity',
@@ -189,13 +189,17 @@ export function indexListRows(container_selector, item_name) {
 }
 
 
-// Tooltips
+// Tooltips and Popover
 export function assignTooltip(selector) {
 	const container = selector ? document.querySelector(selector) : document;
 	if (!container) return;
 
 	const tooltipTriggerList = container.querySelectorAll('[data-bs-toggle="tooltip"]');
 	[...tooltipTriggerList].forEach(el => new bootstrap.Tooltip(el));
+
+
+	const popoverTriggerList = container.querySelectorAll('[data-bs-toggle="popover"]');
+	[...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
 }
 
 

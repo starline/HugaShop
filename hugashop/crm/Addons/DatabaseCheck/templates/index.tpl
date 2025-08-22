@@ -46,7 +46,8 @@
                 const rows = $('tbody tr');
                 const models = rows.map((_, r) => $(r).data('model')).get();
                 const button = $('#check_tables');
-                const infor = '<i class="delete material-icons" title="информация">info_outline</i>';
+                const info =
+                    '<i class="delete material-icons" title="информация" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="And heres some amazing content.">info_outline</i>';
 
                 let index = 0;
 
