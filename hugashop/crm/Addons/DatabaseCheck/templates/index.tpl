@@ -38,48 +38,53 @@
         </table>
     </div>
 
-    <script>
+    <script type="module">
         const check_url = "{'AddonDatabaseCheckCheck'|link}";
+
         {literal}
-        $(function () {
-            const rows = $('tbody tr');
-            const models = rows.map((_, r) => $(r).data('model')).get();
-            let index = 0;
-            const button = $('#check_tables');
-            const infor = '<i class="delete material-icons" title="информация">info_outline</i>';
+            $(function() {
+                const rows = $('tbody tr');
+                const models = rows.map((_, r) => $(r).data('model')).get();
+                const button = $('#check_tables');
+                const infor = '<i class="delete material-icons" title="информация">info_outline</i>';
 
-            function checkNext() {
-                if (index >= models.length) {
-                    button.prop('disabled', false).removeClass('disabled');
-                    return;
-                }
+                let index = 0;
 
-                const model = models[index];
-
-                $.post(check_url, {model: model, csrf: window.csrf}, function (data) {
-                    const row = $('tr[data-model="' + CSS.escape(model) + '"]');
-                    if (row.length) {
-                        row.find('.status').text(data.status);
-                        row.find('.rows').text(data.rows);
-                        row.find('.size').text(data.size);
+                function checkNext() {
+                    if (index >= models.length) {
+                        button.prop('disabled', false).removeClass('disabled');
+                        return;
                     }
 
-                    index++;
+                    const model = models[index];
+
+                    $.post(check_url, {
+                        model: model,
+                        csrf: window.csrf
+                    }, function(data) {
+                        const row = $('tr[data-model="' + CSS.escape(model) + '"]');
+                        if (row.length) {
+                            row.find('.status').text(data.status);
+                            row.find('.rows').text(data.rows);
+                            row.find('.size').text(data.size);
+                        }
+
+                        index++;
+                        checkNext();
+                    }, 'json');
+                }
+
+                button.on('click', function() {
+                    button.prop('disabled', true).addClass('disabled');
+
+                    index = 0;
+                    $('tbody tr').each(function() {
+                        $(this).find('.status, .rows, .size').text('');
+                    });
+
                     checkNext();
-                }, 'json');
-            }
-
-            button.on('click', function () {
-                button.prop('disabled', true).addClass('disabled');
-
-                index = 0;
-                $('tbody tr').each(function () {
-                    $(this).find('.status, .rows, .size').text('');
                 });
-
-                checkNext();
             });
-        });
         {/literal}
     </script>
 {/block}
