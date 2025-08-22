@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.8
+ * @version 3.9
  *
  * Тут работает с правами пользователя
  *
@@ -77,7 +77,7 @@ class UserPermission extends BaseModel
         'backup'                => 'Бекап',
         'design'                => 'Дизайн',
         'settings'              => 'Настройки сайта',
-        'extension'             => 'Модули расширения'
+        'addon'             => 'Модули расширения'
     ];
 
 

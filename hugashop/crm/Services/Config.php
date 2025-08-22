@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.1
+ * @version 3.2
  *
  * Класс-обертка для конфигурационного файла с настройками магазина
  * В отличие от класса Settings, Config оперирует низкоуровневыми настройками, например найстройками базы данных.
@@ -70,7 +70,7 @@ class Config
         self::$vars['payment_dir'] =                self::$crm_dir . 'Modules/Payment/';              # Directory for payment modules
         self::$vars['delivery_dir'] =               self::$crm_dir . 'Modules/Delivery/';             # Directory for delivery modules
         self::$vars['notifier_dir'] =               self::$crm_dir . 'Modules/Notifier/';             # Directory for notifier modules
-        self::$vars['extension_dir'] =              self::$crm_dir . 'Extensions/';                   # Directory for Extensions
+        self::$vars['addon_dir'] =              self::$crm_dir . 'Addons/';                   # Directory for Addons
 
         self::$vars['import_files_dir'] =           self::$root_dir . 'public/files/imports/';        # Directory for import files
         self::$vars['export_files_dir'] =           self::$root_dir . 'public/files/exports/';        # Directory for export files

@@ -124,7 +124,7 @@
 
 			</div>
 
-			{extension name='InfoBlock' id=2 enabled=1}
+			{addon name='InfoBlock' id=2 enabled=1}
 		</div>
 	</div>
 

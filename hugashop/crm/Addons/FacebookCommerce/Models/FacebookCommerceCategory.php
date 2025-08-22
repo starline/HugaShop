@@ -1,0 +1,54 @@
+<?php
+
+/**
+ * HugaShop - Sell anything
+ *
+ * @author Andri Huga
+ * @version 1.8
+ *
+ */
+
+namespace HugaShop\Addons\FacebookCommerce\Models;
+
+use HugaShop\Addons\BaseAddonModel;
+
+class FacebookCommerceCategory extends BaseAddonModel
+{
+    protected static $table_fields = [
+        'pricefeed_id' =>       ['type' => 'int'],
+        'category_id' =>        ['type' => 'int']
+    ];
+
+
+    /**
+     * Выбиарем категории в которых есть характеристика
+     * @param int $pricefeed_id
+     */
+    public static function getCategoriesIds(int $pricefeed_id)
+    {
+        return self::getList(['pricefeed_id' => $pricefeed_id], select: 'category_id');
+    }
+
+
+    /**
+     * Устанавливаем категории для прайса
+     * @param int $pricefeed_id
+     * @param array $category_ids
+     */
+    public static function setCategories(int $pricefeed_id, array $category_ids = [])
+    {
+
+        // Delete all pricefeeds
+        self::where('pricefeed_id', $pricefeed_id)->delete();
+
+        if (!empty($category_ids)) {
+            foreach ($category_ids as $cat_id) {
+                if (!empty($cat_id)) {
+                    self::insert(['pricefeed_id' => $pricefeed_id, 'category_id' => $cat_id]);
+                }
+            }
+        }
+
+        return true;
+    }
+}

@@ -2,7 +2,7 @@
     <div class="container">
 
         <!-- Browsed Product -->
-        {extension name='ProductBrowsed'}
+        {addon name='ProductBrowsed'}
 
         {* Выбираем в переменную $last_posts последние записи *}
         {if $last_posts = 'ContentPost'|api:getPosts:[[random => 1, visible => 1, limit => 5]]}

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.6
+ * @version 3.7
  *
  */
 
@@ -62,7 +62,7 @@ class BaseFrontController extends BaseController
      */
     public function getModelMethod(string $model_name, $method, array $params = [])
     {
-        // If we have API Class Extensions
+        // If we have API Class Addons
         if (class_exists("HugaShop\\Models\\{$model_name}")) {
             $Model = "HugaShop\\Models\\{$model_name}";
         } else {

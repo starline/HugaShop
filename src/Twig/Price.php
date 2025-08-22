@@ -4,11 +4,11 @@ namespace App\Twig;
 
 use Twig\TwigFilter;
 use HugaShop\Models\Finance\FinanceCurrency;
-use Twig\Extension\AbstractExtension;
+use Twig\Addon\AbstractAddon;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
 #[Autoconfigure(lazy: true)]
-class Price extends AbstractExtension
+class Price extends AbstractAddon
 {
 
 

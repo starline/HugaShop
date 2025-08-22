@@ -162,7 +162,7 @@
 				{/if}
 
 				<div class="delivery_info mt-4">
-					{extension  name='InfoBlock' id=1}
+					{addon  name='InfoBlock' id=1}
 				</div>
 
 				{if $product->features}

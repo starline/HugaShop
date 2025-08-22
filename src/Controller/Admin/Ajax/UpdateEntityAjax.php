@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.8
+ * @version 1.9
  *
  */
 
@@ -14,7 +14,7 @@ use HugaShop\Services\Secure;
 use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
 use HugaShop\Models\Order\Order;
-use HugaShop\Services\Extension;
+use HugaShop\Services\Addon;
 use HugaShop\Models\Product\Product;
 use HugaShop\Models\Order\OrderLabel;
 use HugaShop\Models\User\UserNotifier;
@@ -141,11 +141,11 @@ class UpdateEntityAjax extends BaseAdminController
                 }
             default:
 
-                // Check extension
-                $ext_list = Extension::getExtensionsList();
+                // Check addon
+                $ext_list = Addon::getAddonsList();
                 foreach ($ext_list as $ext) {
                     if ($ext->module == $entity) {
-                        if ($Ext = Extension::getNameSpace($ext->module)) {
+                        if ($Ext = Addon::getNameSpace($ext->module)) {
                             $Ext::updateOne($id, $values);
                         }
                         break;

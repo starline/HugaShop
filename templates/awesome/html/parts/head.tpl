@@ -35,6 +35,6 @@
 	{block name=head_css}{/block}
 	{block name=head_script}{/block}
 
-	{extension place='front_head'}
+	{addon place='front_head'}
 
 </head>

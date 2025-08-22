@@ -221,7 +221,7 @@
 				<!-- Cart info -->
 				{include file='order/parts/user_agent_part.tpl'}
 
-				{extension place='admin_order_side'}
+				{addon place='admin_order_side'}
 			</div>
 		</div>
 

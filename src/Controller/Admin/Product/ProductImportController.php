@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  * Работаем над страницей импорта товаров
  *
@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class ProductImportController extends BaseAdminController
 {
     public $import_file = '_import.csv';
-    public $allowed_extensions = ['csv', 'txt'];
+    public $allowed_addons = ['csv', 'txt'];
     private $locale = 'ru_RU.UTF-8';
     private static $price_types = [
         'gdocs' => 'Цены на комплектующие'

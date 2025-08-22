@@ -241,7 +241,7 @@
 							{/if}
 
 
-							{if 'extension'|user_access}
+							{if 'addon'|user_access}
 								<li>
 									<span>
 										<div class="menu_icon">
@@ -251,14 +251,14 @@
 									</span>
 
 									<ul>
-										<li class="mini {if $route == 'ExtensionListAdmin'}active{/if}">
-											<a href="{'ExtensionListAdmin'|link}">Список модулей</a>
+										<li class="mini {if $route == 'AddonListAdmin'}active{/if}">
+											<a href="{'AddonListAdmin'|link}">Список модулей</a>
 										</li>
-										{foreach $extensions_menu as $ext_module}
+										{foreach $addons_menu as $ext_module}
 											<li
-												class="mini {if isset($extension) and $extension->module == $ext_module->module}active{/if}">
+												class="mini {if isset($addon) and $addon->module == $ext_module->module}active{/if}">
 												<a
-													href="{'ExtensionAdmin'|link:[name => $ext_module->module]}">{$ext_module->name}</a>
+													href="{'AddonAdmin'|link:[name => $ext_module->module]}">{$ext_module->name}</a>
 											</li>
 										{/foreach}
 									</ul>

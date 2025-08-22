@@ -47,7 +47,7 @@
 				</div>
 			</div>
 
-			{extension name='GoogleAuth'}
+			{addon name='GoogleAuth'}
 
 		</form>
 	</div>
