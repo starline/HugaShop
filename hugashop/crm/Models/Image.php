@@ -334,7 +334,7 @@ class Image extends BaseModel
 
         $dirname    = $pathinfo['dirname'] ?? '';
         $basename   = $pathinfo['filename'] ?? '';
-        $ext        = $pathinfo['addon'] ?? '';
+        $ext        = $pathinfo['extension'] ?? '';
 
         $prefix     = ($dirname !== '.' && $dirname !== '') ? $dirname . '/' : '';
         $flags      = ($cut ? 'c' : '') . ($watermark ? 'w' : '');

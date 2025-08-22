@@ -18,7 +18,7 @@
         "symfony/cache": "7.3.*",
         "symfony/console": "7.3.*",
         "symfony/dotenv": "7.3.*",
-        "symfony/flex": "^2.8.1",
+        "symfony/flex": "^2.8.2",
         "symfony/framework-bundle": "7.3.*",
         "symfony/mailer": "7.3.*",
         "symfony/messenger": "7.3.*",
@@ -33,7 +33,7 @@
         "symfony/yaml": "7.3.*",
         "twig/extra-bundle": "^2.12|^3.21",
         "twig/twig": "^2.12|^3.21.1",
-        "sensiolabs/minify-bundle": "^1.1",
+        "sensiolabs/minify-bundle": "^1.2",
         "hugashop/crm": ">=2|dev-main|dev-dev",
         "hugashop/telegram": ">=2|dev-main|dev-dev",
         "hugashop/turbosms": ">=2|dev-main|dev-dev"
