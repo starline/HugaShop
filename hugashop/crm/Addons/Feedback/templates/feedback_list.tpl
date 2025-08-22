@@ -42,7 +42,8 @@
 								<div>{$feedback->name} <span class="badge text-bg-round">{$feedback->email}</span><span
 										class="badge text-bg-round ms-2">ip: {$feedback->ip}</span>
 								</div>
-								<div class="badge text-bg-round my-2">{$feedback->created_at|date:m} {$feedback->created_at|time}</div>
+								<div class="badge text-bg-round my-2">{$feedback->created_at|date:m} {$feedback->created_at|time}
+								</div>
 								<div class="notice">{$feedback->message|strip_tags|nl2br|raw}</div>
 							</div>
 
@@ -61,7 +62,7 @@
 							<option value="delete">Удалить</option>
 						</select>
 					</span>
-					<button class="btn btn-primary apply" id="apply_action" type="submit">Применить</button>
+					{include file="parts/button.tpl" label="Применить" extra_attrs='id=apply_action'}
 				</div>
 			</form>
 

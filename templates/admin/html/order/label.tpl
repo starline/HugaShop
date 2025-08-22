@@ -20,13 +20,13 @@
 				<div class="over_name">
 					<div class="checkbox_line">
 						<div class="form-check form-switch">
-							<input type="hidden" name="enabled" value="0">
+							<input type="hidden" name="enabled" value="0" />
 							<input class="form-check-input" name="enabled" value="1" type="checkbox" role="switch"
 								id="active_checkbox" {if $label->enabled}checked{/if} />
 							<label class="form-check-label" for="active_checkbox">Активен</label>
 						</div>
 						<div class="form-check form-switch">
-							<input type="hidden" name="in_filter" value="0">
+							<input type="hidden" name="in_filter" value="0" />
 							<input class="form-check-input" name="in_filter" value="1" type="checkbox" role="switch"
 								id="in_filter_checkbox" {if $label->in_filter}checked{/if} />
 							<label class="form-check-label" for="in_filter_checkbox">Использовать в фильтре заказов</label>
@@ -40,12 +40,11 @@
 							value="#{$label->color}" data-bs-toggle="tooltip" title="Цвет метки" />
 					</span>
 					<input class="form-control form-control-lg" name="name" type="text" value="{$label->name}" />
-
 				</div>
 			</div>
 
 			<div class="col-12 btn_row">
-				{include file="parts/button.tpl"}
+				{include file="parts/button.tpl" label="Сохранить"}
 			</div>
 		</div>
 	</form>

@@ -192,7 +192,7 @@
 									<option value="delete">Удалить выбранные поставки</option>
 								</select>
 							</span>
-							<button class="btn btn-primary apply" id="apply_action" type="submit">Применить</button>
+							{include file="parts/button.tpl" label="Применить" extra_attrs='id=apply_action'}
 						</div>
 					{/if}
 

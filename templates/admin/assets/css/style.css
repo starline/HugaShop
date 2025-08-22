@@ -2080,10 +2080,6 @@ div.comment_text {
 	margin: 0;
 }
 
-#action button.apply {
-	float: right;
-}
-
 #action span#select {
 	display: inline-block;
 	padding-left: 20px;

@@ -57,7 +57,7 @@ class BaseAdminController extends BaseController
             'currency'              => FinanceCurrency::getMainCurrency(),
             'orders_info_count'     => $orders_info_count,
             'new_comments_counter'  => ContentComment::getCommentsCount(filter: ['approved' => 0]),
-            'addons_menu'       => Addon::getMenuAddons()
+            'addons_menu'           => Addon::getMenuAddons()
         ]);
     }
 

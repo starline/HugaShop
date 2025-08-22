@@ -96,7 +96,7 @@ class Design
 
         // Add Smarty Plugins
         self::setFunctionPlugin('url',               self::class,               'urlFunctionPlugin');
-        self::setFunctionPlugin('addon',         self::class,               'addonFunctionPlugin');
+        self::setFunctionPlugin('addon',             self::class,               'addonFunctionPlugin');
         self::setFunctionPlugin('setCSRF',           Secure::class,             'setCSRF');
         self::setFunctionPlugin('getCSRFInput',      Secure::class,             'getCSRFInput');
 
