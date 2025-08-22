@@ -1,4 +1,4 @@
-{* @version 0.1 *}
+{* @version 0.2 *}
 {extends 'wrapper/main.tpl'}
 {include 'addon/parts/menu_part.tpl'}
 
@@ -46,8 +46,6 @@
                 const rows = $('tbody tr');
                 const models = rows.map((_, r) => $(r).data('model')).get();
                 const button = $('#check_tables');
-                const info =
-                    '<i class="delete material-icons" title="информация" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="And heres some amazing content.">info_outline</i>';
 
                 let index = 0;
 
@@ -65,9 +63,21 @@
                     }, function(data) {
                         const row = $('tr[data-model="' + CSS.escape(model) + '"]');
                         if (row.length) {
-                            row.find('.status').text(data.status);
                             row.find('.rows').text(data.rows);
                             row.find('.size').text(data.size);
+                            if (data.status === 'ok') {
+                                row.find('.status').text('ok');
+                            } else {
+                                const icon = $('<i/>', {
+                                    class: 'material-icons text-danger',
+                                    text: 'info_outline',
+                                    'data-bs-toggle': 'popover',
+                                    'data-bs-trigger': 'hover focus',
+                                    'data-bs-content': data.message
+                                });
+                                row.find('.status').empty().append(icon);
+                                bootstrap.Popover.getOrCreateInstance(icon[0]);
+                            }
                         }
 
                         index++;

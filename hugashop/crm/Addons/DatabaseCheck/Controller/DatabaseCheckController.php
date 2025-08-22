@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.2
+ * @version 1.3
  *
  */
 
@@ -38,10 +38,11 @@ final class DatabaseCheckController extends BaseAdminController
     {
         $this->checkAdminAccess('addon', true);
 
-        $class = Request::post('model', 'string');
-        $status = 'ok';
-        $rows = 0;
-        $size = 0;
+        $class   = Request::post('model', 'string');
+        $status  = 'ok';
+        $message = '';
+        $rows    = 0;
+        $size    = 0;
 
         try {
 
@@ -52,14 +53,17 @@ final class DatabaseCheckController extends BaseAdminController
             $schema = DB::schema();
 
             if (!$schema->hasTable($table)) {
-                $status = 'error';
+                $status  = 'error';
+                $message = 'Таблица не найдена';
             } else {
 
                 // check columns exist
                 $columns = $schema->getColumnListing($table);
-                $fields = array_keys($class::getFields());
-                if (!empty(array_diff($fields, $columns))) {
-                    $status = 'error';
+                $fields  = array_keys($class::getFields());
+                $missing = array_diff($fields, $columns);
+                if (!empty($missing)) {
+                    $status  = 'error';
+                    $message = 'Отсутствуют поля: ' . implode(', ', $missing);
                 }
 
                 $rows = DB::table($table)->count();
@@ -79,12 +83,14 @@ final class DatabaseCheckController extends BaseAdminController
                 $size = (int)($info->size ?? 0);
             }
         } catch (\Throwable $e) {
-            $status = 'error';
+            $status  = 'error';
+            $message = $e->getMessage();
         }
 
         return $this->json([
             'model' => class_basename($class),
             'status' => $status,
+            'message' => $message,
             'rows'   => $rows,
             'size'   => Helper::convertBytes($size),
         ]);
