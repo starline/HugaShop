@@ -9,7 +9,7 @@
     </div>
 
     <div class="mb-3">
-        <button class="btn btn-primary" id="checkTables">Проверить таблицы</button>
+        {include 'parts/button.tpl' label="Проверить таблицы" id="check_tables"}
     </div>
 
     <div class="table-responsive">
@@ -40,7 +40,7 @@
     <script>
         const rows = Array.from(document.querySelectorAll('tbody tr'));
         const models = rows.map(r => r.dataset.model);
-        const checkUrl = "{'AddonDatabaseCheckCheck'|link}";
+        const check_url = "{'AddonDatabaseCheckCheck'|link}";
         let index = 0;
 
         {literal}
@@ -54,7 +54,7 @@
                 form.append('model', model);
                 form.append('csrf', window.csrf);
 
-                const res = await fetch(checkUrl, {
+                const res = await fetch(check_url, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                     body: form.toString()
@@ -73,7 +73,7 @@
                 checkNext();
             }
 
-            document.getElementById('checkTables').addEventListener('click', () => {
+            document.getElementById('check_tables').addEventListener('click', () => {
                 index = 0;
                 document.querySelectorAll('tbody tr').forEach(r => {
                     r.querySelector('.status').textContent = '';

@@ -60,7 +60,7 @@ final class SeoLinkerListController extends BaseAdminController
         Design::assign('pagination',    PaginationService::getPagination($pages_count, $filter));
         Design::assign('pages',         $pages);
         Design::assign('pages_total',   $pages_count);
-        Design::assign('addon',     $this->getAddon());
+        Design::assign('addon',         $this->getAddon());
 
         return $this->fetchAddonResponse('report.tpl');
     }

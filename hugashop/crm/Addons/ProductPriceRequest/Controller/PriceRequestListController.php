@@ -41,9 +41,9 @@ final class PriceRequestListController extends BaseAdminController
         $requests       = PriceRequest::getList($filter, order: ['created_at', 'desc'], join: ['product']);
         $requests_count = PriceRequest::getCount($filter);
 
-        Design::assign('requests', $requests);
-        Design::assign('pagination', PaginationService::getPagination($requests_count, $filter));
-        Design::assign('addon', $this->getAddon());
+        Design::assign('requests',      $requests);
+        Design::assign('pagination',    PaginationService::getPagination($requests_count, $filter));
+        Design::assign('addon',         $this->getAddon());
 
         return $this->fetchAddonResponse('list.tpl');
     }

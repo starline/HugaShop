@@ -61,7 +61,7 @@ final class ProductStockManagerController extends BaseAdminController
         Design::assign('products',          $products);
         Design::assign('products_count',    $products_count);
         Design::assign('pagination',        PaginationService::getPagination($products_count, $filter));
-        Design::assign('addon',         $this->getAddon());
+        Design::assign('addon',             $this->getAddon());
 
         return $this->fetchAddonResponse('product_list.tpl');
     }

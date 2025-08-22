@@ -294,6 +294,8 @@ final class TestScriptController extends BaseAdminController
                          * Добавить id в s_product_related
                          * 
                          * Изменить ссылки в GoogleMerchant FacebookMerchant extension на addon
+                         * Изменнить таблицы дополнений ext_ на addon_
+                         * 
                          * 
                          */
                         if (0) {

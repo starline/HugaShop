@@ -46,7 +46,7 @@ final class SeoLinkerController extends BaseAdminController
         Design::assign('page',      $page);
         Design::assign('links',     $links);
         Design::assign('links_in',  $links_in);
-        Design::assign('addon', $this->getAddon());
+        Design::assign('addon',     $this->getAddon());
 
         return $this->fetchAddonResponse('page.tpl');
     }

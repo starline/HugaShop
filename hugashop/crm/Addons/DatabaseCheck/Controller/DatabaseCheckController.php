@@ -101,7 +101,7 @@ final class DatabaseCheckController extends BaseAdminController
         $models = [];
 
         foreach ($iterator as $file) {
-            if (!$file->isFile() || $file->getAddon() !== 'php') {
+            if (!$file->isFile() || $file->getExtension() !== 'php') {
                 continue;
             }
 

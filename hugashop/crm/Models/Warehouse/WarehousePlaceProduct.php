@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.7
+ * @version 1.8
  *
  */
 
@@ -18,13 +18,15 @@ class WarehousePlaceProduct extends BaseModel
 {
 
     protected $table = 'wh_place_product';
+    public $timestamps = true;
     protected static $table_fields = [
-        'id'         => ['type' => 'int',     'extra' => 'AUTO_INCREMENT'],
-        'product_id' => ['type' => 'int'],
-        'place_id'   => ['type' => 'int'],
-        'cost_price' => ['type' => 'decimal', 'def'  => 0.00],
-        'price'      => ['type' => 'decimal', 'def'  => 0.00],
-        'amount'     => ['type' => 'int',     'def'  => 0]
+        'id'            => ['type' => 'int',     'extra' => 'AUTO_INCREMENT'],
+        'product_id'    => ['type' => 'int'],
+        'external_sku'  => ['type' => 'varchar'],
+        'place_id'      => ['type' => 'int'],
+        'cost_price'    => ['type' => 'decimal', 'def'  => 0.00],
+        'price'         => ['type' => 'decimal', 'def'  => 0.00],
+        'amount'        => ['type' => 'int',     'def'  => 0]
     ];
 
     public function place()
