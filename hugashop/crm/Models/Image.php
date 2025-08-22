@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 4.3
+ * @version 4.4
  * 
  * Intervention Image
  * @link https://image.intervention.io/v3/getting-started/installation
@@ -334,7 +334,7 @@ class Image extends BaseModel
 
         $dirname    = $pathinfo['dirname'] ?? '';
         $basename   = $pathinfo['filename'] ?? '';
-        $ext        = $pathinfo['extension'] ?? '';
+        $ext        = $pathinfo['addon'] ?? '';
 
         $prefix     = ($dirname !== '.' && $dirname !== '') ? $dirname . '/' : '';
         $flags      = ($cut ? 'c' : '') . ($watermark ? 'w' : '');

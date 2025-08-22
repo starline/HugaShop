@@ -4,11 +4,11 @@ namespace App\Twig;
 
 use Twig\TwigFilter;
 use HugaShop\Models\User\UserPermission;
-use Twig\Extension\AbstractExtension;
+use Twig\Addon\AbstractAddon;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
 #[Autoconfigure(lazy: true)]
-class UserAccess extends AbstractExtension
+class UserAccess extends AbstractAddon
 {
 
 

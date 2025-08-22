@@ -1,7 +1,0 @@
-{
-    "name": "hugashop/extension-google-auth",
-    "type": "library",
-    "require": {
-        "google/apiclient": "^2.18"
-    }
-}

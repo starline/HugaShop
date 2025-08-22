@@ -46,7 +46,7 @@
 				<button class="btn btn-primary">{'Зарегистрироваться'|trans}</button>
 			</div>
 
-			{extension name='GoogleAuth'}
+			{addon name='GoogleAuth'}
 
 		</form>
 	</div>

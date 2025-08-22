@@ -36,7 +36,7 @@
 
 	{block name=body_script}{/block}
 
-	{extension place='front_body'}
+	{addon place='front_body'}
 
 </body>
 

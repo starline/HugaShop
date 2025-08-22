@@ -1,0 +1,132 @@
+<?php
+
+/**
+ * HugaShop - Sell anything
+ *
+ * @author Andri Huga
+ * @version 1.8
+ * 
+ * SeoLinker addon
+ * @link https://github.com/spatie/crawler
+ *
+ */
+
+namespace HugaShop\Addons\SeoLinker\Services;
+
+use Spatie\Crawler\Crawler;
+use HugaShop\Addons\SeoLinker\Models\SeoLinker;
+use Spatie\Crawler\CrawlProfiles\CrawlInternalUrls;
+use HugaShop\Addons\SeoLinker\Models\SeoLinkerLink;
+use HugaShop\Addons\SeoLinker\Services\CrawlerObserver;
+
+
+final class ScanBatch
+{
+
+    private static $delay;
+    private static $deth;
+    private static $limit;
+
+    /**
+     * Scan Batch
+     */
+    public static function scanBatch(string $base_url, int $limit = 1, int $delay = 0, int $deth = 0): array
+    {
+
+        // Params
+        self::$delay    = $delay ?: 0;
+        self::$limit    = $limit ?: 1;
+        self::$deth     = $deth ?: 0;
+
+        if (!SeoLinker::where('url', $base_url)->exists()) {
+            SeoLinker::insert([
+                'url' => $base_url,
+                'depth' => 0,
+                'scanned' => 0,
+            ]);
+        }
+
+        $pages = SeoLinker::where('scanned', 0)->limit(self::$limit)->get();
+
+        foreach ($pages as $page) {
+            [$outInternal, $outExternal, $links] = self::crawlPage($page->url);
+
+            SeoLinker::where('id', $page->id)->update([
+                'scanned' => 1,
+                'out_internal' => $outInternal,
+                'out_external' => $outExternal,
+            ]);
+
+            foreach ($links as $ln) {
+                $exists = SeoLinkerLink::getOne([
+                    'from_url'  => $ln['from_url'],
+                    'to_url'    => $ln['to_url'],
+                    'type'      => $ln['type']
+                ]);
+
+                if (!$exists) {
+                    SeoLinkerLink::createOne($ln);
+                }
+
+                if ($ln['type'] === 'image') {
+                    continue;
+                }
+
+                // Add internal links to scan line. Except nofollow
+                if ($ln['type'] === 'internal' && !$ln['nofollow']) {
+                    $target = SeoLinker::getOne(['url' => $ln['to_url']]);
+                    if (!$target) {
+                        SeoLinker::createOne([
+                            'url' => $ln['to_url'],
+                            'depth' => $page->depth + 1,
+                            'scanned' => 0,
+                            'in_internal' => 1,
+                        ]);
+                    } else {
+                        if ($target->depth > $page->depth + 1) {
+                            $target->depth = $page->depth + 1;
+                            $target->save();
+                        }
+                        SeoLinker::where('url', $ln['to_url'])->increment('in_internal');
+                    }
+                }
+            }
+        }
+
+        $scanned = SeoLinker::where('scanned', 1)->count();
+        $pending = SeoLinker::where('scanned', 0)->count();
+
+        return [$scanned, $pending];
+    }
+
+
+    /**
+     * Crawl
+     */
+    private static function crawlPage(string $url): array
+    {
+        $parts      = parse_url($url);
+        $scheme     = $parts['scheme'] ?? 'http';
+        $host       = $parts['host'] ?? '';
+
+        $observer = new CrawlerObserver($scheme, $host);
+
+        Crawler::create()
+            ->setCrawlObserver($observer)
+            //->ignoreRobots() # ignore robots.txt rules
+            //->acceptNofollowLinks()
+            ->setDelayBetweenRequests(self::$delay) // After every page crawled, the crawler will wait for 150ms
+            ->setCrawlProfile(new CrawlInternalUrls($url))
+            ->setMaximumDepth(self::$deth)
+            ->setParseableMimeTypes(['text/html'])
+            ->startCrawling($url);
+
+        $res = $observer->results[$url] ?? ['out_internal' => 0, 'out_external' => 0];
+
+        return [
+            $res['out_internal'],
+            $res['out_external'],
+            $observer->links
+        ];
+    }
+}

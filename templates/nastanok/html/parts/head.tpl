@@ -40,6 +40,6 @@
 		<script type="text/javascript" src="{$file}"></script>
 	{/foreach}
 
-	{extension place='front_head'}
+	{addon place='front_head'}
 
 </head>

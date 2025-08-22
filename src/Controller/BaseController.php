@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.5
+ * @version 2.6
  *
  */
 
@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Translation\LocaleSwitcher;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Bridge\Twig\Extension\ImportMapRuntime;
+use Symfony\Bridge\Twig\Addon\ImportMapRuntime;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Translation\Loader\YamlFileLoader;

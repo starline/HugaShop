@@ -86,7 +86,7 @@
 	</div>
 
 	<div class="soc-info">
-		{extension  name='InfoBlock' id=1}
+		{addon  name='InfoBlock' id=1}
 	</div>
 
 	<div class="products-catalog-menu">

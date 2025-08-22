@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 4.9
+ * @version 5.0
  *
  * Smarty 5.x require PHP7.4/PHP8.1
  *
@@ -24,7 +24,7 @@ use HugaShop\Services\Config;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
-use HugaShop\Services\Extension;
+use HugaShop\Services\Addon;
 use HugaShop\Models\User\UserPermission;
 use HugaShop\Models\Finance\FinanceCurrency;
 
@@ -96,7 +96,7 @@ class Design
 
         // Add Smarty Plugins
         self::setFunctionPlugin('url',               self::class,               'urlFunctionPlugin');
-        self::setFunctionPlugin('extension',         self::class,               'extensionFunctionPlugin');
+        self::setFunctionPlugin('addon',         self::class,               'addonFunctionPlugin');
         self::setFunctionPlugin('setCSRF',           Secure::class,             'setCSRF');
         self::setFunctionPlugin('getCSRFInput',      Secure::class,             'getCSRFInput');
 
@@ -277,7 +277,7 @@ class Design
     {
 
         if (!empty($folder)) {
-            if ($type === 'extension') {
+            if ($type === 'addon') {
                 $asset_file = trim($folder, '/') . '/templates/assets/' . ltrim($asset_file, '/');
             } else {
                 $asset_file = rtrim($folder, '/') . '/' . ltrim($asset_file, '/');
@@ -338,36 +338,36 @@ class Design
 
 
     /**
-     * Inject Extension
+     * Inject Addon
      * @param array $ext_params
      */
-    public static function extensionFunctionPlugin(array $ext_params = [])
+    public static function addonFunctionPlugin(array $ext_params = [])
     {
 
-        // Get Extensions by place
+        // Get Addons by place
         if (!empty($place = $ext_params['place'])) {
 
-            // Get All available extension for this place
-            $place_extensions = Extension::getExtensionsByPlace($place);
+            // Get All available addon for this place
+            $place_addons = Addon::getAddonsByPlace($place);
 
             // Get template
             $place_ext_template = '';
-            foreach ($place_extensions as $ext_name) {
-                if (!empty($extension = Extension::getNameSpace($ext_name))) {
-                    Design::assign($extension::getName(), $extension::getSettings());
+            foreach ($place_addons as $ext_name) {
+                if (!empty($addon = Addon::getNameSpace($ext_name))) {
+                    Design::assign($addon::getName(), $addon::getSettings());
                     $get_method = 'get' . ucfirst(Helper::snakeToCamelCase($place)) . 'Template';
-                    if (method_exists($extension, $get_method)) {
-                        $place_ext_template .= $extension::$get_method();
+                    if (method_exists($addon, $get_method)) {
+                        $place_ext_template .= $addon::$get_method();
                     }
                 }
             }
             return $place_ext_template;
         }
 
-        // Get Extension by name
-        if (isset($ext_params['name']) and !empty($extension = Extension::getNameSpace($ext_params['name']))) {
-            Design::assign($extension::getName(), $extension::getSettings());
-            return $extension::getTemplate($ext_params);
+        // Get Addon by name
+        if (isset($ext_params['name']) and !empty($addon = Addon::getNameSpace($ext_params['name']))) {
+            Design::assign($addon::getName(), $addon::getSettings());
+            return $addon::getTemplate($ext_params);
         }
 
         return false;

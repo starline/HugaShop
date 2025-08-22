@@ -23,9 +23,9 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    HugaShop\Extensions\:
-        resource: "../hugashop/crm/Extensions/"
-        tags: ["extensions_tag"]
+    HugaShop\Addons\:
+        resource: "../hugashop/crm/Addons/"
+        tags: ["addons_tag"]
 
 when@dev:
     services:

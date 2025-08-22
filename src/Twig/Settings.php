@@ -4,11 +4,11 @@ namespace App\Twig;
 
 use Twig\TwigFunction;
 use HugaShop\Models\Settings as SettingsApi;
-use Twig\Extension\AbstractExtension;
+use Twig\Addon\AbstractAddon;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
 #[Autoconfigure(lazy: true)]
-class Settings extends AbstractExtension
+class Settings extends AbstractAddon
 {
 
     /**
