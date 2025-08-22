@@ -43,7 +43,7 @@
                                 <div class="row col">
                                     <div class="col-12 col-lg-8 text-break">
                                         {if $ln->from_id}
-                                            <a href="{'ExtSeoLinkerPage'|link:[id => $ln->from_id]}">
+                                            <a href="{'AddonSeoLinkerPage'|link:[id => $ln->from_id]}">
                                                 {$ln->from_url}
                                             </a>
                                         {else}

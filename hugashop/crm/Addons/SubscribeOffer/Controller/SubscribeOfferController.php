@@ -23,7 +23,7 @@ final class SubscribeOfferController extends BaseFrontController
 {
     use BaseAddonTrait;
 
-    #[Route('/SubscribeOffer/form', name: 'ExtSubscribeOfferForm', priority: 20)]
+    #[Route('/SubscribeOffer/form', name: 'AddonSubscribeOfferForm', priority: 20)]
     public function form(): Response
     {
         $id    = Request::post('id', 'int');

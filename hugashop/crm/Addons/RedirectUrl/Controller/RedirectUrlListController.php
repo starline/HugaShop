@@ -25,7 +25,7 @@ final class RedirectUrlListController extends BaseAdminController
     /**
      * Url list
      */
-    #[Route('/RedirectUrl', name: 'ExtRedirectUrlList', priority: 20)]
+    #[Route('/RedirectUrl', name: 'AddonRedirectUrlList', priority: 20)]
     public function links()
     {
         // Handle actions

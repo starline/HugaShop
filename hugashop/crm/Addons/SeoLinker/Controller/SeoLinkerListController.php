@@ -26,7 +26,7 @@ final class SeoLinkerListController extends BaseAdminController
 {
     use BaseAddonTrait;
 
-    #[Route('/SeoLinker', name: 'ExtSeoLinker', priority: 20)]
+    #[Route('/SeoLinker', name: 'AddonSeoLinker', priority: 20)]
     public function index()
     {
         $this->checkAdminAccess('addon');

@@ -21,14 +21,14 @@ final class SeoLinkerController extends BaseAdminController
 {
     use BaseAddonTrait;
 
-    #[Route('/SeoLinker/page/{id}', requirements: ['id' => '\\d+'], name: 'ExtSeoLinkerPage', priority: 20)]
+    #[Route('/SeoLinker/page/{id}', requirements: ['id' => '\\d+'], name: 'AddonSeoLinkerPage', priority: 20)]
     public function page(int $id)
     {
         $this->checkAdminAccess('addon');
 
         $page = SeoLinker::getOne($id);
         if (empty($page)) {
-            return $this->redirectToRoute('ExtSeoLinker');
+            return $this->redirectToRoute('AddonSeoLinker');
         }
 
         $links = SeoLinkerLink::getList(['from_url' => $page->url]);

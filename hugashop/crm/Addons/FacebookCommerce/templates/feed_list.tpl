@@ -8,7 +8,7 @@
     <!-- Заголовок -->
     <div class="header_top">
         <h1>{$meta_title}</h1>
-        <a class="add" href="{'ExtFacebookCommerceNew'|link}">Добавить прайс</a>
+        <a class="add" href="{'AddonFacebookCommerceNew'|link}">Добавить прайс</a>
     </div>
 
     <div id="main_list">
@@ -36,12 +36,12 @@
                                             #{$pricefeed->id}
                                         </span>
 
-                                        <a href="{'ExtFacebookCommerce'|link:[id => $pricefeed->id]}">{$pricefeed->name}</a>
+                                        <a href="{'AddonFacebookCommerce'|link:[id => $pricefeed->id]}">{$pricefeed->name}</a>
                                     </div>
 
                                     <div class="badge text-bg-round copy_field my-2"
-                                        value="{$config->root_url}{'ExtFacebookCommerceFeedCsv'|link:[id => $pricefeed->id, token => $pricefeed->token]}">
-                                        {$config->root_url}{'ExtFacebookCommerceFeedCsv'|link:[id => $pricefeed->id, 'token' => $pricefeed->token]}
+                                        value="{$config->root_url}{'AddonFacebookCommerceFeedCsv'|link:[id => $pricefeed->id, token => $pricefeed->token]}">
+                                        {$config->root_url}{'AddonFacebookCommerceFeedCsv'|link:[id => $pricefeed->id, 'token' => $pricefeed->token]}
                                         <div class="copy_hover" data-bs-toggle="tooltip" data-bs-original-title="Скопировать">
                                             <i class="material-icons">content_copy</i>
                                         </div>
@@ -61,7 +61,7 @@
 
                             <div class="icons">
                                 <a class="material-icons launch" data-bs-toggle="tooltip" title="Открыть прайс"
-                                    href="{'ExtFacebookCommerceFeedCsv'|link:[id => $pricefeed->id, 'token' => $pricefeed->token]}"
+                                    href="{'AddonFacebookCommerceFeedCsv'|link:[id => $pricefeed->id, 'token' => $pricefeed->token]}"
                                     target="_blank"></a>
                                 <i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
                             </div>

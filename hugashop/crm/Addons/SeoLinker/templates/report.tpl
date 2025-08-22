@@ -14,7 +14,7 @@
         <button id="scan_button" class="btn btn-primary ms-2">Сканировать</button>
         <span id="scan_count" class="badge text-bg-round ms-2"></span>
     </div>
-    
+
     <div id="main_list">
         {if $pages}
 
@@ -25,7 +25,7 @@
                     <div class="list_row">
                         <div class="col row gy-5">
                             <div class="col-12 col-lg-4 text-break">
-                                <a href="{'ExtSeoLinkerPage'|link:[id => $p->id]}">{$p->url}</a>
+                                <a href="{'AddonSeoLinkerPage'|link:[id => $p->id]}">{$p->url}</a>
                             </div>
                             <div class="col-3 col-lg-2">
                                 <span class="badge text-bg-round" data-bs-toggle="tooltip" title="Глуба страницы">{$p->depth}</span>

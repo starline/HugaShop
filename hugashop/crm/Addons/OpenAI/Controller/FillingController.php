@@ -26,7 +26,7 @@ final class FillingController extends BaseAdminController
     /**
      * Generate product description using OpenAI
      */
-    #[Route('/OpenAI/ajax/filling', name: 'ExtOpenAIFilling', priority: 20)]
+    #[Route('/OpenAI/ajax/filling', name: 'AddonOpenAIFilling', priority: 20)]
     public function index()
     {
         if (!Secure::checkCSRF()) {

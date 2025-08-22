@@ -33,7 +33,7 @@ final class CargoSortController extends BaseAdminController
     private float $box_cost = 0;
     private ?float $box_delivery_cost = null;
 
-    #[Route('/CargoSort', name: 'ExtCargoSort', priority: 20)]
+    #[Route('/CargoSort', name: 'AddonCargoSort', priority: 20)]
     public function index()
     {
         Design::assign('addon', $this->getAddon());

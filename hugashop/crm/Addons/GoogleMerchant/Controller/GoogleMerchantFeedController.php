@@ -24,7 +24,7 @@ final class GoogleMerchantFeedController extends BaseFrontController
     use BaseAddonTrait;
 
     // Example: a2e8e4cbf284cb268e2b4328eb66cd5e.xml
-    #[Route('/GoogleMerchant/feed/{id}/{token}.xml', name: 'ExtGoogleMerchantFeed', priority: 20)]
+    #[Route('/GoogleMerchant/feed/{id}/{token}.xml', name: 'AddonGoogleMerchantFeed', priority: 20)]
     public function feed(int $id, string $token)
     {
 

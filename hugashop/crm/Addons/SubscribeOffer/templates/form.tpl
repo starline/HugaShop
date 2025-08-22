@@ -9,7 +9,7 @@
             <div class="alert alert-danger">Такой email уже зарегистрирован</div>
         {/if}
 
-        <form method="post" action="{'ExtSubscribeOfferForm'|link}" class="needs-validation">
+        <form method="post" action="{'AddonSubscribeOfferForm'|link}" class="needs-validation">
             {getCSRFInput}
 
             {if $id}

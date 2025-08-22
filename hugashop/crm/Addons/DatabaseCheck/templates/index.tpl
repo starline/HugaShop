@@ -40,7 +40,7 @@
     <script>
         const rows = Array.from(document.querySelectorAll('tbody tr'));
         const models = rows.map(r => r.dataset.model);
-        const checkUrl = "{'ExtDatabaseCheckCheck'|link}";
+        const checkUrl = "{'AddonDatabaseCheckCheck'|link}";
         let index = 0;
 
         {literal}

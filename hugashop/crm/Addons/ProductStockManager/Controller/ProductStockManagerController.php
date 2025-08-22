@@ -21,7 +21,7 @@ final class ProductStockManagerController extends BaseAdminController
 {
     use BaseAddonTrait;
 
-    #[Route('/ProductStockManager', name: 'ExtProductStockManager', priority: 20)]
+    #[Route('/ProductStockManager', name: 'AddonProductStockManager', priority: 20)]
     public function index()
     {
         $filter = PaginationService::initFilter();

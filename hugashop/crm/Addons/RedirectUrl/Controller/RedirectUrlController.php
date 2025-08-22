@@ -24,8 +24,8 @@ final class RedirectUrlController extends BaseAdminController
     /**
      * Link edit
      */
-    #[Route('/RedirectUrl/link', name: 'ExtRedirectUrlNew', priority: 20)]
-    #[Route('/RedirectUrl/link/{id}', name: 'ExtRedirectUrl', priority: 20)]
+    #[Route('/RedirectUrl/link', name: 'AddonRedirectUrlNew', priority: 20)]
+    #[Route('/RedirectUrl/link/{id}', name: 'AddonRedirectUrl', priority: 20)]
     public function link(?int $id = null)
     {
         #### Update
@@ -38,7 +38,7 @@ final class RedirectUrlController extends BaseAdminController
             }
 
             RedirectUrl::cacheClear();
-            return $this->redirectToRoute('ExtRedirectUrl', ['id' => $link->id]);
+            return $this->redirectToRoute('AddonRedirectUrl', ['id' => $link->id]);
         }
 
         #### View
@@ -46,7 +46,7 @@ final class RedirectUrlController extends BaseAdminController
         if (!empty($id)) {
             $link = RedirectUrl::getOne($id);
             if (empty($link->id)) {
-                return $this->redirectToRoute('ExtRedirectUrlList');
+                return $this->redirectToRoute('AddonRedirectUrlList');
             }
         }
 

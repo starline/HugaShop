@@ -28,7 +28,7 @@ final class SeoPageListController extends BaseAdminController
     /**
      * Список страниц
      */
-    #[Route('/SeoPage', name: 'ExtSeoPageList', priority: 20)]
+    #[Route('/SeoPage', name: 'AddonSeoPageList', priority: 20)]
     public function index()
     {
 

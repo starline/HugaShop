@@ -1,7 +1,7 @@
 <script type="module">
     import { asignFancyAjax } from "{'js/common.js'|asset}";
 
-    let offer_link = "{'ExtHelpOfferForm'|link}";
+    let offer_link = "{'AddonHelpOfferForm'|link}";
     let show_timer = {$HelpOffer->timer|default:0} * 1000;
     let show_on_leave = {$HelpOffer->show_on_leave|default:0};
     let storage_key = 'help-offer';

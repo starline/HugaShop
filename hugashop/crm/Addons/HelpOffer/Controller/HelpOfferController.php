@@ -27,7 +27,7 @@ final class HelpOfferController extends BaseFrontController
 {
     use BaseAddonTrait;
 
-    #[Route('/HelpOffer/form', name: 'ExtHelpOfferForm', priority: 20)]
+    #[Route('/HelpOffer/form', name: 'AddonHelpOfferForm', priority: 20)]
     public function form(): Response
     {
 

@@ -39,7 +39,7 @@ final class ProductsImportController extends BaseAdminController
     private string $locale = 'ru_RU.UTF-8';
 
 
-    #[Route('/ProductsImport', name: 'ExtProductsImport', priority: 20)]
+    #[Route('/ProductsImport', name: 'AddonProductsImport', priority: 20)]
     public function index()
     {
         Design::assign('addon', $this->getAddon());
@@ -81,7 +81,7 @@ final class ProductsImportController extends BaseAdminController
     }
 
 
-    #[Route('/ProductsImport/import', name: 'ExtProductsImportImport', priority: 20)]
+    #[Route('/ProductsImport/import', name: 'AddonProductsImportImport', priority: 20)]
     public function import()
     {
         setlocale(LC_ALL, $this->locale);

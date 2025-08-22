@@ -34,8 +34,8 @@ final class SmsSenderController extends BaseAdminController
     /**
      * Рассылка
      */
-    #[Route('/SmsSender/mailing', name: 'ExtSmsSenderMailingNew', priority: 20)]
-    #[Route('/SmsSender/mailing/{id}', name: 'ExtSmsSenderMailing', priority: 20)]
+    #[Route('/SmsSender/mailing', name: 'AddonSmsSenderMailingNew', priority: 20)]
+    #[Route('/SmsSender/mailing/{id}', name: 'AddonSmsSenderMailing', priority: 20)]
     public function mailing(?int $id = null)
     {
         $mailing_list = [];
@@ -77,14 +77,14 @@ final class SmsSenderController extends BaseAdminController
                 Design::setFlashMessage('update', SmsSender::updateOne($mailing->id, $mailing));
             }
 
-            return $this->redirectToRoute('ExtSmsSenderMailing', ['id' => $mailing->id]);
+            return $this->redirectToRoute('AddonSmsSenderMailing', ['id' => $mailing->id]);
         }
 
         // View
         if (!empty($id)) {
             $mailing = SmsSender::getOne($id);
             if (empty($mailing->id)) {
-                return $this->redirectToRoute('ExtSmsSenderList');
+                return $this->redirectToRoute('AddonSmsSenderList');
             }
 
             if (!empty($mailing->product_list)) {

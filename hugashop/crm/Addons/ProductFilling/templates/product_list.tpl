@@ -145,10 +145,10 @@
         import '{"js/piecon/piecon.js"|asset}';
 
         const total                 = {$products_count};
-        const ajax_url              = "{'ExtProductFillingCalculate'|link}";
-        const calculate_product_url = "{'ExtProductFillingCalculateProduct'|link}";
-        const translate_url         = "{'ExtOpenAITranslate'|link}";
-        const filling_url           = "{'ExtOpenAIFilling'|link}";
+        const ajax_url              = "{'AddonProductFillingCalculate'|link}";
+        const calculate_product_url = "{'AddonProductFillingCalculateProduct'|link}";
+        const translate_url         = "{'AddonOpenAITranslate'|link}";
+        const filling_url           = "{'AddonOpenAIFilling'|link}";
         const main_lang             = '{$main_language_code}';
 
         {literal}

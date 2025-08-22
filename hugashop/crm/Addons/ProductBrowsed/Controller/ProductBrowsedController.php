@@ -22,7 +22,7 @@ final class ProductBrowsedController extends BaseFrontController
 
     use BaseAddonTrait;
 
-    #[Route('/ProductBrowsed/ajax', name: 'ExtProductBrowsedAjax', priority: 20)]
+    #[Route('/ProductBrowsed/ajax', name: 'AddonProductBrowsedAjax', priority: 20)]
     public function browsed()
     {
 

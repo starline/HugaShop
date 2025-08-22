@@ -1,4 +1,5 @@
 <?php
+
 /**
  * HugaShop - Sell anything
  *
@@ -19,7 +20,7 @@ final class ProductSearchKeywordListController extends BaseAdminController
 {
     use BaseAddonTrait;
 
-    #[Route('/ProductSearchKeyword', name: 'ExtProductSearchKeywordList', priority: 20)]
+    #[Route('/ProductSearchKeyword', name: 'AddonProductSearchKeywordList', priority: 20)]
     public function index()
     {
         $this->checkAdminAccess('addon');
@@ -30,7 +31,7 @@ final class ProductSearchKeywordListController extends BaseAdminController
 
         Design::assign('keywords',    $keywords);
         Design::assign('pagination',  PaginationService::getPagination($keywords_count, $filter));
-        Design::assign('addon',   $this->getAddon());
+        Design::assign('addon',       $this->getAddon());
         Design::assign('meta_title',  'Поисковые запросы');
 
         return $this->fetchAddonResponse('list.tpl');

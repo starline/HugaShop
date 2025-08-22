@@ -21,13 +21,13 @@ final class HelpOfferItemController extends BaseAdminController
 {
     use BaseAddonTrait;
 
-    #[Route('/HelpOffer/{id}', requirements: ['id' => '\\d+'], name: 'ExtHelpOfferItem', priority: 20)]
+    #[Route('/HelpOffer/{id}', requirements: ['id' => '\\d+'], name: 'AddonHelpOfferItem', priority: 20)]
     public function item(int $id): Response
     {
         $this->checkAdminAccess('addon');
 
         if (!$request = HelpOffer::getOne($id)) {
-            return $this->redirectToRoute('ExtHelpOfferList');
+            return $this->redirectToRoute('AddonHelpOfferList');
         }
 
         if (!empty($request->user_agent)) {

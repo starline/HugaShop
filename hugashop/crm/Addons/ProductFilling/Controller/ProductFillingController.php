@@ -26,7 +26,7 @@ final class ProductFillingController extends BaseAdminController
 {
     use BaseAddonTrait;
 
-    #[Route('/ProductFilling', name: 'ExtProductFilling', priority: 20)]
+    #[Route('/ProductFilling', name: 'AddonProductFilling', priority: 20)]
     public function index()
     {
         $filter = PaginationService::initFilter();
@@ -64,7 +64,7 @@ final class ProductFillingController extends BaseAdminController
     }
 
 
-    #[Route('/ProductFilling/ajax/calculate', name: 'ExtProductFillingCalculate', priority: 20)]
+    #[Route('/ProductFilling/ajax/calculate', name: 'AddonProductFillingCalculate', priority: 20)]
     public function calculate()
     {
         $batch = 20;
@@ -90,7 +90,7 @@ final class ProductFillingController extends BaseAdminController
     }
 
 
-    #[Route('/ProductFilling/ajax/calculateProduct', name: 'ExtProductFillingCalculateProduct', priority: 20)]
+    #[Route('/ProductFilling/ajax/calculateProduct', name: 'AddonProductFillingCalculateProduct', priority: 20)]
     public function calculateProduct()
     {
 

@@ -26,7 +26,7 @@
                     </div>
                 {/if}
 
-                <form method="post" action="{'ExtPriceRequestForm'|link}" class="needs-validation">
+                <form method="post" action="{'AddonPriceRequestForm'|link}" class="needs-validation">
                     <input type="hidden" name="product_id" value="{$product->id}">
                     {getCSRFInput}
 

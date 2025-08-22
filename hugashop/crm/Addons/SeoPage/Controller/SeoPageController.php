@@ -27,8 +27,8 @@ final class SeoPageController extends BaseAdminController
     /**
      * SEO Page
      */
-    #[Route('/SeoPage/page', name: 'ExtSeoPageNew', priority: 20)]
-    #[Route('/SeoPage/page/{id}', requirements: ['id' => '\d+'], name: 'ExtSeoPage', priority: 20)]
+    #[Route('/SeoPage/page', name: 'AddonSeoPageNew', priority: 20)]
+    #[Route('/SeoPage/page/{id}', requirements: ['id' => '\d+'], name: 'AddonSeoPage', priority: 20)]
     public function page(?int $id = null)
     {
 
@@ -53,7 +53,7 @@ final class SeoPageController extends BaseAdminController
             }
 
             SeoPage::cacheClear();
-            return $this->redirectToRouteLang('ExtSeoPage', ['id' => $page->id]);
+            return $this->redirectToRouteLang('AddonSeoPage', ['id' => $page->id]);
         }
 
 
@@ -62,7 +62,7 @@ final class SeoPageController extends BaseAdminController
         if (!empty($id)) {
             $page = SeoPage::getOneEditTranslate($id);
             if (empty($page->id)) {
-                return $this->redirectToRouteLang('ExtSeoPageList');
+                return $this->redirectToRouteLang('AddonSeoPageList');
             }
         }
 

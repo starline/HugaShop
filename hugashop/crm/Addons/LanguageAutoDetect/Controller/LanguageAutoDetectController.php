@@ -22,7 +22,7 @@ final class LanguageAutoDetectController extends BaseFrontController
 {
     use BaseAddonTrait;
 
-    #[Route('/LanguageAutoDetect/switcher', name: 'ExtLanguageAutoDetectSwitcher', priority: 20)]
+    #[Route('/LanguageAutoDetect/switcher', name: 'AddonLanguageAutoDetectSwitcher', priority: 20)]
     public function switcher(): Response
     {
         $match_code     = Request::input('match');

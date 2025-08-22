@@ -6,7 +6,7 @@
 {block name=content}
     <div class="header_top">
         <h1>{$meta_title}</h1>
-        <a class="add" href="{'ExtRedirectUrlNew'|link}">Добавить ссылку</a>
+        <a class="add" href="{'AddonRedirectUrlNew'|link}">Добавить ссылку</a>
     </div>
 
     <div id="main_list">
@@ -21,7 +21,7 @@
                             </div>
                             <div class="row col">
                                 <div class="col-12 col-sm-8">
-                                    <a href="{'ExtRedirectUrl'|link:[id => $l->id]}">{$l->url}</a>
+                                    <a href="{'AddonRedirectUrl'|link:[id => $l->id]}">{$l->url}</a>
                                     <div class="notice">{$l->comment|strip_tags|nl2br|raw}</div>
                                 </div>
                                 <div class="col-12 col-sm-4 text-end">

@@ -25,13 +25,13 @@ final class AdminTemplateController extends BaseAdminController
     /**
      * Список страниц
      */
-    #[Route('/AdminTemplate', name: 'ExtAdminTemplate', priority: 20)]
+    #[Route('/AdminTemplate', name: 'AddonAdminTemplate', priority: 20)]
     public function template()
     {
 
         Design::assign('categories',    ProductCategory::getCategoriesTree());
         Design::assign('images',        Image::getList(['limit' => 3])); # Выбрать изображения для примера
-        Design::assign('addon',     $this->getAddon());
+        Design::assign('addon',         $this->getAddon());
 
         return $this->fetchAddonResponse('template.tpl');
     }

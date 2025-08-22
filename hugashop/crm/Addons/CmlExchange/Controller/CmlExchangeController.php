@@ -25,7 +25,7 @@ final class CmlExchangeController extends BaseFrontController
     /**
      * Список страниц
      */
-    #[Route('/CmlExchange/exchange', name: 'ExtCmlExchange', priority: 1)]
+    #[Route('/CmlExchange/exchange', name: 'AddonCmlExchange', priority: 1)]
     public function exchange(): Response
     {
 

@@ -23,7 +23,7 @@ final class LeadsListController extends BaseAdminController
 {
     use BaseAddonTrait;
 
-    #[Route('/Leads', name: 'ExtLeadsList', priority: 20)]
+    #[Route('/Leads', name: 'AddonLeadsList', priority: 20)]
     public function index(): Response
     {
         $filter = PaginationService::initFilter();

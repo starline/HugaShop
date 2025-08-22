@@ -23,7 +23,7 @@ final class PriceRequestListController extends BaseAdminController
 {
     use BaseAddonTrait;
 
-    #[Route('/ProductPriceRequest', name: 'ExtPriceRequestList', priority: 20)]
+    #[Route('/ProductPriceRequest', name: 'AddonPriceRequestList', priority: 20)]
     public function index(): Response
     {
         $this->checkAdminAccess('addon');

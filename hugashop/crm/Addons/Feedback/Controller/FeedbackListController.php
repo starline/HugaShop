@@ -23,7 +23,7 @@ final class FeedbackListController extends BaseAdminController
 {
     use BaseAddonTrait;
 
-    #[Route('/Feedback', name: 'ExtFeedbackList', priority: 20)]
+    #[Route('/Feedback', name: 'AddonFeedbackList', priority: 20)]
     public function index(): Response
     {
 

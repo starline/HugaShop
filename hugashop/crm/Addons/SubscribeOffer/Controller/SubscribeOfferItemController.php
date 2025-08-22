@@ -21,13 +21,13 @@ final class SubscribeOfferItemController extends BaseAdminController
 {
     use BaseAddonTrait;
 
-    #[Route('/SubscribeOffer/{id}', requirements: ['id' => '\\d+'], name: 'ExtSubscribeOfferItem', priority: 20)]
+    #[Route('/SubscribeOffer/{id}', requirements: ['id' => '\\d+'], name: 'AddonSubscribeOfferItem', priority: 20)]
     public function item(int $id): Response
     {
         $this->checkAdminAccess('addon');
 
         if (!$request = SubscribeOffer::getOne($id)) {
-            return $this->redirectToRoute('ExtSubscribeOfferList');
+            return $this->redirectToRoute('AddonSubscribeOfferList');
         }
 
         if (!empty($request->user_agent)) {

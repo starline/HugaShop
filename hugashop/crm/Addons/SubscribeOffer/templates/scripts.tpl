@@ -1,7 +1,7 @@
 <script type="module">
     import { asignFancyAjax } from "{'js/common.js'|asset}";
 
-    let offer_link = "{'ExtSubscribeOfferForm'|link}";
+    let offer_link = "{'AddonSubscribeOfferForm'|link}";
     let show_timer = {$SubscribeOffer->timer|default:0} * 1000;
     let storage_key = 'subscribe-offer';
     let offer_shown = false;

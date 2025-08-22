@@ -2,7 +2,7 @@
 <script type="module">
     import { asignFancyAjax } from "{'js/common.js'|asset}";
 
-    let price_request_link = "{'ExtPriceRequestForm'|link}";
+    let price_request_link = "{'AddonPriceRequestForm'|link}";
 
     $(function() {
         $('body').on('click', '#product-price-request', function(e) {

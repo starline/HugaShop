@@ -26,8 +26,8 @@ final class InfoBlockController extends BaseAdminController
     /**
      * Список страниц
      */
-    #[Route('/InfoBlock/block', name: 'ExtInfoBlockNew', priority: 20)]
-    #[Route('/InfoBlock/block/{id}', name: 'ExtInfoBlock', priority: 20)]
+    #[Route('/InfoBlock/block', name: 'AddonInfoBlockNew', priority: 20)]
+    #[Route('/InfoBlock/block/{id}', name: 'AddonInfoBlock', priority: 20)]
     public function block(?int $id = null)
     {
 
@@ -44,7 +44,7 @@ final class InfoBlockController extends BaseAdminController
             }
 
             InfoBlock::cacheClear();
-            return $this->redirectToRouteLang('ExtInfoBlock', ['id' => $block->id]);
+            return $this->redirectToRouteLang('AddonInfoBlock', ['id' => $block->id]);
         }
 
 
@@ -53,7 +53,7 @@ final class InfoBlockController extends BaseAdminController
         if (!empty($id)) {
             $block = InfoBlock::getOneEditTranslate($id);
             if (empty($block->id)) {
-                return $this->redirectToRoute('ExtInfoBlockList');
+                return $this->redirectToRoute('AddonInfoBlockList');
             }
         }
 

@@ -22,7 +22,7 @@ final class YandexMerchantFeedController extends BaseAdminController
     use BaseAddonTrait;
 
     // Example: a2e8e4cbf284cb268e2b4328eb66cd5e.xml
-    #[Route('/YandexMerchant/feed/{id}/{token}.xml', name: 'ExtYandexMerchantFeed', priority: 20)]
+    #[Route('/YandexMerchant/feed/{id}/{token}.xml', name: 'AddonYandexMerchantFeed', priority: 20)]
     public function feed(int $id, string $token)
     {
         if (empty($pricefeed = YandexMerchant::getOne(['id' => $id, 'token' => $token]))) {

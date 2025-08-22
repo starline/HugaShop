@@ -25,7 +25,7 @@ final class SmsSenderListController extends BaseAdminController
     /**
      * Список рассылок
      */
-    #[Route('/SmsSender', name: 'ExtSmsSenderList', priority: 20)]
+    #[Route('/SmsSender', name: 'AddonSmsSenderList', priority: 20)]
     public function index()
     {
         // Обработка действий

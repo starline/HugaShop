@@ -8,7 +8,7 @@
     <!-- Заголовок -->
     <div class="header_top">
         <h1>{$meta_title}</h1>
-        <a class="add" href="{'ExtYandexMerchantNew'|link}">Добавить прайс</a>
+        <a class="add" href="{'AddonYandexMerchantNew'|link}">Добавить прайс</a>
     </div>
 
     <div id="main_list">
@@ -36,7 +36,7 @@
                             </div>
 
                             <div class="col">
-                                <a href="{'ExtYandexMerchant'|link:[id => $pricefeed->id]}">{$pricefeed->name}</a>
+                                <a href="{'AddonYandexMerchant'|link:[id => $pricefeed->id]}">{$pricefeed->name}</a>
 
                                 {if !$pricefeed->comment|empty}
                                     <div class="notice">{$pricefeed->comment}</div>
@@ -45,7 +45,7 @@
 
                             <div class="icons">
                                 <a class="material-icons launch" data-bs-toggle="tooltip" title="Открыть прайс"
-                                    href="{'ExtYandexMerchantFeed'|link:[id => $pricefeed->id, token => $pricefeed->token]}"
+                                    href="{'AddonYandexMerchantFeed'|link:[id => $pricefeed->id, token => $pricefeed->token]}"
                                     target="_blank"></a>
                                 <i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
                             </div>

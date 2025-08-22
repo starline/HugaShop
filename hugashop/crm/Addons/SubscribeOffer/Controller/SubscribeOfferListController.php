@@ -23,7 +23,7 @@ final class SubscribeOfferListController extends BaseAdminController
 {
     use BaseAddonTrait;
 
-    #[Route('/SubscribeOffer', name: 'ExtSubscribeOfferList', priority: 20)]
+    #[Route('/SubscribeOffer', name: 'AddonSubscribeOfferList', priority: 20)]
     public function index(): Response
     {
         $this->checkAdminAccess('addon');

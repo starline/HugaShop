@@ -27,8 +27,8 @@ final class FacebookCommerceController extends BaseAdminController
 
     use BaseAddonTrait;
 
-    #[Route('/FacebookCommerce/feed', name: 'ExtFacebookCommerceNew', priority: 20)]
-    #[Route('/FacebookCommerce/feed/{id}', name: 'ExtFacebookCommerce', priority: 20)]
+    #[Route('/FacebookCommerce/feed', name: 'AddonFacebookCommerceNew', priority: 20)]
+    #[Route('/FacebookCommerce/feed/{id}', name: 'AddonFacebookCommerce', priority: 20)]
     public function feed(?int $id = null)
     {
         $pricefeed_categories = [];
@@ -47,7 +47,7 @@ final class FacebookCommerceController extends BaseAdminController
             $pricefeed_categories = Request::post('pricefeed_categories', 'array');
             FacebookCommerceCategory::setCategories($pricefeed->id, $pricefeed_categories);
 
-            return $this->redirectToRoute('ExtFacebookCommerce', ['id' => $pricefeed->id]);
+            return $this->redirectToRoute('AddonFacebookCommerce', ['id' => $pricefeed->id]);
         }
 
         #### View
@@ -56,7 +56,7 @@ final class FacebookCommerceController extends BaseAdminController
             $pricefeed = FacebookCommerce::getOne($id);
 
             if (empty($pricefeed->id)) {
-                return $this->redirectToRoute('ExtFacebookCommerceList');
+                return $this->redirectToRoute('AddonFacebookCommerceList');
             }
 
             $pricefeed_categories = FacebookCommerceCategory::getCategoriesIds($pricefeed->id);

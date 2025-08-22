@@ -24,7 +24,7 @@ final class GoogleAuthController extends BaseFrontController
 {
     use BaseAddonTrait;
 
-    #[Route('/google-auth', name: 'ExtGoogleAuth', priority: 1)]
+    #[Route('/google-auth', name: 'AddonGoogleAuth', priority: 1)]
     public function auth(): Response
     {
 
@@ -49,7 +49,7 @@ final class GoogleAuthController extends BaseFrontController
             return $this->redirectToRoute('UserRegister');
         }
 
-        $redirectUri    = Config::get('root_url') . $this->generateUrlWithLocale('ExtGoogleAuth');
+        $redirectUri    = Config::get('root_url') . $this->generateUrlWithLocale('AddonGoogleAuth');
         $code           = Request::get('code', 'string');
         $isPopup        = Request::get('popup', 'bool') || $state === 'popup';
 

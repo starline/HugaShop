@@ -21,13 +21,13 @@ final class PriceRequestItemController extends BaseAdminController
 {
     use BaseAddonTrait;
 
-    #[Route('/ProductPriceRequest/{id}', requirements: ['id' => '\d+'], name: 'ExtPriceRequestItem', priority: 20)]
+    #[Route('/ProductPriceRequest/{id}', requirements: ['id' => '\d+'], name: 'AddonPriceRequestItem', priority: 20)]
     public function item(int $id): Response
     {
         $this->checkAdminAccess('addon');
 
         if (!$request = PriceRequest::getOne($id, ['product', 'product.image'])) {
-            return $this->redirectToRoute('ExtPriceRequestList');
+            return $this->redirectToRoute('AddonPriceRequestList');
         }
 
         if (!empty($request->user_agent)) {

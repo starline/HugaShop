@@ -22,7 +22,7 @@ final class BinotelController extends BaseFrontController
 {
     use BaseAddonTrait;
 
-    #[Route('/Leads/binotel/webhook', name: 'ExtLeadsBinotelWebhook', priority: 20)]
+    #[Route('/Leads/binotel/webhook', name: 'AddonLeadsBinotelWebhook', priority: 20)]
     public function webhook(Request $request): Response
     {
         $service = new BinotelLeadService();

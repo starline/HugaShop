@@ -20,7 +20,7 @@ final class BookingShinomontagController extends BaseFrontController
 {
     use BaseAddonTrait;
 
-    #[Route('/booking-shinomontag', name: 'ExtBookingShinomontag', priority: 1)]
+    #[Route('/booking-shinomontag', name: 'AddonBookingShinomontag', priority: 1)]
     public function booking(): Response
     {
         if (!empty($booking = Secure::getInputAcces(Booking::getFields()))) {

@@ -24,7 +24,7 @@ final class FacebookCommerceListController extends BaseAdminController
 {
     use BaseAddonTrait;
 
-    #[Route('/FacebookCommerce', name: 'ExtFacebookCommerceList', priority: 20)]
+    #[Route('/FacebookCommerce', name: 'AddonFacebookCommerceList', priority: 20)]
     public function facebook()
     {
         if (Secure::checkCSRF()) {

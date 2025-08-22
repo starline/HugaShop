@@ -23,7 +23,7 @@ final class HelpOfferListController extends BaseAdminController
 {
     use BaseAddonTrait;
 
-    #[Route('/HelpOffer', name: 'ExtHelpOfferList', priority: 20)]
+    #[Route('/HelpOffer', name: 'AddonHelpOfferList', priority: 20)]
     public function index(): Response
     {
         $this->checkAdminAccess('addon');

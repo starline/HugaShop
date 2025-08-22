@@ -29,7 +29,7 @@
 
         $.fancybox.open({
             type: 'ajax',
-            src: "{'ExtLanguageAutoDetectSwitcher'|linkLang}",
+            src: "{'AddonLanguageAutoDetectSwitcher'|linkLang}",
             ajax: {
                 settings: {
                     method: 'POST',

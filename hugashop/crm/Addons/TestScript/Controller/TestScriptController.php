@@ -55,7 +55,7 @@ final class TestScriptController extends BaseAdminController
     /**
      * Список страниц
      */
-    #[Route('/TestScript', name: 'ExtTestScript', priority: 20)]
+    #[Route('/TestScript', name: 'AddonTestScript', priority: 20)]
     public function test()
     {
 
@@ -274,6 +274,7 @@ final class TestScriptController extends BaseAdminController
 
 
                         /**
+                         * 
                          * Переход на версию V2
                          * 1. Исправляем типы комментарий 
                          * 2. делаем дубликат таблицы s_product_variant в s_product_variant_temp
@@ -291,6 +292,8 @@ final class TestScriptController extends BaseAdminController
                          * переименовываем order.url в token
                          * 
                          * Добавить id в s_product_related
+                         * 
+                         * Изменить ссылки в GoogleMerchant FacebookMerchant extension на addon
                          * 
                          */
                         if (0) {

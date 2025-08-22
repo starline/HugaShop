@@ -23,7 +23,7 @@ final class BookingShinomontagListController extends BaseAdminController
 {
     use BaseAddonTrait;
 
-    #[Route('/BookingShinomontag', name: 'ExtBookingShinomontagList', priority: 20)]
+    #[Route('/BookingShinomontag', name: 'AddonBookingShinomontagList', priority: 20)]
     public function index(): Response
     {
         if (Secure::checkCSRF()) {

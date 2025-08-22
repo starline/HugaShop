@@ -26,7 +26,7 @@ final class PriceRequestController extends BaseFrontController
 {
     use BaseAddonTrait;
 
-    #[Route('/ProductPriceRequest/form', name: 'ExtPriceRequestForm', priority: 21)]
+    #[Route('/ProductPriceRequest/form', name: 'AddonPriceRequestForm', priority: 21)]
     public function form(): Response
     {
 

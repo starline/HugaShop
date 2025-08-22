@@ -1,6 +1,6 @@
 <div id="product_browsed">
 
-    <div class="spinner_box" hx-get="{'ExtProductBrowsedAjax'|linkLang}" hx-trigger="load" hx-swap="outerHTML">
+    <div class="spinner_box" hx-get="{'AddonProductBrowsedAjax'|linkLang}" hx-trigger="load" hx-swap="outerHTML">
         <div class="spinner-border" role="status">
             <span class="visually-hidden">{'Загрузка'|trans}...</span>
         </div>

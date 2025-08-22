@@ -25,7 +25,7 @@ final class FeedbackController extends BaseFrontController
 {
     use BaseAddonTrait;
 
-    #[Route('/feedback', name: 'ExtFeedback', priority: 1)]
+    #[Route('/feedback', name: 'AddonFeedback', priority: 1)]
     public function feedback(): Response
     {
         if (Secure::checkCSRF()) {

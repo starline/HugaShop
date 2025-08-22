@@ -27,7 +27,7 @@ final class InfoBlockListController extends BaseAdminController
     /**
      * Список страниц
      */
-    #[Route('/InfoBlock', name: 'ExtInfoBlockList', priority: 20)]
+    #[Route('/InfoBlock', name: 'AddonInfoBlockList', priority: 20)]
     public function block()
     {
 

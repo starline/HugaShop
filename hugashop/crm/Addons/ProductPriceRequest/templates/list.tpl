@@ -24,7 +24,7 @@
                             </div>
 
                             <div class="col">
-                                <a href="{'ExtPriceRequestItem'|link:[id => $r->id]}">{$r->name}</a>
+                                <a href="{'AddonPriceRequestItem'|link:[id => $r->id]}">{$r->name}</a>
                                 <div class="notice">{$r->phone} {$r->email}</div>
                                 <span class="badge text-bg-round">{$r->created_at|date} {$r->created_at|time}</span>
                             </div>

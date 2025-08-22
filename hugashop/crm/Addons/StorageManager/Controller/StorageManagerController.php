@@ -26,7 +26,7 @@ final class StorageManagerController extends BaseAdminController
     /**
      * Управление файлами хранилища
      */
-    #[Route('/StorageManager', name: 'ExtStorageManager', priority: 20)]
+    #[Route('/StorageManager', name: 'AddonStorageManager', priority: 20)]
     public function index()
     {
         $dirs = [

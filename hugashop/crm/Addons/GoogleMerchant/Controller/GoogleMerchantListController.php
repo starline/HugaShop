@@ -24,7 +24,7 @@ final class GoogleMerchantListController extends BaseAdminController
 {
     use BaseAddonTrait;
 
-    #[Route('/GoogleMerchant', name: 'ExtGoogleMerchantList', priority: 20)]
+    #[Route('/GoogleMerchant', name: 'AddonGoogleMerchantList', priority: 20)]
     public function index()
     {
         if (Secure::checkCSRF()) {

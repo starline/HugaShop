@@ -8,7 +8,7 @@
 	<!-- Заголовок -->
 	<div class="header_top">
 		<h1>{$meta_title}</h1>
-		<a class="add" href="{'ExtSeoPageNew'|link}">Добавить страницу</a>
+		<a class="add" href="{'AddonSeoPageNew'|link}">Добавить страницу</a>
 	</div>
 
 	<div id="main_list">
@@ -32,7 +32,7 @@
 
 							<div class="col row">
 								<div class="col-12 col-sm-8">
-									<a href="{'ExtSeoPage'|link:[id => $page->id]}">{$page->name}</a>
+									<a href="{'AddonSeoPage'|link:[id => $page->id]}">{$page->name}</a>
 								</div>
 
 								<div class="col-12 col-sm-4 text-end">

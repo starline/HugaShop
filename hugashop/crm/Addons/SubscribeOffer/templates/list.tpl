@@ -25,7 +25,7 @@
                             </div>
 
                             <div class="col">
-                                <a href="{'ExtSubscribeOfferItem'|link:[id => $r->id]}">{$r->email}</a>
+                                <a href="{'AddonSubscribeOfferItem'|link:[id => $r->id]}">{$r->email}</a>
                                 <span class="badge text-bg-round">{$r->created_at|date} {$r->created_at|time}</span>
                             </div>
 

@@ -22,7 +22,7 @@ final class DatabaseCheckController extends BaseAdminController
 {
     use BaseAddonTrait;
 
-    #[Route('/DatabaseCheck', name: 'ExtDatabaseCheck', priority: 20)]
+    #[Route('/DatabaseCheck', name: 'AddonDatabaseCheck', priority: 20)]
     public function index()
     {
         $models = $this->getModels();
@@ -33,7 +33,7 @@ final class DatabaseCheckController extends BaseAdminController
     }
 
 
-    #[Route('/DatabaseCheck/check', name: 'ExtDatabaseCheckCheck', priority: 20)]
+    #[Route('/DatabaseCheck/check', name: 'AddonDatabaseCheckCheck', priority: 20)]
     public function check()
     {
         $this->checkAdminAccess('addon', true);

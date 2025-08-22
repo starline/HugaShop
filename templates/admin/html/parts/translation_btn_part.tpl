@@ -28,7 +28,7 @@
             import { allButtonOn } from '{"js/common.js"|asset}';
 
             const entity = '{$entity}';
-            const translate_url = "{'ExtOpenAITranslate'|link}";
+            const translate_url = "{'AddonOpenAITranslate'|link}";
 
             {literal}
 

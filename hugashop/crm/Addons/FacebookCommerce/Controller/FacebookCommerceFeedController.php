@@ -25,7 +25,7 @@ final class FacebookCommerceFeedController extends BaseFrontController
     use BaseAddonTrait;
 
     // Example: a2e8e4cbf284cb268e2b4328eb66cd5e.csv
-    #[Route('/FacebookCommerce/feed/{id}/{token}.csv', name: 'ExtFacebookCommerceFeedCsv', priority: 20)]
+    #[Route('/FacebookCommerce/feed/{id}/{token}.csv', name: 'AddonFacebookCommerceFeedCsv', priority: 20)]
     public function feed(int $id, string $token)
     {
 

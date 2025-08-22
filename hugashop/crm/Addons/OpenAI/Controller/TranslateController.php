@@ -36,7 +36,7 @@ final class TranslateController extends BaseAdminController
     /**
      * Translate model fields using OpenAI
      */
-    #[Route('/OpenAI/ajax/translate', name: 'ExtOpenAITranslate', priority: 20)]
+    #[Route('/OpenAI/ajax/translate', name: 'AddonOpenAITranslate', priority: 20)]
     public function index()
     {
         if (!Secure::checkCSRF()) {

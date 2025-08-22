@@ -24,7 +24,7 @@ final class CarouselPromoController extends BaseAdminController
     /**
      * Список страниц
      */
-    #[Route('/CarouselPromo', name: 'ExtCarouselPromo', priority: 20)]
+    #[Route('/CarouselPromo', name: 'AddonCarouselPromo', priority: 20)]
     public function template()
     {
 

@@ -24,7 +24,7 @@ final class YandexMerchantListController extends BaseAdminController
 {
     use BaseAddonTrait;
 
-    #[Route('/YandexMerchant', name: 'ExtYandexMerchantList', priority: 20)]
+    #[Route('/YandexMerchant', name: 'AddonYandexMerchantList', priority: 20)]
     public function index()
     {
         if (Secure::checkCSRF()) {
