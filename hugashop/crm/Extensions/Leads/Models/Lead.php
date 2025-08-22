@@ -9,15 +9,15 @@
  * Lead entity produced from incoming calls.
  */
 
-namespace HugaShop\Models;
+namespace HugaShop\Extensions\Leads\Models;
 
-use HugaShop\Models\LeadCall;
 use HugaShop\Models\User\User;
+use HugaShop\Extensions\BaseExtensionModel;
 
-class Lead extends BaseModel
+class Lead extends BaseExtensionModel
 {
-    public $timestamps = true;
 
+    public $timestamps = true;
     protected static $table_fields = [
         'id' =>         ['type' => 'int',     'extra' => 'AUTO_INCREMENT'],
         'client_id' =>  ['type' => 'int',     'def' => 0],
@@ -35,4 +35,3 @@ class Lead extends BaseModel
         return $this->hasMany(LeadCall::class, 'lead_id', 'id');
     }
 }
-

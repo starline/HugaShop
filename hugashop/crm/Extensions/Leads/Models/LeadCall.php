@@ -9,18 +9,19 @@
  * Call history for leads.
  */
 
-namespace HugaShop\Models;
+namespace HugaShop\Extensions\Leads\Models;
 
-class LeadCall extends BaseModel
+use HugaShop\Extensions\BaseExtensionModel;
+
+class LeadCall extends BaseExtensionModel
 {
-    public $timestamps = true;
 
+    public $timestamps = true;
     protected static $table_fields = [
         'id' =>      ['type' => 'int',     'extra' => 'AUTO_INCREMENT'],
         'lead_id' => ['type' => 'int'],
         'phone' =>  ['type' => 'varchar', 'length' => 32],
         'type' =>   ['type' => 'varchar', 'length' => 16],
-        'payload' =>['type' => 'text'],
+        'payload' => ['type' => 'text'],
     ];
 }
-

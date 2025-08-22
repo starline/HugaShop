@@ -13,7 +13,4 @@ namespace HugaShop\Extensions\Leads;
 
 use HugaShop\Extensions\BaseExtension;
 
-final class Leads extends BaseExtension
-{
-}
-
+final class Leads extends BaseExtension {}

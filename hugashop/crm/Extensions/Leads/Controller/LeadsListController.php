@@ -11,11 +11,11 @@
 
 namespace HugaShop\Extensions\Leads\Controller;
 
-use App\Controller\BaseAdminController;
-use App\Services\PaginationService;
-use HugaShop\Extensions\BaseExtensionTrait;
-use HugaShop\Models\Lead;
 use HugaShop\Services\Design;
+use App\Services\PaginationService;
+use App\Controller\BaseAdminController;
+use HugaShop\Extensions\Leads\Models\Lead;
+use HugaShop\Extensions\BaseExtensionTrait;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -29,7 +29,7 @@ final class LeadsListController extends BaseAdminController
         $filter = PaginationService::initFilter();
 
         $query = Lead::with(['client'])
-            ->withMax(['calls as last_call_at' => 'created_at'])
+            ->withMax('calls as last_call_at', 'created_at')
             ->orderByDesc('last_call_at');
 
         if (($limit = $filter['limit']) !== null && $limit !== 'all') {

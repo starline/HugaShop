@@ -11,9 +11,9 @@
 
 namespace HugaShop\Extensions\Leads\Services;
 
-use HugaShop\Models\Lead;
-use HugaShop\Models\LeadCall;
 use HugaShop\Models\User\User;
+use HugaShop\Extensions\Leads\Models\Lead;
+use HugaShop\Extensions\Leads\Models\LeadCall;
 
 class BinotelLeadService
 {
@@ -48,4 +48,3 @@ class BinotelLeadService
         return $client?->id ?? 0;
     }
 }
-

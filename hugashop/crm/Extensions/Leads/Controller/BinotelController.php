@@ -31,4 +31,3 @@ final class BinotelController extends BaseFrontController
         return new Response('ok');
     }
 }
-
