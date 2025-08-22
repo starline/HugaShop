@@ -43,7 +43,7 @@
 
 - Структуру моделей с `$table_fields`
 - Связи через `hasMany`, `belongsTo`, `morphTo`
-- Расширения с собственной логикой (SeoLinker, FacebookCommerce, StorageManager)
+- Addons с собственной логикой: Controllers, Models, Services, templates
 
 **Контекст проекта**: HugaShop  
 **Автор**: Andri Huga
