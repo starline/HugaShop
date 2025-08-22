@@ -44,8 +44,13 @@
         let index = 0;
 
         {literal}
+            const button = document.getElementById('check_tables');
+            const infor = '<i class="delete material-icons" title="информация">info_outline</i>';
+
             async function checkNext() {
                 if (index >= models.length) {
+                    button.disabled = false;
+                    button.classList.remove('disabled');
                     return;
                 }
 
@@ -70,10 +75,13 @@
                 }
 
                 index++;
-                checkNext();
+                await checkNext();
             }
 
-            document.getElementById('check_tables').addEventListener('click', () => {
+            button.addEventListener('click', () => {
+                button.disabled = true;
+                button.classList.add('disabled');
+
                 index = 0;
                 document.querySelectorAll('tbody tr').forEach(r => {
                     r.querySelector('.status').textContent = '';
