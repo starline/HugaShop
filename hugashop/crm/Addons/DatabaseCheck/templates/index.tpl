@@ -1,3 +1,4 @@
+{* @version 0.1 *}
 {extends 'wrapper/main.tpl'}
 {include 'addon/parts/menu_part.tpl'}
 
@@ -38,58 +39,47 @@
     </div>
 
     <script>
-        const rows = Array.from(document.querySelectorAll('tbody tr'));
-        const models = rows.map(r => r.dataset.model);
         const check_url = "{'AddonDatabaseCheckCheck'|link}";
-        let index = 0;
-
         {literal}
-            const button = document.getElementById('check_tables');
+        $(function () {
+            const rows = $('tbody tr');
+            const models = rows.map((_, r) => $(r).data('model')).get();
+            let index = 0;
+            const button = $('#check_tables');
             const infor = '<i class="delete material-icons" title="информация">info_outline</i>';
 
-            async function checkNext() {
+            function checkNext() {
                 if (index >= models.length) {
-                    button.disabled = false;
-                    button.classList.remove('disabled');
+                    button.prop('disabled', false).removeClass('disabled');
                     return;
                 }
 
                 const model = models[index];
-                const form = new URLSearchParams();
-                form.append('model', model);
-                form.append('csrf', window.csrf);
 
-                const res = await fetch(check_url, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                    body: form.toString()
-                });
+                $.post(check_url, {model: model, csrf: window.csrf}, function (data) {
+                    const row = $('tr[data-model="' + CSS.escape(model) + '"]');
+                    if (row.length) {
+                        row.find('.status').text(data.status);
+                        row.find('.rows').text(data.rows);
+                        row.find('.size').text(data.size);
+                    }
 
-                const data = await res.json();
-                const row = document.querySelector(`tr[data-model="${CSS.escape(model)}"]`);
-
-                if (row) {
-                    row.querySelector('.status').textContent = data.status;
-                    row.querySelector('.rows').textContent = data.rows;
-                    row.querySelector('.size').textContent = data.size;
-                }
-
-                index++;
-                await checkNext();
+                    index++;
+                    checkNext();
+                }, 'json');
             }
 
-            button.addEventListener('click', () => {
-                button.disabled = true;
-                button.classList.add('disabled');
+            button.on('click', function () {
+                button.prop('disabled', true).addClass('disabled');
 
                 index = 0;
-                document.querySelectorAll('tbody tr').forEach(r => {
-                    r.querySelector('.status').textContent = '';
-                    r.querySelector('.rows').textContent = '';
-                    r.querySelector('.size').textContent = '';
+                $('tbody tr').each(function () {
+                    $(this).find('.status, .rows, .size').text('');
                 });
+
                 checkNext();
             });
+        });
         {/literal}
     </script>
 {/block}
