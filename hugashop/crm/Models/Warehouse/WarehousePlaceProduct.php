@@ -28,6 +28,11 @@ class WarehousePlaceProduct extends BaseModel
         'price'         => ['type' => 'decimal', 'def'  => 0.00],
         'amount'        => ['type' => 'int',     'def'  => 0]
     ];
+    
+    protected static $table_keys = [
+        'product_id'    => ['column' => ['product_id'],             'type' => 'index'],
+        'place_id'      => ['column' => ['place_id'],               'type' => 'index']
+    ];
 
     public function place()
     {
