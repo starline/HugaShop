@@ -18,9 +18,15 @@ class ProductCategoryFeature extends BaseModel
 {
 
     protected static $table_fields = [
-        'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
-        'category_id ' =>       ['type' => 'int',           'req' => true],
-        'feature_id' =>         ['type' => 'int',           'req' => true],
+        'id'            => ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
+        'category_id'   => ['type' => 'int',           'req' => true],
+        'feature_id'    => ['type' => 'int',           'req' => true],
+    ];
+
+    public static $table_keys = [
+        'feature_id'    => ['column' => ['feature_id'],     'type' => 'index'],
+        'category_id'   => ['column' => ['category_id'],    'type' => 'index']
+
     ];
 
     public function category()

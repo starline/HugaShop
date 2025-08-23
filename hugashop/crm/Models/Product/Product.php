@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 4.3
+ * @version 4.4
  *
  */
 
@@ -56,13 +56,13 @@ class Product extends BaseModel
     ];
 
     public static $table_keys = [
-        'url'           => ['url'],
-        'brand_id'      => ['brand_id'],
-        'visible'       => ['visible'],
-        'featured'      => ['featured'],
-        'sale'          => ['sale'],
-        'disable'       => ['disable'],
-        'category_id'   => ['category_id', 'visible']
+        'url'           => ['column' => ['url'],                    'type' => 'index'],
+        'brand_id'      => ['column' => ['brand_id'],               'type' => 'index'],
+        'visible'       => ['column' => ['visible'],                'type' => 'index'],
+        'featured'      => ['column' => ['featured'],               'type' => 'index'],
+        'sale'          => ['column' => ['sale'],                   'type' => 'index'],
+        'disable'       => ['column' => ['disable'],                'type' => 'index'],
+        'category_id'   => ['column' => ['category_id', 'visible'], 'type' => 'index']
 
     ];
 

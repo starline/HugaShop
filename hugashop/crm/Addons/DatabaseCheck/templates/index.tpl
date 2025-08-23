@@ -72,7 +72,8 @@
                                     class: 'material-icons text-danger',
                                     text: 'info_outline',
                                     'data-bs-toggle': 'popover',
-                                    'data-bs-trigger': 'hover focus',
+                                    'data-bs-placement': 'top',
+                                    'data-bs-trigger': 'hover',
                                     'data-bs-content': data.message
                                 });
                                 row.find('.status').empty().append(icon);

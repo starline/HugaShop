@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.7
+ * @version 2.8
  *
  */
 
@@ -106,6 +106,15 @@ abstract class BaseModel extends Model
     public static function getFields()
     {
         return static::$table_fields ?? [];
+    }
+
+
+    /**
+     * Get table keys
+     */
+    public static function getKeys()
+    {
+        return static::$table_keys ?? [];
     }
 
 
