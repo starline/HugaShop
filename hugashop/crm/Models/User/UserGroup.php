@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.2
+ * @version 3.3
  *
  */
 
@@ -15,21 +15,16 @@ use HugaShop\Models\BaseModel;
 class UserGroup extends BaseModel
 {
 
-    protected $primaryKey = 'id';
-    protected $guarded = [];
     public $timestamps = false;
-
     protected static $table_fields = [
         'id' =>             ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'name' =>           ['type' => 'varchar',       'req' => true],
         'discount' =>       ['type' => 'decimal',       'length' => 10.2, 'def' => 0.00],
         'position' =>       ['type' => 'int',           'def' => 0]
-
     ];
 
     protected static $table_keys = [
-        'primary_key'   => ['column' => ['id'],          'type' => 'index'],
-        'position'      => ['column' => ['position'],    'type' => 'index']
+        'position'      => ['column' => ['position', 'id'],    'type' => 'index']
     ];
 
 

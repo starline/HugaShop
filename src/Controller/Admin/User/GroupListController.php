@@ -45,11 +45,11 @@ class GroupListController extends BaseAdminController
             }
 
             foreach (Helper::getPositions() as $id => $position) {
-                UserGroup::whereId($id)->update(['position' => $position]);
+                UserGroup::updateOne($id, ['position' => $position]);
             }
         }
 
-        Design::assign('groups', UserGroup::orderBy('position')->get());
+        Design::assign('groups', UserGroup::getList(order: 'position'));
 
         return $this->fetchResponse('user/group_list.tpl');
     }
