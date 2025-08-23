@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.1
+ * @version 3.2
  *
  */
 
@@ -29,10 +29,10 @@ class ProductBrand extends BaseModel
         'featured' =>           ['type' => 'tinyint',       'def' => 0]
     ];
 
-    public static $table_keys = [
-        'name' => ['name'],
-        'url' => ['url'],
-        'featured' => ['featured']
+    protected static $table_keys = [
+        'name'      => ['column' => ['name'],                'type' => 'index'],
+        'url'       => ['column' => ['url'],                 'type' => 'index'],
+        'featured'  => ['column' => ['featured'],            'type' => 'index']
     ];
 
 
@@ -40,6 +40,7 @@ class ProductBrand extends BaseModel
     {
         return $this->hasMany(Product::class, 'brand_id');
     }
+
 
     /**
      * Функция возвращает массив брендов, удовлетворяющих фильтру

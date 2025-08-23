@@ -23,7 +23,7 @@ class ProductCategoryFeature extends BaseModel
         'feature_id'    => ['type' => 'int',           'req' => true],
     ];
 
-    public static $table_keys = [
+    protected static $table_keys = [
         'feature_id'    => ['column' => ['feature_id'],     'type' => 'index'],
         'category_id'   => ['column' => ['category_id'],    'type' => 'index']
 

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.8
+ * @version 1.9
  *
  */
 
@@ -23,8 +23,8 @@ class AbstractTranslation extends BaseModel
     ];
 
 
-    public static $table_keys = [
-        'unique_translation' => ['entity_id', 'language_code']
+    protected static $table_keys = [
+        'unique_translation' => ['column' => ['entity_id', 'language_code'], 'type' => 'index']
     ];
 
 

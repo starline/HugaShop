@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.1
+ * @version 3.2
  *
  */
 
@@ -18,23 +18,24 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ContentComment extends BaseModel
 {
+
     protected static $table_fields = [
         'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'name' =>               ['type' => 'varchar',       'req' => true],
         'text' =>               ['type' => 'text',          'req' => true],
-        'date' =>               ['type' => 'datetime',      'def' => 'CURRENT_TIMESTAMP'],
         'ip' =>                 ['type' => 'varchar',       'access' => false],
         'entity_id' =>          ['type' => 'int'],
         'entity_type' =>        ['type' => 'varchar'],
         'rating' =>             ['type' => 'tinyint',       'def' => 5],
         'related_id' =>         ['type' => 'int',           'access' => false],
         'approved' =>           ['type' => 'tinyint',       'def' => 0],
-        'user_id' =>            ['type' => 'int']
+        'user_id' =>            ['type' => 'int'],
+        'date' =>               ['type' => 'datetime',      'def' => 'CURRENT_TIMESTAMP'],
     ];
 
-    public static $table_keys = [
-        'related_id' => ['related_id'],
-        'entity' => ['entity_type', 'entity_id']
+    protected static $table_keys = [
+        'related_id'    => ['column' => ['related_id'],               'type' => 'index'],
+        'entity'        => ['column' => ['entity_type', 'entity_id'], 'type' => 'index']
     ];
 
     public function entity()

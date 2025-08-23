@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.1
+ * @version 3.2
  *
  */
 
@@ -27,11 +27,10 @@ class UserGroup extends BaseModel
 
     ];
 
-    public static $table_keys = [
-        'primary_key' => 'id',
-        'position' => ['position']
+    protected static $table_keys = [
+        'primary_key'   => ['column' => ['id'],          'type' => 'index'],
+        'position'      => ['column' => ['position'],    'type' => 'index']
     ];
-
 
 
     /**

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.6
+ * @version 2.7
  *
  */
 
@@ -27,10 +27,11 @@ class UserCoupon extends BaseModel
         'usages' =>             ['type' => 'int',           'def' => 0]
     ];
 
-    public static $table_keys = [
-        'code' => ['code']
+    protected static $table_keys = [
+        'code' => ['column' => ['code'], 'type' => 'index']
     ];
 
+    
     /**
      * Функция возвращает купон по его id или code
      * @param int|string $id - id или code купона

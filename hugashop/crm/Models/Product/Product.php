@@ -55,7 +55,7 @@ class Product extends BaseModel
         'position' =>           ['type' => 'int',           'def' => 0],
     ];
 
-    public static $table_keys = [
+    protected static $table_keys = [
         'url'           => ['column' => ['url'],                    'type' => 'index'],
         'brand_id'      => ['column' => ['brand_id'],               'type' => 'index'],
         'visible'       => ['column' => ['visible'],                'type' => 'index'],
