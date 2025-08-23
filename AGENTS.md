@@ -20,6 +20,38 @@
 - Шаблонизатор Smarty
 - Фреймворк для HTML, CSS - Bootstrap 5
 
+## 🎯 Core Symfony Structure (`src/`)
+
+```
+src/
+├── Kernel.php                  # Symfony kernel
+├── Controller/
+│   ├── BaseController.php      # Base controller
+│   ├── BaseAdminController.php # Admin base controller
+│   ├── BaseFrontController.php # Frontend base controller
+│   ├── Admin/                  # Admin controllers
+│   └── Front/                  # Frontend controllers
+├── Services/                   # Business logic services
+├── Event/                      # Custom events
+└── EventListener/              # Event listeners
+```
+
+## Main CRM (`hugashop/crm/`)
+
+```
+hugashop/crm/
+├── composer.json               # CRM dependencies
+├── config.yaml                 # CRM configuration
+├── config_default.yaml         # Default config template
+├── Models/                     # Eloquent models
+├── Services/                   # CRM business logic
+├── Modules/                    # Core modules
+│   ├── Delivery/               # Delivery management
+│   ├── Payment/                # Payment processing
+│   └── Notifier/               # Notifications
+├── Addons/                     # System extensions
+```
+
 ## 🔥 Правила стиля агента
 
 - Пиши как опытный разработчик и предприниматель (уверенно, лаконично)
