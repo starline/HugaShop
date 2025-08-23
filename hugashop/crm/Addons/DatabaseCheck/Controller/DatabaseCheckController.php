@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.3
+ * @version 1.4
  *
  */
 
@@ -57,13 +57,14 @@ final class DatabaseCheckController extends BaseAdminController
                 $message = 'Таблица не найдена';
             } else {
 
+                $errors = [];
+
                 // check columns exist
                 $columns = $schema->getColumnListing($table);
                 $fields  = array_keys($class::getFields());
                 $missing = array_diff($fields, $columns);
                 if (!empty($missing)) {
-                    $status  = 'error';
-                    $message = 'Отсутствуют поля: ' . implode(', ', $missing);
+                    $errors[] = 'Отсутствуют поля: ' . implode(', ', $missing);
                 }
 
                 $rows = DB::table($table)->count();
@@ -81,6 +82,46 @@ final class DatabaseCheckController extends BaseAdminController
                 );
 
                 $size = (int)($info->size ?? 0);
+
+                // check indexes
+                $keys = $class::getKeys();
+                if (!empty($keys)) {
+                    $indexes_data = DB::select("SHOW INDEX FROM `{$real_table}`");
+                    $indexes = [];
+                    foreach ($indexes_data as $idx) {
+                        $indexes[$idx->Key_name]['type'] = ($idx->Non_unique == 0) ? 'unique' : 'index';
+                        $indexes[$idx->Key_name]['columns'][$idx->Seq_in_index] = $idx->Column_name;
+                    }
+                    foreach ($indexes as &$idx) {
+                        ksort($idx['columns']);
+                        $idx['columns'] = array_values($idx['columns']);
+                    }
+                    unset($idx);
+
+                    $missing_idx = [];
+                    foreach ($keys as $key) {
+                        $expected_cols = $key['column'];
+                        $expected_type = $key['type'] ?? 'index';
+                        $found = false;
+                        foreach ($indexes as $idx) {
+                            if ($idx['type'] === $expected_type && $idx['columns'] === $expected_cols) {
+                                $found = true;
+                                break;
+                            }
+                        }
+                        if (!$found) {
+                            $missing_idx[] = implode(', ', $expected_cols);
+                        }
+                    }
+                    if (!empty($missing_idx)) {
+                        $errors[] = 'Отсутствуют индексы: ' . implode(', ', $missing_idx);
+                    }
+                }
+
+                if (!empty($errors)) {
+                    $status  = 'error';
+                    $message = implode('; ', $errors);
+                }
             }
         } catch (\Throwable $e) {
             $status  = 'error';
