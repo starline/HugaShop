@@ -473,7 +473,7 @@ select option.disabled {
 #tab_menu li.mini>a,
 #tab_menu li.mini>span {
 	width: max-content;
-	font-size: .9rem;
+	font-size: .85rem;
 	margin-top: 3px;
 	padding-bottom: 8px;
 }
