@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 4.4
+ * @version 4.5
  *
  */
 
@@ -56,14 +56,16 @@ class Product extends BaseModel
     ];
 
     protected static $table_indexes = [
-        'url'           => ['column' => ['url'],                    'type' => 'index'],
-        'brand_id'      => ['column' => ['brand_id'],               'type' => 'index'],
-        'visible'       => ['column' => ['visible'],                'type' => 'index'],
-        'featured'      => ['column' => ['featured'],               'type' => 'index'],
-        'sale'          => ['column' => ['sale'],                   'type' => 'index'],
-        'disable'       => ['column' => ['disable'],                'type' => 'index'],
-        'category_id'   => ['column' => ['category_id', 'visible'], 'type' => 'index']
+        'url'                        => ['column' => ['url'],                                   'type' => 'unique'],
+        'position'                   => ['column' => ['position', 'id'],                        'type' => 'index'],
+        'stock'                      => ['column' => ['stock'],                                 'type' => 'index'],
+        'featured'                   => ['column' => ['featured'],                              'type' => 'index'],
+        'sale'                       => ['column' => ['sale'],                                  'type' => 'index'],
+        'disable'                    => ['column' => ['disable'],                               'type' => 'index'],
 
+        // фильтры каталога
+        'brand_visible'              => ['column' => ['brand_id', 'visible'],                   'type' => 'index'],
+        'category_visible_position'  => ['column' => ['category_id', 'visible', 'position'],    'type' => 'index']
     ];
 
     public function brand()
