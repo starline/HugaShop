@@ -23,7 +23,7 @@ class AbstractTranslation extends BaseModel
     ];
 
 
-    protected static $table_keys = [
+    protected static $table_indexes = [
         'unique_translation' => ['column' => ['entity_id', 'language_code'], 'type' => 'index']
     ];
 

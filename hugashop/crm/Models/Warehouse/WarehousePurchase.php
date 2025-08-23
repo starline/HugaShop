@@ -32,7 +32,7 @@ class WarehousePurchase extends BaseModel
         'position'     => ['type' => 'int',      'def'  => 0],
     ];
 
-    protected static $table_keys = [
+    protected static $table_indexes = [
         'position' => ['column' => ['moved_id', 'position', 'id'], 'type' => 'index']
     ];
 

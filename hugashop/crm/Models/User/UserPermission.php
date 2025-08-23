@@ -24,7 +24,7 @@ class UserPermission extends BaseModel
 
     ];
 
-    protected static $table_keys = [
+    protected static $table_indexes = [
         'user_id' => ['column' => ['user_id'],    'type' => 'index']
     ];
 

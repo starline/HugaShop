@@ -71,8 +71,8 @@ trait CheckModelTrait
             }
         }
 
-        if (!empty(static::getKeys())) {
-            static::ensureIndexes($table, static::getKeys());
+        if (!empty(static::getIndexes())) {
+            static::ensureIndexes($table, static::getIndexes());
         }
 
         self::$checkedTables[$table] = true;
@@ -152,7 +152,7 @@ trait CheckModelTrait
 
 
     /**
-     * Ensure indexes from $table_keys exist on the table
+     * Ensure indexes from $table_indexes exist on the table
      */
     protected static function ensureIndexes(string $table, array $indexes): void
     {

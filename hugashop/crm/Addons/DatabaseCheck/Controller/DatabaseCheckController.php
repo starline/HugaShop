@@ -84,7 +84,7 @@ final class DatabaseCheckController extends BaseAdminController
                 $size = (int)($info->size ?? 0);
 
                 // check indexes
-                $keys = $class::getKeys();
+                $keys = $class::getIndexes();
                 if (!empty($keys)) {
                     $indexes_data = DB::select("SHOW INDEX FROM `{$real_table}`");
                     $indexes = [];

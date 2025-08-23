@@ -112,9 +112,9 @@ abstract class BaseModel extends Model
     /**
      * Get table keys
      */
-    public static function getKeys()
+    public static function getIndexes()
     {
-        return static::$table_keys ?? [];
+        return static::$table_indexes ?? [];
     }
 
 

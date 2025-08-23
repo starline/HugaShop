@@ -27,7 +27,7 @@ class UserCoupon extends BaseModel
         'usages' =>             ['type' => 'int',           'def' => 0]
     ];
 
-    protected static $table_keys = [
+    protected static $table_indexes = [
         'code' => ['column' => ['code'], 'type' => 'index']
     ];
 

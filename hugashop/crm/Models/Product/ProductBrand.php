@@ -29,7 +29,7 @@ class ProductBrand extends BaseModel
         'featured' =>           ['type' => 'tinyint',       'def' => 0]
     ];
 
-    protected static $table_keys = [
+    protected static $table_indexes = [
         'name'      => ['column' => ['name'],                'type' => 'index'],
         'url'       => ['column' => ['url'],                 'type' => 'index'],
         'featured'  => ['column' => ['featured'],            'type' => 'index']

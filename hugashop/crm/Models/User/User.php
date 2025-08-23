@@ -42,7 +42,7 @@ class User extends BaseModel
         'group_id' =>       ['type' => 'int',                               'access' => 'user_group']
     ];
 
-    protected static $table_keys = [
+    protected static $table_indexes = [
         'position' => ['column' => ['group_id', 'enabled', 'id'],    'type' => 'index']
     ];
 

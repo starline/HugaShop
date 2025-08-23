@@ -33,7 +33,7 @@ class ContentComment extends BaseModel
         'date' =>               ['type' => 'datetime',      'def' => 'CURRENT_TIMESTAMP'],
     ];
 
-    protected static $table_keys = [
+    protected static $table_indexes = [
         'related_id'    => ['column' => ['related_id'],               'type' => 'index'],
         'entity'        => ['column' => ['entity_type', 'entity_id'], 'type' => 'index']
     ];

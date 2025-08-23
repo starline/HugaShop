@@ -25,8 +25,8 @@ class WarehousePlace extends BaseModel
         'position' => ['type' => 'int',         'def' => 0],
     ];
 
-    protected static $table_keys = [
-        'position'      => ['column' => ['position', 'id'],    'type' => 'index']
+    protected static $table_ktable_indexeseys = [
+        'position' => ['column' => ['position', 'id'],    'type' => 'index']
     ];
 
 

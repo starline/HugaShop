@@ -40,7 +40,7 @@ class WarehouseMove extends BaseModel
         'closed'        => ['type' => 'tinyint',  'def' => 0, 'access' => false],
     ];
 
-    protected static $table_keys = [
+    protected static $table_indexes = [
         'user_id' => ['column' => ['status'], 'type' => 'index']
     ];
 
