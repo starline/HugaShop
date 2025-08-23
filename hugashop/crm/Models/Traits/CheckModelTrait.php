@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.0
+ * @version 2.1
  *
  */
 
@@ -70,6 +70,10 @@ trait CheckModelTrait
                     });
                 }
             }
+        }
+
+        if (!empty(static::$table_keys)) {
+            static::ensureIndexes($table, static::$table_keys);
         }
 
         self::$checkedTables[$table] = true;
@@ -145,5 +149,74 @@ trait CheckModelTrait
                 }
             }
         }
+    }
+
+
+    /**
+     * Ensure indexes from $table_keys exist on the table
+     */
+    protected static function ensureIndexes(string $table, array $indexes): void
+    {
+        $schema   = DB::schema();
+        $existing = self::getTableIndexes($table);
+
+        $missing = [];
+        foreach ($indexes as $name => $params) {
+            if (!in_array(strtolower($name), $existing, true)) {
+                $missing[$name] = $params;
+            }
+        }
+
+        if ($missing) {
+            $schema->table($table, function (Blueprint $blueprint) use ($missing) {
+                foreach ($missing as $name => $params) {
+                    $columns = $params['column'] ?? [];
+                    $type    = $params['type'] ?? 'index';
+
+                    switch ($type) {
+                        case 'unique':
+                            $blueprint->unique($columns, $name);
+                            break;
+                        case 'primary':
+                            $blueprint->primary($columns, $name);
+                            break;
+                        default:
+                            $blueprint->index($columns, $name);
+                    }
+                }
+            });
+        }
+    }
+
+
+    /**
+     * Get existing index names for table
+     */
+    protected static function getTableIndexes(string $table): array
+    {
+        $connection = DB::connection();
+        $driver     = $connection->getDriverName();
+
+        $indexes = [];
+
+        if ($driver === 'sqlite') {
+            $rows = $connection->select("PRAGMA index_list('" . $table . "')");
+            foreach ($rows as $row) {
+                $name = is_object($row) ? ($row->name ?? null) : ($row['name'] ?? null);
+                if ($name) {
+                    $indexes[] = strtolower($name);
+                }
+            }
+        } else {
+            $rows = $connection->select("SHOW INDEX FROM `" . $table . "`");
+            foreach ($rows as $row) {
+                $name = is_object($row) ? ($row->Key_name ?? null) : ($row['Key_name'] ?? null);
+                if ($name) {
+                    $indexes[] = strtolower($name);
+                }
+            }
+        }
+
+        return array_unique($indexes);
     }
 }
