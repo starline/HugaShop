@@ -41,6 +41,7 @@
 	--background-color: #f3f3f3;
 	--background-dim-color: #fafafa;
 	--background-inside-color: #fff;
+	--background-alt-color: #000;
 	--input-border-focus-color: #a1b671;
 	--input-border-dim-color: #e2e2e2;
 	--lightin-dim-color: #cbe38c;
@@ -56,20 +57,11 @@
 
 }
 
-.badge {
-	--bs-badge-font-size: 0.85em;
-}
-
-.list-group {
-	--bs-list-group-item-padding-y: 0.3rem;
-	--bs-list-group-item-padding-x: 0.8rem;
-}
-
 /**
  * Custom bootstrap
  */
 html {
-	font-size: 13px;
+	font-size: 14px;
 }
 
 body {
@@ -214,6 +206,7 @@ textarea {
 
 .badge {
 	line-height: normal;
+	--bs-badge-font-size: 0.85em;
 }
 
 .input-group-text {
@@ -225,6 +218,18 @@ textarea {
 	--bs-tooltip-padding-x: 0.7rem;
 	--bs-tooltip-padding-y: 0.35rem;
 	--bs-tooltip-font-size: 0.9rem;
+}
+
+.list-group {
+	--bs-list-group-item-padding-y: 0.3rem;
+	--bs-list-group-item-padding-x: 0.8rem;
+}
+
+.popover {
+	--bs-popover-border-color: rgb(0 0 0 / 30%);
+	--bs-popover-body-color: var(--text-alt-color);
+	--bs-popover-bg: var(--background-alt-color);
+	--bs-popover-font-size: 0.95rem;
 }
 
 .offcanvas {
@@ -262,7 +267,7 @@ textarea {
 	overflow-wrap: anywhere;
 	width: fit-content;
 	cursor: default;
-	font-size: .85rem;
+	font-size: .8rem;
 	font-weight: 400;
 	padding-top: 5px;
 	background-color: var(--background-inside-color);
@@ -372,6 +377,7 @@ select option.disabled {
 	min-width: 250px;
 	margin-top: 30px;
 	margin-bottom: 30px;
+	font-size: 0.95rem;
 }
 
 #main_menu>li {
@@ -859,7 +865,7 @@ a.admin_bookmark svg {
 }
 
 #variants_block ul li.variant_sku_info .variant_sku {
-	font-size: 0.85rem;
+	font-size: 0.8rem;
 }
 
 #variants_block ul li.variant_sku_info .marking_print {
@@ -887,7 +893,7 @@ a.admin_bookmark svg {
 }
 
 #variants_block ul li.variant_price_info .variant_discount {
-	font-size: 0.85rem;
+	font-size: 0.8rem;
 	text-align: center;
 }
 
@@ -895,18 +901,18 @@ a.admin_bookmark svg {
 	text-align: right;
 	display: block;
 	color: var(--lightin-dark-color);
-	font-size: 0.85rem;
+	font-size: 0.8rem;
 }
 
 #variants_block ul li.variant_price_info .discount {
 	text-align: right;
 	display: block;
 	color: var(--flash-color);
-	font-size: 0.85rem;
+	font-size: 0.8rem;
 }
 
 #variants_block ul li.variant_price_info .variant_old {
-	font-size: 0.85rem;
+	font-size: 0.8rem;
 	color: var(--flash-color);
 }
 
@@ -1550,6 +1556,26 @@ div#sort_links b {
 	border-radius: 6px;
 }
 
+.list .list_row .col_price {
+	position: relative;
+}
+
+.list .list_row .col_price .cost_price {
+	position: absolute;
+	right: 0;
+	top: -15px;
+	font-size: .8rem;
+	color: var(--text-dim-color);
+}
+
+.list .list_row .col_price .cost_price .price_html {
+	color: var(--text-dim-color);
+}
+
+.list .list_row .col_price .price {
+	font-weight: 700;
+}
+
 .list .tree_row .list_row {
 	padding-right: 0;
 }
@@ -1603,7 +1629,7 @@ div#sort_links b {
 }
 
 .list .notice_block {
-	font-size: 0.85rem;
+	font-size: 0.8rem;
 	font-style: italic;
 	color: var(--text-dim-color);
 	border-radius: 3px;
@@ -1635,13 +1661,13 @@ div#sort_links b {
 }
 
 .list .order_date .date {
-	font-size: 0.85rem;
+	font-size: 0.8rem;
 	font-weight: bold;
 	color: var(--text-dim-color);
 }
 
 .list .order_date .time {
-	font-size: 0.85rem;
+	font-size: 0.8rem;
 	color: var(--text-dim-color)
 }
 
@@ -1682,7 +1708,7 @@ div#sort_links b {
 
 .list .order_price .order_decline {
 	font-weight: 400;
-	font-size: 0.85rem;
+	font-size: 0.8rem;
 	padding: 2px 6px 2px;
 	background-color: var(--flash-dim-color);
 	color: var(--text-alt-color);
@@ -1753,7 +1779,7 @@ div#sort_links b {
 
 .list .list_row .variants .wmovements {
 	right: 0;
-	font-size: 0.85rem;
+	font-size: 0.8rem;
 	top: -15px;
 	position: absolute;
 	color: var(--lightin-color);
@@ -2146,7 +2172,7 @@ span.alert {
 /* Заказы */
 .list .variant_name {
 	margin-top: 5px;
-	font-size: .85rem;
+	font-size: .8rem;
 	color: var(--text-dim-color);
 }
 
@@ -2155,7 +2181,7 @@ span.alert {
 }
 
 .list.purchases .stock .variant_stock {
-	font-size: 0.85rem;
+	font-size: 0.8rem;
 	line-height: 2.1;
 	color: var(--lightin-dark-color);
 }
@@ -2164,7 +2190,7 @@ span.alert {
 	position: absolute;
 	right: 0;
 	top: -15px;
-	font-size: 0.85rem;
+	font-size: 0.8rem;
 	color: var(--text-dim-color);
 	display: flex;
 	flex-direction: row;
@@ -2232,7 +2258,7 @@ span.alert {
 	opacity: 0.66;
 	cursor: default;
 	position: absolute;
-	font-size: 0.85rem;
+	font-size: 0.8rem;
 	color: var(--text-alt-color);
 	background-color: var(--text-dim-color);
 	padding: 1px 5px;
@@ -2290,7 +2316,7 @@ span.alert {
 
 .order_date_time div {
 	color: var(--text-dim-color);
-	font-size: 0.85rem;
+	font-size: 0.8rem;
 	margin: 8px 0;
 }
 
@@ -2302,7 +2328,7 @@ span.alert {
 }
 
 .order_date_time .order_manager .profit_dicount {
-	font-size: 0.85rem;
+	font-size: 0.8rem;
 	color: var(--flash-color);
 	font-weight: normal;
 }
@@ -2539,13 +2565,13 @@ input.input_autocomplete {
 
 .subtotal .over_line {
 	font-weight: 600;
-	font-size: 0.85rem;
+	font-size: 0.8rem;
 	color: var(--text-dim-color);
 }
 
 
 .subtotal .over_line {
-	font-size: 0.85rem;
+	font-size: 0.8rem;
 	color: var(--text-dim-color);
 }
 
@@ -2637,7 +2663,7 @@ input.input_autocomplete {
 }
 
 .order_label_text {
-	font-size: 0.85rem;
+	font-size: 0.8rem;
 	color: var(--text-alt-color);
 	display: block;
 	padding: 4px 4px;

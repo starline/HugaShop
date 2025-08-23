@@ -289,6 +289,12 @@
 								{$wp->place->name}
 							</div>
 							<div class="col-2">
+								<div class="col_price">
+									<div class="cost_price">{$wp->cost_price|price_html|raw}</div>
+									<div class="price">{$wp->price|price_html|raw}</div>
+								</div>
+							</div>
+							<div class="col-2">
 								<span class="badge text-bg-round">{$wp->amount} {$settings->units}</span>
 							</div>
 						</div>

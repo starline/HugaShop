@@ -71,9 +71,10 @@
                                 const icon = $('<i/>', {
                                     class: 'material-icons text-danger',
                                     text: 'info_outline',
+                                    'tabindex': '0',
                                     'data-bs-toggle': 'popover',
                                     'data-bs-placement': 'top',
-                                    'data-bs-trigger': 'hover',
+                                    'data-bs-trigger': 'hover focus',
                                     'data-bs-content': data.message
                                 });
                                 row.find('.status').empty().append(icon);
