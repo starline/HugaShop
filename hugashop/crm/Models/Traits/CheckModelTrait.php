@@ -17,7 +17,6 @@ use Illuminate\Database\Capsule\Manager as DB;
 trait CheckModelTrait
 {
 
-    protected static $table_fields;
     protected static array $checkedTables = [];
 
 
@@ -51,7 +50,7 @@ trait CheckModelTrait
      */
     protected static function initTable(string $table)
     {
-        if (isset(self::$checkedTables[$table]) || empty(static::$table_fields)) {
+        if (isset(self::$checkedTables[$table]) || empty(static::getFields())) {
             self::$checkedTables[$table] = true;
             return;
         }
@@ -60,10 +59,10 @@ trait CheckModelTrait
 
         if (!$schema->hasTable($table)) {
             $schema->create($table, function (Blueprint $blueprint) {
-                static::addColumns($blueprint, static::$table_fields);
+                static::addColumns($blueprint, static::getFields());
             });
         } else {
-            foreach (static::$table_fields as $field => $options) {
+            foreach (static::getFields() as $field => $options) {
                 if (!$schema->hasColumn($table, $field)) {
                     $schema->table($table, function (Blueprint $blueprint) use ($field, $options) {
                         static::addColumns($blueprint, [$field => $options]);
@@ -72,8 +71,8 @@ trait CheckModelTrait
             }
         }
 
-        if (!empty(static::$table_keys)) {
-            static::ensureIndexes($table, static::$table_keys);
+        if (!empty(static::getKeys())) {
+            static::ensureIndexes($table, static::getKeys());
         }
 
         self::$checkedTables[$table] = true;
@@ -195,25 +194,13 @@ trait CheckModelTrait
     protected static function getTableIndexes(string $table): array
     {
         $connection = DB::connection();
-        $driver     = $connection->getDriverName();
-
         $indexes = [];
 
-        if ($driver === 'sqlite') {
-            $rows = $connection->select("PRAGMA index_list('" . $table . "')");
-            foreach ($rows as $row) {
-                $name = is_object($row) ? ($row->name ?? null) : ($row['name'] ?? null);
-                if ($name) {
-                    $indexes[] = strtolower($name);
-                }
-            }
-        } else {
-            $rows = $connection->select("SHOW INDEX FROM `" . $table . "`");
-            foreach ($rows as $row) {
-                $name = is_object($row) ? ($row->Key_name ?? null) : ($row['Key_name'] ?? null);
-                if ($name) {
-                    $indexes[] = strtolower($name);
-                }
+        $rows = $connection->select("SHOW INDEX FROM `" . $table . "`");
+        foreach ($rows as $row) {
+            $name = is_object($row) ? ($row->Key_name ?? null) : ($row['Key_name'] ?? null);
+            if ($name) {
+                $indexes[] = strtolower($name);
             }
         }
 
