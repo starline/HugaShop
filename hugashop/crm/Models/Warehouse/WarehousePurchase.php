@@ -32,6 +32,10 @@ class WarehousePurchase extends BaseModel
         'position'     => ['type' => 'int',      'def'  => 0],
     ];
 
+    protected static $table_keys = [
+        'position' => ['column' => ['moved_id', 'position', 'id'], 'type' => 'index']
+    ];
+
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id');

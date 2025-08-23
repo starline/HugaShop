@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.2
+ * @version 1.3
  *
  */
 
@@ -25,6 +25,10 @@ class WarehousePlace extends BaseModel
         'position' => ['type' => 'int',         'def' => 0],
     ];
 
+    protected static $table_keys = [
+        'position'      => ['column' => ['position', 'id'],    'type' => 'index']
+    ];
+
 
     /**
      * Delete
@@ -35,6 +39,6 @@ class WarehousePlace extends BaseModel
 
         // TODO: Удалить если нет товаров на складе. Иначе ошибка
 
-        return self::whereId($id)->delete();
+        return self::deleteOne($id);
     }
 }

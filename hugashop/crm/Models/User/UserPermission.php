@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.9
+ * @version 4.0
  *
  * Тут работает с правами пользователя
  *
@@ -22,6 +22,10 @@ class UserPermission extends BaseModel
         'user_id' =>        ['type' => 'int',           'req' => true],
         'name' =>           ['type' => 'varchar',       'req' => true]
 
+    ];
+
+    protected static $table_keys = [
+        'user_id' => ['column' => ['user_id'],    'type' => 'index']
     ];
 
     // Виды прав доступа

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 4.0
+ * @version 4.1
  *
  * Use BCRYPT
  *
@@ -42,6 +42,9 @@ class User extends BaseModel
         'group_id' =>       ['type' => 'int',                               'access' => 'user_group']
     ];
 
+    protected static $table_keys = [
+        'position' => ['column' => ['group_id', 'enabled', 'id'],    'type' => 'index']
+    ];
 
     public function group()
     {

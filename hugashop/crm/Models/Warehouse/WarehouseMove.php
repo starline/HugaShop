@@ -40,6 +40,10 @@ class WarehouseMove extends BaseModel
         'closed'        => ['type' => 'tinyint',  'def' => 0, 'access' => false],
     ];
 
+    protected static $table_keys = [
+        'user_id' => ['column' => ['status'], 'type' => 'index']
+    ];
+
     public function purchases()
     {
         return $this->hasMany(WarehousePurchase::class, 'move_id')->orderBy('position');

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  */
 
@@ -196,7 +196,10 @@ trait CheckModelTrait
         $connection = DB::connection();
         $indexes = [];
 
-        $rows = $connection->select("SHOW INDEX FROM `" . $table . "`");
+        $prefix     = $connection->getTablePrefix();
+        $real_table = str_starts_with($table, $prefix) ? $table : $prefix . $table;
+
+        $rows = $connection->select("SHOW INDEX FROM `{$real_table}`");
         foreach ($rows as $row) {
             $name = is_object($row) ? ($row->Key_name ?? null) : ($row['Key_name'] ?? null);
             if ($name) {
