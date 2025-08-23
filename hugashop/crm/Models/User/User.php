@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 4.1
+ * @version 4.2
  *
  * Use BCRYPT
  *
@@ -43,7 +43,12 @@ class User extends BaseModel
     ];
 
     protected static $table_indexes = [
-        'position' => ['column' => ['group_id', 'enabled', 'id'],    'type' => 'index']
+        'position'   => ['column' => ['group_id', 'enabled', 'id'], 'type' => 'index'],
+        'email'      => ['column' => ['email'], 'type' => 'unique'],
+        'phone'      => ['column' => ['phone'], 'type' => 'index'],
+        'token'      => ['column' => ['token'], 'type' => 'unique'],
+        'manager'    => ['column' => ['manager'], 'type' => 'index'],
+        'created_at' => ['column' => ['created_at'], 'type' => 'index'],
     ];
 
     public function group()
