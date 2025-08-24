@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.2
  *
  */
 
@@ -39,5 +39,19 @@ final class CarouselPromoBanner extends BaseAddonModel
         return $this->hasMany(Image::class, 'entity_id')
             ->where('entity_name', CarouselPromo::class)
             ->orderBy('position');
+    }
+
+    public static function deleteOne(array|int $ids)
+    {
+        $ids_array = is_array($ids) ? $ids : [$ids];
+
+        foreach ($ids_array as $id) {
+            Image::where('entity_name', CarouselPromo::class)
+                ->where('entity_id', $id)
+                ->get()
+                ->each(fn($image) => Image::deleteImage($image->id));
+        }
+
+        return parent::deleteOne($ids);
     }
 }
