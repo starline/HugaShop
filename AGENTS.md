@@ -23,6 +23,7 @@
 - Часть логики оформлена через Service-классы.
 - Шаблоны пишутся на Smarty 5.
 - Для HTML и CSS используется Bootstrap 5.
+- Для JS используется jQuery 3.6.
 
 ## Core Symfony Structure (`src/`)
 
