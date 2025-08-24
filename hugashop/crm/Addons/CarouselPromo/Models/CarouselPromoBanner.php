@@ -41,17 +41,14 @@ final class CarouselPromoBanner extends BaseAddonModel
             ->orderBy('position');
     }
 
+
+    /**
+     * Delete banners and their images
+     */
     public static function deleteOne(array|int $ids)
     {
         $ids_array = is_array($ids) ? $ids : [$ids];
-
-        foreach ($ids_array as $id) {
-            Image::where('entity_name', CarouselPromo::class)
-                ->where('entity_id', $id)
-                ->get()
-                ->each(fn($image) => Image::deleteImage($image->id));
-        }
-
+        Image::deleteEntityImages($ids_array, CarouselPromo::class);
         return parent::deleteOne($ids);
     }
 }
