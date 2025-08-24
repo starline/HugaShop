@@ -65,6 +65,7 @@ final class CarouselPromoController extends BaseAdminController
         return $this->fetchAddonResponse('index.tpl');
     }
 
+
     /**
      * Добавление/редактирование баннера
      */

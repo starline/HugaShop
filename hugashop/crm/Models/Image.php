@@ -30,11 +30,15 @@ class Image extends BaseModel
         'id' =>                 ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'name' =>               ['type' => 'varchar'],
         'entity_id' =>          ['type' => 'int'],
-        'entity_name' =>        ['type' => 'varchar',       'length' => 25],
+        'entity_name' =>        ['type' => 'varchar'],
         'filename' =>           ['type' => 'varchar'],
         'visible' =>            ['type' => 'tinyint',       'def' => 1],
         'position' =>           ['type' => 'created',       'def' => 0],
         'created_at' =>         ['type' => 'varchar',       'def' => 'CURRENT_TIMESTAMP']
+    ];
+
+    protected static $table_indexes = [
+        'entity_id' => ['column' => ['entity_id', 'entity_name', 'position'],   'type' => 'index']
     ];
 
     public function entity()

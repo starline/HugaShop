@@ -1,3 +1,14 @@
 name: "Promo Carousel"
 description: "Управляемая карусель промо баннеров"
+settings_params:
+  - {
+      variable: enabled,
+      name: "Включено",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }
+  - {
+      variable: show_menu,
+      name: "Показывать в меню",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }
 version: 1.2
