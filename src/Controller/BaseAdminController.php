@@ -40,7 +40,9 @@ class BaseAdminController extends BaseController
         // Setup
         $admin_theme = 'admin';
         Design::initSettings(['theme' => $admin_theme, 'packages' => $this->Packages]);
-        $this->setTranslator('ru', $admin_theme);
+
+        $current_language = Language::getCurrent();
+        $this->setTranslator($current_language->code, $admin_theme);
 
         // Order INFO count for top menu
         // 0 - new order
@@ -57,7 +59,10 @@ class BaseAdminController extends BaseController
             'currency'              => FinanceCurrency::getMainCurrency(),
             'orders_info_count'     => $orders_info_count,
             'new_comments_counter'  => ContentComment::getCommentsCount(filter: ['approved' => 0]),
-            'addons_menu'           => Addon::getMenuAddons()
+            'addons_menu'           => Addon::getMenuAddons(),
+            'languages'             => Language::getLanguages(),
+            'current_language'      => $current_language,
+            'main_language'         => Language::getMain()
         ]);
     }
 

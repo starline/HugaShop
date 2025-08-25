@@ -17,8 +17,8 @@
 		{if $locked_key}
 			import { initEditLock } from '{"js/lock.edit.js"|asset}';
 			initEditLock({
-				lock_url: "{'LockEditAjax'|link:[locked_key => $locked_key]}",
-				unlock_url: "{'UnlockEditAjax'|link:[locked_key => $locked_key]}"
+				lock_url: "{'LockEditAjax'|linkLang:[locked_key => $locked_key]}",
+				unlock_url: "{'UnlockEditAjax'|linkLang:[locked_key => $locked_key]}"
 			});
 		{/if}
 	</script>
@@ -29,7 +29,6 @@
 </head>
 
 <body>
-
 	<div class="wrap d-xxl-flex">
 
 		<!-- Sidebar -->
@@ -61,7 +60,7 @@
 									<ul>
 										<li
 											class="mini {if $route|in_array:[OrderListAdmin, OrderAdmin, OrderNewAdmin]}active{/if}">
-											<a href="{'OrderListAdmin'|link:[status => 0]}">Заказы</a>
+											<a href="{'OrderListAdmin'|linkLang:[status => 0]}">{'Orders'|trans}</a>
 											{if $orders_info_count[0]}
 												<div class="badge rounded-pill bg-danger">
 													{$orders_info_count[0]}</div>
@@ -69,33 +68,33 @@
 										</li>
 
 										<li class="mini {if $route|in_array:['CartListAdmin']}active{/if}">
-											<a href="{'CartListAdmin'|link}">Корзины</a>
+											<a href="{'CartListAdmin'|linkLang}">{'Carts'|trans}</a>
 										</li>
 
 										{if 'user_manager'|user_access}
 											<li class="mini right {if $route|in_array:[ManagerProfitAdmin]}active{/if}">
-												<a href="{'ManagerProfitAdmin'|link}">Доход менеджера</a>
+												<a href="{'ManagerProfitAdmin'|linkLang}">Доход менеджера</a>
 											</li>
 										{/if}
 
 										{if 'order_payment'|user_access}
 											<li
 												class="mini {if $route|in_array:[OrderPaymentListAdmin, OrderPaymentAdmin, OrderPaymentNewAdmin]}active{/if}">
-												<a href="{'OrderPaymentListAdmin'|link}">Оплата</a>
+												<a href="{'OrderPaymentListAdmin'|linkLang}">Оплата</a>
 											</li>
 										{/if}
 
 										{if 'order_delivery'|user_access}
 											<li
 												class="mini {if $route|in_array:[DeliveryListAdmin, OrderDeliveryAdmin, OrderDeliveryNewAdmin]}active{/if}">
-												<a href="{'DeliveryListAdmin'|link}">Доставка</a>
+												<a href="{'DeliveryListAdmin'|linkLang}">Доставка</a>
 											</li>
 										{/if}
 
 										{if 'order_label'|user_access}
 											<li
 												class="mini {if $route|in_array:[LabelListAdmin, LabelAdmin, LabelNewAdmin]}active{/if}">
-												<a href="{'LabelListAdmin'|link}">Метки</a>
+												<a href="{'LabelListAdmin'|linkLang}">Метки</a>
 											</li>
 										{/if}
 									</ul>
@@ -116,13 +115,13 @@
 										{if 'product_view'|user_access}
 											<li
 												class="mini {if $route|in_array:[ProductListAdmin, ProductAdmin, ProductPriceAdmin, ImportProductPAdmin]}active{/if}">
-												<a href="{'ProductListAdmin'|link}">Товары</a>
+												<a href="{'ProductListAdmin'|linkLang}">Товары</a>
 											</li>
 										{/if}
 
 										{if 'warehouse'|user_access}
 											<li class="mini {if $route|in_array:['MoveAdmin','MoveListAdmin']}active{/if}">
-												<a href="{'MoveListAdmin'|link}">Поставки</a>
+												<a href="{'MoveListAdmin'|linkLang}">Поставки</a>
 											</li>
 										{/if}
 									</ul>
@@ -143,21 +142,21 @@
 										{if 'user'|user_access}
 											<li
 												class="mini {if $route|in_array:[UserListAdmin, UserAdmin, UserSettingsAdmin]} active{/if}">
-												<a href="{'UserListAdmin'|link}">Покупатели</a>
+												<a href="{'UserListAdmin'|linkLang}">Покупатели</a>
 											</li>
 										{/if}
 
 										{if 'user_notifier'|user_access}
 											<li
 												class="mini {if $route|in_array:[MailingNewAdmin, MailingAdmin, MailingListAdmin, NotifierAdmin, NotifierListAdmin, NotifierNewAdmin, MailTemplateNewAdmin, MailTemplateListAdmin, MailTemplateAdmin]}active{/if}">
-												<a href="{'MailingListAdmin'|link}">Список рассылки</a>
+												<a href="{'MailingListAdmin'|linkLang}">Список рассылки</a>
 											</li>
 										{/if}
 
 										{if 'user_coupon'|user_access}
 											<li
 												class="right mini {if $route|in_array:[CouponListAdmin, CouponAdmin, CouponNewAdmin]}active{/if}">
-												<a href="{'CouponListAdmin'|link}">Купоны</a>
+												<a href="{'CouponListAdmin'|linkLang}">Купоны</a>
 											</li>
 										{/if}
 									</ul>
@@ -178,13 +177,13 @@
 										{if 'blog'|user_access}
 											<li
 												class="mini {if $route|in_array:[PostAdmin, PostListAdmin, PostNewAdmin]}active{/if}">
-												<a href="{'PostListAdmin'|link}">Блог</a>
+												<a href="{'PostListAdmin'|linkLang}">Блог</a>
 											</li>
 										{/if}
 
 										{if 'comment'|user_access}
 											<li class="mini {if $route|in_array:[CommentListAdmin, CommentAdmin]}active{/if}">
-												<a href="{'CommentListAdmin'|link}">Комментарии</a>
+												<a href="{'CommentListAdmin'|linkLang}">Комментарии</a>
 												{if $new_comments_counter}
 													<div class="badge rounded-pill bg-danger">
 														{$new_comments_counter}
@@ -196,13 +195,13 @@
 
 										{if 'feedback'|user_access}
 											<li class="mini right {if $route|in_array:[FeedbackListAdmin]}active{/if}">
-												<a href="{'FeedbackListAdmin'|link}">Обратная связь</a>
+												<a href="{'FeedbackListAdmin'|linkLang}">Обратная связь</a>
 											</li>
 										{/if}
 
 										{if 'page'|user_access}
 											<li class="mini right  {if $route|in_array:[PageListAdmin, PageAdmin]}active{/if}">
-												<a href="{'PageListAdmin'|link}">Страницы</a>
+												<a href="{'PageListAdmin'|linkLang}">Страницы</a>
 											</li>
 										{/if}
 									</ul>
@@ -223,17 +222,17 @@
 										{if 'finance'|user_access}
 											<li
 												class="mini {if $route|in_array:[PaymentListAdmin, PaymentAdmin, PaymentNewAdmin]}active{/if}">
-												<a href="{'PaymentListAdmin'|link}">Платежи</a>
+												<a href="{'PaymentListAdmin'|linkLang}">Платежи</a>
 											</li>
 										{/if}
 										{if 'stats'|user_access}
 											<li class="mini {if $route|in_array:[StatsAdmin]}active{/if}">
-												<a href="{'StatsAdmin'|link}">Статистика продаж</a>
+												<a href="{'StatsAdmin'|linkLang}">Статистика продаж</a>
 											</li>
 										{/if}
 										{if 'finance'|user_access}
 											<li class="mini {if $route|in_array:[CurrencyAdmin]}active{/if}">
-												<a href="{'CurrencyAdmin'|link}">Валюты</a>
+												<a href="{'CurrencyAdmin'|linkLang}">Валюты</a>
 											</li>
 										{/if}
 									</ul>
@@ -252,13 +251,13 @@
 
 									<ul>
 										<li class="mini {if $route == 'AddonListAdmin'}active{/if}">
-											<a href="{'AddonListAdmin'|link}">Список модулей</a>
+											<a href="{'AddonListAdmin'|linkLang}">Список модулей</a>
 										</li>
 										{foreach $addons_menu as $ext_module}
 											<li
 												class="mini {if isset($addon) and $addon->module == $ext_module->module}active{/if}">
 												<a
-													href="{'AddonAdmin'|link:[name => $ext_module->module]}">{$ext_module->name}</a>
+													href="{'AddonAdmin'|linkLang:[name => $ext_module->module]}">{$ext_module->name}</a>
 											</li>
 										{/foreach}
 									</ul>
@@ -278,26 +277,26 @@
 									<ul>
 										{if 'settings'|user_access}
 											<li class="mini {if $route == 'SettingsAdmin'}active{/if}">
-												<a href="{'SettingsAdmin'|link}">Основные настройки</a>
+												<a href="{'SettingsAdmin'|linkLang}">Основные настройки</a>
 											</li>
 										{/if}
 
 										{if 'settings'|user_access}
 											<li class="mini {if $route == 'LanguageListAdmin'}active{/if}">
-												<a href="{'LanguageListAdmin'|link}">Языки</a>
+												<a href="{'LanguageListAdmin'|linkLang}">Языки</a>
 											</li>
 										{/if}
 
 										{if 'backup'|user_access}
 											<li class="{if $route == 'BackupAdmin'}active{/if}">
-												<a href="{'BackupAdmin'|link}">Бекап</a>
+												<a href="{'BackupAdmin'|linkLang}">Бекап</a>
 											</li>
 										{/if}
 
 										{if 'design'|user_access}
 											<li
 												class="{if $route|in_array:[ImagesAdmin, ThemeAdmin, StylesAdmin, TemplatesAdmin, ThemeAdmin]}active{/if}">
-												<a href="{'ThemeAdmin'|link}">Тема</a>
+												<a href="{'ThemeAdmin'|linkLang}">Тема</a>
 											</li>
 										{/if}
 									</ul>
@@ -308,8 +307,8 @@
 				</div>
 
 				<div class="current_user">
-					<a class="user_name" href="{'UserAdmin'|link:['id' => $user->id]}">{$user->name}</a>
-					<a href="{'UserLogout'|link}" id="logout">Выход</a>
+					<a class="user_name" href="{'UserAdmin'|linkLang:['id' => $user->id]}">{$user->name}</a>
+					<a href="{'UserLogout'|linkLang}" id="logout">{'user.logout'|trans}</a>
 				</div>
 			</div>
 		</div>
@@ -343,7 +342,7 @@
 
 
 	<!-- Admin Bookmark -->
-	<a class="admin_bookmark" href="{'Main'|link}" data-bs-toggle="tooltip" title="Перейти на сайт">
+	<a class="admin_bookmark" href="{'Main'|linkLang}" data-bs-toggle="tooltip" title="Перейти на сайт">
 		<svg viewBox="0 0 24 24" focusable="false" class="dyAbMb">
 			<path d="M0 0h24v24H0z" fill="none"></path>
 			<path d="M8.59,16.59L13.17,12L8.59,7.41L10,6l6,6l-6,6L8.59,16.59z"></path>

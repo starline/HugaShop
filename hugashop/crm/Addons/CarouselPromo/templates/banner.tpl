@@ -29,9 +29,11 @@
                 </div>
 
                 <div class="name_row">
-                    <span class="col-form-label item_id">#{$banner->id}</span>
-                    <input class="form-control form-control-lg" name="name" type="text" value="{$banner->name}"
-                        placeholder="Название баннера" />
+                    <div class="col">
+                        <input class="form-control form-control-lg {if name|in_array:$form_invalid}is-invalid{/if}"
+                            name="name" type="text" value="{$banner->name}" placeholder="Название баннера" />
+                        <div class="invalid-feedback">Введите название товара</div>
+                    </div>
                 </div>
             </div>
 
@@ -50,7 +52,7 @@
                 <div class="alert alert-info mt-2">Размер изображения 1920x450 px. Максимальный размер файла:
                     {$config->max_upload_filesize|byte_convert}</div>
 
-                {include file='parts\image_upload_part.tpl' images=[$banner->image] can_edit=true}
+                {include file='parts\image_upload_part.tpl' images=$banner->image max_images=1 can_edit=true}
             </div>
 
         </div>

@@ -1,5 +1,8 @@
 {assign var="max_images" value=$max_images|default:0}
-<div id="images" class="images" {if $max_images}data-max-images="{$max_images}"{/if}>
+{if $images && !$images|@is_array}
+    {assign var="images" value=[$images]}
+{/if}
+<div id="images" class="images" {if $max_images}data-max-images="{$max_images}" {/if}>
     <ul class="image_list">
         {foreach $images as $image}
             {if !$image|empty}
@@ -23,10 +26,11 @@
     </ul>
 
     {if !$max_images || $images|count < $max_images}
-    <div class="dropZone">
-        <input type="file" name="dropped_images[]" {if !$max_images || $max_images > 1}multiple{/if} class="dropInput" />
-        <div class="dropMessage">Перетащите файлы сюда{if $max_images} (максимум {$max_images}){/if}</div>
-    </div>
+        <div class="dropZone">
+            <input type="file" name="dropped_images[]" {if !$max_images || $max_images > 1}multiple{/if}
+                class="dropInput" />
+            <div class="dropMessage">Перетащите файлы сюда{if $max_images} (максимум {$max_images}){/if}</div>
+        </div>
     {/if}
 
     {if $can_edit}
@@ -35,7 +39,6 @@
         </div>
     {/if}
 </div>
-
 
 <link rel="stylesheet" href="{'js/fancybox/jquery.fancybox.min.css'|asset}" />
 <script type="module">
