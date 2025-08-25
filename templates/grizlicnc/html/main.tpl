@@ -1,6 +1,9 @@
 {extends 'wrapper/main.tpl'}
 
 {block name=content}
+
+	{addon name='CarouselPromo'}
+
 	{if $categories_products}
 		{foreach $categories_products as $cat_products}
 

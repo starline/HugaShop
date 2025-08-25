@@ -29,16 +29,16 @@
 
 				<div class="promo_block">
 					{if $product->sale}
-                                                <div class="sale" title="{'Акция и скидка'|trans}">{'Супер цена!'|trans}</div>
+						<div class="sale" title="{'Акция и скидка'|trans}">{'Супер цена!'|trans}</div>
 					{/if}
 				</div>
 
 				{if $product->image}
 					<div class="image">
 						<a href="{$product->image->filename|resize:1080:1080:w}" class="zoom" data-fancybox="images"
-                                                        data-caption="{$product->name} - {'Фото'|trans}: 1">
-                                                        <img src="{$product->image->filename|resize:720:720:w}" alt="{$product->name} | {'Фото'|trans}: 1"
-                                                                title="{$product->name} - {'Фото'|trans}: 1">
+							data-caption="{$product->name} - {'Фото'|trans}: 1">
+							<img src="{$product->image->filename|resize:720:720:w}" alt="{$product->name} | {'Фото'|trans}: 1"
+								title="{$product->name} - {'Фото'|trans}: 1">
 						</a>
 					</div>
 				{/if}
@@ -48,9 +48,10 @@
 						{foreach $product->images as $i => $image}
 							<div class="col-2">
 								<a href="{$image->filename|resize:1080:1080:w}" class="zoom" data-fancybox="images"
-                                                                        data-caption="{$product->name} - {'Фото'|trans}: {$i+1}">
-                                                                        <img class="img-thumbnail img-fluid" src="{$image->filename|resize:60:60:c}"
-                                                                                alt="{$product->name} - {'Фото'|trans}: {$i+1}" title="{$product->name} - {'Фото'|trans}: {$i+1}">
+									data-caption="{$product->name} - {'Фото'|trans}: {$i+1}">
+									<img class="img-thumbnail img-fluid" src="{$image->filename|resize:60:60:c}"
+										alt="{$product->name} - {'Фото'|trans}: {$i+1}"
+										title="{$product->name} - {'Фото'|trans}: {$i+1}">
 								</a>
 							</div>
 						{/foreach}
@@ -62,9 +63,10 @@
 		<div class="col-12 col-lg-6 position-relative">
 			<h1>{$product->name} {if $product->variant_name} - {$product->variant_name}{/if}</h1>
 
-                        {if 'product_content'|user_access AND $product->id}
-                                <a class="admin_edit" href="{'ProductAdmin'|link:[id=>$product->id]}" data-bs-toggle="tooltip">{'Редактировать товар'|trans}</a>
-                        {/if}
+			{if 'product_content'|user_access AND $product->id}
+				<a class="admin_edit" href="{'ProductAdmin'|link:[id=>$product->id]}"
+					data-bs-toggle="tooltip">{'Редактировать товар'|trans}</a>
+			{/if}
 
 			<div class="my-3">{'Код'|trans}: <span class="badge text-bg-secondary rounded-pill">{$product->sku}</span></div>
 
@@ -76,7 +78,8 @@
 					{if $product->old_price > $product->price AND !$product->disable}
 						<div class="old-price text-end">{$product->old_price|price_html|raw}</div>
 					{/if}
-                                        <span class="price_name">{'Цена:'|trans}</span> <span class="cur_price">{$product->price|price_html|raw}</span>
+					<span class="price_name">{'Цена:'|trans}</span> <span
+						class="cur_price">{$product->price|price_html|raw}</span>
 				</span>
 
 				{if $product_variants->isNotEmpty()}
@@ -97,25 +100,26 @@
 										<div class="fw-bold">{$product_variant->variant_name}</div>
 										<div class="border-top">
 											<div class="status_stock">
-                                                                                                {if $product->disable}
-                                                                                                        <span class="notinstock">{'Товар больше не поставляется'|trans}</span>
-                                                                                                {elseif $product_variant->stock>0}
-                                                                                                        <span class="instock">{'В наличии'|trans}</span>
-                                                                                                        {if $product_variant->stock|instock:4:{'заканчивается'|trans}}
-                                                                                                                <span class="instock_count">{$product_variant->stock|instock:4:{'заканчивается'|trans}}</span>
-                                                                                                        {/if}
-                                                                                                {elseif $product_variant->custom}
-                                                                                                        <span class="awaiting">{'Под заказ'|trans}</span>
-                                                                                                {elseif $product_variant->awaiting}
-                                                                                                        <span class="awaiting">{'Ожидается поставка'|trans}
-                                                                                                                {if !$product_variant->awaiting_date|empty and $smarty.now < $product_variant->awaiting_date|strtotime}
-                                                                                                                        <span>{$product_variant->awaiting_date|date}</span>
-                                                                                                                {/if}
-                                                                                                        </span>
-                                                                                                {else}
-                                                                                                        <span class="notinstock">{'Нет в наличии'|trans}</span>
-                                                                                                {/if}
-                                                                                        </div>
+												{if $product->disable}
+													<span class="notinstock">{'Товар больше не поставляется'|trans}</span>
+												{elseif $product_variant->stock>0}
+													<span class="instock">{'В наличии'|trans}</span>
+													{if $product_variant->stock|instock:4:{'заканчивается'|trans}}
+														<span
+															class="instock_count">{$product_variant->stock|instock:4:{'заканчивается'|trans}}</span>
+													{/if}
+												{elseif $product_variant->custom}
+													<span class="awaiting">{'Под заказ'|trans}</span>
+												{elseif $product_variant->awaiting}
+													<span class="awaiting">{'Ожидается поставка'|trans}
+														{if !$product_variant->awaiting_date|empty and $smarty.now < $product_variant->awaiting_date|strtotime}
+															<span>{$product_variant->awaiting_date|date}</span>
+														{/if}
+													</span>
+												{else}
+													<span class="notinstock">{'Нет в наличии'|trans}</span>
+												{/if}
+											</div>
 
 											<span class="variant_price">{$product_variant->price|price_html|raw}</span>
 										</div>
@@ -133,29 +137,30 @@
 
 
 
-                                <div class="status_stock my-3">
-                                        {$show_buy_btn = false}
-                                        {if $product->disable}
-                                                <span class="notinstock">{'Товар больше не поставляется'|trans}</span>
-                                        {elseif $product->stock > 0}
-                                                {$show_buy_btn = true}
-                                                <span class="instock">{'В наличии'|trans}</span>
-                                                {if $product->stock|instock:4:{'заканчивается'|trans}}
-                                                        <span class="instock_count badge text-bg-warning">{$product->stock|instock:4:{'заканчивается'|trans}}</span>
-                                                {/if}
-                                        {elseif $product->custom}
-                                                {$show_buy_btn = true}
-                                                <span class="awaiting">{'Под заказ'|trans}</span>
-                                        {elseif $product->awaiting}
-                                                <span class="awaiting">{'Ожидается поставка'|trans}
-                                                        {if !$product->awaiting_date|empty and $smarty.now < $product->awaiting_date|strtotime}
-                                                                <span>{$product->awaiting_date|date}</span>
-                                                        {/if}
-                                                </span>
-                                        {else}
-                                                <span class="notinstock">{'Нет в наличии'|trans}</span>
-                                        {/if}
-                                </div>
+				<div class="status_stock my-3">
+					{$show_buy_btn = false}
+					{if $product->disable}
+						<span class="notinstock">{'Товар больше не поставляется'|trans}</span>
+					{elseif $product->stock > 0}
+						{$show_buy_btn = true}
+						<span class="instock">{'В наличии'|trans}</span>
+						{if $product->stock|instock:4:{'заканчивается'|trans}}
+							<span
+								class="instock_count badge text-bg-warning">{$product->stock|instock:4:{'заканчивается'|trans}}</span>
+						{/if}
+					{elseif $product->custom}
+						{$show_buy_btn = true}
+						<span class="awaiting">{'Под заказ'|trans}</span>
+					{elseif $product->awaiting}
+						<span class="awaiting">{'Ожидается поставка'|trans}
+							{if !$product->awaiting_date|empty and $smarty.now < $product->awaiting_date|strtotime}
+								<span>{$product->awaiting_date|date}</span>
+							{/if}
+						</span>
+					{else}
+						<span class="notinstock">{'Нет в наличии'|trans}</span>
+					{/if}
+				</div>
 
 				{if $show_buy_btn}
 					<div class="row">
@@ -185,9 +190,10 @@
 						</div>
 					</div>
 
-                                        <div class="my-3">
-                                                <a href="#" id="product-price-request" class="you-price" data-product-id="{$product->id}" rel="nofollow">{'Хочу дешевле'|trans}</a>
-                                        </div>
+					<div class="my-3">
+						<a href="#" id="product-price-request" class="you-price" data-product-id="{$product->id}"
+							rel="nofollow">{'Хочу дешевле'|trans}</a>
+					</div>
 				{/if}
 			</form>
 
@@ -195,8 +201,8 @@
 				{addon name='InfoBlock' id=1 enabled=1}
 			</div>
 
-                                {if $product_features}
-                                        <h2 class="mt-4">{'Характеристики'|trans}</h2>
+			{if $product_features}
+				<h2 class="mt-4">{'Характеристики'|trans}</h2>
 				<ul class="features">
 					{foreach $product_features as $f}
 						<li>
@@ -214,18 +220,18 @@
 	</div>
 
 	<!-- Описание товара -->
-                {if $product->body}
-                        <h2 class="mt-4">{'Описание'|trans}</h2>
+	{if $product->body}
+		<h2 class="mt-4">{'Описание'|trans}</h2>
 		<div class="description_html">
 			{$product->body|raw}
 		</div>
 	{/if}
 
 
-                {if $related_products}
-                        <div id="related_products" class="related_products_box">
-                                <h2>{'С этим товаром покупают'|trans}</h2>
-                                <ul class="products owl-carousel">
+	{if $related_products}
+		<div id="related_products" class="related_products_box">
+			<h2>{'С этим товаром покупают'|trans}</h2>
+			<ul class="products owl-carousel">
 				{foreach $related_products as $product}
 					{include file='parts/product_item.tpl'}
 				{/foreach}
