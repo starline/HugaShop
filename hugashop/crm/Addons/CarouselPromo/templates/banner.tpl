@@ -47,7 +47,26 @@
 
             <div class="col-12 layer">
                 <h2>Изображение</h2>
-                {include file='parts\image_upload_part.tpl' images=$banner->images can_edit=true}
+                {if !$banner->image|empty}
+                    <ul>
+                        <li>
+                            <i class="delete material-icons" title="Удалить">cancel</i>
+                            <a href="{$banner->image->filename|resize:1920:600}" class="zoom" data-fancybox="product_images"
+                                data-caption="{$banner->name}">
+                                <img src="{$banner->image->filename|resize:1920:600}" />
+                            </a>
+                        </li>
+                    </ul>
+                {/if}
+
+                <div class="input-group">
+                    <input class="form-control" name="image" type="file">
+                    <input class="btn btn-primary" type="submit" value="Загрузить">
+                </div>
+
+                <p class="mt-2">максимальный размер файла &mdash; {$config->max_upload_filesize|byte_convert}</p>
+                <div class="alert alert-info">Хавает CSV, стоимость контейнера не должна быть ниже минимальной цены</div>
+
             </div>
 
         </div>
