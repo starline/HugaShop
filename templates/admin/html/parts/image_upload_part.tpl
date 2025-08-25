@@ -26,13 +26,6 @@
         <div class="dropMessage">Перетащите файлы сюда</div>
     </div>
 
-    {if $one_image}
-        <div class="input-group">
-            <input class="form-control" name="image" type="file">
-            <input class="btn btn-primary" type="submit" value="Загрузить">
-        </div>
-    {/if}
-
     {if $can_edit}
         <div class="col-12 btn_row">
             {include file="parts/button.tpl"}
