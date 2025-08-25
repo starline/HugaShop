@@ -1,4 +1,5 @@
-<div id="images" class="images">
+{assign var="max_images" value=$max_images|default:0}
+<div id="images" class="images" {if $max_images}data-max-images="{$max_images}"{/if}>
     <ul class="image_list">
         {foreach $images as $image}
             {if !$image|empty}
@@ -21,10 +22,12 @@
         {/foreach}
     </ul>
 
+    {if !$max_images || $images|count < $max_images}
     <div class="dropZone">
-        <input type="file" name="dropped_images[]" multiple class="dropInput" />
-        <div class="dropMessage">Перетащите файлы сюда</div>
+        <input type="file" name="dropped_images[]" {if !$max_images || $max_images > 1}multiple{/if} class="dropInput" />
+        <div class="dropMessage">Перетащите файлы сюда{if $max_images} (максимум {$max_images}){/if}</div>
     </div>
+    {/if}
 
     {if $can_edit}
         <div class="col-12 btn_row">
