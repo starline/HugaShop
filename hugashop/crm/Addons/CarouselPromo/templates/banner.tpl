@@ -47,35 +47,10 @@
 
             <div class="col-12 layer">
                 <h2>Изображение</h2>
-                {if !$banner->image|empty}
-                    <div>
-                        <i class="delete material-icons" title="Удалить">cancel</i>
-                        <a href="{$banner->image->filename|resize:1920:450}" class="zoom" data-fancybox="product_images"
-                            data-caption="{$banner->name}">
-                            <img src="{$banner->image->filename|resize:1920:450:c}" />
-                        </a>
-                    </div>
-                {/if}
+                <div class="alert alert-info mt-2">Размер изображения 1920x450 px. Максимальный размер файла:
+                    {$config->max_upload_filesize|byte_convert}</div>
 
-                <div class="input-group">
-                    <input class="form-control" name="image" type="file">
-                    <input class="btn btn-primary" type="submit" value="Загрузить">
-                </div>
-
-                <p class="mt-2">максимальный размер файла: {$config->max_upload_filesize|byte_convert}</p>
-                <div class="alert alert-info">Размер изображения 1920x450 px</div>
-
-                <script type="module">
-                    $(function() {
-
-                        // Удаление изображений
-                        $(".images span.delete").on('click', function() {
-                            $("input[name='delete_image']").val('1');
-                            $(this).closest("ul").fadeOut(200, function() { $(this).remove(); });
-                            return false;
-                        });
-                    });
-                </script>
+                {include file='parts\image_upload_part.tpl' images=[$banner->image] can_edit=true}
             </div>
 
         </div>

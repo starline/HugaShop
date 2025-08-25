@@ -1107,6 +1107,9 @@ select.multiple_categories option {
 }
 
 .images ul li .image_icons {
+	padding: 2px 2px;
+	border-radius: 12px;
+	background-color: #ffffffb3;
 	top: 8px;
 	right: 8px;
 	position: absolute;
@@ -1117,7 +1120,6 @@ select.multiple_categories option {
 
 .images ul li .image_icons i {
 	font-size: 1.5rem;
-	margin-left: 5px;
 }
 
 .images ul li:hover i.delete {
