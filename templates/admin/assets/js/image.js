@@ -3,7 +3,7 @@
  * Handles image sorting, visibility and uploading
  *
  * @author Andri Huga
- * @version 1.4
+ * @version 1.5
  */
 
 export function initImagesUpload() {
@@ -13,8 +13,17 @@ export function initImagesUpload() {
         opacity: 0.90
     });
 
+    $(".images").each(function () {
+        const container = $(this);
+        const maxImages = parseInt(container.data('max-images')) || 0;
+        if (maxImages && container.find('ul li').length >= maxImages) {
+            container.find('.dropZone').hide();
+        }
+    });
+
     $(".images").on('click.delete', ' i.delete', function () {
-        $(this).closest(".images").find("input[name='delete_image']").val('1');
+        const imagesBlock = $(this).closest(".images");
+        imagesBlock.find("input[name='delete_image']").val('1');
         $(this).closest("li").fadeOut(200, function () {
             document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
                 const tooltip = bootstrap.Tooltip.getInstance(el);
@@ -23,7 +32,10 @@ export function initImagesUpload() {
                 }
             });
             $(this).remove();
-
+            const maxImages = parseInt(imagesBlock.data('max-images')) || 0;
+            if (maxImages && imagesBlock.find('ul li').length < maxImages) {
+                imagesBlock.find('.dropZone').show();
+            }
         });
         return false;
     });
@@ -67,11 +79,18 @@ export function initImagesUpload() {
 
         let files = evt.target.files;
         let dropInput = $(evt.target);
-        let name = dropInput.closest('.images').attr('id');
+        let container = dropInput.closest('.images');
+        let name = container.attr('id');
+        let maxImages = parseInt(container.data('max-images')) || 0;
+        let currentCount = container.find('ul li').length;
 
         for (let i = 0, file; file = files[i]; i++) {
             if (!file.type.match('image.*')) {
                 continue;
+            }
+
+            if (maxImages && currentCount >= maxImages) {
+                break;
             }
 
             let reader = new FileReader();
@@ -93,6 +112,11 @@ export function initImagesUpload() {
             })(file);
 
             reader.readAsDataURL(file);
+            currentCount++;
+        }
+
+        if (maxImages && currentCount >= maxImages) {
+            container.find('.dropZone').hide();
         }
 
         // Add new empty input for next selection
