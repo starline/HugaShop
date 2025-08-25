@@ -5,8 +5,8 @@
                 {if $banner->image->filename}
                     <div class='item'>
                         {if $banner->link}<a href="{$banner->link}">{/if}
-                            <img src="{$banner->image->filename|resize:1920:450:c}" alt="{$banner->name}" class="img-fluid w-100"
-                                data-src="{$banner->image->filename|resize:1920:450:c}" />
+                            <img src="{$banner->image->filename|resize:1300:305:c}" alt="{$banner->name}" width="1300" height="305"
+                                class="img-fluid w-100" data-src="{$banner->image->filename|resize:1300:305:c}" />
                             {if $banner->link}</a>{/if}
                     </div>
                 {/if}

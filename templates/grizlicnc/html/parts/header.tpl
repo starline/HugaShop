@@ -85,7 +85,7 @@
 						<a href="{'Main'|linkLang}" data-bs-toggle="tooltip"
 							title="{$settings->company_name} - {$settings->company_description}">
 							<img loading="lazy" alt="{$settings->company_name} - {$settings->company_description}"
-								src="{'images/logo.png'|asset}" />
+								width="190" height="50" src="{'images/logo.png'|asset}" />
 						</a>
 					</div>
 				</div>
