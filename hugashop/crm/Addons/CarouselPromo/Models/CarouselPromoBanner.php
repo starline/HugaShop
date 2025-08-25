@@ -29,16 +29,7 @@ final class CarouselPromoBanner extends BaseAddonModel
     public function image()
     {
         return $this->hasOne(Image::class, 'entity_id')
-            ->where('entity_name', CarouselPromo::class)
-            ->where('visible', 1)
-            ->orderBy('position');
-    }
-
-    public function images()
-    {
-        return $this->hasMany(Image::class, 'entity_id')
-            ->where('entity_name', CarouselPromo::class)
-            ->orderBy('position');
+            ->where('entity_name', CarouselPromo::class);
     }
 
 

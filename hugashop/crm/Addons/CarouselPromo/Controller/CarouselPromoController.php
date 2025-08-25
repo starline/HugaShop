@@ -90,7 +90,7 @@ final class CarouselPromoController extends BaseAdminController
         #### View
         #########
         if (!empty($id)) {
-            $banner = CarouselPromoBanner::getOne($id, join: ['images']);
+            $banner = CarouselPromoBanner::getOne($id, join: ['image']);
             if (empty($banner->id)) {
                 return $this->redirectToRoute('AddonCarouselPromo');
             }

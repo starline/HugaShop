@@ -60,11 +60,11 @@
   user-select: none;
 }
 
-.owl-carousel .owl-nav button.owl-prev,
-.owl-carousel .owl-nav button.owl-next,
+.owl-nav button.owl-prev,
+.owl-nav button.owl-next,
 .owl-carousel button.owl-dot {
   border: none;
-  font-size: 2.5em;
+  font-size: 2.5rem;
   color: #c2c2c2;
 }
 
@@ -237,12 +237,4 @@
   -webkit-transition-duration: .3s;
   -o-transition-duration: .3s;
   transition-duration: .3s;
-}
-
-.products .owl-nav button[class*="prev"] {
-  left: -22px;
-}
-
-.products .owl-nav button[class*="next"] {
-  right: -22px;
 }

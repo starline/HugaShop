@@ -48,15 +48,13 @@
             <div class="col-12 layer">
                 <h2>Изображение</h2>
                 {if !$banner->image|empty}
-                    <ul>
-                        <li>
-                            <i class="delete material-icons" title="Удалить">cancel</i>
-                            <a href="{$banner->image->filename|resize:1920:600}" class="zoom" data-fancybox="product_images"
-                                data-caption="{$banner->name}">
-                                <img src="{$banner->image->filename|resize:1920:600}" />
-                            </a>
-                        </li>
-                    </ul>
+                    <div>
+                        <i class="delete material-icons" title="Удалить">cancel</i>
+                        <a href="{$banner->image->filename|resize:1920:450}" class="zoom" data-fancybox="product_images"
+                            data-caption="{$banner->name}">
+                            <img src="{$banner->image->filename|resize:1920:450:c}" />
+                        </a>
+                    </div>
                 {/if}
 
                 <div class="input-group">
@@ -64,9 +62,20 @@
                     <input class="btn btn-primary" type="submit" value="Загрузить">
                 </div>
 
-                <p class="mt-2">максимальный размер файла &mdash; {$config->max_upload_filesize|byte_convert}</p>
-                <div class="alert alert-info">Хавает CSV, стоимость контейнера не должна быть ниже минимальной цены</div>
+                <p class="mt-2">максимальный размер файла: {$config->max_upload_filesize|byte_convert}</p>
+                <div class="alert alert-info">Размер изображения 1920x450 px</div>
 
+                <script type="module">
+                    $(function() {
+
+                        // Удаление изображений
+                        $(".images span.delete").on('click', function() {
+                            $("input[name='delete_image']").val('1');
+                            $(this).closest("ul").fadeOut(200, function() { $(this).remove(); });
+                            return false;
+                        });
+                    });
+                </script>
             </div>
 
         </div>

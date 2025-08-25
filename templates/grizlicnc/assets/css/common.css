@@ -44,16 +44,17 @@ body {
 }
 
 .owl-nav button span {
+	font-size: 2.5rem;
 	position: absolute;
-	top: -3px;
-	right: 16px;
+	top: -1px;
+	right: 19px;
 }
 
-.products .owl-nav button[class*="prev"] {
+.owl-nav button[class*="prev"] {
 	left: -7px;
 }
 
-.products .owl-nav button[class*="next"] {
+.owl-nav button[class*="next"] {
 	right: -7px;
 }
 
