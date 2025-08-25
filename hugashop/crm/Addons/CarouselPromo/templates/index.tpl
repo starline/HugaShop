@@ -31,15 +31,12 @@
                             </div>
 
                             <div class="row col">
-                                <div class="col-12 col-sm-8">
-                                    <a href="{'AddonCarouselPromoBanner'|link:[id => $banner->id]}">
-                                        <img src="{if $banner->image->filename}{$banner->image->filename|resize:120:120:c}{/if}"
-                                            alt="{$banner->name}" class="img-fluid me-2" style="max-width:120px;" />
-                                        <span>{$banner->name}</span>
-                                    </a>
+                                <div class="col_image image">
+                                    <img src="{if $banner->image->filename}{$banner->image->filename|resize:120:120:c}{/if}"
+                                        alt="{$banner->name}" class="img-fluid me-2" style="max-width:120px;" />
                                 </div>
-                                <div class="col-12 col-sm-4 text-end">
-                                    <span class="badge text-bg-round">{$banner->id}</span>
+                                <div class="col">
+                                    <a href="{'AddonCarouselPromoBanner'|link:[id => $banner->id]}">{$banner->name}</a>
                                 </div>
                             </div>
 

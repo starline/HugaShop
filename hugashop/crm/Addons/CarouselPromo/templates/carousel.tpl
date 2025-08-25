@@ -4,8 +4,9 @@
             {foreach $banners as $banner}
                 {if $banner->image->filename}
                     <div class='item'>
-                        {if $banner->link}<a href='{$banner->link}'>{/if}
-                            <img src='{$banner->image->filename|resize:1920:450:c}' alt='{$banner->name}' class='img-fluid w-100' />
+                        {if $banner->link}<a href="{$banner->link}">{/if}
+                            <img src="{$banner->image->filename|resize:1920:450:c}" alt="{$banner->name}" class="img-fluid w-100"
+                                data-src="{$banner->image->filename|resize:1920:450:c}" />
                             {if $banner->link}</a>{/if}
                     </div>
                 {/if}

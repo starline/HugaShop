@@ -96,7 +96,7 @@
 							<input id="search_input" class="form-control" type="text" name="keyword" value="{$keyword}"
 								placeholder="Поиск, например: шпиндель" />
 
-							<button class="btn btn-primary" type="submit">
+							<button id="search_btn" class="btn btn-primary" type="submit">
 								<span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
 								<span class="btn-content">
 									<svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
