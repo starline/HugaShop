@@ -5,7 +5,7 @@
 {if $route == 'Main'}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="{$settings->company_name} {$settings->company_description}" />
-    <meta property="og:url" content="{$config->root_url}" />
+    <meta property="og:url" content="{$canonical}" />
     <meta property="og:title" content="{$settings->company_name}" />
     <meta property="og:description" content="{$settings->company_description}" />
     <meta property="og:image" content='{$config->root_url}{"images/favicon.ico"|asset:"{$settings->theme}"}' />
@@ -17,7 +17,7 @@
 {if $route == 'Product'}
     <meta property="og:type" content="product" />
     <meta property="og:site_name" content="{$settings->company_name} {$settings->company_description}" />
-    <meta property="og:url" content="{$config->root_url}/tovar-{$product->url}" />
+    <meta property="og:url" content="{$canonical}" />
     <meta property="og:title" content="{$product->name}" />
     <meta property="og:description" content="{$product->annotation}" />
 
@@ -56,7 +56,7 @@
     <meta property="og:type" content="product.group">
     <meta property="og:site_name" content="{$settings->company_name} {$settings->company_description}" />
     <meta property="og:title" content="{$category->name}">
-    <meta property="og:url" content="{$config->root_url}/{$category->url}">
+    <meta property="og:url" content="{$canonical}">
     <meta property="og:description" content="{$category->meta_description}">
 
     {if !$category->image->filename|empty}
@@ -68,7 +68,7 @@
 {if $route == 'Page'}
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="{$settings->company_name} {$settings->company_description}" />
-    <meta property="og:url" content="{$config->root_url}{$canonical}" />
+    <meta property="og:url" content="{$canonical}" />
     <meta property="og:title" content="{$page->name}" />
     <meta property="og:description" content="{$page->meta_description}" />
     <meta property="og:image" content='{$config->root_url}{"images/favicon.ico"|asset:"{$settings->theme}"}' />
@@ -80,7 +80,7 @@
 {if $route == 'Post'}
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="{$settings->company_name} {$settings->company_description}" />
-    <meta property="og:url" content="{$config->root_url}{$canonical}" />
+    <meta property="og:url" content="{$canonical}" />
     <meta property="og:title" content="{$post->name}" />
     <meta property="og:description" content="{$post->meta_description}" />
 

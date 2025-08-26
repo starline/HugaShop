@@ -39,8 +39,8 @@ final class OpenGraph extends BaseAddon
             $timezone           = new DateTimeZone(Settings::getParam('timezone'));
             $timezone_offset    = $timezone->getOffset(new DateTime) / 60 / 60;
             $timezone_offset    = $timezone_offset > 0 ? '+' . $timezone_offset : $timezone_offset;
+            
             Design::assign('timezone_offset', $timezone_offset);
-
             return self::fetchTemplate('graph.tpl');
         }
         return;

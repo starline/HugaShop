@@ -45,7 +45,7 @@ class ImageResizeController extends BaseController
 
         if (!empty($resized_filename) and is_readable($resized_filename)) {
             $response = new Response(file_get_contents($resized_filename));
-            $response->headers->set('Content-type', 'image');
+            $response->headers->set('Content-type', 'image/webp');
             return $response;
         }
 

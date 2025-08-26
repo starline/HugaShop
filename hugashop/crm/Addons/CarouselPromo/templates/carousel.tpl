@@ -14,10 +14,10 @@
         </div>
 
         <div class="owl-nav">
-            <button type="button" role="presentation" class="owl-prev">
+            <button type="button" class="owl-prev">
                 <span aria-label="Previous">‹</span>
             </button>
-            <button type="button" role="presentation" class="owl-next">
+            <button type="button" class="owl-next">
                 <span aria-label="Next">›</span>
             </button>
         </div>

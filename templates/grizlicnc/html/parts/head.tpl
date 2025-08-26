@@ -6,7 +6,7 @@
 	<meta name="description" content="{$meta_description}">
 	<title>{$meta_title}</title>
 
-	<link rel="shortcut icon" type="image/x-icon" href="{'images/favicon.ico'|asset}">
+	<link rel="shortcut icon" type="image/x-icon" href="{'images/favicon.ico'|asset}" />
 
 	<meta name="language" content="{$current_language->code}">
 

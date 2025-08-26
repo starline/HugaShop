@@ -15,6 +15,7 @@ use HugaShop\Services\Config;
 use HugaShop\Services\Design;
 use HugaShop\Models\Product\Product;
 use App\Controller\BaseFrontController;
+use HugaShop\Models\Content\ContentPage;
 use HugaShop\Models\Content\ContentPost;
 use HugaShop\Models\Product\ProductCategory;
 use HugaShop\Models\Localization\Language;
@@ -23,6 +24,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class SitemapController extends BaseFrontController
 {
+
     #[Route('/sitemap.xml', priority: 10)]
     public function index(): Response
     {
@@ -31,44 +33,38 @@ class SitemapController extends BaseFrontController
         $cache_item = Cache::cache(self::class, 60 * 60)->getItem('sitemap');
 
         if (!$cache_item->isHit()) {
-            $root_url        = Config::get('root_url');
+            $root_url      = Config::get('root_url');
             $main_language = Language::getMain();
             $languages     = Language::getLanguages();
             $posts         = ContentPost::getPosts(['visible' => 1]);
+            $pages         = ContentPage::getList(['visible' => 1]);
             $categories    = ProductCategory::getCategories();
             $products      = Product::getProducts(['visible' => 1]);
             $today         = date('Y-m-d');
 
-            $paths = [''];
+            $paths = ['']; // Главная страница
 
             // Страницы
-            /*foreach(ContentPage::getList() as $p) {
-                if($p->visible && $p->menu_id == 1) {
-                    $paths[] = '/' . $this->esc($p->url);
-                }
-            }*/
+            foreach ($pages as $page) {
+                $paths[] = $this->generateUrlWithLocale('Page', ['url' => $page->url]);
+            }
 
             // Блог
             foreach ($posts as $post) {
-                $paths[] = '/blog/' . $this->esc($post->url);
+                $paths[] = $this->generateUrlWithLocale('Post', ['url' => $post->url]);
             }
 
             // Категории
             foreach ($categories as $category) {
                 if ($category->visible) {
-                    $paths[] = '/' . $this->esc($category->url);
+                    $paths[] = $this->generateUrlWithLocale('Products', ['url' => $category->url]);
                 }
             }
 
             // Товары
             foreach ($products as $product) {
-                $paths[] = '/tovar-' . $this->esc($product->url);
+                $paths[] = $this->generateUrlWithLocale('Product', ['url' => $product->url]);
             }
-
-            // Бренды
-            /*foreach(ProductBrand::getBrands() as $b) {
-                $paths[] = '/brands/' . $this->esc($b->url);
-            }*/
 
             Design::assign([
                 'root_url'      => $root_url,
@@ -89,14 +85,5 @@ class SitemapController extends BaseFrontController
         $response->headers->set('Content-type', 'text/xml');
 
         return $response;
-    }
-
-
-    /**
-     * Esc
-     */
-    private function esc(string $s): string
-    {
-        return htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
     }
 }
