@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.6
+ * @version 3.9
  *
  */
 
@@ -12,10 +12,12 @@ namespace App\Controller\Front;
 
 use HugaShop\Services\Cache;
 use HugaShop\Services\Config;
+use HugaShop\Services\Design;
 use HugaShop\Models\Product\Product;
 use App\Controller\BaseFrontController;
 use HugaShop\Models\Content\ContentPost;
 use HugaShop\Models\Product\ProductCategory;
+use HugaShop\Models\Localization\Language;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -29,68 +31,54 @@ class SitemapController extends BaseFrontController
         $cache_item = Cache::cache(self::class, 60 * 60)->getItem('sitemap');
 
         if (!$cache_item->isHit()) {
-            $result = '<?xml version="1.0" encoding="UTF-8"?>';
-            $result .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+            $root_url        = Config::get('root_url');
+            $main_language = Language::getMain();
+            $languages     = Language::getLanguages();
+            $posts         = ContentPost::getPosts(['visible' => 1]);
+            $categories    = ProductCategory::getCategories();
+            $products      = Product::getProducts(['visible' => 1]);
+            $today         = date('Y-m-d');
 
-
-            // Главная страница
-            $url = Config::get('root_url');
-
-            $result .= "\t<url>";
-            $result .= "\t\t<loc>$url</loc>";
-            $result .= "\t\t<lastmod>" . date('Y-m-d') . "</lastmod>";
-            $result .= "\t</url>";
-
+            $paths = [''];
 
             // Страницы
             /*foreach(ContentPage::getList() as $p) {
-            if($p->visible && $p->menu_id == 1) {
-                $url = Config::get('root_url').'/'.$this->esc($p->url);
-                $result .= "\t<url>"."\n";
-                $result .= "\t\t<loc>$url</loc>"."\n";
-                $result .= "\t</url>"."\n";
-            }
+                if($p->visible && $p->menu_id == 1) {
+                    $paths[] = '/' . $this->esc($p->url);
+                }
             }*/
 
-
             // Блог
-            foreach (ContentPost::getPosts(['visible' => 1]) as $p) {
-                $url = Config::get('root_url') . '/blog/' . $this->esc($p->url);
-                $result .= "\t<url>";
-                $result .= "\t\t<loc>$url</loc>";
-                $result .= "\t</url>";
+            foreach ($posts as $post) {
+                $paths[] = '/blog/' . $this->esc($post->url);
             }
 
-
             // Категории
-            foreach (ProductCategory::getCategories() as $c) {
-                if ($c->visible) {
-                    $url = Config::get('root_url') . '/' . $this->esc($c->url);
-                    $result .= "\t<url>";
-                    $result .= "\t\t<loc>$url</loc>";
-                    $result .= "\t</url>";
+            foreach ($categories as $category) {
+                if ($category->visible) {
+                    $paths[] = '/' . $this->esc($category->url);
                 }
             }
 
+            // Товары
+            foreach ($products as $product) {
+                $paths[] = '/tovar-' . $this->esc($product->url);
+            }
 
             // Бренды
             /*foreach(ProductBrand::getBrands() as $b) {
-            $url = Config::get('root_url').'/brands/'.$this->esc($b->url);
-            $result .= "\t<url>"."\n";
-            $result .= "\t\t<loc>$url</loc>"."\n";
-            $result .= "\t</url>"."\n";
+                $paths[] = '/brands/' . $this->esc($b->url);
             }*/
 
+            Design::assign([
+                'root_url'      => $root_url,
+                'main_language' => $main_language,
+                'languages'     => $languages,
+                'paths'         => $paths,
+                'today'         => $today
+            ]);
 
-            // Товары
-            foreach (Product::getProducts(["visible" => 1]) as $product) {
-                $product_url = Config::get('root_url') . '/tovar-' . $this->esc($product->url);
-                $result .= "\t<url>";
-                $result .= "\t\t<loc>$product_url</loc>";
-                $result .= "\t</url>";
-            }
-
-            $result .=  '</urlset>';
+            $result = Design::fetch('sitemap.tpl');
 
             Cache::cache(self::class)->save($cache_item->set($result));
         }
@@ -99,16 +87,16 @@ class SitemapController extends BaseFrontController
 
         $response = new Response($result);
         $response->headers->set('Content-type', 'text/xml');
+
         return $response;
     }
 
 
     /**
      * Esc
-     * @param string $s
      */
-    public function esc(string $s)
+    private function esc(string $s): string
     {
-        return (htmlspecialchars($s, ENT_QUOTES, 'UTF-8'));
+        return htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
     }
 }
