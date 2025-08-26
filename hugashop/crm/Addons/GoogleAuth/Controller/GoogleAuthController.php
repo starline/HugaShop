@@ -49,7 +49,7 @@ final class GoogleAuthController extends BaseFrontController
             return $this->redirectToRoute('UserRegister');
         }
 
-        $redirectUri    = $this->generateUrlWithLocale('AddonGoogleAuth', referenceType: 'absolute_url');
+        $redirectUri    = $this->generateUrlWithLocale('AddonGoogleAuth', reference_type: 'absolute_url');
         $code           = Request::get('code', 'string');
         $isPopup        = Request::get('popup', 'bool') || $state === 'popup';
 

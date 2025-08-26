@@ -67,21 +67,10 @@
 			<!-- Изображения -->
 			<div class="col-lg-6 layer images">
 				<h2>Изображение бренда</h2>
-				<input class="form-control upload_image" name="image" type="file">
-				<input type="hidden" name="delete_image" value="">
-				{if !$brand->image|empty}
-					<ul>
-						<li>
-							<i class="delete material-icons" title="Удалить">cancel</i>
-							<a href="{$config->root_url}/files/brands/{$brand->image}" class="zoom"
-								data-fancybox="product_images" data-caption="{$product->name}">
-								<img src="{$config->root_url}/files/brands/{$brand->image}" />
-							</a>
-						</li>
-					</ul>
-				{/if}
+				{include file='parts\image_upload_part.tpl' images=$brand->image max_images=1 can_edit=true}
 			</div>
 
+			
 			<div class="col-12 layer">
 				<h2>Описание</h2>
 				<textarea id="description" name="description"
@@ -98,25 +87,14 @@
 
 
 {block name=body_script append}
-	{* Подключаем Tiny MCE *}
 	{include file='parts/tinymce_init.tpl'}
-	<link rel="stylesheet" href="{'js/fancybox/jquery.fancybox.min.css'|asset}" />
-
 	<script type="module">
-		import '{"js/fancybox/jquery.fancybox.min.js"|asset}';
 		import { generate_meta_title, generate_url } from '{"js/common.js"|asset}';
 
 		{literal}
 
 			//On document load 
 			$(function() {
-
-				// Удаление изображений
-				$(".images span.delete").on('click', function() {
-					$("input[name='delete_image']").val('1');
-					$(this).closest("ul").fadeOut(200, function() { $(this).remove(); });
-					return false;
-				});
 
 				// Автозаполнение мета-тегов
 				let meta_title_touched = true;

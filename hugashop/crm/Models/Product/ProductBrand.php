@@ -4,13 +4,13 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.2
+ * @version 3.4
  *
  */
 
 namespace HugaShop\Models\Product;
 
-use HugaShop\Services\Config;
+use HugaShop\Models\Image;
 use HugaShop\Models\BaseModel;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -25,7 +25,6 @@ class ProductBrand extends BaseModel
         'meta_title' =>         ['type' => 'varchar',       'trans' => true],
         'meta_description' =>   ['type' => 'varchar',       'trans' => true],
         'description' =>        ['type' => 'text',          'trans' => true],
-        'image' =>              ['type' => 'varchar'],
         'featured' =>           ['type' => 'tinyint',       'def' => 0]
     ];
 
@@ -35,6 +34,11 @@ class ProductBrand extends BaseModel
         'featured'  => ['column' => ['featured'],            'type' => 'index']
     ];
 
+    public function image()
+    {
+        return $this->hasOne(Image::class, 'entity_id')
+            ->where('entity_name', ProductBrand::class);
+    }
 
     public function products()
     {
@@ -46,9 +50,14 @@ class ProductBrand extends BaseModel
      * Функция возвращает массив брендов, удовлетворяющих фильтру
      * @param array $filter
      */
-    public static function getBrands(array $filter = [])
+    public static function getBrands(array $filter = [], array $join = [])
     {
         $query = self::query();
+
+        // With relations
+        if (!empty($join)) {
+            $query->with($join);
+        }
 
         // Фильтр по featured
         if (isset($filter['featured'])) {
@@ -73,65 +82,12 @@ class ProductBrand extends BaseModel
 
 
     /**
-     * Функция возвращает бренд по его id или url
-     * (в зависимости от типа аргумента, int - id, string - url)
-     * @param int|string $id id или url поста
-     *
-     */
-    public static function getBrand(int|string $id)
-    {
-        if (is_numeric($id)) {
-            $filter['id'] = intval($id);
-        } else {
-            $filter['url'] = $id;
-        }
-
-        return static::getOne($filter);
-    }
-
-
-    /**
      * Удаление бренда
-     * @param int $id
      */
-    public static function deleteBrand(int $id)
+    public static function deleteBrand(int|array $ids)
     {
-
-        // Удаляем изображение
-        self::deleteImage($id);
-
-        if (self::deleteOne($id)) {
-            Product::where('brand_id', $id)->update(['brand_id' => null]);
-        } else {
-            return false;
-        }
-    }
-
-
-    /**
-     * Удаление изображения бренда
-     * @param int $brand_id
-     */
-    public static function deleteImage(int $brand_id)
-    {
-
-        $brand = self::find($brand_id);
-
-        if (!$brand || empty($brand->image)) {
-            return;
-        }
-
-        $filename = $brand->image;
-
-        // Обновляем бренд, убирая ссылку на изображение
-        $brand->image = null;
-        $brand->save();
-
-        // Проверяем, используется ли это изображение другими брендами
-        $count = self::where('image', $filename)->count();
-
-        if ($count === 0) {
-            @unlink(Config::get('images_brands_dir') . $filename);
-        }
+        $ids_array = is_array($ids) ? $ids : [$ids];
+        Image::deleteEntityImages($ids_array, ProductBrand::class);
+        return parent::deleteOne($ids);
     }
 }

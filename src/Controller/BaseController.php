@@ -166,36 +166,26 @@ class BaseController extends AbstractController
 
     /**
      * Generate URL with locale prefix
+     * @param string $route_name
+     * @param array $params
+     * @param string $reference_type
+     * @return string
      */
-    public function generateUrlWithLocale(string $routeName, array $params = [], string $referenceType = 'absolute_path'): string
+    public function generateUrlWithLocale(string $route_name, array $params = [], string $reference_type = 'absolute_path'): string
     {
-
-        $referenceType = match ($referenceType) {
-            'absolute_url'  => UrlGeneratorInterface::ABSOLUTE_URL,
-            'absolute_path' => UrlGeneratorInterface::ABSOLUTE_PATH,
-            'relative_path' => UrlGeneratorInterface::RELATIVE_PATH,
-            'network_path'  => UrlGeneratorInterface::NETWORK_PATH,
-            default         => UrlGeneratorInterface::ABSOLUTE_PATH,
-        };
-
-        if ($routeName === 'current') {
-            $request    = $this->requestStack->getCurrentRequest();
-            $url        = $request->getPathInfo();
-            $query      = $request->getQueryString();
-            if ($query) {
-                $url .= '?' . $query;
-            }
+        if ($route_name === 'current') {
+            $url = $this->requestStack->getCurrentRequest()->getRequestUri();
         } else {
-            $url = $this->UrlGenerator->generate($routeName, $params, $referenceType);
+            $url = $this->UrlGenerator->generate($route_name, $params, UrlGeneratorInterface::ABSOLUTE_PATH);
         }
 
-        $languageCode = $params['locale'] ?? Language::checkOrGetCode();
-        if ($languageCode && $languageCode !== Language::getMain()->code) {
-            if ($url === '/' || $url === '') {
-                $url = '/' . $languageCode;
-            } else {
-                $url = '/' . $languageCode . $url;
-            }
+        $language_code = $params['locale'] ?? Language::checkOrGetCode();
+        if ($language_code && $language_code !== Language::getMain()->code) {
+            $url = '/' . $language_code . ($url === '/' || $url === '' ? '' : $url);
+        }
+
+        if ($reference_type === 'absolute_url') {
+            $url = Config::get('root_url') . $url;
         }
 
         return $url;

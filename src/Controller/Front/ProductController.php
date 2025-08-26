@@ -68,9 +68,9 @@ class ProductController extends BaseFrontController
         Design::assign('category',          ProductCategory::getCategory(intval($product->category_id)));
 
         // Устанавливаем meta-теги
-        Design::assign('canonical',         $this->generateUrlWithLocale('Product', ['url' => $product->url], referenceType: 'absolute_url'));
-        Design::assign('meta_title',        $product->meta_title ?? $product->name);
-        Design::assign('meta_description',  $product->meta_description ?? $product->meta_title ?? $product->name . ' ' . Settings::getParam('product_meta_description'));
+        Design::assign('canonical',         $this->generateUrlWithLocale('Product', ['url' => $product->url], reference_type: 'absolute_url'));
+        Design::assign('meta_title',        $product->meta_title ?: $product->name);
+        Design::assign('meta_description',  $product->meta_description ?: ($product->meta_title ?: $product->name . ' ' . Settings::getParam('product_meta_description')));
 
         // Event product view
         $this->setEvent(new ProductViewEvent($product));

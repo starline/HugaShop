@@ -146,7 +146,7 @@ class ProductListController extends BaseAdminController
 
         // Текущий бренд
         $brand_id = Request::getInt('brand_id');
-        if ($brand_id && $brand = ProductBrand::getBrand($brand_id)) {
+        if ($brand_id && $brand = ProductBrand::getOne($brand_id, join: ['image'])) {
             $filter['brand_id'] = $brand->id;
         }
 

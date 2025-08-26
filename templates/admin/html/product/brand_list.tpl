@@ -32,9 +32,9 @@
 								<a href="{'BrandAdmin'|link:[id => $brand->id]}">{$brand->name}</a>
 							</div>
 
-							{if $brand->image}
+							{if $brand->image->filename}
 								<div class="brand_image">
-									<img src="{$config->root_url}/files/brands/{$brand->image}" />
+									<img src="{$brand->image->filename|resize:120:60}" />
 								</div>
 							{/if}
 

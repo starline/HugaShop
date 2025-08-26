@@ -96,10 +96,6 @@ class ProductsController extends BaseFrontController
         $products        = Product::getProducts($product_filter, ['image']);
         $products_count  = Product::countProducts($product_filter);
 
-        Design::assign('meta_title',        $category->meta_title ?: $category->name);
-        Design::assign('meta_description',  $category->meta_description ?: $category->meta_title . ' ' . Settings::getParam('product_meta_description'));
-        Design::assign('h1',                $category->h1 ?: $category->name);
-
         Design::assign('products',          $products);
         Design::assign('products_count',    $products_count);
 
@@ -110,8 +106,12 @@ class ProductsController extends BaseFrontController
         Design::assign('selected_features', $selected_features);
 
 
-        // Set canonical url
-        Design::assign('canonical', $this->filterUrl(['option_url' => reset($filter_urls)]));
+        // Устанавливаем meta-теги
+        Design::assign('meta_title',        $category->meta_title ?: $category->name);
+        Design::assign('meta_description',  $category->meta_description ?: $category->meta_title . ' ' . Settings::getParam('product_meta_description'));
+        Design::assign('h1',                $category->h1 ?: $category->name);
+        Design::assign('canonical',         $this->filterUrl(['option_url' => reset($filter_urls)]));
+
 
         $noindex = true; # Right away close indexation
 
@@ -189,7 +189,7 @@ class ProductsController extends BaseFrontController
             $route = 'Products';
         }
 
-        $url = $this->generateUrlWithLocale($route, $urlParams, referenceType: 'absolute_url');
+        $url = $this->generateUrlWithLocale($route, $urlParams, reference_type: 'absolute_url');
 
         $query = Request::gets();
         unset($query['sort'], $query['page']);

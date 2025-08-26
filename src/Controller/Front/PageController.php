@@ -37,7 +37,7 @@ class PageController extends BaseFrontController
         // Устанавливаем meta-теги
         Design::assign('meta_title',        $page->meta_title);
         Design::assign('meta_description',  $page->meta_description);
-        Design::assign('canonical',         $this->generateUrlWithLocale('Page', ['url' => $page->url], referenceType: 'absolute_url'));
+        Design::assign('canonical',         $this->generateUrlWithLocale('Page', ['url' => $page->url], reference_type: 'absolute_url'));
 
         return $this->fetchResponse('page.tpl');
     }

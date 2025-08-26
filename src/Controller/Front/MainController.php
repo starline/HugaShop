@@ -53,7 +53,7 @@ class MainController extends BaseFrontController
         // Устанавливаем meta-теги
         Design::assign('meta_title',        Settings::getParam('company_name') . ' - ' . Settings::getParam('company_description'));
         Design::assign('meta_description',  Settings::getParam('company_name') . ' - ' . Settings::getParam('company_description'));
-        Design::assign('canonical',         $this->generateUrlWithLocale('Main', referenceType: 'absolute_url'));
+        Design::assign('canonical',         $this->generateUrlWithLocale('Main', reference_type: 'absolute_url'));
 
         return $this->fetchResponse('main.tpl');
     }

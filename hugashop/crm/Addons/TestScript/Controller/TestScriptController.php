@@ -284,6 +284,9 @@ final class TestScriptController extends BaseAdminController
                          * Удалить order_purchase.variant_id
                          * Удалить wh_move_purchase.variant_id
                          * 
+                         * Удалить product_brand.image
+                         * Удлаить public\files\brands
+                         * 
                          * переименовываем s_user.created в created_at
                          * переименовываем s_product.created в created_at
                          * переименовываем wh_place.date в created_at

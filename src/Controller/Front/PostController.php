@@ -50,7 +50,7 @@ class PostController extends BaseFrontController
         // Устанавливаем meta-теги
         Design::assign('meta_title',        $post->meta_title);
         Design::assign('meta_description',  $post->meta_description);
-        Design::assign('canonical',         $this->generateUrlWithLocale('Post', ['url' => $post->url], referenceType: 'absolute_url'));
+        Design::assign('canonical',         $this->generateUrlWithLocale('Post', ['url' => $post->url], reference_type: 'absolute_url'));
 
         return $this->fetchResponse('post.tpl');
     }

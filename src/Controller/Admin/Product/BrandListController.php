@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  *
  */
 
@@ -32,7 +32,6 @@ class BrandListController extends BaseAdminController
 
             // Действия с выбранными
             $ids = Request::post('check');
-
             if (is_array($ids)) {
                 switch (Request::post('action')) {
                     case 'delete': {
@@ -45,8 +44,7 @@ class BrandListController extends BaseAdminController
             }
         }
 
-        Design::assign('brands', ProductBrand::getBrands());
-
+        Design::assign('brands', ProductBrand::getBrands(join: ['image']));
         return $this->fetchResponse('product/brand_list.tpl');
     }
 }

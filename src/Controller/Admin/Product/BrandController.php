@@ -4,16 +4,15 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.4
+ * @version 2.6
  *
  */
 
 namespace App\Controller\Admin\Product;
 
-use HugaShop\Services\Config;
 use HugaShop\Services\Design;
 use HugaShop\Services\Secure;
-use HugaShop\Services\Request;
+use App\Services\ImageService;
 use App\Services\LanguageService;
 use App\Controller\BaseAdminController;
 use HugaShop\Models\Product\ProductBrand;
@@ -22,7 +21,6 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class BrandController extends BaseAdminController
 {
-    private $allowed_image_extentions = ['png', 'gif', 'jpg', 'jpeg', 'ico'];
 
     #[Route('/admin/product/brand', name: 'BrandNewAdmin')]
     #[Route('/admin/product/brand/{id}', requirements: ['id' => '\d+'], name: 'BrandAdmin')]
@@ -44,18 +42,7 @@ class BrandController extends BaseAdminController
                 Design::setFlashMessage('update', ProductBrand::updateOne($brand->id, $brand));
             }
 
-            // Удаление изображения
-            if (Request::post('delete_image')) {
-                ProductBrand::deleteImage($brand->id);
-            }
-
-            // Загрузка изображения
-            $image = Request::files('image');
-            if (!empty($image['name']) && in_array(strtolower(pathinfo($image['name'], PATHINFO_EXTENSION)), $this->allowed_image_extentions)) {
-                ProductBrand::deleteImage($brand->id);
-                move_uploaded_file($image['tmp_name'], Config::get('images_brands_dir') . $image['name']);
-                ProductBrand::updateOne($brand->id, ['image' => $image['name']]);
-            }
+            ImageService::catchImages($brand->id, ProductBrand::class);
 
             // Делаем редирект на страницу с ID
             return $this->redirectToRouteLang('BrandAdmin', ['id' => $brand->id]);
@@ -65,7 +52,7 @@ class BrandController extends BaseAdminController
         #### View
         #########
         if (!empty($id)) {
-            $brand = ProductBrand::getOneEditTranslate($id);
+            $brand = ProductBrand::getOneEditTranslate($id, join: ['image']);
             if (empty($brand->id)) {
                 return $this->redirectToRoute('BrandListAdmin');
             }

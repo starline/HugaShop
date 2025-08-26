@@ -86,7 +86,6 @@ class Config
         self::$vars['images_resized_url'] =         'files/resize/';
         self::$vars['images_originals_dir'] =       self::$root_dir . 'public/files/originals/';
         self::$vars['images_resized_dir'] =         self::$root_dir . 'public/files/resize/';
-        self::$vars['images_brands_dir'] =          self::$root_dir . 'public/files/brands/';
         self::$vars['images_watermark_file'] =      self::$root_dir . 'public/files/watermark/watermark.png';
 
         self::$vars['now'] = time(); # Now time from 1970
