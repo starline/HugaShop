@@ -24,6 +24,7 @@ use Symfony\Component\HttpKernel\Attribute\Cache;
  */
 class ImageResizeController extends BaseController
 {
+
     #[Route('/files/resize/{file}', name: 'ImageResize', priority: 10)]
     #[Cache(public: true, maxage: 315360000, mustRevalidate: true)]
     public function imageResize(string $file, Request $request): Response
@@ -40,6 +41,8 @@ class ImageResizeController extends BaseController
         if (!Helper::checkToken($filename, $token, Image::$token_length)) {
             return new Response('File not found. Bad token', Response::HTTP_NOT_FOUND);
         }
+
+        // TODO: редиректить все разрешенные расширение на webp
 
         $resized_filename = Image::resize($filename);
 

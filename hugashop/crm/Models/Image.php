@@ -13,7 +13,6 @@
 
 namespace HugaShop\Models;
 
-use Imagick;
 use HugaShop\Services\Config;
 use HugaShop\Services\Helper;
 use Intervention\Image\ImageManager;
@@ -39,7 +38,8 @@ class Image extends BaseModel
     ];
 
     protected static $table_indexes = [
-        'entity_id' => ['column' => ['entity_id', 'entity_name', 'position'],   'type' => 'index']
+        'entity_id' => ['column' => ['entity_id', 'entity_name', 'position'],   'type' => 'index'],
+        'filename'  => ['column' => ['filename'], 'type' => 'unique']
     ];
 
     public function entity()
@@ -179,19 +179,13 @@ class Image extends BaseModel
      * @param int $width
      * @param string $flags w - watermark, c - cut for size
      */
-    public static function getImageURL(string $filename, int $width = 0, int $height = 0, string $flags = ''): string
+    public static function getImageURL(string $filename, int $width = 0, int $height = 0, string $flags = '', ?string $format = 'webp'): string
     {
         $watermark  = str_contains($flags, 'w');
         $cut        = str_contains($flags, 'c');
 
-        $resized_filename = self::addResizeParams($filename, $width, $height, $watermark, $cut);
-
-        $is_external = str_starts_with($resized_filename, 'http://')
-            || str_starts_with($resized_filename, 'https://');
-
-        $resized_filename_encoded = $is_external ? rawurlencode($resized_filename) : $resized_filename;
-
-        return Config::get('root_url') . '/' . Config::get('images_resized_url') . $resized_filename_encoded . '?' . Helper::makeToken($resized_filename, self::$token_length);
+        $resized_filename = self::addResizeParams($filename, $width, $height, $watermark, $cut, $format);
+        return Config::get('root_url') . '/' . Config::get('images_resized_url') . $resized_filename . '?' . Helper::makeToken($resized_filename, self::$token_length);
     }
 
 
@@ -233,22 +227,29 @@ class Image extends BaseModel
             return false;
         }
 
-        list($original_file, $width, $height, $set_watermark, $cut) = $params;
-        $resized_file = self::addResizeParams($original_file, $width, $height, $set_watermark, $cut);
+        list($root_name, $ext, $width, $height, $set_watermark, $cut) = $params;
+
+        // Найдем оригинальное изображение в DB
+        $image = self::where('filename', 'like', "%$root_name%")->first();
+        if (empty($image->filename)) {
+            return false;
+        }
 
         // Пути к папкам с картинками
-        $originals_dir  = Config::get('images_originals_dir');
-        $resized_dir    = Config::get('images_resized_dir');
+        $original_file_path     = Config::get('images_originals_dir') . $image->filename;
+        $resized_dir            = Config::get('images_resized_dir');
+
+        // Проверяем что оригинальный файл существует
+        if (!is_file($original_file_path)) {
+            return false;
+        }
 
         // Make resize dir
         if (!is_dir($resized_dir)) {
             mkdir($resized_dir, 0777, true);
         }
 
-        // Проверяем что файл существует
-        if (!is_file($originals_dir . $original_file)) {
-            return false;
-        }
+        $resized_file = self::addResizeParams($root_name . '.' . $ext, $width, $height, $set_watermark, $cut);
 
         // Get watermark image
         $watermark = null;
@@ -256,11 +257,11 @@ class Image extends BaseModel
             $watermark = Config::get('images_watermark_file');
         }
 
-        $original_file_path = $originals_dir . $original_file;
-        $new_file_path      = $resized_dir . $resized_file;
-        $sharpen            = Settings::getParam('images_sharpen') ?? 0;
+        $new_file_path  = $resized_dir . $resized_file;
+        $sharpen        = Settings::getParam('images_sharpen') ?? 0;
+        $format         = $ext;
 
-        return self::resizeUploadImage($original_file_path, $new_file_path, $width, $height, $watermark, $cut, $sharpen);
+        return self::resizeUploadImage($original_file_path, $new_file_path, $width, $height, $watermark, $cut, $sharpen, $format);
     }
 
 
@@ -327,13 +328,13 @@ class Image extends BaseModel
     /**
      * Добавляем параметры размера, водяного знака
      */
-    public static function addResizeParams(string $filename, int $width = 0, int $height = 0, bool $watermark = false, bool $cut = false)
+    public static function addResizeParams(string $filename, int $width = 0, int $height = 0, bool $watermark = false, bool $cut = false, ?string $format = null): string
     {
         $pathinfo   = pathinfo($filename);
 
         $dirname    = $pathinfo['dirname'] ?? '';
         $basename   = $pathinfo['filename'] ?? '';
-        $ext        = $pathinfo['extension'] ?? '';
+        $ext        = $format ?: $pathinfo['extension'] ?? '';
 
         $prefix     = ($dirname !== '.' && $dirname !== '') ? $dirname . '/' : '';
         $flags      = ($cut ? 'c' : '') . ($watermark ? 'w' : '');
@@ -372,8 +373,7 @@ class Image extends BaseModel
         $set_watermark  = str_contains($flags, 'w');
         $cut            = str_contains($flags, 'c');
 
-        $file_name = $file . '.' . $ext;
-        return [$file_name, $width, $height, $set_watermark, $cut];
+        return [$file, $ext, $width, $height, $set_watermark, $cut];
     }
 
 
