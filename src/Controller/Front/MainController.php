@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.5
+ * @version 2.6
  *
  * Home page
  *
@@ -48,11 +48,12 @@ class MainController extends BaseFrontController
             }
         }
 
+        Design::assign('categories_products', $categories_products);
+
         // Устанавливаем meta-теги
         Design::assign('meta_title',        Settings::getParam('company_name') . ' - ' . Settings::getParam('company_description'));
         Design::assign('meta_description',  Settings::getParam('company_name') . ' - ' . Settings::getParam('company_description'));
-        Design::assign('canonical',         $this->generateUrlWithLocale('Main'));
-        Design::assign('categories_products', $categories_products);
+        Design::assign('canonical',         $this->generateUrlWithLocale('Main', referenceType: 'absolute_url'));
 
         return $this->fetchResponse('main.tpl');
     }

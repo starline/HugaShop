@@ -1,5 +1,5 @@
 <!-- Product -->
-<li class="product_item{if $product->featured} featured{/if}{if $product->disable} no_stock{/if}"
+<article class="product_item{if $product->featured} featured{/if}{if $product->disable} no_stock{/if}"
 	product_id="{$product->id}">
 	<div class="product_wrap">
 		<div class="product_content">
@@ -93,4 +93,4 @@
 			{/if}
 		</div>
 	</div>
-</li>
+</article>

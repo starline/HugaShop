@@ -19,11 +19,11 @@
 					</span>
 				</div>
 
-				<ul class="products gallerywide">
+				<div class="products gallerywide">
 					{foreach $cat_products->products as $product}
 						{include 'parts/product_item.tpl' lazy=$lazy_load}
 					{/foreach}
-				</ul>
+				</div>
 			</div>
 		{/foreach}
 	{/if}

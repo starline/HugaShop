@@ -33,7 +33,9 @@ class PostsController extends BaseFrontController
         // Передаем в шаблон
         Design::assign('posts', $posts);
         Design::assign('pagination', PaginationService::getPagination($posts_count, $filter));
-        Design::assign('canonical', $this->generateUrlWithLocale('PostList'));
+
+        // Устанавливаем meta-теги
+        Design::assign('canonical', $this->generateUrlWithLocale('PostList', referenceType: 'absolute_url'));
 
         return $this->fetchResponse('posts.tpl');
     }

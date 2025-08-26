@@ -67,10 +67,12 @@ class ProductSearchController extends BaseFrontController
         Design::assign('products', $products);
         Design::assign('pagination', PaginationService::getPagination($products_count, $filter));
         Design::assign('sort', $filter['sort']);
+
+
+        // Устанавливаем meta-теги
         Design::assign('noindex', $noindex);
         Design::assign('meta_title', $search_query);
         Design::assign('meta_description', $search_query . ' ' . Settings::getParam('product_meta_description'));
-
 
         return $this->fetchResponse('product_search.tpl');
     }

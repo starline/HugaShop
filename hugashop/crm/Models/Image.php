@@ -13,6 +13,7 @@
 
 namespace HugaShop\Models;
 
+use Imagick;
 use HugaShop\Services\Config;
 use HugaShop\Services\Helper;
 use Intervention\Image\ImageManager;
@@ -280,7 +281,7 @@ class Image extends BaseModel
     /**
      * Resize uploaded images
      */
-    public static function resizeUploadImage(string $original_file_path, string $new_file_path, ?int $width = null, ?int $height = null, ?string $watermark = null, ?string $cut = null, int $sharpen = 0)
+    public static function resizeUploadImage(string $original_file_path, string $new_file_path, ?int $width = null, ?int $height = null, ?string $watermark = null, ?string $cut = null, int $sharpen = 0, string|null $format = 'webp')
     {
 
         $quality = Config::get('images_quality');
@@ -295,10 +296,12 @@ class Image extends BaseModel
         $manager = new ImageManager(Driver::class);
         $image = $manager->read($original_file_path); # read image from file system
 
-        if ($width and $height and $cut) {
-            $image = $image->coverDown(width: $width, height: $height); # Cut image proportionally to size
-        } else {
-            $image = $image->scaleDown(width: $width, height: $height); # resize image proportionally to width
+        if ($width and $height) {
+            if ($cut) {
+                $image = $image->coverDown(width: $width, height: $height); # Cut image proportionally to size
+            } else {
+                $image = $image->scaleDown(width: $width, height: $height); # resize image proportionally to width
+            }
         }
 
         // insert watermark
@@ -323,7 +326,11 @@ class Image extends BaseModel
             $image = $image->sharpen($sharpen);
         }
 
-        $image->toWebp($quality)->save($new_file_path); # save modified image in new format 
+        if (strtolower($format) === 'webp') {
+            $image = $image->toWebp($quality, strip: true);
+        }
+
+        $image->save($new_file_path); # save modified image in new file 
 
         return $new_file_path;
     }
@@ -452,7 +459,7 @@ class Image extends BaseModel
             $height = $height ?: Config::get('images_max_size') ?? null;
 
             // Изменяем размер изображения
-            if (!empty($image_path = self::resizeUploadImage($temp_filename, $image_path, $width, $height))) {
+            if (!empty($image_path = self::resizeUploadImage($temp_filename, $image_path, $width, $height, sharpen: 0, format: null))) {
                 return pathinfo($image_path, PATHINFO_BASENAME);
             }
         }

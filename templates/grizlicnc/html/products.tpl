@@ -139,11 +139,11 @@
 					</div>
 				{/if}
 
-				<ul class="product_list products gallerywide catalog" list_id="{$category->url}" list_name="{$category->name}">
+				<div class="product_list products gallerywide catalog" list_id="{$category->url}" list_name="{$category->name}">
 					{foreach $products as $product}
 						{include file='parts/product_item.tpl'}
 					{/foreach}
-				</ul>
+				</div>
 
 				{include file="parts/pagination.tpl"}
 

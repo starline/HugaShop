@@ -189,7 +189,7 @@ class ProductsController extends BaseFrontController
             $route = 'Products';
         }
 
-        $url = $this->generateUrlWithLocale($route, $urlParams);
+        $url = $this->generateUrlWithLocale($route, $urlParams, referenceType: 'absolute_url');
 
         $query = Request::gets();
         unset($query['sort'], $query['page']);

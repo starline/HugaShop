@@ -167,8 +167,17 @@ class BaseController extends AbstractController
     /**
      * Generate URL with locale prefix
      */
-    public function generateUrlWithLocale(string $routeName, array $params = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
+    public function generateUrlWithLocale(string $routeName, array $params = [], string $referenceType = 'absolute_path'): string
     {
+
+        $referenceType = match ($referenceType) {
+            'absolute_url'  => UrlGeneratorInterface::ABSOLUTE_URL,
+            'absolute_path' => UrlGeneratorInterface::ABSOLUTE_PATH,
+            'relative_path' => UrlGeneratorInterface::RELATIVE_PATH,
+            'network_path'  => UrlGeneratorInterface::NETWORK_PATH,
+            default         => UrlGeneratorInterface::ABSOLUTE_PATH,
+        };
+
         if ($routeName === 'current') {
             $request    = $this->requestStack->getCurrentRequest();
             $url        = $request->getPathInfo();
