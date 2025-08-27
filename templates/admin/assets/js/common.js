@@ -8,6 +8,21 @@
  * 
  */
 
+// Words count
+export function worldsCount(selector = '.worlds_count') {
+	$(selector).each(function () {
+		const textarea = $(this).find('textarea, input');
+		const fill = $(this).find('.worlds_fill');
+		$(this).find('.worlds_max').text('max:' + textarea.attr('maxlength'));
+		const update_count = function () {
+			fill.text(textarea.val().length);
+		};
+		textarea.on('input', update_count);
+		update_count();
+	});
+}
+
+
 // Зум картинок
 export function initFancybox() {
 	$("a.zoom").fancybox({
@@ -24,7 +39,7 @@ export function initFancybox() {
 
 
 // Generate meta
-export function generate_meta_title() {
+export function generateMetaTitle() {
 	return $('input[name="name"]').val();
 }
 
@@ -44,7 +59,7 @@ export function generate_meta_keywords() {
 	return result;
 }
 
-export function generate_url() {
+export function generateUrl() {
 	let url = $('input[name="name"]').val();
 	url = url.replace(/[\s]+/gi, '-'); // пробелы
 	url = translit(url);

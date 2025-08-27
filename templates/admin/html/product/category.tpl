@@ -85,8 +85,14 @@
 						</li>
 						<li>
 							<label class="col-form-label" for="meta_title">Заголовок (MetaTitle)</label>
-							<input class="form-control" name="meta_title" id="meta_title" type="text"
-								value="{$category->meta_title}" />
+							<div class="worlds_count">
+								<input class="form-control" name="meta_title" id="meta_title" type="text" maxlength="60"
+									value="{$category->meta_title}" />
+								<div class="worlds_counter">
+									<span class="worlds_fill"></span>
+									<span class="worlds_max"></span>
+								</div>
+							</div>
 						</li>
 						<li>
 							<label class="col-form-label" for="h1">Заголовок (H1)</label>
@@ -96,8 +102,14 @@
 							<label class="col-form-label" for="meta_description">Описание (MetaDescription)
 								<div class="emojis">{$settings->emojis}</div>
 							</label>
-							<textarea class="form-control" name="meta_description"
-								id="meta_description">{$category->meta_description}</textarea>
+							<div class="worlds_count">
+								<textarea class="form-control" name="meta_description" maxlength="160"
+									id="meta_description">{$category->meta_description}</textarea>
+								<div class="worlds_counter">
+									<span class="worlds_fill"></span>
+									<span class="worlds_max"></span>
+								</div>
+							</div>
 						</li>
 					</ul>
 				</div>
@@ -203,12 +215,14 @@
 	<script type="module">
 		import '{"js/fancybox/jquery.fancybox.min.js"|asset}';
 		import '{"js/jquery/chosen/chosen.jquery.js"|asset}';
-		import { generate_meta_title, generate_url } from '{"js/common.js"|asset}';
+		import { generateMetaTitle, generateUrl, worldsCount } from '{"js/common.js"|asset}';
 
 		var first_edit = {if $category->id|empty}true{else}false{/if};
 
 		{literal}
 			$(function() {
+
+				worldsCount();
 
 				// Useful select
 				$(".chosen_select").chosen();
@@ -235,11 +249,11 @@
 				let meta_title_touched = true;
 				let url_touched = true;
 
-				if ($('input[name="meta_title"]').val() == generate_meta_title() ||
+				if ($('input[name="meta_title"]').val() == generateMetaTitle() ||
 					$('input[name="meta_title"]').val() == '')
 					meta_title_touched = false;
 
-				if ($('input[name="url"]').val() == generate_url() || $('input[name="url"]').val() == '')
+				if ($('input[name="url"]').val() == generateUrl() || $('input[name="url"]').val() == '')
 					url_touched = false;
 
 				$('input[name="meta_title"]').change(function() { meta_title_touched = true; });
@@ -248,9 +262,9 @@
 
 				function set_meta() {
 					if (!url_touched && first_edit)
-						$('input[name="url"]').val(generate_url());
+						$('input[name="url"]').val(generateUrl());
 					if (!meta_title_touched)
-						$('input[name="meta_title"]').val(generate_meta_title());
+						$('input[name="meta_title"]').val(generateMetaTitle());
 				}
 			});
 		{/literal}

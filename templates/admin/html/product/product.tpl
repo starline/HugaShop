@@ -93,7 +93,7 @@
 					</li>
 					<li>
 						<label for="meta_title" class="col-form-label">Заголовок (MetaTitle)</label>
-						<div class="world_count">
+						<div class="worlds_count">
 							<input class="form-control" id="meta_title" name="meta_title" type="text" maxlength="60"
 								value="{$product->meta_title}" />
 							<div class="worlds_counter">
@@ -106,7 +106,7 @@
 						<label for="meta_description" class="col-form-label">Описание (MetaDescription)
 							<div class="emojis">{$settings->emojis}</div>
 						</label>
-						<div class="world_count">
+						<div class="worlds_count">
 							<textarea class="form-control" id="meta_description" maxlength="160"
 								name="meta_description">{$product->meta_description}</textarea>
 							<div class="worlds_counter">
@@ -117,7 +117,7 @@
 					</li>
 					<li>
 						<label for="annotation" class="col-form-label">Краткое описание</label>
-						<div class="world_count">
+						<div class="worlds_count">
 							<textarea class="form-control" id="annotation" maxlength="300"
 								name="annotation">{$product->annotation}</textarea>
 							<div class="worlds_counter">
@@ -210,6 +210,7 @@
 
 	<script type="module">
 		import '{"js/jquery/chosen/chosen.jquery.js"|asset}';
+		import { worldsCount } from '{"js/common.js"|asset}';
 
 		let lang_code = "{$current_language->code}";
 		let product_id = "{$product->id}";
@@ -217,16 +218,7 @@
 		{literal}
 			$(function() {
 
-				$('.world_count').each(function() {
-					const textarea = $(this).find('textarea, input');
-					const fill = $(this).find('.worlds_fill');
-					$(this).find('.worlds_max').text('max:' + textarea.attr('maxlength'));
-					const update_count = function() {
-						fill.text(textarea.val().length);
-					};
-					textarea.on('input', update_count);
-					update_count();
-				});
+				worldsCount();
 
 				// Useful select
 				$(".chosen_select").chosen();

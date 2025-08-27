@@ -60,15 +60,27 @@
 					</li>
 					<li>
 						<label class="col-form-label" for="meta_title">Заголовок (Title)</label>
-						<input class="form-control" id="meta_title" name="meta_title" type="text"
-							value="{$page->meta_title}" />
+						<div class="worlds_count">
+							<input class="form-control" id="meta_title" name="meta_title" type="text" maxlength="60"
+								value="{$page->meta_title}" />
+							<div class="worlds_counter">
+								<span class="worlds_fill"></span>
+								<span class="worlds_max"></span>
+							</div>
+						</div>
 					</li>
 					<li>
 						<label class="col-form-label" for="meta_description">Описание (MetaDescription)
 							<div class="emojis">{$settings->emojis}</div>
 						</label>
-						<textarea class="form-control" id="meta_description"
-							name="meta_description">{$page->meta_description}</textarea>
+						<div class="worlds_count">
+							<textarea class="form-control" id="meta_description" maxlength="160"
+								name="meta_description">{$page->meta_description}</textarea>
+							<div class="worlds_counter">
+								<span class="worlds_fill"></span>
+								<span class="worlds_max"></span>
+							</div>
+						</div>
 					</li>
 				</ul>
 			</div>
@@ -107,20 +119,21 @@
 
 	<script type="module">
 		import '{"js/fancybox/jquery.fancybox.min.js"|asset}';
-		import { generate_meta_title, generate_url } from '{"js/common.js"|asset}';
+		import { generateMetaTitle, generateUrl, worldsCount } from '{"js/common.js"|asset}';
 
 		{literal}
 			$(function() {
 
+				worldsCount();
 				// Автозаполнение мета-тегов
 				let meta_title_touched = true;
 				let url_touched = true;
 
-				if ($('input[name="meta_title"]').val() == generate_meta_title() ||
+				if ($('input[name="meta_title"]').val() == generateMetaTitle() ||
 					$('input[name="meta_title"]').val() == '')
 					meta_title_touched = false;
 
-				if ($('input[name="url"]').val() == generate_url())
+				if ($('input[name="url"]').val() == generateUrl())
 					url_touched = false;
 
 				$('input[name="meta_title"]').change(function() { meta_title_touched = true; });
@@ -129,9 +142,9 @@
 
 				function set_meta() {
 					if (!meta_title_touched)
-						$('input[name="meta_title"]').val(generate_meta_title());
+						$('input[name="meta_title"]').val(generateMetaTitle());
 					if (!url_touched)
-						$('input[name="url"]').val(generate_url());
+						$('input[name="url"]').val(generateUrl());
 				}
 			});
 		{/literal}

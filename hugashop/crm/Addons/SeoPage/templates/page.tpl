@@ -91,7 +91,7 @@
 
 	<script type="module">
 		import '{"js/fancybox/jquery.fancybox.min.js"|asset}';
-		import { generate_meta_title, generate_url } from '{"js/common.js"|asset}';
+		import { generateMetaTitle, generateUrl } from '{"js/common.js"|asset}';
 
 		{literal}
 			$(function() {
@@ -100,11 +100,11 @@
 				let meta_title_touched = true;
 				let url_touched = true;
 
-				if ($('input[name="meta_title"]').val() == generate_meta_title() ||
+				if ($('input[name="meta_title"]').val() == generateMetaTitle() ||
 					$('input[name="meta_title"]').val() == '')
 					meta_title_touched = false;
 
-				if ($('input[name="url"]').val() == generate_url())
+				if ($('input[name="url"]').val() == generateUrl())
 					url_touched = false;
 
 				$('input[name="meta_title"]').change(function() { meta_title_touched = true; });
@@ -113,9 +113,9 @@
 
 				function set_meta() {
 					if (!meta_title_touched)
-						$('input[name="meta_title"]').val(generate_meta_title());
+						$('input[name="meta_title"]').val(generateMetaTitle());
 					if (!url_touched)
-						$('input[name="url"]').val(generate_url());
+						$('input[name="url"]').val(generateUrl());
 				}
 			});
 		{/literal}
