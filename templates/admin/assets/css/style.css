@@ -710,9 +710,7 @@ footer {
 	color: var(--text-dim-color);
 }
 
-
-/* price html formater */
-.world_counter {
+.worlds_counter {
 	margin-top: 2px;
 	margin-right: 5px;
 	text-align: right;
@@ -720,6 +718,11 @@ footer {
 	color: var(--text-dim-color);
 }
 
+.worlds_max {
+	margin-left: 5px;
+}
+
+/* price html formater */
 .price_html {
 	color: var(--text-color);
 }

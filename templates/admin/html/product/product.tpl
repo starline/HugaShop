@@ -94,9 +94,12 @@
 					<li>
 						<label for="meta_title" class="col-form-label">Заголовок (MetaTitle)</label>
 						<div class="world_count">
-							<input class="form-control" id="meta_title" name="meta_title" type="text"
+							<input class="form-control" id="meta_title" name="meta_title" type="text" maxlength="60"
 								value="{$product->meta_title}" />
-							<div class="world_counter"></div>
+							<div class="worlds_counter">
+								<span class="worlds_fill"></span>
+								<span class="worlds_max"></span>
+							</div>
 						</div>
 					</li>
 					<li>
@@ -104,17 +107,23 @@
 							<div class="emojis">{$settings->emojis}</div>
 						</label>
 						<div class="world_count">
-							<textarea class="form-control" id="meta_description"
+							<textarea class="form-control" id="meta_description" maxlength="160"
 								name="meta_description">{$product->meta_description}</textarea>
-							<div class="world_counter"></div>
+							<div class="worlds_counter">
+								<span class="worlds_fill"></span>
+								<span class="worlds_max"></span>
+							</div>
 						</div>
 					</li>
 					<li>
 						<label for="annotation" class="col-form-label">Краткое описание</label>
 						<div class="world_count">
-							<textarea class="form-control" id="annotation"
+							<textarea class="form-control" id="annotation" maxlength="300"
 								name="annotation">{$product->annotation}</textarea>
-							<div class="world_counter"></div>
+							<div class="worlds_counter">
+								<span class="worlds_fill"></span>
+								<span class="worlds_max"></span>
+							</div>
 						</div>
 					</li>
 				</ul>
@@ -210,9 +219,10 @@
 
 				$('.world_count').each(function() {
 					const textarea = $(this).find('textarea, input');
-					const counter = $(this).find('.world_counter');
+					const fill = $(this).find('.worlds_fill');
+					$(this).find('.worlds_max').text('max:' + textarea.attr('maxlength'));
 					const update_count = function() {
-						counter.text(textarea.val().length);
+						fill.text(textarea.val().length);
 					};
 					textarea.on('input', update_count);
 					update_count();
@@ -227,7 +237,6 @@
 				});
 
 				function show_category_features(category_id) {
-
 					$('ul.features li').each(function(index) {
 						let feature = $(this).find('input') || $(this).find('select');
 						if (!feature.val()) {
