@@ -42,13 +42,23 @@ class ImageResizeController extends BaseController
             return new Response('File not found. Bad token', Response::HTTP_NOT_FOUND);
         }
 
-        // TODO: редиректить все разрешенные расширение на webp
+        // Редиректить все разрешенные расширение на webp
+        // Удалить 26.08.2026
+        list($root_name, $ext, $width, $height, $set_watermark, $cut) = Image::getResizeParams($filename);
+        if (Image::isAllowedFormat($ext) and $ext != 'webp') {
+
+            $flag = $set_watermark ? 'w' : '';
+            $flag .= $cut ? 'c' : '';
+
+            $image_url = Image::getImageURL($root_name, $width, $height, $flag, 'webp');
+            return $this->redirect($image_url, 301);
+        }
 
         $resized_filename = Image::resize($filename);
 
-        if (!empty($resized_filename) and is_readable($resized_filename)) {
+        if ($resized_filename and is_readable($resized_filename)) {
             $response = new Response(file_get_contents($resized_filename));
-            $response->headers->set('Content-type', 'image/webp');
+            $response->headers->set('Content-type', 'image');
             return $response;
         }
 

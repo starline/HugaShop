@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  * Images
  *
@@ -12,17 +12,17 @@
 
 namespace App\Controller\Admin\Settings;
 
+use HugaShop\Models\Image;
+use HugaShop\Models\Settings;
 use HugaShop\Services\Config;
 use HugaShop\Services\Design;
 use HugaShop\Services\Request;
-use HugaShop\Models\Settings;
 use App\Controller\BaseAdminController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class ImagesController extends BaseAdminController
 {
-
 
     #[Route('/admin/images', name: 'ImagesAdmin')]
     public function index(): Response
@@ -32,8 +32,6 @@ class ImagesController extends BaseAdminController
 
         $images_dir = Config::get('templates_dir') . Settings::getParam('theme') . '/assets/images/';
         $images_url = Settings::getParam('theme') . '/assets/images';
-
-        $allowed_extentions = array('png', 'gif', 'jpg', 'jpeg', 'ico');
         $images = [];
 
         // Сохраняем
@@ -63,7 +61,7 @@ class ImagesController extends BaseAdminController
             if ($images = Request::files('upload_images')) {
                 for ($i = 0; $i < count($images['name']); $i++) {
                     $name = trim($images['name'][$i], '.');
-                    if (in_array(strtolower(pathinfo($name, PATHINFO_EXTENSION)), $allowed_extentions)) {
+                    if (Image::isAllowedFormat(pathinfo($name, PATHINFO_EXTENSION))) {
                         move_uploaded_file($images['tmp_name'][$i], $images_dir . $name);
                     }
                 }
@@ -78,10 +76,10 @@ class ImagesController extends BaseAdminController
         }
 
 
-        // Чтаем все файлы
+        // Читаем все файлы
         if ($handle = opendir($images_dir)) {
             while (false !== ($file = readdir($handle))) {
-                if (is_file($images_dir . $file) && $file[0] != '.' && in_array(pathinfo($file, PATHINFO_EXTENSION), $allowed_extentions)) {
+                if (is_file($images_dir . $file) && $file[0] != '.' && Image::isAllowedFormat(pathinfo($file, PATHINFO_EXTENSION))) {
                     $image = new \stdClass();
                     $image->name = $file;
                     $image->size = filesize($images_dir . $file);

@@ -220,17 +220,21 @@ class Image extends BaseModel
      * @param $filename файл с изображением (без пути к файлу)
      * @return string имя файла превью
      */
-    public static function resize(string $filename)
+    public static function resize(string $filename): bool|string
     {
         $params = self::getResizeParams($filename);
         if (!$params) {
             return false;
         }
 
-        list($root_name, $ext, $width, $height, $set_watermark, $cut) = $params;
+        [$root_name, $ext, $width, $height, $set_watermark, $cut] = $params;
+
+        if (empty($root_name) || !self::isAllowedFormat($ext)) {
+            return false;
+        }
 
         // Найдем оригинальное изображение в DB
-        $image = self::where('filename', 'like', "%$root_name%")->first();
+        $image = self::where('filename', 'like', $root_name . '.%')->first();
         if (empty($image->filename)) {
             return false;
         }
@@ -245,8 +249,8 @@ class Image extends BaseModel
         }
 
         // Make resize dir
-        if (!is_dir($resized_dir)) {
-            mkdir($resized_dir, 0777, true);
+        if (!is_dir($resized_dir) && !mkdir($resized_dir, 0775, true) && !is_dir($resized_dir)) {
+            return false;
         }
 
         $resized_file = self::addResizeParams($root_name . '.' . $ext, $width, $height, $set_watermark, $cut);
@@ -394,7 +398,7 @@ class Image extends BaseModel
         $image_path         = Config::get('images_originals_dir') . $root_name . '.' . $ext;
 
         // Пропускаем только разрешенные расширения
-        if (in_array(strtolower($ext), self::$allowed_extentions)) {
+        if (self::isAllowedFormat($ext)) {
 
             // Если файл с таким именем уже существует, добавим token
             while (file_exists($image_path)) {
@@ -428,5 +432,17 @@ class Image extends BaseModel
                 @unlink($file);
             }
         }
+    }
+
+
+    /**
+     * Check is allowed format
+     */
+    public static function isAllowedFormat(string $format): bool
+    {
+        if (in_array(strtolower($format), self::$allowed_extentions)) {
+            return true;
+        }
+        return false;
     }
 }
