@@ -68,7 +68,7 @@
 
             <div class="col-lg-6 layer">
                 <h2>Фотографии</h2>
-                {include file='parts\image_upload_part.tpl' images=$comment->images can_edit=true}
+                {include file='parts/image_upload_part.tpl' images=$comment->images can_edit=true}
             </div>
 
         </div>

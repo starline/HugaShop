@@ -85,7 +85,7 @@
 
 			<div class="col-lg-6 layer">
 				<h2>Изображения поста</h2>
-				{include file='parts\image_upload_part.tpl' images=$post->images can_edit=true}
+				{include file='parts/image_upload_part.tpl' images=$post->images can_edit=true}
 			</div>
 
 			<div class="col-12 layer">

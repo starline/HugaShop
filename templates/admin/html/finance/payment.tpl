@@ -164,7 +164,7 @@
 				<!-- Изображения -->
 				<div class="layer">
 					<h2>Фотоотчет</h2>
-					{include file='parts\image_upload_part.tpl' images=$payment->images can_edit=true}
+					{include file='parts/image_upload_part.tpl' images=$payment->images can_edit=true}
 				</div>
 
 

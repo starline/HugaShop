@@ -67,10 +67,10 @@
 			<!-- Изображения -->
 			<div class="col-lg-6 layer images">
 				<h2>Изображение бренда</h2>
-				{include file='parts\image_upload_part.tpl' images=$brand->image max_images=1 can_edit=true}
+				{include file='parts/image_upload_part.tpl' images=$brand->image max_images=1 can_edit=true}
 			</div>
 
-			
+
 			<div class="col-12 layer">
 				<h2>Описание</h2>
 				<textarea id="description" name="description"

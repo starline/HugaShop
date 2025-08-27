@@ -215,7 +215,7 @@
             <!-- Images -->
             <div id="images" class="col-lg-6 layer images">
                 <h2>Images</h2>
-                {include file='parts\image_upload_part.tpl' images=$images can_edit=true}
+                {include file='parts/image_upload_part.tpl' images=$images can_edit=true}
             </div>
             <!-- End Images -->
 

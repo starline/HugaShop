@@ -419,7 +419,7 @@
 			{if $movement->images|count || $can_edit}
 				<div class="col-12 layer">
 					<h2>Фотоотчет</h2>
-					{include file='parts\image_upload_part.tpl' images=$movement->images edit=$can_edit}
+					{include file='parts/image_upload_part.tpl' images=$movement->images edit=$can_edit}
 				</div>
 			{/if}
 

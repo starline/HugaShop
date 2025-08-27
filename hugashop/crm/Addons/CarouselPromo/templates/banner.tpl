@@ -52,7 +52,7 @@
                 <div class="alert alert-info mt-2">Размер изображения 1920x450 px. Максимальный размер файла:
                     {$config->max_upload_filesize|byte_convert}</div>
 
-                {include file='parts\image_upload_part.tpl' images=$banner->image max_images=1 can_edit=true}
+                {include file='parts/image_upload_part.tpl' images=$banner->image max_images=1 can_edit=true}
             </div>
 
         </div>

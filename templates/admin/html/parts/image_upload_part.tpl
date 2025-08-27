@@ -1,11 +1,12 @@
 {assign var="max_images" value=$max_images|default:0}
-{if $images && !$images|@is_array}
+{if !$images->id|empty}
     {assign var="images" value=[$images]}
 {/if}
+
 <div id="images" class="images" {if $max_images}data-max-images="{$max_images}" {/if}>
     <ul class="image_list">
         {foreach $images as $image}
-            {if !$image|empty}
+            {if !$image->filename|empty}
                 <li class="{if !$image->visible}visible_off{/if}">
                     {if $can_edit}
                         <div class="image_icons">

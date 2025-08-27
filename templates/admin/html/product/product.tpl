@@ -114,7 +114,7 @@
 			<!-- Изображения товара -->
 			<div class="col-lg-6 layer">
 				<h2>Изображения товара</h2>
-				{include file='parts\image_upload_part.tpl' images=$product->images can_edit=true}
+				{include file='parts/image_upload_part.tpl' images=$product->images can_edit=true}
 			</div>
 
 
