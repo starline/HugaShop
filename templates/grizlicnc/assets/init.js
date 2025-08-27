@@ -75,14 +75,11 @@ $(function () {
 
     // Зум картинок
     $("a.zoom").fancybox({
-        buttons: [
-            'close'
-        ],
-        image: {
-            preload: true
-        },
+        buttons: ['close'],
+        image: { preload: true },
         closeExisting: true,
-        defaultType: "image"
+        defaultType: "image",
+        loop: true,
     });
 
 
