@@ -38,14 +38,15 @@ final class Product extends ProductModel
 
         $model = static::getModel();
         $query = $model->newQuery();
-        $products_table = $model->getTable();
+
+        $baseTable = $model->getTable();
 
         $main_lang = Language::getMain()->code;
-        $query->select("$products_table.*");
+        $query->select("$baseTable.*");
         $query->selectSub(
             ProductFilling::query()
                 ->select('percent')
-                ->whereColumn('product_id', "$products_table.id")
+                ->whereColumn('product_id', "$baseTable.id")
                 ->where('language_code', $main_lang)
                 ->limit(1),
             'percent'
