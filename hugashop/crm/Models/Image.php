@@ -21,7 +21,7 @@ use Intervention\Image\Drivers\Imagick\Driver;
 class Image extends BaseModel
 {
 
-    private static array $allowed_extentions = ['png', 'gif', 'jpg', 'jpeg', 'ico', 'webp', 'bmp'];
+    private static array $allowed_extensions = ['png', 'gif', 'jpg', 'jpeg', 'ico', 'webp', 'bmp'];
     public static $token_length = 10;
 
     protected $table = 'content_image';
