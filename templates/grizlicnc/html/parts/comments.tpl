@@ -20,8 +20,9 @@
                         <div class="comment_images row g-2 my-2">
                             {foreach $comment->images as $image}
                                 <div class="col-auto">
-                                    <a href="{$image->filename|resize:1080:1080:w}" class="zoom" data-fancybox="comment{$comment->id}">
-                                        <img src="{$image->filename|resize:120:120:c}" width="120" height="120" />
+                                    <a href="{$image->filename|resize:1080:1080:w}" class="zoom" data-fancybox="comment{$comment->id}"
+                                        alt="{$entity->name}">
+                                        <img src="{$image->filename|resize:120}" alt="{$entity->name}" />
                                     </a>
                                 </div>
                             {/foreach}
@@ -59,7 +60,7 @@
             <input type="hidden" id="comment_related_id" name="comment_related_id" value="" />
             {getCSRFInput}
 
-            <h4>{'Написать комментарий'|trans}</h4>
+            <div class="h4">{'Написать комментарий'|trans}</div>
 
             {if $error}
                 <div class="col-12">
@@ -94,7 +95,8 @@
 
             <div class="col-12">
                 <div class="col-lg-3">
-                    <input class="form-control" type="file" name="comment_images[]" accept="image/*" multiple>
+                    <input class="form-control" type="file" name="comment_images[]" aria-label="Comment images"
+                        accept="image/*" multiple />
                 </div>
                 <div id="comment_images_preview" class="comment_images row g-2 mt-2"></div>
             </div>

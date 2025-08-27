@@ -237,6 +237,6 @@
 		</div>
 	{/if}
 
-	{include file='parts/comments.tpl'}
+	{include file='parts/comments.tpl' entity=$product}
 
 {/block}

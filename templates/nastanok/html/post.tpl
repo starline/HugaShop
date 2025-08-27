@@ -54,5 +54,5 @@
 		{/if}
 	</div>
 
-	{include file='parts/comments.tpl'}
+	{include file='parts/comments.tpl' entity=$post}
 {/block}

@@ -45,7 +45,7 @@
 		<input type="hidden" id="comment_related_id" name="comment_related_id" value="" />
 		{getCSRFInput}
 
-		<div class="h4">Написать комментарий</div>
+		<div class="h4">{'Написать комментарий'|trans}</div>
 
 		{if $error}
 			<div class="col-12">

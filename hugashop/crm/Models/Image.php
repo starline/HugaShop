@@ -287,12 +287,13 @@ class Image extends BaseModel
         $manager = new ImageManager(Driver::class);
         $image = $manager->read($original_file_path); # read image from file system
 
-        if ($width and $height) {
-            if ($cut) {
-                $image = $image->coverDown(width: $width, height: $height); # Cut image proportionally to size
-            } else {
-                $image = $image->scaleDown(width: $width, height: $height); # resize image proportionally to width
-            }
+        // Resize
+        if ($cut and $width and $height) {
+            $image = $image->coverDown(width: $width, height: $height); # Cut image proportionally to size
+        } elseif ($width and $height) {
+            $image = $image->scaleDown(width: $width, height: $height); # resize image proportionally
+        } elseif ($width) {
+            $image = $image->scaleDown(width: $width); # resize image proportionally to width
         }
 
         // insert watermark
@@ -332,7 +333,7 @@ class Image extends BaseModel
     /**
      * Добавляем параметры размера, водяного знака
      */
-    public static function addResizeParams(string $filename, int $width = 0, int $height = 0, bool $watermark = false, bool $cut = false, ?string $format = null): string
+    public static function addResizeParams(string $filename, ?int $width = null, ?int $height = null, bool $watermark = false, bool $cut = false, ?string $format = null): string
     {
         $pathinfo   = pathinfo($filename);
 

@@ -168,7 +168,8 @@
 							<div class="product_amount">
 								<div class="input-group">
 									<div class="input-group-text items minus">-</div>
-									<input type="text" name="amount" value="1" class="form-control text-center" />
+									<input type="text" name="amount" value="1" class="form-control text-center"
+										aria-label="Product amount" />
 									<div class="input-group-text items plus">+</div>
 								</div>
 							</div>
@@ -239,6 +240,6 @@
 		</div>
 	{/if}
 
-	{include file='parts/comments.tpl'}
+	{include file='parts/comments.tpl' entity=$product}
 
 {/block}

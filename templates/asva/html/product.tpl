@@ -232,7 +232,7 @@
 			</div>
 		</div>
 
-		{include file='parts/comments.tpl'}
+		{include file='parts/comments.tpl' entity=$product}
 	</div>
 
 	<!-- Информация для покупки -->
