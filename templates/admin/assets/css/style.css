@@ -712,6 +712,14 @@ footer {
 
 
 /* price html formater */
+.world_counter {
+	margin-top: 2px;
+	margin-right: 5px;
+	text-align: right;
+	font-size: .80em;
+	color: var(--text-dim-color);
+}
+
 .price_html {
 	color: var(--text-color);
 }

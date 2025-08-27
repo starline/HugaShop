@@ -93,19 +93,29 @@
 					</li>
 					<li>
 						<label for="meta_title" class="col-form-label">Заголовок (MetaTitle)</label>
-						<input class="form-control" id="meta_title" name="meta_title" type="text"
-							value="{$product->meta_title}" />
+						<div class="world_count">
+							<input class="form-control" id="meta_title" name="meta_title" type="text"
+								value="{$product->meta_title}" />
+							<div class="world_counter"></div>
+						</div>
 					</li>
 					<li>
 						<label for="meta_description" class="col-form-label">Описание (MetaDescription)
 							<div class="emojis">{$settings->emojis}</div>
 						</label>
-						<textarea class="form-control world_count" id="meta_description"
-							name="meta_description">{$product->meta_description}</textarea>
+						<div class="world_count">
+							<textarea class="form-control" id="meta_description"
+								name="meta_description">{$product->meta_description}</textarea>
+							<div class="world_counter"></div>
+						</div>
 					</li>
 					<li>
 						<label for="annotation" class="col-form-label">Краткое описание</label>
-						<textarea class="form-control world_count" id="annotation" name="annotation">{$product->annotation}</textarea>
+						<div class="world_count">
+							<textarea class="form-control" id="annotation"
+								name="annotation">{$product->annotation}</textarea>
+							<div class="world_counter"></div>
+						</div>
 					</li>
 				</ul>
 			</div>
@@ -196,12 +206,11 @@
 		let product_id = "{$product->id}";
 
 		{literal}
-						$(function() {
+			$(function() {
 
 				$('.world_count').each(function() {
-					const textarea = $(this);
-					const counter = $('<div class="text-end small text-muted"></div>');
-					textarea.after(counter);
+					const textarea = $(this).find('textarea, input');
+					const counter = $(this).find('.world_counter');
 					const update_count = function() {
 						counter.text(textarea.val().length);
 					};
