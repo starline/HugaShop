@@ -196,7 +196,18 @@
 		let product_id = "{$product->id}";
 
 		{literal}
-			$(function() {
+						$(function() {
+
+				$('.world_count').each(function() {
+					const textarea = $(this);
+					const counter = $('<div class="text-end small text-muted"></div>');
+					textarea.after(counter);
+					const update_count = function() {
+						counter.text(textarea.val().length);
+					};
+					textarea.on('input', update_count);
+					update_count();
+				});
 
 				// Useful select
 				$(".chosen_select").chosen();
