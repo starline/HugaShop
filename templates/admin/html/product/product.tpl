@@ -100,12 +100,12 @@
 						<label for="meta_description" class="col-form-label">Описание (MetaDescription)
 							<div class="emojis">{$settings->emojis}</div>
 						</label>
-						<textarea class="form-control" id="meta_description"
+						<textarea class="form-control world_count" id="meta_description"
 							name="meta_description">{$product->meta_description}</textarea>
 					</li>
 					<li>
 						<label for="annotation" class="col-form-label">Краткое описание</label>
-						<textarea class="form-control" id="annotation" name="annotation">{$product->annotation}</textarea>
+						<textarea class="form-control world_count" id="annotation" name="annotation">{$product->annotation}</textarea>
 					</li>
 				</ul>
 			</div>
