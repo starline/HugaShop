@@ -1,4 +1,5 @@
 {assign var=authUrl value='AddonGoogleAuth'|linkLang}
+
 <div class="border-top w-100 mt-5">
     <div class="my-5">
         <a class="btn btn-outline-danger w-100" href="{$authUrl}"
@@ -7,7 +8,7 @@
 
 
     <script>
-        const authUrl = '{$authUrl}';
+        var authUrl = '{$authUrl}';
 
         {literal}
             function popupGoogle(e) {

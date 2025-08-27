@@ -5,7 +5,7 @@
 {block name=content}
 	<div class="login_wrap my-5">
 
-		<h1>{'Регистрация'|trans} <a href="{'UserLogin'|linkLang}">{'Вход'|trans} →</a></h1>
+		<h1>{'Регистрация'|trans} <a class="ajax" href="{'UserLogin'|linkLang}">{'Вход'|trans} →</a></h1>
 
 		{if $error|in_array:['user_exists', 'captcha']}
 			<div class="alert alert-danger">
