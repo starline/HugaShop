@@ -174,7 +174,7 @@ class BaseController extends AbstractController
     public function generateUrlWithLocale(string $route_name, array $params = [], string $reference_type = 'absolute_path'): string
     {
         if ($route_name === 'current') {
-            dump($url = $this->requestStack->getCurrentRequest()->getRequestUri());
+            $url = $this->requestStack->getCurrentRequest()->getRequestUri();
         } else {
             $url = $this->UrlGenerator->generate($route_name, $params, UrlGeneratorInterface::ABSOLUTE_PATH);
         }
