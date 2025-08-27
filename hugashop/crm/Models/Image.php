@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 4.4
+ * @version 4.5
  * 
  * Intervention Image
  * @link https://image.intervention.io/v3/getting-started/installation
@@ -21,7 +21,7 @@ use Intervention\Image\Drivers\Imagick\Driver;
 class Image extends BaseModel
 {
 
-    private static $allowed_extentions = ['png', 'gif', 'jpg', 'jpeg', 'ico', 'webp', 'bmp'];
+    private static array $allowed_extentions = ['png', 'gif', 'jpg', 'jpeg', 'ico', 'webp', 'bmp'];
     public static $token_length = 10;
 
     protected $table = 'content_image';
@@ -70,7 +70,7 @@ class Image extends BaseModel
      * @param string $filename
      * @return int image_id
      */
-    public static function addImage(int $entity_id, string $entity_name, string $filename)
+    public static function addImage(int $entity_id, string $entity_name, string $filename): int
     {
         // Check and Make uniq name
         $unique_name = $base_name = $filename;
@@ -126,7 +126,7 @@ class Image extends BaseModel
      * Delete Image
      * @param int $id
      */
-    public static function deleteImage(int $id)
+    public static function deleteImage(int $id): void
     {
         $image = self::find($id);
         if (!$image) {
@@ -179,7 +179,7 @@ class Image extends BaseModel
      * @param int $width
      * @param string $flags w - watermark, c - cut for size
      */
-    public static function getImageURL(string $filename, int $width = 0, int $height = 0, string $flags = '', ?string $format = 'webp'): string
+    public static function getImageURL(string $filename, ?int $width = null, ?int $height = null, string $flags = '', ?string $format = 'webp'): string
     {
         $watermark  = str_contains($flags, 'w');
         $cut        = str_contains($flags, 'c');
@@ -425,7 +425,7 @@ class Image extends BaseModel
      * Сlear image resize folder
      * @param ?string $dir
      */
-    public static function clearImageResize(?string $dir = null)
+    public static function clearImageResize(?string $dir = null): void
     {
         $dir = $dir ?: Config::get('images_resized_dir');
         foreach (glob($dir . '/*') as $file) {
@@ -441,9 +441,6 @@ class Image extends BaseModel
      */
     public static function isAllowedFormat(string $format): bool
     {
-        if (in_array(strtolower($format), self::$allowed_extentions)) {
-            return true;
-        }
-        return false;
+        return in_array(strtolower($format), self::$allowed_extensions, true);
     }
 }
