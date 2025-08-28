@@ -120,7 +120,7 @@
 
 {block name=body_script append}
 	<script type="module">
-		import { ajax_icon } from '{"js/common.js"|asset}';
+		import { ajaxEntityUpdateIcon } from '{"js/common.js"|asset}';
 
 		{literal}
 			$(function() {
@@ -133,7 +133,7 @@
 
 				// Одобрить
 				$("a.approve").click(function() {
-					ajax_icon($(this), 'comment', 'approved', csrf);
+					ajaxEntityUpdateIcon($(this), 'comment', 'approved', csrf);
 					return false;
 				});
 

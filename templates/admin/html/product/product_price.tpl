@@ -402,7 +402,7 @@
 
 	<script type="module">
 		import '{"js/jquery/datepicker/jquery.ui.datepicker-ru.js"|asset}';
-		import { ajax_icon, indexListRows } from '{"js/common.js"|asset}';
+		import { ajaxEntityUpdateIcon, indexListRows } from '{"js/common.js"|asset}';
 		import { makeChart } from '{"js/chart.js"|asset}';
 
 		let php_product_id = '{$product->id}';

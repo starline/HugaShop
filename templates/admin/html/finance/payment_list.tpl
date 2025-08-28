@@ -186,7 +186,7 @@
    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
    <script type="module">
-      import { ajax_icon } from '{"js/common.js"|asset}';
+      import { ajaxEntityUpdateIcon } from '{"js/common.js"|asset}';
       import { makeChart } from '{"js/chart.js"|asset}';
 
       let stats_url = "{'FinanceStatsAdmin'|link}";
@@ -199,7 +199,7 @@
 
          // Сделать проверенным
          $("a.verified.edit").click(function() {
-            ajax_icon($(this), 'payment', 'verified');
+            ajaxEntityUpdateIcon($(this), 'payment', 'verified');
             return false;
          });
 

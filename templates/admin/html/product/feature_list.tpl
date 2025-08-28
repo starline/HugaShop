@@ -111,14 +111,14 @@
 
 {block name=body_script append}
 	<script type="module">
-		import { ajax_icon } from '{"js/common.js"|asset}';
+		import { ajaxEntityUpdateIcon } from '{"js/common.js"|asset}';
 
 		{literal}
 			$(function() {
 
 				// Указать "в фильтре"/"не в фильтре"
 				$("a.in_filter").click(function() {
-					ajax_icon($(this), 'feature', 'in_filter', csrf);
+					ajaxEntityUpdateIcon($(this), 'feature', 'in_filter', csrf);
 					return false;
 				});
 

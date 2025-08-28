@@ -77,19 +77,19 @@
 
 {block name=body_script append}
 	<script type="module">
-		import { ajax_icon } from '{"js/common.js"|asset}';
+		import { ajaxEntityUpdateIcon } from '{"js/common.js"|asset}';
 
 		{literal}
 			$(function() {
 
 				// Скрыт/Видим
 				$("i.enable").click(function() {
-					ajax_icon($(this), 'payment_method', 'enabled', csrf);
+					ajaxEntityUpdateIcon($(this), 'payment_method', 'enabled', csrf);
 					return false;
 				});
 
 				$("i.enable_public").click(function() {
-					ajax_icon($(this), 'payment_method', 'enabled_public', csrf);
+					ajaxEntityUpdateIcon($(this), 'payment_method', 'enabled_public', csrf);
 					return false;
 				});
 			});

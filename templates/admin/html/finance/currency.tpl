@@ -136,7 +136,7 @@
 
 {block name=body_script append}
 	<script type="module">
-		import { ajax_icon } from '{"js/common.js"|asset}';
+		import { ajaxEntityUpdateIcon } from '{"js/common.js"|asset}';
 
 		{literal}
 			$(function() {
@@ -153,13 +153,13 @@
 
 				// Скрыт/Видим
 				$("i.enable").on('click', function() {
-					ajax_icon($(this), 'currency', 'enabled', csrf);
+					ajaxEntityUpdateIcon($(this), 'currency', 'enabled', csrf);
 					return false;
 				});
 
 				// Центы
 				$("a.cents").on('click', function() {
-					ajax_icon($(this), 'currency', 'cents', csrf);
+					ajaxEntityUpdateIcon($(this), 'currency', 'cents', csrf);
 					return false;
 				});
 

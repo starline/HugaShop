@@ -287,7 +287,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 	<script type="module">
-		import { ajax_icon } from '{"js/common.js"|asset}';
+		import { ajaxEntityUpdateIcon } from '{"js/common.js"|asset}';
 		import { makeChart } from '{"js/chart.js"|asset}';
 
 		const php_category_id = '{$category->id}';
@@ -354,19 +354,19 @@
 
 				// Скрыт/Видим
 				$("i.enable.edit").click(function() {
-					ajax_icon($(this), 'product', 'visible');
+					ajaxEntityUpdateIcon($(this), 'product', 'visible');
 					return false;
 				});
 
 				// Сделать хитом
 				$("a.featured.edit").click(function() {
-					ajax_icon($(this), 'product', 'featured');
+					ajaxEntityUpdateIcon($(this), 'product', 'featured');
 					return false;
 				});
 
 				// Сделать акционным
 				$("a.sale.edit").click(function() {
-					ajax_icon($(this), 'product', 'sale');
+					ajaxEntityUpdateIcon($(this), 'product', 'sale');
 					return false;
 				});
 

@@ -57,12 +57,12 @@
 
 {block name=body_script append}
     <script type="module">
-        import { ajax_icon } from '{"js/common.js"|asset}';
+        import { ajaxEntityUpdateIcon } from '{"js/common.js"|asset}';
 
         {literal}
             $(function() {
                 $("i.enable").click(function() {
-                    ajax_icon($(this), 'RedirectUrl', 'enabled', csrf);
+                    ajaxEntityUpdateIcon($(this), 'RedirectUrl', 'enabled', csrf);
                     return false;
                 });
             });

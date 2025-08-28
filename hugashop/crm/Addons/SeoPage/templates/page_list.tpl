@@ -73,14 +73,14 @@
 
 {block name=body_script append}
 	<script type="module">
-		import { ajax_icon } from '{"js/common.js"|asset}';
+		import { ajaxEntityUpdateIcon } from '{"js/common.js"|asset}';
 
 		{literal}
 			$(function() {
 
 				// Показать
 				$("i.enable").click(function() {
-					ajax_icon($(this), 'SeoPage', 'enabled', csrf);
+					ajaxEntityUpdateIcon($(this), 'SeoPage', 'enabled', csrf);
 					return false;
 				});
 

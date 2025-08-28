@@ -86,14 +86,14 @@
 
 {block name=body_script append}
 	<script type="module">
-		import { ajax_icon } from '{"js/common.js"|asset}';
+		import { ajaxEntityUpdateIcon } from '{"js/common.js"|asset}';
 
 		{literal}
 			$(function() {
 
 				// Скрыт/Видим
 				$("i.enable").on('click', function() {
-					ajax_icon($(this), 'blog', 'visible', csrf);
+					ajaxEntityUpdateIcon($(this), 'blog', 'visible', csrf);
 					return false;
 				});
 

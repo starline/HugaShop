@@ -85,7 +85,7 @@ $(function () {
     });
 
 
-    // Langyage change
+    // Language change
     $('#language_select').on('change', function () {
         const url = new URL(window.location.href);
         url.searchParams.set('lang', this.value);

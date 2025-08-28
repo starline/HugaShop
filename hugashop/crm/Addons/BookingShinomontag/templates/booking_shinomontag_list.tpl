@@ -59,11 +59,11 @@
 
 {block name=body_script append}
     <script type="module">
-        import { ajax_icon } from '{"js/common.js"|asset}';
+        import { ajaxEntityUpdateIcon } from '{"js/common.js"|asset}';
         {literal}
             $(function() {
                 $("i.enable").click(function() {
-                    ajax_icon($(this), 'booking_shinomontag', 'visible', csrf);
+                    ajaxEntityUpdateIcon($(this), 'booking_shinomontag', 'visible', csrf);
                     return false;
                 });
             });

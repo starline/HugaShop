@@ -126,7 +126,7 @@ export function asignFancyAjax() {
 
 
 // Ajax icons
-export function ajax_icon(icon, entity, var_name, csrf) {
+export function ajaxEntityUpdateIcon(icon, entity, var_name, csrf) {
 
 	icon.addClass('loading_icon');
 	let line = icon.closest(".list_row");
