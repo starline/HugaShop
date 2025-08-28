@@ -4,12 +4,11 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.8
+ * @version 1.9
  */
 
 namespace HugaShop\Addons\OpenAI\Controller;
 
-use OpenAI;
 use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use HugaShop\Models\Product\Product;
@@ -27,6 +26,7 @@ use HugaShop\Addons\SeoPage\Models\SeoPage;
 use HugaShop\Models\Product\ProductFeatureOption;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use HugaShop\Addons\InfoBlock\Models\InfoBlock;
+use HugaShop\Addons\OpenAi\Services\OpenAiServices;
 
 final class TranslateController extends BaseAdminController
 {
@@ -102,23 +102,16 @@ final class TranslateController extends BaseAdminController
             return new JsonResponse(['error' => 'not_found']);
         }
 
-        $key = self::getSettings()->api_key;
-        if (empty($key)) {
+        if (empty(self::getSettings()->api_key)) {
             return new JsonResponse(['error' => 'openai_key']);
         }
 
-        $client = OpenAI::client($key);
+        $system_content = 'Ты переводчик. Переводишь на ' . $language->name . '. Всегда возвращай только переведённый текст, без комментариев.';
 
         $translated = [];
         foreach ($model::getTranslatableFields() as $field) {
             if (!empty($model->$field)) {
-                $result = $client->chat()->create([
-                    'model' => 'gpt-4o',
-                    'messages' => [
-                        ['role' => 'system', 'content' => 'Ты переводчик. Переводишь на ' . $language->name . '. Всегда возвращай только переведённый текст, без комментариев.'],
-                        ['role' => 'user', 'content' => $model->$field],
-                    ]
-                ]);
+                $result = OpenAiServices::chatCreate($system_content, $model->$field, 'gpt-4o');
                 $translated[$field] = trim($result->choices[0]->message->content);
             }
         }
@@ -130,15 +123,11 @@ final class TranslateController extends BaseAdminController
             $translated_options = [];
 
             foreach ($options as $option) {
-                $result = $client->chat()->create([
-                    'model' => 'gpt-4o',
-                    'messages' => [
-                        ['role' => 'system', 'content' => 'Ты переводчик. Переводишь на ' . $language->name . '. Всегда возвращай только переведённый текст, без комментариев.'],
-                        ['role' => 'user', 'content' => $option->value],
-                    ]
-                ]);
-
-                $translated_options[] = ['id' => $option->id, 'value' => trim($result->choices[0]->message->content)];
+                $result = OpenAiServices::chatCreate($system_content, $option->value, 'gpt-4o');
+                $translated_options[] = [
+                    'id' => $option->id,
+                    'value' => trim($result->choices[0]->message->content)
+                ];
             }
 
             if ($save && !empty($translated_options)) {
