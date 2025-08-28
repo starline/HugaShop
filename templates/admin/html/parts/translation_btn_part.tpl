@@ -1,5 +1,5 @@
 {if $languages}
-    
+
     <!-- Languages btn -->
     <div class="row mb-3">
         <div class="col-auto">
@@ -23,6 +23,16 @@
                 </button>
             </div>
         {/if}
+
+        <div class="col-auto">
+            <button id="filling_button" type="button" class="btn btn-secondary">
+                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                <span class="btn-content">
+                    <span class="material-icons">wifi_tethering</span>
+                    AI Заполнение
+                </span>
+            </button>
+        </div>
     </div>
 
     <script type="module">
@@ -30,6 +40,7 @@
 
         const entity = '{$entity}';
         const translate_url = "{'AddonOpenAITranslate'|link}";
+        const filling_url   = "{'AddonOpenAIFilling'|link}";
 
         {literal}
 
@@ -40,8 +51,8 @@
                 window.location.href = url.toString();
             });
 
+            // Translate button
             $('#translate_button').on('click', function() {
-                const btn = $(this);
 
                 // Проверка: если entity не задан — отменяем
                 if (typeof entity === 'undefined' || !entity) {
@@ -121,6 +132,34 @@
                     }
                 });
                 return false;
+            });
+
+
+            // Filling button
+            $("#filling_button").on('click', function() {
+
+                // Проверка: если entity не задан — отменяем
+                if (typeof entity === 'undefined' || !entity) {
+                    console.warn('entity is not defined');
+                    return false;
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: filling_url,
+                    data: {
+                        entity: entity,
+                        id: $('input[name=id]').val(),
+                        lang: $('#language_select').val(),
+                        csrf: window.csrf
+                    },
+                    dataType: 'json',
+                    success: function(res) {
+                        if (res.description) {
+                            alert(res.description);
+                        }
+                    }
+                });
             });
         {/literal}
     </script>
