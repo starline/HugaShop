@@ -5,6 +5,7 @@
  *
  * @author Andri Huga
  * @version 1.8
+ * 
  */
 
 namespace HugaShop\Addons\OpenAI\Controller;

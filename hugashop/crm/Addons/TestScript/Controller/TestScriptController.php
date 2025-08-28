@@ -264,7 +264,6 @@ final class TestScriptController extends BaseAdminController
                             }
                             $result[] = checkFunction();
 
-
                             $result[] = $arr['var1'];       # Linking var threw the function with '&'
                             $result[] = $arr_copy['var1'];  # Array doesn't linking with =
                             $result[] = $arr2['var1'];      # NO linking Array threw the function
