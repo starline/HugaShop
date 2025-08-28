@@ -83,7 +83,7 @@
                             <div class="col row">
                                 <div class="col">
                                     <a class="open_fancybox"
-                                        href="{'ProductAdmin'|link:[id=>$product->id]}?return={$smarty.server.REQUEST_URI}">{$product->name}</a>
+                                        href="{'AddonProductFillingContent'|link:[id=>$product->id]}">{$product->name}</a>
                                     {if $product->variant_name}
                                         <span class="small"> - {$product->variant_name}</span>
                                     {/if}
