@@ -18,14 +18,18 @@
 
 	<!-- Основная форма -->
 	<form method="post">
+		<input name="id" type="hidden" value="{$coupon->id}" />
 		{getCSRFInput}
 
 		<div class="row gx-5">
 
 			<div class="col-12">
 				<div class="name_row">
-					<input class="form-control form-control-lg" name="code" type="text" value="{$coupon->code}" />
-					<input name="id" class="name" type="hidden" value="{$coupon->id}" />
+					<div class="col">
+						<input class="form-control form-control-lg {if name|in_array:$form_invalid}is-invalid{/if}"
+							name="code" type="text" value="{$coupon->code}" />
+						<div class="invalid-feedback">Введите код купона</div>
+					</div>
 				</div>
 			</div>
 

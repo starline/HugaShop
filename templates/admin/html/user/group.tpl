@@ -8,7 +8,7 @@
 {/if}
 
 {block name=content}
-	<form method=post enctype="multipart/form-data">
+	<form method="post" enctype="multipart/form-data">
 		<input name="id" type="hidden" value="{$group->id}" />
 		{getCSRFInput}
 
@@ -33,6 +33,7 @@
 					</li>
 				</ul>
 			</div>
+
 			<div class="col-12 btn_row">
 				{include file="parts/button.tpl"}
 			</div>

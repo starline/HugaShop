@@ -69,7 +69,7 @@
 								</div>
 
 								<div class="col">
-									<a href="{'MailTemplateNewAdmin'|link:[id => $mail_template->id]}">{$mail_template->name}</a>
+									<a href="{'MailTemplateAdmin'|link:[id => $mail_template->id]}">{$mail_template->name}</a>
 								</div>
 
 								<div>

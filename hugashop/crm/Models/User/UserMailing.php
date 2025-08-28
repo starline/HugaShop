@@ -136,13 +136,9 @@ class UserMailing extends BaseModel
 
     public static function sendList()
     {
-
         // Выбираем список на отправку на текущее время
-
         // Выбираем все способы отправки
-
         // отправляем
-
         // при успешной отправки, отмечаем
     }
 

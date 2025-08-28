@@ -8,24 +8,18 @@
 {/if}
 
 {block name=content}
-
-	{if $message_error}
-		<div class="message message_error">
-			<span class="text">{if $message_error == 'code_exists'}Купон с таким кодом уже существует{/if}</span>
-		</div>
-	{/if}
-
-
-	<!-- Основная форма -->
 	<form method="post" enctype="multipart/form-data">
-		<input name="id" class="name" type="hidden" value="{$mail_template->id}" />
+		<input name="id" type="hidden" value="{$mail_template->id}" />
 		{getCSRFInput}
 
 		<div class="row gx-5">
-
 			<div class="col-12">
 				<div class="name_row">
-					<input class="form-control form-control-lg" name="name" type="text" value="{$mail_template->name}" />
+					<div class="col">
+						<input class="form-control form-control-lg {if name|in_array:$form_invalid}is-invalid{/if}"
+							name="name" type="text" value="{$mail_template->name}" />
+						<div class="invalid-feedback">Введите название шаблона</div>
+					</div>
 				</div>
 			</div>
 
@@ -60,5 +54,4 @@
 	</form>
 
 	{include file='parts/tinymce_init.tpl'}
-
 {/block}

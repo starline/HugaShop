@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.2
+ * @version 1.3
  *
  */
 
@@ -15,13 +15,13 @@ use HugaShop\Models\BaseModel;
 class UserMailTemplate extends BaseModel
 {
 
+    public $timestamps = true;
     protected static $table_fields = [
         'id' =>             ['type' => 'int',           'extra' => 'AUTO_INCREMENT'],
         'name' =>           ['type' => 'varchar',       'req' => true],
         'content' =>        ['type' => 'text'],
         'type' =>           ['type' => 'varchar'],
-        'settings' =>       ['type' => 'text'],
-        'create_date' =>    ['type' => 'datetime',      'def' => 'CURRENT_TIMESTAMP']
+        'settings' =>       ['type' => 'text']
     ];
 
     public static $mail_types = [
