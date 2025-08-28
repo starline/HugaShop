@@ -196,6 +196,30 @@
                     });
                 }
 
+                function update_lang_badges(row, fillings) {
+                    if (!fillings) {
+                        return;
+                    }
+                    $.each(fillings, function(lang, percent) {
+                        const badge = row.find(`[data-lang="${lang}"]`);
+                        if (!badge.length) {
+                            return;
+                        }
+                        const value = parseInt(percent);
+                        badge.text(value + '% ' + lang);
+                        badge.removeClass(
+                            'text-bg-danger text-bg-warning text-bg-success'
+                        );
+                        if (value < 20) {
+                            badge.addClass('text-bg-danger');
+                        } else if (value < 80) {
+                            badge.addClass('text-bg-warning');
+                        } else {
+                            badge.addClass('text-bg-success');
+                        }
+                    });
+                }
+
 
                 // refresh
                 $("i.refresh").on('click', function() {
@@ -213,26 +237,7 @@
                             csrf: window.csrf
                         },
                         success: function(res) {
-                            if (!res) {
-                                return;
-                            }
-                            $.each(res, function(lang, percent) {
-                                const badge = row.find(`[data-lang="${lang}"]`);
-                                if (!badge.length) {
-                                    return;
-                                }
-                                const value = parseInt(percent);
-                                badge.text(value + '% ' + lang);
-                                badge.removeClass(
-                                    'text-bg-danger text-bg-warning text-bg-success');
-                                if (value < 20) {
-                                    badge.addClass('text-bg-danger');
-                                } else if (value < 80) {
-                                    badge.addClass('text-bg-warning');
-                                } else {
-                                    badge.addClass('text-bg-success');
-                                }
-                            });
+                            update_lang_badges(row, res);
                         },
                         complete: function() {
                             icon.removeClass('loading_icon');
@@ -283,24 +288,7 @@
                                         csrf: window.csrf
                                     },
                                     success: function(res) {
-                                        if (res && res[lang] !== undefined) {
-                                            const badge = row.find(`[data-lang="${lang}"]`);
-                                            const percent = parseInt(res[lang]);
-                                            badge.text(percent + '% ' + lang);
-                                            badge.removeClass(
-                                                'text-bg-danger text-bg-warning text-bg-success'
-                                            );
-                                            if (percent < 20) {
-                                                badge.addClass(
-                                                    'text-bg-danger');
-                                            } else if (percent < 80) {
-                                                badge.addClass(
-                                                    'text-bg-warning');
-                                            } else {
-                                                badge.addClass(
-                                                    'text-bg-success');
-                                            }
-                                        }
+                                        update_lang_badges(row, res);
                                     },
                                     complete: function() {
                                         translateNext(index + 1);
