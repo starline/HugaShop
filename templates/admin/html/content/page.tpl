@@ -125,6 +125,7 @@
 			$(function() {
 
 				worldsCount();
+
 				// Автозаполнение мета-тегов
 				let meta_title_touched = true;
 				let url_touched = true;

@@ -14,7 +14,7 @@
 			</h1>
 
 			{if $purchases}
-				<form id="cart_form" method="post" name="cart" action="/cart">
+				<form id="cart_form" method="post" name="cart" action="{'Cart'|linkLang}">
 					{getCSRFInput}
 
 					<div class="cart_purchases">

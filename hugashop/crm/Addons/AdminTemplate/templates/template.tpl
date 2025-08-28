@@ -96,7 +96,13 @@
                 <ul class="property_block">
                     <li>
                         <label class="col-form-label" for="param_1">Значение параметра</label>
-                        <input class="form-control" id="param_1" name="param_1" type="text" value="">
+                        <div class="worlds_count">
+                            <input class="form-control" id="param_1" name="param_1" type="text" value="" maxlength="60">
+                            <div class="worlds_counter">
+                                <span class="worlds_fill"></span>
+                                <span class="worlds_max"></span>
+                            </div>
+                        </div>
                     </li>
                     <li>
                         <label class="col-form-label" for="param_2">Значение с префиксом</label>
@@ -115,12 +121,28 @@
                     </li>
                     <li>
                         <label class="col-form-label" for="param_3">Текстовое поле</label>
-                        <textarea class="form-control" id="param_3" name="param_3"></textarea>
+                        <div class="worlds_count">
+                            <textarea class="form-control" id="param_3" name="param_3" maxlength="160"></textarea>
+                            <div class="worlds_counter">
+                                <span class="worlds_fill"></span>
+                                <span class="worlds_max"></span>
+                            </div>
+                        </div>
                     </li>
                 </ul>
                 <div class="col-12 btn_row">
                     {include file="parts/button.tpl" label="Кнопка"}
                 </div>
+
+
+                <script type="module">
+                    import { worldsCount } from '{"js/common.js"|asset}';
+                    {literal}
+                        $(function() {
+                            worldsCount();
+                        });
+                    {/literal}
+                </script>
             </div>
             <!-- End Param Input -->
 

@@ -23,7 +23,7 @@
             <div class="list">
                 {foreach $pages as $p}
                     <div class="list_row">
-                        <div class="col row gy-5">
+                        <div class="col row">
                             <div class="col-12 col-lg-4 text-break">
                                 <a href="{'AddonSeoLinkerPage'|link:[id => $p->id]}">{$p->url}</a>
                             </div>

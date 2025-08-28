@@ -23,7 +23,7 @@ final class ProductContentController extends BaseAdminController
 {
     use BaseAddonTrait;
 
-    #[Route('/ProductFilling/content/{id}', name: 'AddonProductFillingContent', requirements: ['id' => '\\d+'], priority: 20)]
+    #[Route('/ProductFilling/content/{id}', name: 'AddonProductFillingContent', requirements: ['id' => '\d+'], priority: 20)]
     public function index(int $id): Response
     {
         $this->checkAdminAccess('product_content');
@@ -32,7 +32,6 @@ final class ProductContentController extends BaseAdminController
 
         if (!empty($product = Secure::getInputCheckEditAccess(Product::class, $id))) {
             Design::setFlashMessage('update', Product::updateProduct($id, $product));
-            return $this->redirectToRouteLang('AddonProductFillingContent', ['id' => $id]);
         }
 
         $product = Product::getOneEditTranslate($id);

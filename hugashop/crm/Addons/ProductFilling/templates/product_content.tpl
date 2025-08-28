@@ -1,24 +1,23 @@
 {block name=content}
-    <div>
+    <div class="container">
 
         {include 'parts/translation_btn_part.tpl' entity='product'}
 
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" action="{'AddonProductFillingContent'|linkLang:[id => $product->id]}"
+            enctype="multipart/form-data">
             <input name="id" type="hidden" value="{$product->id}" />
             {getCSRFInput}
 
             <div class="row gx-5">
-
                 <div class="col-12">
                     <div class="over_name">
                         <div class="checkbox_line"></div>
                         <div class="link_line">
-                            {if $product->id}
-                                <a class="out_link" target="_self" href="{'Product'|linkLang:[url => $product->url]}">Открыть
-                                    товар на сайте</a>
-                            {/if}
+                            <a class="out_link" target="_self" href="{'Product'|linkLang:[url => $product->url]}">Открыть
+                                товар на сайте</a>
                         </div>
                     </div>
+
                     <div class="name_row">
                         <div class="col">
                             <input class="form-control form-control-lg {if name|in_array:$form_invalid}is-invalid{/if}"
