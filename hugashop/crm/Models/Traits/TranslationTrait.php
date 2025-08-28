@@ -133,6 +133,21 @@ trait TranslationTrait
 
 
     /**
+     * Get All translation record for entity
+     */
+    public static function getAllTranslations(int $entity_id)
+    {
+        $model = AbstractTranslation::setTableTranslation(static::class);
+
+        return $model->runWithInitTable(function () use ($model, $entity_id) {
+            return $model->newQuery()
+                ->where('entity_id', $entity_id)
+                ->get()->keyBy('language_code');
+        });
+    }
+
+
+    /**
      * Update or create translation
      */
     public static function updateOrCreateTranslation(int $entity_id, string $code, array $data)

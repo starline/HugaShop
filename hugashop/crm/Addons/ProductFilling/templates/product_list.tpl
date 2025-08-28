@@ -71,6 +71,7 @@
         <div id="main_list">
             {if $products}
                 {include file='parts/pagination.tpl'}
+
                 <div class="list">
                     {foreach $products as $product}
                         <div class="list_row" item_id="{$product->id}">
@@ -122,17 +123,18 @@
                             {/foreach}
 
                             <div class="icons flex-column">
-                                <i class="edit filling library_books material-icons" data-bs-toggle="tooltip" aria-label="Заполнить"
+                                <i class="filling library_books material-icons" data-bs-toggle="tooltip" aria-label="Заполнить"
                                     data-bs-original-title="Заполнить"></i>
 
                                 {if $languages|count > 1}
-                                    <i class="edit translate material-icons" data-bs-toggle="tooltip" aria-label="Перевести"
+                                    <i class="translate material-icons" data-bs-toggle="tooltip" aria-label="Перевести"
                                         data-langs="{$translate_langs|regex_replace:'/,$/':''}" data-bs-original-title="Перевести"></i>
                                 {/if}
                             </div>
                         </div>
                     {/foreach}
                 </div>
+
                 {include file='parts/pagination.tpl'}
             {/if}
         </div>
@@ -192,7 +194,7 @@
 
 
                 // translate
-                $("i.translate.edit").on('click', function() {
+                $("i.translate").on('click', function() {
                     const icon = $(this);
                     const row = icon.closest('.list_row');
                     const langs = row.find('.languages [data-lang]').map(function() {
@@ -265,7 +267,7 @@
 
 
                 // filling
-                $("i.filling.edit").on('click', function() {
+                $("i.filling").on('click', function() {
                     const id = $(this).closest('.list_row').attr('item_id');
                     $.ajax({
                         type: 'POST',
