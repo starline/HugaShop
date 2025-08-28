@@ -1,1 +1,3 @@
-{block name=$ajax_block}{/block}
+<div class="container">
+    {block name=$ajax_block}{/block}
+</div>
