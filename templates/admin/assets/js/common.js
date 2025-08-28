@@ -75,20 +75,33 @@ export function generate_meta_description() {
 }
 
 
+// Open Fancy
+export function asignFancyOpen() {
+	$('body').on('click', 'a.open_fancybox', function (e) {
+		e.preventDefault();
+		$.fancybox.open({
+			type: 'ajax',
+			src: $(this).attr('href'),
+			touch: false,
+			closeExisting: true,
+			afterShow: asignFancyAjax
+		});
+	});
+}
+
+
 // Form in Fancy
 export function asignFancyAjax() {
 
 	// Ajax ссылки
 	$('.fancybox-inner a.ajax').on('click', function (e) {
 		e.preventDefault();
-		$.post($(this).attr('href'), function (response) {
-			$.fancybox.open({
-				type: 'html',
-				src: response,
-				touch: false,
-				closeExisting: true,
-				afterShow: asignFancyAjax
-			});
+		$.fancybox.open({
+			type: 'ajax',
+			src: $(this).attr('href'),
+			touch: false,
+			closeExisting: true,
+			afterShow: asignFancyAjax
 		});
 	})
 
@@ -97,11 +110,19 @@ export function asignFancyAjax() {
 		e.preventDefault();
 		$(this).ajaxSubmit({
 			dataType: "html",
-			beforeSubmit: function (arr, form, options) {
-				// показать лоадер
+			beforeSubmit: function (formData, form, options) {
+				$.fancybox.getInstance()?.showLoading();
 			},
-			success: function (response) {
-				response = $.parseResponseByType(response);
+			success: function (response, statusText, xhr, $form) {
+
+				// Приоритет: редирект через заголовок
+				let redirectUrl = xhr.getResponseHeader('X-Redirect');
+				if (redirectUrl) {
+					window.location.href = redirectUrl;
+					return;
+				}
+
+				response = parseResponseByType(response);
 				if (response.type == 'html') {
 					$.fancybox.open({
 						type: 'html',
@@ -118,10 +139,24 @@ export function asignFancyAjax() {
 				}
 			},
 			error: function (xmlRequest, textStatus, errorThrown) {
-				alert(errorThrown);
+				console.error(errorThrown || 'Request failed');
 			}
 		});
 	});
+}
+
+
+// Parse response
+function parseResponseByType(response) {
+	let result = {};
+	if (response.indexOf('{') == 0) { 	// it is JSON response
+		result['data'] = JSON.parse(response);
+		result['type'] = 'json';
+	} else {							// it is HTML response
+		result['data'] = response;
+		result['type'] = 'html';
+	}
+	return result;
 }
 
 

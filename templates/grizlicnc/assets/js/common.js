@@ -68,14 +68,12 @@ export function asignFancyAjax() {
     // Ajax links
     $('.fancybox-inner a.ajax').on('click', function (e) {
         e.preventDefault();
-        $.post($(this).attr('href'), function (response) {
-            $.fancybox.open({
-                type: 'html',
-                src: response,
-                touch: false,
-                closeExisting: true,
-                afterShow: asignFancyAjax
-            });
+        $.fancybox.open({
+            type: 'ajax',
+            src: $(this).attr('href'),
+            touch: false,
+            closeExisting: true,
+            afterShow: asignFancyAjax
         });
     });
 
@@ -119,9 +117,6 @@ export function asignFancyAjax() {
             },
             error: function (xmlRequest, textStatus, errorThrown) {
                 console.error(errorThrown || 'Request failed');
-            },
-            complete: function () {
-                $.fancybox.getInstance()?.hideLoading();
             }
         });
     });

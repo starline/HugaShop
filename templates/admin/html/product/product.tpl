@@ -25,11 +25,11 @@
 					<div class="link_line">
 						{if $product->category_id}
 							<a class="out_link" href="{'ProductListAdmin'|link:[category_id => $product->category_id]}">Перейти
-								к товарам
-								категории в админке</a>
+								к товарам категории в админке</a>
 						{/if}
 						{if $product->id}
-							<a class="out_link" target="_self" href="{'Product'|linkLang:[url => $product->url]}">Открыть товар
+							<a class="out_link" target="_self" href="{'Product'|linkLang:[url => $product->url]}">Открыть
+								товар
 								на сайте</a>
 						{/if}
 					</div>

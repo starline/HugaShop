@@ -2,19 +2,20 @@
  * Welcome to your app's main JavaScript file!
  * 
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  */
 
+import './js/fancybox/jquery.fancybox.min.css';
 import './css/style.css';
 
 import './js/jquery/jquery.min.js';
-
+import './js/fancybox/jquery.fancybox.min.js';
 import './js/bootstrap.bundle.min.js';
 import './js/jquery/jquery-ui.js';
 import './js/jquery/jquery.form.js';
 import './js/autocomplete/jquery.autocomplete.min.js';
 import './js/ctrlnavigate.js';
-import { assignTooltip, assignButton } from './js/common.js';
+import { assignTooltip, assignButton, asignFancyOpen } from './js/common.js';
 
 $(function () {
 
@@ -36,6 +37,7 @@ $(function () {
         }
     });
 
+    asignFancyOpen();
     assignButton('button.btn');
     assignTooltip();
 
