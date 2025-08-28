@@ -572,6 +572,10 @@ footer {
 	align-items: center;
 }
 
+.fancybox-inner .container {
+	padding: 30px;
+}
+
 .sum_total {
 	color: var(--text-dim-color);
 	position: relative;

@@ -199,7 +199,45 @@
 
                 // refresh
                 $("i.refresh").on('click', function() {
+                    const icon = $(this);
+                    const row = icon.closest('.list_row');
+                    const id = row.attr('item_id');
+                    icon.addClass('loading_icon');
 
+                    $.ajax({
+                        url: calculate_product_url,
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            id: id,
+                            csrf: window.csrf
+                        },
+                        success: function(res) {
+                            if (!res) {
+                                return;
+                            }
+                            $.each(res, function(lang, percent) {
+                                const badge = row.find(`[data-lang="${lang}"]`);
+                                if (!badge.length) {
+                                    return;
+                                }
+                                const value = parseInt(percent);
+                                badge.text(value + '% ' + lang);
+                                badge.removeClass(
+                                    'text-bg-danger text-bg-warning text-bg-success');
+                                if (value < 20) {
+                                    badge.addClass('text-bg-danger');
+                                } else if (value < 80) {
+                                    badge.addClass('text-bg-warning');
+                                } else {
+                                    badge.addClass('text-bg-success');
+                                }
+                            });
+                        },
+                        complete: function() {
+                            icon.removeClass('loading_icon');
+                        }
+                    });
                 });
 
 
