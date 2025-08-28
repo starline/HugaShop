@@ -1,0 +1,6 @@
+name: "Yandex Wordstat API"
+description: "Получение списка улючевых слов из Yandex Wordstat."
+settings_params:
+  - { variable: client_id, name: "ClientId" }
+  - { variable: auth_token, name: "OAuth-токен" }
+version: 1.1
