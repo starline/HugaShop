@@ -27,7 +27,7 @@
     "facebook/php-business-sdk": "^21.0.3",
     "google/apiclient": "^2.18",
     "guzzlehttp/guzzle": "^7.9",
-    "openai-php/client": "^0.13",
+    "openai-php/client": "^0.16",
     "google/recaptcha": "^1.3",
     "spatie/crawler": "^8.0"
   },

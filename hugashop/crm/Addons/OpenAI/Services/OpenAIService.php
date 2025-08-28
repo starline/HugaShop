@@ -47,4 +47,25 @@ class OpenAIService
 
         return $result;
     }
+
+
+    /**
+     * Create base response
+     */
+    public static function responsesCreate(string $input, string $model = 'gpt-4o', float $temperature = 0.7)
+    {
+
+        if (empty($key = self::getSettings()?->api_key)) {
+            return null;
+        }
+
+        $client = OpenAI::client($key);
+        $result = $client->responses()->create([
+            'model' => $model,
+            'temperature' => $temperature,
+            'input' => $input,
+        ]);
+
+        return $result;
+    }
 }

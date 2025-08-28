@@ -72,8 +72,7 @@ final class FillingController extends BaseAdminController
                 return new JsonResponse(['error' => 'entity']);
         }
 
-        $key = self::getSettings()->api_key;
-        if (empty($key)) {
+        if (empty(self::getSettings()->api_key)) {
             return new JsonResponse(['error' => 'openai_key']);
         }
 

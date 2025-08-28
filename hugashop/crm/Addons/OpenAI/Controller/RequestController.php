@@ -51,11 +51,11 @@ final class RequestController extends BaseAdminController
             return new JsonResponse(['error' => 'params']);
         }
 
-        $result = OpenAIServices::chatCreate($system_content, $user_content, 'gpt-4o');
-
-        if (empty($result)) {
+        if (empty(self::getSettings()->api_key)) {
             return new JsonResponse(['error' => 'openai_key']);
         }
+
+        $result = OpenAIServices::chatCreate($system_content, $user_content, 'gpt-4o');
 
         return new JsonResponse([
             'content' => trim($result->choices[0]->message->content),

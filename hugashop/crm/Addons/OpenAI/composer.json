@@ -1,0 +1,7 @@
+{
+    "name": "hugashop/open-ai",
+    "type": "library",
+    "require": {
+        "openai-php/client": "^0.16"
+    }
+}
