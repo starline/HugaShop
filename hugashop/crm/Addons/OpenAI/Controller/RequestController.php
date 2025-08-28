@@ -12,7 +12,6 @@
 
 namespace HugaShop\Addons\OpenAI\Controller;
 
-use OpenAI;
 use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use App\Controller\BaseAdminController;
@@ -51,19 +50,11 @@ final class RequestController extends BaseAdminController
             return new JsonResponse(['error' => 'params']);
         }
 
-        $key = self::getSettings()->api_key;
-        if (empty($key)) {
+        $result = OpenAiServices::chatCreate($system_content, $user_content, 'gpt-4o');
+
+        if (empty($result)) {
             return new JsonResponse(['error' => 'openai_key']);
         }
-
-        $client = OpenAI::client($key);
-        $result = $client->chat()->create([
-            'model' => 'gpt-4o',
-            'messages' => [
-                ['role' => 'system', 'content' => $system_content],
-                ['role' => 'user', 'content' => $user_content],
-            ],
-        ]);
 
         return new JsonResponse([
             'content' => trim($result->choices[0]->message->content),
