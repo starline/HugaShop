@@ -4,6 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
+ * @version 1.4
  *
  * Для оператора NovaPoshta.ua
  *
@@ -17,10 +18,11 @@
 
 namespace HugaShop\Modules\Delivery\NovaPoshta;
 
-use HugaShop\Models\Order\Order;
+use GuzzleHttp\Client as GuzzleClient;
 use HugaShop\Services\Config;
 use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
+use HugaShop\Models\Order\Order;
 use HugaShop\Models\Order\OrderDelivery;
 
 class NovaPoshta
@@ -135,14 +137,11 @@ class NovaPoshta
      */
     public function checkTracking(string $track, string $phone)
     {
-
         $track = trim($track); # Очистить пробелы вконце и вначале
-
         $property["Documents"][] = [
             "DocumentNumber" => strval($track),
             "Phone" => $phone
         ];
-
         return $this->getResponse("TrackingDocument", "getStatusDocuments", $property);
     }
 
@@ -155,20 +154,19 @@ class NovaPoshta
      */
     private function getResponse($model, $method, $property)
     {
+        $params = [
+            "apiKey"            => $this->api_key,
+            "modelName"         => $model,
+            "calledMethod"      => $method,
+            "methodProperties"  => $property
+        ];
 
-        $params["apiKey"] = $this->api_key;
-        $params["modelName"] = $model;
-        $params["calledMethod"] = $method;
-        $params["methodProperties"] = $property;
-
-        // Send an asynchronous request.
-        $client = new \GuzzleHttp\Client();
+        // Send an asynchronous request
+        $client = new GuzzleClient();
         $response = $client->request('PUT', $this->api_url, [
             'json' =>  $params
         ]);
 
-        $body = $response->getBody();
-
-        return json_decode($body, true);
+        return json_decode($response->getBody(), true);
     }
 }

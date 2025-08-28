@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.3
+ * @version 3.4
  *
  * @BotFather Edit Bot -> Edit Commmands
  * star - Все сначала
@@ -16,7 +16,7 @@
 namespace TelegramBot;
 
 use TelegramBot\Helper\Utilities;
-use GuzzleHttp\Client;
+use GuzzleHttp\Client as GuzzleClient;
 use Longman\TelegramBot\Telegram;
 use Longman\TelegramBot\Exception\TelegramException;
 use Longman\TelegramBot\Request;
@@ -38,6 +38,7 @@ define("ROOT_PATH", realpath(dirname(__DIR__)));
  */
 class NotifyBot
 {
+
     /**
      * Commands
      * @var array
@@ -298,7 +299,7 @@ class NotifyBot
         }
 
         if (isset($this->config['custom_http_client'])) {
-            Request::setClient(new Client($this->config['custom_http_client']));
+            Request::setClient(new GuzzleClient($this->config['custom_http_client']));
         }
 
         if (isset($this->config['commands']['paths'])) {

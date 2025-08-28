@@ -21,6 +21,7 @@ use HugaShop\Services\Secure;
 use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
 use HugaShop\Models\Order\Order;
+use HugaShop\Addons\BaseAddonTrait;
 use HugaShop\Models\Product\Product;
 use HugaShop\Models\Cart\CartPurchase;
 use HugaShop\Services\NotifierFactory;
@@ -28,7 +29,6 @@ use App\Controller\BaseAdminController;
 use HugaShop\Models\Content\ContentPost;
 use HugaShop\Models\Order\OrderPurchase;
 use HugaShop\Models\Product\ProductOption;
-use HugaShop\Addons\BaseAddonTrait;
 use HugaShop\Models\Content\ContentComment;
 use HugaShop\Models\Product\ProductRelated;
 use HugaShop\Models\Product\ProductCategory;
@@ -39,13 +39,14 @@ use Illuminate\Database\Capsule\Manager as DB;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Console\Input\ArrayInput;
 use HugaShop\Models\Warehouse\WarehousePurchase;
-use HugaShop\Models\Product\ProductFeatureOption;
-use HugaShop\Models\Warehouse\WarehousePlaceProduct;
-use Symfony\Component\Console\Output\BufferedOutput;
 use HugaShop\Addons\TestScript\Services\Composer;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
+use HugaShop\Models\Product\ProductFeatureOption;
 use HugaShop\Addons\Feedback\Services\NotifyService;
 use HugaShop\Addons\TestScript\Services\SystemCheck;
+use HugaShop\Models\Warehouse\WarehousePlaceProduct;
+use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use HugaShop\Addons\YandexWordstat\Services\YandexWordstatService;
 
 final class TestScriptController extends BaseAdminController
 {
@@ -268,6 +269,11 @@ final class TestScriptController extends BaseAdminController
                             $result[] = $arr_copy['var1'];  # Array doesn't linking with =
                             $result[] = $arr2['var1'];      # NO linking Array threw the function
                             $result[] = $obj->var1;         # Linking Object threw the function
+                        }
+
+
+                        if (1) {
+                            $result[] = YandexWordstatService::getTopRequests('шпиндель');
                         }
 
 

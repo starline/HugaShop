@@ -61,9 +61,9 @@ class OpenAIService
 
         $client = OpenAI::client($key);
         $result = $client->responses()->create([
-            'model' => $model,
-            'temperature' => $temperature,
-            'input' => $input,
+            'model'         => $model,
+            'temperature'   => $temperature,
+            'input'         => $input,
         ]);
 
         return $result;
