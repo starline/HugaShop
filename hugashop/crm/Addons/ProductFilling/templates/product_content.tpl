@@ -77,8 +77,16 @@
             </div>
         </form>
     </div>
-{/block}
 
-{block name=body_script append}
+    {* Подключаем Tiny MCE *}
     {include file='parts/tinymce_init.tpl'}
+
+    <script type="module">
+        import { worldsCount } from '{"js/common.js"|asset}';
+        {literal}
+            $(function() {
+                worldsCount();
+            });
+        {/literal}
+    </script>
 {/block}

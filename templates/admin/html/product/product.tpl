@@ -18,7 +18,6 @@
 		{getCSRFInput}
 
 		<div class="row gx-5">
-
 			<div class="col-12">
 				<div class="over_name">
 					<div class="checkbox_line"></div>
