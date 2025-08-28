@@ -20,6 +20,12 @@ class OpenAIService
 
     use BaseAddonTrait;
 
+    public static $models = [
+        'gpt-5-2025-08-07'      => 'GPT-5',     # $1.5     $10
+        'gpt-4o'                => 'GPT-4o',    # $2.5     $8
+        'gpt-4.1-2025-04-14'    => 'GPT-4.1',   # $2       $8
+    ];
+
     /**
      * Create base chat
      */
