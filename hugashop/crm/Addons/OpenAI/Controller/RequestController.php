@@ -18,7 +18,7 @@ use HugaShop\Addons\BaseAddonTrait;
 use App\Controller\BaseAdminController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use HugaShop\Addons\OpenAi\Services\OpenAiServices;
+use HugaShop\Addons\OpenAI\Services\OpenAIServices;
 
 final class RequestController extends BaseAdminController
 {
@@ -51,7 +51,7 @@ final class RequestController extends BaseAdminController
             return new JsonResponse(['error' => 'params']);
         }
 
-        $result = OpenAiServices::chatCreate($system_content, $user_content, 'gpt-4o');
+        $result = OpenAIServices::chatCreate($system_content, $user_content, 'gpt-4o');
 
         if (empty($result)) {
             return new JsonResponse(['error' => 'openai_key']);

@@ -5,14 +5,17 @@
  *
  * @author Andri Huga
  * @version 1.1
+ * 
+ * @link https://openai.com/api/
  *
  */
 
-namespace HugaShop\Addons\OpenAi\Services;
+namespace HugaShop\Addons\OpenAI\Services;
 
 use OpenAI;
+use HugaShop\Addons\BaseAddonTrait;
 
-class OpenAiServices
+class OpenAIService
 {
 
     use BaseAddonTrait;
@@ -23,7 +26,7 @@ class OpenAiServices
     public static function chatCreate(string $system_content, string $user_content, string $model = 'gpt-4o')
     {
 
-        if (empty($key = self::getSettings()->api_key)) {
+        if (empty($key = self::getSettings()?->api_key)) {
             return null;
         }
 

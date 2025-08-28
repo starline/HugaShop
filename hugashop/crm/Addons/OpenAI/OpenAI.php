@@ -7,6 +7,7 @@
  * @version 1.3
  *
  * OpenAI integration
+ * 
  */
 
 namespace HugaShop\Addons\OpenAI;
