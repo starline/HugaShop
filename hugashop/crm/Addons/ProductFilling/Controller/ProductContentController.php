@@ -45,4 +45,3 @@ final class ProductContentController extends BaseAdminController
         return $this->fetchAddonResponse('product_content.tpl');
     }
 }
-

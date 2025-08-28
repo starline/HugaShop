@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use HugaShop\Addons\ProductFilling\Models\Product;
 use HugaShop\Addons\ProductFilling\Services\Calculate;
 
-final class ProductFillingController extends BaseAdminController
+final class ProductListController extends BaseAdminController
 {
     use BaseAddonTrait;
 
