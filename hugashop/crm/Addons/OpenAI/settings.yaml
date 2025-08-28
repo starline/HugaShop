@@ -2,4 +2,4 @@ name: "OpenAI"
 description: "Интеграция с OpenAI"
 settings_params:
   - { variable: api_key, name: "Api key" }
-version: 1.0
+version: 1.1
