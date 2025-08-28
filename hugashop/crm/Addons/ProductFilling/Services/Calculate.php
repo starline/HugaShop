@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.3
+ * @version 1.4
  * 
  */
 
@@ -30,6 +30,13 @@ final class Calculate
 
         $fields = ['name', 'meta_title', 'meta_description', 'annotation', 'body'];
         $langs = Language::getLanguages();
+        $language_codes = $langs->pluck('code')->toArray();
+
+        // Remove filling data for languages absent in the system
+        ProductFilling::query()
+            ->where('product_id', $product_id)
+            ->whereNotIn('language_code', $language_codes)
+            ->delete();
 
         foreach ($langs as $lang) {
             $filled = 0;
