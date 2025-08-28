@@ -7,6 +7,7 @@
  * @version 1.0
  *
  * OpenAI custom request playground
+ * 
  */
 
 namespace HugaShop\Addons\OpenAI\Controller;
@@ -31,6 +32,7 @@ final class RequestController extends BaseAdminController
     {
         return $this->fetchAddonResponse('request.tpl');
     }
+
 
     /**
      * Send custom request to OpenAI

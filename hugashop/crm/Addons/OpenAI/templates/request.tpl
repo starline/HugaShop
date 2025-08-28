@@ -1,3 +1,4 @@
+{extends 'wrapper/main.tpl'}
 {include 'addon/parts/menu_part.tpl'}
 
 {$meta_title='OpenAI'}
@@ -17,32 +18,36 @@
             <label class="form-label" for="user_content">User content</label>
             <textarea class="form-control" name="user_content" id="user_content" rows="5"></textarea>
         </div>
-        <div class="mb-3">
-            <button type="submit" class="btn btn-primary">Отправить</button>
+
+        <div class="col-12 btn_row">
+            {include file="parts/button.tpl" label="Отправить"}
         </div>
     </form>
 
     <div id="openai_result" class="mt-3"></div>
 
     <script type="module">
+        const open_ai_url = "{'AddonOpenAIRequest'|link}";
+
         {literal}
-        $(function() {
-            $('#openai_form').on('submit', function(e) {
-                e.preventDefault();
-                $.ajax({
-                    url: "{'AddonOpenAIRequest'|link}",
-                    type: 'POST',
-                    data: $('#openai_form').serialize(),
-                    success: function(resp) {
-                        if (resp.content) {
-                            $('#openai_result').html('<pre>' + resp.content + '</pre>');
-                        } else if (resp.error) {
-                            $('#openai_result').html('<div class="text-danger">' + resp.error + '</div>');
+            $(function() {
+                $('#openai_form').on('submit', function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: open_ai_url,
+                        type: 'POST',
+                        data: $('#openai_form').serialize(),
+                        success: function(resp) {
+                            if (resp.content) {
+                                $('#openai_result').html('<pre>' + resp.content + '</pre>');
+                            } else if (resp.error) {
+                                $('#openai_result').html('<div class="text-danger">' + resp.error +
+                                    '</div>');
+                            }
                         }
-                    }
+                    });
                 });
             });
-        });
         {/literal}
     </script>
 {/block}
