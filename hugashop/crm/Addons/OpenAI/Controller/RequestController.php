@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
  *
  * OpenAI custom request playground
  * 
@@ -14,10 +14,11 @@ namespace HugaShop\Addons\OpenAI\Controller;
 
 use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
-use App\Controller\BaseAdminController;
 use HugaShop\Addons\BaseAddonTrait;
+use App\Controller\BaseAdminController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use HugaShop\Addons\OpenAi\Services\OpenAiServices;
 
 final class RequestController extends BaseAdminController
 {

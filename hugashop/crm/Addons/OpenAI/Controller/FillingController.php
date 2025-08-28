@@ -4,12 +4,11 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.7
+ * @version 1.8
  */
 
 namespace HugaShop\Addons\OpenAI\Controller;
 
-use OpenAI;
 use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use HugaShop\Addons\BaseAddonTrait;
@@ -22,6 +21,7 @@ use HugaShop\Addons\SeoPage\Models\SeoPage;
 use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use HugaShop\Addons\OpenAi\Services\OpenAiServices;
 
 final class FillingController extends BaseAdminController
 {
@@ -82,16 +82,10 @@ final class FillingController extends BaseAdminController
             return new JsonResponse(['error' => 'model']);
         }
 
-        $client = OpenAI::client($key);
+        $system_content = 'Ты переводчик. Переводишь на . Всегда возвращай только переведённый текст, без комментариев';
 
         // 1. По названию определяем основной ключевой запрос
-        $result = $client->chat()->create([
-            'model' => 'gpt-4o',
-            'messages' => [
-                ['role' => 'system', 'content' => 'Ты переводчик. Переводишь на . Всегда возвращай только переведённый текст, без комментариев.'],
-                ['role' => 'user', 'content' =>  $model->name],
-            ],
-        ]);
+        $result = OpenAiServices::chatCreate($system_content, $model->name, 'gpt-4o');
 
         return new JsonResponse(['description' => trim($result->choices[0]->message->content ?? '')]);
     }
