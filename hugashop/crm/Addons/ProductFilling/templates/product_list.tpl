@@ -130,6 +130,9 @@
                                     <i class="translate material-icons" data-bs-toggle="tooltip" aria-label="Перевести"
                                         data-langs="{$translate_langs|regex_replace:'/,$/':''}" data-bs-original-title="Перевести"></i>
                                 {/if}
+
+                                <i class="refresh material-icons" data-bs-toggle="tooltip" aria-label="Пересчитать"
+                                    data-bs-original-title="Пересчитать"></i>
                             </div>
                         </div>
                     {/foreach}
@@ -193,6 +196,12 @@
                 }
 
 
+                // refresh
+                $("i.refresh").on('click', function() {
+
+                });
+
+
                 // translate
                 $("i.translate").on('click', function() {
                     const icon = $(this);
@@ -243,11 +252,14 @@
                                                 'text-bg-danger text-bg-warning text-bg-success'
                                             );
                                             if (percent < 20) {
-                                                badge.addClass('text-bg-danger');
+                                                badge.addClass(
+                                                    'text-bg-danger');
                                             } else if (percent < 80) {
-                                                badge.addClass('text-bg-warning');
+                                                badge.addClass(
+                                                    'text-bg-warning');
                                             } else {
-                                                badge.addClass('text-bg-success');
+                                                badge.addClass(
+                                                    'text-bg-success');
                                             }
                                         }
                                     },
