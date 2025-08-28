@@ -15,6 +15,7 @@ use OpenAI;
 class OpenAiServices
 {
 
+    use BaseAddonTrait;
 
     /**
      * Create base chat
@@ -22,8 +23,7 @@ class OpenAiServices
     public static function chatCreate(string $system_content, string $user_content, string $model = 'gpt-4o')
     {
 
-        $key = self::getSettings()->api_key;
-        if (empty($key)) {
+        if (empty($key = self::getSettings()->api_key)) {
             return null;
         }
 
