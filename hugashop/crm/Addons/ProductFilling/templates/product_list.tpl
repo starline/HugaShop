@@ -123,16 +123,17 @@
                             {/foreach}
 
                             <div class="icons flex-column">
-                                <i class="filling library_books material-icons" data-bs-toggle="tooltip" aria-label="Заполнить"
-                                    data-bs-original-title="Заполнить"></i>
+                                <i class="filling material-icons" data-bs-toggle="tooltip" aria-label="Заполнить"
+                                    data-bs-original-title="Заполнить">library_books</i>
 
                                 {if $languages|count > 1}
                                     <i class="translate material-icons" data-bs-toggle="tooltip" aria-label="Перевести"
-                                        data-langs="{$translate_langs|regex_replace:'/,$/':''}" data-bs-original-title="Перевести"></i>
+                                        data-langs="{$translate_langs|regex_replace:'/,$/':''}"
+                                        data-bs-original-title="Перевести">translate</i>
                                 {/if}
 
                                 <i class="refresh material-icons" data-bs-toggle="tooltip" aria-label="Пересчитать"
-                                    data-bs-original-title="Пересчитать"></i>
+                                    data-bs-original-title="Пересчитать">refresh</i>
                             </div>
                         </div>
                     {/foreach}

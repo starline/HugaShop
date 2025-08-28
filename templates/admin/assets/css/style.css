@@ -1895,14 +1895,6 @@ i.material-icons.visibility::before {
 	content: 'visibility_off';
 }
 
-i.material-icons.library_books::before {
-	content: 'library_books';
-}
-
-i.material-icons.translate::before {
-	content: 'translate';
-}
-
 i.material-icons.library_add::before {
 	color: var(--flash-alt-color);
 	content: 'library_add';
@@ -2040,6 +2032,7 @@ i.material-icons.shopping_cart::before {
 
 .icons i.loading_icon,
 .icons a.loading_icon {
+	font-size: 0;
 	background-position: center;
 	background-image: url(../images/loader.gif) !important;
 	background-repeat: no-repeat;
