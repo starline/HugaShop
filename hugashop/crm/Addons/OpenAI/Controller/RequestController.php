@@ -12,6 +12,7 @@
 
 namespace HugaShop\Addons\OpenAI\Controller;
 
+use HugaShop\Services\Design;
 use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use HugaShop\Addons\BaseAddonTrait;
@@ -30,6 +31,7 @@ final class RequestController extends BaseAdminController
     #[Route('/OpenAI', name: 'AddonOpenAI', priority: 20)]
     public function index()
     {
+        Design::assign('addon', $this->getAddon());
         return $this->fetchAddonResponse('request.tpl');
     }
 
@@ -51,14 +53,14 @@ final class RequestController extends BaseAdminController
             return new JsonResponse(['error' => 'params']);
         }
 
-        if (empty(self::getSettings()->api_key)) {
+        if (empty(self::getSettings()?->api_key)) {
             return new JsonResponse(['error' => 'openai_key']);
         }
 
         $result = OpenAIServices::chatCreate($system_content, $user_content, 'gpt-4o');
 
         return new JsonResponse([
-            'content' => trim($result->choices[0]->message->content),
+            'content' => trim($result->choices[0]->message->content)
         ]);
     }
 }

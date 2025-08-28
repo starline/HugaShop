@@ -13,6 +13,7 @@
  * @link https://yandex.ru/dev/id/doc/ru/tokens/debug-token
  * 
  * Regions list:
+ * 
  * 255      - Россия
  * 10174    - Петербург и Ленинградская область
  * 1        - Москва и Московская область
@@ -45,8 +46,8 @@ class YandexWordstatService
         }
 
         $params = [
-            'phrase' => $keyword,
-            'numPhrases' => $limit
+            'phrase'        => $keyword,
+            'numPhrases'    => $limit
         ];
 
         if (!empty($region)) {
@@ -54,7 +55,7 @@ class YandexWordstatService
         }
 
         $response = $client->request('POST', 'topRequests', [
-            'json' => $params,
+            'json' => $params
         ]);
 
         return json_decode($response->getBody(), true);
@@ -69,9 +70,7 @@ class YandexWordstatService
         if (empty($client = self::wordstatClient())) {
             return null;
         }
-
         $response = $client->request('POST', 'getRegionsTree');
-
         return json_decode($response->getBody(), true);
     }
 

@@ -10,6 +10,7 @@
 
     <form id="openai_form" method="post">
         {getCSRFInput}
+
         <div class="mb-3">
             <label class="form-label" for="system_content">System content</label>
             <textarea class="form-control" name="system_content" id="system_content" rows="5"></textarea>

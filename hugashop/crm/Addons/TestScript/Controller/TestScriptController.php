@@ -271,7 +271,7 @@ final class TestScriptController extends BaseAdminController
                         }
 
 
-                        if (1) {
+                        if (0) {
                             $result[] = YandexWordstatService::getTopRequests('шпиндель');
                         }
 
@@ -735,6 +735,7 @@ final class TestScriptController extends BaseAdminController
 
         $result = print_r($result, true);
         Design::assign('result', $result);
+        Design::assign('addon', $this->getAddon());
 
         return $this->fetchAddonResponse('index.tpl');
     }
