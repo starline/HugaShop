@@ -26,7 +26,7 @@ use HugaShop\Addons\SeoPage\Models\SeoPage;
 use HugaShop\Models\Product\ProductFeatureOption;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use HugaShop\Addons\InfoBlock\Models\InfoBlock;
-use HugaShop\Addons\OpenAI\Services\OpenAIServices;
+use HugaShop\Addons\OpenAI\Services\OpenAIService;
 
 final class TranslateController extends BaseAdminController
 {
@@ -111,7 +111,7 @@ final class TranslateController extends BaseAdminController
         $translated = [];
         foreach ($model::getTranslatableFields() as $field) {
             if (!empty($model->$field)) {
-                $result = OpenAIServices::chatCreate($system_content, $model->$field, 'gpt-4o');
+                $result = OpenAIService::chatCreate($system_content, $model->$field, 'gpt-4o');
                 $translated[$field] = trim($result->choices[0]->message->content);
             }
         }
@@ -123,7 +123,7 @@ final class TranslateController extends BaseAdminController
             $translated_options = [];
 
             foreach ($options as $option) {
-                $result = OpenAIServices::chatCreate($system_content, $option->value, 'gpt-4o');
+                $result = OpenAIService::chatCreate($system_content, $option->value, 'gpt-4o');
                 $translated_options[] = [
                     'id' => $option->id,
                     'value' => trim($result->choices[0]->message->content)

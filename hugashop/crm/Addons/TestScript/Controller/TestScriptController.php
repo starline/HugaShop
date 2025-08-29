@@ -41,6 +41,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use HugaShop\Models\Warehouse\WarehousePurchase;
 use HugaShop\Addons\TestScript\Services\Composer;
 use HugaShop\Models\Product\ProductFeatureOption;
+use HugaShop\Addons\OpenAI\Services\OpenAIService;
 use HugaShop\Addons\Feedback\Services\NotifyService;
 use HugaShop\Addons\TestScript\Services\SystemCheck;
 use HugaShop\Models\Warehouse\WarehousePlaceProduct;
@@ -271,8 +272,23 @@ final class TestScriptController extends BaseAdminController
                         }
 
 
-                        if (0) {
-                            $result[] = YandexWordstatService::getTopRequests('шпиндель');
+                        if (1) {
+
+                            $name = "315/80 R 22.5 Royal Black RD801 156/150M 20PR 3PMSF веду";
+                            $system_content = "Ты SEO специалист. Определи head_term для фразы. json";
+                            $user_content = $name;
+
+                            //$result[] = OpenAIService::chatCreate($system_content, $user_content, 'gpt-4o');
+
+                            $result[] = OpenAIService::responsesCreate("
+                                Your task is to extract:
+                                - head_term: the most important search phrase a user would type.  
+                                - modifiers: a list of additional attributes. should contain all the other descriptive elements that help narrow down the product.
+                                - Return the result strictly in JSON format on russian.
+                                Now process this title: $name", 'gpt-5');
+
+
+                            //$result[] = YandexWordstatService::getTopRequests('шпиндель');
                         }
 
 

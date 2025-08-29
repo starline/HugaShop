@@ -21,9 +21,10 @@ class OpenAIService
     use BaseAddonTrait;
 
     public static $models = [
-        'gpt-5-2025-08-07'      => 'GPT-5',     # $1.5     $10
-        'gpt-4o'                => 'GPT-4o',    # $2.5     $8
-        'gpt-4.1-2025-04-14'    => 'GPT-4.1',   # $2       $8
+        'gpt-5'                 => 'GPT-5',     # $1.5      $10
+        'gpt-4o'                => 'GPT-4o',    # $2.5      $8
+        'gpt-4.1'               => 'GPT-4.1',   # $2        $8
+        'gpt-5-mini'            => 'GPT-5 mini' # $0.25     $2
     ];
 
     /**
@@ -62,7 +63,7 @@ class OpenAIService
         $client = OpenAI::client($key);
         $result = $client->responses()->create([
             'model'         => $model,
-            'temperature'   => $temperature,
+            //'temperature'   => $temperature,
             'input'         => $input,
         ]);
 
