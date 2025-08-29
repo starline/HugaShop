@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.2
  *
  * OpenAI custom request playground
  * 
@@ -32,6 +32,8 @@ final class RequestController extends BaseAdminController
     public function index()
     {
         Design::assign('addon', $this->getAddon());
+        Design::assign('models', OpenAIService::$models); # Available OpenAI models for selection
+
         return $this->fetchAddonResponse('request.tpl');
     }
 
@@ -46,8 +48,9 @@ final class RequestController extends BaseAdminController
             return new JsonResponse(['error' => 'csrf']);
         }
 
-        $system_content = Request::post('system_content', 'string');
-        $user_content   = Request::post('user_content', 'string');
+        $system_content = trim((string) Request::post('system_content', 'string'));
+        $user_content   = trim((string) Request::post('user_content', 'string'));
+        $model          = (string) Request::post('model', 'string') ?: 'gpt-4o';
 
         if (empty($system_content) || empty($user_content)) {
             return new JsonResponse(['error' => 'params']);
@@ -57,10 +60,21 @@ final class RequestController extends BaseAdminController
             return new JsonResponse(['error' => 'openai_key']);
         }
 
-        $result = OpenAIService::chatCreate($system_content, $user_content, 'gpt-4o');
+        // Validate model against allowed list
+        if (!array_key_exists($model, OpenAIService::$models)) {
+            $model = 'gpt-4o';
+        }
 
-        return new JsonResponse([
-            'content' => trim($result->choices[0]->message->content)
-        ]);
+        try {
+            $result = OpenAIService::chatCreate($system_content, $user_content, $model);
+            return new JsonResponse([
+                'content' => trim($result->choices[0]->message->content)
+            ]);
+        } catch (\Throwable $e) {
+            return new JsonResponse([
+                'error' => 'openai_failed',
+                'message' => $e->getMessage(),
+            ]);
+        }
     }
 }

@@ -48,8 +48,9 @@
 				</div>
 			</div>
 
+
 			<div class="col-12 btn_row">
-				<button class="btn btn-primary " type="submit" name="do_script" value="1">Выполнить скрипт</button>
+				{include file="parts/button.tpl" label="Выполнить скрипт"}
 			</div>
 		</form>
 
@@ -78,18 +79,4 @@
 			{/if}
 		</div>
 	</div>
-
-
-	<script type="module">
-		{literal}
-			$(function() {
-
-				$(".do_script").on('click', function() {
-					$('form#hidden input[name="action"]').val('restore_orders');
-					$('form#hidden').submit();
-					return false;
-				});
-			});
-		{/literal}
-	</script>
 {/block}
