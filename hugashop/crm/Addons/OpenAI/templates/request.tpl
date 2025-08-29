@@ -34,16 +34,23 @@
             $(function() {
                 $('#openai_form').on('submit', function(e) {
                     e.preventDefault();
+                    const $form = $(this);
+                    const $submit_btn = $form.find('button[type="submit"]');
                     $.ajax({
                         url: open_ai_url,
                         type: 'POST',
-                        data: $('#openai_form').serialize(),
+                        data: $form.serialize(),
+                        beforeSend: function() {
+                            $submit_btn.prop('disabled', true).addClass('disabled');
+                        },
+                        complete: function() {
+                            $submit_btn.prop('disabled', false).removeClass('disabled');
+                        },
                         success: function(resp) {
                             if (resp.content) {
                                 $('#openai_result').html('<pre>' + resp.content + '</pre>');
                             } else if (resp.error) {
-                                $('#openai_result').html('<div class="text-danger">' + resp.error +
-                                    '</div>');
+                                $('#openai_result').html('<div class="text-danger">' + resp.error + '</div>');
                             }
                         }
                     });
