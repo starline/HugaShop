@@ -117,40 +117,20 @@
 	{* Подключаем Tiny MCE *}
 	{include file='parts/tinymce_init.tpl'}
 
-	<script type="module">
-		import '{"js/jquery/datepicker/jquery.ui.datepicker-ru.js"|asset}';
-		import { generateMetaTitle, generateUrl, worldsCount } from '{"js/common.js"|asset}';
+       <script type="module">
+               import '{"js/jquery/datepicker/jquery.ui.datepicker-ru.js"|asset}';
+               import { worldsCount, autofillMeta } from '{"js/common.js"|asset}';
 
-		{literal}
-			$(function() {
-				worldsCount();
+               {literal}
+                       $(function() {
+                               worldsCount();
 
-				$('input[name="date"]').datepicker({
-					regional: 'ru'
-				});
+                               $('input[name="date"]').datepicker({
+                                       regional: 'ru'
+                               });
 
-				// Автозаполнение мета-тегов
-				let meta_title_touched = true;
-				let url_touched = true;
-
-				if ($('input[name="meta_title"]').val() == generateMetaTitle() ||
-					$('input[name="meta_title"]').val() == '')
-					meta_title_touched = false;
-
-				if ($('input[name="url"]').val() == generateUrl() || $('input[name="url"]').val() == '')
-					url_touched = false;
-
-				$('input[name="meta_title"]').change(function() { meta_title_touched = true; });
-				$('input[name="url"]').change(function() { url_touched = true; });
-				$('input[name="name"]').keyup(function() { set_meta(); });
-
-				function set_meta() {
-					if (!meta_title_touched)
-						$('input[name="meta_title"]').val(generateMetaTitle());
-					if (!url_touched)
-						$('input[name="url"]').val(generateUrl());
-				}
-			});
-		{/literal}
-	</script>
+                               autofillMeta();
+                       });
+               {/literal}
+       </script>
 {/block}

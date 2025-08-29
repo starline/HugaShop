@@ -4,7 +4,7 @@
  * Functions, actions
  * 
  * @author Andri Huga
- * @version 2.1
+ * @version 2.2
  * 
  */
 
@@ -72,6 +72,36 @@ export function generate_meta_description() {
 		replace(/(<([^>]+)>)/ig, ' ').
 		replace(/(\&nbsp;)/ig, ' ').
 		replace(/^\s+|\s+$/g, '').substr(0, 512);
+}
+
+export function autofillMeta(
+	name_selector = 'input[name="name"]',
+	meta_title_selector = 'input[name="meta_title"]',
+	url_selector = 'input[name="url"]'
+)
+{
+	let meta_title_touched = true;
+	let url_touched = true;
+
+	if ($(meta_title_selector).val() === generateMetaTitle() || $(meta_title_selector).val() === '') {
+		meta_title_touched = false;
+	}
+
+	if ($(url_selector).val() === generateUrl() || $(url_selector).val() === '') {
+		url_touched = false;
+	}
+
+	$(meta_title_selector).on('change', function () { meta_title_touched = true; });
+	$(url_selector).on('change', function () { url_touched = true; });
+
+	$(name_selector).on('keyup', function () {
+		if (!meta_title_touched) {
+		        $(meta_title_selector).val(generateMetaTitle());
+		}
+		if (!url_touched) {
+		        $(url_selector).val(generateUrl());
+		}
+	});
 }
 
 
