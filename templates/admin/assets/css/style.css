@@ -339,6 +339,9 @@ select option.disabled {
 	color: var(--text-dim-color);
 }
 
+pre {
+	white-space: pre-wrap;
+}
 
 /* color */
 .color_red {
