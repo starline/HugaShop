@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.2
  * 
  * @link https://openai.com/api/
  *
@@ -21,10 +21,10 @@ class OpenAIService
     use BaseAddonTrait;
 
     public static $models = [
-        'gpt-5'                 => 'GPT-5',     # $1.5      $10
-        'gpt-4o'                => 'GPT-4o',    # $2.5      $8
-        'gpt-4.1'               => 'GPT-4.1',   # $2        $8
-        'gpt-5-mini'            => 'GPT-5 mini' # $0.25     $2
+        'gpt-4o'                => 'GPT-4o',        # $2.5      $8
+        'gpt-4.1'               => 'GPT-4.1',       # $2        $8
+        'gpt-5-mini'            => 'GPT-5 mini',    # $0.25     $2
+        'gpt-5'                 => 'GPT-5'          # $1.5      $10
     ];
 
     /**

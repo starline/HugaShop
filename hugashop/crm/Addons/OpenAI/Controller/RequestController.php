@@ -33,7 +33,6 @@ final class RequestController extends BaseAdminController
     {
         Design::assign('addon', $this->getAddon());
         Design::assign('models', OpenAIService::$models); # Available OpenAI models for selection
-
         return $this->fetchAddonResponse('request.tpl');
     }
 
