@@ -17,7 +17,6 @@
 		{getCSRFInput}
 
 		<div class="row gx-5">
-
 			<div class="col-12">
 				<div class="over_name">
 					<div class="checkbox_line">
@@ -55,14 +54,26 @@
 					</li>
 					<li>
 						<label for="meta_title" class="col-form-label">Заголовок (MetaTitle)</label>
-						<input class="form-control" id="meta_title" name="meta_title" type="text"
-							value="{$post->meta_title}" />
+						<div class="worlds_count">
+							<input class="form-control" id="meta_title" maxlength="60" name="meta_title" type="text"
+								value="{$post->meta_title}" />
+							<div class="worlds_counter">
+								<span class="worlds_fill"></span>
+								<span class="worlds_max"></span>
+							</div>
+						</div>
 					</li>
 					<li>
-						<label for=meta_description class="col-form-label">Описание (MetaDescription)
+						<label for="meta_description" class="col-form-label">Описание (MetaDescription)
 							</br>{$settings->emojis}</label>
-						<textarea class="form-control" id=meta_description
-							name="meta_description">{$post->meta_description}</textarea>
+						<div class="worlds_count">
+							<textarea class="form-control" id="meta_description" name="meta_description"
+								maxlength="160">{$post->meta_description}</textarea>
+							<div class="worlds_counter">
+								<span class="worlds_fill"></span>
+								<span class="worlds_max"></span>
+							</div>
+						</div>
 					</li>
 					<li>
 						<label for="seo_keywords" class="col-form-label">Ключевые слова (SEO)</label>
@@ -108,10 +119,11 @@
 
 	<script type="module">
 		import '{"js/jquery/datepicker/jquery.ui.datepicker-ru.js"|asset}';
-		import { generateMetaTitle, generateUrl } from '{"js/common.js"|asset}';
+		import { generateMetaTitle, generateUrl, worldsCount } from '{"js/common.js"|asset}';
 
 		{literal}
 			$(function() {
+				worldsCount();
 
 				$('input[name="date"]').datepicker({
 					regional: 'ru'

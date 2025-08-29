@@ -74,8 +74,8 @@
 							<div class="emojis">{$settings->emojis}</div>
 						</label>
 						<div class="worlds_count">
-							<textarea class="form-control" id="meta_description" maxlength="160"
-								name="meta_description">{$page->meta_description}</textarea>
+							<textarea class="form-control" id="meta_description" maxlength="160" name="meta_description"
+								type="text">{$page->meta_description}</textarea>
 							<div class="worlds_counter">
 								<span class="worlds_fill"></span>
 								<span class="worlds_max"></span>
@@ -117,7 +117,6 @@
 
 		{literal}
 			$(function() {
-
 				worldsCount();
 
 				// Автозаполнение мета-тегов
