@@ -181,8 +181,8 @@
 											<i class="enable {if 'product_price'|user_access}edit{/if} material-icons visibility"
 												data-bs-toggle="tooltip" title="Активен" title="Активен"></i>
 											{if 'product_price'|user_access}
-												<i class="duplicate material-icons library_add" data-bs-toggle="tooltip"
-													title="Дублировать"></i>
+												<i class="duplicate material-icons" data-bs-toggle="tooltip"
+													title="Дублировать">library_add</i>
 											{/if}
 											<a class="material-icons launch" data-bs-toggle="tooltip"
 												title="Предпросмотр в новом окне" href="{'Product'|linkLang:[url => $product->url]}"

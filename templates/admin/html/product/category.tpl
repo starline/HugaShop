@@ -95,10 +95,6 @@
 							</div>
 						</li>
 						<li>
-							<label class="col-form-label" for="h1">Заголовок (H1)</label>
-							<input class="form-control" name="h1" id="h1" type="text" value="{$category->h1}" />
-						</li>
-						<li>
 							<label class="col-form-label" for="meta_description">Описание (MetaDescription)
 								<div class="emojis">{$settings->emojis}</div>
 							</label>
@@ -110,6 +106,10 @@
 									<span class="worlds_max"></span>
 								</div>
 							</div>
+						</li>
+						<li>
+							<label class="col-form-label" for="h1">Заголовок (H1)</label>
+							<input class="form-control" name="h1" id="h1" type="text" value="{$category->h1}" />
 						</li>
 					</ul>
 				</div>

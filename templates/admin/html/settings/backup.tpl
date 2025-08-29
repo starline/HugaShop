@@ -67,8 +67,8 @@
 									<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
 								{/if}
 
-								<i class="restore material-icons cloud_upload" data-bs-toggle="tooltip"
-									title="Восстановить этот бекап"></i>
+								<i class="restore material-icons" data-bs-toggle="tooltip"
+									title="Восстановить этот бекап">cloud_upload</i>
 							</div>
 						</div>
 					{/foreach}

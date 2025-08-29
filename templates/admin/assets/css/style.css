@@ -1908,14 +1908,12 @@ i.material-icons.visibility::before {
 	content: 'visibility_off';
 }
 
-i.material-icons.library_add::before {
+i.material-icons.duplicate {
 	color: var(--flash-alt-color);
-	content: 'library_add';
 }
 
-i.material-icons.cloud_upload::before {
+i.material-icons.restore {
 	color: var(--lightin-dark-color);
-	content: 'cloud_upload';
 }
 
 

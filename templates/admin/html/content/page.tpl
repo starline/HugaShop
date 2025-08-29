@@ -82,12 +82,6 @@
 							</div>
 						</div>
 					</li>
-				</ul>
-			</div>
-
-			<div class="col-lg-6 layer">
-				<h2>Настройки меню</h2>
-				<ul class="property_block">
 					<li>
 						<label for="h1" class="col-form-label">Заголовок (H1)</label>
 						<input class="form-control" id="h1" name="h1" type="text" value="{$page->h1}">
