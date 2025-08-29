@@ -111,16 +111,15 @@
 
 	{include file='parts/tinymce_init.tpl'}
 
-       <script type="module">
-               import '{"js/fancybox/jquery.fancybox.min.js"|asset}';
-               import { worldsCount, autofillMeta } from '{"js/common.js"|asset}';
+	<script type="module">
+		import '{"js/fancybox/jquery.fancybox.min.js"|asset}';
+		import { worldsCount, autofillMeta } from '{"js/common.js"|asset}';
 
-               {literal}
-                       $(function() {
-                               worldsCount();
-
-                               autofillMeta();
-                       });
-               {/literal}
-       </script>
+		{literal}
+			$(function() {
+				worldsCount();
+				autofillMeta();
+			});
+		{/literal}
+	</script>
 {/block}

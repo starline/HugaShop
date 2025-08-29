@@ -117,20 +117,19 @@
 	{* Подключаем Tiny MCE *}
 	{include file='parts/tinymce_init.tpl'}
 
-       <script type="module">
-               import '{"js/jquery/datepicker/jquery.ui.datepicker-ru.js"|asset}';
-               import { worldsCount, autofillMeta } from '{"js/common.js"|asset}';
+	<script type="module">
+		import '{"js/jquery/datepicker/jquery.ui.datepicker-ru.js"|asset}';
+		import { worldsCount, autofillMeta } from '{"js/common.js"|asset}';
 
-               {literal}
-                       $(function() {
-                               worldsCount();
+		{literal}
+			$(function() {
+				worldsCount();
+				autofillMeta();
 
-                               $('input[name="date"]').datepicker({
-                                       regional: 'ru'
-                               });
-
-                               autofillMeta();
-                       });
-               {/literal}
-       </script>
+				$('input[name="date"]').datepicker({
+					regional: 'ru'
+				});
+			});
+		{/literal}
+	</script>
 {/block}

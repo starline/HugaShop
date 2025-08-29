@@ -39,47 +39,11 @@ export function initFancybox() {
 
 
 // Generate meta
-export function generateMetaTitle() {
-	return $('input[name="name"]').val();
-}
-
-export function generate_meta_keywords() {
-	let name = $('input[name="name"]').val();
-	let result = name;
-	let brand = $('select[name="brand_id"] option:selected').attr('brand_name');
-
-	if (typeof (brand) == 'string' && brand != '')
-		result += ', ' + brand;
-
-	$('select[name="categories[]"]').each(function (index) {
-		c = $(this).find('option:selected').attr('category_name');
-		if (typeof (c) == 'string' && c != '')
-			result += ', ' + c;
-	});
-	return result;
-}
-
-export function generateUrl() {
-	let url = $('input[name="name"]').val();
-	url = url.replace(/[\s]+/gi, '-'); // пробелы
-	url = translit(url);
-	url = url.replace(/[^0-9a-z_\-]+/gi, '').toLowerCase();
-	return url;
-}
-
-export function generate_meta_description() {
-	return $('textarea[name=description]').val().
-		replace(/(<([^>]+)>)/ig, ' ').
-		replace(/(\&nbsp;)/ig, ' ').
-		replace(/^\s+|\s+$/g, '').substr(0, 512);
-}
-
 export function autofillMeta(
 	name_selector = 'input[name="name"]',
 	meta_title_selector = 'input[name="meta_title"]',
 	url_selector = 'input[name="url"]'
-)
-{
+) {
 	let meta_title_touched = true;
 	let url_touched = true;
 
@@ -96,12 +60,24 @@ export function autofillMeta(
 
 	$(name_selector).on('keyup', function () {
 		if (!meta_title_touched) {
-		        $(meta_title_selector).val(generateMetaTitle());
+			$(meta_title_selector).val(generateMetaTitle());
 		}
 		if (!url_touched) {
-		        $(url_selector).val(generateUrl());
+			$(url_selector).val(generateUrl());
 		}
 	});
+}
+
+function generateMetaTitle() {
+	return $('input[name="name"]').val();
+}
+
+function generateUrl() {
+	let url = $('input[name="name"]').val();
+	url = url.replace(/[\s]+/gi, '-'); // пробелы
+	url = translit(url);
+	url = url.replace(/[^0-9a-z_\-]+/gi, '').toLowerCase();
+	return url;
 }
 
 

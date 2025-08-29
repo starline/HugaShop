@@ -209,20 +209,17 @@
 
 	{* Подключаем Tiny MCE *}
 	{include file='parts/tinymce_init.tpl'}
-
 	<link rel="stylesheet" href="{'js/jquery/chosen/chosen.css'|asset}" />
-
 	<script type="module">
 		import '{"js/fancybox/jquery.fancybox.min.js"|asset}';
 		import '{"js/jquery/chosen/chosen.jquery.js"|asset}';
-		import { generateMetaTitle, generateUrl, worldsCount } from '{"js/common.js"|asset}';
-
-		var first_edit = {if $category->id|empty}true{else}false{/if};
+		import { autofillMeta, worldsCount } from '{"js/common.js"|asset}';
 
 		{literal}
 			$(function() {
 
 				worldsCount();
+				autofillMeta();
 
 				// Useful select
 				$(".chosen_select").chosen();
@@ -244,28 +241,6 @@
 					});
 					return false;
 				});
-
-				// Автозаполнение мета-тегов
-				let meta_title_touched = true;
-				let url_touched = true;
-
-				if ($('input[name="meta_title"]').val() == generateMetaTitle() ||
-					$('input[name="meta_title"]').val() == '')
-					meta_title_touched = false;
-
-				if ($('input[name="url"]').val() == generateUrl() || $('input[name="url"]').val() == '')
-					url_touched = false;
-
-				$('input[name="meta_title"]').change(function() { meta_title_touched = true; });
-				$('input[name="url"]').change(function() { url_touched = true; });
-				$('input[name="name"]').keyup(function() { set_meta(); });
-
-				function set_meta() {
-					if (!url_touched && first_edit)
-						$('input[name="url"]').val(generateUrl());
-					if (!meta_title_touched)
-						$('input[name="meta_title"]').val(generateMetaTitle());
-				}
 			});
 		{/literal}
 	</script>
