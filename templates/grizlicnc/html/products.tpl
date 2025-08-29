@@ -101,7 +101,7 @@
 			{if $products}
 
 				{* Features filter *}
-				{if $features}
+				{if $features->isNotEmpty()}
 					<table id="features">
 						{foreach $features as $f}
 							<tr>

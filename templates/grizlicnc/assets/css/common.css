@@ -10,6 +10,7 @@
 	--text-flash: #ff5000;
 	--text-alt: #fff;
 	--text-dim: #979797;
+	--text-minor: #3a3a3a;
 	--bg-dim-color: #7b7b7b;
 	--bg-soft-color: #f4f4f4;
 	--bs-link-color: #7b7b7b;
@@ -276,7 +277,8 @@ a.logout {
 }
 
 .description_html {
-	color: #3a3a3a;
+	text-align: justify;
+	color: var(--text-minor);
 }
 
 .description_html::after {
@@ -320,8 +322,7 @@ a.logout {
 
 .category_annotation,
 .category_description {
-	line-height: 1.2;
-	font-size: 1rem;
+	font-size: 0.9rem;
 	font-style: italic;
 }
 
@@ -517,7 +518,7 @@ footer .posts_content a {
 }
 
 #catalog_menu ul ul li a {
-	color: #868686;
+	color: var(--text-minor);
 }
 
 #catalog_menu .category_main>a {

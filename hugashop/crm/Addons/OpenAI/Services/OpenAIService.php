@@ -67,6 +67,6 @@ class OpenAIService
             'input'         => $input,
         ]);
 
-        return $result;
+        return $result?->output;
     }
 }

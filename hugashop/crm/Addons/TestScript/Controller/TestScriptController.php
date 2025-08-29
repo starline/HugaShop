@@ -47,7 +47,6 @@ use HugaShop\Addons\TestScript\Services\SystemCheck;
 use HugaShop\Models\Warehouse\WarehousePlaceProduct;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use HugaShop\Addons\YandexWordstat\Services\YandexWordstatService;
 
 final class TestScriptController extends BaseAdminController
 {
