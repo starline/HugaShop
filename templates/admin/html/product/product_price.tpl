@@ -204,7 +204,7 @@
 							<div class="move">
 								<div class="move_zone"></div>
 							</div>
-							<div class="image">
+							<div class="col_image">
 								<img
 									src="{if $product_variant->image->filename}{$product_variant->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}">
 							</div>
@@ -241,7 +241,7 @@
 						<div class="move">
 							<div class="move_zone"></div>
 						</div>
-						<div class="image">
+						<div class="col_image">
 							<img src="">
 						</div>
 
@@ -319,7 +319,7 @@
 							<div class="move">
 								<div class="move_zone"></div>
 							</div>
-							<div class="image">
+							<div class="col_image">
 								<img
 									src="{if $rel_product->image->filename}{$rel_product->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}">
 							</div>
@@ -356,7 +356,7 @@
 							<input type="hidden" name="related_products[]" value="">
 							<div class="move_zone"></div>
 						</div>
-						<div class="image">
+						<div class="col_image">
 							<img src="">
 						</div>
 						<div class="col row">

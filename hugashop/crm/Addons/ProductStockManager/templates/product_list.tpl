@@ -77,7 +77,7 @@
                             item_id="{$product->id}">
 
                             <div class="col row">
-                                <div class="col_image image">
+                                <div class="col_image">
                                     <img
                                         src="{if $product->image->filename}{$product->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}" />
                                 </div>

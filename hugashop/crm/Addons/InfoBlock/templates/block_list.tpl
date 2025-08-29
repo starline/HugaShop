@@ -19,7 +19,7 @@
 
 				<div class="list sortable_on">
 					{foreach $blocks as $block}
-						<div class="{if !$block->enabled}enabled_off{/if} list_row">
+						<div class="list_row {if !$block->enabled}enabled_off{/if}">
 
 							<div class="move">
 								<div class="move_zone"></div>

@@ -49,6 +49,7 @@
 	--lightin-dark-color: #58ab0f;
 	--flash-color: #f00;
 	--flash-dim-color: #fc5e5e;
+	--border-radius: 3px;
 	--flash-alt-color: #ffa200;
 	--bg-warning-color: #fffac4;
 	--bs-border-color: #c3c3c3;
@@ -425,7 +426,7 @@ pre {
 
 .current_user a.user_name {
 	margin: 0 5px;
-	border-radius: 3px;
+	border-radius: var(--border-radius);
 	padding: 3px 8px;
 	background-color: var(--text-dim-color);
 	color: var(--text-alt-color);
@@ -797,7 +798,7 @@ a.admin_bookmark svg {
 
 /* Сообщение */
 .message {
-	border-radius: 3px;
+	border-radius: var(--border-radius);
 	padding: 9px 20px;
 	margin-bottom: 20px;
 }
@@ -823,7 +824,7 @@ a.admin_bookmark svg {
 
 #variants_block ul {
 	font-size: 0.95rem;
-	border-radius: 3px;
+	border-radius: var(--border-radius);
 	background-color: var(--background-dim-color);
 	display: flex;
 	padding: 15px 10px;
@@ -838,7 +839,7 @@ a.admin_bookmark svg {
 
 #variants_block ul li {
 	margin: 5px;
-	border-radius: 5px;
+	border-radius: var(--border-radius);
 	background-color: var(--background-inside-color);
 	padding: 12px;
 }
@@ -1122,12 +1123,13 @@ select.multiple_categories option {
 	background-size: cover;
 	background-repeat: no-repeat;
 	display: block;
+	border-radius: var(--border-radius);
 }
 
 .images ul li .image_icons {
 	padding: 2px 2px;
 	border-radius: 12px;
-	background-color: #ffffffb3;
+	background-color: var(--background-inside-color);
 	top: 8px;
 	right: 8px;
 	position: absolute;
@@ -1276,11 +1278,11 @@ select.multiple_categories option {
 	color: var(--text-alt-color);
 	text-decoration: none;
 	display: block;
-	border-radius: 3px;
+	border-radius: var(--border-radius);
 }
 
 .menu_list li.label a {
-	border-radius: 3px;
+	border-radius: var(--border-radius);
 	color: var(--text-alt-color);
 }
 
@@ -1290,7 +1292,7 @@ select.multiple_categories option {
 	padding-top: 2px;
 	color: var(--text-alt-color);
 	display: block;
-	border-radius: 3px;
+	border-radius: var(--border-radius);
 }
 
 .menu_list li.label.disabled {
@@ -1308,7 +1310,7 @@ select.multiple_categories option {
 }
 
 .wallets .all.selected {
-	border-radius: 3px;
+	border-radius: var(--border-radius);
 	background-color: var(--lightin-color);
 }
 
@@ -1318,7 +1320,7 @@ select.multiple_categories option {
 
 .wallets .menu_list li {
 	background-color: var(--background-inside-color);
-	border-radius: 5px;
+	border-radius: var(--border-radius);
 	padding: 2px 10px;
 	border: 1px solid var(--border-color);
 }
@@ -1410,7 +1412,7 @@ select.multiple_categories option {
 .categories_tree ul li.selected>div>a {
 	padding-left: 5px;
 	background-color: var(--lightin-color);
-	border-radius: 3px;
+	border-radius: var(--border-radius);
 	color: var(--text-alt-color);
 	text-decoration: none;
 }
@@ -1455,7 +1457,7 @@ select.multiple_categories option {
 	text-align: center;
 	border: 1px solid var(--border-color);
 	text-decoration: none;
-	border-radius: 4px;
+	border-radius: var(--border-radius);
 }
 
 .pagination a.selected:hover,
@@ -1563,17 +1565,17 @@ div#sort_links b {
 }
 
 .list .list_row .col_image {
-	width: 80px;
+	width: fit-content;
 }
 
-.list .list_row .image a {
+.list .list_row .col_image a {
 	display: block;
 }
 
-.list .list_row .image img {
+.list .list_row .col_image img {
 	width: 60px;
 	background-color: var(--background-inside-color);
-	border-radius: 6px;
+	border-radius: var(--border-radius);
 }
 
 .list .list_row .col_price {
@@ -1603,7 +1605,7 @@ div#sort_links b {
 .list .list_row .mail_status {
 	text-align: center;
 	font-size: 0.9rem;
-	border-radius: 6px;
+	border-radius: var(--border-radius);
 	padding: 2px 6px 3px;
 	background-color: var(--background-inside-color);
 	color: var(--text-dim-color)
@@ -1652,7 +1654,7 @@ div#sort_links b {
 	font-size: 0.8rem;
 	font-style: italic;
 	color: var(--text-dim-color);
-	border-radius: 3px;
+	border-radius: var(--border-radius);
 	padding: 8px 13px;
 	background-color: var(--background-inside-color);
 	margin-top: 5px;
@@ -1755,6 +1757,10 @@ div#sort_links b {
 	opacity: 0.4;
 }
 
+.list .list_row.disable .col_name a {
+	text-decoration: line-through;
+}
+
 .list .list_row .detail {
 	color: var(--text-dim-color);
 }
@@ -1818,7 +1824,7 @@ span.order_label {
 	width: 16px;
 	height: 16px;
 	margin-right: 5px;
-	background-color: #e0e0e0;
+	background-color: var(--background-color);
 	background-image: url(../images/label.png);
 }
 
@@ -2152,7 +2158,7 @@ textarea.editor_small {
 
 /* Валюты */
 #currencies_block {
-	border-radius: 6px;
+	border-radius: var(--border-radius);
 	background-color: var(--background-dim-color);
 	padding-top: 15px;
 	padding-bottom: 15px;
@@ -2263,17 +2269,18 @@ span.alert {
 }
 
 .list .purchases .image img {
-	margin: 0;
+	width: 60px;
+	border-radius: var(--border-radius);
 }
 
-
 .list .purchases .amount {
-	opacity: 0.66;
+	font-weight: 600;
+	opacity: .55;
 	cursor: default;
 	position: absolute;
 	font-size: 0.8rem;
 	color: var(--text-alt-color);
-	background-color: var(--text-dim-color);
+	background-color: var(--background-alt-color);
 	padding: 1px 5px;
 	border-top-left-radius: 6px;
 	border-bottom-right-radius: 6px;
@@ -2290,7 +2297,7 @@ span.alert {
 }
 
 #order_details #user {
-	border-radius: 3px;
+	border-radius: var(--border-radius);
 	background-color: var(--background-dim-color);
 	border: 1px solid var(--border-color);
 	padding: 15px;
@@ -2635,7 +2642,7 @@ input.input_autocomplete {
 .autocomplete-suggestions .autocomplete-suggestion img {
 	padding: 2px;
 	border: 1px solid #ccc;
-	border-radius: 3px;
+	border-radius: var(--border-radius);
 	width: 50px;
 }
 
@@ -2680,7 +2687,7 @@ input.input_autocomplete {
 	color: var(--text-alt-color);
 	display: block;
 	padding: 4px 4px;
-	border-radius: 3px;
+	border-radius: var(--border-radius);
 	margin-bottom: 5px;
 }
 
@@ -2716,7 +2723,7 @@ input.input_autocomplete {
 		align-items: center;
 		justify-content: center;
 		cursor: pointer;
-		border-radius: 3px;
+		border-radius: var(--border-radius);
 		padding: 16px;
 		margin: 10px 0;
 		background-color: var(--background-color);

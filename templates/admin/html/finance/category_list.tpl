@@ -23,7 +23,6 @@
 				<div class="list sortable_on">
 					{foreach $categories as $c}
 						<div class="list_row" item_id="{$c->id}">
-
 							<div class="move">
 								<div class="move_zone"></div>
 								<input type="hidden" name="positions[{$c->id}]" value="{$c->position}">

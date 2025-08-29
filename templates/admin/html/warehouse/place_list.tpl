@@ -21,7 +21,6 @@
                 <div class="list sortable_on">
                     {foreach $places as $place}
                         <div class="list_row {if !$place->enabled}enabled_off{/if}" item_id="{$place->id}">
-
                             <div class="move">
                                 <div class="move_zone"></div>
                                 <input type="hidden" name="positions[{$place->id}]" value="{$place->position}">

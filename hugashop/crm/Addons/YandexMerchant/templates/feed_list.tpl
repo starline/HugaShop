@@ -19,7 +19,6 @@
                 <div class="list sortable_on">
                     {foreach $pricefeeds as $pricefeed}
                         <div class="list_row" item_id="{$pricefeed->id}">
-
                             <div class="move">
                                 <div class="move_zone"></div>
                                 <input type="hidden" name="positions[{$pricefeed->id}]" value="{$pricefeed->position}" />

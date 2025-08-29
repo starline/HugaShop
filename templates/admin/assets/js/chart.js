@@ -3,13 +3,13 @@
  * Functions related to rendering ApexCharts graphs
  *
  * @author Andri Huga
- * @version 1.4
+ * @version 1.5
  */
 
 
 export function makeChart(element, chartOptions = {}, datasets = []) {
     if (!element) {
-        console.warn('makeChart: element not found');
+        console.log('makeChart: element not found');
         return;
     }
 

@@ -24,7 +24,9 @@
                                 <input class="form-check-input" type="checkbox" name="check[]" value="{$booking->id}" />
                             </div>
                             <div class='col'>
-                                <div><span class="badge text-bg-round">{$booking->date} {$booking->time}</span></div>
+                                <div>
+                                    <span class="badge text-bg-round">{$booking->date} {$booking->time}</span>
+                                </div>
                                 <div>{$booking->name} <span class="badge text-bg-round ms-2">{$booking->phone}</span></div>
                                 {if $booking->comment}
                                     <div class="notice">{$booking->comment|strip_tags|nl2br|raw}</div>
@@ -49,7 +51,7 @@
                     {include file="parts/button.tpl" label="Применить" extra_attrs='id=apply_action'}
                 </div>
             </form>
-            
+
             {include file='parts/pagination.tpl'}
         {else}
             Нет заявок

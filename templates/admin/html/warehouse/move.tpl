@@ -229,7 +229,7 @@
 							<div class="move_zone"></div>
 						</div>
 
-						<div class="col_image  image">
+						<div class="col_image">
 							<img src="{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}"
 								data-bs-toggle="tooltip" title="{$purchase->product->variant_name}" />
 						</div>
@@ -344,7 +344,7 @@
 						<div class="move_zone"></div>
 					</div>
 
-					<div class="col_image image">
+					<div class="col_image">
 						<img src="">
 					</div>
 

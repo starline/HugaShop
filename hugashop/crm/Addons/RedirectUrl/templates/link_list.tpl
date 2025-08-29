@@ -15,7 +15,7 @@
                 {getCSRFInput}
                 <div class="list">
                     {foreach $links as $l}
-                        <div class="{if !$l->enabled}enabled_off{/if} list_row">
+                        <div class="list_row {if !$l->enabled}enabled_off{/if}">
                             <div class="checkbox">
                                 <input class="form-check-input" type="checkbox" name="check[]" value="{$l->id}" />
                             </div>

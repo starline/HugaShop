@@ -42,7 +42,6 @@
 				<div class="list">
 					{foreach $posts as $post}
 						<div class="list_row {if !$post->visible}visible_off{/if}">
-
 							<div class="checkbox">
 								<input class="form-check-input" type="checkbox" name="check[]" value="{$post->id}" />
 							</div>

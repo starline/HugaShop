@@ -75,7 +75,7 @@
                 <div class="list">
                     {foreach $products as $product}
                         <div class="list_row" item_id="{$product->id}">
-                            <div class="image">
+                            <div class="col_image">
                                 <img
                                     src="{if $product->image->filename}{$product->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}" />
                             </div>

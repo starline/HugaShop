@@ -19,8 +19,7 @@
 
 				<div class="list sortable_on">
 					{foreach $pages as $page}
-						<div class="{if !$page->enabled}enabled_off{/if} list_row">
-
+						<div class="list_row {if !$page->enabled}enabled_off{/if}">
 							<div class="move">
 								<div class="move_zone"></div>
 								<input type="hidden" name="positions[{$page->id}]" value="{$page->position}">

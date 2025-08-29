@@ -31,7 +31,7 @@
                             </div>
 
                             <div class="row col">
-                                <div class="col_image image">
+                                <div class="col_image">
                                     <img src="{if $banner->image->filename}{$banner->image->filename|resize:120:120:c}{/if}"
                                         alt="{$banner->name}" class="img-fluid me-2" style="max-width:120px;" />
                                 </div>
