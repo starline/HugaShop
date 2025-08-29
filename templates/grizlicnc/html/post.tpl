@@ -31,12 +31,11 @@
 		</div>
 
 		<div class="col-lg-9 position-relative">
-			{if 'blog'|user_access AND $post->id}
-				<a class="admin_edit" href="{'PostAdmin'|linkLang:[id => $post->id]}" data-bs-toggle="tooltip"
-					title="{'Редактировать статью'|trans}">{'Редактировать статью'|trans}</a>
-			{/if}
-
-			<h1>{$post->name}</h1>
+			<h1>{$post->name}
+				{if 'blog'|user_access AND $post->id}
+					{include file='parts/btn_edit.tpl' btn_edit_link={'PostAdmin'|linkLang:[id => $post->id]}}
+				{/if}
+			</h1>
 
 			<p>{$post->date|date}</p>
 

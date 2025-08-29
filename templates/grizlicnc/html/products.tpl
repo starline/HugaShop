@@ -83,12 +83,12 @@
 		</nav>
 
 		<div class="col-lg-9 wrap_products position-relative">
-			{if 'product_category'|user_access AND $category->id}
-				<a class="admin_edit" href="{'CategoryAdmin'|link:[id => $category->id]}" data-bs-toggle="tooltip"
-					title="{'Редактировать категорию'|trans}">{'Редактировать категорию'|trans}</a>
-			{/if}
 
-			<h1>{$h1}</h1>
+			<h1>{$h1}
+				{if 'product_category'|user_access AND $category->id}
+					{include file='parts/btn_edit.tpl' btn_edit_link={'CategoryAdmin'|link:[id => $category->id]}}
+				{/if}
+			</h1>
 
 			{if $category->annotation}
 				<div class="description_html category_annotation">

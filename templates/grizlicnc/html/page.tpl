@@ -25,13 +25,11 @@
 		</div>
 
 		<div class="col-lg-9 position-relative">
-			{if 'page'|user_access AND $page->id}
-				<a class="admin_edit" href="{'PageAdmin'|linkLang:[id => $page->id]}" data-bs-toggle="tooltip"
-					title="{'Редактировать страницу'|trans}">
-					{'Редактировать страницу'|trans}
-				</a>
-			{/if}
-			<h1>{$page->h1}</h1>
+			<h1>{$page->h1}
+				{if 'page'|user_access AND $page->id}
+					{include file='parts/btn_edit.tpl' btn_edit_link={'PageAdmin'|linkLang:[id => $page->id]}}
+				{/if}
+			</h1>
 
 			<!-- Page Body -->
 			<div class="description_html">

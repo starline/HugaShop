@@ -73,7 +73,7 @@
 							<div class="price">{$product->price|price_html|raw}</div>
 						</div>
 
-						{if $is_instock === true || is_custom === true}
+						{if !$product->disable and ($is_instock === true || is_custom === true)}
 							<button class="btn btn-primary" type="submit" value="to_cart"
 								data-result-text="{'Добавлено'|trans}">
 								<span class="spinner-border spinner-border-sm" aria-hidden="true"></span>

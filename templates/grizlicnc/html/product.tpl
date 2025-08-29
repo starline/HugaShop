@@ -61,12 +61,13 @@
 		</div>
 
 		<div class="col-12 col-lg-6 position-relative">
-			<h1>{$product->name} {if $product->variant_name} - {$product->variant_name}{/if}</h1>
 
-			{if 'product_content'|user_access AND $product->id}
-				<a class="admin_edit" href="{'ProductAdmin'|link:[id=>$product->id]}"
-					data-bs-toggle="tooltip">{'Редактировать товар'|trans}</a>
-			{/if}
+			<h1>{$product->name} {if $product->variant_name} - {$product->variant_name}{/if}
+				{if 'product_content'|user_access AND $product->id}
+					{include file='parts/btn_edit.tpl' btn_edit_link={'ProductAdmin'|link:[id=>$product->id]}}
+				{/if}
+			</h1>
+
 
 			<div class="my-3">{'Код'|trans}: <span class="badge text-bg-secondary rounded-pill">{$product->sku}</span></div>
 
