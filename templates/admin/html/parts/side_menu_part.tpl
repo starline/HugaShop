@@ -48,6 +48,11 @@
                         <a href="{'LabelListAdmin'|linkLang}">Метки</a>
                     </li>
                 {/if}
+                {foreach $addons_menu.crm|default:[] as $ext_module}
+                    <li class="mini {if isset($addon) and $addon->module == $ext_module->module}active{/if}">
+                        <a href="{'AddonAdmin'|linkLang:[name => $ext_module->module]}">{$ext_module->name}</a>
+                    </li>
+                {/foreach}
             </ul>
         </li>
     {/if}
@@ -75,6 +80,11 @@
                         <a href="{'MoveListAdmin'|linkLang}">Поставки</a>
                     </li>
                 {/if}
+                {foreach $addons_menu.warehouse|default:[] as $ext_module}
+                    <li class="mini {if isset($addon) and $addon->module == $ext_module->module}active{/if}">
+                        <a href="{'AddonAdmin'|linkLang:[name => $ext_module->module]}">{$ext_module->name}</a>
+                    </li>
+                {/foreach}
             </ul>
         </li>
     {/if}
@@ -108,6 +118,11 @@
                         <a href="{'CouponListAdmin'|linkLang}">Купоны</a>
                     </li>
                 {/if}
+                {foreach $addons_menu.clients|default:[] as $ext_module}
+                    <li class="mini {if isset($addon) and $addon->module == $ext_module->module}active{/if}">
+                        <a href="{'AddonAdmin'|linkLang:[name => $ext_module->module]}">{$ext_module->name}</a>
+                    </li>
+                {/foreach}
             </ul>
         </li>
     {/if}
@@ -152,6 +167,11 @@
                         <a href="{'PageListAdmin'|linkLang}">Страницы</a>
                     </li>
                 {/if}
+                {foreach $addons_menu.content|default:[] as $ext_module}
+                    <li class="mini {if isset($addon) and $addon->module == $ext_module->module}active{/if}">
+                        <a href="{'AddonAdmin'|linkLang:[name => $ext_module->module]}">{$ext_module->name}</a>
+                    </li>
+                {/foreach}
             </ul>
         </li>
     {/if}
@@ -182,6 +202,11 @@
                         <a href="{'CurrencyAdmin'|linkLang}">Валюты</a>
                     </li>
                 {/if}
+                {foreach $addons_menu.finance|default:[] as $ext_module}
+                    <li class="mini {if isset($addon) and $addon->module == $ext_module->module}active{/if}">
+                        <a href="{'AddonAdmin'|linkLang:[name => $ext_module->module]}">{$ext_module->name}</a>
+                    </li>
+                {/foreach}
             </ul>
         </li>
     {/if}
@@ -200,7 +225,7 @@
                 <li class="mini {if $route == 'AddonListAdmin'}active{/if}">
                     <a href="{'AddonListAdmin'|linkLang}">Список модулей</a>
                 </li>
-                {foreach $addons_menu as $ext_module}
+                {foreach $addons_menu.addon|default:[] as $ext_module}
                     <li class="mini {if isset($addon) and $addon->module == $ext_module->module}active{/if}">
                         <a href="{'AddonAdmin'|linkLang:[name => $ext_module->module]}">{$ext_module->name}</a>
                     </li>
@@ -244,6 +269,11 @@
                         <a href="{'ThemeAdmin'|linkLang}">Тема</a>
                     </li>
                 {/if}
+                {foreach $addons_menu.settings|default:[] as $ext_module}
+                    <li class="mini {if isset($addon) and $addon->module == $ext_module->module}active{/if}">
+                        <a href="{'AddonAdmin'|linkLang:[name => $ext_module->module]}">{$ext_module->name}</a>
+                    </li>
+                {/foreach}
             </ul>
         </li>
     {/if}
