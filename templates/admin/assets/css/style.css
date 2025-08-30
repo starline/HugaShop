@@ -754,7 +754,7 @@ a:has(> span.price_html.negative) {
 	opacity: 0.6;
 }
 
-.price_html .price_sign {
+.price_sign {
 	margin-left: 3px;
 }
 

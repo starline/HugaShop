@@ -817,9 +817,9 @@
 						}
 
 						if (product.image.url)
-							new_item.find('.image img').attr("src", product.image.url);
+							new_item.find('.col_image img').attr("src", product.image.url);
 						else
-							new_item.find('.image img').remove();
+							new_item.find('.col_image img').remove();
 
 						$("input#add_purchase").val('').focus().blur();
 
