@@ -209,7 +209,7 @@
 
 	<script type="module">
 		import '{"js/jquery/chosen/chosen.jquery.js"|asset}';
-		import { worldsCount } from '{"js/common.js"|asset}';
+		import { worldsCount, autofillMeta } from '{"js/common.js"|asset}';
 
 		let lang_code = "{$current_language->code}";
 		let product_id = "{$product->id}";
@@ -218,6 +218,7 @@
 			$(function() {
 
 				worldsCount();
+				autofillMeta();
 
 				// Useful select
 				$(".chosen_select").chosen();

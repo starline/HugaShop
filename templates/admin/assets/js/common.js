@@ -44,25 +44,25 @@ export function autofillMeta(
 	meta_title_selector = 'input[name="meta_title"]',
 	url_selector = 'input[name="url"]'
 ) {
-	let meta_title_touched = true;
-	let url_touched = true;
+	let meta_title_blocked = true;
+	let url_blocked = true;
 
 	if ($(meta_title_selector).val() === generateMetaTitle() || $(meta_title_selector).val() === '') {
-		meta_title_touched = false;
+		meta_title_blocked = false;
 	}
 
-	if ($(url_selector).val() === generateUrl() || $(url_selector).val() === '') {
-		url_touched = false;
+	if ($(name_selector).val() === '' && $(url_selector).val() === '') {
+		url_blocked = false;
 	}
 
-	$(meta_title_selector).on('change', function () { meta_title_touched = true; });
-	$(url_selector).on('change', function () { url_touched = true; });
+	$(meta_title_selector).on('change', function () { meta_title_blocked = true; });
+	$(url_selector).on('change', function () { url_blocked = true; });
 
 	$(name_selector).on('keyup', function () {
-		if (!meta_title_touched) {
+		if (!meta_title_blocked) {
 			$(meta_title_selector).val(generateMetaTitle());
 		}
-		if (!url_touched) {
+		if (!url_blocked) {
 			$(url_selector).val(generateUrl());
 		}
 	});
