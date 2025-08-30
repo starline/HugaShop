@@ -11,4 +11,5 @@ settings_params:
       name: "Показывать в меню",
       options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
     }
-version: 1.2
+menu_section: content
+version: 1.4

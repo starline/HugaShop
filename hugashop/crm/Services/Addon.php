@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.6
+ * @version 1.8
  *
  */
 
@@ -25,6 +25,20 @@ class Addon
     ];
 
     private static $place_cache = [];
+
+    /**
+     * Available admin menu sections
+     * @var array<int, string>
+     */
+    private static $menu_sections = [
+        'crm',
+        'warehouse',
+        'clients',
+        'content',
+        'finance',
+        'addon',
+        'settings'
+    ];
 
     /**
      * Update
@@ -54,7 +68,7 @@ class Addon
     /**
      * Get addons list for Admin menu
      */
-    public static function getMenuAddons()
+    public static function getMenuAddons(?string $section = null)
     {
         $menu_addons = [];
         foreach (self::getAddonsList() as $ext) {
@@ -62,7 +76,16 @@ class Addon
                 continue;
             }
             $settings = $Ext::getSettings();
-            if (!empty($settings->show_menu)) {
+            if (empty($settings->show_menu)) {
+                continue;
+            }
+            $place = $Ext::getConfig('menu_section') ?? 'addon';
+            if (!in_array($place, self::$menu_sections, true)) {
+                $place = 'addon';
+            }
+            if ($section === null) {
+                $menu_addons[$place][] = $ext;
+            } elseif ($section === $place) {
                 $menu_addons[] = $ext;
             }
         }
