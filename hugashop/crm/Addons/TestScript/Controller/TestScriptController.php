@@ -286,7 +286,6 @@ final class TestScriptController extends BaseAdminController
                                 - Return the result strictly in JSON format on russian.
                                 Now process this title: $name", 'gpt-5');
 
-                            WarehousePlaceProduct::getList(select: 'updated_at');
                             //$result[] = YandexWordstatService::getTopRequests('шпиндель');
                         }
 
@@ -328,7 +327,7 @@ final class TestScriptController extends BaseAdminController
 
                                 // Создаем поля в таблице
                                 ProductFeatureOption::getList(select: 'url');
-                                WarehousePlaceProduct::getList();
+                                WarehousePlaceProduct::getList(select: 'updated_at');
 
                                 ContentComment::chunk(100, function ($comments) { #  обрабатывает по 100 записей за раз, чтобы не съесть всю память
                                     foreach ($comments as $comment) {
