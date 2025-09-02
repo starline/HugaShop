@@ -28,7 +28,6 @@ class Addon
 
     /**
      * Available admin menu sections
-     * @var array<int, string>
      */
     private static $menu_sections = [
         'crm',

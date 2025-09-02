@@ -270,4 +270,8 @@
 
         </div>
     </form>
+
+    <div class="btn_bottom_row">
+        {include file="parts/button.tpl" label="Сохранить"}
+    </div>
 {/block}

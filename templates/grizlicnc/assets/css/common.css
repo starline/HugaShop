@@ -312,7 +312,8 @@ a.logout {
 	margin-left: 15px;
 }
 
-.description_html ul li {
+.description_html ul li,
+.description_html ol li {
 	margin: 7px 0;
 }
 

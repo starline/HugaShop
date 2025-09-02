@@ -11,7 +11,7 @@ settings_params:
       name: "Показывать в меню",
       options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
     }
-menu_section: clients
+menu_section: crm
 notifier:
   admin:
     - priceRequestToAdmin: "Запрос на скидку"
