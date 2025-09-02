@@ -66,11 +66,10 @@ class Helper
      * Formatting date
      * @param $date
      * @param string $format m - mounth
-     *
      */
-    public static function dateFormat($date = null, ?string $format = null)
+    public static function dateFormat(?string $date = null, ?string $format = null)
     {
-        if (empty($date)) {
+        if (empty($date) || $date === 'now') {
             $date = date("Y-m-d");
         }
 
