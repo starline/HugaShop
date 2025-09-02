@@ -120,7 +120,7 @@ class NovaPoshta
             //$result = $NPresult;
 
             // Добавляем дату //22-09-2021
-            $result = $result . "</br> Обновлено - " . Helper::dateFormat($order->date, "d-m-Y H:i:s");
+            $result = $result . "</br> Обновлено - " . Helper::dateFormat('now', "d-m-Y H:i:s");
 
             // Записываем информацию в базу
             Order::updateOrder($order->id, ['delivery_info' => $result], false);

@@ -70,7 +70,7 @@ class Helper
     public static function dateFormat(?string $date = null, ?string $format = null)
     {
         if (empty($date) || $date === 'now') {
-            $date = date("Y-m-d");
+            $date = date("Y-m-d H:i:s");
         }
 
         $date = new \DateTime($date);
