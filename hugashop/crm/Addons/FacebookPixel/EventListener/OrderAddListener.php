@@ -72,7 +72,6 @@ class OrderAddListener
             return;
         }
 
-
         $purchases_price = 0;
         $purchases_count = 0;
         $purchases_sku = [];
