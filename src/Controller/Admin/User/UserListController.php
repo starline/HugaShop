@@ -85,26 +85,18 @@ class UserListController extends BaseAdminController
             Design::assign('keyword', $keyword);
         }
 
-        // Сортировка пользователей, сохраняем в сессии, чтобы текущая сортировка не сбрасывалась
-        if ($sort = Request::get('sort', 'string')) {
-            Request::setSession('user_admin_sort', $sort);
-        }
+        // Сортировка
+        $sort = Request::get('sort', 'string', 'name');
 
-        if (!empty(Request::getSession('user_admin_sort'))) {
-            $filter['sort'] = Request::getSession('user_admin_sort');
-        } else {
-            $filter['sort'] = 'name';
-        }
+        $users          = User::getUsers($filter, order: $sort);
+        $users_count    = User::getCount($filter);
+        $groups         = UserGroup::orderBy('position')->get();
 
-        $users =        User::getUsers($filter);
-        $users_count =  User::getCount($filter);
-        $groups =       UserGroup::orderBy('position')->get();
-
-        Design::assign('pagination', PaginationService::getPagination($users_count, $filter));
-        Design::assign('groups', $groups);
-        Design::assign('users', $users);
-        Design::assign('users_count', $users_count);
-        Design::assign('sort', $filter['sort']);
+        Design::assign('pagination',    PaginationService::getPagination($users_count, $filter));
+        Design::assign('groups',        $groups);
+        Design::assign('users',         $users);
+        Design::assign('users_count',   $users_count);
+        Design::assign('sort',          $sort);
 
         return $this->fetchResponse('user/user_list.tpl');
     }

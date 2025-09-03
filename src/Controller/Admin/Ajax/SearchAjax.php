@@ -72,12 +72,7 @@ class SearchAjax extends BaseAdminController
             $filter['search'] = $keyword;
         }
 
-        // Сортировка
-        if (!empty($sort = Request::get('sort', 'string'))) {
-            $filter['sort'] = $sort;
-        }
-
-        $users = User::getUsers($filter);
+        $users = User::getUsers($filter, order: Request::get('sort', 'string', 'name'));
 
         $suggestions = [];
         foreach ($users as $user) {

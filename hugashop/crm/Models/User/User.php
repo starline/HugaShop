@@ -62,31 +62,16 @@ class User extends BaseModel
      */
     public static function getUsers(array $filter = [], array|string $order = [], array|string $join = [], ?string $select = null, ?int $cache = 0)
     {
-
-        $sort = $filter['sort'] ?? null;
-        unset($filter['sort']);
-
-        $sort = match ($sort) {
-            'date'    => ['created_at', 'desc'],
-            'manager' => ['manager', 'desc'],
-            'name'    => 'name',
-            default   => 'name',
-        };
-
-        $order = $order ?: $sort;
+        if (is_string($order)) {
+            $order = match ($order) {
+                'date'    => ['created_at', 'desc'],
+                'manager' => ['manager', 'desc'],
+                'name'    => 'name',
+                default   => 'name',
+            };
+        }
         return parent::getList($filter, $order, $join, $select, cache: $cache);
     }
-
-
-    /**
-     * Get Users count
-     */
-    public static function getCount(array $filter = [], ?int $cache = 0): int
-    {
-        unset($filter['sort']);
-        return parent::getCount($filter, $cache);
-    }
-
 
 
     /**

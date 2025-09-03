@@ -18,7 +18,26 @@
     <div id="main_list">
         {if $pages}
 
-            {include file='parts/pagination.tpl'}
+            <div class="list_navigation">
+                {if !$pagination_hide}
+                    {include file='parts/pagination.tpl'}
+                {elseif ($settings->products_num_admin <= $users_count)}
+                    <div class="pagination">Показано только первые {$settings->products_num_admin} покупателей</div>
+                {/if}
+
+                <div class="sort">
+                    <div class="input-group">
+                        <span class="input-group-text">Сортировка</span>
+                        <select class="form-select" name="sort">
+                            <option value="depth" {if $sort === 'depth'}selected{/if}>По глубине</option>
+                            <option value="out_internal" {if $sort === 'out_internal'}selected{/if}>По исходящим внутренним
+                            </option>
+                            <option value="in_internal" {if $sort === 'in_internal'}selected{/if}>По входящим внутренним
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
 
             <div class="list">
                 {foreach $pages as $p}
@@ -57,7 +76,6 @@
 {block name=body_script append}
     <script type="module">
         {literal}
-
             $(function() {
                 $('#scan_button').click(function() {
                     let btn = $(this);
@@ -91,8 +109,21 @@
                     iterate(true);
                     return false;
                 });
-            });
 
+
+                // Select sort
+                let current_url = new URL(window.location.href);
+                $('select[name="sort"]').change(function() {
+                    var sort = $(this).val();
+                    if (sort != '')
+                        current_url.searchParams.set('sort', sort);
+                    else
+                        current_url.searchParams.delete('sort');
+
+                    current_url.searchParams.delete('page');
+                    window.location.href = current_url.toString();
+                });
+            });
         {/literal}
     </script>
 {/block}

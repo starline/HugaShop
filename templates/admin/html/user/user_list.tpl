@@ -79,17 +79,21 @@
 		<div id="main_list">
 			{if $users}
 
-				<div class="list_top_row">
+				<div class="list_navigation">
 					{if !$pagination_hide}
 						{include file='parts/pagination.tpl'}
 					{elseif ($settings->products_num_admin <= $users_count)}
 						<div class="pagination">Показано только первые {$settings->products_num_admin} покупателей</div>
 					{/if}
 
-					<div id="sort_links">
-						Упорядочить по
-						{if $sort!='name'}<a href="{url sort=name}">имени</a>{else}<b>Имени</b>{/if} или
-						{if $sort!='date'}<a href="{url sort=date}">дате</a>{else}<b>Дате</b>{/if}
+					<div class="sort">
+						<div class="input-group">
+							<span class="input-group-text">Сортировка</span>
+							<select class="form-select" name="sort">
+								<option value="name" {if $sort === 'name'}selected{/if}>По имени</option>
+								<option value="date" {if $sort === 'date'}selected{/if}>По дате</option>
+							</select>
+						</div>
 					</div>
 				</div>
 
@@ -157,7 +161,6 @@
 
 			{/if}
 		</div>
-
 	</div>
 {/block}
 
@@ -173,6 +176,19 @@
 				$("i.enable.edit").on('click', function() {
 					ajaxEntityUpdateIcon($(this), 'user', 'enabled', csrf);
 					return false;
+				});
+
+				// Select sort
+				let current_url = new URL(window.location.href);
+				$('select[name="sort"]').change(function() {
+					var sort = $(this).val();
+					if (sort != '')
+						current_url.searchParams.set('sort', sort);
+					else
+						current_url.searchParams.delete('sort');
+
+					current_url.searchParams.delete('page');
+					window.location.href = current_url.toString();
 				});
 			});
 		{/literal}

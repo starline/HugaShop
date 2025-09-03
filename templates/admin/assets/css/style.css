@@ -1213,12 +1213,21 @@ select.multiple_categories option {
 	grid-area: main_list;
 }
 
-#main_list .list_top_row {
+#main_list .list_navigation {
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-end;
 	flex-direction: row;
 	flex-wrap: wrap;
+}
+
+#main_list .list_navigation .sort {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#main_list .list_navigation .sort .input-group-text {
+	font-size: 0.85rem;
 }
 
 #right_menu {
@@ -1439,7 +1448,6 @@ select.multiple_categories option {
 
 /* @group Постраничная навигация */
 .pagination {
-	font-size: 1.1rem;
 	display: flex;
 	margin-top: 10px;
 	margin-bottom: 10px;

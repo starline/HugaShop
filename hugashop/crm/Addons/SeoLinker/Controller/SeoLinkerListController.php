@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.3
+ * @version 1.4
  *
  */
 
@@ -54,13 +54,16 @@ final class SeoLinkerListController extends BaseAdminController
             }
         }
 
-        $filter         = PaginationService::initFilter();
-        $pages          = SeoLinker::getList($filter, order: ['in_internal', 'desc']);
+        $filter = PaginationService::initFilter();
+        $sort = Request::get('sort', 'string', 'in_internal');
+
+        $pages          = SeoLinker::getList($filter, order: [$sort, 'desc']);
         $pages_count    = SeoLinker::getCount($filter);
 
         Design::assign('pagination',    PaginationService::getPagination($pages_count, $filter));
         Design::assign('pages',         $pages);
         Design::assign('pages_total',   $pages_count);
+        Design::assign('sort',          $sort);
         Design::assign('addon',         $this->getAddon());
 
         return $this->fetchAddonResponse('report.tpl');
