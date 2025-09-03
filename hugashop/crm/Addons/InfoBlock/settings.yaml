@@ -6,4 +6,10 @@ settings_params:
       name: "Включено",
       options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
     }
-version: 1.4
+  - {
+      variable: show_menu,
+      name: "Показывать в меню",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }
+menu_section: content
+version: 1.5

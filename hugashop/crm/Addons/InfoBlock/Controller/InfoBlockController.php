@@ -57,6 +57,7 @@ final class InfoBlockController extends BaseAdminController
             }
         }
 
+        Design::assign('addon', $this->getAddon());
         Design::assign('block', $block);
 
         return $this->fetchAddonResponse('block.tpl');

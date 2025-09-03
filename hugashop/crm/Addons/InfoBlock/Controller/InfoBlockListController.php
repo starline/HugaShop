@@ -62,7 +62,8 @@ final class InfoBlockListController extends BaseAdminController
             InfoBlock::cacheClear();
         }
 
-        Design::assign('blocks',  InfoBlock::getList(order: 'position'));
+        Design::assign('addon',     $this->getAddon());
+        Design::assign('blocks',    InfoBlock::getList(order: 'position'));
 
         return $this->fetchAddonResponse('block_list.tpl');
     }
