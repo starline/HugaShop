@@ -31,13 +31,13 @@ final class SeoLinkerListController extends BaseAdminController
     {
         $this->checkAdminAccess('addon');
 
-        $base_url = $this->getSettings()->base_url ?? rtrim(Config::get('root_url'), '/') . '/';
-
         if (Request::post('scan')) {
             if (Request::post('start')) {
                 SeoLinker::deleteAll();
                 SeoLinkerLink::deleteAll();
             }
+
+            $base_url = $this->getSettings()->base_url ?? rtrim(Config::get('root_url'), '/') . '/';
 
             [$scanned, $pending] = ScanBatch::scanBatch(
                 $base_url,

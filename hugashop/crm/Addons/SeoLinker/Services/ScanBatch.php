@@ -23,40 +23,36 @@ use HugaShop\Addons\SeoLinker\Services\CrawlerObserver;
 final class ScanBatch
 {
 
-    private static $delay;
-    private static $deth;
-    private static $limit;
+    private static int $delay = 0;
+    private static int $limit = 1;
+    private static int $depth = 0;
 
     /**
      * Scan Batch
      */
-    public static function scanBatch(string $base_url, int $limit = 1, int $delay = 0, int $deth = 0): array
+    public static function scanBatch(string $base_url, int $limit = 1, int $delay = 0, int $depth = 0): array
     {
 
         // Params
-        self::$delay    = $delay ?: 0;
-        self::$limit    = $limit ?: 1;
-        self::$deth     = $deth ?: 0;
+        self::$delay = max(0, $delay);
+        self::$limit = max(1, $limit);
+        self::$depth = max(0, $depth);
 
-        if (!SeoLinker::where('url', $base_url)->exists()) {
-            SeoLinker::insert([
-                'url' => $base_url,
-                'depth' => 0,
-                'scanned' => 0,
-            ]);
-        }
+        SeoLinker::firstOrCreate(
+            ['url' => $base_url],
+            ['depth' => 0, 'scanned' => 0]
+        );
 
         $pages = SeoLinker::where('scanned', 0)->limit(self::$limit)->get();
-
         foreach ($pages as $page) {
-            [$outInternal, $outExternal, $metaTitle, $metaDescription, $h1, $links] = self::crawlPage($page->url);
+            [$out_internal, $out_external, $meta_title, $meta_description, $h1, $links] = self::crawlPage($page->url);
 
-            SeoLinker::where('id', $page->id)->update([
+            $page->update([
                 'scanned'           => 1,
-                'out_internal'      => $outInternal,
-                'out_external'      => $outExternal,
-                'meta_title'        => $metaTitle,
-                'meta_description'  => $metaDescription,
+                'out_internal'      => $out_internal,
+                'out_external'      => $out_external,
+                'meta_title'        => $meta_title,
+                'meta_description'  => $meta_description,
                 'h1'                => $h1,
             ]);
 
@@ -111,6 +107,7 @@ final class ScanBatch
         $parts      = parse_url($url);
         $scheme     = $parts['scheme'] ?? 'http';
         $host       = $parts['host'] ?? '';
+        $base_url   = $scheme . '://' . $host;
 
         $observer = new CrawlerObserver($scheme, $host);
 
@@ -119,17 +116,17 @@ final class ScanBatch
             //->ignoreRobots() # ignore robots.txt rules
             //->acceptNofollowLinks()
             ->setDelayBetweenRequests(self::$delay) // After every page crawled, the crawler will wait for 150ms
-            ->setCrawlProfile(new CrawlInternalUrls($url))
-            ->setMaximumDepth(self::$deth)
+            ->setCrawlProfile(new CrawlInternalUrls($base_url))
+            ->setMaximumDepth(self::$depth)
             ->setParseableMimeTypes(['text/html'])
-            ->startCrawling($url);
+            ->startCrawling($base_url);
 
-        $res = $observer->results[$url] ?? [
-            'out_internal' => 0,
-            'out_external' => 0,
-            'meta_title' => '',
-            'meta_description' => '',
-            'h1' => '',
+        $res = $observer->results[$base_url] ?? [
+            'out_internal'      => 0,
+            'out_external'      => 0,
+            'meta_title'        => '',
+            'meta_description'  => '',
+            'h1'                => '',
         ];
 
         return [
@@ -138,7 +135,6 @@ final class ScanBatch
             $res['meta_title'],
             $res['meta_description'],
             $res['h1'],
-            
             $observer->links
         ];
     }

@@ -116,7 +116,7 @@ final class CrawlerObserver extends CrawlObserver
             // Хост/схема
             $p       = parse_url($abs) ?: [];
             $host    = strtolower((string) ($p['host'] ?? ''));
-            $scheme  = strtolower((string) ($p['scheme'] ?? '')); // может быть пустым после absoluteUrl, но обычно уже нормализован
+            $scheme  = strtolower((string) ($p['scheme'] ?? '')); # может быть пустым после absoluteUrl, но обычно уже нормализован
 
             // Нормализуем эталонные хост/схему (свойства класса заданы заранее)
             $base_host   = strtolower((string) $this->host);
@@ -194,9 +194,9 @@ final class CrawlerObserver extends CrawlObserver
         }
 
         try {
-            $baseUri = new Uri($base);
-            $hrefUri = new Uri($href);
-            $resolved = UriResolver::resolve($baseUri, $hrefUri);
+            $base_uri = new Uri($base);
+            $href_uri = new Uri($href);
+            $resolved = UriResolver::resolve($base_uri, $href_uri);
 
             if ($resolved->getScheme() === '') {
                 $resolved = $resolved->withScheme($this->scheme);
