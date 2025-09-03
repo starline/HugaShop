@@ -16,11 +16,11 @@
         </div>
         <div class="row gx-5">
             <div class="col-lg-6 layer">
-                <h2>Исходящие ссылки</h2>
+                <h2>Исходящие ссылки <span class="sum_total">{$links_out|count}</span></h2>
 
-                {if $links}
+                {if $links_out}
                     <div class="list">
-                        {foreach $links as $ln}
+                        {foreach $links_out as $ln}
                             <div class="list_row">
                                 <div class="row col">
                                     <div class="col-12 col-lg-8 text-break">
@@ -41,7 +41,8 @@
 
             </div>
             <div class="col-lg-6 layer">
-                <h2>Входящие внутренние ссылки</h2>
+                <h2>Входящие внутренние ссылки <span class="sum_total">{$links_in|count}</span></h2>
+
                 {if $links_in}
                     <div class="list">
                         {foreach $links_in as $ln}

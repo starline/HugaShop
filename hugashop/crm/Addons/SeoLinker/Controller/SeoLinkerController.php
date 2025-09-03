@@ -31,7 +31,7 @@ final class SeoLinkerController extends BaseAdminController
             return $this->redirectToRoute('AddonSeoLinker');
         }
 
-        $links = SeoLinkerLink::getList(['from_url' => $page->url]);
+        $links_out = SeoLinkerLink::getList(['from_url' => $page->url]);
         $links_in = SeoLinkerLink::getList([
             'to_url' => $page->url,
             'type'   => 'internal',
@@ -43,7 +43,7 @@ final class SeoLinkerController extends BaseAdminController
         }
 
         Design::assign('page',      $page);
-        Design::assign('links',     $links);
+        Design::assign('links_out', $links_out);
         Design::assign('links_in',  $links_in);
         Design::assign('addon',     $this->getAddon());
 

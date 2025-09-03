@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.3
+ * @version 1.4
  *
  */
 
@@ -19,6 +19,7 @@ final class SeoLinkerLink extends BaseAddonModel
         'from_url' => ['type' => 'varchar'],
         'to_url'   => ['type' => 'varchar'],
         'type'     => ['type' => 'varchar'],
-        'nofollow' => ['type' => 'tinyint', 'def'  => 0]
+        'nofollow' => ['type' => 'tinyint', 'def'  => 0],
+        'status'   => ['type' => 'int', 'def'  => 200]      # HTTP status code
     ];
 }

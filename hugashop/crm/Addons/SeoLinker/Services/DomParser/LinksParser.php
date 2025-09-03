@@ -72,6 +72,7 @@ final class LinksParser
                     'type'     => 'image',
                     'nofollow' => (int) $nofollow,
                 ];
+                return;
             }
 
             // Хост/схема
@@ -90,7 +91,7 @@ final class LinksParser
                 ];
             }
 
-            // Векшеяя ссылка
+            // Внешняя ссылка
             else {
                 $out_external++;
                 self::$links[] = [
