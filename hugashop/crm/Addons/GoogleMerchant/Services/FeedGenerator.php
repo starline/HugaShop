@@ -72,6 +72,7 @@ final class FeedGenerator
 
 
             $filter['category_id']  = array_unique($categories);
+            $filter['disable']      = 0;
             $filter['visible']      = 1;
             $products_raw = Product::getProducts($filter, join: ['image', 'brand']);
 
@@ -82,11 +83,6 @@ final class FeedGenerator
 
                 // Hard Required params
                 if (empty($product_raw->image) || empty($product_raw->name) || empty($product_raw->price)) {
-                    continue;
-                }
-
-                // Disable
-                if (!empty($product_raw->disable)) {
                     continue;
                 }
 
