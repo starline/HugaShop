@@ -22,18 +22,29 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class DesignBeforeFetchListener
 {
+
+    /**
+     * Symfony request stack
+     */
+    private RequestStack $request_stack;
+
+    public function __construct(RequestStack $request_stack)
+    {
+        $this->request_stack = $request_stack;
+    }
+
     /**
      * Order Add
      * @param DesignBeforeFetchEvent $event
      */
     #[AsEventListener]
-    public function onDesignBeforeFetchEvent(DesignBeforeFetchEvent $event, RequestStack $request_stack): void
+    public function onDesignBeforeFetchEvent(DesignBeforeFetchEvent $event): void
     {
         if (Request::isAjax() || Design::getTheme() === 'admin') {
             return;
         }
 
-        $request = $request_stack->getCurrentRequest();
+        $request = $this->request_stack->getCurrentRequest();
         if ($request === null) {
             return;
         }
@@ -42,7 +53,6 @@ class DesignBeforeFetchListener
         // Example: /info/pravila+кирилица
         // Example: /uk/info/pravila+кирилица
         $page_uri = urldecode((string) $request->server->get('REQUEST_URI'));
-
         $lang = Language::getCurrent()->code;
 
         $cache_item = Cache::cache(SeoPage::class)->getItem('item_' . Helper::makeToken($page_uri) . '_' . $lang);
