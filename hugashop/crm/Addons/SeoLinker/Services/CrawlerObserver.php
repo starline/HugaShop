@@ -4,21 +4,20 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.6
+ * @version 1.7
  *
  */
 
 namespace HugaShop\Addons\SeoLinker\Services;
 
-use DOMXPath;
 use Throwable;
-use DOMDocument;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
 use Psr\Http\Message\UriInterface;
 use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Exception\RequestException;
 use Spatie\Crawler\CrawlObservers\CrawlObserver;
+use Symfony\Component\DomCrawler\Crawler as DomCrawler;
 
 final class CrawlerObserver extends CrawlObserver
 {
@@ -46,68 +45,82 @@ final class CrawlerObserver extends CrawlObserver
         $outInternal = 0;
         $outExternal = 0;
 
-        $dom = new DOMDocument();
-        @($dom->loadHTML($html));
-        $xpath = new DOMXPath($dom);
-        $nodes = $xpath->evaluate("//a[@href]");
+        $dom = new DomCrawler($html, (string) $url);
 
-        $metaTitle = trim((string) $xpath->evaluate('string(//title)'));
-        $metaNode = $xpath->query("//meta[translate(@name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='description']");
-        $metaDescription = '';
-        if ($metaNode->length > 0) {
-            $metaDescription = trim((string) $metaNode->item(0)?->getAttribute('content'));
-        }
-        $h1Node = $xpath->query('//h1');
-        $h1 = '';
-        if ($h1Node->length > 0) {
-            $h1 = trim((string) $h1Node->item(0)?->textContent);
+
+        // Meta tags
+        $title_node = $dom->filter('title');
+        if ($title_node->count() > 0) {
+            $title = trim($title_node->text());
         }
 
-        foreach ($nodes as $node) {
-            $href = trim($node->getAttribute('href'));
-            $rel  = strtolower($node->getAttribute('rel'));
+        $description_node = $dom->filterXPath("//meta[translate(@name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='description']");
+        if ($description_node->count() > 0) {
+            $description = trim((string) $description_node->first()->attr('content'));
+        }
 
-            $nofollow = str_contains($rel, 'nofollow');
+        $h1_node = $dom->filter('h1');
+        if ($h1_node->count() > 0) {
+            $h1 = trim($h1_node->first()->text());
+        }
 
-            // Пропускаем ссылки 
+
+        // Links
+        $dom->filter('a[href]')->each(function ($node) use (&$outInternal, &$outExternal,  $current) {
+            $href = trim((string) ($node->attr('href') ?? ''));
+            if ($href === '') {
+                return;
+            }
+
+            // rel может быть пустым; нормализуем к нижнему регистру
+            $rel_attr = (string) $node->attr('rel') ?? '';
+            $rel      = strtolower(trim($rel_attr));
+            $nofollow = ($rel !== '' && str_contains($rel, 'nofollow'));
+
+            // Пропуски явно не-кликабельных кейсов
+            $href_lc = strtolower($href);
             if (
-                $href === '' ||
                 str_starts_with($href, '#') ||
-                str_starts_with(strtolower($href), 'javascript:') ||
-                str_starts_with($href, 'mailto:') ||
-                str_starts_with($href, 'tel:') ||
-                str_starts_with(strtolower($href), 'tg:')
+                str_starts_with($href_lc, 'javascript:') ||
+                str_starts_with($href_lc, 'mailto:') ||
+                str_starts_with($href_lc, 'tel:') ||
+                str_starts_with($href_lc, 'tg:')
             ) {
-                continue;
+                return;
             }
 
+            // Абсолютный URL
             $abs = $this->absoluteUrl($href, $current);
-            if (!$abs) {
-                continue;
+            if (!$abs || !is_string($abs)) {
+                return;
             }
 
+            // Картинки по расширению
+            $path = (string) (parse_url($abs, PHP_URL_PATH) ?? '');
+            $ext  = strtolower((string) pathinfo($path, PATHINFO_EXTENSION));
+            $is_image = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'tif', 'tiff'], true);
 
-            // Image
-            $path = parse_url($abs, PHP_URL_PATH) ?? '';
-            $ext  = strtolower(pathinfo($path, PATHINFO_EXTENSION));
-            $isImage = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'tiff']);
-
-            $p = parse_url($abs);
-            if ($isImage) {
+            if ($is_image) {
                 $this->links[] = [
                     'from_url' => $current,
                     'to_url'   => $abs,
                     'type'     => 'image',
                     'nofollow' => (int) $nofollow,
                 ];
-                continue;
+                return;
             }
 
+            // Хост/схема
+            $p       = parse_url($abs) ?: [];
+            $host    = strtolower((string) ($p['host'] ?? ''));
+            $scheme  = strtolower((string) ($p['scheme'] ?? '')); // может быть пустым после absoluteUrl, но обычно уже нормализован
 
-            $scheme = strtolower($p['scheme'] ?? $this->scheme);
+            // Нормализуем эталонные хост/схему (свойства класса заданы заранее)
+            $base_host   = strtolower((string) $this->host);
+            $base_scheme = strtolower((string) $this->scheme);
 
-            // Internal links
-            if (($p['host'] ?? '') === $this->host && $scheme === strtolower($this->scheme)) {
+            // Внутренняя/внешняя
+            if ($host === $base_host && ($scheme === '' || $scheme === $base_scheme)) {
                 $outInternal++;
                 $this->links[] = [
                     'from_url' => $current,
@@ -115,10 +128,7 @@ final class CrawlerObserver extends CrawlObserver
                     'type'     => 'internal',
                     'nofollow' => (int) $nofollow,
                 ];
-            }
-
-            // External links
-            else {
+            } else {
                 $outExternal++;
                 $this->links[] = [
                     'from_url' => $current,
@@ -127,16 +137,16 @@ final class CrawlerObserver extends CrawlObserver
                     'nofollow' => (int) $nofollow,
                 ];
             }
-        }
+        });
 
         // Result
         $this->results[$current] = [
-            'url' => $current,
-            'out_internal' => $outInternal,
-            'out_external' => $outExternal,
-            'meta_title' => $metaTitle,
-            'meta_description' => $metaDescription,
-            'h1' => $h1,
+            'url'               => $current,
+            'out_internal'      => $outInternal,
+            'out_external'      => $outExternal,
+            'meta_title'        => $title,
+            'meta_description'  => $description,
+            'h1'                => $h1,
         ];
     }
 
