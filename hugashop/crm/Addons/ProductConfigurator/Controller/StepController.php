@@ -32,11 +32,13 @@ final class StepController extends BaseAdminController
         if (Secure::checkCSRF()) {
             if (!empty($data = Secure::getInputCheckEditAccess(ConfiguratorStep::class, $id))) {
                 $data->configurator_id = $configurator_id;
+
                 if (empty($data->id)) {
                     $data = Design::setFlashMessage('add', ConfiguratorStep::createOne($data));
                 } else {
-                    $data = Design::setFlashMessage('update', ConfiguratorStep::updateOne($data->id, $data));
+                    Design::setFlashMessage('update', ConfiguratorStep::updateOne($data->id, $data));
                 }
+
                 $option_ids    = Request::post('option_id');
                 $option_names  = Request::post('option_name');
                 $option_prices = Request::post('option_price');
@@ -74,9 +76,10 @@ final class StepController extends BaseAdminController
 
         $options = ConfiguratorOption::getList(['step_id' => $step->id ?? 0], order: 'position');
 
-        Design::assign('step', $step);
-        Design::assign('options', $options);
-        Design::assign('configurator_id', $configurator_id);
+        Design::assign('step',              $step);
+        Design::assign('options',           $options);
+        Design::assign('configurator_id',   $configurator_id);
+        Design::assign('addon',             $this->getAddon());
 
         return $this->fetchAddonResponse('step.tpl');
     }

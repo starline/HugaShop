@@ -4,7 +4,8 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
+ * 
  */
 
 namespace HugaShop\Addons\ProductConfigurator\Controller;
@@ -39,8 +40,9 @@ final class ConfiguratorController extends BaseAdminController
                 if (empty($config->id)) {
                     $config = Design::setFlashMessage('add', Configurator::createOne($config));
                 } else {
-                    $config = Design::setFlashMessage('update', Configurator::updateOne($config->id, $config));
+                    Design::setFlashMessage('update', Configurator::updateOne($config->id, $config));
                 }
+
                 return $this->redirectToRoute('AddonProductConfigurator', ['id' => $config->id]);
             }
         }
