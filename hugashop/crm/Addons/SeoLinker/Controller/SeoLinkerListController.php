@@ -37,7 +37,8 @@ final class SeoLinkerListController extends BaseAdminController
                 SeoLinkerLink::deleteAll();
             }
 
-            $base_url = $this->getSettings()->base_url ?? rtrim(Config::get('root_url'), '/') . '/';
+            $base_url = $this->getSettings()->base_url ?? Config::get('root_url');
+            $base_url = rtrim($base_url, '/') . '/';
 
             [$scanned, $pending] = ScanBatch::scanBatch(
                 $base_url,

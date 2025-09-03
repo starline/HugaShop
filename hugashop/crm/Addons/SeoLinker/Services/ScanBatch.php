@@ -74,7 +74,7 @@ final class ScanBatch
                 // Add internal links to scan line. Except nofollow
                 if ($ln['type'] === 'internal' && !$ln['nofollow']) {
                     $target = SeoLinker::getOne(['url' => $ln['to_url']]);
-                    if (!$target) {
+                    if (empty($target)) {
                         SeoLinker::createOne([
                             'url'           => $ln['to_url'],
                             'depth'         => $page->depth + 1,
@@ -107,7 +107,6 @@ final class ScanBatch
         $parts      = parse_url($url);
         $scheme     = $parts['scheme'] ?? 'http';
         $host       = $parts['host'] ?? '';
-        $base_url   = $scheme . '://' . $host;
 
         $observer = new CrawlerObserver($scheme, $host);
 
@@ -116,18 +115,12 @@ final class ScanBatch
             //->ignoreRobots() # ignore robots.txt rules
             //->acceptNofollowLinks()
             ->setDelayBetweenRequests(self::$delay) // After every page crawled, the crawler will wait for 150ms
-            ->setCrawlProfile(new CrawlInternalUrls($base_url))
+            ->setCrawlProfile(new CrawlInternalUrls($url))
             ->setMaximumDepth(self::$depth)
             ->setParseableMimeTypes(['text/html'])
-            ->startCrawling($base_url);
+            ->startCrawling($url);
 
-        $res = $observer->results[$base_url] ?? [
-            'out_internal'      => 0,
-            'out_external'      => 0,
-            'meta_title'        => '',
-            'meta_description'  => '',
-            'h1'                => '',
-        ];
+        $res = $observer->results[$url];
 
         return [
             $res['out_internal'],

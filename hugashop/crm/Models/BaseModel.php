@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.8
+ * @version 2.9
  *
  */
 
@@ -161,11 +161,17 @@ abstract class BaseModel extends Model
 
 
     /**
-     * Check if Model has url
+     * Check if Model has slug
      */
-    public static function hasUrl(): bool
+    public static function hasSlug(): bool
     {
-        return array_key_exists('url', static::getFields());
+        foreach (static::getFields() as $params) {
+            if (!empty($params['slug'])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
@@ -191,7 +197,7 @@ abstract class BaseModel extends Model
         $model = static::getModel();
 
         // If Table has url. Make it uniq
-        if ($model::hasUrl()) {
+        if ($model::hasSlug()) {
             $values = Helper::makeUniqSlug(static::class, $values);
         }
 
@@ -222,7 +228,7 @@ abstract class BaseModel extends Model
         }
 
         // If Table has url. Make it uniq
-        if ($model::hasUrl()) {
+        if ($model::hasSlug()) {
             $values = Helper::makeUniqSlug(static::class, $values);
         }
 
@@ -457,7 +463,7 @@ abstract class BaseModel extends Model
     public static function urlExists(string $url, ?string $entity_id = null)
     {
         $model = static::getModel();
-        if (!$model::hasUrl()) {
+        if (!$model::hasSlug()) {
             return false;
         }
 
