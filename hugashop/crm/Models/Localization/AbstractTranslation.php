@@ -48,9 +48,9 @@ class AbstractTranslation extends BaseModel
 
         $table_name = $model->getTable() . '_translation';
 
-        $translate_nodel = new static;
-        $translate_nodel->setTable($table_name);
+        $translate_model = static::getModel();
+        $translate_model->setTable($table_name);
 
-        return $translate_nodel;
+        return $translate_model;
     }
 }

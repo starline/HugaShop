@@ -32,7 +32,6 @@ final class SeoLinkerController extends BaseAdminController
         }
 
         $links = SeoLinkerLink::getList(['from_url' => $page->url]);
-
         $links_in = SeoLinkerLink::getList([
             'to_url' => $page->url,
             'type'   => 'internal',

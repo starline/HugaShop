@@ -35,8 +35,8 @@ final class SeoLinkerListController extends BaseAdminController
 
         if (Request::post('scan')) {
             if (Request::post('start')) {
-                SeoLinker::query()->delete();
-                SeoLinkerLink::query()->delete();
+                SeoLinker::deleteAll();
+                SeoLinkerLink::deleteAll();
             }
 
             [$scanned, $pending] = ScanBatch::scanBatch(

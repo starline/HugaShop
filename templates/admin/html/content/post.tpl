@@ -27,8 +27,11 @@
 							<label class="form-check-label" for="active_checkbox">Активна</label>
 						</div>
 					</div>
-					<a class="out_link" target="_self" href="{'Post'|linkLang:[url => $post->url]}">Открыть статью на
-						сайте</a>
+					
+					{if $post->url}
+						<a class="out_link" target="_self" href="{'Post'|linkLang:[url => $post->url]}">Открыть статью на
+							сайте</a>
+					{/if}
 				</div>
 
 				<div class="name_row">

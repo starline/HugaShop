@@ -96,7 +96,7 @@ abstract class BaseModel extends Model
      */
     public static function getModel()
     {
-        return new static;
+        return new static();
     }
 
 
@@ -196,7 +196,6 @@ abstract class BaseModel extends Model
         }
 
         $values = self::validateValues($values);
-
         $entity = $model->runWithInitTable(function () use ($model, $values) {
             return $model->newQuery()->create($values);
         });
@@ -228,7 +227,6 @@ abstract class BaseModel extends Model
         }
 
         $values = self::validateValues($values);
-
         return $model->runWithInitTable(function () use ($model, $id, $values) {
             return $model->newQuery()->whereId($id)->update($values);
         });
@@ -256,7 +254,10 @@ abstract class BaseModel extends Model
         if (static::isTranslatable()) {
             static::deleteTranslations($ids);
         }
-        return self::query()->whereId($ids)->delete();
+        $model = static::getModel();
+        return $model->runWithInitTable(function () use ($model, $ids) {
+            return $model->newQuery()->whereId($ids)->delete();
+        });
     }
 
 
@@ -268,6 +269,21 @@ abstract class BaseModel extends Model
     public static function deleteBy(string $field, $value): int
     {
         return self::query()->where($field, $value)->delete();
+    }
+
+
+    /**
+     * Delete All
+     */
+    public static function deleteAll()
+    {
+        if (static::isTranslatable()) {
+            static::deleteTranslations();
+        }
+        $model = static::getModel();
+        return $model->runWithInitTable(function () use ($model) {
+            return $model->newQuery()->delete();
+        });
     }
 
 
@@ -422,7 +438,7 @@ abstract class BaseModel extends Model
             $query->where('id', $id);
         }
 
-        $result = $model->runWithInitTable(function () use ($query) {
+        return $model->runWithInitTable(function () use ($query) {
             $result = $query->first();
 
             // Settings
@@ -432,8 +448,6 @@ abstract class BaseModel extends Model
 
             return $result;
         });
-
-        return $result;
     }
 
 

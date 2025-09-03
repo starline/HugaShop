@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.8
+ * @version 1.9
  *
  */
 
@@ -122,7 +122,6 @@ trait TranslationTrait
     public static function getTranslation(int $entity_id, string $code)
     {
         $model = AbstractTranslation::setTableTranslation(static::class);
-
         return $model->runWithInitTable(function () use ($model, $entity_id, $code) {
             return $model->newQuery()
                 ->where('entity_id', $entity_id)
@@ -138,7 +137,6 @@ trait TranslationTrait
     public static function getAllTranslations(int $entity_id)
     {
         $model = AbstractTranslation::setTableTranslation(static::class);
-
         return $model->runWithInitTable(function () use ($model, $entity_id) {
             return $model->newQuery()
                 ->where('entity_id', $entity_id)
@@ -153,7 +151,6 @@ trait TranslationTrait
     public static function updateOrCreateTranslation(int $entity_id, string $code, array $data)
     {
         $model = AbstractTranslation::setTableTranslation(static::class);
-
         return $model->runWithInitTable(function () use ($model, $entity_id, $code, $data) {
             return $model->newQuery()->updateOrCreate(
                 ['entity_id' => $entity_id, 'language_code' => $code],
@@ -166,16 +163,20 @@ trait TranslationTrait
     /**
      * Delete translations for provided entity IDs
      */
-    public static function deleteTranslations(int|array $entity_ids)
+    public static function deleteTranslations(int|array|null $entity_ids = null)
     {
-        $ids = (array) $entity_ids;
-        if (empty($ids)) {
-            return 0;
-        }
-
         $model = AbstractTranslation::setTableTranslation(static::class);
+        return $model->runWithInitTable(function () use ($model, $entity_ids) {
+            if (is_null($entity_ids)) {
+                return $model->newQuery()
+                    ->delete();
+            }
 
-        return $model->runWithInitTable(function () use ($model, $ids) {
+            $ids = (array) $entity_ids;
+            if (empty($ids)) {
+                return 0;
+            }
+
             return $model->newQuery()
                 ->whereIn('entity_id', $ids)
                 ->delete();
