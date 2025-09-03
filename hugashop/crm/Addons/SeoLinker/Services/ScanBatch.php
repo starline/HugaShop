@@ -52,12 +52,12 @@ final class ScanBatch
             [$outInternal, $outExternal, $metaTitle, $metaDescription, $h1, $links] = self::crawlPage($page->url);
 
             SeoLinker::where('id', $page->id)->update([
-                'scanned' => 1,
-                'out_internal' => $outInternal,
-                'out_external' => $outExternal,
-                'meta_title' => $metaTitle,
-                'meta_description' => $metaDescription,
-                'h1' => $h1,
+                'scanned'           => 1,
+                'out_internal'      => $outInternal,
+                'out_external'      => $outExternal,
+                'meta_title'        => $metaTitle,
+                'meta_description'  => $metaDescription,
+                'h1'                => $h1,
             ]);
 
             foreach ($links as $ln) {
@@ -80,10 +80,10 @@ final class ScanBatch
                     $target = SeoLinker::getOne(['url' => $ln['to_url']]);
                     if (!$target) {
                         SeoLinker::createOne([
-                            'url' => $ln['to_url'],
-                            'depth' => $page->depth + 1,
-                            'scanned' => 0,
-                            'in_internal' => 1,
+                            'url'           => $ln['to_url'],
+                            'depth'         => $page->depth + 1,
+                            'scanned'       => 0,
+                            'in_internal'   => 1,
                         ]);
                     } else {
                         if ($target->depth > $page->depth + 1) {
@@ -138,6 +138,7 @@ final class ScanBatch
             $res['meta_title'],
             $res['meta_description'],
             $res['h1'],
+            
             $observer->links
         ];
     }

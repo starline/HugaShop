@@ -42,11 +42,11 @@ final class CrawlerObserver extends CrawlObserver
         $html       = (string) $response->getBody();
         $current    = (string) $url;
 
-        $outInternal = 0;
-        $outExternal = 0;
-
         $dom = new DomCrawler($html, (string) $url);
 
+        $title = '';
+        $description = '';
+        $h1 = '';
 
         // Meta tags
         $title_node = $dom->filter('title');
@@ -66,7 +66,10 @@ final class CrawlerObserver extends CrawlObserver
 
 
         // Links
+        $outInternal = 0;
+        $outExternal = 0;
         $dom->filter('a[href]')->each(function ($node) use (&$outInternal, &$outExternal,  $current) {
+
             $href = trim((string) ($node->attr('href') ?? ''));
             if ($href === '') {
                 return;
@@ -96,9 +99,9 @@ final class CrawlerObserver extends CrawlObserver
             }
 
             // Картинки по расширению
-            $path = (string) (parse_url($abs, PHP_URL_PATH) ?? '');
-            $ext  = strtolower((string) pathinfo($path, PATHINFO_EXTENSION));
-            $is_image = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'tif', 'tiff'], true);
+            $path       = (string) (parse_url($abs, PHP_URL_PATH) ?? '');
+            $ext        = strtolower((string) pathinfo($path, PATHINFO_EXTENSION));
+            $is_image   = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'tif', 'tiff'], true);
 
             if ($is_image) {
                 $this->links[] = [

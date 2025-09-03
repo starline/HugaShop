@@ -3,4 +3,10 @@ description: "Анализ внутренних ссылок сайта"
 settings_params:
   - { variable: base_url, name: "Стартовая страница сканирования" }
   - { variable: delay, name: "Задержка сканирования, мсек.", default: 0 }
+  - {
+      variable: show_menu,
+      name: "Показывать в меню",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }
+menu_section: content
 version: 1.3
