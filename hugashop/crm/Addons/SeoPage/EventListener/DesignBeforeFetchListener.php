@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.5
+ * @version 2.6
  *
  */
 
@@ -18,6 +18,7 @@ use App\Event\DesignBeforeFetchEvent;
 use HugaShop\Models\Localization\Language;
 use HugaShop\Addons\SeoPage\Models\SeoPage;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class DesignBeforeFetchListener
 {
@@ -26,16 +27,21 @@ class DesignBeforeFetchListener
      * @param DesignBeforeFetchEvent $event
      */
     #[AsEventListener]
-    public function onDesignBeforeFetchEvent(DesignBeforeFetchEvent $event): void
+    public function onDesignBeforeFetchEvent(DesignBeforeFetchEvent $event, RequestStack $request_stack): void
     {
         if (Request::isAjax() || Design::getTheme() === 'admin') {
             return;
         }
 
-        // $_SERVER['REQUEST_URI'];
+        $request = $request_stack->getCurrentRequest();
+        if ($request === null) {
+            return;
+        }
+
+        // Request URI
         // Example: /info/pravila+кирилица
         // Example: /uk/info/pravila+кирилица
-        $page_uri = urldecode($_SERVER['REQUEST_URI']);
+        $page_uri = urldecode((string) $request->server->get('REQUEST_URI'));
 
         $lang = Language::getCurrent()->code;
 
