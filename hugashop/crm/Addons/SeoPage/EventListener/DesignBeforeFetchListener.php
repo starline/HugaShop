@@ -15,6 +15,7 @@ use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Request;
 use App\Event\DesignBeforeFetchEvent;
+use HugaShop\Models\Localization\Language;
 use HugaShop\Addons\SeoPage\Models\SeoPage;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
@@ -33,21 +34,25 @@ class DesignBeforeFetchListener
 
         // $_SERVER['REQUEST_URI'];
         // Example: /info/pravila+кирилица
+        // Example: /uk/info/pravila+кирилица
         $page_uri = urldecode($_SERVER['REQUEST_URI']);
 
-        $cache_item = Cache::cache(self::class)->getItem('item_' . Helper::makeToken($page_uri));
+        $lang = Language::getCurrent()->code;
+
+        $cache_item = Cache::cache(SeoPage::class)->getItem('item_' . Helper::makeToken($page_uri) . '_' . $lang);
         if (!$cache_item->isHit()) {
 
             // SEO page
             // Protect for infinity fake pages. Don't make cache
-            if (empty($seo = SeoPage::getOne(['enabled' => 1, 'url' =>  $page_uri]))) {
+            if (empty($seo = SeoPage::getOneTranslate(['enabled' => 1, 'url' =>  $page_uri]))) {
                 return;
             }
 
-            Cache::cache(self::class)->save($cache_item->set($seo));
+            Cache::cache(SeoPage::class)->save($cache_item->set($seo));
+        } else {
+            $seo = $cache_item->get();
         }
 
-        $seo = $cache_item->get();
         Design::assign('seo', $seo);
 
         // H1
