@@ -25,13 +25,11 @@ final class InfoBlock extends BaseAddon
      */
     public static function getTemplate(array $params = [])
     {
-
         if (empty($params['id'])) {
             return;
         }
 
         $enabled = $params['enabled'] ?? '1';
-
         $lang = Language::getCurrent()->code;
 
         $cache_item = Cache::cache(InfoBlockModel::class)->getItem('item_' . $params['id'] . '_' . $lang);

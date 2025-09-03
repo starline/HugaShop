@@ -17,16 +17,18 @@ use HugaShop\Addons\GoogleMerchant\Models\GoogleMerchantCategory;
 final class GoogleMerchant extends BaseAddonModel
 {
     protected static $table_fields = [
-        'id' =>             ['type' => 'int',     'extra' => 'AUTO_INCREMENT'],
-        'name' =>           ['type' => 'varchar', 'req' => true],
-        'label' =>          ['type' => 'varchar'],
-        'currency_code' =>  ['type' => 'varchar'],
-        'token' =>          ['type' => 'varchar', 'access' => false],
-        'sku_id' =>         ['type' => 'tinyint', 'def' => 0],
-        'comment' =>        ['type' => 'varchar'],
-        'show_out_stock' => ['type' => 'tinyint', 'def' => 0],
-        'created' =>        ['type' => 'datetime', 'def' => 'CURRENT_TIMESTAMP'],
-        'position' =>       ['type' => 'int',     'def' => 0],
+        'id'                => ['type' => 'int',        'extra' => 'AUTO_INCREMENT'],
+        'name'              => ['type' => 'varchar',    'req' => true],
+        'label'             => ['type' => 'varchar'],
+        'currency_code'     => ['type' => 'varchar'],
+        'token'             => ['type' => 'varchar',    'access' => false],
+        'sku_id'            => ['type' => 'tinyint',    'def' => 0],
+        'comment'           => ['type' => 'varchar'],
+        'show_out_stock'    => ['type' => 'tinyint',    'def' => 0],
+        'created'           => ['type' => 'datetime',   'def' => 'CURRENT_TIMESTAMP'],
+        'position'          => ['type' => 'int',        'def' => 0],
+        'price_from'        => ['type' => 'int',        'def' => 0],
+        'price_to'          => ['type' => 'int',        'def' => 0],
     ];
 
     public static function deleteOne($id)

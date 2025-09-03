@@ -27,7 +27,7 @@ use HugaShop\Addons\GoogleMerchant\Models\GoogleMerchantCategory;
 
 final class FeedGenerator
 {
-    
+
     private static $pricefeed;
 
     public static function getPriceFeed(object $pricefeed)
@@ -60,9 +60,20 @@ final class FeedGenerator
                 }
             }
 
-            $filter['category_id'] = array_unique($categories);
-            $filter['visible'] = 1;
-            $products_raw = Product::getList($filter, order: 'position', join: ['image', 'brand']);
+
+            // Price filter
+            if (self::$pricefeed->price_from > 0) {
+                $filter['price_from'] = self::$pricefeed->price_from;
+            }
+
+            if (self::$pricefeed->price_to > 0) {
+                $filter['price_to'] = self::$pricefeed->price_to;
+            }
+
+
+            $filter['category_id']  = array_unique($categories);
+            $filter['visible']      = 1;
+            $products_raw = Product::getProducts($filter, join: ['image', 'brand']);
 
             // В качестве id используется артикул
             foreach ($products_raw as $product_raw) {

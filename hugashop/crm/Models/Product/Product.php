@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 4.5
+ * @version 4.6
  *
  */
 
@@ -244,6 +244,14 @@ class Product extends BaseModel
             $query->whereColumn('old_price', '>', 'price');
         }
 
+        if (Arr::has($filter, 'price_from') and $filter['price_from'] > 0) {
+            $query->where('price', '>=', $filter['price_from']);
+        }
+
+        if (Arr::has($filter, 'price_to') and $filter['price_to'] > 0) {
+            $query->where('price', '<=', $filter['price_to']);
+        }
+
         if (Arr::has($filter, 'in_stock')) {
             if ($filter['in_stock'] === 1) {
                 $query->where(function ($q) {
@@ -324,8 +332,8 @@ class Product extends BaseModel
 
         // Pagination
         if (!empty($filter['limit']) && $filter['limit'] !== 'all') {
-            $limit = max(1, (int)$filter['limit']);
-            $page = max(1, (int)($filter['page'] ?? 1));
+            $limit  = max(1, (int)$filter['limit']);
+            $page   = max(1, (int)($filter['page'] ?? 1));
             $query->limit($limit)->offset(($page - 1) * $limit);
         }
 

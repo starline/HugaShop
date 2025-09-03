@@ -60,10 +60,10 @@ final class GoogleMerchantController extends BaseAdminController
 
         $categories = ProductCategory::getCategoriesTree();
 
-        Design::assign('pricefeed', $pricefeed);
-        Design::assign('categories', $categories);
-        Design::assign('pricefeed_categories', $pricefeed_categories);
-        Design::assign('addon', $this->getAddon());
+        Design::assign('pricefeed',             $pricefeed);
+        Design::assign('categories',            $categories);
+        Design::assign('pricefeed_categories',  $pricefeed_categories);
+        Design::assign('addon',                 $this->getAddon());
 
         return $this->fetchAddonResponse('feed.tpl');
     }

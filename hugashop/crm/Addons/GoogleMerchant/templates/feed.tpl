@@ -41,8 +41,12 @@
                         </select>
                     </li>
                     <li>
-                        <label for="label" class="col-form-label">Feed Label</label>
+                        <label for="label" class="col-form-label">Feed label_0</label>
                         <input class="form-control" name="label" id="label" value="{$pricefeed->label}" />
+                    </li>
+                    <li>
+                        <div class="col-form-label">Feed label_1</div>
+                        <div class="col-form-label">url категории товара</div>
                     </li>
                     <li>
                         <label for="currency_code" class="col-form-label">Код валюты</label>
@@ -52,6 +56,26 @@
                     <li>
                         <label for="comment" class="col-form-label">Заметки</label>
                         <textarea class="form-control" name="comment" id="comment">{$pricefeed->comment}</textarea>
+                    </li>
+                    <li>
+                        <label for="price_from" class="col-form-label">Фильтр по цене</label>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="input-group col-6">
+                                    <span class="input-group-text">от</span>
+                                    <input class="form-control text-center" id="price_from" type="text" name="price_from"
+                                        value="{$pricefeed->price_from}" autocomplete="off">
+                                    <span class="input-group-text">грн</span>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group col-6">
+                                    <span class="input-group-text">до</span>
+                                    <input class="form-control text-center" name="price_to" type="text" value="{$pricefeed->price_to}">
+                                    <span class="input-group-text">грн</span>
+                                </div>
+                            </div>
+                        </div>
                     </li>
                 </ul>
             </div>

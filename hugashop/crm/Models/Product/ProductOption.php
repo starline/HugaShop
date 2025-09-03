@@ -54,6 +54,12 @@ class ProductOption extends BaseModel
         $options    = ProductFeatureOption::getListTranslate(['id' => $options_ids])->keyBy('feature_id');
 
         foreach ($features as $feature) {
+
+            // Если у характеристики нет опции
+            if (empty($options[$feature->id])) {
+                continue;
+            }
+            
             $feature->value     = $options[$feature->id]->value;
             $feature->option_id = $options[$feature->id]->id;
         }
