@@ -22,7 +22,7 @@ final class FrontController extends BaseFrontController
 {
     use BaseAddonTrait;
 
-    #[Route('/configurator/{id}', name: 'AddonProductConfiguratorFront', priority: 1)]
+    #[Route('/ProductConfigurator/{id}', name: 'AddonProductConfiguratorFront', priority: 1)]
     public function index(int $id): Response
     {
         $configurator = ConfiguratorAddon::get_configurator($id);
@@ -31,7 +31,7 @@ final class FrontController extends BaseFrontController
         }
 
         if (Secure::checkCSRF()) {
-            $selected = Request::post('option', []);
+            $selected = Request::post('option', 'array');
             $total = 0;
             $details = [];
             foreach ($configurator->steps as $step) {

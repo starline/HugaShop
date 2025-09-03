@@ -11,7 +11,6 @@ namespace HugaShop\Addons\ProductConfigurator\Controller;
 
 use HugaShop\Services\Design;
 use HugaShop\Services\Secure;
-use HugaShop\Services\Request;
 use HugaShop\Services\Helper;
 use App\Controller\BaseAdminController;
 use HugaShop\Addons\BaseAddonTrait;
@@ -53,8 +52,9 @@ final class ConfiguratorController extends BaseAdminController
             }
         }
 
-        Design::assign('configurator', $configurator);
-        Design::assign('steps', ConfiguratorStep::getList(['configurator_id' => $configurator->id ?? 0], order: 'position'));
+        Design::assign('addon',         $this->getAddon());
+        Design::assign('configurator',  $configurator);
+        Design::assign('steps',         ConfiguratorStep::getList(['configurator_id' => $configurator->id ?? 0], order: 'position'));
 
         return $this->fetchAddonResponse('configurator.tpl');
     }

@@ -43,6 +43,7 @@ final class ConfiguratorListController extends BaseAdminController
             }
         }
 
+        Design::assign('addon', $this->getAddon());
         Design::assign('configurators', Configurator::getList(order: 'position'));
         return $this->fetchAddonResponse('configurator_list.tpl');
     }

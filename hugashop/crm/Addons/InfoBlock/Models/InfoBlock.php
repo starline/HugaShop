@@ -15,6 +15,8 @@ use HugaShop\Addons\BaseAddonModel;
 
 final class InfoBlock extends BaseAddonModel
 {
+
+    public $timestamps = true;
     protected static $table_fields = [
         'id'       => ['type' => 'int',     'extra' => 'AUTO_INCREMENT'],
         'name'     => ['type' => 'varchar', 'trans' => true, 'required' => 'true'],

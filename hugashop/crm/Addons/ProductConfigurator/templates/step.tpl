@@ -36,7 +36,8 @@
                             <input type="hidden" name="option_id[]" value="{$opt->id}">
                             <div class="col-6"><input class="form-control" name="option_name[]" value="{$opt->name}"></div>
                             <div class="col-4"><input class="form-control" name="option_price[]" value="{$opt->price}"></div>
-                            <div class="col-2"><button class="btn btn-outline-danger remove_option" type="button">&times;</button></div>
+                            <div class="col-2"><button class="btn btn-outline-danger remove_option"
+                                    type="button">&times;</button></div>
                         </div>
                     {/foreach}
                 </div>
@@ -52,12 +53,14 @@
 {block name=body_script append}
     <script type="module">
         {literal}
-        $(function(){
-            $('#add_option').click(function(){
-                $('#options').append('<div class="row g-2 option_row mb-2"><input type="hidden" name="option_id[]" value=""><div class="col-6"><input class="form-control" name="option_name[]"></div><div class="col-4"><input class="form-control" name="option_price[]" value="0"></div><div class="col-2"><button class="btn btn-outline-danger remove_option" type="button">&times;</button></div></div>');
+            $(function() {
+                $('#add_option').click(function() {
+                    $('#options').append(
+                        '<div class="row g-2 option_row mb-2"><input type="hidden" name="option_id[]" value=""><div class="col-6"><input class="form-control" name="option_name[]"></div><div class="col-4"><input class="form-control" name="option_price[]" value="0"></div><div class="col-2"><button class="btn btn-outline-danger remove_option" type="button">&times;</button></div></div>'
+                        );
+                });
+                $(document).on('click', '.remove_option', function() { $(this).closest('.option_row').remove(); });
             });
-            $(document).on('click','.remove_option',function(){ $(this).closest('.option_row').remove(); });
-        });
         {/literal}
     </script>
 {/block}

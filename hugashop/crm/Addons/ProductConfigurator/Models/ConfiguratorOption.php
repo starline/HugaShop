@@ -4,7 +4,8 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
+ * 
  */
 
 namespace HugaShop\Addons\ProductConfigurator\Models;
@@ -13,6 +14,8 @@ use HugaShop\Addons\BaseAddonModel;
 
 final class ConfiguratorOption extends BaseAddonModel
 {
+
+    public $timestamps = true;
     protected static $table_fields = [
         'id'       => ['type' => 'int',     'extra' => 'AUTO_INCREMENT'],
         'step_id'  => ['type' => 'int'],

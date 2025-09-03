@@ -62,12 +62,12 @@
     <script type="module">
         import { ajaxEntityUpdateIcon } from '{"js/common.js"|asset}';
         {literal}
-        $(function(){
-            $("i.enable").click(function(){
-                ajaxEntityUpdateIcon($(this), 'ProductConfigurator', 'enabled', csrf);
-                return false;
+            $(function() {
+                $("i.enable").click(function() {
+                    ajaxEntityUpdateIcon($(this), 'ProductConfigurator', 'enabled', csrf);
+                    return false;
+                });
             });
-        });
         {/literal}
     </script>
 {/block}

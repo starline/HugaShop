@@ -18,7 +18,8 @@
                     <div class="checkbox_line">
                         <div class="form-check form-switch">
                             <input type="hidden" name="enabled" value="0">
-                            <input class="form-check-input" name="enabled" value="1" type="checkbox" role="switch" id="enabled" {if $configurator->enabled}checked{/if} />
+                            <input class="form-check-input" name="enabled" value="1" type="checkbox" role="switch"
+                                id="enabled" {if $configurator->enabled}checked{/if} />
                             <label class="form-check-label" for="enabled">Активен</label>
                         </div>
                     </div>
@@ -52,7 +53,8 @@
                         </div>
                         <div class="row col">
                             <div class="col-12 col-sm-8">
-                                <a href="{'AddonProductConfiguratorStep'|link:[configurator_id=>$configurator->id,id=>$step->id]}">{$step->name}</a>
+                                <a
+                                    href="{'AddonProductConfiguratorStep'|link:[configurator_id=>$configurator->id,id=>$step->id]}">{$step->name}</a>
                             </div>
                             <div class="col-12 col-sm-4 text-end">
                                 <span class="badge text-bg-round">{$step->id}</span>
@@ -63,7 +65,8 @@
             </div>
             <div class="mt-3">
                 {include file="parts/button.tpl" label="Сохранить порядок"}
-                <a class="btn btn-outline-primary" href="{'AddonProductConfiguratorStepNew'|link:[configurator_id=>$configurator->id]}">Добавить шаг</a>
+                <a class="btn btn-outline-primary"
+                    href="{'AddonProductConfiguratorStepNew'|link:[configurator_id=>$configurator->id]}">Добавить шаг</a>
             </div>
         </form>
     {/if}

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
  */
 
 namespace HugaShop\Addons\ProductConfigurator\Controller;
@@ -37,10 +37,11 @@ final class StepController extends BaseAdminController
                 } else {
                     $data = Design::setFlashMessage('update', ConfiguratorStep::updateOne($data->id, $data));
                 }
-                $option_ids    = Request::post('option_id', []);
-                $option_names  = Request::post('option_name', []);
-                $option_prices = Request::post('option_price', []);
+                $option_ids    = Request::post('option_id');
+                $option_names  = Request::post('option_name');
+                $option_prices = Request::post('option_price');
                 $keep_ids = [];
+
                 foreach ($option_names as $i => $name) {
                     if (trim($name) === '') {
                         continue;
@@ -58,6 +59,7 @@ final class StepController extends BaseAdminController
                     );
                     $keep_ids[] = $option->id;
                 }
+
                 ConfiguratorOption::where('step_id', $data->id)->whereNotIn('id', $keep_ids)->delete();
                 return $this->redirectToRoute('AddonProductConfiguratorStep', ['configurator_id' => $configurator_id, 'id' => $data->id]);
             }
