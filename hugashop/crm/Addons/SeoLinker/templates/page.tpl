@@ -8,6 +8,12 @@
         <h1>{$page->url}</h1>
     </div>
     <div id="main_list">
+        <div class="layer mb-4">
+            <h2>Метаданные</h2>
+            <div class="mb-2"><strong>Title:</strong> {$page->meta_title}</div>
+            <div class="mb-2"><strong>Description:</strong> {$page->meta_description}</div>
+            <div><strong>H1:</strong> {$page->h1}</div>
+        </div>
         <div class="row gx-5">
             <div class="col-lg-6 layer">
                 <h2>Исходящие ссылки</h2>

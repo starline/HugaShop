@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.5
+ * @version 1.6
  *
  */
 
@@ -50,6 +50,18 @@ final class CrawlerObserver extends CrawlObserver
         @($dom->loadHTML($html));
         $xpath = new DOMXPath($dom);
         $nodes = $xpath->evaluate("//a[@href]");
+
+        $metaTitle = trim((string) $xpath->evaluate('string(//title)'));
+        $metaNode = $xpath->query("//meta[translate(@name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='description']");
+        $metaDescription = '';
+        if ($metaNode->length > 0) {
+            $metaDescription = trim((string) $metaNode->item(0)?->getAttribute('content'));
+        }
+        $h1Node = $xpath->query('//h1');
+        $h1 = '';
+        if ($h1Node->length > 0) {
+            $h1 = trim((string) $h1Node->item(0)?->textContent);
+        }
 
         foreach ($nodes as $node) {
             $href = trim($node->getAttribute('href'));
@@ -122,6 +134,9 @@ final class CrawlerObserver extends CrawlObserver
             'url' => $current,
             'out_internal' => $outInternal,
             'out_external' => $outExternal,
+            'meta_title' => $metaTitle,
+            'meta_description' => $metaDescription,
+            'h1' => $h1,
         ];
     }
 
