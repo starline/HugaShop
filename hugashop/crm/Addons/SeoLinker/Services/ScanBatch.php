@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.8
+ * @version 1.9
  * 
  * SeoLinker addon
  * @link https://github.com/spatie/crawler
@@ -49,12 +49,15 @@ final class ScanBatch
         $pages = SeoLinker::where('scanned', 0)->limit(self::$limit)->get();
 
         foreach ($pages as $page) {
-            [$outInternal, $outExternal, $links] = self::crawlPage($page->url);
+            [$outInternal, $outExternal, $metaTitle, $metaDescription, $h1, $links] = self::crawlPage($page->url);
 
             SeoLinker::where('id', $page->id)->update([
                 'scanned' => 1,
                 'out_internal' => $outInternal,
                 'out_external' => $outExternal,
+                'meta_title' => $metaTitle,
+                'meta_description' => $metaDescription,
+                'h1' => $h1,
             ]);
 
             foreach ($links as $ln) {
@@ -121,11 +124,20 @@ final class ScanBatch
             ->setParseableMimeTypes(['text/html'])
             ->startCrawling($url);
 
-        $res = $observer->results[$url] ?? ['out_internal' => 0, 'out_external' => 0];
+        $res = $observer->results[$url] ?? [
+            'out_internal' => 0,
+            'out_external' => 0,
+            'meta_title' => '',
+            'meta_description' => '',
+            'h1' => '',
+        ];
 
         return [
             $res['out_internal'],
             $res['out_external'],
+            $res['meta_title'],
+            $res['meta_description'],
+            $res['h1'],
             $observer->links
         ];
     }
