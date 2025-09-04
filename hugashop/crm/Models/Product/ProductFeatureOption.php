@@ -66,7 +66,6 @@ class ProductFeatureOption extends BaseModel
         }
 
         $option->save();
-
         return $option;
     }
 

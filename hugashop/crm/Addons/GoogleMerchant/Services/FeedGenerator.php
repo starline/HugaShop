@@ -3,7 +3,7 @@
 /**
  *
  * @author Andri Huga
- * @version 4.4
+ * @version 4.5
  *
  * Google feed generator
  * Uses Cache
@@ -47,39 +47,10 @@ final class FeedGenerator
                 $main_currency->code = self::$pricefeed->currency_code;
             }
 
-            $categories_raw = GoogleMerchantCategory::getCategoriesIds(self::$pricefeed->id);
-
-            // Collect selected categories with all children
-            $categories = [];
-            foreach ($categories_raw as $cat_id) {
-                $cat = ProductCategory::getCategory($cat_id);
-                if (!empty($cat->children)) {
-                    $categories = array_merge($categories, $cat->children);
-                } else {
-                    $categories[] = $cat_id;
-                }
-            }
-
-
-            // Price filter
-            if (self::$pricefeed->price_from > 0) {
-                $filter['price_from'] = self::$pricefeed->price_from;
-            }
-
-            if (self::$pricefeed->price_to > 0) {
-                $filter['price_to'] = self::$pricefeed->price_to;
-            }
-
-
-            $filter['category_id']  = array_unique($categories);
-            $filter['disable']      = 0;
-            $filter['visible']      = 1;
-            $products_raw = Product::getProducts($filter, join: ['image', 'brand']);
-
-            // В качестве id используется артикул
+            $products_raw = Product::getProducts(self::getProductFilter(self::$pricefeed), join: ['image', 'brand']);
             foreach ($products_raw as $product_raw) {
 
-                $product = new \stdClass();  # clean
+                $product = new \stdClass(); # clean
 
                 // Hard Required params
                 if (empty($product_raw->image) || empty($product_raw->name) || empty($product_raw->price)) {
@@ -202,5 +173,40 @@ final class FeedGenerator
         });
 
         return $response;
+    }
+
+    /**
+     * Get product filter
+     */
+    public static function getProductFilter(object $pricefeed)
+    {
+        $categories_raw = GoogleMerchantCategory::getCategoriesIds($pricefeed->id);
+
+        // Collect selected categories with all children
+        $categories = [];
+        foreach ($categories_raw as $cat_id) {
+            $cat = ProductCategory::getCategory($cat_id);
+            if (!empty($cat->children)) {
+                $categories = array_merge($categories, $cat->children);
+            } else {
+                $categories[] = $cat_id;
+            }
+        }
+
+
+        // Price filter
+        if ($pricefeed->price_from > 0) {
+            $filter['price_from'] = $pricefeed->price_from;
+        }
+
+        if ($pricefeed->price_to > 0) {
+            $filter['price_to'] = $pricefeed->price_to;
+        }
+
+        $filter['category_id']  = array_unique($categories);
+        $filter['disable']      = 0;
+        $filter['visible']      = 1;
+
+        return $filter;
     }
 }

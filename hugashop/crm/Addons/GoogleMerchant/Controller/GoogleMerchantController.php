@@ -15,8 +15,9 @@ use HugaShop\Services\Design;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
-use App\Controller\BaseAdminController;
 use HugaShop\Addons\BaseAddonTrait;
+use HugaShop\Models\Product\Product;
+use App\Controller\BaseAdminController;
 use HugaShop\Models\Product\ProductCategory;
 use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Addons\GoogleMerchant\Models\GoogleMerchant;
@@ -31,8 +32,6 @@ final class GoogleMerchantController extends BaseAdminController
     #[Route('/GoogleMerchant/feed/{id}', name: 'AddonGoogleMerchant', priority: 20)]
     public function feed(?int $id = null)
     {
-        $pricefeed_categories = [];
-
         if (!empty($pricefeed = Secure::getInputCheckEditAccess(GoogleMerchant::class, $id))) {
             if (empty($pricefeed->id)) {
                 $pricefeed->token = Helper::makeToken();
@@ -55,14 +54,14 @@ final class GoogleMerchantController extends BaseAdminController
                 return $this->redirectToRoute('AddonGoogleMerchantList');
             }
 
-            $pricefeed_categories = GoogleMerchantCategory::getCategoriesIds($pricefeed->id);
+            $pricefeed_categories   = GoogleMerchantCategory::getCategoriesIds($pricefeed->id);
+            $products_count         = Product::countProducts(FeedGenerator::getProductFilter($pricefeed));
         }
 
-        $categories = ProductCategory::getCategoriesTree();
-
         Design::assign('pricefeed',             $pricefeed);
-        Design::assign('categories',            $categories);
-        Design::assign('pricefeed_categories',  $pricefeed_categories);
+        Design::assign('categories',            ProductCategory::getCategoriesTree());
+        Design::assign('pricefeed_categories',  $pricefeed_categories ?? []);
+        Design::assign('products_count',        $products_count ?? 0);
         Design::assign('addon',                 $this->getAddon());
 
         return $this->fetchAddonResponse('feed.tpl');

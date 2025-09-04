@@ -71,7 +71,8 @@
                             <div class="col-6">
                                 <div class="input-group col-6">
                                     <span class="input-group-text">до</span>
-                                    <input class="form-control text-center" name="price_to" type="text" value="{$pricefeed->price_to}">
+                                    <input class="form-control text-center" name="price_to" type="text"
+                                        value="{$pricefeed->price_to}">
                                     <span class="input-group-text">грн</span>
                                 </div>
                             </div>
@@ -81,7 +82,8 @@
             </div>
 
             <div class="col-lg-6 layer">
-                <h2>Использовать в категориях</h2>
+                <h2>Использовать в категориях <span class="sum_total">{$products_count}
+                        {$products_count|plural:'товар':'товаров':'товара'}</span></h2>
                 <select class="form-select multiple_categories" multiple name="pricefeed_categories[]">
                     {function name=category_select selected_id=$product_category level=0}
                         {foreach $categories as $category}
