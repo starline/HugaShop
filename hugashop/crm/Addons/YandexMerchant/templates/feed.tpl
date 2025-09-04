@@ -14,7 +14,7 @@
         {getCSRFInput}
 
         <div class="row gx-5">
-            <div class="col-lg-12">
+            <div class="col-12">
                 <div class="name_row">
                     <div class="col">
                         <div class="input-group has-validation">
