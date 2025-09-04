@@ -48,7 +48,6 @@
 					<img src="{'images/printer.png'|asset}" data-bs-toggle="tooltip" title="Печать заказа">
 				</a>
 			{/if}
-
 		</div>
 
 

@@ -8,13 +8,11 @@
 {/if}
 
 {block name=content}
-
 	<form method="post" enctype="multipart/form-data">
 		<input name="id" type="hidden" value="{$category->id}" />
 		{getCSRFInput}
 
 		<div class="row gx-5">
-
 			<div class="col-12 name_row">
 				<input class="form-control form-control-lg" name="name" type="text" value="{$category->name}"
 					autocomplete="none" />
@@ -40,7 +38,5 @@
 				{include file="parts/button.tpl"}
 			</div>
 		</div>
-
 	</form>
-
 {/block}

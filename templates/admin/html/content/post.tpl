@@ -27,7 +27,7 @@
 							<label class="form-check-label" for="active_checkbox">Активна</label>
 						</div>
 					</div>
-					
+
 					{if $post->url}
 						<a class="out_link" target="_self" href="{'Post'|linkLang:[url => $post->url]}">Открыть статью на
 							сайте</a>
@@ -35,9 +35,14 @@
 				</div>
 
 				<div class="name_row">
-					<span class="item_id">H1</span>
-					<input class="form-control form-control-lg" name=name type="text" value="{$post->name}"
-						autocomplete="off" />
+					<div class="col">
+						<div class="input-group has-validation">
+							<span class="input-group-text item_id">H1</span>
+							<input class="form-control form-control-lg {if name|in_array:$form_invalid}is-invalid{/if}"
+								name="name" type="text" value="{$post->name}" autocomplete="off" />
+							<div class="invalid-feedback">Введите название</div>
+						</div>
+					</div>
 				</div>
 			</div>
 

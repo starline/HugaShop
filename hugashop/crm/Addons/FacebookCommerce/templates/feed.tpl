@@ -17,8 +17,14 @@
 
             <div class="col-12">
                 <div class="name_row">
-                    <span class="item_id">#{$pricefeed->id}</span>
-                    <input class="form-control form-control-lg name" name="name" type="text" value="{$pricefeed->name}" />
+                    <div class="col">
+                        <div class="input-group has-validation">
+                            <span class="input-group-text item_id">#{$pricefeed->id}</span>
+                            <input class="form-control form-control-lg {if name|in_array:$form_invalid}is-invalid{/if}"
+                                name="name" type="text" value="{$pricefeed->name}" autocomplete="off" />
+                            <div class="invalid-feedback">Введите название</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

@@ -11,7 +11,6 @@
 		{getCSRFInput}
 
 		<div class="row gx-5">
-
 			<div class="col-lg-6 layer">
 				<h2>Вознаграждения менеджеров</h2>
 				<div>
@@ -42,7 +41,6 @@
 								<span class="input-group-text">%</span>
 							</div>
 						</li>
-
 					</ul>
 				</div>
 			</div>

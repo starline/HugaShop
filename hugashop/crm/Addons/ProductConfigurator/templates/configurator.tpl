@@ -26,8 +26,14 @@
                 </div>
 
                 <div class="name_row">
-                    <span class="col-form-label item_id">#{$configurator->id}</span>
-                    <input class="form-control form-control-lg" name="name" type="text" value="{$configurator->name}" />
+                    <div class="col">
+                        <div class="input-group has-validation">
+                            <span class="input-group-text item_id">#{$configurator->id}</span>
+                            <input class="form-control form-control-lg {if name|in_array:$form_invalid}is-invalid{/if}"
+                                name="name" type="text" value="{$configurator->name}" autocomplete="off" />
+                            <div class="invalid-feedback">Введите название</div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-12 layer">

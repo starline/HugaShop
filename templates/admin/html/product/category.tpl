@@ -13,10 +13,10 @@
 
 	<!-- Основная форма -->
 	<form method="post" enctype="multipart/form-data">
+		<input name="id" type="hidden" value="{$category->id}" />
 		{getCSRFInput}
 
 		<div class="row gx-5">
-
 			<div class="col-12">
 				<div class="over_name">
 					<div class="checkbox_line">
@@ -41,10 +41,14 @@
 				</div>
 
 				<div class="name_row">
-					<span class="item_id">#{$category->id}</span>
-					<input class="form-control form-control-lg" name="name" type="text" value="{$category->name}"
-						autocomplete="off" />
-					<input name="id" type="hidden" value="{$category->id}" />
+					<div class="col">
+						<div class="input-group has-validation">
+							<span class="input-group-text item_id">#{$category->id}</span>
+							<input class="form-control form-control-lg {if name|in_array:$form_invalid}is-invalid{/if}"
+								name="name" type="text" value="{$category->name}" autocomplete="off" />
+							<div class="invalid-feedback">Введите название</div>
+						</div>
+					</div>
 				</div>
 			</div>
 

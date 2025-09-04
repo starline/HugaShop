@@ -43,8 +43,11 @@
 				</div>
 
 				<div class="name_row">
-					<input class="form-control form-control-lg" name="name" type="text" value="{$page->name}"
-						autocomplete="off" />
+					<div class="col">
+						<input class="form-control form-control-lg {if name|in_array:$form_invalid}is-invalid{/if}"
+							name="name" type="text" value="{$page->name}" autocomplete="off" />
+						<div class="invalid-feedback">Введите название</div>
+					</div>
 				</div>
 			</div>
 

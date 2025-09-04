@@ -8,7 +8,7 @@
 {/if}
 
 {block name=content}
-	
+
 	{include 'parts/translation_btn_part.tpl' entity='info_block'}
 
 	<!-- Основная форма -->
@@ -31,8 +31,14 @@
 				</div>
 
 				<div class="name_row">
-					<span for="name" class="col-form-label item_id">#{$block->id}</span>
-					<input class="form-control form-control-lg" name="name" type="text" value="{$block->name}" />
+					<div class="col">
+						<div class="input-group has-validation">
+							<span class="input-group-text item_id">#{$block->id}</span>
+							<input class="form-control form-control-lg {if name|in_array:$form_invalid}is-invalid{/if}"
+								name="name" type="text" value="{$block->name}" autocomplete="off" />
+							<div class="invalid-feedback">Введите название</div>
+						</div>
+					</div>
 				</div>
 			</div>
 

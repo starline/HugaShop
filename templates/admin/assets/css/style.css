@@ -2682,10 +2682,10 @@ input.input_autocomplete {
 }
 
 .item_id {
-	padding: 0px;
 	color: var(--lightin-color);
 	font-size: 2rem;
-	margin-right: 15px;
+	padding-right: 15px;
+	padding-left: 15px;
 }
 
 .order_label_text {
