@@ -32,18 +32,19 @@
                             <div class="col">
                                 <a href="{'AddonGoogleMerchant'|link:[id => $pricefeed->id]}">{$pricefeed->name}</a>
 
-                                <div class="badge text-bg-round copy_field"
-                                    value="{$config->root_url}{'AddonGoogleMerchantFeed'|link:[id => $pricefeed->id, token => $pricefeed->token]}">
-                                    {$config->root_url}{'AddonGoogleMerchantFeed'|link:[id => $pricefeed->id, token => $pricefeed->token]}
-                                    <div class="copy_hover" data-bs-toggle="tooltip" data-bs-original-title="Скопировать">
-                                        <i class="material-icons">content_copy</i>
+                                <div class="my-2">
+                                    <div class="badge text-bg-round copy_field"
+                                        value="{$config->root_url}{'AddonGoogleMerchantFeed'|link:[id => $pricefeed->id, token => $pricefeed->token]}">
+                                        {$config->root_url}{'AddonGoogleMerchantFeed'|link:[id => $pricefeed->id, token => $pricefeed->token]}
+                                        <div class="copy_hover" data-bs-toggle="tooltip" data-bs-original-title="Скопировать">
+                                            <i class="material-icons">content_copy</i>
+                                        </div>
                                     </div>
                                 </div>
 
                                 {if !$pricefeed->comment|empty}
                                     <div class="notice">{$pricefeed->comment|strip_tags|nl2br|raw}</div>
                                 {/if}
-
                             </div>
 
                             {if $pricefeed->label}
