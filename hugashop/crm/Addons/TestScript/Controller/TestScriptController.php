@@ -12,6 +12,7 @@ namespace HugaShop\Addons\TestScript\Controller;
 
 use OpenAI;
 use stdClass;
+use Exception;
 use HugaShop\Models\Image;
 use HugaShop\Models\Settings;
 use HugaShop\Services\Config;
@@ -126,15 +127,21 @@ final class TestScriptController extends BaseAdminController
                             // date_default_timezone_set('UTC');
                             $result[] = 'UTC Time: ' . date("Y-m-d H:i:s") . '. Timezone: ' .  date_default_timezone_get();
 
-                            $from_date = '2020-12-10';
-                            $result[] = $date = new \DateTime($from_date . ' ' . Settings::getParam('timezone'));
-                            //$date->setTimeZone(new \DateTimeZone('UTC'));
+                            //$from_date = '2020-12-10';
+                            $from_date = '30.11.-0001';
+                            try {
+                                $result[] = $date = new \DateTime($from_date . ' ' . Settings::getParam('timezone'));
 
-                            //$result[] = $date = new \DateTime($from_date);
-                            //$timezone = new \DateTimeZone(Settings::getParam('timezone));
-                            //$date->setTimeZone($timezone);
+                                //$date->setTimeZone(new \DateTimeZone('UTC'));
 
-                            $result[] = 'Server Time: ' . $date->format('Y-m-d H:i:s') . '. Timezone: ' .  Settings::getParam('timezone');
+                                //$result[] = $date = new \DateTime($from_date);
+                                //$timezone = new \DateTimeZone(Settings::getParam('timezone));
+                                //$date->setTimeZone($timezone);
+
+                                $result[] = 'Server Time: ' . $date->format('Y-m-d H:i:s') . '. Timezone: ' .  Settings::getParam('timezone');
+                            } catch (Exception $e) {
+                                $result[] = 'Wrong format: ' . $e;
+                            }
                         }
 
 
