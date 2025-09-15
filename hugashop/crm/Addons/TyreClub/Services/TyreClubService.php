@@ -28,7 +28,7 @@ final class TyreClubService
     public static function requestPriceList(?int $date_from = null, ?string $callback_url = null): ?array
     {
         $api_key = self::getApiKey();
-        $client  = self::createClient($api_key);
+        $client  = self::createClient();
 
         if (empty($client) || empty($api_key)) {
             return null;
@@ -38,7 +38,7 @@ final class TyreClubService
             'key'          => $api_key,
             'date_from'    => $date_from,
             'callback_url' => $callback_url,
-        ], static fn ($value) => $value !== null && $value !== '');
+        ], static fn($value) => $value !== null && $value !== '');
 
         try {
             $response = $client->post('RequestPriceList', [
@@ -65,17 +65,15 @@ final class TyreClubService
         return $data;
     }
 
-    private static function createClient(?string $api_key): ?GuzzleClient
-    {
-        if (empty($api_key)) {
-            return null;
-        }
 
+    private static function createClient(): ?GuzzleClient
+    {
         return new GuzzleClient([
             'base_uri' => self::API_BASE_URL,
             'timeout'  => 60,
         ]);
     }
+
 
     private static function persistApiResponse(GuzzleClient $client, array $response): void
     {
@@ -96,6 +94,7 @@ final class TyreClubService
 
         self::persistProducts($products);
     }
+
 
     private static function extractProducts(array $response): ?array
     {
@@ -129,6 +128,7 @@ final class TyreClubService
         return null;
     }
 
+
     private static function downloadPriceList(GuzzleClient $client, string $url): ?array
     {
         $download_url = str_contains($url, 'contentOutput=1')
@@ -157,13 +157,14 @@ final class TyreClubService
         return self::extractProducts($data);
     }
 
+
     private static function persistProducts(array $products): void
     {
         $product_model = TyreClubProduct::getModel();
         $offer_model   = TyreClubOffer::getModel();
 
-        $product_model->runWithInitTable(static fn () => null);
-        $offer_model->runWithInitTable(static fn () => null);
+        $product_model->runWithInitTable(static fn() => null);
+        $offer_model->runWithInitTable(static fn() => null);
 
         DB::connection()->transaction(static function () use ($products) {
             foreach ($products as $product) {
@@ -204,6 +205,7 @@ final class TyreClubService
         });
     }
 
+
     private static function mapProductPayload(array $product): array
     {
         return [
@@ -226,12 +228,13 @@ final class TyreClubService
         ];
     }
 
+
     private static function mapOfferPayload(array $offer, int $product_id, int $external_id): array
     {
         return [
             'product_id'            => $product_id,
             'product_external_id'   => $external_id,
-            'source_price_wholesale'=> self::normalizeDecimal($offer['source_price_wholesale'] ?? null),
+            'source_price_wholesale' => self::normalizeDecimal($offer['source_price_wholesale'] ?? null),
             'source_price_retail'   => self::normalizeDecimal($offer['source_price_retail'] ?? null),
             'user_wholesale_price'  => self::normalizeDecimal($offer['user_wholesale_price'] ?? null),
             'user_price_retail'     => self::normalizeDecimal($offer['user_price_retail'] ?? null),
@@ -242,6 +245,7 @@ final class TyreClubService
             'date'                  => self::normalizeInt($offer['date'] ?? null),
         ];
     }
+
 
     private static function normalizeInt(mixed $value): ?int
     {
@@ -264,6 +268,7 @@ final class TyreClubService
         return null;
     }
 
+
     private static function normalizeDecimal(mixed $value): ?float
     {
         if (is_null($value)) {
@@ -284,6 +289,7 @@ final class TyreClubService
         return (float) $value;
     }
 
+
     private static function normalizeString(mixed $value): ?string
     {
         if (is_null($value)) {
@@ -294,6 +300,7 @@ final class TyreClubService
 
         return $value === '' ? null : $value;
     }
+
 
     private static function getApiKey(): ?string
     {
