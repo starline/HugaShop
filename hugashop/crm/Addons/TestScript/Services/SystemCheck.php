@@ -19,7 +19,7 @@ final class SystemCheck
 
         $php_check->version = phpversion();
 
-        if (addon_loaded('apc') && ini_get('apc.enabled')) {
+        if (extension_loaded('apc') && ini_get('apc.enabled')) {
             $php_check->apc = ini_get('apc.shm_size');
         }
 
@@ -37,5 +37,10 @@ final class SystemCheck
             $php_check->func_overload = "str function doesn't overload to mbstring";
         }
         return $php_check;
+    }
+
+    public static function checkFoldersAccess()
+    {
+        return true;
     }
 }

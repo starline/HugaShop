@@ -19,6 +19,7 @@ use HugaShop\Addons\CronAgent\Models\CronAgent as Agent;
 
 final class CronAgentController extends BaseAdminController
 {
+
     use BaseAddonTrait;
 
     /**
@@ -44,8 +45,9 @@ final class CronAgentController extends BaseAdminController
             if (empty($agent->id)) {
                 $agent = Design::setFlashMessage('add', Agent::createOne($agent));
             } else {
-                $agent = Design::setFlashMessage('update', Agent::updateOne($agent->id, $agent));
+                Design::setFlashMessage('update', Agent::updateOne($agent->id, $agent));
             }
+
             return $this->redirectToRoute('AddonCronAgentAgent', ['id' => $agent->id]);
         }
 

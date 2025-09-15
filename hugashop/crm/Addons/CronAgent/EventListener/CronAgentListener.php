@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
  *
  */
 
@@ -17,6 +17,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 final class CronAgentListener
 {
+
     /**
      * Run agents on site requests when cron is disabled
      * @param RequestEvent $event

@@ -14,19 +14,21 @@ use HugaShop\Addons\CronAgent\Models\CronAgent as Agent;
 
 final class CronAgentService
 {
+
     /**
      * Run active agents
      */
     public static function run(): void
     {
         $now = date('Y-m-d H:i:s');
-        $agents = Agent::getList(['enabled' => 1]);
+        $agents = Agent::getList(['enabled' => 1], cache: 0);
         foreach ($agents as $agent) {
             if (self::isDue($agent, $now)) {
                 self::execute($agent);
             }
         }
     }
+
 
     /**
      * Check is agent due
@@ -49,6 +51,7 @@ final class CronAgentService
         );
         return $now >= $next;
     }
+
 
     /**
      * Execute agent function

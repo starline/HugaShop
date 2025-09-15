@@ -12,6 +12,4 @@ namespace HugaShop\Addons\CronAgent;
 
 use HugaShop\Addons\BaseAddon;
 
-final class CronAgent extends BaseAddon
-{
-}
+final class CronAgent extends BaseAddon {}
