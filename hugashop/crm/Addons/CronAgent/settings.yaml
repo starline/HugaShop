@@ -1,0 +1,6 @@
+name: "Cron агенты"
+description: "Выполнение произвольных методов по расписанию"
+settings_params:
+  - { variable: use_cron, name: "Запуск по cron", options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }] }
+menu_section: addon
+version: 1.0
