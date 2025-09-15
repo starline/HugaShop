@@ -4,7 +4,14 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
+ * 
+ * 
+ * Запуск комманды вручную
+ * php bin/console cron:agents
+ * 
+ * Запуск комманды по cron
+ * *\/5 * * * * /usr/bin/php /var/www/hugashop/bin/console cron:agents >> /var/www/hugashop/var/log/cron_agents.log 2>&1
  *
  */
 

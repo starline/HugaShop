@@ -94,6 +94,7 @@ class Helper
         if (empty($date)) {
             $date = date("H:i");
         }
+        
         $date = new \DateTime($date);
         $date->setTimeZone(new \DateTimeZone(Settings::getParam('timezone')));
         return $date->format(empty($format) ? 'H:i' : $format);

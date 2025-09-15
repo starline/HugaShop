@@ -31,7 +31,7 @@
 <body>
 	<div class="wrap d-xxl-flex">
 
-	
+
 		<!-- Sidebar -->
 		<div class="navbar_vertical navbar d-flex flex-column navbar-expand-xxl">
 			<div class="container flex-xxl-column ps-xxl-4">
@@ -74,7 +74,8 @@
 				</main>
 
 				<footer class="mt-4 mb-4">
-					<span>HugaShop v{$config->version}</span>
+					<span>HugaShop <snan class="badge text-bg-round">v{$config->version}</snan></span>
+					<span>Время <span class="badge text-bg-round">{'now'|date} {'now'|time}</span></span>
 				</footer>
 			</div>
 		</div>

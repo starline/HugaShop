@@ -19,7 +19,13 @@
                                 <a href={'AddonCronAgentAgent'|link:[id => $agent->id]}>{$agent->name}</a>
                             </div>
                             <div class="col-12 col-sm-4 text-end">
-                                <span class="badge text-bg-round">{$agent->id}</span>
+                                <span class="badge text-bg-round">
+                                    {if $agent->last_run_at}
+                                        Последнее срабатывание: {$agent->last_run_at|date} {$agent->last_run_at|time}
+                                    {else}
+                                        Ещё не запускался
+                                    {/if}
+                                </span>
                             </div>
                         </div>
                     </div>
