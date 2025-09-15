@@ -10,10 +10,11 @@
 
 namespace HugaShop\Addons\CronAgent\Controller;
 
+use HugaShop\Services\Cache;
 use HugaShop\Services\Design;
 use HugaShop\Services\Secure;
-use App\Controller\BaseAdminController;
 use HugaShop\Addons\BaseAddonTrait;
+use App\Controller\BaseAdminController;
 use Symfony\Component\Routing\Attribute\Route;
 use HugaShop\Addons\CronAgent\Models\CronAgent as Agent;
 
@@ -47,7 +48,8 @@ final class CronAgentController extends BaseAdminController
             } else {
                 Design::setFlashMessage('update', Agent::updateOne($agent->id, $agent));
             }
-
+            
+            Cache::cache(Agent::class)->clear();
             return $this->redirectToRoute('AddonCronAgentAgent', ['id' => $agent->id]);
         }
 

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
  *
  */
 
@@ -21,7 +21,7 @@ final class CronAgentService
     public static function run(): void
     {
         $now = date('Y-m-d H:i:s');
-        $agents = Agent::getList(['enabled' => 1], cache: 0);
+        $agents = Agent::getList(['enabled' => 1], cache: null);
         foreach ($agents as $agent) {
             if (self::isDue($agent, $now)) {
                 self::execute($agent);

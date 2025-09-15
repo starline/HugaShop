@@ -299,7 +299,7 @@ abstract class BaseModel extends Model
      * @param array|string $order ['id', 'asc]
      * @param array $join ['user', 'user.permissions'] | 'user.permissions'
      * @param string $select
-     * @param int $cache Cache lifetime in seconds
+     * @param int $cache Cache lifetime in seconds. null is infinity
      */
     public static function getList(array $filter = [], array|string $order = [], array|string $join = [], ?string $select = null, bool $count = false, ?int $cache = 0)
     {

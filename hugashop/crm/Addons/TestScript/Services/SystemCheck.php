@@ -10,6 +10,8 @@
 
 namespace HugaShop\Addons\TestScript\Services;
 
+use HugaShop\Services\Config;
+
 final class SystemCheck
 {
 
@@ -39,8 +41,26 @@ final class SystemCheck
         return $php_check;
     }
 
-    public static function checkFoldersAccess()
+
+    /**
+     * Log folders access check execution time.
+     */
+    public static function checkFoldersAccess(): void
     {
-        return true;
+        $log_dir = Config::get('log_dir');
+
+        if (empty($log_dir)) {
+            return;
+        }
+
+        if (!is_dir($log_dir) && !mkdir($log_dir, 0775, true) && !is_dir($log_dir)) {
+            return;
+        }
+
+        $log_file = $log_dir . 'check_folder.log';
+        $timestamp = (new \DateTimeImmutable())->format('Y-m-d H:i:s');
+        $message = sprintf('[%s] checkFoldersAccess triggered%s', $timestamp, PHP_EOL);
+
+        file_put_contents($log_file, $message, FILE_APPEND | LOCK_EX);
     }
 }
