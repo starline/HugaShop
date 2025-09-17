@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.8
+ * @version 3.9
  *
  */
 
@@ -39,7 +39,7 @@ class ProductController extends BaseFrontController
 
 
     #[Route(Config::PRODUCT_PREFIX . '{url}', name: 'Product', priority: 10)]
-    public function product_url(string $url, ?int $id = null): Response
+    public function product_url(string $url): Response
     {
 
         // Выбираем товар из базы
@@ -49,8 +49,17 @@ class ProductController extends BaseFrontController
             'brand'
         ]);
 
-        if (empty($product) || (!is_null($id) and $id !== $product->id)) {
+        if (empty($product)) {
             throw $this->createNotFoundException('Product does not found'); # 404
+        }
+
+        // Redirect if NO visible
+        if (!$product->visible) {
+            if ($product->category_id) {
+                return $this->redirectToRoute('ProductCategoryId', ['id' => $product->category_id], 301);
+            } else {
+                return $this->redirectToRoute('Main', status: 301);
+            }
         }
 
         // Redirect to canonical page

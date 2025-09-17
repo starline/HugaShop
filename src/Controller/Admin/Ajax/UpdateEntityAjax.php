@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.9
+ * @version 2.0
  *
  */
 
@@ -53,7 +53,7 @@ class UpdateEntityAjax extends BaseAdminController
 
         switch ($entity) {
             case 'product':
-                if (UserPermission::checkAccess('products')) {
+                if (UserPermission::checkAccess('product_price')) {
                     $result = Product::updateProduct($id, $values);
                 }
                 break;
