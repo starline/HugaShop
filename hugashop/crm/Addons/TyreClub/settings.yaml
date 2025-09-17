@@ -1,6 +1,10 @@
 name: "TyreClub"
 description: "Интеграция с API поставщиков TyreClub."
 settings_params:
-  - { variable: enabled, name: "Включено", type: checkbox }
+  - {
+      variable: enabled,
+      name: "Включено",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }
   - { variable: api_key, name: "API key" }
-version: 1.0
+version: 1.1

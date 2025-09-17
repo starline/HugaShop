@@ -15,7 +15,7 @@
  *
  */
 
-namespace App\Command;
+namespace HugaShop\Addons\CronAgent\Command;
 
 use HugaShop\Addons\CronAgent\CronAgent;
 use HugaShop\Addons\CronAgent\Services\CronAgentService;
