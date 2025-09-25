@@ -175,6 +175,7 @@ final class FeedGenerator
         return $response;
     }
 
+
     /**
      * Get product filter
      */
@@ -192,7 +193,6 @@ final class FeedGenerator
                 $categories[] = $cat_id;
             }
         }
-
 
         // Price filter
         if ($pricefeed->price_from > 0) {

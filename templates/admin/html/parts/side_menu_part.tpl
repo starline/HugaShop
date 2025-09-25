@@ -144,6 +144,12 @@
                     </li>
                 {/if}
 
+                {if 'page'|user_access}
+                    <li class="mini right  {if $route|in_array:[PageListAdmin, PageAdmin]}active{/if}">
+                        <a href="{'PageListAdmin'|linkLang}">Страницы</a>
+                    </li>
+                {/if}
+
                 {if 'comment'|user_access}
                     <li class="mini {if $route|in_array:[CommentListAdmin, CommentAdmin]}active{/if}">
                         <a href="{'CommentListAdmin'|linkLang}">Комментарии</a>
@@ -155,18 +161,6 @@
                     </li>
                 {/if}
 
-
-                {if 'feedback'|user_access}
-                    <li class="mini right {if $route|in_array:[FeedbackListAdmin]}active{/if}">
-                        <a href="{'FeedbackListAdmin'|linkLang}">Обратная связь</a>
-                    </li>
-                {/if}
-
-                {if 'page'|user_access}
-                    <li class="mini right  {if $route|in_array:[PageListAdmin, PageAdmin]}active{/if}">
-                        <a href="{'PageListAdmin'|linkLang}">Страницы</a>
-                    </li>
-                {/if}
                 {foreach $addons_menu.content|default:[] as $ext_module}
                     <li class="mini {if isset($addon) and $addon->module == $ext_module->module}active{/if}">
                         <a href="{'AddonAdmin'|linkLang:[name => $ext_module->module]}">{$ext_module->name}</a>
