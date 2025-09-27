@@ -1,0 +1,12 @@
+name: "Google Отзывы клиентов"
+description: "Отправляет приглашение оставить отзыв в Google Customer Reviews после оформления заказа."
+settings_params:
+  - { variable: merchant_id, name: "Merchant ID" }
+  - { variable: delivery_country, name: "Страна доставки (ISO Alpha-2)" }
+  - { variable: delivery_days, name: "Срок доставки (дней)" }
+  - {
+      variable: enabled,
+      name: "Включено",
+      options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
+    }
+version: 1.0
