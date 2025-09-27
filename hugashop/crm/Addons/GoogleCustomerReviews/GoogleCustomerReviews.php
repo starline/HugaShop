@@ -4,7 +4,9 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.0
+ * @version 1.1
+ * 
+ * @link https://support.google.com/merchants/answer/14629205?sjid=3111895555780829847-NC
  *
  */
 
@@ -16,6 +18,7 @@ use HugaShop\Services\Design;
 
 final class GoogleCustomerReviews extends BaseAddon
 {
+
     /**
      * Render Google Customer Reviews opt-in block for the front body.
      */
@@ -53,10 +56,10 @@ final class GoogleCustomerReviews extends BaseAddon
         if (!empty($purchases) && is_iterable($purchases)) {
             foreach ($purchases as $purchase) {
                 $gtin = null;
-                if (!empty($purchase->product?->sku)) {
-                    $gtin = $purchase->product->sku;
-                } elseif (!empty($purchase->sku)) {
-                    $gtin = $purchase->sku;
+                if (!empty($purchase->product?->gtin)) {
+                    $gtin = $purchase->product->gtin;
+                } elseif (!empty($purchase->gtin)) {
+                    $gtin = $purchase->gtin;
                 }
 
                 if (!empty($gtin)) {
@@ -65,7 +68,7 @@ final class GoogleCustomerReviews extends BaseAddon
             }
         }
 
-        $payload = [
+        $data = [
             'merchant_id' => $settings->merchant_id,
             'order_id' => !empty($order?->id) ? (string) $order->id : '',
             'email' => !empty($order?->email) ? (string) $order->email : '',
@@ -74,12 +77,12 @@ final class GoogleCustomerReviews extends BaseAddon
         ];
 
         if (!empty($gtins)) {
-            $payload['products'] = array_map(static function (string $gtin): array {
+            $data['products'] = array_map(static function (string $gtin): array {
                 return ['gtin' => $gtin];
             }, $gtins);
         }
 
-        Design::assign('GoogleCustomerReviewsPayload', $payload);
+        Design::assign('GoogleCustomerReviewsData', $data);
 
         return self::fetchTemplate('opt_in.tpl');
     }
