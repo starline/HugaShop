@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.2
  * 
  * @link https://support.google.com/merchants/answer/14629205?sjid=3111895555780829847-NC
  *
@@ -26,17 +26,12 @@ final class GoogleCustomerReviews extends BaseAddon
     {
         $settings = self::getSettings();
 
-        if (empty($settings->enabled) || empty($settings->merchant_id) || empty($settings->delivery_country)) {
-            return null;
-        }
-
-        $settings->merchant_id = (int) $settings->merchant_id;
-        if ($settings->merchant_id <= 0) {
+        if (empty($settings->enabled) || empty($settings->merchant_id) || empty($settings->delivery_country) || empty($settings->delivery_days)) {
             return null;
         }
 
         $settings->delivery_country = strtoupper((string) $settings->delivery_country);
-        $settings->delivery_days = isset($settings->delivery_days) ? max(0, (int) $settings->delivery_days) : 3;
+        $settings->delivery_days = max(0, (int) $settings->delivery_days);
 
         $order = Design::getSmarty()->getTemplateVars('order');
         $purchases = Design::getSmarty()->getTemplateVars('purchases');
