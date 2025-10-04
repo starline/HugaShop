@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.4
+ * @version 1.5
  *
  * Для оператора NovaPoshta.ua
  *
@@ -87,13 +87,22 @@ class NovaPoshta
             if (isset($NPresult['success']) and $NPresult['success'] == "true") {
                 $data = $NPresult["data"][0];
 
+                // Выделим статус
+                $status_text = $data['Status'];
+                if (stripos($data['Status'], "Відправлення отримано") !== false) {
+                    $status_text = "Відправлення <span class='color_green'>отримано</span>";
+                } elseif (stripos($data['Status'], "Відмова від отримання") !== false) {
+                    $status_text = "<span class='color_red'>Відмова від отримання</span>";
+                }
+
+                // Формируем результат
                 if (isset($data['CitySender'])) {
                     $result =
                         '<b>' . $data['CitySender'] . '</b> - ' . $data['WarehouseSender'] . ' - (' . $data['DateCreated'] . ')<br>' .
                         '<b>' . $data['CityRecipient'] . '</b> - ' . $data['WarehouseRecipient'] . ' - (' . $data['ActualDeliveryDate'] . ')<br>' .
                         'Предварительная дата доставки - ' . $data['ScheduledDeliveryDate'] . '<br>' .
                         ((!empty($data['DateFirstDayStorage'])) ? 'Платное хранение с ' . $data['DateFirstDayStorage'] . '<br>' : '') .
-                        "<b>" . ((stripos($data['Status'], "Відправлення отримано") !== false) ? "Відправлення <b class='color_green'>отримано</b>" : $data['Status']) . '</b> - ' . $data['RecipientDateTime'] . '<br>' .
+                        "<b>" . $status_text . '</b> - ' . $data['RecipientDateTime'] . '<br>' .
                         'Кол-во мест - ' . $data['SeatsAmount'] . '<br>' .
                         'Вес - ' . $data['VolumeWeight'] . 'кг <br>' .
                         'Итоговая стоимость доставки - ' . $data['DocumentCost'] . ' грн <br>' .
