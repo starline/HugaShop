@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.4
+ * @version 3.5
  *
  * @BotFather Edit Bot -> Edit Commmands
  * star - Все сначала
@@ -153,6 +153,12 @@ class NotifyBot
                 'debug'  => ROOT_PATH . '/var/logs/Debug.log',
                 'update' => ROOT_PATH . '/var/logs/Update.log',
             ],
+            'custom_http_client' => [
+                'base_uri' => 'https://api.telegram.org',
+                'timeout' => 10.0,
+                'connect_timeout' => 5.0,
+                'force_ip_resolve' => 'v4' # форс IPv4
+            ]
         ];
     }
 
