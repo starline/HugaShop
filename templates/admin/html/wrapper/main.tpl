@@ -40,6 +40,11 @@
 					<span class="navbar-toggler-icon"></span>
 				</button>
 
+				<div class="current_user pt-xxl-4">
+					<a class="user_name" href="{'UserAdmin'|linkLang:['id' => $user->id]}">{$user->name}</a>
+					<a href="{'UserLogout'|linkLang}" id="logout">{'user.logout'|trans}</a>
+				</div>
+
 				<div class="offcanvas offcanvas-start" id="sidebar">
 					<div class="offcanvas-header">
 						<h5 class="offcanvas-title" id="offcanvasLabel"></h5>
@@ -48,11 +53,6 @@
 					<div class="offcanvas-body">
 						{include file='parts/side_menu_part.tpl'}
 					</div>
-				</div>
-
-				<div class="current_user">
-					<a class="user_name" href="{'UserAdmin'|linkLang:['id' => $user->id]}">{$user->name}</a>
-					<a href="{'UserLogout'|linkLang}" id="logout">{'user.logout'|trans}</a>
 				</div>
 			</div>
 		</div>
