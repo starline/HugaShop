@@ -35,9 +35,9 @@ class NotifierCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $module_name = (string) $input->getArgument('module');
-        $content_argument = (string) $input->getArgument('content');
-        $data_argument = (string) $input->getArgument('data');
+        $module_name        = (string) $input->getArgument('module');
+        $content_argument   = (string) $input->getArgument('content');
+        $data_argument      = (string) $input->getArgument('data');
 
         $message_content = base64_decode($content_argument, true);
         if ($message_content === false) {

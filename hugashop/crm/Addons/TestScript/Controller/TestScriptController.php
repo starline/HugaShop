@@ -105,10 +105,11 @@ final class TestScriptController extends BaseAdminController
 
 
                         // Mailer
-                        if (0) {
+                        if (1) {
 
                             // Works well
-                            $result[] = NotifierFactory::sendToManagers([NotifyService::class, 'feedbackToAdmin'], ['feedback' => 'name']);
+                            //$result[] = NotifierFactory::sendToManagers([NotifyService::class, 'feedbackToAdmin'], ['feedback' => 'name']);
+                            $result[] = NotifierFactory::sendToManagers([NotifierFactory::class, 'commentToAdmin'], ['comment_id' => 3284]);
                         }
 
 
@@ -278,7 +279,7 @@ final class TestScriptController extends BaseAdminController
                         }
 
 
-                        if (1) {
+                        if (0) {
 
                             $name = "315/80 R 22.5 Royal Black RD801 156/150M 20PR 3PMSF веду";
                             $system_content = "Ты SEO специалист. Определи head_term для фразы. json";
