@@ -14,12 +14,14 @@ use HugaShop\Models\User\User;
 use HugaShop\Models\Order\Order;
 use HugaShop\Models\Product\Product;
 use HugaShop\Models\User\UserNotifier;
+use Symfony\Component\Process\Process;
 use HugaShop\Models\Order\OrderPayment;
 use HugaShop\Models\Content\ContentPost;
 use HugaShop\Models\Order\OrderDelivery;
 use HugaShop\Models\Order\OrderPurchase;
 use HugaShop\Models\Content\ContentComment;
 use HugaShop\Models\Finance\FinanceCurrency;
+use Symfony\Component\Process\PhpExecutableFinder;
 
 class NotifierFactory
 {
@@ -101,12 +103,40 @@ class NotifierFactory
         // Fetch template
         $message_content    = $class::$method($module_name, $message_data);
 
-        // Run
         if (empty($message_content) || !class_exists($Module)) {
             return false;
         }
 
-        return $Module::send($message_content, $message_data);
+        // Run in background process
+        $root_dir       = Config::get('root_dir');
+        $console_path   = $root_dir ? $root_dir . 'bin/console' : null;
+        $php_finder     = new PhpExecutableFinder();
+        $php_binary     = $php_finder->find(false) ?: PHP_BINARY;
+
+        if (empty($console_path) || !is_file($console_path) || empty($php_binary)) {
+            return false;
+        }
+
+        // Prepare command
+        $command = [
+            $php_binary,
+            $console_path,
+            'notifier:send',
+            $module_name,
+            base64_encode($message_content),
+            base64_encode(serialize($message_data)),
+        ];
+
+        try {
+            $process = new Process($command, $root_dir);
+            $process->setTimeout(null);
+            $process->disableOutput();
+            $process->start();
+        } catch (\Throwable) {
+            return false;
+        }
+
+        return true;
     }
 
 
