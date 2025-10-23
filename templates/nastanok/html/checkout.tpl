@@ -183,20 +183,16 @@
 				{if $coupon_request}
 					<div class="form_block">
 						<div class="wrapper">
-							{if $coupon_error}
-								<div class="message_error">s
-									{if $coupon_error == 'invalid'}Такого промокода у нас нет{/if}
-								</div>
-							{/if}
-							<div class="row">
-								<label for="coupon_code">Введите промокод <span>узнай свою скидку</span></label>
-								<input class="form-control" id="coupon_code" name="coupon_code" type="text"
-									value="{$cart->coupon_code}" autocomplete="off" />
+							<div class="col-12">
+								<label class="form-label" for="coupon_code">Введите промокод <span>узнай свою
+										скидку</span></label>
+								<input class="form-control {if coupon|in_array:$form_invalid}is-invalid{/if}" id="coupon_code"
+									name="coupon_code" type="text" value="{$pre_order->coupon_code}" autocomplete="off"
+									placeholder="Код" />
+								<div class="invalid-feedback">Такого промокода у нас нет</div>
 							</div>
-							<div class="row">
-								<button class="button btn_grey" form=cart type="submit" name="promocod" value="true">
-									Применить промокод
-								</button>
+							<div class="mt-2">
+								{include file="parts/button.tpl" label="Применить промокод" class="btn-light" type="submit" extra_attrs='name=promocod value=true form=cart'}
 							</div>
 						</div>
 					</div>

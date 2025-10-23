@@ -90,7 +90,7 @@
 									<h3 class="acc_header">
 										<div class="checkbox">
 											<input type="radio" name="payment_method_id" value='{$payment_method->id}'
-												{if $pre_order->payment_method_id == $payment_method->id}checked{/if}
+												{if $pre_order->payment_method_id == $payment_method->id || $payment_method@index == 0}checked{/if}
 												id="payment_{$payment_method->id}">
 											<label for="payment_{$payment_method->id}">{$payment_method->public_name}</label>
 										</div>
@@ -164,20 +164,16 @@
 				{if $coupon_request}
 					<div class="form_block">
 						<div class="wrapper">
-							{if $coupon_error}
-								<div class="message_error">
-									{if $coupon_error == 'invalid'}Такого промокода у нас нет{/if}
-								</div>
-							{/if}
-							<div class="row">
-								<label for="coupon_code">Введите промокод <span>узнай свою скидку</span></label>
-								<input id="coupon_code" name="coupon_code" type="text" value="{$pre_order->coupon_code}"
-									autocomplete="off" />
+							<div class="col-12">
+								<label class="form-label" for="coupon_code">Введите промокод <span>узнай свою
+										скидку</span></label>
+								<input class="form-control {if coupon|in_array:$form_invalid}is-invalid{/if}" id="coupon_code"
+									name="coupon_code" type="text" value="{$pre_order->coupon_code}" autocomplete="off"
+									placeholder="Код" />
+								<div class="invalid-feedback">Такого промокода у нас нет</div>
 							</div>
-							<div class="row">
-								<button class="button btn_grey" form=cart type="submit" name="promocod" value="true">
-									Применить промокод
-								</button>
+							<div class="mt-2">
+								{include file="parts/button.tpl" label="Применить промокод" class="btn-light" type="submit" extra_attrs='name=promocod value=true form=cart'}
 							</div>
 						</div>
 					</div>
@@ -190,8 +186,9 @@
 							<div class="left_part">Итого:</div>
 							<div class="right_part">{$cart->purchases_price|price_html|raw}</div>
 						</div>
-
-						{include file="parts/button.tpl" label="Подтвердить заказ" type="submit" extra_attrs='name=checkout value=true'}
+						<div class="mt-5">
+							{include file="parts/button.tpl" label="Подтвердить заказ" type="submit" extra_attrs='name=checkout value=true'}
+						</div>
 					</div>
 				</div>
 

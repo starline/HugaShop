@@ -67,21 +67,22 @@ class CheckoutController extends BaseFrontController
 
         $auth_user = User::authUser();
 
+        // Купон
+        if (!empty($coupon_code = trim(Request::post('coupon_code', 'string')))) {
+            $coupon = UserCoupon::getCoupon((string)$coupon_code);
+            if (empty($coupon) || !$coupon->valid) {
+                UserCoupon::applyCoupon('');
+                Design::append('form_invalid', 'coupon');
+            } else {
+                UserCoupon::applyCoupon($coupon_code);
+            }
+        }
 
+        
         #### Update
         ###########
         if (!empty($pre_order = Secure::getInputAcces($this->fields))) {
 
-            // Купон
-            if (!empty($coupon_code = trim(Request::post('coupon_code', 'string')))) {
-                $coupon = UserCoupon::getCoupon((string)$coupon_code);
-                if (empty($coupon) || !$coupon->valid) {
-                    UserCoupon::applyCoupon('');
-                    Design::assign('coupon_error', 'invalid');
-                } else {
-                    UserCoupon::applyCoupon($coupon_code);
-                }
-            }
 
             // Get updated cart
             $cart = Cart::getCart(join: ['total']);

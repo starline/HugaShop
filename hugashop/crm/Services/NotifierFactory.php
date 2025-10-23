@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.0
+ * @version 3.2
  *
  */
 
@@ -238,8 +238,8 @@ class NotifierFactory
         Design::assign([
             'order'             => $order,
             'purchases'         => OrderPurchase::getPurchases(['order_id' => $order->id], ['image', 'product']),
-            'payment_method'    => OrderPayment::getOne($order->payment_method_id),
-            'delivery_method'   => OrderDelivery::getOne($order->delivery_id)
+            'payment_method'    => !empty($order->payment_method_id) ? OrderPayment::getOne($order->payment_method_id) : null,
+            'delivery_method'   => !empty($order->delivery_id) ? OrderDelivery::getOne($order->delivery_id) : null
         ]);
 
         // Image template
@@ -270,8 +270,8 @@ class NotifierFactory
         Design::assign([
             'order'             => $order,
             'purchases'         => OrderPurchase::getPurchases(['order_id' => $order->id], ['image', 'product']),
-            'payment_method'    => OrderPayment::getOne($order->payment_method_id),
-            'delivery_method'   => OrderDelivery::getOne($order->delivery_id)
+            'payment_method'    => !empty($order->payment_method_id) ? OrderPayment::getOne($order->payment_method_id) : null,
+            'delivery_method'   => !empty($order->delivery_id) ? OrderDelivery::getOne($order->delivery_id) : null
         ]);
 
         return self::fetchTemplate($module_name, __FUNCTION__);
