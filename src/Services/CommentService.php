@@ -109,6 +109,7 @@ class CommentService
 
                     // Отправляем email
                     NotifierFactory::sendToManagers([NotifierFactory::class, 'commentToAdmin'], ['comment_id' => $comment->id]);
+                    
                     Request::makeRedirect($_SERVER['REQUEST_URI'] . '#comment_' . $comment->id);
                 }
             }

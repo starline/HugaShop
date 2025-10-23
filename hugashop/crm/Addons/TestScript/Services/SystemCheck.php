@@ -4,13 +4,13 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.7
+ * @version 1.8
  *
  */
 
 namespace HugaShop\Addons\TestScript\Services;
 
-use HugaShop\Services\Config;
+use HugaShop\Services\Helper;
 
 final class SystemCheck
 {
@@ -47,20 +47,6 @@ final class SystemCheck
      */
     public static function checkFoldersAccess(): void
     {
-        $log_dir = Config::get('log_dir');
-
-        if (empty($log_dir)) {
-            return;
-        }
-
-        if (!is_dir($log_dir) && !mkdir($log_dir, 0775, true) && !is_dir($log_dir)) {
-            return;
-        }
-
-        $log_file = $log_dir . 'check_folder.log';
-        $timestamp = (new \DateTimeImmutable())->format('Y-m-d H:i:s');
-        $message = sprintf('[%s] checkFoldersAccess triggered%s', $timestamp, PHP_EOL);
-
-        file_put_contents($log_file, $message, FILE_APPEND | LOCK_EX);
+        Helper::log('checkFoldersAccess triggered');
     }
 }

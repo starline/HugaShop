@@ -109,7 +109,7 @@ final class TestScriptController extends BaseAdminController
 
                             // Works well
                             //$result[] = NotifierFactory::sendToManagers([NotifyService::class, 'feedbackToAdmin'], ['feedback' => 'name']);
-                            $result[] = NotifierFactory::sendToManagers([NotifierFactory::class, 'commentToAdmin'], ['comment_id' => 3284]);
+                            $result[] = NotifierFactory::sendToManagers([NotifierFactory::class, 'commentToAdmin'], ['comment_id' => 3284], async: true);
                         }
 
 

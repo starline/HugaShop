@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.6
+ * @version 3.7
  *
  */
 
@@ -22,6 +22,37 @@ use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter
 
 class Helper
 {
+
+
+    /**
+     * Log debug information to file
+     * @param mixed $data
+     * @param ?string $file_name
+     */
+    public static function log(mixed $data, ?string $file_name = null): void
+    {
+        $log_dir = Config::get('log_dir');
+
+        if (empty($log_dir)) {
+            return;
+        }
+
+        if (!is_dir($log_dir)) {
+            @mkdir($log_dir, 0775, true);
+        }
+
+        $file_name = $file_name ?: 'debug.log';
+        $log_path = rtrim($log_dir, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file_name;
+
+        if (is_array($data) || is_object($data)) {
+            $data = print_r($data, true);
+        }
+
+        $message = '[' . date('Y-m-d H:i:s') . '] ' . $data . PHP_EOL;
+
+        file_put_contents($log_path, $message, FILE_APPEND);
+    }
+
 
     /**
      * Camel to Snake Case
@@ -94,7 +125,7 @@ class Helper
         if (empty($date)) {
             $date = date("H:i");
         }
-        
+
         $date = new \DateTime($date);
         $date->setTimeZone(new \DateTimeZone(Settings::getParam('timezone')));
         return $date->format(empty($format) ? 'H:i' : $format);

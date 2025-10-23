@@ -4,13 +4,15 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.1
+ * @version 1.2
  */
 
 namespace App\Command;
 
-use Symfony\Component\Console\Attribute\AsCommand;
+use HugaShop\Services\Helper;
+use HugaShop\Services\NotifierFactory;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -26,7 +28,7 @@ class NotifierCommand extends Command
     {
         $this
             ->addArgument('module', InputArgument::REQUIRED, 'Notifier module name.')
-            ->addArgument('content', InputArgument::REQUIRED, 'Base64 encoded message content.')
+            ->addArgument('callback', InputArgument::REQUIRED, 'Base64 encoded callback.')
             ->addArgument('data', InputArgument::REQUIRED, 'Serialized message data.');
     }
 
@@ -35,26 +37,29 @@ class NotifierCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $module_name        = (string) $input->getArgument('module');
-        $content_argument   = (string) $input->getArgument('content');
-        $data_argument      = (string) $input->getArgument('data');
+        $module             = (string) $input->getArgument('module');
+        $callback           = (string) $input->getArgument('callback');
+        $data               = (string) $input->getArgument('data');
 
-        $message_content = base64_decode($content_argument, true);
-        if ($message_content === false) {
+        Helper::log('execute: ' . $module . ' ' . $callback . ' ' . $data);
+
+        $serialized_callback = base64_decode($callback, true);
+        if ($serialized_callback === false) {
             $output->writeln('<error>Invalid message content payload.</error>');
             return Command::FAILURE;
         }
 
-        $serialized_data = base64_decode($data_argument, true);
+        $serialized_data = base64_decode($data, true);
         if ($serialized_data === false) {
             $output->writeln('<error>Invalid message data data.</error>');
             return Command::FAILURE;
         }
 
         try {
-            $message_data = unserialize($serialized_data, ['allowed_classes' => true]);
+            $message_data       = unserialize($serialized_data, ['allowed_classes' => true]);
+            $message_callback   = unserialize($serialized_callback, ['allowed_classes' => true]);
         } catch (\Throwable) {
-            $output->writeln('<error>Unable to unserialize message data data.</error>');
+            $output->writeln('<error>Unable to unserialize message or callback data.</error>');
             return Command::FAILURE;
         }
 
@@ -62,14 +67,11 @@ class NotifierCommand extends Command
             $message_data = (array) $message_data;
         }
 
-        $module_class = sprintf('HugaShop\\Modules\\Notifier\\%s\\%s', $module_name, $module_name);
-
-        if (!class_exists($module_class)) {
-            $output->writeln(sprintf('<error>Notifier module %s not found.</error>', $module_name));
-            return Command::FAILURE;
+        if (!is_array($message_callback)) {
+            $message_callback = (array) $message_callback;
         }
 
-        $result = $module_class::send($message_content, $message_data);
+        $result = NotifierFactory::sendNotifier($module, $message_callback, $message_data);
 
         return $result === false ? Command::FAILURE : Command::SUCCESS;
     }

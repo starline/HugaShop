@@ -107,32 +107,47 @@ class NotifierFactory
             return false;
         }
 
+        // Send notification
+        return $Module::send($message_content, $message_data);
+    }
+
+
+    /**
+     * Send notification message via Module Async
+     */
+    public static function sendNotifierAsync(string $module_name, callable $callback, array $message_data)
+    {
+
         // Run in background process
         $root_dir       = Config::get('root_dir');
         $console_path   = $root_dir ? $root_dir . 'bin/console' : null;
         $php_finder     = new PhpExecutableFinder();
-        $php_binary     = $php_finder->find(false) ?: PHP_BINARY;
+        $php_bin        = $php_finder->find(false) ?: PHP_BINARY;
 
-        if (empty($console_path) || !is_file($console_path) || empty($php_binary)) {
+        if (empty($console_path) || !is_file($console_path) || empty($php_bin)) {
             return false;
         }
 
+        Helper::log('sendNotifier: ' . $console_path . ' ' . $php_bin);
+
         // Prepare command
         $command = [
-            $php_binary,
+            $php_bin,
             $console_path,
             'notifier:send',
             $module_name,
-            base64_encode($message_content),
-            base64_encode(serialize($message_data)),
+            base64_encode(serialize($callback)),
+            base64_encode(serialize($message_data))
         ];
 
         try {
             $process = new Process($command, $root_dir);
-            $process->setTimeout(null);
+            $process->setTimeout(0);
+            $process->setOptions(['create_process_group' => true]); # Linux/macOS: отделяем процессную группу — меньше шансов, что FPM его «прихлопнет»
             $process->disableOutput();
-            $process->start();
-        } catch (\Throwable) {
+            $process->mustRun();
+        } catch (\Throwable $e) {
+            Helper::log('sendNotifierAsync error: ' . $e->getMessage());
             return false;
         }
 
@@ -144,7 +159,7 @@ class NotifierFactory
      * Send Notifier manager. Select avaliable notifier Method
      * Send notification only to Managers
      */
-    public static function sendToManagers(callable $callback, array $message_data)
+    public static function sendToManagers(callable $callback, array $message_data, bool $async = false)
     {
 
         // User List to notifier
@@ -157,7 +172,11 @@ class NotifierFactory
             // Get avaliable notifier modules for User
             $user_notifiers = UserNotifier::getAllowedNotifier($user->id, $method);
             foreach ($user_notifiers as $notifier) {
-                self::sendNotifier($notifier->module, $callback, $message_data);
+                if ($async) {
+                    self::sendNotifierAsync($notifier->module, $callback, $message_data);
+                } else {
+                    self::sendNotifier($notifier->module, $callback, $message_data);
+                }
             }
         }
     }
