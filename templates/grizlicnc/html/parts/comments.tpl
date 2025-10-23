@@ -103,9 +103,9 @@
 
             {if $user|empty}
                 <div class="col-12">
-                    <div class="g-recaptcha" data-sitekey="{$config->recaptcha->public_key}"></div>
+                    <div class="g-recaptcha" data-sitekey="{$config->recaptcha->public_key}" data-action="comment_send"></div>
                 </div>
-                <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+                <script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
             {/if}
 
             <div class="col-12">
