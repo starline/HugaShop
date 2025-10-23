@@ -142,7 +142,13 @@ class NotifierFactory
         try {
             $process = new Process($command, $root_dir);
             $process->setTimeout(60); # 1 min
-            $process->setOptions(['create_process_group' => true]); # Linux/macOS: отделяем процессную группу — меньше шансов, что FPM его «прихлопнет»
+            
+            if (DIRECTORY_SEPARATOR === '\\') {
+                $process->setOptions(['create_new_console' => true]); # Windows: запускаем в отдельной консоли
+            } else {
+                $process->setOptions(['create_process_group' => true]); # Linux/macOS: отделяем процессную группу — меньше шансов, что FPM его «прихлопнет»
+            }
+
             $process->disableOutput();
             $process->start();
         } catch (\Throwable $e) {
