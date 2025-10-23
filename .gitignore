@@ -38,6 +38,7 @@
 ###> symfony/asset-mapper ###
 /public/assets/
 /assets/vendor/
+/assets/vendor/hugashop/
 ###< symfony/asset-mapper ###
 
 ###> sensiolabs/minify-bundle ###

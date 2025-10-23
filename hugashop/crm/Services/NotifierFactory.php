@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.9
+ * @version 3.0
  *
  */
 
@@ -64,15 +64,49 @@ class NotifierFactory
             return false;
         }
 
-        $message_data = array_merge((array) $notifier_settings, $message_data);
-        $ClassName = "HugaShop\\Modules\\Notifier\\{$module_name}\\{$module_name}";
+        $message_data   = array_merge((array) $notifier_settings, $message_data);
+        $Module         = "HugaShop\\Modules\\Notifier\\{$module_name}\\{$module_name}";
 
-        if (empty($module_name) || !class_exists($ClassName)) {
+        if (empty($module_name) || !class_exists($Module)) {
             return false;
         }
 
         // Run
-        return $ClassName::send($message_content, $message_data);
+        return $Module::send($message_content, $message_data);
+    }
+
+
+    /**
+     * Send notification template via Module
+     */
+    public static function sendNotifier(string $module_name, callable $callback, array $message_data)
+    {
+
+        [$class, $method] = $callback;
+
+        // Проверить есть ли такой method (message function)
+        if (!class_exists($class) || !method_exists($class, $method)) {
+            return false;
+        }
+
+        // Get module settings
+        $notifier_settings  = UserNotifier::getNotifierSettings($module_name);
+        if (empty($notifier_settings)) {
+            return false;
+        }
+
+        $message_data       = array_merge((array) $notifier_settings, $message_data);
+        $Module             = "HugaShop\\Modules\\Notifier\\{$module_name}\\{$module_name}";
+
+        // Fetch template
+        $message_content    = $class::$method($module_name, $message_data);
+
+        // Run
+        if (empty($message_content) || !class_exists($Module)) {
+            return false;
+        }
+
+        return $Module::send($message_content, $message_data);
     }
 
 
@@ -96,36 +130,6 @@ class NotifierFactory
                 self::sendNotifier($notifier->module, $callback, $message_data);
             }
         }
-    }
-
-
-    /**
-     * Send notification template via Module
-     */
-    public static function sendNotifier(string $module_name, callable $callback, array $message_data)
-    {
-
-        [$class, $method] = $callback;
-
-        // Проверить есть ли такой method (message function)
-        if (!class_exists($class) || !method_exists($class, $method)) {
-            return;
-        }
-
-        // Get module settings
-        $notifier_settings  = UserNotifier::getNotifierSettings($module_name);
-        $message_data       = array_merge((array) $notifier_settings, $message_data);
-
-        // Fetch template
-        $message_content = $class::$method($module_name, $message_data);
-
-        // Run
-        if (!empty($message_content)) {
-            $Module = "HugaShop\\Modules\\Notifier\\{$module_name}\\{$module_name}";
-            return $Module::send($message_content, $message_data);
-        }
-
-        return;
     }
 
 
