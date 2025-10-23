@@ -121,8 +121,7 @@ class NotifierFactory
         // Run in background process
         $root_dir       = Config::get('root_dir');
         $console_path   = $root_dir ? $root_dir . 'bin/console' : null;
-        $php_finder     = new PhpExecutableFinder();
-        $php_bin        = $php_finder->find(false) ?: PHP_BINARY;
+        $php_bin        = (new PhpExecutableFinder())->find(false) ?: PHP_BINARY;
 
         if (empty($console_path) || !is_file($console_path) || empty($php_bin)) {
             return false;
@@ -142,10 +141,10 @@ class NotifierFactory
 
         try {
             $process = new Process($command, $root_dir);
-            $process->setTimeout(0);
+            $process->setTimeout(60); # 1 min
             $process->setOptions(['create_process_group' => true]); # Linux/macOS: отделяем процессную группу — меньше шансов, что FPM его «прихлопнет»
             $process->disableOutput();
-            $process->mustRun();
+            $process->start();
         } catch (\Throwable $e) {
             Helper::log('sendNotifierAsync error: ' . $e->getMessage());
             return false;
