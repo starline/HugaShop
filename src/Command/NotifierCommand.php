@@ -70,7 +70,7 @@ class NotifierCommand extends Command
         if (!is_array($message_callback)) {
             $message_callback = (array) $message_callback;
         }
-
+        //Helper::log('execute sendNotifier: ' . $module . ' ' . $message_callback . ' ' . $message_data);
         $result = NotifierFactory::sendNotifier($module, $message_callback, $message_data);
 
         return $result === false ? Command::FAILURE : Command::SUCCESS;

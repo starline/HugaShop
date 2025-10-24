@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 5.0
+ * @version 5.1
  *
  * Smarty 5.x require PHP7.4/PHP8.1
  *
@@ -33,8 +33,6 @@ class Design
     private static Smarty $smarty;
     public static ?string $theme;
     private static $Packages;
-    public static $Translator;
-
 
     public static function getSmarty()
     {
@@ -43,6 +41,47 @@ class Design
             // Initialization Smarty
             self::$smarty = new Smarty();
             self::$smarty->setEscapeHtml(true);
+
+            self::setTheme();
+
+            // Add Smarty Plugins
+            self::setFunctionPlugin('url',               self::class,               'urlFunctionPlugin');
+            self::setFunctionPlugin('addon',             self::class,               'addonFunctionPlugin');
+            self::setFunctionPlugin('setCSRF',           Secure::class,             'setCSRF');
+            self::setFunctionPlugin('getCSRFInput',      Secure::class,             'getCSRFInput');
+
+            self::setModifierPlugin('asset',             self::class,               'getAssetUrl');
+            self::setModifierPlugin('resize',            Image::class,              'getImageURL');
+            self::setModifierPlugin('plural',            self::class,               'pluralModifier');
+            self::setModifierPlugin('first',             self::class,               'firstModifier');
+            self::setModifierPlugin('cut',               self::class,               'cutModifier');
+            self::setModifierPlugin('byte_convert',      Helper::class,             'convertBytes');
+            self::setModifierPlugin('dump',              self::class,               'dumpModifier');
+
+
+            // DATE Plugins
+            self::setModifierPlugin('date',              Helper::class,             'dateFormat');
+            self::setModifierPlugin('time',              Helper::class,             'timeFormat');
+
+            // Finance Plugins
+            self::setModifierPlugin('price_convert',     FinanceCurrency::class,    'priceConvert');
+            self::setModifierPlugin('price_html',        FinanceCurrency::class,    'priceHTML');
+            self::setModifierPlugin('number',            Helper::class,             'numberFormat');
+
+            // User Plugins
+            self::setModifierPlugin('user_access',       UserPermission::class,     'checkAccess');
+
+            // В новой версии Smarty php модификаторы необходимо регестрировать
+            // Look Smarty_Security $php_functions
+            self::setModifierPlugin('json_encode',   'json_encode');
+            self::setModifierPlugin('join',          'join');
+            self::setModifierPlugin('strtotime',     'strtotime');
+            self::setModifierPlugin('is_null',       'is_null');
+            self::setModifierPlugin('urlencode',     'urlencode');
+            self::setModifierPlugin('ceil',          'ceil');
+            self::setModifierPlugin('floor',         'floor');
+            self::setModifierPlugin('max',           'max');
+            self::setModifierPlugin('min',           'min');
         }
 
         return self::$smarty;
@@ -50,18 +89,12 @@ class Design
 
 
     /**
-     * Initilization Settings
-     * @param array $theme
+     * setTheme
      */
-    public static function initSettings(array $settings = [])
+    public static function setTheme(?string $theme = null)
     {
 
-        self::$theme = $settings['theme'] ?? Settings::getParam('theme');
-
-        if (!empty($settings['packages'])) {
-            self::$Packages = $settings['packages'];
-        }
-
+        self::$theme = $theme ?? Settings::getParam('theme');
         self::getSmarty()->assign('theme', self::$theme);
 
         // Template
@@ -93,45 +126,6 @@ class Design
         if (!is_dir(self::getSmarty()->getCacheDir())) {
             mkdir(self::getSmarty()->getCacheDir(), 0777, true);
         }
-
-        // Add Smarty Plugins
-        self::setFunctionPlugin('url',               self::class,               'urlFunctionPlugin');
-        self::setFunctionPlugin('addon',             self::class,               'addonFunctionPlugin');
-        self::setFunctionPlugin('setCSRF',           Secure::class,             'setCSRF');
-        self::setFunctionPlugin('getCSRFInput',      Secure::class,             'getCSRFInput');
-
-        self::setModifierPlugin('asset',             self::class,               'getAssetUrl');
-        self::setModifierPlugin('resize',            Image::class,              'getImageURL');
-        self::setModifierPlugin('plural',            self::class,               'pluralModifier');
-        self::setModifierPlugin('first',             self::class,               'firstModifier');
-        self::setModifierPlugin('cut',               self::class,               'cutModifier');
-        self::setModifierPlugin('byte_convert',      Helper::class,             'convertBytes');
-        self::setModifierPlugin('dump',              self::class,               'dumpModifier');
-
-
-        // DATE Plugins
-        self::setModifierPlugin('date',              Helper::class,             'dateFormat');
-        self::setModifierPlugin('time',              Helper::class,             'timeFormat');
-
-        // Finance Plugins
-        self::setModifierPlugin('price_convert',     FinanceCurrency::class,    'priceConvert');
-        self::setModifierPlugin('price_html',        FinanceCurrency::class,    'priceHTML');
-        self::setModifierPlugin('number',            Helper::class,             'numberFormat');
-
-        // User Plugins
-        self::setModifierPlugin('user_access',       UserPermission::class,     'checkAccess');
-
-        // В новой версии Smarty php модификаторы необходимо регестрировать
-        // Look Smarty_Security $php_functions
-        self::setModifierPlugin('json_encode',   'json_encode');
-        self::setModifierPlugin('join',          'join');
-        self::setModifierPlugin('strtotime',     'strtotime');
-        self::setModifierPlugin('is_null',       'is_null');
-        self::setModifierPlugin('urlencode',     'urlencode');
-        self::setModifierPlugin('ceil',          'ceil');
-        self::setModifierPlugin('floor',         'floor');
-        self::setModifierPlugin('max',           'max');
-        self::setModifierPlugin('min',           'min');
     }
 
 
@@ -305,11 +299,11 @@ class Design
 
 
     /**
-     * Set Translator
+     * Set Packages
      */
-    public static function setTranslator($Translator)
+    public static function setPackages($Packages)
     {
-        self::$Translator = $Translator;
+        self::$Packages = $Packages;
     }
 
 

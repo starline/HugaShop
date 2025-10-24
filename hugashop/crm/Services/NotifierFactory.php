@@ -139,10 +139,26 @@ class NotifierFactory
             base64_encode(serialize($message_data))
         ];
 
+        $env = [];
+
+        if (!empty($_SERVER['HTTP_HOST'])) {
+            $env['HTTP_HOST'] = $_SERVER['HTTP_HOST'];
+        }
+
+        if (!empty($_SERVER['SERVER_NAME'])) {
+            $env['SERVER_NAME'] = $_SERVER['SERVER_NAME'];
+        }
+
+        if (isset($_SERVER['HTTPS'])) {
+            $env['HTTPS'] = $_SERVER['HTTPS'];
+        } elseif (!empty($_SERVER['REQUEST_SCHEME'])) {
+            $env['HTTPS'] = $_SERVER['REQUEST_SCHEME'] === 'https' ? 'on' : 'off';
+        }
+
         try {
-            $process = new Process($command, $root_dir);
+            $process = new Process($command, $root_dir, $env ?: null);
             $process->setTimeout(60); # 1 min
-            
+
             if (DIRECTORY_SEPARATOR === '\\') {
                 $process->setOptions(['create_new_console' => true]); # Windows: запускаем в отдельной консоли
             } else {
@@ -150,7 +166,7 @@ class NotifierFactory
             }
 
             $process->disableOutput();
-            $process->start();
+            $process->run();
         } catch (\Throwable $e) {
             Helper::log('sendNotifierAsync error: ' . $e->getMessage());
             return false;

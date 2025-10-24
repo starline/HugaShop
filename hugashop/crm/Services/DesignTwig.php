@@ -30,7 +30,6 @@ class DesignTwig
     {
 
         self::$theme = $settings['theme'] ?? Settings::getParam('theme');
-
         $cache_dir = Config::get('cache_dir') . self::$theme;
 
         // Создаем папку для скомпилированных шаблонов текущей темы

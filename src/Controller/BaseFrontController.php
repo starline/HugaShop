@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.7
+ * @version 3.8
  *
  */
 
@@ -28,7 +28,7 @@ class BaseFrontController extends BaseController
     {
 
         // Setup
-        Design::initSettings(['theme' => Settings::getParam('theme'), 'packages' => $this->Packages]);
+        Design::setPackages($this->Packages);
 
         // Locale
         $current_language = Language::getCurrent();

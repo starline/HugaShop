@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.5
+ * @version 3.6
  *
  */
 
@@ -39,7 +39,8 @@ class BaseAdminController extends BaseController
 
         // Setup
         $admin_theme = 'admin';
-        Design::initSettings(['theme' => $admin_theme, 'packages' => $this->Packages]);
+        Design::setTheme($admin_theme);
+        Design::setPackages($this->Packages);
 
         $current_language = Language::getCurrent();
         $this->setTranslator($current_language->code, $admin_theme);

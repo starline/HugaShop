@@ -124,7 +124,6 @@ class BaseController extends AbstractController
             $Translator->addResource('yaml', $translate_file_path, $locale);
         }
 
-        Design::setTranslator($Translator);
         Design::setModifierPlugin('trans', $Translator, 'trans');
     }
 

@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.8
+ * @version 2.0
  *
  */
 
@@ -12,6 +12,7 @@ namespace HugaShop\Modules\Notifier\Email;
 
 use HugaShop\Models\Settings;
 use HugaShop\Services\Design;
+use HugaShop\Services\Helper;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport;
@@ -90,8 +91,17 @@ class Email implements NotifierInterface
             return true;
         } catch (TransportExceptionInterface $e) {
 
-            // TODO: логируй, уведомляй или используй fallback
+            // Log error
+            $log_msg = sprintf(
+                "Email send failed: to=%s, from=%s, subject=\"%s\". Error: %s\n",
+                $to_email ?? '-',
+                $from_email ?? '-',
+                $subject ?? '-',
+                $e->getMessage()
+            );
 
+            Helper::log($log_msg);
+            return false;
         }
     }
 }

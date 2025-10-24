@@ -58,7 +58,11 @@ class Config
             self::$vars[$var] = $value;
         }
 
+        // Define protocol HTTP/HTTPS
         $protocol = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http';
+        if ($protocol === 'http' && !empty($_SERVER['REQUEST_SCHEME'])) {
+            $protocol = $_SERVER['REQUEST_SCHEME'];
+        }
 
         self::$vars['protocol'] =                   $protocol;
         self::$vars['host'] =                       rtrim($_SERVER['HTTP_HOST']);
