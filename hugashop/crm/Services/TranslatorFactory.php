@@ -43,14 +43,14 @@ class TranslatorFactory
         self::addYamlResourse(Config::get('templates_dir') . $theme . '/translations/messages.' . $locale_code . '.yaml', $locale_code);
 
         // If not main locale, set fallback
-        if ($locale_code != $main_locale_code) {
+        if ($locale_code !== $main_locale_code) {
             self::$Translator->setFallbackLocales([$main_locale_code]);
             self::addYamlResourse(Config::get('templates_dir') . $theme . '/translations/messages.' . $main_locale_code . '.yaml', $main_locale_code);
         }
 
         // Сохранять список ресурсов по локали в кеш, проверять какие уже загруженны и не загружать заново.
-        $catalogue = self::$Translator->getCatalogue($locale_code);
-        dump($catalogue = $catalogue->getResources());
+
+        dump(self::$Translator->getCatalogue($locale_code));
 
         Design::setModifierPlugin('trans', self::class, 'translate');
     }
