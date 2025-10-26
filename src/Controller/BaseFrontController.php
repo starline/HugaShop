@@ -24,11 +24,12 @@ class BaseFrontController extends BaseController
 {
 
     #[Required]
-    public function init()
+    public function initBaseFront()
     {
 
         // Setup
         $this->setupController();
+
         Cart::catchCartSession();
 
         if (!empty($message_success = Helper::getSessionMessage('message_success'))) {

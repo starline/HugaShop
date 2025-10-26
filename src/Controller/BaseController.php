@@ -46,10 +46,14 @@ class BaseController extends AbstractController
     /**
      * Setup Controller
      */
-    public function setupController()
+    public function setupController(?string $theme = null)
     {
+
         // Inject Symfony session
         Request::startSession($this->requestStack->getSession());
+
+        // Theme
+        Design::setTheme($theme);
 
         // Assets
         Design::setPackages($this->Packages);
