@@ -5,7 +5,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.3
+ * @version 2.4
  *
  */
 
@@ -106,6 +106,10 @@ class Language extends BaseModel
     }
 
 
+    /**
+     * Delete language.
+     * If it's main, do not delete
+     */
     public static function deleteLenguage(int $language_id)
     {
         $language = self::query()->where('id', $language_id)->first();

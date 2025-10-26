@@ -326,45 +326,36 @@ class Design
      * @param string $locale
      * @param string $theme
      */
-    public static function setTranslator()
+    public static function setTranslator($Translator)
     {
-
-
         if (empty(self::$theme)) {
             return;
         }
 
+        self::$Translator = $Translator;
+
         $locale_code = Language::getCurrent()->code;
         $main_code   = Language::getMain()->code;
 
-        self::$Translator = new Translator($locale_code, null, Config::get('cache_dir') . '/translations', true);
-
-
-        //self::$Translator->setFallbackLocales([$main_code]);
-
+        // Add Lovale translation file
         $translate_file_path = Config::get('templates_dir') . self::$theme . '/translations/messages.' . $locale_code . '.yaml';
-        // $main_translate_file_path = Config::get('templates_dir') . self::$theme . '/translations/messages.' . $main_code . '.yaml';
-
-        // If Translation file exists
         if (file_exists($translate_file_path)) {
-            self::$Translator->addLoader('yaml', new YamlFileLoader());
             self::$Translator->addResource('yaml', $translate_file_path, $locale_code);
-            //self::$Translator->addResource('yaml', $main_translate_file_path, $main_code);
-
-            dump(self::$Translator->getCatalogue($locale_code)->getResources());
-
-            // Сохранять список ресурсов по локали в кеш, проверять какие уже загруженны и не загружать заново.
-
-            dump($catalogue = self::$Translator->getCatalogue($locale_code));
-
-
-            //$loader = new YamlFileLoader();
-            //$addon_catalogue = $loader->load($translate_file_path, $locale_code);
-            //$catalogue->addCatalogue($addon_catalogue);
-
-            //dump($catalogue);
         }
 
+        // If not main locale, set fallback
+        if ($locale_code != $main_code) {
+            self::$Translator->setFallbackLocales([$main_code]);
+
+            $fallback_translate_file_path = Config::get('templates_dir') . self::$theme . '/translations/messages.' . $main_code . '.yaml';
+            if (file_exists($fallback_translate_file_path)) {
+                self::$Translator->addResource('yaml', $fallback_translate_file_path, $locale_code);
+            }
+        }
+
+        // Сохранять список ресурсов по локали в кеш, проверять какие уже загруженны и не загружать заново.
+        $catalogue = self::$Translator->getCatalogue($locale_code);
+        dump($catalogue = $catalogue->getResources());
 
         self::setModifierPlugin('trans', self::$Translator, 'trans');
     }
