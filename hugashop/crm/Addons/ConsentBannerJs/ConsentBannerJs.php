@@ -12,9 +12,9 @@
 
 namespace HugaShop\Addons\ConsentBannerJs;
 
-use HugaShop\Services\Design;
 use HugaShop\Addons\BaseAddon;
 use HugaShop\Models\Localization\Language;
+use HugaShop\Services\TranslatorFactory;
 
 final class ConsentBannerJs extends BaseAddon
 {
@@ -25,13 +25,7 @@ final class ConsentBannerJs extends BaseAddon
     public static function getFrontBodyTemplate()
     {
         if (self::isEnabled()) {
-
-            // If Trnaslation file exists
-            $translate_file_path = self::getAddonDir() . 'translations/messages.' . Language::getCurrent()->code . '.yaml';
-            if (file_exists($translate_file_path)) {
-                Design::$Translator->addResource('yaml', $translate_file_path, Language::getCurrent()->code);
-            }
-
+            TranslatorFactory::addYamlResourse(self::getAddonDir() . 'translations/messages.' . Language::getCurrent()->code . '.yaml');
             return self::fetchTemplate('banner.tpl');
         }
     }

@@ -17,10 +17,10 @@ use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
 use App\Event\DesignBeforeFetchEvent;
 use Symfony\Component\Asset\Packages;
+use HugaShop\Services\TranslatorFactory;
 use HugaShop\Models\Localization\Language;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Translation\LocaleSwitcher;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Bridge\Twig\Extension\ImportMapRuntime;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
@@ -34,7 +34,6 @@ class BaseController extends AbstractController
 {
 
     public function __construct(
-        public LocaleSwitcher $LocaleSwitcher,
         public TranslatorInterface $Translator,
         public Packages $Packages,
         public RequestStack $requestStack,
@@ -64,9 +63,8 @@ class BaseController extends AbstractController
 
         Design::assign('route', $this->requestStack->getCurrentRequest()->attributes->get('_route'));
 
-        // Locale
-        $this->LocaleSwitcher->setLocale(Language::getCurrent()->code);
-        Design::setTranslator($this->Translator);
+        // Translator
+        TranslatorFactory::initTranslator($this->Translator);
 
         // Show Profiler
         if (!is_null($this->Profiler) and !User::authUser('manager')) {

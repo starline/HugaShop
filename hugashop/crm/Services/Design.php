@@ -26,16 +26,12 @@ use HugaShop\Services\Helper;
 use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
 use HugaShop\Models\User\UserPermission;
-use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Finance\FinanceCurrency;
-use Symfony\Component\Translation\Translator;
-use Symfony\Component\Translation\Loader\YamlFileLoader;
 
 class Design
 {
     private static Smarty $smarty;
-    public static ?string $theme;
-    public static $Translator;
+    private static ?string $theme;
     private static $Packages;
 
     public static function getSmarty(): Smarty
@@ -318,46 +314,6 @@ class Design
     public static function getTemplateVars(string $name)
     {
         return self::getSmarty()->getTemplateVars($name);
-    }
-
-
-    /**
-     * Set Translator
-     * @param string $locale
-     * @param string $theme
-     */
-    public static function setTranslator($Translator)
-    {
-        if (empty(self::$theme)) {
-            return;
-        }
-
-        self::$Translator = $Translator;
-
-        $locale_code = Language::getCurrent()->code;
-        $main_code   = Language::getMain()->code;
-
-        // Add Lovale translation file
-        $translate_file_path = Config::get('templates_dir') . self::$theme . '/translations/messages.' . $locale_code . '.yaml';
-        if (file_exists($translate_file_path)) {
-            self::$Translator->addResource('yaml', $translate_file_path, $locale_code);
-        }
-
-        // If not main locale, set fallback
-        if ($locale_code != $main_code) {
-            self::$Translator->setFallbackLocales([$main_code]);
-
-            $fallback_translate_file_path = Config::get('templates_dir') . self::$theme . '/translations/messages.' . $main_code . '.yaml';
-            if (file_exists($fallback_translate_file_path)) {
-                self::$Translator->addResource('yaml', $fallback_translate_file_path, $locale_code);
-            }
-        }
-
-        // Сохранять список ресурсов по локали в кеш, проверять какие уже загруженны и не загружать заново.
-        $catalogue = self::$Translator->getCatalogue($locale_code);
-        dump($catalogue = $catalogue->getResources());
-
-        self::setModifierPlugin('trans', self::$Translator, 'trans');
     }
 
 

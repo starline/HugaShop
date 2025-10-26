@@ -15,9 +15,9 @@ use Illuminate\Support\Str;
 use Jenssegers\Agent\Agent;
 use HugaShop\Models\Settings;
 use HugaShop\Services\Config;
-use HugaShop\Services\Design;
 use HugaShop\Services\Request;
 use Symfony\Component\Yaml\Yaml;
+use HugaShop\Services\TranslatorFactory;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 
 class Helper
@@ -108,7 +108,7 @@ class Helper
         $date->setTimeZone(new \DateTimeZone(Settings::getParam('timezone')));
 
         if ($format === 'm') {
-            return $date->format('j ') . Design::$Translator->trans('month.' . $date->format('F')) . $date->format(' Y');
+            return $date->format('j ') . TranslatorFactory::translate('month.' . $date->format('F')) . $date->format(' Y');
         }
 
         return $date->format(empty($format) ? Settings::getParam('date_format') : $format);
