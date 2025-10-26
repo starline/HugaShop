@@ -28,9 +28,6 @@ use HugaShop\Services\Request;
 use HugaShop\Models\User\UserPermission;
 use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Finance\FinanceCurrency;
-use Symfony\Component\Translation\Translator;
-use Symfony\Component\Translation\Loader\YamlFileLoader;
-use Symfony\Component\Translation\TranslatorBagInterface;
 
 class Design
 {
@@ -46,7 +43,10 @@ class Design
             self::$smarty = new Smarty();
             self::$smarty->setEscapeHtml(true);
 
-            self::setTheme();
+            if (empty(self::$theme)) {
+                self::setTheme();
+            }
+
             self::setDefaultPlugins();
         }
 
@@ -323,7 +323,7 @@ class Design
 
         $locale_code = Language::getCurrent()->code;
         $Translator->setFallbackLocales([Language::getMain()->code]);
-         dump(Language::getMain()->code);
+        dump(Language::getMain()->code);
         $translate_file_path = Config::get('templates_dir') . self::$theme . '/translations/messages.' . $locale_code . '.yaml';
 
         // If Translation file exists

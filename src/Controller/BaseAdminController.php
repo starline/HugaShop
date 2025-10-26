@@ -37,9 +37,9 @@ class BaseAdminController extends BaseController
             Request::makeRedirect($this->UrlGenerator->generate('UserLogin'));
         }
 
-        $this->setupController();
         Design::setTheme('admin');
-
+        $this->setupController();
+        
         // Order INFO count for top menu
         // 0 - new order
         // 1 - accepted order
