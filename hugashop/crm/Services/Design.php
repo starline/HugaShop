@@ -28,11 +28,14 @@ use HugaShop\Services\Request;
 use HugaShop\Models\User\UserPermission;
 use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Finance\FinanceCurrency;
+use Symfony\Component\Translation\Translator;
+use Symfony\Component\Translation\Loader\YamlFileLoader;
 
 class Design
 {
     private static Smarty $smarty;
     public static ?string $theme;
+    public static $Translator;
     private static $Packages;
 
     public static function getSmarty(): Smarty
@@ -323,32 +326,47 @@ class Design
      * @param string $locale
      * @param string $theme
      */
-    public static function setTranslator($Translator)
+    public static function setTranslator()
     {
+
+
         if (empty(self::$theme)) {
             return;
         }
 
         $locale_code = Language::getCurrent()->code;
-        $Translator->setFallbackLocales([Language::getMain()->code]);
-        dump(Language::getMain()->code);
+        $main_code   = Language::getMain()->code;
+
+        self::$Translator = new Translator($locale_code, null, Config::get('cache_dir') . '/translations', true);
+
+
+        //self::$Translator->setFallbackLocales([$main_code]);
+
         $translate_file_path = Config::get('templates_dir') . self::$theme . '/translations/messages.' . $locale_code . '.yaml';
+        // $main_translate_file_path = Config::get('templates_dir') . self::$theme . '/translations/messages.' . $main_code . '.yaml';
 
         // If Translation file exists
         if (file_exists($translate_file_path)) {
-            $Translator->addResource('yaml', $translate_file_path, $locale_code);
+            self::$Translator->addLoader('yaml', new YamlFileLoader());
+            self::$Translator->addResource('yaml', $translate_file_path, $locale_code);
+            //self::$Translator->addResource('yaml', $main_translate_file_path, $main_code);
 
-            dump('Load translation file: ' . $translate_file_path);
-            dump($Translator->getCatalogue($locale_code)->getResources());
+            dump(self::$Translator->getCatalogue($locale_code)->getResources());
 
-            // форсируем сбор каталога и смотрим именно домен
-            $domain = 'messages';
-            dump($Translator->trans('content.search', [], $domain, $locale_code)); // пробный перевод
-            dump(substr(file_get_contents($translate_file_path), 0, 200)); // первые 200 байт
+            // Сохранять список ресурсов по локали в кеш, проверять какие уже загруженны и не загружать заново.
+
+            dump($catalogue = self::$Translator->getCatalogue($locale_code));
+
+
+            //$loader = new YamlFileLoader();
+            //$addon_catalogue = $loader->load($translate_file_path, $locale_code);
+            //$catalogue->addCatalogue($addon_catalogue);
+
+            //dump($catalogue);
         }
 
 
-        self::setModifierPlugin('trans', $Translator, 'trans');
+        self::setModifierPlugin('trans', self::$Translator, 'trans');
     }
 
 

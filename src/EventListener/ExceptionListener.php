@@ -30,10 +30,9 @@ class ExceptionListener
         }
 
         Design::assign([
-            'meta_title'       => 'Страница не найдена',
-            'meta_description' => 'Страница не найдена',
+            'meta_title'       => 'Страница не найдена. Error 404',
+            'meta_description' => 'Страница не найдена. Error 404',
         ]);
-
 
 
         if (!Design::templateExists('404.tpl')) {

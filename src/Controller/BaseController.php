@@ -65,8 +65,8 @@ class BaseController extends AbstractController
         Design::assign('route', $this->requestStack->getCurrentRequest()->attributes->get('_route'));
 
         // Locale
-        Design::setTranslator($this->Translator);
         $this->LocaleSwitcher->setLocale(Language::getCurrent()->code);
+        Design::setTranslator($this->Translator);
 
         // Show Profiler
         if (!is_null($this->Profiler) and !User::authUser('manager')) {

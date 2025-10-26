@@ -5,7 +5,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.2
+ * @version 2.3
  *
  */
 
@@ -128,12 +128,13 @@ class Language extends BaseModel
 
 
     /**
-     * Create language. If it's marked as main, remove main flag from others
+     * Create language.
+     * If it's marked as main, remove main flag from others
      */
     public static function createOne(array|object $values): object
     {
 
-        $values = is_object($values) ? (array) $values : $values;
+        $values = is_array($values) ? (object) $values : $values;
 
         // Reset main flag for other languages
         if (!empty($values->main)) {
@@ -150,11 +151,12 @@ class Language extends BaseModel
 
 
     /**
-     * Update language. If it's marked as main, remove main flag from others
+     * Update language.
+     * If it's marked as main, remove main flag from others
      */
     public static function updateOne(int|array $ids, array|object $values)
     {
-        $values = is_object($values) ? (array) $values : $values;
+        $values = is_array($values) ? (object) $values : $values;
 
         if (!empty($values->main)) {
             $ids_array = is_array($ids) ? (array) ($ids['id'] ?? $ids) : [$ids];
