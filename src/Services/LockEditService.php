@@ -17,7 +17,7 @@ use HugaShop\Models\User\User;
 class LockEditService
 {
 
-    private static $ttl = 600; # seconds
+    private static $ttl = 600; # max locked time in seconds
 
 
     /**

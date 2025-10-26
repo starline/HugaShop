@@ -322,7 +322,8 @@ class Design
         }
 
         $locale_code = Language::getCurrent()->code;
-        $Translator->setFallbackLocales(['en']);
+        $Translator->setFallbackLocales([Language::getMain()->code]);
+         dump(Language::getMain()->code);
         $translate_file_path = Config::get('templates_dir') . self::$theme . '/translations/messages.' . $locale_code . '.yaml';
 
         // If Translation file exists
