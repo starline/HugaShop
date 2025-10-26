@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.8
+ * @version 3.9
  *
  */
 
@@ -27,13 +27,9 @@ class BaseFrontController extends BaseController
     public function init()
     {
 
+        $this->setupController();
+
         // Setup
-        Design::setPackages($this->Packages);
-
-        // Locale
-        $current_language = Language::getCurrent();
-        $this->setTranslator($current_language->code, Settings::getParam('theme'));
-
         Cart::catchCartSession();
 
         if (!empty($message_success = Helper::getSessionMessage('message_success'))) {
@@ -46,7 +42,7 @@ class BaseFrontController extends BaseController
             'user'              => User::authUser(),
             'categories'        => ProductCategory::getCategoriesTree(['visible' => 1]),
             'languages'         => Language::getLanguages(),
-            'current_language'  => $current_language,
+            'current_language'  => Language::getCurrent(),
             'main_language'     => Language::getMain()
         ]);
 

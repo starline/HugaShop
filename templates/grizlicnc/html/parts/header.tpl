@@ -96,7 +96,7 @@
 							<input id="search_input" class="form-control" type="text" name="keyword" value="{$keyword}"
 								placeholder="{'Search'|trans}" aria-label="{'Search'|trans}" />
 
-							<button class="btn btn-primary" type="submit" title="{'Search'|trans}">
+							<button class="btn btn-primary" type="submit" title="{'content.search'|trans}">
 								<span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
 								<span class="btn-content">
 									<svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

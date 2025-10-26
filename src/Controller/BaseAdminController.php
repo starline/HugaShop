@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 3.6
+ * @version 3.7
  *
  */
 
@@ -37,13 +37,8 @@ class BaseAdminController extends BaseController
             Request::makeRedirect($this->UrlGenerator->generate('UserLogin'));
         }
 
-        // Setup
-        $admin_theme = 'admin';
-        Design::setTheme($admin_theme);
-        Design::setPackages($this->Packages);
-
-        $current_language = Language::getCurrent();
-        $this->setTranslator($current_language->code, $admin_theme);
+        $this->setupController();
+        Design::setTheme('admin');
 
         // Order INFO count for top menu
         // 0 - new order
@@ -62,7 +57,7 @@ class BaseAdminController extends BaseController
             'new_comments_counter'  => ContentComment::getCommentsCount(filter: ['approved' => 0]),
             'addons_menu'           => Addon::getMenuAddons(),
             'languages'             => Language::getLanguages(),
-            'current_language'      => $current_language,
+            'current_language'      => Language::getCurrent(),
             'main_language'         => Language::getMain()
         ]);
     }

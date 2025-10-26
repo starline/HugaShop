@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 2.6
+ * @version 2.7
  *
  */
 
@@ -18,7 +18,6 @@ use HugaShop\Services\Request;
 use App\Event\DesignBeforeFetchEvent;
 use Symfony\Component\Asset\Packages;
 use HugaShop\Models\Localization\Language;
-use Symfony\Component\Translation\Translator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Translation\LocaleSwitcher;
@@ -26,7 +25,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Bridge\Twig\Extension\ImportMapRuntime;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Translation\Loader\YamlFileLoader;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,27 +33,40 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class BaseController extends AbstractController
 {
 
-    public $route;
-
     public function __construct(
         public LocaleSwitcher $LocaleSwitcher,
+        public TranslatorInterface $Translator,
         public Packages $Packages,
         public RequestStack $requestStack,
         public UrlGeneratorInterface $UrlGenerator,
-        public ?Profiler $profiler
-    ) {
+        public ?Profiler $Profiler
+    ) {}
 
+
+    /**
+     * Setup Controller
+     */
+    public function setupController()
+    {
         // Inject Symfony session
         Request::startSession($this->requestStack->getSession());
 
-        Design::setModifierPlugin('linkLang', $this, 'generateUrlWithLocale');
-        Design::setModifierPlugin('link', $UrlGenerator, 'generate');
+        // Assets
+        Design::setPackages($this->Packages);
 
-        Design::assign('route', $this->route = $this->requestStack->getCurrentRequest()->attributes->get('_route'));
+        // Links
+        Design::setModifierPlugin('linkLang', $this, 'generateUrlWithLocale');
+        Design::setModifierPlugin('link', $this->UrlGenerator, 'generate');
+
+        Design::assign('route', $this->requestStack->getCurrentRequest()->attributes->get('_route'));
+
+        // Locale
+        Design::setTranslator($this->Translator);
+        $this->LocaleSwitcher->setLocale(Language::getCurrent()->code);
 
         // Show Profiler
-        if (!is_null($profiler) and !User::authUser('manager')) {
-            $profiler->disable();
+        if (!is_null($this->Profiler) and !User::authUser('manager')) {
+            $this->Profiler->disable();
         }
     }
 
@@ -103,28 +115,6 @@ class BaseController extends AbstractController
         }
 
         return new Response($this->fetch($content_tpl, $block, $template_dir));
-    }
-
-
-    /**
-     * Set Translator
-     * @param string $locale
-     * @param string $theme
-     */
-    public function setTranslator(string $locale, string $theme)
-    {
-        $this->LocaleSwitcher->setLocale($locale);
-
-        $Translator = new Translator($locale);
-
-        // If Translation file exists
-        $translate_file_path = Config::get('templates_dir') . $theme . '/translations/messages.' . $locale . '.yaml';
-        if (file_exists($translate_file_path)) {
-            $Translator->addLoader('yaml', new YamlFileLoader());
-            $Translator->addResource('yaml', $translate_file_path, $locale);
-        }
-
-        Design::setModifierPlugin('trans', $Translator, 'trans');
     }
 
 

@@ -68,9 +68,7 @@
 				{/if}
 			</h1>
 
-
 			<div class="my-3">{'Код'|trans}: <span class="badge text-bg-secondary rounded-pill">{$product->sku}</span></div>
-
 
 			<form class="variants" id="variants" action="/cart">
 				{getCSRFInput}
@@ -93,8 +91,8 @@
 									{if !$product_variant->stock AND !$product_variant->custom}disabled{/if}
 									product_id="{$product_variant->id}" sku="{$product_variant->sku}"
 									name="{$product_variant->name}" variant_name="{$product_variant->variant_name}"
-									price="{$product_variant->price|price_html:clean}" max_stock="{$product_variant->stock}"
-									old_price="{$product_variant->old_price|price_html:clean}" />
+									price="{$product_variant->price}" max_stock="{$product_variant->stock}"
+									old_price="{$product_variant->old_price}" />
 
 								{if $product_variant->variant_name}
 									<label class="btn btn-outline-secondary" for="product_{$product_variant->id}">
@@ -132,10 +130,9 @@
 				{else}
 					<input type="hidden" name="product" value="{$product->id}" product_id="{$product->id}"
 						product_sku="{$product->sku}" product_name="{$product->name}" variant_name="{$product->variant_name}"
-						product_price="{$product->price|price_html:clean}"
-						product_old_price="{$product->old_price|price_html:clean}" product_max_stock="{$product->stock}" />
+						product_price="{$product->price}" product_old_price="{$product->old_price}"
+						product_max_stock="{$product->stock}" />
 				{/if}
-
 
 
 				<div class="status_stock my-3">

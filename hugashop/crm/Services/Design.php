@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 5.1
+ * @version 5.3
  *
  * Smarty 5.x require PHP7.4/PHP8.1
  *
@@ -19,14 +19,18 @@ namespace HugaShop\Services;
 
 use Smarty\Smarty;
 use HugaShop\Models\Image;
+use HugaShop\Services\Addon;
 use HugaShop\Models\Settings;
 use HugaShop\Services\Config;
 use HugaShop\Services\Helper;
 use HugaShop\Services\Secure;
 use HugaShop\Services\Request;
-use HugaShop\Services\Addon;
 use HugaShop\Models\User\UserPermission;
+use HugaShop\Models\Localization\Language;
 use HugaShop\Models\Finance\FinanceCurrency;
+use Symfony\Component\Translation\Translator;
+use Symfony\Component\Translation\Loader\YamlFileLoader;
+use Symfony\Component\Translation\TranslatorBagInterface;
 
 class Design
 {
@@ -43,48 +47,56 @@ class Design
             self::$smarty->setEscapeHtml(true);
 
             self::setTheme();
-
-            // Add Smarty Plugins
-            self::setFunctionPlugin('url',               self::class,               'urlFunctionPlugin');
-            self::setFunctionPlugin('addon',             self::class,               'addonFunctionPlugin');
-            self::setFunctionPlugin('setCSRF',           Secure::class,             'setCSRF');
-            self::setFunctionPlugin('getCSRFInput',      Secure::class,             'getCSRFInput');
-
-            self::setModifierPlugin('asset',             self::class,               'getAssetUrl');
-            self::setModifierPlugin('resize',            Image::class,              'getImageURL');
-            self::setModifierPlugin('plural',            self::class,               'pluralModifier');
-            self::setModifierPlugin('first',             self::class,               'firstModifier');
-            self::setModifierPlugin('cut',               self::class,               'cutModifier');
-            self::setModifierPlugin('byte_convert',      Helper::class,             'convertBytes');
-            self::setModifierPlugin('dump',              self::class,               'dumpModifier');
-
-
-            // DATE Plugins
-            self::setModifierPlugin('date',              Helper::class,             'dateFormat');
-            self::setModifierPlugin('time',              Helper::class,             'timeFormat');
-
-            // Finance Plugins
-            self::setModifierPlugin('price_convert',     FinanceCurrency::class,    'priceConvert');
-            self::setModifierPlugin('price_html',        FinanceCurrency::class,    'priceHTML');
-            self::setModifierPlugin('number',            Helper::class,             'numberFormat');
-
-            // User Plugins
-            self::setModifierPlugin('user_access',       UserPermission::class,     'checkAccess');
-
-            // В новой версии Smarty php модификаторы необходимо регестрировать
-            // Look Smarty_Security $php_functions
-            self::setModifierPlugin('json_encode',   'json_encode');
-            self::setModifierPlugin('join',          'join');
-            self::setModifierPlugin('strtotime',     'strtotime');
-            self::setModifierPlugin('is_null',       'is_null');
-            self::setModifierPlugin('urlencode',     'urlencode');
-            self::setModifierPlugin('ceil',          'ceil');
-            self::setModifierPlugin('floor',         'floor');
-            self::setModifierPlugin('max',           'max');
-            self::setModifierPlugin('min',           'min');
+            self::setDefaultPlugins();
         }
 
         return self::$smarty;
+    }
+
+
+    /**
+     * setDefaultPlugins
+     */
+    public static function setDefaultPlugins()
+    {
+
+        // Add Smarty Plugins
+        self::setFunctionPlugin('url',               self::class,               'urlFunctionPlugin');
+        self::setFunctionPlugin('addon',             self::class,               'addonFunctionPlugin');
+        self::setFunctionPlugin('setCSRF',           Secure::class,             'setCSRF');
+        self::setFunctionPlugin('getCSRFInput',      Secure::class,             'getCSRFInput');
+
+        self::setModifierPlugin('asset',             self::class,               'getAssetUrl');
+        self::setModifierPlugin('resize',            Image::class,              'getImageURL');
+        self::setModifierPlugin('plural',            self::class,               'pluralModifier');
+        self::setModifierPlugin('first',             self::class,               'firstModifier');
+        self::setModifierPlugin('cut',               self::class,               'cutModifier');
+        self::setModifierPlugin('byte_convert',      Helper::class,             'convertBytes');
+        self::setModifierPlugin('dump',              self::class,               'dumpModifier');
+
+        // DATE Plugins
+        self::setModifierPlugin('date',              Helper::class,             'dateFormat');
+        self::setModifierPlugin('time',              Helper::class,             'timeFormat');
+
+        // Finance Plugins
+        self::setModifierPlugin('price_convert',     FinanceCurrency::class,    'priceConvert');
+        self::setModifierPlugin('price_html',        FinanceCurrency::class,    'priceHTML');
+        self::setModifierPlugin('number',            Helper::class,             'numberFormat');
+
+        // User Plugins
+        self::setModifierPlugin('user_access',       UserPermission::class,     'checkAccess');
+
+        // В новой версии Smarty php модификаторы необходимо регестрировать
+        // Look Smarty_Security $php_functions
+        self::setModifierPlugin('json_encode',   'json_encode');
+        self::setModifierPlugin('join',          'join');
+        self::setModifierPlugin('strtotime',     'strtotime');
+        self::setModifierPlugin('is_null',       'is_null');
+        self::setModifierPlugin('urlencode',     'urlencode');
+        self::setModifierPlugin('ceil',          'ceil');
+        self::setModifierPlugin('floor',         'floor');
+        self::setModifierPlugin('max',           'max');
+        self::setModifierPlugin('min',           'min');
     }
 
 
@@ -94,7 +106,7 @@ class Design
     public static function setTheme(?string $theme = null)
     {
 
-        self::$theme = $theme ?? Settings::getParam('theme');
+        self::$theme = $theme ?: Settings::getParam('theme');
         self::getSmarty()->assign('theme', self::$theme);
 
         // Template
@@ -295,6 +307,39 @@ class Design
     public static function getTemplateVars(string $name)
     {
         return self::getSmarty()->getTemplateVars($name);
+    }
+
+
+    /**
+     * Set Translator
+     * @param string $locale
+     * @param string $theme
+     */
+    public static function setTranslator($Translator)
+    {
+        if (empty(self::$theme)) {
+            return;
+        }
+
+        $locale_code = Language::getCurrent()->code;
+        $Translator->setFallbackLocales(['en']);
+        $translate_file_path = Config::get('templates_dir') . self::$theme . '/translations/messages.' . $locale_code . '.yaml';
+
+        // If Translation file exists
+        if (file_exists($translate_file_path)) {
+            $Translator->addResource('yaml', $translate_file_path, $locale_code);
+
+            dump('Load translation file: ' . $translate_file_path);
+            dump($Translator->getCatalogue($locale_code)->getResources());
+
+            // форсируем сбор каталога и смотрим именно домен
+            $domain = 'messages';
+            dump($Translator->trans('content.search', [], $domain, $locale_code)); // пробный перевод
+            dump(substr(file_get_contents($translate_file_path), 0, 200)); // первые 200 байт
+        }
+
+
+        self::setModifierPlugin('trans', $Translator, 'trans');
     }
 
 

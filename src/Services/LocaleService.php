@@ -27,8 +27,8 @@ class LocaleService
         $raw_path = parse_url($request->server->get('REQUEST_URI') ?? '/', PHP_URL_PATH);
         $segments = array_values(array_filter(explode('/', trim($raw_path, '/'))));
 
-        $main    = Language::getMain();                 # Главная локаль (например: 'en')
-        $locale  = $segments[0] ?? null;                # Первый сегмент пути
+        $main    = Language::getMain();       # Главная локаль (например: 'en')
+        $locale  = $segments[0] ?? null;      # Первый сегмент пути
 
         // Если путь начинается с валидной локали
         if ($locale && Language::isLanguage($locale)) {
