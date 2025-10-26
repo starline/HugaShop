@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 5.3
+ * @version 5.4
  *
  * Smarty 5.x require PHP7.4/PHP8.1
  *
@@ -35,7 +35,7 @@ class Design
     public static ?string $theme;
     private static $Packages;
 
-    public static function getSmarty()
+    public static function getSmarty(): Smarty
     {
         if (empty(self::$smarty)) {
 
@@ -43,6 +43,7 @@ class Design
             self::$smarty = new Smarty();
             self::$smarty->setEscapeHtml(true);
 
+            // Set setting theme
             if (empty(self::$theme)) {
                 self::setTheme();
             }
@@ -57,7 +58,7 @@ class Design
     /**
      * setDefaultPlugins
      */
-    public static function setDefaultPlugins()
+    public static function setDefaultPlugins(): void
     {
 
         // Add Smarty Plugins
@@ -106,37 +107,44 @@ class Design
     public static function setTheme(?string $theme = null)
     {
 
-        self::$theme = $theme ?: Settings::getParam('theme');
-        self::getSmarty()->assign('theme', self::$theme);
+        self::$theme    = $theme ?: Settings::getParam('theme');
+        $smarty         = self::getSmarty();
+        $config         = Config::get('smarty');
+        $compiled_dir   = Config::get('compiled_dir') . self::$theme;
+
+        // Assign theme var
+        $smarty->assign('theme', self::$theme);
 
         // Template
-        self::getSmarty()->setTemplateDir(Config::get('templates_dir') . self::$theme . '\/html\/');
+        $smarty->setTemplateDir(Config::get('templates_dir') . self::$theme . '\/html\/');
 
         // Caching
-        self::getSmarty()->setCaching(Config::get('smarty')->caching);
-        self::getSmarty()->setCacheLifetime(Config::get('smarty')->cache_lifetime);
-        self::getSmarty()->setCacheDir(Config::get('compiled_dir') . self::$theme . '/cache');
+        $smarty->setCaching($config->caching);
+        $smarty->setCacheLifetime($config->cache_lifetime);
+        $smarty->setCacheDir($compiled_dir . '/cache');
 
         // Debugging
         // The debugging console does not work when you use the fetch() API, only when using display().
-        self::getSmarty()->setDebugging(Config::get('smarty')->debugging);
-        self::getSmarty()->setErrorReporting(E_ALL & ~E_NOTICE);
+        $smarty->setDebugging($config->debugging);
+        $smarty->setErrorReporting(E_ALL & ~E_NOTICE);
 
         // To make Smarty convert Errors warnings into Notices
-        self::getSmarty()->muteUndefinedOrNullWarnings();
+        $smarty->muteUndefinedOrNullWarnings();
 
         // Compiling Smmarty Template
-        self::getSmarty()->setCompileCheck(Config::get('smarty')->compile_check);
-        self::getSmarty()->setCompileDir(Config::get('compiled_dir') . self::$theme);
+        $smarty->setCompileCheck($config->compile_check);
+        $smarty->setCompileDir($compiled_dir);
 
         // Создаем папку для скомпилированных шаблонов текущей темы
-        if (!is_dir(self::getSmarty()->getCompileDir())) {
-            mkdir(self::getSmarty()->getCompileDir(), 0777, true);
+        $compile_dir = $smarty->getCompileDir();
+        if (!is_dir($compile_dir)) {
+            mkdir($compile_dir, 0777, true);
         }
 
         // Make a folder for Cache
-        if (!is_dir(self::getSmarty()->getCacheDir())) {
-            mkdir(self::getSmarty()->getCacheDir(), 0777, true);
+        $cache_dir = $smarty->getCacheDir();
+        if (!is_dir($cache_dir)) {
+            mkdir($cache_dir, 0777, true);
         }
     }
 
@@ -144,7 +152,7 @@ class Design
     /**
      *  Get theme 
      */
-    public static function getTheme()
+    public static function getTheme(): ?string
     {
         return self::$theme ?: null;
     }
@@ -199,10 +207,10 @@ class Design
     /**
      * Check if template exists
      */
-    public static function templateExists(string $tempalte)
+    public static function templateExists(string $tempalte): bool
     {
         $template_path = self::getSmarty()->getTemplateDir(0) . $tempalte;
-        return file_exists($template_path) ? true : false;
+        return file_exists($template_path);
     }
 
 
