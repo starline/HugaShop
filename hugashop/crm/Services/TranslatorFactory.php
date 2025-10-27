@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.3
+ * @version 1.4
  *
  */
 
@@ -48,6 +48,13 @@ class TranslatorFactory
 
         self::$locale_resources = self::loadLocaleResources();
         dump(self::$locale_resources);
+
+        // Force rebuild cache if empty catalogue
+        if (self::$Translator->getCatalogue($locale_code)->all() === [] and !empty(self::$locale_resources[$locale_code])) {
+            self::$locale_resources[$locale_code] = [];
+            self::saveLocaleResources();
+        }
+        dump(self::$locale_resources);
         // Add Locale translation file
         self::addYamlResource(Config::get('templates_dir') . $theme . '/translations/messages.' . $locale_code . '.yaml', $locale_code);
 
@@ -68,9 +75,9 @@ class TranslatorFactory
      * @param string $message
      * @param string|null $domain
      */
-    public static function translate(string $message, ?string $domain = null): string
+    public static function translate(string $message, ?string $domain = null,  ?string $locale = null): string
     {
-        return self::$Translator->trans($message, [], $domain);
+        return self::$Translator->trans($message, [], $domain, $locale);
     }
 
 
@@ -83,11 +90,8 @@ class TranslatorFactory
         $resources          = self::$locale_resources[$locale_code] ?? [];
         $resource_exists    = in_array($translate_file_path, $resources, true);
 
+        // Store loaded resources
         if (!$resource_exists and file_exists($translate_file_path)) {
-
-            //self::$Translator->addResource('yaml', $translate_file_path, $locale_code);
-
-            // Store loaded resource
             self::$locale_resources[$locale_code][] = $translate_file_path;
             self::saveLocaleResources();
             self::rebuildLocaleCatalogueCache($locale_code);
@@ -143,6 +147,7 @@ class TranslatorFactory
 
         // Добавить все ресурсы заново
         foreach (self::$locale_resources[$locale] as $resource) {
+            dump($resource . ' for ' . $locale);
             self::$Translator->addResource('yaml', $resource, $locale);
         }
     }
