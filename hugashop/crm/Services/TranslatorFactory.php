@@ -49,12 +49,6 @@ class TranslatorFactory
         self::$locale_resources = self::loadLocaleResources();
         dump(self::$locale_resources);
 
-        // Force rebuild cache if empty catalogue
-        if (self::$Translator->getCatalogue($locale_code)->all() === [] and !empty(self::$locale_resources[$locale_code])) {
-            self::$locale_resources[$locale_code] = [];
-            self::saveLocaleResources();
-        }
-        dump(self::$locale_resources);
         // Add Locale translation file
         self::addYamlResource(Config::get('templates_dir') . $theme . '/translations/messages.' . $locale_code . '.yaml', $locale_code);
 
@@ -64,7 +58,15 @@ class TranslatorFactory
             self::addYamlResource(Config::get('templates_dir') . $theme . '/translations/messages.' . $main_locale_code . '.yaml', $main_locale_code);
         }
 
-        dump(self::$Translator->getCatalogue($locale_code));
+        // Пишет в кэш. если нет каталога, создает пустой кеш
+        // Удаляет кеш если есть изменненния в ресурсах
+        $catalogue = self::$Translator->getCatalogue($locale_code);
+
+        if ($catalogue->all() === [] and !empty(self::$locale_resources[$locale_code])) {
+            self::resetTranslatorCatalogues(self::$Translator);
+            self::rebuildLocaleCatalogueCache($locale_code);
+            self::$Translator->getCatalogue($locale_code);
+        }
 
         Design::setModifierPlugin('trans', self::class, 'translate');
     }
@@ -128,6 +130,20 @@ class TranslatorFactory
      */
     private static function rebuildLocaleCatalogueCache(string $locale): void
     {
+        self::cleanCache($locale);
+
+        // Добавить все ресурсы заново
+        foreach (self::$locale_resources[$locale] as $resource) {
+            self::$Translator->addResource('yaml', $resource, $locale);
+        }
+    }
+
+
+    /**
+     * Clean translations cache for provided locale
+     */
+    private static function cleanCache(string $locale): void
+    {
         $cache_dir = self::getTranslationsCacheDir();
 
         $finder = new Finder();
@@ -144,12 +160,6 @@ class TranslatorFactory
             // Затем удаляем файл
             @unlink($path);
         }
-
-        // Добавить все ресурсы заново
-        foreach (self::$locale_resources[$locale] as $resource) {
-            dump($resource . ' for ' . $locale);
-            self::$Translator->addResource('yaml', $resource, $locale);
-        }
     }
 
 
@@ -164,5 +174,32 @@ class TranslatorFactory
         }
 
         return rtrim(Config::get('cache_dir'), '/') . '/' . $app_env . '/translations/';
+    }
+
+    /**
+     * Reset translator catalogues property
+     */
+    private static function resetTranslatorCatalogues(TranslatorInterface $translator): void
+    {
+        $reflection = new \ReflectionClass($translator);
+
+        // Если это LoggingTranslator (dev)
+        if ($reflection->hasProperty('translator')) {
+            $prop = $reflection->getProperty('translator');
+            $prop->setAccessible(true);
+            $inner_translator = $prop->getValue($translator);
+
+            if ($inner_translator instanceof TranslatorInterface) {
+                self::resetTranslatorCatalogues($inner_translator);
+                return;
+            }
+        }
+
+        // Если это реальный Translator
+        if ($reflection->hasProperty('catalogues')) {
+            $prop = $reflection->getProperty('catalogues');
+            $prop->setAccessible(true);
+            $prop->setValue($translator, []);
+        }
     }
 }
