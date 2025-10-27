@@ -47,7 +47,6 @@ class TranslatorFactory
         self::$Translator->setLocale($locale_code);
 
         self::$locale_resources = self::loadLocaleResources();
-        dump(self::$locale_resources);
 
         // Add Locale translation file
         self::addYamlResource(Config::get('templates_dir') . $theme . '/translations/messages.' . $locale_code . '.yaml', $locale_code);
