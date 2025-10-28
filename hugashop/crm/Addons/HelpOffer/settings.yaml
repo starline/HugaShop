@@ -6,12 +6,12 @@ settings_params:
       name: "Включено",
       options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
     }
-  - { variable: timer, name: "Таймер показа (сек.)", placeholder: "30" }
   - {
       variable: show_on_timer,
       name: "Показывать по таймеру",
       options: [{ name: "Нет", value: 0 }, { name: "Да", value: 1 }],
     }
+  - { variable: timer, name: "Таймер показа (сек.)", placeholder: "30" }
   - {
       variable: show_on_leave,
       name: "Показ при уходе",

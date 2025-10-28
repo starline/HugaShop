@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 4.0
+ * @version 4.1
  *
  */
 
@@ -449,13 +449,13 @@ class Order extends BaseModel
         }
 
         // Добавляем платеж за операцию
-        if (!empty($payment_settings->fee_fix_inside)) {
+        if (!empty($payment->settings->fee_fix_inside)) {
             $order_payment_fee_inside_price += $payment->settings->fee_fix_inside;
         }
 
         // Вычисляем внутренюю сумму налога которую оплачивает продавец
         $order_payment_tax_inside_price = 0;
-        if (!empty($payment_settings->tax_inside)) {
+        if (!empty($payment->settings->tax_inside)) {
             $order_payment_tax_inside_price = $order_discount_price * $payment->settings->tax_inside / 100;
         }
 
@@ -469,12 +469,12 @@ class Order extends BaseModel
 
         // Если есть налоги способа оплаты, добавляем к цене
         // Формула: (100-tax%)*PriceWithTax = Price => PriceWithTax = Price/((100-tax%)/100)
-        if (!empty($payment_settings->tax)) {
+        if (!empty($payment->settings->tax)) {
             $order_payment_price = $order_payment_price / ((100 - $payment->settings->tax) / 100);
         }
 
         // Добавляем комиссию сервиса
-        if (!empty($payment_settings->fee)) {
+        if (!empty($payment->settings->fee)) {
             $order_payment_price = $order_payment_price / ((100 - $payment->settings->fee) / 100);
         }
 
