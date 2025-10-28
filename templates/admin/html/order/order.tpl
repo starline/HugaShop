@@ -225,288 +225,292 @@
 		</div>
 
 
-
 		<!-- Товары заказа -->
-		<div id="purchases">
-			<div class="list purchases overflow-x-auto">
+		<div id="order_purchases">
+			<div class="layer">
+				<div class="list purchases overflow-x-auto">
 
-				{foreach $order->purchases as $purchase}
-					<div class="list_row">
-						<input type="hidden" name="purchases[{$purchase->position}][product_id]"
-							value="{$purchase->product_id}" />
-						<input type="hidden" name="purchases[{$purchase->position}][id]" value="{$purchase->id}" />
+					{foreach $order->purchases as $purchase}
+						<div class="list_row">
+							<input type="hidden" name="purchases[{$purchase->position}][product_id]"
+								value="{$purchase->product_id}" />
+							<input type="hidden" name="purchases[{$purchase->position}][id]" value="{$purchase->id}" />
+
+							<div class="col row gy-5">
+								<div class="col-12 col-md-7">
+									<div class="row">
+										<div class="move">
+											<div class="move_zone"></div>
+										</div>
+										<div class="col_image">
+											<img
+												src="{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}" />
+										</div>
+										<div class="col">
+											<a class="product_name"
+												href="{'ProductPriceAdmin'|link:[id => $purchase->product_id]}">{$purchase->product_name}</a>
+											<div class="variant_name">{$purchase->variant_name}</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-12 col-md-5">
+									<div class="row gx-2">
+										<div class="col-4 text-end sku">
+											{if $purchase->sku}
+												<div class="badge text-bg-round copy_field" value="{$purchase->sku}">
+													<span>{$purchase->sku}</span>
+													<div class="copy_hover" data-bs-toggle="tooltip"
+														data-bs-original-title="Скопировать">
+														<i class="material-icons">content_copy</i>
+													</div>
+												</div>
+											{/if}
+										</div>
+
+										<div class="col-4 text-end">
+											<div class="view_edit_purchase price">
+												<div class="row_alert">
+													{if 'order_finance'|user_access}
+														<span class="js_change">{$purchase->cost_price|number:2}</span>
+														<span class="price_sign">{$currency->sign}</span>
+													{/if}
+												</div>
+												{if 'product_price'|user_access}
+													<div class="view_purchase">
+														{$purchase->price|price_html|raw}
+													</div>
+												{/if}
+												<div class="edit_purchase input-group input-group-sm" style="display:none;">
+													<input class="form-control text-end" type="text"
+														name="purchases[{$purchase->position}][price]"
+														value="{$purchase->price}" size="5" maxlength="10"
+														{if !'order_finance'|user_access}disabled{/if} />
+													<span class="input-group-text">{$currency->sign}</span>
+												</div>
+											</div>
+										</div>
+
+
+										<div class="col-4 text-end">
+											<div class="view_edit_purchase amount">
+												{if $purchase->product->weight}
+													<div class="row_alert">
+														<span
+															class="js_change">{($purchase->product->weight * $purchase->amount)|number:2}</span>
+														<span class="price_sign">{$settings->weight_units}</span>
+													</div>
+												{/if}
+												<div class="view_purchase">
+													{$purchase->amount} {$settings->units}
+												</div>
+
+												<div class="edit_purchase" style="display:none;">
+
+													{if $purchase->product}
+														{math equation="min(max(x,y),z)" x=$purchase->product->stock + $purchase->amount * ($order->closed) y=$purchase->amount z=$settings->max_order_amount assign="loop"}
+													{else}
+														{math equation="x" x=$purchase->amount assign="loop"}
+													{/if}
+
+													<select class="form-select form-select-sm text-end"
+														name="purchases[{$purchase->position}][amount]">
+														{section name=amounts start=1 loop=$loop+1 step=1}
+															<option value="{$smarty.section.amounts.index}"
+																{if $purchase->amount == $smarty.section.amounts.index}selected{/if}>
+																{$smarty.section.amounts.index} {$settings->units}</option>
+														{/section}
+													</select>
+												</div>
+											</div>
+
+											<div class="text-end stock view_edit_purchase">
+												{if $purchase->product}
+													<div class="row_alert alert_down">
+														{if $purchase->product->movements_amount}
+															<div class="wmovements" data-bs-toggle="tooltip" data-bs-html="true"
+																title="{foreach $purchase->product->movements as $mov}<div class='text-nowrap'>Поставка №{$mov->move_id} | {$mov->awaiting_date|date} | +{$mov->amount}</div>{/foreach}">
+																+{$purchase->product->movements_amount}
+															</div>
+														{/if}
+														{if !$order->closed and $purchase->product->stock < $purchase->amount and !$purchase->product->stock|is_null}
+															<img src="{'images/error.png'|asset}" data-bs-toggle="tooltip"
+																title='На складе остал{$purchase->product->stock|plural:'ся':'ось'} {$purchase->product->stock} товар{$purchase->product->stock|plural:'':'ов':'а'}'>
+														{/if}
+													</div>
+
+													<div class="variant_stock">остаток: <span
+															class="js_change">{if $purchase->product->stock|is_null}∞{else}{$purchase->product->stock}{/if}</span>
+													</div>
+												{/if}
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="icons">
+								{if !$order->closed}
+									{if !$purchase->product}
+										<img src="{'images/error.png'|asset}" alt="Товар был удалён" title="Товар был удалён">
+									{elseif !$purchase->product->id}
+										<img src="{'images/error.png'|asset}" alt="Товара был удалён" title="Вариант товара был удалён">
+									{/if}
+								{/if}
+
+								{if $can_edit}
+									<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
+								{/if}
+							</div>
+						</div>
+					{/foreach}
+
+
+					<!-- New purchase row -->
+					<div id="new_purchase" class="list_row sortable_off" style="display:none;">
+						<input type="hidden" name="purchases[INDEX][product_id]" value="">
+						<input type="hidden" name="purchases[INDEX][id]" value="">
 
 						<div class="col row gy-5">
-							<div class="col-12 col-md-7">
+							<div class="col-12 col-md-6">
 								<div class="row">
 									<div class="move">
 										<div class="move_zone"></div>
 									</div>
 									<div class="col_image">
-										<img
-											src="{if $purchase->product->image->filename}{$purchase->product->image->filename|resize:60:60:c}{else}{'images/cargo.png'|asset}{/if}" />
+										<img src="" />
 									</div>
 									<div class="col">
-										<a class="product_name"
-											href="{'ProductPriceAdmin'|link:[id => $purchase->product_id]}">{$purchase->product_name}</a>
-										<div class="variant_name">{$purchase->variant_name}</div>
+										<a class="product_name" href=""></a>
+										<div class="variant_name"></div>
 									</div>
 								</div>
 							</div>
 
-							<div class="col-12 col-md-5">
+							<div class="col-12 col-md-6">
 								<div class="row gx-2">
 									<div class="col-4 text-end sku">
-										{if $purchase->sku}
-											<div class="badge text-bg-round copy_field" value="{$purchase->sku}">
-												<span>{$purchase->sku}</span>
-												<div class="copy_hover" data-bs-toggle="tooltip"
-													data-bs-original-title="Скопировать">
-													<i class="material-icons">content_copy</i>
-												</div>
+										<div class="badge text-bg-round copy_field" value="">
+											<span></span>
+											<div class="copy_hover" data-bs-toggle="tooltip"
+												data-bs-original-title="Скопировать">
+												<i class="material-icons">content_copy</i>
 											</div>
-										{/if}
+										</div>
 									</div>
 
 									<div class="col-4 text-end">
 										<div class="view_edit_purchase price">
 											<div class="row_alert">
 												{if 'order_finance'|user_access}
-													<span class="js_change">{$purchase->cost_price|number:2}</span>
+													<span class="js_change"></span>
 													<span class="price_sign">{$currency->sign}</span>
 												{/if}
 											</div>
-											{if 'product_price'|user_access}
-												<div class="view_purchase">
-													{$purchase->price|price_html|raw}
-												</div>
-											{/if}
-											<div class="edit_purchase input-group input-group-sm" style="display:none;">
+											<div class="edit_purchase input-group input-group-sm">
 												<input class="form-control text-end" type="text"
-													name="purchases[{$purchase->position}][price]" value="{$purchase->price}"
-													size="5" maxlength="10" {if !'order_finance'|user_access}disabled{/if} />
+													name="purchases[INDEX][price]" value="" size="5"
+													{if !'order_finance'|user_access} disabled {/if} />
 												<span class="input-group-text">{$currency->sign}</span>
 											</div>
 										</div>
 									</div>
 
-
 									<div class="col-4 text-end">
 										<div class="view_edit_purchase amount">
-											{if $purchase->product->weight}
-												<div class="row_alert">
-													<span
-														class="js_change">{($purchase->product->weight * $purchase->amount)|number:2}</span>
-													<span class="price_sign">{$settings->weight_units}</span>
-												</div>
-											{/if}
-											<div class="view_purchase">
-												{$purchase->amount} {$settings->units}
-											</div>
-
-											<div class="edit_purchase" style="display:none;">
-
-												{if $purchase->product}
-													{math equation="min(max(x,y),z)" x=$purchase->product->stock + $purchase->amount * ($order->closed) y=$purchase->amount z=$settings->max_order_amount assign="loop"}
-												{else}
-													{math equation="x" x=$purchase->amount assign="loop"}
-												{/if}
-
-												<select class="form-select form-select-sm text-end"
-													name="purchases[{$purchase->position}][amount]">
-													{section name=amounts start=1 loop=$loop+1 step=1}
-														<option value="{$smarty.section.amounts.index}"
-															{if $purchase->amount == $smarty.section.amounts.index}selected{/if}>
-															{$smarty.section.amounts.index} {$settings->units}</option>
-													{/section}
-												</select>
-											</div>
-										</div>
-
-										<div class="text-end stock view_edit_purchase">
-											{if $purchase->product}
-												<div class="row_alert alert_down">
-													{if $purchase->product->movements_amount}
-														<div class="wmovements" data-bs-toggle="tooltip" data-bs-html="true"
-															title="{foreach $purchase->product->movements as $mov}<div class='text-nowrap'>Поставка №{$mov->move_id} | {$mov->awaiting_date|date} | +{$mov->amount}</div>{/foreach}">
-															+{$purchase->product->movements_amount}
-														</div>
-													{/if}
-													{if !$order->closed and $purchase->product->stock < $purchase->amount and !$purchase->product->stock|is_null}
-														<img src="{'images/error.png'|asset}" data-bs-toggle="tooltip"
-															title='На складе остал{$purchase->product->stock|plural:'ся':'ось'} {$purchase->product->stock} товар{$purchase->product->stock|plural:'':'ов':'а'}'>
-													{/if}
-												</div>
-
-												<div class="variant_stock">остаток: <span
-														class="js_change">{if $purchase->product->stock|is_null}∞{else}{$purchase->product->stock}{/if}</span>
-												</div>
-											{/if}
-										</div>
-
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="icons">
-							{if !$order->closed}
-								{if !$purchase->product}
-									<img src="{'images/error.png'|asset}" alt="Товар был удалён" title="Товар был удалён">
-								{elseif !$purchase->product->id}
-									<img src="{'images/error.png'|asset}" alt="Товара был удалён" title="Вариант товара был удалён">
-								{/if}
-							{/if}
-
-							{if $can_edit}
-								<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
-							{/if}
-						</div>
-					</div>
-				{/foreach}
-
-
-				<!-- New purchase row -->
-				<div id="new_purchase" class="list_row sortable_off" style="display:none;">
-					<input type="hidden" name="purchases[INDEX][product_id]" value="">
-					<input type="hidden" name="purchases[INDEX][id]" value="">
-
-					<div class="col row gy-5">
-						<div class="col-12 col-md-6">
-							<div class="row">
-								<div class="move">
-									<div class="move_zone"></div>
-								</div>
-								<div class="col_image">
-									<img src="" />
-								</div>
-								<div class="col">
-									<a class="product_name" href=""></a>
-									<div class="variant_name"></div>
-								</div>
-							</div>
-						</div>
-
-						<div class="col-12 col-md-6">
-							<div class="row gx-2">
-								<div class="col-4 text-end sku">
-									<div class="badge text-bg-round copy_field" value="">
-										<span></span>
-										<div class="copy_hover" data-bs-toggle="tooltip"
-											data-bs-original-title="Скопировать">
-											<i class="material-icons">content_copy</i>
-										</div>
-									</div>
-								</div>
-
-								<div class="col-4 text-end">
-									<div class="view_edit_purchase price">
-										<div class="row_alert">
-											{if 'order_finance'|user_access}
+											<div class="row_alert">
 												<span class="js_change"></span>
-												<span class="price_sign">{$currency->sign}</span>
-											{/if}
+												<span class="price_sign">{$settings->weight_units}</span>
+											</div>
+											<select class="form-select form-select-sm text-end"
+												name="purchases[INDEX][amount]"></select>
 										</div>
-										<div class="edit_purchase input-group input-group-sm">
-											<input class="form-control text-end" type="text" name="purchases[INDEX][price]"
-												value="" size="5" {if !'order_finance'|user_access} disabled {/if} />
-											<span class="input-group-text">{$currency->sign}</span>
+										<div class="view_edit_purchase text-end stock">
+											<div class="row_alert alert_down"></div>
+											<div class="variant_stock">остаток: <span class="js_change"></span></div>
 										</div>
-									</div>
-								</div>
-
-								<div class="col-4 text-end">
-									<div class="view_edit_purchase amount">
-										<div class="row_alert">
-											<span class="js_change"></span>
-											<span class="price_sign">{$settings->weight_units}</span>
-										</div>
-										<select class="form-select form-select-sm text-end"
-											name="purchases[INDEX][amount]"></select>
-									</div>
-									<div class="view_edit_purchase text-end stock">
-										<div class="row_alert alert_down"></div>
-										<div class="variant_stock">остаток: <span class="js_change"></span></div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
 
-					<div class="icons flex-column">
-						<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
-					</div>
-				</div>
-
-			</div>
-
-			<div id="add_purchase" {if $order->purchases}style='display:none;' {/if}>
-				<input type="text" id="add_purchase" class="form-control input_autocomplete"
-					placeholder="Выберите товар чтобы добавить его" />
-			</div>
-
-			{if $order->purchases and $can_edit}
-				<div class="edit_purchases dash_link">редактировать покупки</div>
-			{/if}
-
-
-			{if $order->purchases}
-				<div class="subtotal mt-4">
-					<div class="over_line">{$total->purchases_count} {$settings->units} {$total->purchases_weight}
-						{$settings->weight_units}
-					</div>
-					<div class="main_line">
-						Всего: <b>{$total->purchases_price|price_html|raw}</b>
-					</div>
-				</div>
-			{/if}
-
-
-			<!-- Скидка и купоны -->
-			<div class="my-4">
-				<div class="row gx-5 mt-2">
-					<label class="col-form-label col-3 col-xl-2" for="discount">Скидка</label>
-					<div class="col-5 col-xl-3">
-						<div class="input-group">
-							<input id="discount" class="form-control text-end" {if !$can_edit}disabled{/if} type="text"
-								name="discount" value="{$order->discount}" autocomplete='off' />
-							<span class="input-group-text currency">%</span>
+						<div class="icons flex-column">
+							<i class="delete material-icons" data-bs-toggle="tooltip" title="Удалить">cancel</i>
 						</div>
 					</div>
 
-					{if $order->discount > 0}
-						<span class="col-form-label col">
-							<b class="disount_amount">
-								{(-($total->purchases_price * ($order->discount/100)))|price_html:profit|raw}
-							</b>
-						</span>
-					{/if}
 				</div>
 
-				<div class="row gx-5 mt-2">
-					<label class="col-form-label col-3 col-xl-2" for="coupon_discount">Купон
-						{if !$order->coupon_code|empty}({$order->coupon_code}){/if}</label>
-					<div class="col-5 col-xl-3">
-						<div class="input-group">
-							<input id="coupon_discount" class="form-control text-end" {if !$can_edit}disabled{/if}
-								type="text" name="coupon_discount" value="{$order->coupon_discount}" autocomplete='off' />
-							<span class="input-group-text currency">{$currency->sign}</span>
-						</div>
-					</div>
+				<div id="add_purchase" {if $order->purchases}style='display:none;' {/if}>
+					<input type="text" id="add_purchase" class="form-control input_autocomplete"
+						placeholder="Выберите товар чтобы добавить его" />
 				</div>
 
-				{if $order->discount > 0 || $order->coupon_discount > 0}
-					<div class="subtotal">
-						<div class="over_line">
-							Скидка:
-							{(-($total->purchases_price * ($order->discount / 100) + $order->coupon_discount))|price_html:profit|raw}
+				{if $order->purchases and $can_edit}
+					<div class="edit_purchases dash_link">редактировать покупки</div>
+				{/if}
+
+
+				{if $order->purchases}
+					<div class="subtotal mt-4">
+						<div class="over_line">{$total->purchases_count} {$settings->units} {$total->purchases_weight}
+							{$settings->weight_units}
 						</div>
 						<div class="main_line">
-							Итого: <b>
-								{($total->purchases_price - $total->purchases_price * ($order->discount / 100) - $order->coupon_discount)|price_html|raw}</b>
+							Всего: <b>{$total->purchases_price|price_html|raw}</b>
 						</div>
 					</div>
 				{/if}
+
+
+				<!-- Скидка и купоны -->
+				<div class="my-4">
+					<div class="row gx-5 mt-2">
+						<label class="col-form-label col-3 col-xl-2" for="discount">Скидка</label>
+						<div class="col-5 col-xl-3">
+							<div class="input-group">
+								<input id="discount" class="form-control text-end" {if !$can_edit}disabled{/if} type="text"
+									name="discount" value="{$order->discount}" autocomplete='off' />
+								<span class="input-group-text currency">%</span>
+							</div>
+						</div>
+
+						{if $order->discount > 0}
+							<span class="col-form-label col">
+								<b class="disount_amount">
+									{(-($total->purchases_price * ($order->discount/100)))|price_html:profit|raw}
+								</b>
+							</span>
+						{/if}
+					</div>
+
+					<div class="row gx-5 mt-2">
+						<label class="col-form-label col-3 col-xl-2" for="coupon_discount">Купон
+							{if !$order->coupon_code|empty}({$order->coupon_code}){/if}</label>
+						<div class="col-5 col-xl-3">
+							<div class="input-group">
+								<input id="coupon_discount" class="form-control text-end" {if !$can_edit}disabled{/if}
+									type="text" name="coupon_discount" value="{$order->coupon_discount}"
+									autocomplete='off' />
+								<span class="input-group-text currency">{$currency->sign}</span>
+							</div>
+						</div>
+					</div>
+
+					{if $order->discount > 0 || $order->coupon_discount > 0}
+						<div class="subtotal">
+							<div class="over_line">
+								Скидка:
+								{(-($total->purchases_price * ($order->discount / 100) + $order->coupon_discount))|price_html:profit|raw}
+							</div>
+							<div class="main_line">
+								Итого: <b>
+									{($total->purchases_price - $total->purchases_price * ($order->discount / 100) - $order->coupon_discount)|price_html|raw}</b>
+							</div>
+						</div>
+					{/if}
+				</div>
 			</div>
 
 
@@ -594,44 +598,44 @@
 						{get_payment_module_html order_id=$order->id module=$order->payment_method->module view_type='admin'}
 					</div>
 				{/if}
-			</div>
 
+				<!-- Итоговая сумма -->
+				<div class="subtotal fs-2 my-5">
+					{if 'order_finance'|user_access}
+						{if $order->profit_price|isset}
+							<div class="over_line">
+								<span class="profit_price" data-bs-toggle="tooltip" title="Чистая прибыль">
+									{$order->profit_price|price_html:profit|raw}
+								</span>
+							</div>
+						{/if}
 
-			<div class="subtotal fs-2 my-5">
+						{if $order->total_price > 0}
+							<div class="over_line">
+								<span class="percent" data-bs-toggle="tooltip" title="Маржа = % прибыли в выручке">Маржа:
+									{($order->profit_price / $order->total_price * 100)|number:2}%</span>
+								<span class="percent" data-bs-toggle="tooltip" title="ROI = % возврата инвестиций">ROI:
+									{($order->profit_price / max(0.01, $order->total_price - $order->profit_price) * 100)|number:2}%</span>
+							</div>
+						{/if}
+					{/if}
+					{if !$order->payment_price|empty}
+						<div class="main_line">
+							<small>К оплате:</small>
+							<b>
+								{$order->payment_price|price_convert:$order->payment_method->currency->id|raw}
 
-				{if 'order_finance'|user_access}
-					{if $order->profit_price|isset}
-						<div class="over_line">
-							<span class="profit_price" data-bs-toggle="tooltip" title="Чистая прибыль">
-								{$order->profit_price|price_html:profit|raw}
-							</span>
+								{if !$order->payment_method->currency->sign|empty}
+									<span class="price_sign">{$order->payment_method->currency->sign}</span>
+								{else}
+									<span class="price_sign">{$currency->sign}</span>
+								{/if}
+							</b>
 						</div>
 					{/if}
-
-					{if $order->total_price > 0}
-						<div class="over_line">
-							<span class="percent" data-bs-toggle="tooltip" title="Маржа = % прибыли в выручке">Маржа:
-								{($order->profit_price / $order->total_price * 100)|number:2}%</span>
-							<span class="percent" data-bs-toggle="tooltip" title="ROI = % возврата инвестиций">ROI:
-								{($order->profit_price / max(0.01, $order->total_price - $order->profit_price) * 100)|number:2}%</span>
-						</div>
-					{/if}
-				{/if}
-				{if !$order->payment_price|empty}
-					<div class="main_line">
-						<small>К оплате:</small>
-						<b>
-							{$order->payment_price|price_convert:$order->payment_method->currency->id|raw}
-
-							{if !$order->payment_method->currency->sign|empty}
-								<span class="price_sign">{$order->payment_method->currency->sign}</span>
-							{else}
-								<span class="price_sign">{$currency->sign}</span>
-							{/if}
-						</b>
-					</div>
-				{/if}
+				</div>
 			</div>
+
 
 			{if $can_edit}
 				<div class="btn_row_add">
@@ -644,7 +648,6 @@
 					{include file="parts/button.tpl"}
 				</div>
 			{/if}
-
 
 
 			<!-- Финансы -->
@@ -733,21 +736,21 @@
 			$(function() {
 
 				// Сортировка вариантов
-				$("#purchases").sortable({
+				$(".purchases").sortable({
 					items: '.list_row',
 					handle: ".move_zone",
 					tolerance: "pointer",
 					opacity: 0.95,
 					axis: 'y',
 					update: function(event, ui) {
-						indexListRows('#purchases', 'purchases');
+						indexListRows('.purchases', 'purchases');
 					}
 				});
 
 				// Удаление товара
 				$(".purchases").on('click', 'i.delete', function() {
 					$(this).closest(".list_row").fadeOut(200, function() { $(this).remove(); });
-					indexListRows('#purchases', 'purchases');
+					indexListRows('.purchases', 'purchases');
 					return false;
 				});
 
@@ -822,7 +825,7 @@
 
 						$("input#add_purchase").val('').focus().blur();
 
-						indexListRows('#purchases', 'purchases');
+						indexListRows('.purchases', 'purchases');
 						new_item.show();
 
 					},

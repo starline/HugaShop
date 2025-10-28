@@ -674,7 +674,7 @@ a.out_link:hover {
 .two_columns_order {
 	grid-template-areas:
 		"header_top header_top"
-		"purchases order_details";
+		"order_purchases order_details";
 	grid-template-columns: 1fr 340px;
 	display: grid;
 }
@@ -2297,6 +2297,10 @@ span.alert {
 	width: auto;
 }
 
+#order_purchases {
+	grid-area: order_purchases;
+}
+
 #order_details {
 	margin-left: 40px;
 	grid-area: order_details;
@@ -2576,7 +2580,7 @@ input.input_autocomplete {
 	margin-top: 10px;
 }
 
-#purchases .coupon .name input.coupon_code {
+.coupon .name input.coupon_code {
 	width: 200px;
 }
 
@@ -2600,8 +2604,6 @@ input.input_autocomplete {
 .subtotal .over_line .percent {
 	margin-left: 5px;
 }
-
-
 
 .tracking_info {
 	margin-left: 10px;

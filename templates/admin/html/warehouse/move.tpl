@@ -216,8 +216,8 @@
 
 
 		<!-- Список поставки -->
-		<div id="purchases">
-			<div class="list purchases">
+		<div id="order_purchases">
+			<div class="list purchases overflow-x-auto">
 
 				{foreach $movement->purchases as $purchase}
 					<div class="list_row">
@@ -447,21 +447,21 @@
 				});
 
 				// Сортировка вариантов
-				$("#purchases").sortable({
+				$(".purchases").sortable({
 					items: '.list_row',
 					handle: ".move_zone",
 					tolerance: "pointer",
 					opacity: 0.95,
 					axis: 'y',
 					update: function(event, ui) {
-						indexListRows('#purchases', 'purchases');
+						indexListRows('.purchases', 'purchases');
 					}
 				});
 
 				// Удаление товара
 				$(".purchases").on('click', 'i.delete', function() {
 					$(this).closest(".list_row").fadeOut(200, function() { $(this).remove(); });
-					indexListRows('#purchases', 'purchases');
+					indexListRows('.purchases', 'purchases');
 					return false;
 				});
 
@@ -526,7 +526,7 @@
 
 						$("input#add_purchase").val('').focus().blur();
 
-						indexListRows('#purchases', 'purchases');
+						indexListRows('.purchases', 'purchases');
 						new_item.show();
 
 					},
