@@ -3,6 +3,7 @@
 
     let offer_link = "{'AddonHelpOfferForm'|link}";
     let show_timer = {$HelpOffer->timer|default:0} * 1000;
+    let show_on_timer = {$HelpOffer->show_on_timer|default:0};
     let show_on_leave = {$HelpOffer->show_on_leave|default:0};
     let storage_key = 'help-offer';
     let offer_shown = false;
@@ -37,7 +38,7 @@
         if (localStorage.getItem(storage_key)) {
             return;
         }
-        if (show_timer > 0) {
+        if (show_on_timer && show_timer > 0) {
             setTimeout(openOffer, show_timer);
         }
         if (show_on_leave) {
