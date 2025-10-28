@@ -94,7 +94,7 @@
 					<form id="search" action="/s">
 						<div class="input-group">
 							<input id="search_input" class="form-control" type="text" name="keyword" value="{$keyword}"
-								placeholder="{'Search'|trans}" aria-label="{'Search'|trans}" />
+								placeholder="{'content.search'|trans}" aria-label="{'content.search'|trans}" />
 
 							<button class="btn btn-primary" type="submit" title="{'content.search'|trans}">
 								<span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
