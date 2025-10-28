@@ -43,7 +43,6 @@ use HugaShop\Models\Warehouse\WarehousePurchase;
 use HugaShop\Addons\TestScript\Services\Composer;
 use HugaShop\Models\Product\ProductFeatureOption;
 use HugaShop\Addons\OpenAI\Services\OpenAIService;
-use HugaShop\Addons\Feedback\Services\NotifyService;
 use HugaShop\Addons\TestScript\Services\SystemCheck;
 use HugaShop\Models\Warehouse\WarehousePlaceProduct;
 use Symfony\Component\Console\Output\BufferedOutput;

@@ -41,10 +41,10 @@ final class HelpOfferListController extends BaseAdminController
         $requests       = HelpOffer::getList($filter, order: ['created_at', 'desc']);
         $requests_count = HelpOffer::getCount($filter);
 
-        Design::assign('requests', $requests);
-        Design::assign('requests_count', $requests_count);
-        Design::assign('pagination', PaginationService::getPagination($requests_count, $filter));
-        Design::assign('addon', $this->getAddon());
+        Design::assign('requests',          $requests);
+        Design::assign('requests_count',    $requests_count);
+        Design::assign('pagination',        PaginationService::getPagination($requests_count, $filter));
+        Design::assign('addon',             $this->getAddon());
 
         return $this->fetchAddonResponse('list.tpl');
     }
