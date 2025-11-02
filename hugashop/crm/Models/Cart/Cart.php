@@ -257,7 +257,10 @@ class Cart extends BaseModel
                 break;
             }
 
-            if (in_array($get_key, ['gclid', 'gbraid', 'wbraid'])) {
+            // Google Ads params
+            // gad_source = 1
+            // gad_campaignid
+            if (in_array($get_key, ['gclid', 'gbraid', 'wbraid', 'gad_source'])) {
                 $referral_name = 'Google Ads';
                 break;
             }

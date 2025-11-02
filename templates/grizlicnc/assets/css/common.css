@@ -65,6 +65,10 @@ body {
 	user-select: none;
 }
 
+.product_amount .items:hover {
+	color: var(--text-flash);
+}
+
 .product_amount input {
 	width: 55px !important;
 }
