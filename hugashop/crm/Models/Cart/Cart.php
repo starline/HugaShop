@@ -247,11 +247,13 @@ class Cart extends BaseModel
      * Get referral
      * @param array $gets
      */
-    public static function getReferral(array $gets)
+    public function getReferral(array $gets)
     {
 
         $referral_name = '';
         foreach ($gets as $get_key => $get_value) {
+
+            // Facebook Ads params
             if (in_array($get_key, ['fbclid'])) {
                 $referral_name = 'Facebook';
                 break;
@@ -259,17 +261,29 @@ class Cart extends BaseModel
 
             // Google Ads params
             // gad_source = 1
-            // gad_campaignid
+            // gad_campaignid = 123456
+            // utm_source = adwords
             if (in_array($get_key, ['gclid', 'gbraid', 'wbraid', 'gad_source'])) {
                 $referral_name = 'Google Ads';
                 break;
             }
 
+            // Google Shoping params
+            // srsltid
+            // google_free_listing_action = view_item | buy_now
+            if (in_array($get_key, ['google_free_listing_action'])) {
+                $referral_name = 'Google Shopping Free Listing';
+                break;
+            }
+
+            // Google Organic params
+            // srsltid
             if (in_array($get_key, ['srsltid'])) {
                 $referral_name = 'Google Shopping';
                 break;
             }
         }
+
         return $referral_name;
     }
 }

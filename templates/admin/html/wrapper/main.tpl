@@ -8,6 +8,7 @@
 	<title>{$meta_title}</title>
 
 	<link rel="icon" href='{"images/favicon.ico"|asset:"{$settings->theme}/assets"}' type="image/x-icon" />
+	<meta name="robots" content="noindex">
 
 	{importmap point='admin'}
 
