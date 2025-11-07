@@ -130,11 +130,9 @@ class ImportCsvAjax extends BaseAdminController
     public function importItem(array $new_product)
     {
 
-        // Проверим обязательные параметры
-        foreach (['sku', 'price'] as $key) {
-            if (empty($new_product[$key])) {
-                return false;
-            }
+        // SKU - обязательное поле
+        if (!isset($new_product['sku']) || trim((string)$new_product['sku']) === '') {
+            return false;
         }
 
         // Убираем пробелы и меняем "," на "."
@@ -203,15 +201,15 @@ class ImportCsvAjax extends BaseAdminController
      * Фозвращает внутреннее название колонки по названию колонки в файле
      * @param string $name
      */
-    public function internalColumnName(string $name, $columns_names)
+    public function internalColumnName(string $name, array $columns_names)
     {
-        $name = trim($name);
-        $name = str_replace('/', '', $name);
-        $name = str_replace('\/', '', $name);
-        foreach ($columns_names as $i => $names) {
+        $name = mb_strtolower(trim($name));
+        $name = str_replace(['/', '\/'], '', $name);
+        foreach ($columns_names as $key => $names) {
             foreach ($names as $n) {
+                $n = mb_strtolower(trim($n));
                 if (!empty($name) && preg_match("/^" . preg_quote($name) . "$/ui", $n)) {
-                    return $i;
+                    return $key;
                 }
             }
         }
