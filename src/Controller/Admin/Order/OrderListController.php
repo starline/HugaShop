@@ -132,6 +132,10 @@ class OrderListController extends BaseAdminController
         $filter['paid'] = $paid;
         Design::assign('paid', $paid);
 
+        // Фильтр по способу оплаты
+        $payment_method_id = Request::get('payment_method_id', 'integer');
+        $filter['payment_method_id'] = $payment_method_id;
+        Design::assign('payment_method_id', $payment_method_id);
 
         if (empty($keyword)) {
 

@@ -207,21 +207,25 @@ class Cart extends BaseModel
      */
     public static function catchCartSession()
     {
-        if (empty(Request::getSession('session_start'))) {
+        if (!Request::getSession('session_start')) {
             Request::setSession('session_start', date('Y-m-d H:i:s'));
-        }
 
-        if (!empty($gets = Request::gets())) {
+            if (!empty($gets = Request::gets())) {
 
-            // Except some GET params
-            foreach ($gets as $get_key => $p) {
-                if (!in_array($get_key, ['page', 'variant', 'sort'])) {
-                    Request::setSession('referral', serialize(Request::gets()));
-                    break;
+                // TODO: Landing page, User-Agent, HTTP Referer, Отфильтрованные GET-параметры, Используем JSON, а не serialize
+
+                // Фильтруем GET параметры, исключая page и sort
+                $filtered_gets = array_diff_key($gets, array_flip(['page', 'sort']));
+
+                if (!empty($filtered_gets)) {
+
+                    // Сохраняем только отфильтрованные GET параметры
+                    Request::setSession('referral', serialize($filtered_gets));
                 }
             }
         }
     }
+
 
     /**
      * Get cart info
@@ -235,8 +239,8 @@ class Cart extends BaseModel
             $cart->user_agent = Helper::getUserAgentInfo($cart->user_agent);
         }
 
-        if (!empty($cart->referral) and !empty($gets = @unserialize($cart->referral))) {
-            $cart->referral = Cart::getReferral($gets);
+        if (!empty($cart->referral) and !empty($get_vars = @unserialize($cart->referral))) {
+            $cart->referral = Cart::getReferral($get_vars);
         }
 
         return $cart;
@@ -247,7 +251,7 @@ class Cart extends BaseModel
      * Get referral
      * @param array $gets
      */
-    public function getReferral(array $gets)
+    public static function getReferral(array $gets)
     {
 
         $referral_name = '';

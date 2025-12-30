@@ -71,12 +71,14 @@ class OrderExport extends BaseAdminController
         }
 
         $filter = [];
-        $filter['page'] = $page;
-        $filter['limit'] = $orders_count;
+        $filter['page']                 = $page;
+        $filter['limit']                = $orders_count;
+        $filter['status']               = intval(Request::get('status'));
+        $filter['label']                = intval(Request::get('label'));
+        $filter['keyword']              = Request::get('keyword');
+        $filter['payment_method_id']    = intval(Request::get('payment_method_id'));
+        $filter['paid']                 = intval(Request::get('paid'));
 
-        $filter['status'] =  intval(Request::get('status'));
-        $filter['label'] =   intval(Request::get('label'));
-        $filter['keyword'] = Request::get('keyword');
 
         // Выбираем заказы
         foreach (Order::getOrders($filter) as $order) {

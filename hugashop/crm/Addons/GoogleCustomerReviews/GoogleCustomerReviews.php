@@ -4,7 +4,7 @@
  * HugaShop - Sell anything
  *
  * @author Andri Huga
- * @version 1.2
+ * @version 1.3
  * 
  * @link https://support.google.com/merchants/answer/14629205?sjid=3111895555780829847-NC
  *
@@ -63,6 +63,7 @@ final class GoogleCustomerReviews extends BaseAddon
             }
         }
 
+        // email cannot be empty!
         $data = [
             'merchant_id' => $settings->merchant_id,
             'order_id' => !empty($order?->id) ? (string) $order->id : '',

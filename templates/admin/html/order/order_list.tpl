@@ -92,6 +92,18 @@
 							<a href="{url paid=0}">Не оплачены</a>
 						</li>
 					</ul>
+
+					<select class="form-select" name="payment_method_id">
+						<option value="">Все способы оплаты</option>
+						{foreach $payment_methods as $pm}
+							{if $pm->enabled || $pm->enabled_public}
+								<option class="{if !$pm->enabled_public}disabled{/if}"
+									{if $payment_method_id == $pm->id}selected{/if} value="{$pm->id}">
+									{$pm->name}
+								</option>
+							{/if}
+						{/foreach}
+					</select>
 				</div>
 			</div>
 		</div>

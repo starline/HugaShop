@@ -22,14 +22,17 @@ use HugaShop\Services\Secure;
 use HugaShop\Models\User\User;
 use HugaShop\Services\Request;
 use HugaShop\Models\Order\Order;
+use HugaShop\Services\DesignTwig;
 use HugaShop\Addons\BaseAddonTrait;
 use HugaShop\Models\Product\Product;
+use HugaShop\Models\User\UserMailing;
 use HugaShop\Models\Cart\CartPurchase;
 use HugaShop\Services\NotifierFactory;
 use App\Controller\BaseAdminController;
 use HugaShop\Models\Content\ContentPost;
 use HugaShop\Models\Order\OrderPurchase;
 use HugaShop\Models\Product\ProductOption;
+use HugaShop\Models\User\UserMailTemplate;
 use HugaShop\Models\Content\ContentComment;
 use HugaShop\Models\Product\ProductRelated;
 use HugaShop\Models\Product\ProductCategory;
@@ -104,7 +107,7 @@ final class TestScriptController extends BaseAdminController
 
 
                         // Mailer
-                        if (1) {
+                        if (0) {
 
                             // Works well
                             //$result[] = NotifierFactory::sendToManagers([NotifyService::class, 'feedbackToAdmin'], ['feedback' => 'name']);
@@ -327,7 +330,29 @@ final class TestScriptController extends BaseAdminController
                          * 
                          * 
                          */
-                        if (0) {
+                        if (1) {
+
+                            // 0. Compile message template
+                            if (0) {
+                                $messages = UserMailing::getList();
+                                foreach ($messages as $message) {
+                                    if (empty($message->template_id)) {
+                                        continue;
+                                    }
+
+                                    $template_params = [];
+                                    $template_params['utm_link'] = UserMailing::makeShortUTMLink($message);
+                                    $template = UserMailTemplate::getOne($message->template_id);
+
+                                    $message_content = DesignTwig::renderTemplate($template->content, $template_params);
+
+                                    UserMailing::where('id', $message->id)->update([
+                                        'message' => $message_content
+                                    ]);
+
+                                    $result[] = 'Message #' . $message->id . ' compiled.';
+                                }
+                            }
 
                             // 1. Исправляем типы комментарий
                             if (0) {

@@ -1848,8 +1848,8 @@ span.order_label {
 	background-position: -48px;
 }
 
-/* Icons */
-.badge.copy_field {
+/* Copy */
+.copy_field {
 	cursor: pointer;
 	text-align: center;
 	position: relative;
@@ -1881,6 +1881,7 @@ span.order_label {
 	border-radius: 22px;
 }
 
+/* Icons */
 a.material-icons,
 i.material-icons {
 	opacity: 0.55;

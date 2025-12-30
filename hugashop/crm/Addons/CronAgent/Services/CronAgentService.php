@@ -11,6 +11,7 @@
 namespace HugaShop\Addons\CronAgent\Services;
 
 use HugaShop\Services\Cache;
+use HugaShop\Services\Helper;
 use HugaShop\Addons\CronAgent\Models\CronAgent as Agent;
 
 final class CronAgentService
@@ -65,12 +66,14 @@ final class CronAgentService
         $callable = str_replace('()', '', (string) $agent->function);
         if (str_contains($callable, '::')) {
             [$class, $method] = explode('::', $callable);
-            dump([$class, $method]);
+
             if (class_exists($class) && method_exists($class, $method)) {
                 try {
                     $class::$method();
                 } catch (\Throwable) {
+
                     // Ignore errors
+                    Helper::log('CronAgentService: execute ' . $agent->function . ' failed.');
                 }
             }
         }

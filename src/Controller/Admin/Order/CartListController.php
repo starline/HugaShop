@@ -54,8 +54,8 @@ class CartListController extends BaseAdminController
             if (!empty($cart->user_agent)) {
                 $cart->user_agent = Helper::getUserAgentInfo($cart->user_agent);
             }
-            if (!empty($cart->referral) and !empty($gets = @unserialize($cart->referral))) {
-                $cart->referral = Cart::getReferral($gets);
+            if (!empty($cart->referral) and !empty($get_vars = @unserialize($cart->referral))) {
+                $cart->referral = Cart::getReferral($get_vars);
             }
         }
 

@@ -15,7 +15,6 @@
 		{getCSRFInput}
 
 		<div class="row gx-5">
-
 			<div class="col-12">
 				<div class="over_name">
 					<div class="checkbox_line">
@@ -33,44 +32,16 @@
 						</div>
 					</div>
 				</div>
-				<div class="name_row">
-					<input class="form-control form-control-lg" name="contact" type="text" value="{$mailing->contact}" />
-				</div>
 			</div>
 
 			<div class="col-lg-6 layer">
 				<h2>Настройки сообщения</h2>
 				<ul class="property_block">
-
-					{if !$mailing->token|empty}
-						<li>
-							<label class="col-form-label">Ссылка для отслеживания</label>
-							<div class="property_value_text copy_field"
-								value="{$config->root_url}/m{$mailing->id}/{$mailing->token}">
-								{$config->root_url}/m{$mailing->id}/{$mailing->token}
-								<div class="copy_hover" data-bs-toggle="tooltip" title="Скопировать">
-									<i class="material-icons">content_copy</i>
-								</div>
-							</div>
-						</li>
-						<li>
-							<label class="col-form-label">Метка для отслеживания</label>
-							<div class="property_value_text copy_field"
-								value="?utm_mid={$mailing->id}&utm_mtoken={$mailing->token}">
-								?utm_mid={$mailing->id}&utm_mtoken={$mailing->token}
-								<div class="copy_hover" data-bs-toggle="tooltip" title="Скопировать">
-									<i class="material-icons">content_copy</i>
-								</div>
-							</div>
-						</li>
-					{/if}
-
-
-					<li class="row_sm">
-						<label for="sending_date" class="col-form-label">Когда отправить</label>
-						<input name="sending_date" id="sending_date" type="text" class="form-control"
-							value="{$mailing->sending_date}" />
+					<li>
+						<label for="contact" class="col-form-label">Получатель</label>
+						<input id="contact" class="form-control" name="contact" type="text" value="{$mailing->contact}" />
 					</li>
+
 					<li>
 						<label for="modules">Способы оповещения</label>
 						<select class="form-select" name="notifier_id" id="modules">
@@ -81,11 +52,41 @@
 							{/foreach}
 						</select>
 					</li>
+
+					<li class="row_sm">
+						<label for="sending_date" class="col-form-label">Когда отправить</label>
+						<input name="sending_date" id="sending_date" type="text" class="form-control"
+							value="{$mailing->sending_date}" />
+					</li>
 				</ul>
 			</div>
 
 			<div class="col-lg-6 layer">
 				<ul class="property_block">
+					{if !$mailing->token|empty}
+						<li>
+							<label class="col-form-label">Ссылка для отслеживания</label>
+							<div class="property_value_text badge text-bg-round copy_field"
+								value="{$config->root_url}/m{$mailing->id}/{$mailing->token}">
+								{$config->root_url}/m{$mailing->id}/{$mailing->token}
+								<div class="copy_hover" data-bs-toggle="tooltip" title="Скопировать">
+									<i class="material-icons">content_copy</i>
+								</div>
+							</div>
+						</li>
+
+						<li>
+							<label class="col-form-label">Метка для отслеживания</label>
+							<div class="property_value_text badge text-bg-round copy_field"
+								value="?utm_mid={$mailing->id}&utm_mtoken={$mailing->token}">
+								?utm_mid={$mailing->id}&utm_mtoken={$mailing->token}
+								<div class="copy_hover" data-bs-toggle="tooltip" title="Скопировать">
+									<i class="material-icons">content_copy</i>
+								</div>
+							</div>
+						</li>
+					{/if}
+
 					<li>
 						<label class="col-form-label">Отправлен</label>
 						<div class="property_value_text">
@@ -96,6 +97,7 @@
 							{/if}
 						</div>
 					</li>
+
 					<li>
 						<label class="col-form-label">Переходов</label>
 						<div class="property_value_text">{$mailing->count}</div>
@@ -108,12 +110,7 @@
 						</li>
 					{/if}
 
-					{if $mailing->template_id|empty}
-						<li>
-							<label for="message" class="col-form-label">Сообщение</label>
-							<textarea class="form-control" name="message" id="message">{$mailing->message}</textarea>
-						</li>
-					{else}
+					{if $mailing->template_id}
 						<li>
 							<label class="col-form-label">Шаблон</label>
 							<a href="{'MailTemplateAdmin'|link:[id => $mailing->template_id]}">{$mailing->template_id}</a>
@@ -122,23 +119,17 @@
 				</ul>
 			</div>
 
-			{if !$mailing->template_id|empty}
-				<div class="col-12 layer">
-					<h2>Сообщение</h2>
-					{if $mailing->template->type|in_array:[sms, telegram]}
-						<textarea name="content" class="form-control sms_editor" disabled>{$mailing->template->compiled}</textarea>
-					{else}
-						<textarea name="content" class="editor_large" disabled>{$mailing->template->compiled}</textarea>
-					{/if}
-
-				</div>
-			{/if}
+			<div class="col-12 layer">
+				<h2>Сообщение</h2>
+				<textarea name="message"
+					class="form-control {if $mailing->template->type|in_array:[sms, telegram]}sms_editor{else}editor_small{/if}"
+					{if $mailing->send}disabled{/if}>{$mailing->message}</textarea>
+			</div>
 
 			<div class="col-12 btn_row">
 				{include file="parts/button.tpl" class="btn-light" label="Отправить" extra_attrs="name=action value=send"}
 				{include file="parts/button.tpl"}
 			</div>
-
 		</div>
 	</form>
 
