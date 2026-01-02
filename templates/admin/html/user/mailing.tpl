@@ -38,11 +38,6 @@
 				<h2>Настройки сообщения</h2>
 				<ul class="property_block">
 					<li>
-						<label for="contact" class="col-form-label">Получатель</label>
-						<input id="contact" class="form-control" name="contact" type="text" value="{$mailing->contact}" />
-					</li>
-
-					<li>
 						<label for="modules">Способы оповещения</label>
 						<select class="form-select" name="notifier_id" id="modules">
 							<option value="">Не установлен</option>
@@ -51,6 +46,11 @@
 									{$notifier->name}</option>
 							{/foreach}
 						</select>
+					</li>
+
+					<li>
+						<label for="contact" class="col-form-label">Получатель</label>
+						<input id="contact" class="form-control" name="contact" type="text" value="{$mailing->contact}" />
 					</li>
 
 					<li class="row_sm">
@@ -113,7 +113,7 @@
 					{if $mailing->template_id}
 						<li>
 							<label class="col-form-label">Шаблон</label>
-							<a href="{'MailTemplateAdmin'|link:[id => $mailing->template_id]}">{$mailing->template_id}</a>
+							<a href="{'MailTemplateAdmin'|link:[id => $mailing->template_id]}">{$mailing->template->name}</a>
 						</li>
 					{/if}
 				</ul>

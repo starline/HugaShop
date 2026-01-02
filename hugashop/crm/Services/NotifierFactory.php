@@ -113,74 +113,10 @@ class NotifierFactory
 
 
     /**
-     * Send notification message via Module Async
-     */
-    public static function sendNotifierAsync(string $module_name, callable $callback, array $message_data)
-    {
-
-        // Run in background process
-        $root_dir       = Config::get('root_dir');
-        $console_path   = $root_dir ? $root_dir . 'bin/console' : null;
-        $php_bin        = (new PhpExecutableFinder())->find(false) ?: PHP_BINARY;
-
-        if (empty($console_path) || !is_file($console_path) || empty($php_bin)) {
-            return false;
-        }
-
-        Helper::log('sendNotifier: ' . $console_path . ' ' . $php_bin);
-
-        // Prepare command
-        $command = [
-            $php_bin,
-            $console_path,
-            'notifier:send',
-            $module_name,
-            base64_encode(serialize($callback)),
-            base64_encode(serialize($message_data))
-        ];
-
-        $env = [];
-
-        if (!empty($_SERVER['HTTP_HOST'])) {
-            $env['HTTP_HOST'] = $_SERVER['HTTP_HOST'];
-        }
-
-        if (!empty($_SERVER['SERVER_NAME'])) {
-            $env['SERVER_NAME'] = $_SERVER['SERVER_NAME'];
-        }
-
-        if (isset($_SERVER['HTTPS'])) {
-            $env['HTTPS'] = $_SERVER['HTTPS'];
-        } elseif (!empty($_SERVER['REQUEST_SCHEME'])) {
-            $env['HTTPS'] = $_SERVER['REQUEST_SCHEME'] === 'https' ? 'on' : 'off';
-        }
-
-        try {
-            $process = new Process($command, $root_dir, $env ?: null);
-            $process->setTimeout(60); # 1 min
-
-            if (DIRECTORY_SEPARATOR === '\\') {
-                $process->setOptions(['create_new_console' => true]); # Windows: запускаем в отдельной консоли
-            } else {
-                $process->setOptions(['create_process_group' => true]); # Linux/macOS: отделяем процессную группу — меньше шансов, что FPM его «прихлопнет»
-            }
-
-            $process->disableOutput();
-            $process->run();
-        } catch (\Throwable $e) {
-            Helper::log('sendNotifierAsync error: ' . $e->getMessage());
-            return false;
-        }
-
-        return true;
-    }
-
-
-    /**
      * Send Notifier manager. Select avaliable notifier Method
      * Send notification only to Managers
      */
-    public static function sendToManagers(callable $callback, array $message_data, bool $async = false)
+    public static function sendToManagers(callable $callback, array $message_data)
     {
 
         // User List to notifier
@@ -193,11 +129,7 @@ class NotifierFactory
             // Get avaliable notifier modules for User
             $user_notifiers = UserNotifier::getAllowedNotifier($user->id, $method);
             foreach ($user_notifiers as $notifier) {
-                if ($async) {
-                    self::sendNotifierAsync($notifier->module, $callback, $message_data);
-                } else {
-                    self::sendNotifier($notifier->module, $callback, $message_data);
-                }
+                self::sendNotifier($notifier->module, $callback, $message_data);
             }
         }
     }
@@ -213,7 +145,7 @@ class NotifierFactory
 
         // Get extra notifier messages from addons
         $addons = Helper::getModules(Config::get('addon_dir'));
-        foreach ($addons as $addon) {
+        foreach ((array) $addons as $addon) {
             if (!empty($addon->notifier->$type)) {
                 foreach ((array) $addon->notifier->$type as $message) {
                     foreach ((array) $message as $message_key => $message_name) {

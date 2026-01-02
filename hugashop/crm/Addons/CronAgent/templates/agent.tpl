@@ -26,44 +26,46 @@
 
             <div class="col-12">
                 <div class="mb-3">
-                    <label class="form-label">Название</label>
-                    <input class="form-control form-control-lg" name="name" type="text" value="{$agent->name}"
+                    <label class="form-label" for="name">Название</label>
+                    <input class="form-control form-control-lg" id="name" name="name" type="text" value="{$agent->name}"
                         autocomplete="off" />
                 </div>
             </div>
 
             <div class="col-12">
                 <div class="mb-3">
-                    <label class="form-label">Описание</label>
-                    <textarea class="form-control" name="description">{$agent->description}</textarea>
+                    <label class="form-label" for="description">Описание</label>
+                    <textarea class="form-control" id="description" name="description">{$agent->description}</textarea>
                 </div>
             </div>
 
             <div class="col-12 col-md-6">
                 <div class="mb-3">
-                    <label class="form-label">Дата запуска</label>
-                    <input class="form-control" name="start_at" type="datetime-local"
+                    <label class="form-label" for="start_at">Дата запуска</label>
+                    <input class="form-control" id="start_at" name="start_at" type="datetime-local"
                         value="{$agent->start_at|date_format:'Y-m-d\\TH:i'}" />
                 </div>
             </div>
             <div class="col-12 col-md-3">
                 <div class="mb-3">
-                    <label class="form-label">Часы</label>
-                    <input class="form-control" name="period_hours" type="number" value="{$agent->period_hours}" min="0" />
+                    <label class="form-label" for="period_hours">Период (часы)</label>
+                    <input class="form-control" id="period_hours" name="period_hours" type="number"
+                        value="{$agent->period_hours}" min="0" />
                 </div>
             </div>
             <div class="col-12 col-md-3">
                 <div class="mb-3">
-                    <label class="form-label">Минуты</label>
-                    <input class="form-control" name="period_minutes" type="number" value="{$agent->period_minutes}" min="0"
-                        max="59" />
+                    <label class="form-label" for="period_minutes">Период (минуты)</label>
+                    <input class="form-control" id="period_minutes" name="period_minutes" type="number"
+                        value="{$agent->period_minutes}" min="0" max="59" />
                 </div>
             </div>
 
             <div class="col-12">
                 <div class="mb-3">
-                    <label class="form-label">Функция</label>
-                    <input class="form-control" name="function" type="text" value="{$agent->function}" autocomplete="off" />
+                    <label class="form-label" for="function">Функция</label>
+                    <input class="form-control" id="function" name="function" type="text" value="{$agent->function}"
+                        autocomplete="off" />
                 </div>
             </div>
 
